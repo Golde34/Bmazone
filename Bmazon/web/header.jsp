@@ -1,14 +1,4 @@
-<<<<<<< HEAD
-<%@page import="entity.User"%>
-<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
-<%@page import="entity.Category"%>
-<%@page import="java.util.ArrayList"%>
-<%@page import="model.DBConnection"%>
-<%@page import="model.DAOCategory"%>
-
-=======
 <%@ page contentType="text/html;charset=UTF-8" language="java" pageEncoding="UTF-8"%>
->>>>>>> be56bf7f0888e50abde46fbd760dc99044b5e098
 <!DOCTYPE html>
 <!--[if IE 9 ]> <html lang="vi" class="ie9 loading-site no-js"> <![endif]-->
 <!--[if IE 8 ]> <html lang="vi" class="ie8 loading-site no-js"> <![endif]-->
@@ -712,38 +702,6 @@ li.html .row, li.html form, li.html select, li.html input {
   </i>
   </a>
 
-<<<<<<< HEAD
-    <body>  
-        <!--Menu starts here-->
-        <%
-            User user = (User) session.getAttribute("currUser");
-
-            int size = 0;
-//            if (ShoppingCart != null) {
-//                size = ShoppingCart.size();
-//            }
-            String logHead = "  Sign in";
-            String loginOrChangePassword = "  Login";
-            String registerOrCheckout = "  Register";
-            String urlLogin = "jsp/login.jsp";
-            String urlRegister = "jsp/register.jsp";
-            if (user != null) {
-                logHead = "  Profile";
-                loginOrChangePassword = "  Change Password";
-                registerOrCheckout = "  Sign out";
-                urlLogin = "jsp/changepass.jsp";
-                urlRegister = "UserControllerMap?service=logout";
-            }
-
-        %>
-        <!-- Navbar -->
-        <div class="w3-top">
-            <div class="w3-bar w3-black w3-card">
-                <a class="w3-bar-item w3-button w3-padding-large w3-hide-medium w3-hide-large w3-right" href="javascript:void(0)" onclick="myFunction()" title="Toggle Navigation Menu"><i class="fa fa-bars"></i></a>
-                <a href="index.jsp" class="w3-bar-item w3-button w3-padding-large">BMAZON</a>
-                <a href="#band" class="w3-bar-item w3-button w3-padding-large w3-hide-small">ABOUT US</a>
-                <a href="#contact" class="w3-bar-item w3-button w3-padding-large w3-hide-small">CONTACT</a>
-=======
 
   <!-- Cart Sidebar Popup -->
   <div id="cart-popup" class="mfp-hide widget_shopping_cart">
@@ -756,33 +714,8 @@ li.html .row, li.html form, li.html select, li.html input {
           
 
 	<p class="woocommerce-mini-cart__empty-message">The cart is empty</p>
->>>>>>> be56bf7f0888e50abde46fbd760dc99044b5e098
 
-                <!--                <a href="jsp/login.jsp" class="w3-padding-large w3-hover-red w3-hide-small w3-right" style="text-decoration: none;">LOGIN-REGISTER</a>-->
-                <a href="${pageContext.request.contextPath }/ShoppingCart.jsp" class="w3-padding-large w3-hover-red w3-hide-small w3-right" >CART</a>
-                <div class="w3-padding-large w3-hover-red w3-hide-small w3-right" style="text-decoration: none;">
-                    <ul class="nav navbar-nav navbar-right ">
-                        <li class="nav-item dropdown">
-                            <a class="nav-link dropdown-toggle" href="#" data-toggle="dropdown">
-                                <span class="glyphicon glyphicon-th-list"></span><%= logHead%></a>
-                            <div class="dropdown-menu">
 
-<<<<<<< HEAD
-                                <a href="<%=urlLogin%>"><span class="glyphicon glyphicon-log-in"></span><%=loginOrChangePassword%></a>
-                                <!--                    If role is admin or owner-->
-                                <%if (user != null && (user.getSystemRole() == 1 || user.getSystemRole() == 1)) {%>
-                                <a href="AdminControllerMap"><span class="glyphicon glyphicon-log-in"></span>   Admin Page</a>
-                                <a href="UserControllerMap?service=info"><span class="glyphicon glyphicon-log-in"></span>   About Me</a>
-                                <%}
-                                if (user != null && user.getSystemRole() == 0) {%>
-                                <a href="UserControllerMap?service=info"><span class="glyphicon glyphicon-log-in"></span>   About Me</a>
-                                <%}%>
-                                <a href="<%=urlRegister%>"><span class="glyphicon glyphicon-log-in"></span><%=registerOrCheckout%></a>  
-                        </li>
-                    </ul>
-                </div>
-            </div>
-=======
       </div>
              <div class="cart-sidebar-content relative"></div>  </div>
   </div>
@@ -790,7 +723,6 @@ li.html .row, li.html form, li.html select, li.html input {
 </li>
             </ul>
           </div>
->>>>>>> be56bf7f0888e50abde46fbd760dc99044b5e098
 
       </div><!-- .header-inner -->
       
@@ -872,32 +804,10 @@ var wc_password_strength_meter_params = {"min_password_strength":"3","i18n_passw
 	
 	
 
-<<<<<<< HEAD
-            <div class="w3-bar w3-black w3-card">
-                <form action="" style="text-align: center;">
-                    <input type="text" placeholder="Search.." name="search" style="width: 300px">
-                    <button type="submit"><i class="fa fa-search"></i></button>
-                </form>
-=======
->>>>>>> be56bf7f0888e50abde46fbd760dc99044b5e098
 
 	
 
-<<<<<<< HEAD
-                <br>
-                <div style="margin:auto;">
-                    <% for (Category x : cateList) {%>
-                    <a  href="ProductControllerMap?service=searchByCate1&cateID=<%=x.getCategoryName()%>">
-                        <i style="margin: 10px 60px; text-decoration: none;" ></i> <%=x.getCategoryName()%><i style="float:right;margin-right: 50px;" ></i></a>
-                        <% }%>                          
-                </div>
-            </div>
-        </div>
-        <br>
-        <br>
-=======
 	
->>>>>>> be56bf7f0888e50abde46fbd760dc99044b5e098
 
 
 
@@ -906,6 +816,8 @@ var wc_password_strength_meter_params = {"min_password_strength":"3","i18n_passw
 	        }
 	
 	</style>
+   </div>
+</header>
 	
 
 	
