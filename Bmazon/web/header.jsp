@@ -579,7 +579,7 @@ Nhấp chuột vào biểu tượng trợ giúp phía trên để tìm hiểu th
                                             <%if (x.getSystemRole() == 1) {%>
                                             <li  ><a href="AdminControllerMap" class="menu-image-title-after"><span >Admin Dashboard</span></a></li>
                                             <%}%>
-                                            <li  ><a href="ProfileUser.jsp" class="menu-image-title-after"><span >User profile</span></a></li>
+                                            <li  ><a href="UserControllerMap?service=info" class="menu-image-title-after"><span >User profile</span></a></li>
                                             <li  ><a href="UserControllerMap?service=logout" class="menu-image-title-after"><span >Lougout</span></a></li>
 
                                         </ul>

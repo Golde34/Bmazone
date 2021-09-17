@@ -107,7 +107,7 @@ public class UserController extends HttpServlet {
                 }
             }
 
-            //changepass
+            //change pass
             if (service.equalsIgnoreCase("changepass")) {
                 String mess = "";
 
@@ -161,6 +161,13 @@ public class UserController extends HttpServlet {
                     request.setAttribute("mess", "Duplicate user!");
                 }
                 request.getRequestDispatcher("jsp/login.jsp").include(request, response);
+            }
+            
+            //profile
+            if (service.equalsIgnoreCase("info")) {
+                User x = (User) request.getSession().getAttribute("currUser");
+                request.setAttribute("currUser", x);
+                sendDispatcher(request, response, "profile.jsp");
             }
         }
     }
