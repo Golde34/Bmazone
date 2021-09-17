@@ -558,7 +558,7 @@ Nhấp chuột vào biểu tượng trợ giúp phía trên để tìm hiểu th
 
                             <div class="flex-col hide-for-medium flex-right">
                                 <ul class="nav top-bar-nav nav-right nav-small  nav-">
-                                    <li class="html custom html_topbar_right"><p class="topbarlink"><a href="http://mauweb.monamedia.net/lazada/cong-tac-cung-mona/" style="color:#37cfdd">Be one of us</a></p></li>
+                                    <li class="html custom html_topbar_right"><p class="topbarlink"><a href="" style="color:#37cfdd">Be one of us</a></p></li>
                                     <li class="html custom html_top_right_text"><p class="topbarlink"><a href="#">Customer Service</a></p></li>
                                     <li class="html custom html_nav_position_text_top"><p class="topbarlink"><a href="#">Check Order</a></p></li>
                                         <%User x = (User) request.getSession().getAttribute("currUser");%>
@@ -598,8 +598,9 @@ Nhấp chuột vào biểu tượng trợ giúp phía trên để tìm hiểu th
                             <!-- Logo -->
                             <div id="logo" class="flex-col logo">
                                 <!-- Header logo -->
-                                <a href="http://mauweb.monamedia.net/lazada/" title="BMAZON" rel="home">
-                                    <img width="124" height="75" src="http://mauweb.monamedia.net/lazada/wp-content/uploads/2017/11/logo-ecommerce-1.svg" class="header_logo header-logo" alt="Lazada"/><img  width="124" height="75" src="http://mauweb.monamedia.net/lazada/wp-content/uploads/2017/11/logo-ecommerce-1.svg" class="header-logo-dark" alt="Lazada"/></a>
+                                <a href="" title="BMAZON" rel="home">
+                                    
+                                    <img  width="124" height="75" src="images/fpt.png" class="header-logo-dark" /></a>
                             </div>
 
 
@@ -611,10 +612,10 @@ Nhấp chuột vào biểu tượng trợ giúp phía trên để tìm hiểu th
                                 <ul class="header-nav header-nav-main nav nav-left  nav-uppercase" >
                                     <li class="header-search-form search-form html relative has-icon">
                                         <div class="header-search-form-wrapper">
-                                            <div class="searchform-wrapper ux-search-box relative form- is-normal"><form method="get" class="searchform" action="http://mauweb.monamedia.net/lazada/" role="search">
+                                            <div class="searchform-wrapper ux-search-box relative form- is-normal"><form method="get" class="searchform" action="" role="search">
                                                     <div class="flex-row relative">
                                                         <div class="flex-col flex-grow">
-                                                            <input type="search" class="search-field mb-0" name="s" value="" placeholder="Find Product" />
+                                                            <input type="search" class="search-field mb-0" name="" value="" placeholder="Find Product" />
                                                             <input type="hidden" name="post_type" value="product" />
                                                         </div><!-- .flex-col -->
                                                         <div class="flex-col">
@@ -625,10 +626,10 @@ Nhấp chuột vào biểu tượng trợ giúp phía trên để tìm hiểu th
                                                     <div class="live-search-results text-left z-top"></div>
                                                 </form>
                                             </div>	</div>
-                                    </li><li class="cart-item has-icon
-                                             has-dropdown">
+                                    </li><li>
+                                        <i>   <img src="iamges/car.png" style="height: 10px; width: 10px"></i>
 
-                                        <a href="http://mauweb.monamedia.net/lazada/gio-hang/" title="Cart" class="header-cart-link is-small">
+                                        <a href="" title="Cart" class="header-cart-link is-small">
 
 
 
@@ -654,47 +655,16 @@ Nhấp chuột vào biểu tượng trợ giúp phía trên để tìm hiểu th
                             </div>
 
                             <!-- Right Elements -->
+                            <!-- logo ben trai-->
                             <div class="flex-col hide-for-medium flex-right">
                                 <ul class="header-nav header-nav-main nav nav-right  nav-uppercase">
-                                    <li class="html custom html_nav_position_text"><img class="header_promotion" src="http://mauweb.monamedia.net/lazada/wp-content/uploads/2017/11/or-header.png" alt="promotion" height="40" width="170"></li>            </ul>
+                                    <li class="html custom html_nav_position_text"><img class="header_promotion" 
+                                      src="images/FPT.jpg" alt="promotion" style="height: 40px;width: 170px;"></li>            </ul>
                             </div>
 
-                            <!-- Mobile Right Elements -->
-                            <div class="flex-col show-for-medium flex-right">
-                                <ul class="mobile-nav nav nav-right ">
-                                    <li class="cart-item has-icon">
-
-
-                                        <a href="http://mauweb.monamedia.net/lazada/gio-hang/" class="header-cart-link off-canvas-toggle nav-top-link is-small" data-open="#cart-popup" data-class="off-canvas-cart" title="Giỏ hàng" data-pos="right">
-
-                                            <i class="icon-shopping-cart"
-                                               data-icon-label="0">
-                                            </i>
-                                        </a>
-
-
-                                        <!-- Cart Sidebar Popup -->
-                                        <div id="cart-popup" class="mfp-hide widget_shopping_cart">
-                                            <div class="cart-popup-inner inner-padding">
-                                                <div class="cart-popup-title text-center">
-                                                    <h4 class="uppercase">Cart</h4>
-                                                    <div class="is-divider"></div>
-                                                </div>
-                                                <div class="widget_shopping_cart_content">
-
-
-                                                    <p class="woocommerce-mini-cart__empty-message">The cart is empty</p>
-
-
-                                                </div>
-                                                <div class="cart-sidebar-content relative"></div>  </div>
-                                        </div>
-
-                                    </li>
-                                </ul>
-                            </div>
-
-                        </div><!-- .header-inner -->
+                            
+                           
+                        </div>
 
 
                     </div>
