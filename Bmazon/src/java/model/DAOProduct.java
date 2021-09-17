@@ -53,6 +53,7 @@ public class DAOProduct {
         }
         return list;
     }
+
     public ArrayList<Product> getTrueProduct() {
         ArrayList<Product> list = new ArrayList<>();
         String sql = "SELECT * FROM Product";
@@ -77,7 +78,7 @@ public class DAOProduct {
         }
         return list;
     }
-    
+
     public ArrayList<Product> getProductBySeller(int seller) {
         ArrayList<Product> list = new ArrayList<>();
         String sql = "SELECT * FROM [Bmazon].[dbo].[Product] where seller=" + seller;
