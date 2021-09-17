@@ -6,7 +6,7 @@
     text-decoration: none;
 }
 .sidebar{
-    width: 345px;
+    width: 250px;
     position: fixed;
     left: 0;
     top: 0;
@@ -53,16 +53,14 @@
 }
 .main-content{
     transition: margin-left 300ms;
-    margin-left: 345px;
+    margin-left: 250px;
 }
 header{
     display: flex;
     justify-content: space-between;
     padding: 1rem 1.5rem;
     box-shadow: 2px 2px 5px rgba(0,0,0,0.2);
-/*    position: fixed;*/
     left: 345px;
-    width: calc(100%-345px);
     top: 0;
     z-index: 100;
     transition: left 300s;
@@ -119,7 +117,6 @@ header label span{
     margin-bottom: 0rem !important;
 }
 main{
-/*    margin-top: 85px;*/
     padding: 2rem 1.5rem;
     background: #f1f5f9;
     min-height: calc(100vh - 90px);
@@ -209,4 +206,23 @@ tbody td span{
     display: inline-block;
     margin-left: .5rem;
     
+}
+@media only screen and (max-width: 960px){
+    .cards{
+        grid-template-columns: repeat(3, 1fr);
+    }
+    .recent-grid{
+        grid-template-columns: 60% 40%;
+    }
+}
+@media only screen and (max-width: 768px){
+    .cards{
+        grid-template-columns: repeat(2, 1fr);
+    }
+    .recent-grid{
+        grid-template-columns: 100%;
+    }
+    .search-wrapper{
+        display: none;
+    }
 }

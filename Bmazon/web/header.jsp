@@ -574,12 +574,15 @@ Nhấp chuột vào biểu tượng trợ giúp phía trên để tìm hiểu th
 
                                     </li>
                                     <%} else {%>
-                                    <li class=" menu-item menu-item-type-taxonomy menu-item-object-product_cat menu-item-has-children has-dropdown"><a><span> Hello <%=x.getFullname() %></span></a>
-                                    <ul class='nav-dropdown nav-dropdown-simple'>
-                                        <li  ><a href="ProfileUser.jsp" class="menu-image-title-after"><span >User profile</span></a></li>
-                                        <li  ><a href="Logout.jsp" class="menu-image-title-after"><span >Lougout</span></a></li>
-                                            
-                                    </ul>
+                                    <li class=" menu-item menu-item-type-taxonomy menu-item-object-product_cat menu-item-has-children has-dropdown"><a><span> Hello <%=x.getFullname()%></span></a>
+                                        <ul class='nav-dropdown nav-dropdown-simple'>
+                                            <%if (x.getSystemRole() == 1) {%>
+                                            <li  ><a href="AdminControllerMap" class="menu-image-title-after"><span >Admin Dashboard</span></a></li>
+                                            <%}%>
+                                            <li  ><a href="ProfileUser.jsp" class="menu-image-title-after"><span >User profile</span></a></li>
+                                            <li  ><a href="UserControllerMap?service=logout" class="menu-image-title-after"><span >Lougout</span></a></li>
+
+                                        </ul>
                                     </li>
                                     <%}%>
                                 </ul>

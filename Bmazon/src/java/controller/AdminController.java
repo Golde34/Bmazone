@@ -63,11 +63,12 @@ public class AdminController extends HttpServlet {
                 request.setAttribute("listProduct", listProduct);
                 ArrayList<User> listUser = daouser.getTrueUser();
                 request.setAttribute(("listUser"), listUser);
-                ArrayList<Category> listCategory = daocategory.getTrueCategories();
-                request.setAttribute("listCategory", listCategory);
-                ArrayList<Genre> listGenre = daogenre.getTrueGenres();
-                request.setAttribute("listGenre", listGenre);
-                sendDispatcher(request, response, "admin.jsp");
+                sendDispatcher(request, response, "admin/admin.jsp");
+            }
+            if(service.equalsIgnoreCase("usermanagement")){
+                ArrayList<User> listUser = daouser.getTrueUser();
+                request.setAttribute("listUser", listUser);
+                sendDispatcher(request, response, "admin/usermanagement.jsp");
             }
         }
     }
