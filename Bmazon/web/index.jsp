@@ -18,6 +18,9 @@
         <div class="wrap">
             <jsp:include page="header.jsp"/>
              <br> <br> <br><br> <br> <br><br>
+             <br> <br> <br><br> <br> <br><br>
+             <br> <br> <br><br> <br> <br><br>
+             <br> <br> <br><br> <br>
             <jsp:include page="footer.jsp"/>
         </div>
        
