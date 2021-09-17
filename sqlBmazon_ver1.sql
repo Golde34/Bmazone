@@ -115,7 +115,7 @@ CREATE TABLE ShipCompany (
 )
 
 CREATE TABLE Gallery (
-	galleryID int NOT NULL PRIMARY KEY, 
+	galleryID int NOT NULL IDENTITY(1,1) PRIMARY KEY , 
 	productID int NOT NULL,
 	productTypeID nvarchar(255) NOT NULL,
 	link nvarchar(255) NOT NULL,
