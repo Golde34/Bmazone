@@ -58,11 +58,11 @@ public class DAOUser {
         return null;
     }
     
-    public void singup(String user, String pass, String email, String phone) {
-        String sql = "INSERT INTO [User]([username],[password],[email],[phoneNumber],[systemRole],[status])\n" +
+    public void singup(String user, String pass, String email, String phone, String fname) {
+        String sql = "INSERT INTO [User]([username],[password],[email],[phoneNumber],[fullname],[systemRole],[status])\n" +
 
 
-"     VALUES	(?,?,?,?,0,1)";
+"     VALUES	(?,?,?,?,?,0,1)";
 
         try {
             PreparedStatement pre = conn.prepareStatement(sql);
@@ -70,6 +70,7 @@ public class DAOUser {
             pre.setString(2, pass);
             pre.setString(3, email);
             pre.setString(4, phone);
+            pre.setString(5, fname);
             pre.executeUpdate();
         } catch (Exception e) {
         }
@@ -78,7 +79,7 @@ public class DAOUser {
     public static void main(String[] args) {
         DBConnection dbCon = new DBConnection();
         DAOUser daouser =new DAOUser(dbCon);
-        daouser.singup("hieu", "123456", "hieu@gmail.com", "012345678977");
+        daouser.singup("hieu", "123456", "hieu@gmail.com", "012345678977","Le Trung Hieu");
     }
     
     public int addUser(User obj) {

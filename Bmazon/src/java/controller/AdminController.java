@@ -58,6 +58,8 @@ public class AdminController extends HttpServlet {
             if (service == null) {
                 service = "AdminDashBoard";
             }
+            
+            //admin dashboard
             if (service.equalsIgnoreCase("AdminDashBoard")) {
                 ArrayList<Product> listProduct = daoproduct.getTrueProduct();
                 request.setAttribute("listProduct", listProduct);
@@ -65,6 +67,7 @@ public class AdminController extends HttpServlet {
                 request.setAttribute(("listUser"), listUser);
                 sendDispatcher(request, response, "admin/admin.jsp");
             }
+            
             if(service.equalsIgnoreCase("usermanagement")){
                 ArrayList<User> listUser = daouser.getTrueUser();
                 request.setAttribute("listUser", listUser);

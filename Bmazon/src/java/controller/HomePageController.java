@@ -57,6 +57,7 @@ public class HomePageController extends HttpServlet {
             if (service == null) {
                 service = "HomePage";
             }
+            
             //Home.jsp
             if (service.equalsIgnoreCase("HomePage")) {
                 ArrayList<Category> ListCategory = daoCategory.getTrueCategories();

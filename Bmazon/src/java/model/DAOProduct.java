@@ -56,7 +56,7 @@ public class DAOProduct {
 
     public ArrayList<Product> getTrueProduct() {
         ArrayList<Product> list = new ArrayList<>();
-        String sql = "SELECT * FROM Product";
+        String sql = "SELECT TOP 10 * FROM Product";
         try {
             PreparedStatement ps = conn.prepareStatement(sql);
             ResultSet rs = ps.executeQuery();

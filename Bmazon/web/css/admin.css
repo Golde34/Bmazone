@@ -38,6 +38,8 @@
     display: block;
     color: #fff;
     font-size: 1.1rem;
+    padding-top: 1rem;
+    padding-bottom: 1rem;
 }
 .sidebar-menu a span:first-child{
     font-size: 1.5rem;
@@ -45,11 +47,9 @@
 }
 .sidebar-menu a.active{
     background: #fff;
-    padding-top: 1rem;
-    padding-bottom: 1rem;
+
     color: #000;
     border-radius: 30px 0px 0px 30px;
-    
 }
 .main-content{
     transition: margin-left 300ms;
@@ -116,6 +116,29 @@ header label span{
 .user-wrapper h4{
     margin-bottom: 0rem !important;
 }
+.dropdown ul li {
+    position: relative;
+    display: inline-block;
+}
+.dropdown ul li a{
+    display: block;
+    padding: 1rem 1rem;
+}
+.dropdown ul li a:hover{
+    background: rgba(220,220,220,0.5);
+    color: #000;;
+}
+.dropdown ul ul{
+    position: absolute;
+    display: none;
+}
+.dropdown ul li:hover > ul {
+    display: block;
+    background: #fff;
+}
+.dropdown ul ul li {
+    width: 150px;
+}
 main{
     padding: 2rem 1.5rem;
     background: #f1f5f9;
@@ -144,6 +167,7 @@ main{
     grid-template-columns: 65% auto;
     grid-gap: 2rem;
 }
+
 .card{
     background: #fff;
     border-radius: 5px;
@@ -183,6 +207,7 @@ td{
 tbody td span{
     font-size: 20px;
 }
+
 .customer{
     display: flex;
     justify-content: space-between;
@@ -205,7 +230,7 @@ tbody td span{
     font-size: 1.2rem;
     display: inline-block;
     margin-left: .5rem;
-    
+
 }
 @media only screen and (max-width: 960px){
     .cards{

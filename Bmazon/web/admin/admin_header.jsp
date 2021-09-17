@@ -30,9 +30,19 @@
                 <input type="search" placeholder="Search here">
             </div>
             <div class="user-wrapper">
-                <img src="images/FPT.jpg" width="30px" height="30px">
-                <div>
-                    <h4>Hello,<%=currUser.getFullname()%></h4>
+                <div class="dropdown">
+                    <ul>
+                        <li>
+                            <div>
+                                <h4>Hello,<%=currUser.getFullname()%></h4>
+                            </div>
+                            <ul>
+                                <li><a href="">Profile</a></li>
+                                <li><a href="index.jsp">Shopping</a></li>
+                                <li><a href="UserControllerMap?service=logout">Logout</a></li>
+                            </ul>
+                        </li>
+                    </ul>
                 </div>
             </div>
         </header>

@@ -163,20 +163,7 @@
             <a href="#top" class="back-to-top button invert plain is-outline hide-for-medium icon circle fixed bottom z-1" id="top-link"><i class="icon-angle-up" ></i></a>
 
         </footer><!-- .footer-wrapper -->
-
-   
-   
-    
-
-       
-
-
-
-
-   
-   
-   
-   
+ 
     <script type='text/javascript' src='http://mauweb.monamedia.net/lazada/wp-content/plugins/woocommerce/assets/js/js-cookie/js.cookie.min.js?ver=2.1.4'></script>
     
     
@@ -197,8 +184,43 @@
     <script type='text/javascript' src='http://mauweb.monamedia.net/lazada/wp-content/plugins/woocommerce-products-filter/js/html_types/checkbox.js?ver=4.8.14'></script>
     <script type='text/javascript' src='http://mauweb.monamedia.net/lazada/wp-content/plugins/woocommerce-products-filter/js/html_types/select.js?ver=4.8.14'></script>
     <script type='text/javascript' src='http://mauweb.monamedia.net/lazada/wp-content/plugins/woocommerce-products-filter/js/html_types/mselect.js?ver=4.8.14'></script>
+
     
     
+
+    <script type='text/javascript' src='http://mauweb.monamedia.net/lazada/wp-content/plugins/woocommerce-products-filter/ext/by_text/js/by_text.js?ver=4.8.14'></script>
+    <script type='text/javascript' src='http://mauweb.monamedia.net/lazada/wp-content/plugins/woocommerce-products-filter/ext/color/js/html_types/color.js?ver=4.8.14'></script>
+    <script type='text/javascript' src='http://mauweb.monamedia.net/lazada/wp-content/plugins/woocommerce-products-filter/ext/label/js/html_types/label.js?ver=4.8.14'></script>
+    <script type='text/javascript' src='http://mauweb.monamedia.net/lazada/wp-content/plugins/woocommerce-products-filter/ext/select_hierarchy/js/html_types/select_hierarchy.js?ver=4.8.14'></script>
+    <script type='text/javascript' src='http://mauweb.monamedia.net/lazada/wp-content/plugins/woocommerce-products-filter/ext/select_radio_check/js/html_types/select_radio_check.js?ver=4.8.14'></script>
+    <script type='text/javascript' src='http://mauweb.monamedia.net/lazada/wp-content/plugins/woocommerce-products-filter/js/chosen/chosen.jquery.min.js?ver=4.8.14'></script>
+    <script type='text/javascript' src='http://mauweb.monamedia.net/lazada/wp-content/themes/flatsome/inc/shortcodes/ux_countdown/countdown-script-min.js?ver=4.8.14'></script>
+    <script type='text/javascript' src='http://mauweb.monamedia.net/lazada/wp-content/themes/flatsome/inc/shortcodes/ux_countdown/ux-countdown.js?ver=3.2.6'></script>
+    <script type='text/javascript'>
+                               /* <![CDATA[ */
+                               var _zxcvbnSettings = {"src":"http:\/\/mauweb.monamedia.net\/lazada\/wp-includes\/js\/zxcvbn.min.js"};
+                               /* ]]> */
+    </script>
+    <script type='text/javascript' src='http://mauweb.monamedia.net/lazada/wp-includes/js/zxcvbn-async.min.js?ver=1.0'></script>
+    <script type='text/javascript'>
+                               /* <![CDATA[ */
+                               var pwsL10n = {"unknown":"M\u1eadt kh\u1ea9u m\u1ea1nh kh\u00f4ng x\u00e1c \u0111\u1ecbnh", "short":"R\u1ea5t y\u1ebfu", "bad":"Y\u1ebfu", "good":"Trung b\u00ecnh", "strong":"M\u1ea1nh", "mismatch":"M\u1eadt kh\u1ea9u kh\u00f4ng kh\u1edbp"};
+                               /* ]]> */
+    </script>
+    <script type='text/javascript' src='http://mauweb.monamedia.net/lazada/wp-admin/js/password-strength-meter.min.js?ver=4.8.14'></script>
+    <script type='text/javascript'>
+                               /* <![CDATA[ */
+                               var wc_password_strength_meter_params = {"min_password_strength":"3", "i18n_password_error":"Vui l\u00f2ng nh\u1eadp m\u1eadt kh\u1ea9u kh\u00f3 h\u01a1n.", "i18n_password_hint":"G\u1ee3i \u00fd: M\u1eadt kh\u1ea9u ph\u1ea3i c\u00f3 \u00edt nh\u1ea5t 12 k\u00fd t\u1ef1. \u0110\u1ec3 n\u00e2ng cao \u0111\u1ed9 b\u1ea3o m\u1eadt, s\u1eed d\u1ee5ng ch\u1eef in hoa, in th\u01b0\u1eddng, ch\u1eef s\u1ed1 v\u00e0 c\u00e1c k\u00fd t\u1ef1 \u0111\u1eb7c bi\u1ec7t nh\u01b0 ! \" ? $ % ^ & )."};
+                               /* ]]> */
+    </script>
+    <script type='text/javascript' src='http://mauweb.monamedia.net/lazada/wp-content/plugins/woocommerce/assets/js/frontend/password-strength-meter.min.js?ver=3.2.3'></script>
+    <style type="text/css">
+        .woof_edit_view{
+            display: none;
+        }
+
+    </style>
+
 
 
 </body>
