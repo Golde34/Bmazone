@@ -142,6 +142,7 @@ public class UserController extends HttpServlet {
                 String username = request.getParameter("signupusername");
                 String password = request.getParameter("signuppass");
                 String repassword = request.getParameter("resignuppass");
+                String fname = request.getParameter("fname");
                 String email = request.getParameter("email");
                 String phone = request.getParameter("phone");
 
@@ -153,7 +154,7 @@ public class UserController extends HttpServlet {
 
                 boolean exist = daoUser.checkExistUserName(username);
                 if (exist == false) {
-                    daoUser.singup(username, password, email, phone);
+                    daoUser.singup(username, password, email, phone, fname);
                     request.setAttribute("mess", "Signup Successfully!");
                     request.getRequestDispatcher("jsp/login.jsp").forward(request, response);
                     return;
