@@ -100,8 +100,8 @@
                                         <tr>
                                             <td><%=product.getProductName()%></td>
                                             <td><%=product.getDescription()%></td>
-                                            <td><span class="las la-edit"></span></td>
-                                            <td><span class="las la-trash"></span></td>
+                                            <td><a href="AdminControllerMap?service=updateuser&userid=<%=product.getProductID()%>"><span class="las la-edit"></span></a></td>
+                                            <td><a href="AdminControllerMap?service=deleteuser&userid=<%=product.getProductID()%>"><span class="las la-trash"></span></a></td>
                                         </tr>
                                         <%}%>
                                     </tbody>
@@ -126,8 +126,8 @@
                                         </div>
                                     </div>
                                     <div class="edit-delete">
-                                        <span class="las la-edit"></span>
-                                        <span class="las la-trash"></span>
+                                        <a href="AdminControllerMap?service=updateuser&userid=<%=user.getUserId()%>"><span class="las la-edit"></span></a>
+                                        <a href="AdminControllerMap?service=deleteuser&userid=<%=user.getUserId()%>"><span class="las la-trash"></span></a>
                                     </div>
                                 </div>
                                 <%}%>
