@@ -120,7 +120,8 @@
                                 <%for (User user : listUser) {%>
                                 <div class="customer">
                                     <div class="info">
-                                        <img src="<%=user.getProfileImage()%>" width="40px" height="40px">
+                                        <img src="" width="40px" height="40px">
+                                        
                                         <div>
                                             <h2><%=user.getUsername()%></h2>
                                         </div>
