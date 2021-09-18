@@ -75,19 +75,91 @@ public class AdminController extends HttpServlet {
             }
 
             //User detail to add and update
-            if (service.equalsIgnoreCase("detail")) {
-                String sid = request.getParameter("userid");
-                if("null".equals(sid)){
+            if (service.equalsIgnoreCase("updatedetail") || service.equalsIgnoreCase("adddetail")) {
+                request.setAttribute("service", service);
+                if (service.equalsIgnoreCase("adddetail")) {
+//                    User user = new User();
+//                    request.setAttribute("user", user);
                     sendDispatcher(request, response, "admin/detail.jsp");
                     return;
                 }
-                int id = Integer.parseInt(sid);
+                int id = Integer.parseInt(request.getParameter("userid"));
                 User user = daouser.getUserById(id);
                 request.setAttribute("user", user);
                 sendDispatcher(request, response, "admin/detail.jsp");
             }
-            if(service.equalsIgnoreCase("deleteuser")){
-                int id=Integer.parseInt(request.getParameter("userid"));
+
+            //Add user
+            if (service.equalsIgnoreCase("adduser")) {
+                String username = request.getParameter("username");
+                String password = request.getParameter("password");
+                String fullname = request.getParameter("fullname");
+                String email = request.getParameter("email");
+                String phone = request.getParameter("phone");
+                String address = request.getParameter("address");
+                int gender = Integer.parseInt(request.getParameter("gender"));
+                int role = Integer.parseInt(request.getParameter("role"));
+                boolean isExist = false;
+                if (daouser.checkExistMail(email) == true
+                        || daouser.checkExistPhone(phone) == true
+                        || daouser.checkExistUserName(username) == true) {
+                    isExist = true;
+                }
+                if (isExist == true) {
+                    String mess = "Add fail because duplicate information";
+                    request.setAttribute("mess", mess);
+                    sendDispatcher(request, response, "admin/detail.jsp");
+                }
+                if (isExist == false) {
+                    User user = new User(username, password, email, phone, 0, 0, fullname, address, "", gender, "", "", "", "", "", 0, role, 1);
+                    daouser.addUser(user);
+                    ArrayList<User> listUser = daouser.getAllUser();
+                    request.setAttribute("listUser", listUser);
+                    sendDispatcher(request, response, "admin/usermanagement.jsp");
+                }
+            }
+            //Update User 
+            if (service.equalsIgnoreCase("updateuser")) {
+                String username = request.getParameter("username");
+                String password = request.getParameter("password");
+                String fullname = request.getParameter("fullname");
+                String email = request.getParameter("email");
+                String phone = request.getParameter("phone");
+                String address = request.getParameter("address");
+                int gender = Integer.parseInt(request.getParameter("gender"));
+                int role = Integer.parseInt(request.getParameter("role"));
+                boolean isExist = false;
+//                if (daouser.checkExistMail(email) == true
+//                        || daouser.checkExistPhone(phone) == true
+//                        || daouser.checkExistUserName(username) == true) {
+//                    isExist = true;
+//                }
+//                if (isExist == true) {
+//                    String mess = "Add fail because duplicate information";
+//                    request.setAttribute("mess", mess);
+//                    sendDispatcher(request, response, "admin/detail.jsp");
+//                }
+                if(isExist==false){
+                    String id = request.getParameter("id");
+                    User user = daouser.getUserById(Integer.parseInt(id));
+                    user.setUsername(username);
+                    user.setPassword(password);
+                    user.setFullname(fullname);
+                    user.setEmail(email);
+                    user.setPhoneNumber(phone);
+                    user.setAddress(address);
+                    user.setGender(gender);
+                    user.setSystemRole(role);
+                    daouser.updateInfoUser(user);
+                    ArrayList<User> listUser = daouser.getAllUser();
+                    request.setAttribute("listUser", listUser);
+                    sendDispatcher(request, response, "admin/usermanagement.jsp");
+                }
+            }
+
+            //Delete user
+            if (service.equalsIgnoreCase("deleteuser")) {
+                int id = Integer.parseInt(request.getParameter("userid"));
                 daouser.changeStatus(id, 0);
                 ArrayList<User> listUser = daouser.getAllUser();
                 request.setAttribute("listUser", listUser);

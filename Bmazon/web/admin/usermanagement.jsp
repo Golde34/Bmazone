@@ -53,7 +53,7 @@
                             <div class="card">
                                 <div class="card-header">
                                     <h3>User</h3>
-                                    <a href="AdminControllerMap?service=detail">
+                                    <a href="AdminControllerMap?service=adddetail">
                                         <button>Add new user</button></a>
                                 </div>
                                 <div class="card-body">
@@ -61,10 +61,10 @@
                                         <thead>
                                             <tr>
                                                 <td>User name</td>
-                                                <td>Bio</td>
-                                                <td>Facebook</td>
-                                                <td>Instagram</td>
-                                                <td>Twitter</td>
+                                                <td>Password</td>
+                                                <td>Email</td>
+                                                <td>Phone</td>
+                                                <td>Address</td>
                                                 <td></td>
                                                 <td></td>
                                             </tr>
@@ -72,13 +72,13 @@
                                         <tbody>
                                         <%for (User user : listUser) {%>
                                         <tr>
-                                            <td><%=user.getFullname()%></td>
-                                            <td><%=user.getBio()%></td>
-                                            <td><%=user.getFacebook()%></td>
-                                            <td><%=user.getInstagram()%></td>
-                                            <td><%=user.getTwitter()%></td>
+                                            <td><%=user.getUsername()%></td>
+                                            <td><%=user.getPassword()%></td>
+                                            <td><%=user.getEmail()%></td>
+                                            <td><%=user.getPhoneNumber()%></td>
+                                            <td><%=user.getAddress()%></td>
                                             <td>
-                                                <a href="AdminControllerMap?service=detail&userid=<%=user.getUserId()%>"><span class="las la-edit"></span></a>
+                                                <a href="AdminControllerMap?service=updatedetail&userid=<%=user.getUserId()%>"><span class="las la-edit"></span></a>
                                             </td>
                                             <td><a href="AdminControllerMap?service=deleteuser&userid=<%=user.getUserId()%>" onclick="return confirm('Are you sure you want to Remove?');"><span class="las la-trash"></span></a></td>
                                         </tr>

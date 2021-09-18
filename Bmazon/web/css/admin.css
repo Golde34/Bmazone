@@ -125,7 +125,7 @@ header label span{
 }
 .dropdown ul li a{
     display: block;
-    padding: 1rem 1rem;
+    padding: 1rem 150px 1rem 1rem;
 }
 .dropdown ul li a:hover{
     background: rgba(220,220,220,0.5);

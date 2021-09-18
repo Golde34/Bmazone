@@ -1,8 +1,16 @@
 
+<%@page import="model.DBConnection"%>
+<%@page import="model.DAOUser"%>
 <%@page import="java.util.ArrayList"%>
 <%@page import="entity.*"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%
+    User user = new User();
+    if (request.getAttribute("user") != null) {
+        user = (User) request.getAttribute("user");
+    }
+    String mess = (String) request.getAttribute("mess");
+    String serivce = (String) request.getAttribute("service");
     User curUser = (User) request.getSession().getAttribute("currUser");
     ArrayList<User> listUser = (ArrayList<User>) request.getAttribute("listUser");
 %>
@@ -12,7 +20,7 @@
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         <title>Admin Page</title>
         <link rel="stylesheet" href="https://maxst.icons8.com/vue-static/landings/line-awesome/line-awesome/1.3.0/css/line-awesome.min.css">
-
+        <link rel="stylesheet" href="../css/detail.css">
         <link rel="stylesheet" href="../css/admin.css">
         <link rel="stylesheet" href="../css/usermanagement.css">
     </head>
@@ -53,31 +61,110 @@
                             <div class="card">
                                 <div class="card-header">
                                     <h3>User</h3>
-
                                 </div>
                                 <div class="card-body">
-                                    <form action="/Bmazon/AdminControllerMap" method="POST">
-                                        <div class="group">
-                                            <label for="user" class="label">Username</label>
-                                            <input id="user" type="text" name="signupusername" placeholder="Username" class="input" required autofocus="" >
+                                    <h6 style="color: yellow;" style="font-size: small" >${mess}</h6>
+                                <div class="wrapper">
+                                    <form class="form" action="/Bmazon/AdminControllerMap" method="POST">
+                                        <%if (serivce.equalsIgnoreCase("adddetail")) {%>
+                                        <div class="input-field">
+                                            <label>Username</label>
+                                            <input type="text" name="username" class="input">
                                         </div>
-                                        <div class="group">
-                                            <label for="pass" class="label">Password</label>
-                                            <input id="pass" type="password" name="signuppass" class="input" placeholder="Password" data-type="password" required autofocus="" >
+                                        <div class="input-field">
+                                            <label>Password</label>
+                                            <input type="text" name="password" class="input">
                                         </div>
-                                        <div class="group">
-                                            <label for="pass" class="label">Email</label>
-                                            <input id="pass" type="text" name="email" class="input" placeholder="abc@xyz.com" required autofocus="" >
+                                        <div class="input-field">
+                                            <label>Full name</label>
+                                            <input type="text" name="fullname" class="input">
                                         </div>
-                                        <div class="group">
-                                            <label for="pass" class="label">Phone</label>
-                                            <input id="pass" type="text" name="phone" class="input" placeholder="0987654321 required autofocus="" >
+                                        <div class="input-field">
+                                            <label>Phone</label>
+                                            <input type="text" name="phone" class="input">
                                         </div>
-                                    <div class="group">
-                                        <input type="submit" class="button" value="Add User">
-                                        <input type="hidden" name="service" value="register">
-                                    </div>
-                                </form>
+                                        <div class="input-field">
+                                            <label>Email</label>
+                                            <input type="text" name="email" class="input">
+                                        </div>
+                                        <div class="input-field">
+                                            <label>Address</label>
+                                            <input type="text" name="address" class="input">
+                                        </div>
+                                        <div class="input-field">
+                                            <label>Gender</label>
+                                            <div class="custom-select">
+                                                <select name="gender">
+                                                    <option value="1">Male</option>
+                                                    <option value="0">Female</option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                        <div class="input-field">
+                                            <label>System Role</label>
+                                            <div class="custom-select">
+                                                <select name="role">
+                                                    <option value="0">Customer</option>
+                                                    <option value="1">Admin</option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                        <div class="input-field">
+                                            <input type="submit" value="Add User" class="btn">
+                                            <input type="hidden" value="adduser" name="service">
+                                        </div>
+                                        <%}%>
+                                        <%if (serivce.equalsIgnoreCase("updatedetail")) {%>
+                                        <div class="input-field">
+                                            <label>Username</label>
+                                            <input value="<%=user.getUsername()%>" type="text" name="username" class="input">
+                                        </div>
+                                        <div class="input-field">
+                                            <label>Password</label>
+                                            <input value="<%=user.getPassword()%>" type="text" name="password" class="input">
+                                        </div>
+                                        <div class="input-field">
+                                            <label>Full name</label>
+                                            <input value="<%=user.getFullname()%>" type="text" name="fullname" class="input">
+                                        </div>
+                                        <div class="input-field">
+                                            <label>Phone</label>
+                                            <input value="<%=user.getPhoneNumber()%>" type="text" name="phone" class="input">
+                                        </div>
+                                        <div class="input-field">
+                                            <label>Email</label>
+                                            <input value="<%=user.getEmail()%>" type="text" name="email" class="input">
+                                        </div>
+                                        <div class="input-field">
+                                            <label>Address</label>
+                                            <input value="<%=user.getAddress()%>" type="text" name="address" class="input">
+                                        </div>
+                                        <div class="input-field">
+                                            <label>Gender</label>
+                                            <div class="custom-select">
+                                                <select name="gender">
+                                                    <option value="1">Male</option>
+                                                    <option value="0">Female</option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                        <div class="input-field">
+                                            <label>System Role</label>
+                                            <div class="custom-select">
+                                                <select name="role">
+                                                    <option value="0">Customer</option>
+                                                    <option value="1">Admin</option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                        <div class="input-field">
+                                            <input type="submit" value="Update User" class="btn">
+                                            <input type="hidden" value="updateuser" name="service">
+                                            <input type="hidden" value="<%=user.getUserId()%>" name="id">
+                                        </div>
+                                        <%}%>
+                                    </form>
+                                </div>
                             </div>
                         </div>
                     </div>

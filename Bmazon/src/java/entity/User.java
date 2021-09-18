@@ -41,6 +41,28 @@ public class User {
     public User() {
     }
 
+    public User(String username, String password, String email, String phoneNumber, int sell, double wallet, String fullname, String address, String profileImage, int gender, String bio, String Facebook, String Instagram, String Twitter, String Youtube, int activityPoint, int systemRole, int status) {
+        this.username = username;
+        this.password = password;
+        this.email = email;
+        this.phoneNumber = phoneNumber;
+        this.sell = sell;
+        this.wallet = wallet;
+        this.fullname = fullname;
+        this.address = address;
+        this.profileImage = profileImage;
+        this.gender = gender;
+        this.DOB = DOB;
+        this.bio = bio;
+        this.Facebook = Facebook;
+        this.Instagram = Instagram;
+        this.Twitter = Twitter;
+        this.Youtube = Youtube;
+        this.activityPoint = activityPoint;
+        this.systemRole = systemRole;
+        this.status = status;
+    }
+
     public User(String userId, String username, String password, String email, String phoneNumber, int sell, double wallet, String fullname, String address, String profileImage, int gender, Date DOB, String bio, String Facebook, String Instagram, String Twitter, String Youtube, int activityPoint, int systemRole, int status) {
         this.userId = userId;
         this.username = username;

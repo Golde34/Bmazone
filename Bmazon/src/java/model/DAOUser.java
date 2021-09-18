@@ -31,6 +31,14 @@ public class DAOUser {
         this.dbConn = dbCon;
         conn = dbCon.getConnection();
     }
+    public static void main(String[] args) {
+        DBConnection db = new DBConnection();
+        DAOUser dao = new DAOUser(db);
+        User x = dao.getUserById(8);
+        x.setAddress("Hai Duong 2");
+        dao.updateInfoUser(x);
+        System.out.println(x.getAddress());
+    }
 
     public User getUserLogin(String username, String password) {
         String sql = "SELECT * FROM [User] WHERE username = ? and password = ? and status = 1";
@@ -80,7 +88,7 @@ public class DAOUser {
         int n = 0;
         String sql = "INSERT INTO [User](username, password, email, phoneNumber, sell, wallet, fullname, address,"
                 + " profileImage, gender, DOB, bio, Facebook, Instagram, Twitter, Youtube, activityPoint, systemRole, status)"
-                + " values (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,1)";
+                + " values (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)";
         try {
             PreparedStatement pre = conn.prepareStatement(sql);
             pre.setString(1, obj.getUsername());
@@ -111,8 +119,8 @@ public class DAOUser {
     
     public int updateInfoUser(User obj) {
         int n = 0;
-        String sql = "UPDATE [User] SET username=? password=? email=? phoneNumber=? sell=? wallet=? fullname=? address=?"
-                + " profileImage=? gender=? DOB=? bio=? Facebook=? Instagram=? Twitter=? Youtube=? activityPoint=? systemRole=? status=1"
+        String sql = "UPDATE [User] SET username=?, password=?, email=?, phoneNumber=?, sell=?, wallet=?, fullname=?, address=?,"
+                + " profileImage=?, gender=?, DOB=?, bio=?, Facebook=?, Instagram=?, Twitter=?, Youtube=?, activityPoint=?, systemRole=?, status=?"
                 + " where userID=?";
         try {
             PreparedStatement pre = conn.prepareStatement(sql);
@@ -134,7 +142,8 @@ public class DAOUser {
             pre.setString(16, obj.getYoutube());
             pre.setInt(17, obj.getActivityPoint());
             pre.setInt(18, obj.getSystemRole());
-            pre.setString(19, obj.getUserId());
+            pre.setInt(19, obj.getStatus());
+            pre.setString(20, obj.getUserId());
             n = pre.executeUpdate();
         } catch (SQLException ex) {
             Logger.getLogger(DAOUser.class.getName()).log(Level.SEVERE, null, ex);
@@ -382,8 +391,8 @@ public class DAOUser {
     }
     
     public void updateinfo(User obj) {
-        String sql = "UPDATE [User] SET  email=? phoneNumber=? fullname=? address=?"
-                + " profileImage=? gender=? DOB=? bio=? Facebook=? Instagram=? Twitter=? Youtube=? "
+        String sql = "UPDATE [User] SET  email=?, phoneNumber=?, fullname=?, address=?,"
+                + " profileImage=?, gender=?, DOB=?, bio=?, Facebook=?, Instagram=?, Twitter=?, Youtube=? "
                 + " where userID=?";
         try {
             PreparedStatement pre = conn.prepareStatement(sql);
