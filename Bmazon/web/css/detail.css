@@ -72,3 +72,6 @@
 .wrapper .form .input-field .btn:hover{
     background: #ffd658;
 }
+.btn{
+    padding: 1rem 2rem;
+}

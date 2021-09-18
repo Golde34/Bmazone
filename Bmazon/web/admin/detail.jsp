@@ -5,10 +5,7 @@
 <%@page import="entity.*"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%
-    User user = new User();
-    if (request.getAttribute("user") != null) {
-        user = (User) request.getAttribute("user");
-    }
+    User user = (User) request.getAttribute("user");
     String mess = (String) request.getAttribute("mess");
     String serivce = (String) request.getAttribute("service");
     User curUser = (User) request.getSession().getAttribute("currUser");
@@ -67,85 +64,118 @@
                                     <form class="form" action="/Bmazon/AdminControllerMap" method="POST">
                                         <%if (serivce.equalsIgnoreCase("adddetail")) {%>
                                         <table class="table table-striped">
-                                            <tr>   <td> Name <p></td><td> <input type="text" name="username" class="input"> <br></td> <tr>
-                                            <tr>  <td>  Password <p></td><td><input type="text" name="password" class="input"> <br>      </td>     <tr>    
-                                            <tr>  <td>  Full Name<p></td><td><input type="text" name="fullname" class="input"> <br></td><tr>
-                                            <tr>   <td>   Phone<p></td><td><input type="text" name="phone" class="input"><br></td><tr>
-                                            <tr>   <td>   Email<p></td><td><input type="text" name="email" class="input"> <br></td><tr>
-                                            <tr>   <td>   Address<p></td><td><input type="text" name="address" class="input"><br></td><tr>
-                                            <tr>  <td>    <label>Gender</label></td><td>
+                                            <tr>
+                                                <td>Name</td>
+                                                <td><input type="text" name="username" class="input"><br></td>
+                                            </tr>
+                                            <tr>
+                                                <td>Password</td>
+                                                <td><input type="text" name="password" class="input"><br></td>
+                                            </tr>    
+                                            <tr>
+                                                <td>Full Name<p></td>
+                                                <td><input type="text" name="fullname" class="input"><br></td>
+                                            </tr>
+                                            <tr>
+                                                <td>Phone<p></td>
+                                                <td><input type="text" name="phone" class="input"><br></td>
+                                            </tr>
+                                            <tr>
+                                                <td>Email<p></td>
+                                                <td><input type="text" name="email" class="input"> <br></td>
+                                            <tr>
+                                            <tr>
+                                                <td>Address<p></td>
+                                                <td><input type="text" name="address" class="input"><br></td>
+                                            <tr>
+                                            <tr>
+                                                <td><label>Gender</label></td>
+                                                <td>
                                                     <div class="custom-select">
                                                         <select name="gender">
                                                             <option value="1">Male</option>
                                                             <option value="0">Female</option>
                                                         </select>
-                                                    </div></td></tr>
-                                            <tr>  <td>    <label>System Role</label></td><td>
+                                                    </div>
+                                                </td>
+                                            </tr>
+                                            <tr>  
+                                                <td><label>System Role</label></td>
+                                                <td>
                                                     <div class="custom-select">
                                                         <select name="role">
                                                             <option value="0">Customer</option>
                                                             <option value="1">Admin</option>
                                                         </select>
-                                                    </div></td></tr>
-                                            <tr>  <td>   </td><td>
-
-
+                                                    </div>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td></td>
+                                                <td>
                                                     <input type="submit" value="Add User" class="btn">
                                                     <input type="hidden" value="adduser" name="service">
-
-                                                </td></tr>
-
+                                                </td>
+                                            </tr>
                                         </table>
-
                                         <%}%>
                                         <%if (serivce.equalsIgnoreCase("updatedetail")) {%>
-                                        <div class="input-field">
-                                            <label>Username</label>
-                                            <input value="<%=user.getUsername()%>" type="text" name="username" class="input">
-                                        </div>
-                                        <div class="input-field">
-                                            <label>Password</label>
-                                            <input value="<%=user.getPassword()%>" type="text" name="password" class="input">
-                                        </div>
-                                        <div class="input-field">
-                                            <label>Full name</label>
-                                            <input value="<%=user.getFullname()%>" type="text" name="fullname" class="input">
-                                        </div>
-                                        <div class="input-field">
-                                            <label>Phone</label>
-                                            <input value="<%=user.getPhoneNumber()%>" type="text" name="phone" class="input">
-                                        </div>
-                                        <div class="input-field">
-                                            <label>Email</label>
-                                            <input value="<%=user.getEmail()%>" type="text" name="email" class="input">
-                                        </div>
-                                        <div class="input-field">
-                                            <label>Address</label>
-                                            <input value="<%=user.getAddress()%>" type="text" name="address" class="input">
-                                        </div>
-                                        <div class="input-field">
-                                            <label>Gender</label>
-                                            <div class="custom-select">
-                                                <select name="gender">
-                                                    <option value="1">Male</option>
-                                                    <option value="0">Female</option>
-                                                </select>
-                                            </div>
-                                        </div>
-                                        <div class="input-field">
-                                            <label>System Role</label>
-                                            <div class="custom-select">
-                                                <select name="role">
-                                                    <option value="0">Customer</option>
-                                                    <option value="1">Admin</option>
-                                                </select>
-                                            </div>
-                                        </div>
-                                        <div class="input-field">
-                                            <input type="submit" value="Update User" class="btn">
-                                            <input type="hidden" value="updateuser" name="service">
-                                            <input type="hidden" value="<%=user.getUserId()%>" name="id">
-                                        </div>
+                                        <table class="table table-striped">
+                                            <tr>
+                                                <td>Name</td>
+                                                <td><input value="<%=user.getUsername()%>" type="text" name="username" class="input"><br></td>
+                                            </tr>
+                                            <tr>
+                                                <td>Password</td>
+                                                <td><input value="<%=user.getPassword()%>" type="text" name="password" class="input"><br></td>
+                                            </tr>    
+                                            <tr>
+                                                <td>Full Name<p></td>
+                                                <td><input value="<%=user.getFullname()%>" type="text" name="fullname" class="input"><br></td>
+                                            </tr>
+                                            <tr>
+                                                <td>Phone<p></td>
+                                                <td><input value="<%=user.getPhoneNumber()%>" type="text" name="phone" class="input"><br></td>
+                                            </tr>
+                                            <tr>
+                                                <td>Email<p></td>
+                                                <td><input value="<%=user.getEmail()%>" type="text" name="email" class="input"> <br></td>
+                                            <tr>
+                                            <tr>
+                                                <td>Address<p></td>
+                                                <td><input value="<%=user.getAddress()%>" type="text" name="address" class="input"><br></td>
+                                            <tr>
+                                            <tr>
+                                                <td><label>Gender</label></td>
+                                                <td>
+                                                    <div class="custom-select">
+                                                        <select name="gender">
+                                                            <option <%if (user.getGender() == 1) {%> selected<%}%> value="1">Male</option>
+                                                            <option <%if (user.getGender() == 0) {%> selected<%}%> value="0">Female</option>
+                                                        </select>
+                                                    </div>
+                                                </td>
+                                            </tr>
+                                            <tr>  
+                                                <td><label>System Role</label></td>
+                                                <td>
+                                                    <div class="custom-select">
+                                                        <select name="role">
+                                                            <option <%if (user.getSystemRole() == 0) {%> selected<%}%> value="0">Customer</option>
+                                                            <option <%if (user.getSystemRole() == 1) {%> selected<%}%> value="1">Admin</option>
+                                                        </select>
+                                                    </div>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td></td>
+                                                <td>
+                                                    <input type="submit" value="Update User" class="btn">
+                                                    <input type="hidden" value="updateuser" name="service">
+                                                    <input type="hidden" value="<%=user.getUserId()%>" name="id">
+                                                </td>
+                                            </tr>
+                                        </table>
                                         <%}%>
                                     </form>
                                 </div>

@@ -61,9 +61,9 @@ public class AdminController extends HttpServlet {
 
             //Admin Dashboard
             if (service.equalsIgnoreCase("AdminDashBoard")) {
-                ArrayList<Product> listProduct = daoproduct.getTrueProduct();
+                ArrayList<Product> listProduct = daoproduct.getAllProduct();
                 request.setAttribute("listProduct", listProduct);
-                ArrayList<User> listUser = daouser.getTrueUser();
+                ArrayList<User> listUser = daouser.getAllUser();
                 request.setAttribute(("listUser"), listUser);
                 sendDispatcher(request, response, "admin/admin.jsp");
             }
