@@ -66,12 +66,16 @@
                                 <input id="pass" type="password" name="resignuppass" class="input" placeholder="Repeat Password" data-type="password"required autofocus="" >
                             </div>
                             <div class="group">
+                                <label for="pass" class="label">Full Name</label>
+                                <input id="pass" type="text" name="fname" class="input" placeholder="NguyenVanA" required autofocus="" >
+                            </div>
+                            <div class="group">
                                 <label for="pass" class="label">Email</label>
                                 <input id="pass" type="text" name="email" class="input" placeholder="abc@xyz.com" required autofocus="" >
                             </div>
                             <div class="group">
                                 <label for="pass" class="label">Phone</label>
-                                <input id="pass" type="text" name="phone" class="input" placeholder="0987654321 required autofocus="" >
+                                <input id="pass" type="text" name="phone" class="input" placeholder="0987654321" required autofocus="" >
                             </div>
                             <h6 style="color: yellow;" style="font-size: small" >${mess}</h6>
                             <div class="group">
