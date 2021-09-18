@@ -76,12 +76,15 @@ public class DAOUser {
         }
     }
     
+<<<<<<< Updated upstream
     public static void main(String[] args) {
         DBConnection dbCon = new DBConnection();
         DAOUser daouser =new DAOUser(dbCon);
         daouser.singup("hieu", "123456", "hieu@gmail.com", "012345678977","Le Trung Hieu");
     }
     
+=======
+>>>>>>> Stashed changes
     public int addUser(User obj) {
         int n = 0;
         String sql = "INSERT INTO [User](username, password, email, phoneNumber, sell, wallet, fullname, address,"
@@ -174,7 +177,11 @@ public class DAOUser {
         }
         return n;
     }
-    
+    public static void main(String[] args) {
+        DBConnection dbCon = new DBConnection();
+        DAOUser dao = new DAOUser(dbCon);
+        dao.changeStatus(1, 0);
+    }
     public int changeStatus(int id, int status) {
         int n = 0;
         String sql = "UPDATE [User] SET status = " + (status == 1 ? 1 : 0)
@@ -195,7 +202,7 @@ public class DAOUser {
         ResultSet rs = dbConn.getData(sql);
         try {
             if (rs.next()) {
-                n = changeStatus(rs.getString("username"), 0);
+                n = changeStatus(rs.getInt("userID"), 0);
             } else {
                 String sqlDelete = "DELETE FROM User WHERE userID = " + id;
                 Statement state = conn.createStatement();
@@ -219,11 +226,7 @@ public class DAOUser {
         }
         return false;
     }
-//    public static void main(String[] args) {
-//        DBConnection dbCon = new DBConnection();
-//        DAOUser daouser =new DAOUser(dbCon);
-//        daouser.singup("hieu", "123456", "hieu@gmail.com", "012345678977");
-//    }
+
     public boolean checkExistPhone(String phone) {
         String sql = "SELECT * FROM [User] WHERE phoneNumber = '" + phone + "' and status = 1" ;
         ResultSet rs = dbConn.getData(sql);

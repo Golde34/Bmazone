@@ -116,6 +116,9 @@ header label span{
 .user-wrapper h4{
     margin-bottom: 0rem !important;
 }
+.dropdown ul{
+    margin-right: 30px;
+}
 .dropdown ul li {
     position: relative;
     display: inline-block;
@@ -137,7 +140,7 @@ header label span{
     background: #fff;
 }
 .dropdown ul ul li {
-    width: 150px;
+    width: 100px;
 }
 main{
     padding: 2rem 1.5rem;

@@ -155,5 +155,3 @@ CREATE TABLE OrderDetail(
     FOREIGN KEY (productTypeID) references [ProductType](productTypeID),
 )
 
-INSERT INTO [User](username, [password], email, phoneNumber, sell, wallet, fullname, [address], profileImage, gender, DOB, bio, Facebook, Instagram, Twitter, Youtube, activityPoint, systemRole, [status])
-VALUES ('Viet', '123456', 'viet@gmail.com', '0983586778', 1, 5.6, 'DongViet', 'HaiDuong', 'image', 1, GETDATE(), 'Love sex', 'fb', 'ins', 'twt', 'yt', 1000, 1, 1)

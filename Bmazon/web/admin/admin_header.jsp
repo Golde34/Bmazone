@@ -15,7 +15,10 @@
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         <title>Admin Page</title>
         <link rel="stylesheet" href="https://maxst.icons8.com/vue-static/landings/line-awesome/line-awesome/1.3.0/css/line-awesome.min.css">
+        
         <link rel="stylesheet" href="css/admin.css">
+        <link rel='stylesheet' href="../css/2.css"  type='text/css'>
+        <link rel='stylesheet' href="../css/3.css"  type='text/css'>
     </head>
     <body>
         <header>
@@ -37,7 +40,7 @@
                                 <h4>Hello,<%=currUser.getFullname()%></h4>
                             </div>
                             <ul>
-                                <li><a href="">Profile</a></li>
+                                <li><a href="UserControllerMap?service=info">Profile</a></li>
                                 <li><a href="index.jsp">Shopping</a></li>
                                 <li><a href="UserControllerMap?service=logout">Logout</a></li>
                             </ul>

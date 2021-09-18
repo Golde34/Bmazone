@@ -12,7 +12,7 @@
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         <title>Admin Page</title>
         <link rel="stylesheet" href="https://maxst.icons8.com/vue-static/landings/line-awesome/line-awesome/1.3.0/css/line-awesome.min.css">
-        
+
         <link rel="stylesheet" href="../css/admin.css">
         <link rel="stylesheet" href="../css/usermanagement.css">
     </head>
@@ -53,38 +53,31 @@
                             <div class="card">
                                 <div class="card-header">
                                     <h3>User</h3>
-                                    <a href="AdminControllerMap?service=detail">
-                                        <button>Add new user</button></a>
+
                                 </div>
                                 <div class="card-body">
-                                    <table width="100%">
-                                        <thead>
-                                            <tr>
-                                                <td>User name</td>
-                                                <td>Bio</td>
-                                                <td>Facebook</td>
-                                                <td>Instagram</td>
-                                                <td>Twitter</td>
-                                                <td></td>
-                                                <td></td>
-                                            </tr>
-                                        </thead>
-                                        <tbody>
-                                        <%for (User user : listUser) {%>
-                                        <tr>
-                                            <td><%=user.getFullname()%></td>
-                                            <td><%=user.getBio()%></td>
-                                            <td><%=user.getFacebook()%></td>
-                                            <td><%=user.getInstagram()%></td>
-                                            <td><%=user.getTwitter()%></td>
-                                            <td>
-                                                <a href="AdminControllerMap?service=detail&userid=<%=user.getUserId()%>"><span class="las la-edit"></span></a>
-                                            </td>
-                                            <td><a href="AdminControllerMap?service=deleteuser&userid=<%=user.getUserId()%>" onclick="return confirm('Are you sure you want to Remove?');"><span class="las la-trash"></span></a></td>
-                                        </tr>
-                                        <%}%>
-                                    </tbody>
-                                </table>
+                                    <form action="/Bmazon/AdminControllerMap" method="POST">
+                                        <div class="group">
+                                            <label for="user" class="label">Username</label>
+                                            <input id="user" type="text" name="signupusername" placeholder="Username" class="input" required autofocus="" >
+                                        </div>
+                                        <div class="group">
+                                            <label for="pass" class="label">Password</label>
+                                            <input id="pass" type="password" name="signuppass" class="input" placeholder="Password" data-type="password" required autofocus="" >
+                                        </div>
+                                        <div class="group">
+                                            <label for="pass" class="label">Email</label>
+                                            <input id="pass" type="text" name="email" class="input" placeholder="abc@xyz.com" required autofocus="" >
+                                        </div>
+                                        <div class="group">
+                                            <label for="pass" class="label">Phone</label>
+                                            <input id="pass" type="text" name="phone" class="input" placeholder="0987654321 required autofocus="" >
+                                        </div>
+                                    <div class="group">
+                                        <input type="submit" class="button" value="Add User">
+                                        <input type="hidden" name="service" value="register">
+                                    </div>
+                                </form>
                             </div>
                         </div>
                     </div>

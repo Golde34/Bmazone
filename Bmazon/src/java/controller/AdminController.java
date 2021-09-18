@@ -58,8 +58,13 @@ public class AdminController extends HttpServlet {
             if (service == null) {
                 service = "AdminDashBoard";
             }
+<<<<<<< Updated upstream
             
             //admin dashboard
+=======
+
+            //Admin Dashboard
+>>>>>>> Stashed changes
             if (service.equalsIgnoreCase("AdminDashBoard")) {
                 ArrayList<Product> listProduct = daoproduct.getTrueProduct();
                 request.setAttribute("listProduct", listProduct);
@@ -67,9 +72,36 @@ public class AdminController extends HttpServlet {
                 request.setAttribute(("listUser"), listUser);
                 sendDispatcher(request, response, "admin/admin.jsp");
             }
+<<<<<<< Updated upstream
             
             if(service.equalsIgnoreCase("usermanagement")){
                 ArrayList<User> listUser = daouser.getTrueUser();
+=======
+
+            //User Management
+            if (service.equalsIgnoreCase("usermanagement")) {
+                ArrayList<User> listUser = daouser.getAllUser();
+                request.setAttribute("listUser", listUser);
+                sendDispatcher(request, response, "admin/usermanagement.jsp");
+            }
+
+            //User detail to add and update
+            if (service.equalsIgnoreCase("detail")) {
+                String sid = request.getParameter("userid");
+                if("null".equals(sid)){
+                    sendDispatcher(request, response, "admin/detail.jsp");
+                    return;
+                }
+                int id = Integer.parseInt(sid);
+                User user = daouser.getUserById(id);
+                request.setAttribute("user", user);
+                sendDispatcher(request, response, "admin/detail.jsp");
+            }
+            if(service.equalsIgnoreCase("deleteuser")){
+                int id=Integer.parseInt(request.getParameter("userid"));
+                daouser.changeStatus(id, 0);
+                ArrayList<User> listUser = daouser.getAllUser();
+>>>>>>> Stashed changes
                 request.setAttribute("listUser", listUser);
                 sendDispatcher(request, response, "admin/usermanagement.jsp");
             }
