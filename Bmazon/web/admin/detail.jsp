@@ -21,8 +21,7 @@
         <title>Admin Page</title>
         <link rel="stylesheet" href="https://maxst.icons8.com/vue-static/landings/line-awesome/line-awesome/1.3.0/css/line-awesome.min.css">
         <link rel="stylesheet" href="../css/detail.css">
-        <link rel="stylesheet" href="../css/admin.css">
-        <link rel="stylesheet" href="../css/usermanagement.css">
+
     </head>
     <body>
         <input type="checkbox" id="nav-toggle">
@@ -67,52 +66,37 @@
                                 <div class="wrapper">
                                     <form class="form" action="/Bmazon/AdminControllerMap" method="POST">
                                         <%if (serivce.equalsIgnoreCase("adddetail")) {%>
-                                        <div class="input-field">
-                                            <label>Username</label>
-                                            <input type="text" name="username" class="input">
-                                        </div>
-                                        <div class="input-field">
-                                            <label>Password</label>
-                                            <input type="text" name="password" class="input">
-                                        </div>
-                                        <div class="input-field">
-                                            <label>Full name</label>
-                                            <input type="text" name="fullname" class="input">
-                                        </div>
-                                        <div class="input-field">
-                                            <label>Phone</label>
-                                            <input type="text" name="phone" class="input">
-                                        </div>
-                                        <div class="input-field">
-                                            <label>Email</label>
-                                            <input type="text" name="email" class="input">
-                                        </div>
-                                        <div class="input-field">
-                                            <label>Address</label>
-                                            <input type="text" name="address" class="input">
-                                        </div>
-                                        <div class="input-field">
-                                            <label>Gender</label>
-                                            <div class="custom-select">
-                                                <select name="gender">
-                                                    <option value="1">Male</option>
-                                                    <option value="0">Female</option>
-                                                </select>
-                                            </div>
-                                        </div>
-                                        <div class="input-field">
-                                            <label>System Role</label>
-                                            <div class="custom-select">
-                                                <select name="role">
-                                                    <option value="0">Customer</option>
-                                                    <option value="1">Admin</option>
-                                                </select>
-                                            </div>
-                                        </div>
-                                        <div class="input-field">
-                                            <input type="submit" value="Add User" class="btn">
-                                            <input type="hidden" value="adduser" name="service">
-                                        </div>
+                                        <table class="table table-striped">
+                                            <tr>   <td> Name <p></td><td> <input type="text" name="username" class="input"> <br></td> <tr>
+                                            <tr>  <td>  Password <p></td><td><input type="text" name="password" class="input"> <br>      </td>     <tr>    
+                                            <tr>  <td>  Full Name<p></td><td><input type="text" name="fullname" class="input"> <br></td><tr>
+                                            <tr>   <td>   Phone<p></td><td><input type="text" name="phone" class="input"><br></td><tr>
+                                            <tr>   <td>   Email<p></td><td><input type="text" name="email" class="input"> <br></td><tr>
+                                            <tr>   <td>   Address<p></td><td><input type="text" name="address" class="input"><br></td><tr>
+                                            <tr>  <td>    <label>Gender</label></td><td>
+                                                    <div class="custom-select">
+                                                        <select name="gender">
+                                                            <option value="1">Male</option>
+                                                            <option value="0">Female</option>
+                                                        </select>
+                                                    </div></td></tr>
+                                            <tr>  <td>    <label>System Role</label></td><td>
+                                                    <div class="custom-select">
+                                                        <select name="role">
+                                                            <option value="0">Customer</option>
+                                                            <option value="1">Admin</option>
+                                                        </select>
+                                                    </div></td></tr>
+                                            <tr>  <td>   </td><td>
+
+
+                                                    <input type="submit" value="Add User" class="btn">
+                                                    <input type="hidden" value="adduser" name="service">
+
+                                                </td></tr>
+
+                                        </table>
+
                                         <%}%>
                                         <%if (serivce.equalsIgnoreCase("updatedetail")) {%>
                                         <div class="input-field">
