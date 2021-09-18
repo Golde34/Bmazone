@@ -76,15 +76,6 @@ public class DAOUser {
         }
     }
     
-<<<<<<< Updated upstream
-    public static void main(String[] args) {
-        DBConnection dbCon = new DBConnection();
-        DAOUser daouser =new DAOUser(dbCon);
-        daouser.singup("hieu", "123456", "hieu@gmail.com", "012345678977","Le Trung Hieu");
-    }
-    
-=======
->>>>>>> Stashed changes
     public int addUser(User obj) {
         int n = 0;
         String sql = "INSERT INTO [User](username, password, email, phoneNumber, sell, wallet, fullname, address,"
@@ -177,11 +168,7 @@ public class DAOUser {
         }
         return n;
     }
-    public static void main(String[] args) {
-        DBConnection dbCon = new DBConnection();
-        DAOUser dao = new DAOUser(dbCon);
-        dao.changeStatus(1, 0);
-    }
+    
     public int changeStatus(int id, int status) {
         int n = 0;
         String sql = "UPDATE [User] SET status = " + (status == 1 ? 1 : 0)

@@ -58,13 +58,8 @@ public class AdminController extends HttpServlet {
             if (service == null) {
                 service = "AdminDashBoard";
             }
-<<<<<<< Updated upstream
-            
-            //admin dashboard
-=======
 
             //Admin Dashboard
->>>>>>> Stashed changes
             if (service.equalsIgnoreCase("AdminDashBoard")) {
                 ArrayList<Product> listProduct = daoproduct.getTrueProduct();
                 request.setAttribute("listProduct", listProduct);
@@ -72,12 +67,6 @@ public class AdminController extends HttpServlet {
                 request.setAttribute(("listUser"), listUser);
                 sendDispatcher(request, response, "admin/admin.jsp");
             }
-<<<<<<< Updated upstream
-            
-            if(service.equalsIgnoreCase("usermanagement")){
-                ArrayList<User> listUser = daouser.getTrueUser();
-=======
-
             //User Management
             if (service.equalsIgnoreCase("usermanagement")) {
                 ArrayList<User> listUser = daouser.getAllUser();
@@ -101,7 +90,6 @@ public class AdminController extends HttpServlet {
                 int id=Integer.parseInt(request.getParameter("userid"));
                 daouser.changeStatus(id, 0);
                 ArrayList<User> listUser = daouser.getAllUser();
->>>>>>> Stashed changes
                 request.setAttribute("listUser", listUser);
                 sendDispatcher(request, response, "admin/usermanagement.jsp");
             }
