@@ -61,7 +61,7 @@ CREATE TABLE [Warehouse](
 CREATE TABLE [Product] (
 	productID int NOT NULL identity(1,1) PRIMARY KEY,
 	productName nvarchar(255) NOT NULL,
-	[description] nvarchar(255),
+	[description] nvarchar(max),
 	rating int,
 	releaseDate date NOT NULL CHECK(releaseDate <= getDate()),
 	seller int NOT NULL,
