@@ -5,8 +5,14 @@
 <%@page import="entity.*"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%
-    User user = (User) request.getAttribute("user");
+    User user = new User();
+    if (request.getAttribute("user") != null) {
+        user = (User) request.getAttribute("user");
+    }
     String mess = (String) request.getAttribute("mess");
+    if (mess == null) {
+        mess = "";
+    }
     String serivce = (String) request.getAttribute("service");
     User curUser = (User) request.getSession().getAttribute("currUser");
     ArrayList<User> listUser = (ArrayList<User>) request.getAttribute("listUser");

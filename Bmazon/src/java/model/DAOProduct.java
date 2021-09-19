@@ -31,7 +31,7 @@ public class DAOProduct {
 
     public ArrayList<Product> getAllProduct() {
         ArrayList<Product> list = new ArrayList<>();
-        String sql = "SELECT * FROM Product where status=1";
+        String sql = "SELECT TOP 10 * FROM Product where status=1";
         try {
             PreparedStatement ps = conn.prepareStatement(sql);
             ResultSet rs = ps.executeQuery();
