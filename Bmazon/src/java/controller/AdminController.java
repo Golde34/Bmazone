@@ -152,7 +152,8 @@ public class AdminController extends HttpServlet {
                     daouser.updateInfoUser(user);
                     ArrayList<User> listUser = daouser.getAllUser();
                     request.setAttribute("listUser", listUser);
-                    request.setAttribute("serive","adddetail" );
+                    request.setAttribute("user", user);
+                    request.setAttribute("service","updatedetail" );
                     sendDispatcher(request, response, "admin/detail.jsp");
                 }
             }
