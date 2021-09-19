@@ -98,17 +98,17 @@ public class AdminController extends HttpServlet {
                 int gender = Integer.parseInt(request.getParameter("gender"));
                 int role = Integer.parseInt(request.getParameter("role"));
                 boolean isExist = false;
-//                if (daouser.checkExistMail(email) == true
-//                        || daouser.checkExistPhone(phone) == true
-//                        || daouser.checkExistUserName(username) == true) {
-//                    isExist = true;
-//                }
-//                if (isExist == true) {
-//                    String mess = "Add fail because duplicate information";
-//                    request.setAttribute("mess", mess);
-//                    request.setAttribute("serive","adddetail" );
-//                    sendDispatcher(request, response, "admin/detail.jsp");
-//                }
+                if (daouser.checkExistMail(email) == true
+                        || daouser.checkExistPhone(phone) == true
+                        || daouser.checkExistUserName(username) == true) {
+                    isExist = true;
+                }
+                if (isExist == true) {
+                    String mess = "Add fail because duplicate information";
+                    request.setAttribute("mess", mess);
+                    request.setAttribute("service","adddetail" );
+                    sendDispatcher(request, response, "admin/detail.jsp");
+                }
                 if (isExist == false) {
                     User user = new User(username, password, email, phone, 0, 0, fullname, address, "", gender, "", "", "", "", "", 0, role, 1);
                     daouser.addUser(user);

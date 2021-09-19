@@ -57,13 +57,20 @@
                 <!-- Profile widget -->
                 <div class="bg-white shadow rounded overflow-hidden">
                     <div class="px-4 pt-0 pb-4 cover">
+                        <!--                        <div class="a-row desktop cover-photo-edit-icon">
+                                                    <img alt="" src="//d1k8kvpjaf8geh.cloudfront.net/gp/profile/assets/camera-desktop-4aba2c5ff428bad7bee93a2e61a2ad5128cbdd58b770618a1fd108abca1e2f31.png">
+                                                    <span class="a-declarative" data-action="a-popover" data-a-popover="{&quot;name&quot;:&quot;cover-photo-edit-image-popover&quot;,&quot;dataStrategy&quot;:&quot;preload&quot;,&quot;position&quot;:&quot;triggerBottom&quot;,&quot;activate&quot;:&quot;onclick&quot;,&quot;closeButton&quot;:&quot;false&quot;,&quot;closeButtonLabel&quot;:&quot;cover-photo-upload-popover-close&quot;}">
+                                                        <div id="cover-photo-edit-popover-trigger" class="a-section edit-popover-trigger">
+                                                        </div>
+                                                    </span>
+                                                </div>-->
                         <div class="media align-items-end profile-head">
-                            <div class="profile mr-3"><img src="https://images.unsplash.com/photo-1522075469751-3a6694fb2f61?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=500&q=80"
+                            <div class="profile mr-3"><img src="images/defaultPicture.jpg"
                                                            alt="..." width="200" class="rounded mb-2 img-thumbnail">
                                 <a href="#" class="btn btn-outline-dark btn-sm btn-block">Edit profile</a>
                             </div>
                             <div class="media-body mb-5 text-white">
-                                <h4 class="mt-0 mb-0" style="color: white; font-size:30px;">Mark Williams</h4>
+                                <h4 class="mt-0 mb-0" style="color: white; font-size:30px;"><%=x.getFullname()%></h4>
                                 <p class="small mb-4"> <i class="fas fa-map-marker-alt mr-2"></i>New York</p>
                             </div>
                         </div>
@@ -81,12 +88,35 @@
                             </li>
                         </ul>
                     </div>
-                    <div class="px-4 py-3">
-                        <h5 class="mb-0">About</h5>
-                        <div class="p-4 rounded shadow-sm bg-light">
-                            <p class="font-italic mb-0">Web Developer</p>
-                            <p class="font-italic mb-0">Lives in New York</p>
-                            <p class="font-italic mb-0">Photographer</p>
+                    <br>
+                    <div class="row">
+                        <div class="px-4 py-3 col-md-4">
+                            <ul> 
+                                <li >
+                                    <h5 class="mb-0"><strong>About</strong></h5>
+                                    <div class="p-4 rounded shadow-sm bg-light" style="background-color: #F5F7F5">
+                                        <p class="font-italic mb-0">Web Developer</p>
+                                        <p class="font-italic mb-0">Lives in New York</p>
+                                        <p class="font-italic mb-0">Photographer</p>
+                                    </div>
+                                </li>
+                            </ul>
+                        </div>
+                        <div class="px-4 py-3 col-md-8">
+
+                            <h5 class="mb-0"><strong>Your list and your wishlist</strong></h5>
+                            <div class="p-4 rounded shadow-sm bg-light" style="background-color: #F5F7F5">
+                                <p class="font-italic mb-0">Web Developer</p>
+                                <p class="font-italic mb-0">Lives in New York</p>
+                                <p class="font-italic mb-0">Photographer</p>
+                            </div>
+
+                            <!--                            <h5 class="mb-0"><strong>Insights</strong></h5>
+                                                        <div class="p-4 rounded bg-light" style="background-color: #F5F7F5">
+                                                            <p class="font-italic mb-0">Web Developer</p>
+                                                            <p class="font-italic mb-0">Lives in New York</p>
+                                                            <p class="font-italic mb-0">Photographer</p>
+                                                        </div>-->
                         </div>
                     </div>
                     <div class="py-4 px-4">

@@ -13,7 +13,7 @@
     if (mess == null) {
         mess = "";
     }
-    String serivce = (String) request.getAttribute("service");
+    String service = (String) request.getAttribute("service");
     User curUser = (User) request.getSession().getAttribute("currUser");
     ArrayList<User> listUser = (ArrayList<User>) request.getAttribute("listUser");
 %>
@@ -65,10 +65,10 @@
                                     <h3>User</h3>
                                 </div>
                                 <div class="card-body">
-                                    <h6 style="color: yellow;" style="font-size: small" >${mess}</h6>
+                                    <h6 style="color: red;" style="font-size: small" >${mess}</h6>
                                 <div class="wrapper">
                                     <form class="form" action="/Bmazon/AdminControllerMap" method="POST">
-                                        <%if (serivce.equalsIgnoreCase("adddetail")) {%>
+                                        <%if (service.equalsIgnoreCase("adddetail")) {%>
                                         <table class="table table-striped">
                                             <tr>
                                                 <td>Name</td>
@@ -125,7 +125,7 @@
                                             </tr>
                                         </table>
                                         <%}%>
-                                        <%if (serivce.equalsIgnoreCase("updatedetail")) {%>
+                                        <%if (service.equalsIgnoreCase("updatedetail")) {%>
                                         <table class="table table-striped">
                                             <tr>
                                                 <td>Name</td>
