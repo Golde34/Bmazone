@@ -16,25 +16,18 @@ import java.util.List;
  *
  * @author DELL
  */
-public class DAOShipCompany {
-    
-    DBConnection dbConn;
-    Connection conn;
-    PreparedStatement ps = null;
-    ResultSet rs = null;
-    String xSql = null;
+public class ShipCompanyDAO extends BaseDAO{
 
-    public DAOShipCompany(DBConnection dbCon) {
-        this.dbConn = dbCon;
-        conn = dbCon.getConnection();
+    public ShipCompanyDAO(DBConnection dbCon) {
+        super(dbCon);
     }
-
+    
     public void deleteShipCompany(String companyID) {
         String sql = "delete from ShipCompany where [companyID] = ?";
         try {
-            ps = conn.prepareStatement(sql);
-            ps.setString(1, companyID);
-            ps.executeUpdate();
+            pre = conn.prepareStatement(sql);
+            pre.setString(1, companyID);
+            pre.executeUpdate();
         } catch (Exception e) {
         }
     }
@@ -43,12 +36,12 @@ public class DAOShipCompany {
         xSql = "INSERT INTO ShipCompany ([companyName],[unitCost],[commitDate],[status])\n"
                 + "     VALUES (?,?,?,?)";
         try {
-            ps = conn.prepareStatement(xSql);
-            ps.setString(1, sp.getCompanyName());
-            ps.setDouble(2, sp.getUnitCost());
-            ps.setInt(3, sp.getCommitDate());
-            ps.setInt(4, sp.getStatus());
-            ps.executeUpdate();
+            pre = conn.prepareStatement(xSql);
+            pre.setString(1, sp.getCompanyName());
+            pre.setDouble(2, sp.getUnitCost());
+            pre.setInt(3, sp.getCommitDate());
+            pre.setInt(4, sp.getStatus());
+            pre.executeUpdate();
         } catch (Exception e) {
         }
     }
@@ -57,13 +50,13 @@ public class DAOShipCompany {
         int n = 0;
         xSql = "update ShipCompany set [companyName] = ? [unitCost] = ? [commitDate] = ? [status] =? where [companyID] = ?";
         try {
-            ps = conn.prepareStatement(xSql);
-            ps.setString(1, sp.getCompanyName());
-            ps.setDouble(2, sp.getUnitCost());
-            ps.setInt(3, sp.getCommitDate());
-            ps.setInt(4, sp.getStatus());
-            ps.setInt(5, sp.getCompanyID());
-            ps.executeUpdate();
+            pre = conn.prepareStatement(xSql);
+            pre.setString(1, sp.getCompanyName());
+            pre.setDouble(2, sp.getUnitCost());
+            pre.setInt(3, sp.getCommitDate());
+            pre.setInt(4, sp.getStatus());
+            pre.setInt(5, sp.getCompanyID());
+            pre.executeUpdate();
         } catch (Exception e) {
         }
         return n;
@@ -73,8 +66,8 @@ public class DAOShipCompany {
         List<ShipCompany> list = new ArrayList<>();
         xSql = "select * from ShipCompany where [status] = 1";
         try {
-            ps = conn.prepareStatement(xSql);
-            rs = ps.executeQuery();
+            pre = conn.prepareStatement(xSql);
+            rs = pre.executeQuery();
             while (rs.next()) {
                 list.add(new ShipCompany(
                         rs.getInt(1),

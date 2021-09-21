@@ -16,25 +16,18 @@ import java.util.List;
  *
  * @author DELL
  */
-public class DAOProductType {
+public class ProductTypeDAO extends BaseDAO {
 
-    DBConnection dbConn;
-    Connection conn;
-    PreparedStatement ps = null;
-    ResultSet rs = null;
-    String xSql = null;
-
-    public DAOProductType(DBConnection dbCon) {
-        this.dbConn = dbCon;
-        conn = dbCon.getConnection();
+    public ProductTypeDAO(DBConnection dbCon) {
+        super(dbCon);
     }
 
     public void deleteProductType(String ProTypeId) {
         String sql = "delete from ProductType where prodụctTypeID = ?";
         try {
-            ps = conn.prepareStatement(sql);
-            ps.setString(1, ProTypeId);
-            ps.executeUpdate();
+            pre = conn.prepareStatement(sql);
+            pre.setString(1, ProTypeId);
+            pre.executeUpdate();
         } catch (Exception e) {
         }
     }
@@ -43,16 +36,16 @@ public class DAOProductType {
         xSql = "INSERT INTO ProductType ([productTypeId],[productID],[size],[color],[price],[wareHouseID],[quantity],[status])\n"
                 + "     VALUES (?,?,?,?,?,?,?,?)";
         try {
-            ps = conn.prepareStatement(xSql);
-            ps.setString(1, p.getProductTypeId());
-            ps.setInt(2, p.getProductID());
-            ps.setString(3, p.getSize());
-            ps.setString(4, p.getColor());
-            ps.setDouble(5, p.getPrice());
-            ps.setInt(6, p.getWareHouseID());
-            ps.setInt(7, p.getQuantity());
-            ps.setInt(8, p.getStatus());
-            ps.executeUpdate();
+            pre = conn.prepareStatement(xSql);
+            pre.setString(1, p.getProductTypeId());
+            pre.setInt(2, p.getProductID());
+            pre.setString(3, p.getSize());
+            pre.setString(4, p.getColor());
+            pre.setDouble(5, p.getPrice());
+            pre.setInt(6, p.getWareHouseID());
+            pre.setInt(7, p.getQuantity());
+            pre.setInt(8, p.getStatus());
+            pre.executeUpdate();
         } catch (Exception e) {
         }
     }
@@ -61,16 +54,16 @@ public class DAOProductType {
         int n = 0;
         xSql = "update product set productID = ? size = ? color = ? price =? wareHouseID = ? quantity = ? status = ? where productTypeId = ?";
         try {
-            ps = conn.prepareStatement(xSql);
-            ps.setInt(1, p.getProductID());
-            ps.setString(2, p.getSize());
-            ps.setString(3, p.getColor());
-            ps.setDouble(4, p.getPrice());
-            ps.setInt(5, p.getWareHouseID());
-            ps.setInt(6, p.getQuantity());
-            ps.setInt(7, p.getStatus());
-            ps.setString(8, p.getProductTypeId());
-            ps.executeUpdate();
+            pre = conn.prepareStatement(xSql);
+            pre.setInt(1, p.getProductID());
+            pre.setString(2, p.getSize());
+            pre.setString(3, p.getColor());
+            pre.setDouble(4, p.getPrice());
+            pre.setInt(5, p.getWareHouseID());
+            pre.setInt(6, p.getQuantity());
+            pre.setInt(7, p.getStatus());
+            pre.setString(8, p.getProductTypeId());
+            pre.executeUpdate();
         } catch (Exception e) {
         }
         return n;
@@ -80,10 +73,10 @@ public class DAOProductType {
         int n = 0;
         xSql = "update product set quantity =? where productTypeId = ?";
         try {
-            ps = conn.prepareStatement(xSql);
-            ps.setInt(1, quantity);
-            ps.setInt(2, ProTypeId);
-            n = ps.executeUpdate();
+            pre = conn.prepareStatement(xSql);
+            pre.setInt(1, quantity);
+            pre.setInt(2, ProTypeId);
+            n = pre.executeUpdate();
         } catch (Exception e) {
         }
         return n;
@@ -93,8 +86,8 @@ public class DAOProductType {
         List<ProductType> list = new ArrayList<>();
         xSql = "select * from ProductType where status = 1";
         try {
-            ps = conn.prepareStatement(xSql);
-            rs = ps.executeQuery();
+            pre = conn.prepareStatement(xSql);
+            rs = pre.executeQuery();
             while (rs.next()) {
                 list.add(new ProductType(
                         rs.getString(1),
@@ -115,9 +108,9 @@ public class DAOProductType {
         ProductType ptype = new ProductType();
         xSql = "select * from ProductType where ProTypeId = ?";
         try {
-            ps = conn.prepareStatement(xSql);
-            ps.setInt(1, ProTypeId);
-            rs = ps.executeQuery();
+            pre = conn.prepareStatement(xSql);
+            pre.setInt(1, ProTypeId);
+            rs = pre.executeQuery();
             while (rs.next()) {
                 ptype = new ProductType(
                         rs.getString(1),
@@ -138,9 +131,9 @@ public class DAOProductType {
         List<ProductType> list = new ArrayList<>();
         xSql = "select * from ProductType where pid = ?";
         try {
-            ps = conn.prepareStatement(xSql);
-            ps.setString(1, pid);
-            rs = ps.executeQuery();
+            pre = conn.prepareStatement(xSql);
+            pre.setString(1, pid);
+            rs = pre.executeQuery();
             while (rs.next()) {
                 list.add(new ProductType(
                         rs.getString(1),
@@ -161,9 +154,9 @@ public class DAOProductType {
         ArrayList<ProductType> list = new ArrayList<>();
         xSql = "SELECT * FROM ProductType WHERE color like ?";
         try {
-            ps = conn.prepareStatement(xSql);
-            ps.setString(1, "%" + color + "%");
-            rs = ps.executeQuery();
+            pre = conn.prepareStatement(xSql);
+            pre.setString(1, "%" + color + "%");
+            rs = pre.executeQuery();
             while (rs.next()) {
                 list.add(new ProductType(
                         rs.getString(1),

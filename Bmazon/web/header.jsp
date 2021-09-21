@@ -1,7 +1,7 @@
 <%@page import="entity.Gallery"%>
 <%@page import="entity.User"%>
 <%@page import="model.DBConnection"%>
-<%@page import="model.DAOGallery"%>
+<%@page import="model.GalleryDAO"%>
 <%@page import="entity.Product"%>
 <%@page import="java.util.ArrayList"%>
 
@@ -44,12 +44,11 @@
         <script src="js/1.js"></script>
         <noscript><style>.woocommerce-product-gallery{ opacity: 1 !important; }</style></noscript>
         <link rel='stylesheet' href="css/2.css"  type='text/css'>
-        <script type="text/javascript">var essb_settings = {"ajax_url": "http:\/\/mauweb.monamedia.net\/lazada\/wp-admin\/admin-ajax.php", "essb3_nonce": "2096ea4430", "essb3_plugin_url": "http:\/\/mauweb.monamedia.net\/lazada\/wp-content\/plugins\/easy-social-share-buttons3", "essb3_facebook_total": true, "essb3_admin_ajax": false, "essb3_internal_counter": false, "essb3_stats": false, "essb3_ga": false, "essb3_ga_mode": "simple", "essb3_counter_button_min": 0, "essb3_counter_total_min": 0, "blog_url": "http:\/\/mauweb.monamedia.net\/lazada\/", "ajax_type": "wp", "essb3_postfloat_stay": false, "essb3_no_counter_mailprint": false, "essb3_single_ajax": false, "twitter_counter": "self", "post_id": 16};</script>
         <link rel='stylesheet' href="css/3.css"  type='text/css'> 
 
-        <script src="js/2.js"> </script>
+        <script src="js/2.js"></script>
 
-        <script src="js.home.js"> </script>
+        <script src="js.home.js"></script>
     </head>
     <body class="home page-template page-template-page-blank page-template-page-blank-php page page-id-16 page-parent lightbox nav-dropdown-has-arrow" >
 
@@ -95,7 +94,7 @@
                                             <%if (x.getSystemRole() == 1) {%>
                                             <li  ><a href="AdminControllerMap" class="menu-image-title-after"><span >Admin Dashboard</span></a></li>
                                                 <%}%>
-                                            
+
                                             <li  ><a href="UserControllerMap?service=info" class="menu-image-title-after"><span >User profile</span></a></li>
                                             <li  ><a href="UserControllerMap?service=changepass" class="menu-image-title-after"><span >Change Password</span></a></li>
                                             <li  ><a href="UserControllerMap?service=logout" class="menu-image-title-after"><span >Logout</span></a></li>
@@ -179,22 +178,19 @@
                                     <li class="html custom html_nav_position_text"><img class="header_promotion" 
                                                                                         src="images/FPT.jpg" alt="promotion" style="height: 40px;width: 170px;"></li>            </ul>
                             </div>
-
-
-
                         </div>
-
-
                     </div>
-              
-                    
-                    
-                    
-          
                 </div>
             </header>
-
-
-
+            <script type="text/javascript">
+                var essb_settings = {
+                    "ajax_url": "http:\/\/mauweb.monamedia.net\/lazada\/wp-admin\/admin-ajax.php",
+                    "essb3_nonce": "2096ea4430", "essb3_plugin_url": "http:\/\/mauweb.monamedia.net\/lazada\/wp-content\/plugins\/easy-social-share-buttons3",
+                    "essb3_facebook_total": true, "essb3_admin_ajax": false, "essb3_internal_counter": false, "essb3_stats": false,
+                    "essb3_ga": false, "essb3_ga_mode": "simple", "essb3_counter_button_min": 0, "essb3_counter_total_min": 0,
+                    "blog_url": "http:\/\/mauweb.monamedia.net\/lazada\/", "ajax_type": "wp", "essb3_postfloat_stay": false,
+                    "essb3_no_counter_mailprint": false, "essb3_single_ajax": false, "twitter_counter": "self", "post_id": 16
+                };
+            </script>
     </body>
 </html>

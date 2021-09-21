@@ -6,9 +6,6 @@
 package model;
 
 import entity.WareHouse;
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -16,25 +13,18 @@ import java.util.List;
  *
  * @author DELL
  */
-public class DAOWareHouse {
-    
-    DBConnection dbConn;
-    Connection conn;
-    PreparedStatement ps = null;
-    ResultSet rs = null;
-    String xSql = null;
+public class WareHouseDAO extends BaseDAO{
 
-    public DAOWareHouse(DBConnection dbCon) {
-        this.dbConn = dbCon;
-        conn = dbCon.getConnection();
+    public WareHouseDAO(DBConnection dbCon) {
+        super(dbCon);
     }
 
     public void deleteWareHouse(String wareHouseID) {
         String sql = "delete from WareHouse where [wareHouseID] = ?";
         try {
-            ps = conn.prepareStatement(sql);
-            ps.setString(1, wareHouseID);
-            ps.executeUpdate();
+            pre = conn.prepareStatement(sql);
+            pre.setString(1, wareHouseID);
+            pre.executeUpdate();
         } catch (Exception e) {
         }
     }
@@ -43,11 +33,11 @@ public class DAOWareHouse {
         xSql = "INSERT INTO WareHouse ([wareHouseAddress],[wareHouseCity],[status])\n"
                 + "     VALUES (?,?,?)";
         try {
-            ps = conn.prepareStatement(xSql);
-            ps.setString(1, wh.getWareHouseAddress());
-            ps.setString(2, wh.getWareHouseCity());
-            ps.setInt(3, wh.getStatus());
-            ps.executeUpdate();
+            pre = conn.prepareStatement(xSql);
+            pre.setString(1, wh.getWareHouseAddress());
+            pre.setString(2, wh.getWareHouseCity());
+            pre.setInt(3, wh.getStatus());
+            pre.executeUpdate();
         } catch (Exception e) {
         }
     }
@@ -56,12 +46,12 @@ public class DAOWareHouse {
         int n = 0;
         xSql = "update WareHouse set [wareHouseAddress] = ? [wareHouseCity] = ? [status] =? where [wareHouseID] = ?";
         try {
-            ps = conn.prepareStatement(xSql);
-            ps.setString(1, wh.getWareHouseAddress());
-            ps.setString(2, wh.getWareHouseCity());
-            ps.setInt(3, wh.getStatus());
-            ps.setInt(4, wh.getWareHouseID());
-            ps.executeUpdate();
+            pre = conn.prepareStatement(xSql);
+            pre.setString(1, wh.getWareHouseAddress());
+            pre.setString(2, wh.getWareHouseCity());
+            pre.setInt(3, wh.getStatus());
+            pre.setInt(4, wh.getWareHouseID());
+            pre.executeUpdate();
         } catch (Exception e) {
         }
         return n;
@@ -71,8 +61,8 @@ public class DAOWareHouse {
         List<WareHouse> list = new ArrayList<>();
         xSql = "select * from WareHouse where [status] = 1";
         try {
-            ps = conn.prepareStatement(xSql);
-            rs = ps.executeQuery();
+            pre = conn.prepareStatement(xSql);
+            rs = pre.executeQuery();
             while (rs.next()) {
                 list.add(new WareHouse(
                         rs.getInt(1),

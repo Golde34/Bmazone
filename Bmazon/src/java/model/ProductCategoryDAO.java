@@ -7,11 +7,8 @@ package model;
 
 import entity.ProductCategory;
 import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
-import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -19,22 +16,18 @@ import java.util.logging.Logger;
  *
  * @author Admin
  */
-public class DAOProductCategory {
+public class ProductCategoryDAO extends BaseDAO{
 
-    DBConnection dbConn;
-    Connection conn;
-
-    public DAOProductCategory(DBConnection dbCon) {
-        this.dbConn = dbCon;
-        conn = dbCon.getConnection();
+    public ProductCategoryDAO(DBConnection dbCon) {
+        super(dbCon);
     }
 
     public ArrayList<ProductCategory> getAllProductCategory() {
         ArrayList<ProductCategory> list = new ArrayList<>();
         String sql = "SELECT * FROM [Bmazon].[dbo].[ProductCategory] where status=1";
         try {
-            PreparedStatement ps = conn.prepareStatement(sql);
-            ResultSet rs = ps.executeQuery();
+            pre = conn.prepareStatement(sql);
+            rs = pre.executeQuery();
             while (rs.next()) {
                 ProductCategory pc = new ProductCategory();
                 pc.setCategoryID(rs.getInt("categoryId"));
@@ -43,9 +36,9 @@ public class DAOProductCategory {
                 list.add(pc);
             }
             rs.close();
-            ps.close();
+            pre.close();
         } catch (SQLException e) {
-            Logger.getLogger(DAOProductCategory.class.getName()).log(Level.SEVERE, null, e);
+            Logger.getLogger(ProductCategoryDAO.class.getName()).log(Level.SEVERE, null, e);
         }
         return list;
     }
@@ -57,15 +50,14 @@ public class DAOProductCategory {
                 + "           ,[categoryId]\n"
                 + "           ,[status]) VALUES(?,?,1)";
         try {
-            PreparedStatement ps = conn.prepareStatement(sql);
-            ps.setInt(1, obj.getProductID());
-            ps.setInt(2, obj.getCategoryID());
-            n = ps.executeUpdate();
-            ps.close();
+            pre = conn.prepareStatement(sql);
+            pre.setInt(1, obj.getProductID());
+            pre.setInt(2, obj.getCategoryID());
+            n = pre.executeUpdate();
+            pre.close();
         } catch (SQLException e) {
-            Logger.getLogger(DAOProductCategory.class.getName()).log(Level.SEVERE, null, e);
+            Logger.getLogger(ProductCategoryDAO.class.getName()).log(Level.SEVERE, null, e);
         }
         return n;
     }
-    
 }

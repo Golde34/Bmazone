@@ -6,9 +6,6 @@
 package model;
 
 import entity.*;
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.logging.Level;
@@ -18,22 +15,18 @@ import java.util.logging.Logger;
  *
  * @author Admin
  */
-public class DAOProductGenre {
+public class ProductGenreDAO extends BaseDAO{
 
-    DBConnection dbConn;
-    Connection conn;
-
-    public DAOProductGenre(DBConnection dbCon) {
-        this.dbConn = dbCon;
-        conn = dbCon.getConnection();
+    public ProductGenreDAO(DBConnection dbCon) {
+        super(dbCon);
     }
 
     public ArrayList<ProductGenre> getAllProductGenre() {
         ArrayList<ProductGenre> list = new ArrayList<>();
         String sql = "SELECT * FROM [Bmazon].[dbo].[ProductGenre] where status=1";
         try {
-            PreparedStatement ps = conn.prepareStatement(sql);
-            ResultSet rs = ps.executeQuery();
+            pre = conn.prepareStatement(sql);
+            rs = pre.executeQuery();
             while (rs.next()) {
                 ProductGenre pc = new ProductGenre();
                 pc.setProductID(rs.getInt("productID"));
@@ -42,9 +35,9 @@ public class DAOProductGenre {
                 list.add(pc);
             }
             rs.close();
-            ps.close();
+            pre.close();
         } catch (SQLException e) {
-            Logger.getLogger(DAOProductGenre.class.getName()).log(Level.SEVERE, null, e);
+            Logger.getLogger(ProductGenreDAO.class.getName()).log(Level.SEVERE, null, e);
         }
         return list;
     }
@@ -56,13 +49,13 @@ public class DAOProductGenre {
                 + "           ,[genreID]\n"
                 + "           ,[status]) VALUES(?,?,1)";
         try {
-            PreparedStatement ps = conn.prepareStatement(sql);
-            ps.setInt(1, obj.getProductID());
-            ps.setInt(2, obj.getGenreID());
-            n = ps.executeUpdate();
-            ps.close();
+            pre = conn.prepareStatement(sql);
+            pre.setInt(1, obj.getProductID());
+            pre.setInt(2, obj.getGenreID());
+            n = pre.executeUpdate();
+            pre.close();
         } catch (SQLException e) {
-            Logger.getLogger(DAOProductGenre.class.getName()).log(Level.SEVERE, null, e);
+            Logger.getLogger(ProductGenreDAO.class.getName()).log(Level.SEVERE, null, e);
         }
         return n;
     }

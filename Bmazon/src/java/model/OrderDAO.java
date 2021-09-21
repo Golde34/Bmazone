@@ -6,9 +6,6 @@
 package model;
 
 import entity.Order;
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
@@ -19,14 +16,10 @@ import java.util.logging.Logger;
  *
  * @author Duong
  */
-public class DAOOrder {
+public class OrderDAO extends BaseDAO{
 
-    DBConnection dbConn;
-    Connection conn;
-
-    public DAOOrder(DBConnection dbConn) {
-        this.dbConn = dbConn;
-        conn = dbConn.getConnection();
+    public OrderDAO(DBConnection dbCon) {
+        super(dbCon);
     }
 
     public int insertOrder(Order obj) {
@@ -36,7 +29,7 @@ public class DAOOrder {
 "           ,[shipPhone],[companyID],[shipMoney],[paymentMethod],[total],[status])"+
 "     VALUES (?,GETDATE(),?,?,?,?,?,?,?,?,?,?,?,1)" ;
         try {
-            PreparedStatement pre = conn.prepareStatement(sql);
+            pre = conn.prepareStatement(sql);
             pre.setString(1, obj.getUserID());
             pre.setDate(2, obj.getOrderDate());
             pre.setDate(3, obj.getRequiredDate());
@@ -51,7 +44,7 @@ public class DAOOrder {
             pre.setDouble(12, obj.getTotal());
             n = pre.executeUpdate();
         } catch (SQLException ex) {
-            Logger.getLogger(DAOOrder.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(OrderDAO.class.getName()).log(Level.SEVERE, null, ex);
         }
         return n;
     }
@@ -59,13 +52,12 @@ public class DAOOrder {
     public int changeStatus(String orderId) {
         int n = 0;
         String sql = "UPDATE [Order] SET status = 1 WHERE orderID = '" + orderId + "'";
-
         Statement state;
         try {
             state = conn.createStatement();
             n = state.executeUpdate(sql);
         } catch (SQLException ex) {
-            Logger.getLogger(DAOOrder.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(OrderDAO.class.getName()).log(Level.SEVERE, null, ex);
         }
         return n;
     }
@@ -75,8 +67,7 @@ public class DAOOrder {
         String sql = "update [Order] set[orderDate]=? [requiredDate]=?[shippedDate]=?[shipName]=?[shipAddress]=?[shipCity]=?" +
 "           [shipPhone]=?[companyID]=?[shipMoney]=?[paymentMethod]=? [total]=? [status]=1 where orderID=?";
         try {
-            PreparedStatement pre = conn.prepareStatement(sql);
-
+            pre = conn.prepareStatement(sql);
             pre.setDate(1, obj.getOrderDate());
             pre.setDate(2, obj.getRequiredDate());
             pre.setDate(3, obj.getShippedDate());
@@ -91,7 +82,7 @@ public class DAOOrder {
              pre.setInt(12, obj.getOrderID());
             n = pre.executeUpdate();
         } catch (SQLException ex) {
-            Logger.getLogger(DAOOrder.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(OrderDAO.class.getName()).log(Level.SEVERE, null, ex);
         }
         return n;
     }
@@ -99,14 +90,14 @@ public class DAOOrder {
     public int removeOrder(String orderId) {
         int n = 0;
         String sql = "Select * from [Order] as a join OrderDetail as b on a.orderID = b.orderID where a.orderID = '" + orderId + "'";
-        ResultSet rs = dbConn.getData(sql);
+        rs = dbConn.getData(sql);
         try {
             if (rs.next()) {
                 String s = rs.getString("orderID");
                 return s == null ? 0 : Integer.parseInt(s);
             }
         } catch (SQLException ex) {
-            Logger.getLogger(DAOOrder.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(OrderDAO.class.getName()).log(Level.SEVERE, null, ex);
         }
         return n;
     }
@@ -114,7 +105,7 @@ public class DAOOrder {
     public ArrayList<Order> getAllOrder() {
         ArrayList<Order> list = new ArrayList<>();
         String sql = "select * from [Order] where status = 1  order by orderID desc";
-        ResultSet rs = dbConn.getData(sql);
+        rs = dbConn.getData(sql);
         try {
             while (rs.next()) {
                 Order o = new Order();
@@ -135,7 +126,7 @@ public class DAOOrder {
                 list.add(o);
             }
         } catch (SQLException ex) {
-            Logger.getLogger(DAOOrder.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(OrderDAO.class.getName()).log(Level.SEVERE, null, ex);
         }
         return list;
     }  

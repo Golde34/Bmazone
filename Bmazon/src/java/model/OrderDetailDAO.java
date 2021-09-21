@@ -7,8 +7,6 @@ package model;
 
 import entity.OrderDetail;
 import java.sql.*;
-import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -16,14 +14,10 @@ import java.util.logging.Logger;
  *
  * @author Admin
  */
-public class DAOOrderDetail {
+public class OrderDetailDAO extends BaseDAO{
 
-    DBConnection dbConn;
-    Connection conn;
-
-    public DAOOrderDetail(DBConnection dbConn) {
-        this.dbConn = dbConn;
-        conn = dbConn.getConnection();
+    public OrderDetailDAO(DBConnection dbCon) {
+        super(dbCon);
     }
 
     public int insertOrderDetail(OrderDetail obj) {
@@ -31,7 +25,7 @@ public class DAOOrderDetail {
         String sql = "Insert into OrderDetail(orderID, productTypeID,.productName, price,quantity, status)"
                 + " values (?,?,?,?,?,1)";
         try {
-            PreparedStatement pre = conn.prepareStatement(sql);
+            pre = conn.prepareStatement(sql);
             pre.setInt(1, obj.getOrderID());
             pre.setString(2, obj.getProductTypeId());
             pre.setString(3, obj.getProductName());
@@ -40,7 +34,7 @@ public class DAOOrderDetail {
             pre.setInt(6, obj.getStatus());
             n = pre.executeUpdate();
         } catch (SQLException ex) {
-            Logger.getLogger(DAOOrderDetail.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(OrderDetailDAO.class.getName()).log(Level.SEVERE, null, ex);
         }
         return n;
     }
@@ -53,7 +47,7 @@ public class DAOOrderDetail {
             stm = conn.createStatement();
             n = stm.executeUpdate(sqlDelete);
         } catch (SQLException ex) {
-            Logger.getLogger(DAOOrderDetail.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(OrderDetailDAO.class.getName()).log(Level.SEVERE, null, ex);
         }
         return n;
     }
@@ -62,13 +56,13 @@ public class DAOOrderDetail {
         int n = 0;
         String sql = "update OrderDetail set quantity=? where orderID=? and productTypeID=?";
         try {
-            PreparedStatement pre = conn.prepareStatement(sql);
+            pre = conn.prepareStatement(sql);
             pre.setInt(1, obj.getQuantity());
             pre.setInt(2, obj.getOrderID());
             pre.setString(3, obj.getProductTypeId());
             n = pre.executeUpdate();
         } catch (SQLException ex) {
-            Logger.getLogger(DAOOrderDetail.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(OrderDetailDAO.class.getName()).log(Level.SEVERE, null, ex);
 
         }
         return n;

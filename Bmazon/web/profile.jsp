@@ -4,7 +4,7 @@
     Author     : Admin
 --%>
 
-<%@page import="model.DAOUser"%>
+<%@page import="model.UserDAO"%>
 <%@page import="model.DBConnection"%>
 <%@page import="entity.User"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
@@ -48,7 +48,7 @@
             User x = (User) request.getSession().getAttribute("currUser");
 
             DBConnection dbCon = new DBConnection();
-            DAOUser daoUser = new DAOUser(dbCon);
+            UserDAO daoUser = new UserDAO(dbCon);
 //            DAOGalery daoGalery = new DAOGalery(dbCon);
 
         %>

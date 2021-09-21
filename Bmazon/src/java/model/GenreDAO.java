@@ -1,23 +1,16 @@
 package model;
 
 import entity.Genre;
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-public class DAOGenre {
+public class GenreDAO extends BaseDAO{
 
-    DBConnection dbConn;
-    Connection conn;
-
-    public DAOGenre(DBConnection dbCon) {
-        this.dbConn = dbCon;
-        conn = dbCon.getConnection();
+    public GenreDAO(DBConnection dbCon) {
+        super(dbCon);
     }
 
     public ArrayList<Genre> getAllGenres() {
@@ -29,8 +22,8 @@ public class DAOGenre {
         int categoryID;
         int status;
         try {
-            PreparedStatement ps = conn.prepareStatement(sql);
-            ResultSet rs = ps.executeQuery();
+            pre = conn.prepareStatement(sql);
+            rs = pre.executeQuery();
             while (rs.next()) {
                 genreID = rs.getInt("genreID");
                 genreName = rs.getString("genreName");
@@ -40,7 +33,7 @@ public class DAOGenre {
                 list.add(x);
             }
         } catch (SQLException ex) {
-            Logger.getLogger(DAOCategory.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(CategoryDAO.class.getName()).log(Level.SEVERE, null, ex);
         }
         return list;
     }
@@ -54,8 +47,8 @@ public class DAOGenre {
         int categoryID;
         int status;
         try {
-            PreparedStatement ps = conn.prepareStatement(sql);
-            ResultSet rs = ps.executeQuery();
+            pre = conn.prepareStatement(sql);
+            rs = pre.executeQuery();
             while (rs.next()) {
                 genreID = rs.getInt("genreID");
                 genreName = rs.getString("genreName");
@@ -65,37 +58,35 @@ public class DAOGenre {
                 list.add(x);
             }
         } catch (SQLException ex) {
-            Logger.getLogger(DAOCategory.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(CategoryDAO.class.getName()).log(Level.SEVERE, null, ex);
         }
         return list;
     }
 
     public void insertGenre(Genre gen) {
         String sql = "Insert into Genre(genreName,categoryID,status) values (?,?,?)";
-        PreparedStatement ps;
         try {
-            ps = conn.prepareStatement(sql);
-            ps.setString(1, gen.getGenreName());
-            ps.setInt(2, gen.getCategoryID());
-            ps.setInt(3, gen.getStatus());
-            ps.executeUpdate();
+            pre = conn.prepareStatement(sql);
+            pre.setString(1, gen.getGenreName());
+            pre.setInt(2, gen.getCategoryID());
+            pre.setInt(3, gen.getStatus());
+            pre.executeUpdate();
         } catch (SQLException ex) {
-            Logger.getLogger(DAOCategory.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(CategoryDAO.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
 
     public void updateGenre(Genre gen) {
         String sql = "update Genre set genreName=?, categoryID=?, status=? where genreID=?";
-        PreparedStatement ps;
         try {
-            ps = conn.prepareStatement(sql);
-            ps.setString(1, gen.getGenreName());
-            ps.setInt(2, gen.getCategoryID());
-            ps.setInt(3, gen.getStatus());
-            ps.setInt(4, gen.getGenreID());
-            ps.executeUpdate();
+            pre = conn.prepareStatement(sql);
+            pre.setString(1, gen.getGenreName());
+            pre.setInt(2, gen.getCategoryID());
+            pre.setInt(3, gen.getStatus());
+            pre.setInt(4, gen.getGenreID());
+            pre.executeUpdate();
         } catch (SQLException ex) {
-            Logger.getLogger(DAOCategory.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(CategoryDAO.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
 
@@ -107,8 +98,8 @@ public class DAOGenre {
         int categoryID;
         int status;
         try {
-            PreparedStatement ps = conn.prepareStatement(sql);
-            ResultSet rs = ps.executeQuery();
+            pre = conn.prepareStatement(sql);
+            rs = pre.executeQuery();
             while (rs.next()) {
                 genreID = rs.getInt("genreID");
                 genreName = rs.getString("genreName");
@@ -117,7 +108,7 @@ public class DAOGenre {
                 x = new Genre(genreID, genreName, categoryID, status);
             }
         } catch (SQLException ex) {
-            Logger.getLogger(DAOCategory.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(CategoryDAO.class.getName()).log(Level.SEVERE, null, ex);
         }
         return x;
     }
@@ -126,10 +117,10 @@ public class DAOGenre {
         int n = 0;
         String sql = "update Genre set status = " + (status == 1 ? 1 : 0) + " where genreID = '" + id + "'";
         try {
-            PreparedStatement pre = conn.prepareStatement(sql);
+            pre = conn.prepareStatement(sql);
             n = pre.executeUpdate();
         } catch (SQLException ex) {
-            Logger.getLogger(DAOCategory.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(CategoryDAO.class.getName()).log(Level.SEVERE, null, ex);
         }
         return n;
     }
@@ -141,20 +132,20 @@ public class DAOGenre {
                 Statement state = conn.createStatement();
                 n = state.executeUpdate(sql);          
         } catch (SQLException ex) {
-            Logger.getLogger(DAOCategory.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(CategoryDAO.class.getName()).log(Level.SEVERE, null, ex);
         }
         return n;
     }
     
     public boolean checkExistGenreName(String genreName) {
         String sql = "SELECT * FROM Genre WHERE genreName = '" + genreName + "'";
-        ResultSet rs = dbConn.getData(sql);
+        rs = dbConn.getData(sql);
         try {
             if (rs.next()) {
                 return true;
             }
         } catch (SQLException ex) {
-            Logger.getLogger(DAOCategory.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(CategoryDAO.class.getName()).log(Level.SEVERE, null, ex);
         }
         return false;
     }

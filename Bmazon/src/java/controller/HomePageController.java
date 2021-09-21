@@ -17,9 +17,9 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import model.DAOProduct;
-import model.DAOCategory;
-import model.DAOGenre;
+import model.ProductDAO;
+import model.CategoryDAO;
+import model.GenreDAO;
 import entity.Genre;
 import model.DBConnection;
 
@@ -38,36 +38,45 @@ public class HomePageController extends HttpServlet {
      * @throws ServletException if a servlet-specific error occurs
      * @throws IOException if an I/O error occurs
      */
+    
+    DBConnection dbCon = new DBConnection();
+    CategoryDAO daoCategory = new CategoryDAO(dbCon);
+    GenreDAO daoGenre = new GenreDAO(dbCon);
+
+    protected void processRequest(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException {
+        response.setContentType("text/html;charset=UTF-8");
+        try (PrintWriter out = response.getWriter()) {
+            
+            String service = request.getParameter("service");
+            
+            if (service == null) {
+                service = "HomePage";
+            }
+
+            //Home.jsp
+            if (service.equalsIgnoreCase("HomePage")) {
+                serviceHomePage(request, response);
+            }
+        }
+    }
+
+    public void serviceHomePage(HttpServletRequest request, HttpServletResponse response) {
+        ArrayList<Category> ListCategory = daoCategory.getTrueCategories();
+        request.setAttribute("listCategory", ListCategory);
+        ArrayList<Genre> ListGenre = daoGenre.getTrueGenres();
+        request.setAttribute("listCategory", ListCategory);
+        sendDispatcher(request, response, "/header.jsp");
+        request.setAttribute("listgerne", ListGenre);
+        sendDispatcher(request, response, "/header.jsp");
+    }
+
     public void sendDispatcher(HttpServletRequest request, HttpServletResponse response, String path) {
         try {
             RequestDispatcher rd = request.getRequestDispatcher(path);
             rd.forward(request, response);
         } catch (ServletException | IOException ex) {
             Logger.getLogger(HomePageController.class.getName()).log(Level.SEVERE, null, ex);
-        }
-    }
-    protected void processRequest(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {
-        response.setContentType("text/html;charset=UTF-8");
-        DBConnection dbCon=new DBConnection();
-        DAOCategory daoCategory=new DAOCategory(dbCon);
-        DAOGenre daoGenre= new DAOGenre(dbCon);
-        try (PrintWriter out = response.getWriter()) {
-            String service = request.getParameter("service");
-            if (service == null) {
-                service = "HomePage";
-            }
-            
-            //Home.jsp
-            if (service.equalsIgnoreCase("HomePage")) {
-                ArrayList<Category> ListCategory = daoCategory.getTrueCategories();
-                request.setAttribute("listCategory", ListCategory);
-                ArrayList<Genre> ListGerne = daoGenre.getTrueGenres();
-                request.setAttribute("listCategory", ListCategory);
-                sendDispatcher(request, response, "/header.jsp");
-                request.setAttribute("listgerne", ListGerne);
-                sendDispatcher(request, response, "/header.jsp");
-            }
         }
     }
 

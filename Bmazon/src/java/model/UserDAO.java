@@ -6,14 +6,10 @@
 package model;
 
 import entity.User;
-import entity.ProductType;
-import java.sql.Connection;
-import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -22,18 +18,15 @@ import java.util.logging.Logger;
  *
  * @author Admin
  */
-public class DAOUser {
+public class UserDAO extends BaseDAO {
 
-    DBConnection dbConn;
-    Connection conn;
-
-    public DAOUser(DBConnection dbCon) {
-        this.dbConn = dbCon;
-        conn = dbCon.getConnection();
+    public UserDAO(DBConnection dbCon) {
+        super(dbCon);
     }
+
     public static void main(String[] args) {
         DBConnection db = new DBConnection();
-        DAOUser dao = new DAOUser(db);
+        UserDAO dao = new UserDAO(db);
         User x = dao.getUserById(8);
         x.setAddress("Hai Duong 2");
         dao.updateInfoUser(x);
@@ -43,7 +36,7 @@ public class DAOUser {
     public User getUserLogin(String username, String password) {
         String sql = "SELECT * FROM [User] WHERE username = ? and password = ? and status = 1";
         try {
-            PreparedStatement pre = conn.prepareStatement(sql);
+            pre = conn.prepareStatement(sql);
             pre.setString(1, username);
             pre.setString(2, password);
             ResultSet rs = pre.executeQuery();
@@ -61,19 +54,17 @@ public class DAOUser {
                 return user;
             }
         } catch (SQLException ex) {
-            Logger.getLogger(DAOUser.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(UserDAO.class.getName()).log(Level.SEVERE, null, ex);
         }
         return null;
     }
-    
+
     public void singup(String user, String pass, String email, String phone, String fname) {
-        String sql = "INSERT INTO [User]([username],[password],[email],[phoneNumber],[fullname],[systemRole],[status])\n" +
-
-
-"     VALUES	(?,?,?,?,?,0,1)";
+        String sql = "INSERT INTO [User]([username],[password],[email],[phoneNumber],[fullname],[systemRole],[status])\n"
+                + "     VALUES	(?,?,?,?,?,0,1)";
 
         try {
-            PreparedStatement pre = conn.prepareStatement(sql);
+            pre = conn.prepareStatement(sql);
             pre.setString(1, user);
             pre.setString(2, pass);
             pre.setString(3, email);
@@ -83,20 +74,20 @@ public class DAOUser {
         } catch (Exception e) {
         }
     }
-    
+
     public int addUser(User obj) {
         int n = 0;
         String sql = "INSERT INTO [User](username, password, email, phoneNumber, sell, wallet, fullname, address,"
                 + " profileImage, gender, DOB, bio, Facebook, Instagram, Twitter, Youtube, activityPoint, systemRole, status)"
                 + " values (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)";
         try {
-            PreparedStatement pre = conn.prepareStatement(sql);
+            pre = conn.prepareStatement(sql);
             pre.setString(1, obj.getUsername());
             pre.setString(2, obj.getPassword());
             pre.setString(3, obj.getEmail());
             pre.setString(4, obj.getPhoneNumber());
             pre.setInt(5, obj.getSell());
-            pre.setDouble(6, obj.getWallet());          
+            pre.setDouble(6, obj.getWallet());
             pre.setString(7, obj.getFullname());
             pre.setString(8, obj.getAddress());
             pre.setString(9, obj.getProfileImage());
@@ -112,24 +103,24 @@ public class DAOUser {
             pre.setInt(19, obj.getStatus());
             n = pre.executeUpdate();
         } catch (SQLException ex) {
-            Logger.getLogger(DAOUser.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(UserDAO.class.getName()).log(Level.SEVERE, null, ex);
         }
         return n;
     }
-    
+
     public int updateInfoUser(User obj) {
         int n = 0;
         String sql = "UPDATE [User] SET username=?, password=?, email=?, phoneNumber=?, sell=?, wallet=?, fullname=?, address=?,"
                 + " profileImage=?, gender=?, DOB=?, bio=?, Facebook=?, Instagram=?, Twitter=?, Youtube=?, activityPoint=?, systemRole=?, status=?"
                 + " where userID=?";
         try {
-            PreparedStatement pre = conn.prepareStatement(sql);
+            pre = conn.prepareStatement(sql);
             pre.setString(1, obj.getUsername());
             pre.setString(2, obj.getPassword());
             pre.setString(3, obj.getEmail());
             pre.setString(4, obj.getPhoneNumber());
             pre.setInt(5, obj.getSell());
-            pre.setDouble(6, obj.getWallet());          
+            pre.setDouble(6, obj.getWallet());
             pre.setString(7, obj.getFullname());
             pre.setString(8, obj.getAddress());
             pre.setString(9, obj.getProfileImage());
@@ -146,11 +137,11 @@ public class DAOUser {
             pre.setString(20, obj.getUserId());
             n = pre.executeUpdate();
         } catch (SQLException ex) {
-            Logger.getLogger(DAOUser.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(UserDAO.class.getName()).log(Level.SEVERE, null, ex);
         }
         return n;
     }
-    
+
     public int changePassword(String username, String newPass) {
         try {
             String sqlUpdate = "update [User] set password = ? where username = ?";
@@ -160,37 +151,37 @@ public class DAOUser {
             int n = preStm.executeUpdate();
             return n;
         } catch (SQLException ex) {
-            Logger.getLogger(DAOUser.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(UserDAO.class.getName()).log(Level.SEVERE, null, ex);
         }
         return 0;
     }
-    
+
     public int changeStatus(String username, int status) {
         int n = 0;
         String sql = "UPDATE [User] SET status = " + (status == 1 ? 1 : 0)
                 + " WHERE username = '" + username + "'";
         try {
-            PreparedStatement pre = conn.prepareStatement(sql);
+            pre = conn.prepareStatement(sql);
             n = pre.executeUpdate();
         } catch (SQLException ex) {
-            Logger.getLogger(DAOUser.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(UserDAO.class.getName()).log(Level.SEVERE, null, ex);
         }
         return n;
     }
-    
+
     public int changeStatus(int id, int status) {
         int n = 0;
         String sql = "UPDATE [User] SET status = " + (status == 1 ? 1 : 0)
                 + " WHERE userID = '" + id + "'";
         try {
-            PreparedStatement pre = conn.prepareStatement(sql);
+            pre = conn.prepareStatement(sql);
             n = pre.executeUpdate();
         } catch (SQLException ex) {
-            Logger.getLogger(DAOUser.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(UserDAO.class.getName()).log(Level.SEVERE, null, ex);
         }
         return n;
     }
-    
+
     public int removeCustomer(int id) {
         int n = 0;
         String sql = "SELECT * FROM ([User] AS a JOIN [Order] as b on a.userID = b.userID ) Join [Product] as c on a.userID=c.seller"
@@ -205,11 +196,11 @@ public class DAOUser {
                 n = state.executeUpdate(sqlDelete);
             }
         } catch (SQLException ex) {
-            Logger.getLogger(DAOUser.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(UserDAO.class.getName()).log(Level.SEVERE, null, ex);
         }
         return n;
     }
-    
+
     public boolean checkExistUserName(String username) {
         String sql = "SELECT * FROM [User] WHERE username = '" + username + "'";
         ResultSet rs = dbConn.getData(sql);
@@ -218,24 +209,24 @@ public class DAOUser {
                 return true;
             }
         } catch (SQLException ex) {
-            Logger.getLogger(DAOUser.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(UserDAO.class.getName()).log(Level.SEVERE, null, ex);
         }
         return false;
     }
 
     public boolean checkExistPhone(String phone) {
-        String sql = "SELECT * FROM [User] WHERE phoneNumber = '" + phone + "' and status = 1" ;
+        String sql = "SELECT * FROM [User] WHERE phoneNumber = '" + phone + "' and status = 1";
         ResultSet rs = dbConn.getData(sql);
         try {
             if (rs.next()) {
                 return true;
             }
         } catch (SQLException ex) {
-            Logger.getLogger(DAOUser.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(UserDAO.class.getName()).log(Level.SEVERE, null, ex);
         }
         return false;
     }
-    
+
     public boolean checkExistMail(String mail) {
         String sql = "SELECT * FROM [User] WHERE email = '" + mail + "' and status = 1";
         ResultSet rs = dbConn.getData(sql);
@@ -244,11 +235,11 @@ public class DAOUser {
                 return true;
             }
         } catch (SQLException ex) {
-            Logger.getLogger(DAOUser.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(UserDAO.class.getName()).log(Level.SEVERE, null, ex);
         }
         return false;
     }
-    
+
     public User getUserByUsername(String username) {
         String sql = "SELECT * FROM [User] WHERE username = '" + username + "' and status=1";
         ResultSet rs = dbConn.getData(sql);
@@ -267,11 +258,11 @@ public class DAOUser {
                 return user;
             }
         } catch (SQLException ex) {
-            Logger.getLogger(DAOUser.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(UserDAO.class.getName()).log(Level.SEVERE, null, ex);
         }
         return null;
     }
-    
+
     public User getUserById(int id) {
         String sql = "SELECT * FROM [User] WHERE userID = '" + id + "'";
         ResultSet rs = dbConn.getData(sql);
@@ -290,7 +281,7 @@ public class DAOUser {
                 return user;
             }
         } catch (SQLException ex) {
-            Logger.getLogger(DAOUser.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(UserDAO.class.getName()).log(Level.SEVERE, null, ex);
         }
         return null;
     }
@@ -314,11 +305,11 @@ public class DAOUser {
                 list.add(c);
             }
         } catch (SQLException ex) {
-            Logger.getLogger(DAOUser.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(UserDAO.class.getName()).log(Level.SEVERE, null, ex);
         }
         return list;
     }
-    
+
     public ArrayList<User> getTrueUser() {
         ArrayList<User> list = new ArrayList<>();
         String sql = "SELECT * FROM [User]";
@@ -338,11 +329,11 @@ public class DAOUser {
                 list.add(c);
             }
         } catch (SQLException ex) {
-            Logger.getLogger(DAOUser.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(UserDAO.class.getName()).log(Level.SEVERE, null, ex);
         }
         return list;
     }
-    
+
     public ArrayList<User> getSearchUser(int uId, String uName, int status) {
         ArrayList<User> list = new ArrayList<>();
         String s1 = " ";
@@ -372,32 +363,32 @@ public class DAOUser {
                 list.add(c);
             }
         } catch (SQLException ex) {
-            Logger.getLogger(DAOUser.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(UserDAO.class.getName()).log(Level.SEVERE, null, ex);
         }
         return list;
     }
-    
+
     public void updateWalletUser(User obj, double amount) {
-        
+
         String sql = "UPDATE [User] SET wallet=? where userID=?";
         try {
-            PreparedStatement pre = conn.prepareStatement(sql);
-            pre.setDouble(1,obj.getWallet()+amount);
+            pre = conn.prepareStatement(sql);
+            pre.setDouble(1, obj.getWallet() + amount);
             pre.setString(2, obj.getUserId());
             pre.executeUpdate();
         } catch (SQLException ex) {
-            Logger.getLogger(DAOUser.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(UserDAO.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
-    
+
     public void updateinfo(User obj) {
         String sql = "UPDATE [User] SET  email=?, phoneNumber=?, fullname=?, address=?,"
                 + " profileImage=?, gender=?, DOB=?, bio=?, Facebook=?, Instagram=?, Twitter=?, Youtube=? "
                 + " where userID=?";
         try {
-            PreparedStatement pre = conn.prepareStatement(sql);
+            pre = conn.prepareStatement(sql);
             pre.setString(1, obj.getEmail());
-            pre.setString(2, obj.getPhoneNumber());        
+            pre.setString(2, obj.getPhoneNumber());
             pre.setString(3, obj.getFullname());
             pre.setString(4, obj.getAddress());
             pre.setString(5, obj.getProfileImage());
@@ -411,26 +402,23 @@ public class DAOUser {
             pre.setString(13, obj.getUserId());
             pre.executeUpdate();
         } catch (SQLException ex) {
-            Logger.getLogger(DAOUser.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(UserDAO.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
 
-   
-    
     public int updateActivityPoint(User obj, int activityPoint) {
         int n = 0;
         String sql = "UPDATE [User] SET activityPoint=? where userID=?";
         try {
-            PreparedStatement pre = conn.prepareStatement(sql);
+            pre = conn.prepareStatement(sql);
             pre.setInt(1, activityPoint);
             pre.setString(2, obj.getUserId());
             n = pre.executeUpdate();
         } catch (SQLException ex) {
-            Logger.getLogger(DAOUser.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(UserDAO.class.getName()).log(Level.SEVERE, null, ex);
         }
         return n;
     }
-    
 
     public int uploadprofileImage(User obj, String uploadImg) {
         int n = 0;
@@ -439,7 +427,7 @@ public class DAOUser {
             Statement state = conn.createStatement();
             n = state.executeUpdate(sql);
         } catch (SQLException ex) {
-            Logger.getLogger(DAOUser.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(UserDAO.class.getName()).log(Level.SEVERE, null, ex);
         }
         return n;
     }

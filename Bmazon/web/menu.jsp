@@ -1,8 +1,6 @@
-
-
 <%@page import="entity.Gallery"%>
 <%@page import="model.DBConnection"%>
-<%@page import="model.DAOGallery"%>
+<%@page import="model.GalleryDAO"%>
 <%@page import="entity.Product"%>
 <%@page import="java.util.ArrayList"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>

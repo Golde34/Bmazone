@@ -7,8 +7,6 @@ package model;
 
 import entity.*;
 import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
@@ -19,22 +17,18 @@ import java.util.logging.Logger;
  *
  * @author Admin
  */
-public class DAOProduct {
+public class ProductDAO extends BaseDAO{
 
-    DBConnection dbConn;
-    Connection conn;
-
-    public DAOProduct(DBConnection dbCon) {
-        this.dbConn = dbCon;
-        conn = dbCon.getConnection();
+    public ProductDAO(DBConnection dbCon) {
+        super(dbCon);
     }
 
     public ArrayList<Product> getAllProduct() {
         ArrayList<Product> list = new ArrayList<>();
         String sql = "SELECT TOP 10 * FROM Product where status=1";
         try {
-            PreparedStatement ps = conn.prepareStatement(sql);
-            ResultSet rs = ps.executeQuery();
+            pre = conn.prepareStatement(sql);
+            rs = pre.executeQuery();
             while (rs.next()) {
                 Product pro = new Product();
                 pro.setProductID(rs.getInt("productID"));
@@ -47,9 +41,9 @@ public class DAOProduct {
                 list.add(pro);
             }
             rs.close();
-            ps.close();
+            pre.close();
         } catch (SQLException e) {
-            Logger.getLogger(DAOProduct.class.getName()).log(Level.SEVERE, null, e);
+            Logger.getLogger(ProductDAO.class.getName()).log(Level.SEVERE, null, e);
         }
         return list;
     }
@@ -58,8 +52,8 @@ public class DAOProduct {
         ArrayList<Product> list = new ArrayList<>();
         String sql = "SELECT TOP 10 * FROM Product";
         try {
-            PreparedStatement ps = conn.prepareStatement(sql);
-            ResultSet rs = ps.executeQuery();
+            pre = conn.prepareStatement(sql);
+            rs = pre.executeQuery();
             while (rs.next()) {
                 Product pro = new Product();
                 pro.setProductID(rs.getInt("productID"));
@@ -72,9 +66,9 @@ public class DAOProduct {
                 list.add(pro);
             }
             rs.close();
-            ps.close();
+            pre.close();
         } catch (SQLException e) {
-            Logger.getLogger(DAOProduct.class.getName()).log(Level.SEVERE, null, e);
+            Logger.getLogger(ProductDAO.class.getName()).log(Level.SEVERE, null, e);
         }
         return list;
     }
@@ -83,8 +77,8 @@ public class DAOProduct {
         ArrayList<Product> list = new ArrayList<>();
         String sql = "SELECT * FROM [Bmazon].[dbo].[Product] where seller=" + seller;
         try {
-            PreparedStatement ps = conn.prepareStatement(sql);
-            ResultSet rs = ps.executeQuery();
+            pre = conn.prepareStatement(sql);
+            rs = pre.executeQuery();
             while (rs.next()) {
                 Product pro = new Product();
                 pro.setProductID(rs.getInt("productID"));
@@ -97,9 +91,9 @@ public class DAOProduct {
                 list.add(pro);
             }
             rs.close();
-            ps.close();
+            pre.close();
         } catch (SQLException e) {
-            Logger.getLogger(DAOProduct.class.getName()).log(Level.SEVERE, null, e);
+            Logger.getLogger(ProductDAO.class.getName()).log(Level.SEVERE, null, e);
         }
         return list;
     }
@@ -108,8 +102,8 @@ public class DAOProduct {
         ArrayList<Product> list = new ArrayList<>();
         String sql = "SELECT * FROM [Bmazon].[dbo].[Product] where productName like '%" + name + "%'";
         try {
-            PreparedStatement ps = conn.prepareStatement(sql);
-            ResultSet rs = ps.executeQuery();
+            pre = conn.prepareStatement(sql);
+            rs = pre.executeQuery();
             while (rs.next()) {
                 Product pro = new Product();
                 pro.setProductID(rs.getInt("productID"));
@@ -122,9 +116,9 @@ public class DAOProduct {
                 list.add(pro);
             }
             rs.close();
-            ps.close();
+            pre.close();
         } catch (SQLException e) {
-            Logger.getLogger(DAOProduct.class.getName()).log(Level.SEVERE, null, e);
+            Logger.getLogger(ProductDAO.class.getName()).log(Level.SEVERE, null, e);
         }
         return list;
     }
@@ -133,8 +127,8 @@ public class DAOProduct {
         Product pro = null;
         String sql = "SELECT * FROM [Bmazon].[dbo].[Product] where productID=" + id;
         try {
-            PreparedStatement ps = conn.prepareStatement(sql);
-            ResultSet rs = ps.executeQuery();
+            pre = conn.prepareStatement(sql);
+            rs = pre.executeQuery();
             if (rs.next()) {
                 pro.setProductID(rs.getInt("productID"));
                 pro.setProductName(rs.getString("productName"));
@@ -145,9 +139,9 @@ public class DAOProduct {
                 pro.setStatus(rs.getInt("status"));
             }
             rs.close();
-            ps.close();
+            pre.close();
         } catch (SQLException e) {
-            Logger.getLogger(DAOProduct.class.getName()).log(Level.SEVERE, null, e);
+            Logger.getLogger(ProductDAO.class.getName()).log(Level.SEVERE, null, e);
         }
         return pro;
     }
@@ -157,8 +151,8 @@ public class DAOProduct {
         String sql = "SELECT * FROM [Bmazon].[dbo].[Product] as a join ProductCategory as b on a.productID=b.productID\n"
                 + "WHERE a.status=1 and b.categoryId=" + categoryID;
         try {
-            PreparedStatement ps = conn.prepareStatement(sql);
-            ResultSet rs = ps.executeQuery();
+            pre = conn.prepareStatement(sql);
+            rs = pre.executeQuery();
             while (rs.next()) {
                 Product pro = new Product();
                 pro.setProductID(rs.getInt("productID"));
@@ -171,9 +165,9 @@ public class DAOProduct {
                 list.add(pro);
             }
             rs.close();
-            ps.close();
+            pre.close();
         } catch (SQLException e) {
-            Logger.getLogger(DAOProduct.class.getName()).log(Level.SEVERE, null, e);
+            Logger.getLogger(ProductDAO.class.getName()).log(Level.SEVERE, null, e);
         }
         return list;
     }
@@ -183,8 +177,8 @@ public class DAOProduct {
         String sql = "SELECT * FROM [Bmazon].[dbo].[Product] as a join ProductGenre as b on a.productID=b.productID"
                 + "WHERE a.status=1 and b.genreID=" + genreID;
         try {
-            PreparedStatement ps = conn.prepareStatement(sql);
-            ResultSet rs = ps.executeQuery();
+            pre = conn.prepareStatement(sql);
+            rs = pre.executeQuery();
             while (rs.next()) {
                 Product pro = new Product();
                 pro.setProductID(rs.getInt("productID"));
@@ -197,9 +191,9 @@ public class DAOProduct {
                 list.add(pro);
             }
             rs.close();
-            ps.close();
+            pre.close();
         } catch (SQLException e) {
-            Logger.getLogger(DAOProduct.class.getName()).log(Level.SEVERE, null, e);
+            Logger.getLogger(ProductDAO.class.getName()).log(Level.SEVERE, null, e);
         }
         return list;
     }
@@ -209,16 +203,16 @@ public class DAOProduct {
         String sql = "INSERT INTO [Bmazon].[dbo].[Product]([productName],[description],[rating],[releaseDate],[seller],[status])"
                 + "VALUES(?,?,?,?,?,1)";
         try {
-            PreparedStatement ps = conn.prepareStatement(sql);
-            ps.setString(1, obj.getProductName());
-            ps.setString(2, obj.getDescription());
-            ps.setInt(3, obj.getRating());
-            ps.setDate(4, obj.getReleaseDate());
-            ps.setInt(5, obj.getSeller());
-            n = ps.executeUpdate();
-            ps.close();
+            pre = conn.prepareStatement(sql);
+            pre.setString(1, obj.getProductName());
+            pre.setString(2, obj.getDescription());
+            pre.setInt(3, obj.getRating());
+            pre.setDate(4, obj.getReleaseDate());
+            pre.setInt(5, obj.getSeller());
+            n = pre.executeUpdate();
+            pre.close();
         } catch (SQLException e) {
-            Logger.getLogger(DAOProduct.class.getName()).log(Level.SEVERE, null, e);
+            Logger.getLogger(ProductDAO.class.getName()).log(Level.SEVERE, null, e);
         }
         return n;
     }
@@ -234,18 +228,18 @@ public class DAOProduct {
                 + "      ,[status] = ?"
                 + " WHERE productID=?";
         try {
-            PreparedStatement ps = conn.prepareStatement(sql);
-            ps.setString(1, obj.getProductName());
-            ps.setString(2, obj.getDescription());
-            ps.setInt(3, obj.getRating());
-            ps.setDate(4, obj.getReleaseDate());
-            ps.setInt(5, obj.getSeller());
-            ps.setInt(6, obj.getStatus());
-            ps.setInt(7, obj.getProductID());
-            n = ps.executeUpdate();
-            ps.close();
+            pre = conn.prepareStatement(sql);
+            pre.setString(1, obj.getProductName());
+            pre.setString(2, obj.getDescription());
+            pre.setInt(3, obj.getRating());
+            pre.setDate(4, obj.getReleaseDate());
+            pre.setInt(5, obj.getSeller());
+            pre.setInt(6, obj.getStatus());
+            pre.setInt(7, obj.getProductID());
+            n = pre.executeUpdate();
+            pre.close();
         } catch (SQLException e) {
-            Logger.getLogger(DAOProduct.class.getName()).log(Level.SEVERE, null, e);
+            Logger.getLogger(ProductDAO.class.getName()).log(Level.SEVERE, null, e);
         }
         return n;
     }
@@ -254,10 +248,10 @@ public class DAOProduct {
         int n = 0;
         String sql = "update Product set status = " + (status == 1 ? 1 : 0) + " where gId = '" + id + "'";
         try {
-            PreparedStatement ps = conn.prepareStatement(sql);
-            n = ps.executeUpdate();
+            pre = conn.prepareStatement(sql);
+            n = pre.executeUpdate();
         } catch (SQLException ex) {
-            Logger.getLogger(DAOProduct.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(ProductDAO.class.getName()).log(Level.SEVERE, null, ex);
         }
         return n;
     }
@@ -268,7 +262,7 @@ public class DAOProduct {
                 + "AS a join ProductCategory as b on a.productID=b.productID"
                 + " join ProductGenre as c on a.productID=c.productID"
                 + " join Gallery as d on a.productID=d.productID ";
-        ResultSet rs = dbConn.getData(sql);
+        rs = dbConn.getData(sql);
         try {
             if (rs.next()) {
                 changeStatus(rs.getInt("productID"), 0);
@@ -278,7 +272,7 @@ public class DAOProduct {
                 n = state.executeUpdate(sqlDelete);
             }
         } catch (SQLException ex) {
-            Logger.getLogger(DAOProduct.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(ProductDAO.class.getName()).log(Level.SEVERE, null, ex);
         }
         return n;
     }
