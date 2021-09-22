@@ -19,13 +19,12 @@ import java.util.logging.Logger;
  * @author Admin
  */
 public class UserDAO extends BaseDAO {
-
-  
+   BaseDAO dbConn= new BaseDAO();
 
     public static void main(String[] args) {
-        DBConnection db = new DBConnection();
+       
         UserDAO dao = new UserDAO();
-        User x = dao.getUserById(8);
+        User x = dao.getUserById(3);
         x.setAddress("Hai Duong 2");
         dao.updateInfoUser(x);
         System.out.println(x.getAddress());

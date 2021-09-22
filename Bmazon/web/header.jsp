@@ -63,24 +63,24 @@
         <script src="js.home.js"></script>
     </head>
     <body class="home page-template page-template-page-blank page-template-page-blank-php page page-id-16 page-parent lightbox nav-dropdown-has-arrow" >
-        <div id="wrapper">
+       <div id="wrapper">
+          
 
-
-            <header id="header" class="header has-sticky sticky-jump" >
+            <header id="header" class="header has-sticky sticky-jump">
                 <div class="header-wrapper">
-                    <div id="top-bar" class="header-top hide-for-sticky nav-dark" style="background-color: black">
-                        <div class="flex-row container" style="background-color: black">
-                            <div class="flex-col hide-for-medium flex-left" style="background-color: black">
+                    <div id="top-bar" class="header-top hide-for-sticky nav-dark" >
+                        <div class="flex-row container" >
+                            <div class="flex-col hide-for-medium flex-left">
                                 <ul class="nav nav-left medium-nav-center nav-small  nav-">
                                 </ul>
                             </div><!-- flex-col left -->
 
-                            <div class="flex-col hide-for-medium flex-center" style="background-color: black">
+                            <div class="flex-col hide-for-medium flex-center">
                                 <ul class="nav nav-center nav-small  nav-">
                                 </ul>
                             </div><!-- center -->
 
-                            <div class="flex-col hide-for-medium flex-right"style="background-color: black">
+                            <div class="flex-col hide-for-medium flex-right">
                                 <ul class="nav top-bar-nav nav-right nav-small  nav-">
                                     <li class="html custom html_topbar_right"><p class="topbarlink"><a href="" style="color:#37cfdd">Be one of us</a></p></li>
                                     <li class="html custom html_top_right_text"><p class="topbarlink"><a href="#">Customer Service</a></p></li>
@@ -115,9 +115,10 @@
                             </div><!-- .flex-col right -->
 
 
+                           
 
                         </div><!-- .flex-row -->
-                    </div><!-<!-- #header-top -->
+                    </div><!-- #header-top -->
                     <div id="masthead" class="header-main nav-dark" style="background-color: black">
                         <div class="header-inner flex-row container logo-left medium-logo-center" role="navigation">
 
@@ -129,11 +130,11 @@
                                     <img  width="124" height="75" src="images/fpt.png" class="header-logo-dark" /></a>
                             </div>
 
-
-
+                            <!-- Mobile Left Elements -->
+                           
 
                             <!-- Left Elements -->
-                            <div class="flex-col hide-for-medium flex-left
+                              <div class="flex-col hide-for-medium flex-left
                                  flex-grow" >
                                 <ul class="header-nav header-nav-main nav nav-left  nav-uppercase" >
                                     <li class="header-search-form search-form html relative has-icon">
@@ -181,18 +182,20 @@
                             </div>
 
                             <!-- Right Elements -->
-                            <!-- logo ben trai-->
                             <div class="flex-col hide-for-medium flex-right" style="background:black ">
                                 <ul class="header-nav header-nav-main nav nav-right  nav-uppercase">
                                     <li class="html custom html_nav_position_text"><img class="header_promotion" 
                                                                                         src="images/FPT.jpg" alt="promotion" style="height: 40px;width: 170px;"></li>            </ul>
                             </div>
-                        </div>
+
+                            <!-- Mobile Right Elements -->
+                         
+
+                        </div><!-- .header-inner -->
 
                         <!-- Header divider -->
                         <div class="container"><div class="top-divider full-width"></div></div>
-                    </div><!-- .header-main -->
-                    <div id="wide-nav" class="header-bottom wide-nav nav-dark flex-has-center hide-for-medium" style="background-color: black">
+                    </div> <div id="wide-nav" class="header-bottom wide-nav nav-dark flex-has-center hide-for-medium" style="background-color: black">
                         <div class="flex-row container">
 
 
@@ -227,6 +230,9 @@
 
                     <div class="header-bg-container fill"><div class="header-bg-image fill"></div><div class="header-bg-color fill"></div></div><!-- .header-bg-container -->   </div><!-- header-wrapper-->
             </header>
+       </div>
+                                
+                                    
 
     </body>
 </html>
