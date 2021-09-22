@@ -28,7 +28,7 @@
             }
 
             .cover {
-                background-image: url(https://images.unsplash.com/photo-1530305408560-82d13781b33a?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1352&q=80);
+                background-image: url(images/background_profile.jpg);
                 background-size: cover;
                 background-repeat: no-repeat;
                 height: 230px;
@@ -65,13 +65,14 @@
                                                     </span>
                                                 </div>-->
                         <div class="media align-items-end profile-head">
-                            <div class="profile mr-3"><img src="images/defaultPicture.jpg"
-                                                           alt="..." width="200" class="rounded mb-2 img-thumbnail">
-                                <a href="#" class="btn btn-outline-dark btn-sm btn-block">Edit profile</a>
+                            <div class="profile mr-3">
+                                <img src="images/defaultPicture.jpg"
+                                                           alt="..." width="180" class="rounded mb-2 img-thumbnail">
+                                <a href="UserControllerMap?service=editProfile" class="btn btn-outline-dark btn-sm btn-block">Edit profile</a>
                             </div>
                             <div class="media-body mb-5 text-white">
                                 <h4 class="mt-0 mb-0" style="color: white; font-size:30px;"><%=x.getFullname()%></h4>
-                                <p class="small mb-4"> <i class="fas fa-map-marker-alt mr-2"></i>New York</p>
+                                <p class="small mb-4"> <i class="fas fa-map-marker-alt mr-2"></i><%= x.getAddress()%></p>
                             </div>
                         </div>
                     </div>

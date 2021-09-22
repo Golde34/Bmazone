@@ -36,16 +36,15 @@ public class UserController extends HttpServlet {
      * @throws ServletException if a servlet-specific error occurs
      * @throws IOException if an I/O error occurs
      */
-    
     DBConnection dbCon = new DBConnection();
     UserDAO daoUser = new UserDAO();
-    
+   
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
         try (PrintWriter out = response.getWriter()) {
             String service = request.getParameter("service");
-            
+
             if (service == null) {
                 service = "HomePage";
             }
@@ -78,6 +77,16 @@ public class UserController extends HttpServlet {
             //profile
             if (service.equalsIgnoreCase("info")) {
                 serviceInfo(request, response);
+            }
+
+            //Edit profile Service
+            //Edit Profile Page
+            if (service.equalsIgnoreCase("editProfile")) {
+                serviceEditProfile(request, response);
+            }
+            //Change Info Profile
+            if (service.equalsIgnoreCase("changeInfo")) {
+                serviceChangeInfo(request, response);
             }
         }
     }
@@ -198,6 +207,31 @@ public class UserController extends HttpServlet {
         sendDispatcher(request, response, "profile.jsp");
     }
 
+    private void serviceEditProfile(HttpServletRequest request, HttpServletResponse response) {
+        User x = (User) request.getSession().getAttribute("currUser");
+        request.setAttribute("currUser", x);
+        sendDispatcher(request, response, "profile/editProfile.jsp");
+    }
+
+    private void serviceChangeInfo(HttpServletRequest request, HttpServletResponse response) {
+        User x = (User) request.getSession().getAttribute("currUser");
+        request.setAttribute("currUser", x);
+        String name = request.getParameter("name");
+        String mail = request.getParameter("mail");
+        String phone = request.getParameter("phone");
+        String address = request.getParameter("address");
+        String pass = request.getParameter("pass");
+        User u = new User(x.getUserId(), name, mail, phone, address);
+        if (pass.equals(x.getPassword())) {
+            daoUser.updateinfo(u);
+            int currentUserID = Integer.parseInt(x.getUserId());
+            request.getSession().setAttribute("currUser", daoUser.getUserById(currentUserID));
+            sendDispatcher(request, response, "UserControllerMap?service=info");
+        }
+//        out.print("wrong pass");
+        sendDispatcherInclude(request, response, "UserControllerMap?service=edit");
+    }
+
     public void sendDispatcher(HttpServletRequest request, HttpServletResponse response, String path) {
         try {
             RequestDispatcher rd = request.getRequestDispatcher(path);
@@ -209,6 +243,17 @@ public class UserController extends HttpServlet {
         }
     }
 
+    public void sendDispatcherInclude(HttpServletRequest request, HttpServletResponse response, String path) {
+        try {
+            RequestDispatcher rd = request.getRequestDispatcher(path);
+            rd.include(request, response);
+
+        } catch (ServletException | IOException ex) {
+            Logger.getLogger(UserController.class
+                    .getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+    
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
     /**
      * Handles the HTTP <code>GET</code> method.
