@@ -18,9 +18,6 @@ import java.util.List;
  */
 public class ShipCompanyDAO extends BaseDAO{
 
-    public ShipCompanyDAO(DBConnection dbCon) {
-        super(dbCon);
-    }
     
     public void deleteShipCompany(String companyID) {
         String sql = "delete from ShipCompany where [companyID] = ?";

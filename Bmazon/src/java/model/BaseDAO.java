@@ -13,16 +13,27 @@ import java.sql.ResultSet;
  *
  * @author Admin
  */
-public class BaseDAO {
-    
+
+public class BaseDAO extends DBConnection {
+
     DBConnection dbConn;
     Connection conn;
     PreparedStatement pre = null;
     ResultSet rs = null;
     String xSql = null;
 
-    public BaseDAO(DBConnection dbCon) {
-        this.dbConn = dbCon;
-        conn = dbCon.getConnection();
+    public BaseDAO() {
+        conn=connection;
     }
+
+    public void finalize() {
+        try {
+            if (conn != null) {
+                conn.close();
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
 }

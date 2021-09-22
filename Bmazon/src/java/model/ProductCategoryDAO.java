@@ -18,9 +18,7 @@ import java.util.logging.Logger;
  */
 public class ProductCategoryDAO extends BaseDAO{
 
-    public ProductCategoryDAO(DBConnection dbCon) {
-        super(dbCon);
-    }
+  
 
     public ArrayList<ProductCategory> getAllProductCategory() {
         ArrayList<ProductCategory> list = new ArrayList<>();

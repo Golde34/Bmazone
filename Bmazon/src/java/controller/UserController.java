@@ -38,7 +38,7 @@ public class UserController extends HttpServlet {
      */
     
     DBConnection dbCon = new DBConnection();
-    UserDAO daoUser = new UserDAO(dbCon);
+    UserDAO daoUser = new UserDAO();
     
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {

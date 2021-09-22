@@ -4,8 +4,20 @@
 <%@page import="model.GalleryDAO"%>
 <%@page import="entity.Product"%>
 <%@page import="java.util.ArrayList"%>
+<%@page import="model.CategoryDAO"%>
+<%@page import="entity.Category"%>
+<%@page import="entity.Genre"%>
+<%@page import="model.GenreDAO"%>
 
 <%@ page contentType="text/html;charset=UTF-8" language="java" pageEncoding="UTF-8"%>
+<%
+    DBConnection dbCon = new DBConnection();
+    CategoryDAO daoCate = new CategoryDAO();
+    GenreDAO genDAO = new GenreDAO();
+    ArrayList<Category> cateList = daoCate.getTrueCategories();
+    ArrayList<Genre> gerneList = genDAO.getTrueGenres();
+
+%>
 <!DOCTYPE html>
 <!--[if IE 9 ]> <html lang="vi" class="ie9 loading-site no-js"> <![endif]-->
 <!--[if IE 8 ]> <html lang="vi" class="ie8 loading-site no-js"> <![endif]-->
@@ -51,27 +63,24 @@
         <script src="js.home.js"></script>
     </head>
     <body class="home page-template page-template-page-blank page-template-page-blank-php page page-id-16 page-parent lightbox nav-dropdown-has-arrow" >
-
-        <a class="skip-link screen-reader-text" href="#main">Skip to content</a>
-
         <div id="wrapper">
 
 
             <header id="header" class="header has-sticky sticky-jump" >
                 <div class="header-wrapper">
-                    <div id="top-bar" class="header-top hide-for-sticky nav-dark">
-                        <div class="flex-row container">
-                            <div class="flex-col hide-for-medium flex-left">
+                    <div id="top-bar" class="header-top hide-for-sticky nav-dark" style="background-color: black">
+                        <div class="flex-row container" style="background-color: black">
+                            <div class="flex-col hide-for-medium flex-left" style="background-color: black">
                                 <ul class="nav nav-left medium-nav-center nav-small  nav-">
                                 </ul>
                             </div><!-- flex-col left -->
 
-                            <div class="flex-col hide-for-medium flex-center">
+                            <div class="flex-col hide-for-medium flex-center" style="background-color: black">
                                 <ul class="nav nav-center nav-small  nav-">
                                 </ul>
                             </div><!-- center -->
 
-                            <div class="flex-col hide-for-medium flex-right">
+                            <div class="flex-col hide-for-medium flex-right"style="background-color: black">
                                 <ul class="nav top-bar-nav nav-right nav-small  nav-">
                                     <li class="html custom html_topbar_right"><p class="topbarlink"><a href="" style="color:#37cfdd">Be one of us</a></p></li>
                                     <li class="html custom html_top_right_text"><p class="topbarlink"><a href="#">Customer Service</a></p></li>
@@ -108,8 +117,8 @@
 
 
                         </div><!-- .flex-row -->
-                    </div><!-- #header-top -->
-                    <div id="masthead" class="header-main nav-dark" style="background:black ">
+                    </div><!-<!-- #header-top -->
+                    <div id="masthead" class="header-main nav-dark" style="background-color: black">
                         <div class="header-inner flex-row container logo-left medium-logo-center" role="navigation">
 
                             <!-- Logo -->
@@ -179,18 +188,45 @@
                                                                                         src="images/FPT.jpg" alt="promotion" style="height: 40px;width: 170px;"></li>            </ul>
                             </div>
                         </div>
-                    </div>
-                </div>
+
+                        <!-- Header divider -->
+                        <div class="container"><div class="top-divider full-width"></div></div>
+                    </div><!-- .header-main -->
+                    <div id="wide-nav" class="header-bottom wide-nav nav-dark flex-has-center hide-for-medium" style="background-color: black">
+                        <div class="flex-row container">
+
+
+                            <div class="flex-col hide-for-medium flex-center">
+
+                                <ul class="nav header-nav header-bottom-nav nav-center  nav-line-bottom nav-spacing-xsmall nav-uppercase">
+                                    <% for (Category c : cateList) {%>
+                                    <li  class="menu-item menu-item-type-taxonomy menu-item-object-product_cat menu-item-has-children has-dropdown" style=" margin-left: 70px">
+                                        <a href="HomeControllerMap?service=getProductByCate" class="menu-image-title-after nav-top-link">
+                                            <span class="menu-image-title"><%=c.getCategoryName()%></span></a>
+
+                                        <ul class='nav-dropdown nav-dropdown-simple'>
+                                            <% for (Genre g : gerneList) {
+                                                    if (g.getCategoryID() == c.getCategoryID()) {
+
+                                            %>
+                                            <li class="menu-item menu-item-type-taxonomy menu-item-object-product_cat  ">
+                                                <a href="HomeControllerMap?service=getProductByGenre" class="menu-image-title-after">
+                                                    <span class="menu-image-title"><%=g.getGenreName()%></span></a></li>
+                                                    <% } %>
+                                                    <% } %>
+                                        </ul>
+                                    </li>
+                                    <% }%>
+                                </ul>
+                            </div><!-- flex-col -->
+
+
+
+                        </div><!-- .flex-row -->
+                    </div><!-- .header-bottom -->
+
+                    <div class="header-bg-container fill"><div class="header-bg-image fill"></div><div class="header-bg-color fill"></div></div><!-- .header-bg-container -->   </div><!-- header-wrapper-->
             </header>
-            <script type="text/javascript">
-                var essb_settings = {
-                    "ajax_url": "http:\/\/mauweb.monamedia.net\/lazada\/wp-admin\/admin-ajax.php",
-                    "essb3_nonce": "2096ea4430", "essb3_plugin_url": "http:\/\/mauweb.monamedia.net\/lazada\/wp-content\/plugins\/easy-social-share-buttons3",
-                    "essb3_facebook_total": true, "essb3_admin_ajax": false, "essb3_internal_counter": false, "essb3_stats": false,
-                    "essb3_ga": false, "essb3_ga_mode": "simple", "essb3_counter_button_min": 0, "essb3_counter_total_min": 0,
-                    "blog_url": "http:\/\/mauweb.monamedia.net\/lazada\/", "ajax_type": "wp", "essb3_postfloat_stay": false,
-                    "essb3_no_counter_mailprint": false, "essb3_single_ajax": false, "twitter_counter": "self", "post_id": 16
-                };
-            </script>
+
     </body>
 </html>

@@ -19,10 +19,7 @@ import java.util.List;
  */
 public class GalleryDAO extends BaseDAO{
 
-    public GalleryDAO(DBConnection dbCon) {
-        super(dbCon);
-    }
-
+   
     public void deleteGallery(String ProTypeId) {
         String sql = "delete from Gallery where prodụctTypeID = ?";
         try {

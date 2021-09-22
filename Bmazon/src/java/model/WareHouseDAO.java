@@ -15,9 +15,7 @@ import java.util.List;
  */
 public class WareHouseDAO extends BaseDAO{
 
-    public WareHouseDAO(DBConnection dbCon) {
-        super(dbCon);
-    }
+   
 
     public void deleteWareHouse(String wareHouseID) {
         String sql = "delete from WareHouse where [wareHouseID] = ?";

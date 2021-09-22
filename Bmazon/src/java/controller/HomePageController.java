@@ -40,8 +40,8 @@ public class HomePageController extends HttpServlet {
      */
     
     DBConnection dbCon = new DBConnection();
-    CategoryDAO daoCategory = new CategoryDAO(dbCon);
-    GenreDAO daoGenre = new GenreDAO(dbCon);
+    CategoryDAO daoCategory = new CategoryDAO();
+    GenreDAO daoGenre = new GenreDAO();
 
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {

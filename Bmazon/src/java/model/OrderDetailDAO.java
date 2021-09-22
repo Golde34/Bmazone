@@ -16,9 +16,7 @@ import java.util.logging.Logger;
  */
 public class OrderDetailDAO extends BaseDAO{
 
-    public OrderDetailDAO(DBConnection dbCon) {
-        super(dbCon);
-    }
+    
 
     public int insertOrderDetail(OrderDetail obj) {
         int n = 0;

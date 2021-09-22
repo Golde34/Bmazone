@@ -9,9 +9,7 @@ import java.util.logging.Logger;
 
 public class GenreDAO extends BaseDAO{
 
-    public GenreDAO(DBConnection dbCon) {
-        super(dbCon);
-    }
+   
 
     public ArrayList<Genre> getAllGenres() {
         String sql = "select * from Genre WHERE status=1";

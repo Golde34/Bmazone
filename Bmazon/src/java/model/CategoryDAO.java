@@ -9,9 +9,7 @@ import java.util.logging.Logger;
 
 public class CategoryDAO extends BaseDAO{
 
-    public CategoryDAO(DBConnection dbCon) {
-        super(dbCon);
-    }
+   
 
     public ArrayList<Category> getAllCategories() {
         String sql = "select * from Category WHERE status=1";

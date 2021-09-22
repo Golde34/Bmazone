@@ -20,13 +20,11 @@ import java.util.logging.Logger;
  */
 public class UserDAO extends BaseDAO {
 
-    public UserDAO(DBConnection dbCon) {
-        super(dbCon);
-    }
+  
 
     public static void main(String[] args) {
         DBConnection db = new DBConnection();
-        UserDAO dao = new UserDAO(db);
+        UserDAO dao = new UserDAO();
         User x = dao.getUserById(8);
         x.setAddress("Hai Duong 2");
         dao.updateInfoUser(x);

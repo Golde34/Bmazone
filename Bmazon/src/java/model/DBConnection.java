@@ -18,12 +18,12 @@ import java.util.logging.Logger;
  * @author Admin
  */
 public class DBConnection {
-    Connection conn = null;
+    Connection connection = null;
 
     public DBConnection() {
         try {
             Class.forName("com.microsoft.sqlserver.jdbc.SQLServerDriver");
-            conn = DriverManager.getConnection("jdbc:sqlserver://localhost:1434;databaseName=Bmazon", "sa", "sa");
+            connection = DriverManager.getConnection("jdbc:sqlserver://localhost:1434;databaseName=Bmazon", "sa", "sa");
             System.out.println("Connect successfully !!");
         } catch (ClassNotFoundException | SQLException ex) {
             Logger.getLogger(DBConnection.class.getName()).log(Level.SEVERE, null, ex);
@@ -33,7 +33,7 @@ public class DBConnection {
     public DBConnection(String URL, String username, String pass){
         try {
             Class.forName("com.microsoft.sqlserver.jdbc.SQLServerDriver");
-            conn = DriverManager.getConnection(URL, username, pass);
+            connection = DriverManager.getConnection(URL, username, pass);
             System.out.println("Connect successfully !!");
         } catch (ClassNotFoundException | SQLException ex) {
             Logger.getLogger(DBConnection.class.getName()).log(Level.SEVERE, null, ex);
@@ -41,13 +41,13 @@ public class DBConnection {
     }
     
     public Connection getConnection(){
-        return conn;
+        return connection;
     }
     
     public ResultSet getData(String sql){
         ResultSet rs = null;
         try {
-            Statement stm = conn.createStatement(ResultSet.TYPE_SCROLL_SENSITIVE, ResultSet.CONCUR_UPDATABLE);
+            Statement stm = connection.createStatement(ResultSet.TYPE_SCROLL_SENSITIVE, ResultSet.CONCUR_UPDATABLE);
             rs = stm.executeQuery(sql);
         } catch (SQLException ex) {
             Logger.getLogger(DBConnection.class.getName()).log(Level.SEVERE, null, ex);

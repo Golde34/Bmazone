@@ -48,7 +48,7 @@
             User x = (User) request.getSession().getAttribute("currUser");
 
             DBConnection dbCon = new DBConnection();
-            UserDAO daoUser = new UserDAO(dbCon);
+            UserDAO daoUser = new UserDAO();
 //            DAOGalery daoGalery = new DAOGalery(dbCon);
 
         %>

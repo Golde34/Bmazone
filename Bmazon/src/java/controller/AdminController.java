@@ -34,11 +34,11 @@ public class AdminController extends HttpServlet {
      * @throws IOException if an I/O error occurs
      */
     DBConnection dbconn = new DBConnection();
-    ProductDAO daoproduct = new ProductDAO(dbconn);
-    CategoryDAO daocategory = new CategoryDAO(dbconn);
-    GenreDAO daogenre = new GenreDAO(dbconn);
-    UserDAO daouser = new UserDAO(dbconn);
-    WareHouseDAO daowarehouse = new WareHouseDAO(dbconn);
+    ProductDAO daoproduct = new ProductDAO();
+    CategoryDAO daocategory = new CategoryDAO();
+    GenreDAO daogenre = new GenreDAO();
+    UserDAO daouser = new UserDAO();
+    WareHouseDAO daowarehouse = new WareHouseDAO();
 
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {

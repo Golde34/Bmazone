@@ -18,9 +18,7 @@ import java.util.List;
  */
 public class ProductTypeDAO extends BaseDAO {
 
-    public ProductTypeDAO(DBConnection dbCon) {
-        super(dbCon);
-    }
+    
 
     public void deleteProductType(String ProTypeId) {
         String sql = "delete from ProductType where prodụctTypeID = ?";
