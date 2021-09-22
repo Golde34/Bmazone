@@ -8,7 +8,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 public class GenreDAO extends BaseDAO{
-
+BaseDAO dbConn= new BaseDAO();
    
 
     public ArrayList<Genre> getAllGenres() {

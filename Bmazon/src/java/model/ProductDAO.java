@@ -18,7 +18,7 @@ import java.util.logging.Logger;
  * @author Admin
  */
 public class ProductDAO extends BaseDAO{
-
+BaseDAO dbConn= new BaseDAO();
    
 
     public ArrayList<Product> getAllProduct() {

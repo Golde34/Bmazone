@@ -18,7 +18,7 @@ import java.util.logging.Logger;
  */
 public class OrderDAO extends BaseDAO{
 
-   
+   BaseDAO dbConn= new BaseDAO();
 
     public int insertOrder(Order obj) {
         int n = 0;

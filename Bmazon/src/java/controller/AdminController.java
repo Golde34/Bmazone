@@ -33,7 +33,7 @@ public class AdminController extends HttpServlet {
      * @throws ServletException if a servlet-specific error occurs
      * @throws IOException if an I/O error occurs
      */
-    DBConnection dbconn = new DBConnection();
+    
     ProductDAO daoproduct = new ProductDAO();
     CategoryDAO daocategory = new CategoryDAO();
     GenreDAO daogenre = new GenreDAO();

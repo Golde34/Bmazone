@@ -9,14 +9,9 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 
-/**
- *
- * @author Admin
- */
 
 public class BaseDAO extends DBConnection {
 
-    DBConnection dbConn;
     Connection conn;
     PreparedStatement pre = null;
     ResultSet rs = null;
