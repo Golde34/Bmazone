@@ -1,6 +1,6 @@
 
 <%@page import="model.DBConnection"%>
-<%@page import="model.DAOUser"%>
+<%@page import="model.UserDAO"%>
 <%@page import="java.util.ArrayList"%>
 <%@page import="entity.*"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
