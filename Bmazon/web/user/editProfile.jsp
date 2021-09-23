@@ -10,21 +10,47 @@
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         <title>Edit Information</title>
-<!--        <link rel="shortcut icon" type="image/png" href="images/80jslogo.png">-->
+        <!--        <link rel="shortcut icon" type="image/png" href="images/80jslogo.png">-->
         <%--js,css--%>   
         <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
         <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js" integrity="sha384-IQsoLXl5PILFhosVNubq5LC7Qb9DXgDA9i+tQ8Zj3iwWAwPtgFTxbJ8NT4GN1R8p" crossorigin="anonymous"></script>
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.min.js" integrity="sha384-cVKIPhGWiC2Al4u+LWgxfKTRIcfu0JTxR+EQDz/bgldoEyl4H0zUF0QKbrJ0EcQF" crossorigin="anonymous"></script>
-        <link rel="stylesheet" href="css/editProfile.css">
+        <!--<link rel="stylesheet" href="css/editProfile.css">-->
+
     </head>
     <body>
 
         <%
             User x = (User) request.getAttribute("currUser");
         %>
+        <jsp:include page="../header.jsp"/>
 
         <div class="container">
-            <div class="col-md-5">
+            <br>
+            <h1>Public Profile page settings</h1>
+            <ul class="nav nav-tabs">
+                <li class="active"><a data-toggle="tab" href="#home">Edit public profile</a></li>
+                <li><a data-toggle="tab" href="#menu1">Edit private profile</a></li>
+            </ul>
+
+            <div class="tab-content">
+                <div class="" id="public-name ">
+                    <h5>Your public name</h5>
+                    <input type="text" value="<%=x.getUsername()%>" >
+                    <p>This will not change the name associated with your account (<%=x.getFullname()%>)</p>
+                    <p>Your public name will be visible on your public profile page and elsewhere on Bmazon.</p>
+                </div>
+                <div id="menu1" class="tab-pane fade">
+                    <h3>Menu 1</h3>
+                    <p>Some content in menu 1.</p>
+                </div>
+                <div id="menu2" class="tab-pane fade">
+                    <h3>Menu 2</h3>
+                    <p>Some content in menu 2.</p>
+                </div>
+            </div>
+
+            <div class="col-md-5">  
                 <div class="card">
                     <div class="box">
                         <div class="content">
@@ -100,7 +126,7 @@
         </div>
 
 
-
+        <jsp:include page="../footer.jsp"/>
         <%--JS--%>
         <script type="text/javascript" src="//code.jquery.com/jquery-1.11.0.min.js"></script>
         <script type="text/javascript" src="//code.jquery.com/jquery-migrate-1.2.1.min.js"></script>

@@ -74,6 +74,11 @@ public class UserController extends HttpServlet {
                 serviceRegister(request, response);
             }
 
+            //account page to see profile, security, orders, payments, profile, list
+            if (service.equalsIgnoreCase("account")) {
+                serviceAccount(request, response);
+            }
+                        
             //profile
             if (service.equalsIgnoreCase("info")) {
                 serviceInfo(request, response);
@@ -204,13 +209,13 @@ public class UserController extends HttpServlet {
     public void serviceInfo(HttpServletRequest request, HttpServletResponse response) {
         User x = (User) request.getSession().getAttribute("currUser");
         request.setAttribute("currUser", x);
-        sendDispatcher(request, response, "profile.jsp");
+        sendDispatcher(request, response, "user/profile.jsp");
     }
 
     private void serviceEditProfile(HttpServletRequest request, HttpServletResponse response) {
         User x = (User) request.getSession().getAttribute("currUser");
         request.setAttribute("currUser", x);
-        sendDispatcher(request, response, "profile/editProfile.jsp");
+        sendDispatcher(request, response, "user/editProfile.jsp");
     }
 
     private void serviceChangeInfo(HttpServletRequest request, HttpServletResponse response) {
@@ -232,6 +237,12 @@ public class UserController extends HttpServlet {
         sendDispatcherInclude(request, response, "UserControllerMap?service=edit");
     }
 
+    private void serviceAccount(HttpServletRequest request, HttpServletResponse response) {
+        User x = (User) request.getSession().getAttribute("currUser");
+        request.setAttribute("currUser", x);
+        sendDispatcher(request, response, "user/account.jsp");
+    }
+    
     public void sendDispatcher(HttpServletRequest request, HttpServletResponse response, String path) {
         try {
             RequestDispatcher rd = request.getRequestDispatcher(path);

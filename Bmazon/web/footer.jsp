@@ -1,4 +1,6 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" pageEncoding="UTF-8"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<c:set var="contextPath" value="${pageContext.request.contextPath}" />
 <!DOCTYPE html>
 <!--[if IE 9 ]> <html lang="vi" class="ie9 loading-site no-js"> <![endif]-->
 <!--[if IE 8 ]> <html lang="vi" class="ie8 loading-site no-js"> <![endif]-->
@@ -13,7 +15,7 @@
                 html.className = html.className.replace(/\bno-js\b/, 'js')
             })(document.documentElement);</script>
         <title>BMAZON</title>
-        <link rel="stylesheet" href="css/1.css">
+        <link rel="stylesheet" href="${contextPath}/css/1.css">
         <link rel='stylesheet' id='contact-form-7-css'  href='http://mauweb.monamedia.net/lazada/wp-content/plugins/contact-form-7/includes/css/styles.css?ver=4.9.1' type='text/css' media='all' />
         <link rel='stylesheet' id='menu-image-css'  href='http://mauweb.monamedia.net/lazada/wp-content/plugins/menu-image/menu-image.css?ver=1.1' type='text/css' media='all' />
         <link rel='stylesheet' id='woof-css'  href='http://mauweb.monamedia.net/lazada/wp-content/plugins/woocommerce-products-filter/css/front.css?ver=4.8.14' type='text/css' media='all' />
@@ -31,13 +33,13 @@
         <link rel='stylesheet' id='flatsome-style-css'  href='http://mauweb.monamedia.net/lazada/wp-content/themes/flatsome-child/style.css?ver=3.4.0' type='text/css' media='all' />
         <script type='text/javascript' src='http://mauweb.monamedia.net/lazada/wp-includes/js/jquery/jquery.js?ver=1.12.4'></script>
         <script type='text/javascript' src='http://mauweb.monamedia.net/lazada/wp-includes/js/jquery/jquery-migrate.min.js?ver=1.4.1'></script>     
-        <link rel='stylesheet' href="css/home.css"  type='text/css'>
+        <link rel='stylesheet' href="${contextPath}/css/home.css"  type='text/css'>
         <style>.bg{opacity: 0; transition: opacity 1s; -webkit-transition: opacity 1s;} .bg-loaded{opacity: 1;}</style><!--[if IE]><link rel="stylesheet" type="text/css" href="http://mauweb.monamedia.net/lazada/wp-content/themes/flatsome/assets/css/ie-fallback.css"><script src="//cdnjs.cloudflare.com/ajax/libs/html5shiv/3.6.1/html5shiv.js"></script><script>var head = document.getElementsByTagName('head')[0],style = document.createElement('style');style.type = 'text/css';style.styleSheet.cssText = ':before,:after{content:none !important';head.appendChild(style);setTimeout(function(){head.removeChild(style);}, 0);</script><script src="http://mauweb.monamedia.net/lazada/wp-content/themes/flatsome/assets/libs/ie-flexibility.js"></script><![endif]--> 
         <script src="js/1.js"></script>
         <noscript><style>.woocommerce-product-gallery{ opacity: 1 !important; }</style></noscript>
-        <link rel='stylesheet' href="css/2.css"  type='text/css'>
+        <link rel='stylesheet' href="${contextPath}/css/2.css"  type='text/css'>
         <script type="text/javascript">var essb_settings = {"ajax_url": "http:\/\/mauweb.monamedia.net\/lazada\/wp-admin\/admin-ajax.php", "essb3_nonce": "2096ea4430", "essb3_plugin_url": "http:\/\/mauweb.monamedia.net\/lazada\/wp-content\/plugins\/easy-social-share-buttons3", "essb3_facebook_total": true, "essb3_admin_ajax": false, "essb3_internal_counter": false, "essb3_stats": false, "essb3_ga": false, "essb3_ga_mode": "simple", "essb3_counter_button_min": 0, "essb3_counter_total_min": 0, "blog_url": "http:\/\/mauweb.monamedia.net\/lazada\/", "ajax_type": "wp", "essb3_postfloat_stay": false, "essb3_no_counter_mailprint": false, "essb3_single_ajax": false, "twitter_counter": "self", "post_id": 16};</script>
-        <link rel='stylesheet' href="css/3.css"  type='text/css'> 
+        <link rel='stylesheet' href="${contextPath}/css/3.css"  type='text/css'> 
 
         <script src="js/2.js"> </script>
 
@@ -102,7 +104,7 @@
                             </div></div>
                         <div class="col medium-6 small-12 large-6"  >
                                   
-                            <img src="images/fpt.png" style="height: 80%; width: 80%">
+                            <img src="${contextPath}/images/fpt.png" style="height: 80%; width: 80%">
                                </div>
 
 
@@ -156,7 +158,7 @@
 
                     <div class="footer-primary pull-left">
                         <div class="copyright-footer">
-                            <p> All rights reserved. Design By <img src="images/fpt.png" style="width:20px;vertical-align:sub;" > <a ><strong>FPT BOYS</strong></a></p>      </div>
+                            <p> All rights reserved. Design By <img src="${contextPath}/images/fpt.png" style="width:20px;vertical-align:sub;" > <a ><strong>FPT BOYS</strong></a></p>      </div>
                     </div><!-- .left -->
                 </div><!-- .container -->
             </div><!-- .absolute-footer -->
