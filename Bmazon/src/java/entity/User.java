@@ -108,6 +108,10 @@ public class User {
         this.systemRole = systemRole;
     }
 
+    public User(String userId, String name, String mail, String phone, String address) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
     public String getUserId() {
         return userId;
     }

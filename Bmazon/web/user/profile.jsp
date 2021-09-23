@@ -8,6 +8,8 @@
 <%@page import="model.DBConnection"%>
 <%@page import="entity.User"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<c:set var="contextPath" value="${pageContext.request.contextPath}" />
 <!DOCTYPE html>
 <html>
     <head>
@@ -28,7 +30,7 @@
             }
 
             .cover {
-                background-image: url(https://images.unsplash.com/photo-1530305408560-82d13781b33a?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1352&q=80);
+                background-image: url(${contextPath}/images/background_profile.jpg);
                 background-size: cover;
                 background-repeat: no-repeat;
                 height: 230px;
@@ -43,7 +45,7 @@
         </style>
     </head>
     <body>
-        <jsp:include page="header.jsp"/>
+        <jsp:include page="../header.jsp"/>
         <%
             User x = (User) request.getSession().getAttribute("currUser");
 
@@ -65,13 +67,14 @@
                                                     </span>
                                                 </div>-->
                         <div class="media align-items-end profile-head">
-                            <div class="profile mr-3"><img src="images/defaultPicture.jpg"
-                                                           alt="..." width="200" class="rounded mb-2 img-thumbnail">
-                                <a href="#" class="btn btn-outline-dark btn-sm btn-block">Edit profile</a>
+                            <div class="profile mr-3">
+                                <img src="${contextPath}/images/defaultPicture.jpg"
+                                                           alt="..." width="180" class="rounded mb-2 img-thumbnail">
+                                <a href="${contextPath}/UserControllerMap?service=editProfile" class="btn btn-outline-dark btn-sm btn-block">Edit profile</a>
                             </div>
                             <div class="media-body mb-5 text-white">
                                 <h4 class="mt-0 mb-0" style="color: white; font-size:30px;"><%=x.getFullname()%></h4>
-                                <p class="small mb-4"> <i class="fas fa-map-marker-alt mr-2"></i>New York</p>
+                                <p class="small mb-4"> <i class="fas fa-map-marker-alt mr-2"></i><%= x.getAddress()%></p>
                             </div>
                         </div>
                     </div>
@@ -134,6 +137,6 @@
             </div>
         </div>
     </div>
-    <jsp:include page="footer.jsp"/>
+    <jsp:include page="../footer.jsp"/>
 </body>
 </html>

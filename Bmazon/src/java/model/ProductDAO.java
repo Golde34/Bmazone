@@ -70,6 +70,30 @@ BaseDAO dbConn= new BaseDAO();
         }
         return list;
     }
+    public ArrayList<Product> getProductSale() {
+        ArrayList<Product> list = new ArrayList<>();
+        String sql = "SELECT TOP 8 * FROM Product";
+        try {
+            pre = conn.prepareStatement(sql);
+            rs = pre.executeQuery();
+            while (rs.next()) {
+                Product pro = new Product();
+                pro.setProductID(rs.getInt("productID"));
+                pro.setProductName(rs.getString("productName"));
+                pro.setDescription(rs.getString("description"));
+                pro.setRating(rs.getInt("rating"));
+                pro.setReleaseDate(rs.getDate("releaseDate"));
+                pro.setSeller(rs.getInt("seller"));
+                pro.setStatus(rs.getInt("status"));
+                list.add(pro);
+            }
+            rs.close();
+            pre.close();
+        } catch (SQLException e) {
+            Logger.getLogger(ProductDAO.class.getName()).log(Level.SEVERE, null, e);
+        }
+        return list;
+    }
 
     public ArrayList<Product> getProductBySeller(int seller) {
         ArrayList<Product> list = new ArrayList<>();
