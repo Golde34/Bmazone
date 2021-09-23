@@ -18,7 +18,7 @@ import java.util.List;
  * @author DELL
  */
 public class GalleryDAO extends BaseDAO{
-
+BaseDAO dbConn= new BaseDAO();
    
     public void deleteGallery(String ProTypeId) {
         String sql = "delete from Gallery where prodụctTypeID = ?";
@@ -64,7 +64,7 @@ public class GalleryDAO extends BaseDAO{
 
     public List<Gallery> getAllGalleryOfProduct(int pid) {
         List<Gallery> list = new ArrayList<>();
-        xSql = "select * from Gallery where productID = ?";
+        xSql = "select * from [Gallery] where productID = ?";
         try {
             pre = conn.prepareStatement(xSql);
             rs = pre.executeQuery();
@@ -79,6 +79,19 @@ public class GalleryDAO extends BaseDAO{
         } catch (Exception e) {
         }
         return list;
+    }
+    public String getSampleOfProduct(int pid) {
+        String s=null;
+        xSql = "select top 1 link from [Gallery] WHERE productID = '" + pid + "'";
+        try {
+            pre = conn.prepareStatement(xSql);
+            rs = pre.executeQuery();
+            while (rs.next()) {
+             s=rs.getString("link");
+            }
+        } catch (Exception e) {
+        }
+        return s;
     }
 
 //    public List<Gallery> getGalleryBySizeAndColor(ProductType p) {
@@ -100,6 +113,15 @@ public class GalleryDAO extends BaseDAO{
 //        }
 //        return list;
 //    }
+    public static void main(String[] args) {
+        GalleryDAO g= new GalleryDAO();
+         List<Gallery> list=g.getAllGalleryOfProduct(3);
+         for (Gallery gallery : list) {
+             System.out.println(gallery);
+            
+        }
+        System.out.println(g.getSampleOfProduct(1));
+    }
 
-
+    
 }

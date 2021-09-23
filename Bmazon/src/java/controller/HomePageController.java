@@ -42,6 +42,7 @@ public class HomePageController extends HttpServlet {
     DBConnection dbCon = new DBConnection();
     CategoryDAO daoCategory = new CategoryDAO();
     GenreDAO daoGenre = new GenreDAO();
+    ProductDAO daoProduct= new ProductDAO();
 
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
@@ -62,14 +63,12 @@ public class HomePageController extends HttpServlet {
     }
 
     public void serviceHomePage(HttpServletRequest request, HttpServletResponse response) {
-        ArrayList<Category> ListCategory = daoCategory.getTrueCategories();
-        request.setAttribute("listCategory", ListCategory);
-        ArrayList<Genre> ListGenre = daoGenre.getTrueGenres();
-        request.setAttribute("listCategory", ListCategory);
-        sendDispatcher(request, response, "/header.jsp");
-        request.setAttribute("listgerne", ListGenre);
-        sendDispatcher(request, response, "/header.jsp");
+        ArrayList<Product> ListP = daoProduct.getProductSale();
+        request.setAttribute("listP", ListP);
+            sendDispatcher(request, response, "/index.jsp");;
+        
     }
+    
 
     public void sendDispatcher(HttpServletRequest request, HttpServletResponse response, String path) {
         try {
