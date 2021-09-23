@@ -38,7 +38,7 @@ public class UserController extends HttpServlet {
      */
     DBConnection dbCon = new DBConnection();
     UserDAO daoUser = new UserDAO();
-   
+
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
@@ -78,7 +78,7 @@ public class UserController extends HttpServlet {
             if (service.equalsIgnoreCase("account")) {
                 serviceAccount(request, response);
             }
-                        
+
             //profile
             if (service.equalsIgnoreCase("info")) {
                 serviceInfo(request, response);
@@ -97,6 +97,8 @@ public class UserController extends HttpServlet {
     }
 
     public void serviceLogin(HttpServletRequest request, HttpServletResponse response) {
+        String checkLogin = "checked";
+        request.setAttribute("checkLogin", checkLogin);
         String userName = request.getParameter("username");
         String mess = "";
         String userPass = request.getParameter("password");
@@ -109,6 +111,8 @@ public class UserController extends HttpServlet {
             sendDispatcher(request, response, "index.jsp");
         } else {
             mess = "Login failed, check your username or your password.";
+            request.setAttribute("userName", userName);
+            request.setAttribute("userPass", userPass);
             request.setAttribute("mess", mess);
             sendDispatcher(request, response, "jsp/login.jsp");
         }
@@ -151,7 +155,7 @@ public class UserController extends HttpServlet {
     }
 
     public void serviceChangePassword(HttpServletRequest request, HttpServletResponse response) {
-        String mess = "";
+        String mess3 = "";
 
         HttpSession session = request.getSession();
         User account = (User) session.getAttribute("currUser");
@@ -161,48 +165,59 @@ public class UserController extends HttpServlet {
         String oldpass = request.getParameter("oldpass");
         String newpass = request.getParameter("newpass");
 
-        if (!user.equals(xUser)) {
-            mess = "You are only have permission to change pass of your own account";
-        } else if (!account.getPassword().equals(oldpass)) {
-            mess = "Old Password is not correct";
-        } else if (oldpass.equals(newpass)) {
-            mess = "New pass still same old pass!";
+//        if (!newpass.equals(repass)) {
+//            mess3 = "You are only have permission to change pass of your own account";
+//        } else 
+        if (!account.getPassword().equals(oldpass)) {
+            mess3 = "Old Password is not correct";
         } else {
             daoUser.changePassword(user, newpass);
-            mess = "Change password successfully !!";
+            mess3 = "Change password successfully !!";
         }
-        request.setAttribute("mess", mess);
+        request.setAttribute("mess3", mess3);
         sendDispatcher(request, response, "jsp/changepass.jsp");
     }
 
     public void serviceRegister(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         String checkRegis = "checked";
         request.setAttribute("checkRegis", checkRegis);
-        String mess = "";
-        String username = request.getParameter("signupusername");
-        String password = request.getParameter("signuppass");
-        String repassword = request.getParameter("resignuppass");
-        String fname = request.getParameter("fname");
-        String email = request.getParameter("email");
-        String phone = request.getParameter("phone");
+        String mess2 = "";
+        String Username = request.getParameter("signupusername");
+        String Password = request.getParameter("signuppass");
+        String Repassword = request.getParameter("resignuppass");
+        String fullname = request.getParameter("fname");
+        String Email = request.getParameter("email");
+        String Phone = request.getParameter("phone");
+        request.setAttribute("Username", Username);
+        request.setAttribute("Password", Password);
+        request.setAttribute("Repassword", Repassword);
+        request.setAttribute("fullname", fullname);
+        request.setAttribute("Email", Email);
+        request.setAttribute("Phone", Phone);
 
-        if (!password.equals(repassword)) {
-            request.setAttribute("mess", "Password must be same as repeat password");
+        if (!Password.equals(Repassword)) {
+            request.setAttribute("mess2", "Password must be same as repeat password");
             request.getRequestDispatcher("login.jsp").include(request, response);
             return;
         }
 
-        boolean exist = daoUser.checkExistUserName(username);
+        boolean exist = daoUser.checkExistUserName(Username);
         if (exist == false) {
-            daoUser.singup(username, password, email, phone, fname);
-            mess = "Signup Successfully!";
-            request.setAttribute("mess", mess);
+            daoUser.singup(Username, Password, Email, Phone, fullname);
+            mess2 = "Signup Successfully!";
+            request.setAttribute("mess2", mess2);
             request.getRequestDispatcher("jsp/login.jsp").forward(request, response);
             return;
         } else {
-            mess = "Duplicate user!";
-            request.setAttribute("mess", mess);
+            mess2 = "Duplicate user!";
+            request.setAttribute("mess2", mess2);
         }
+        request.setAttribute("Username", Username);
+        request.setAttribute("Password", Password);
+        request.setAttribute("Repassword", Repassword);
+        request.setAttribute("fullname", fullname);
+        request.setAttribute("Email", Email);
+        request.setAttribute("Phone", Phone);
         request.getRequestDispatcher("jsp/login.jsp").include(request, response);
     }
 
@@ -242,7 +257,7 @@ public class UserController extends HttpServlet {
         request.setAttribute("currUser", x);
         sendDispatcher(request, response, "user/account.jsp");
     }
-    
+
     public void sendDispatcher(HttpServletRequest request, HttpServletResponse response, String path) {
         try {
             RequestDispatcher rd = request.getRequestDispatcher(path);
@@ -264,7 +279,7 @@ public class UserController extends HttpServlet {
                     .getName()).log(Level.SEVERE, null, ex);
         }
     }
-    
+
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
     /**
      * Handles the HTTP <code>GET</code> method.

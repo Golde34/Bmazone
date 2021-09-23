@@ -3,7 +3,8 @@ body{
   color:#6a6f8c;
   background:#c8c8c8;
   font:600 16px/18px 'Open Sans',sans-serif;
-  background-image: url("../images/cp-bg.jpg");
+/*  background-image: url("../images/seller/blur-background08.jpg");*/
+background-image: url("../images/cp-bg.jpg");
   background-attachment: scroll;
   background-position: center center;
   background-size: cover;
