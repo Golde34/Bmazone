@@ -311,28 +311,18 @@
                         <div id="slider" class="owl-carousel product-slider">
                             <%for (Gallery gallery : listGallery) {%>
                             <div class="item">
-                                <img src="<%=gallery.getLink()%>"/>
+                                <%String str = "images/"+gallery.getLink();%>
+                                <img src="<%=str%>"/>
                             </div>
                             <%}%>
-<!--                            <div class="item">
-                                <img src="images/Pr1Ty1Ga1.jpg"/>
-                            </div>
-                            <div class="item">
-                                <img src="images/Pr1Ty1Ga2.jpg" />
-                            </div>-->
                         </div>
                         <div id="thumb" class="owl-carousel product-thumb">
                             <%for (Gallery gallery : listGallery) {%>
                             <div class="item">
-                                <img src="<%=gallery.getLink()%>"/>
+                                <%String str = "images/"+gallery.getLink();%>
+                                <img src="<%=str%>"/>
                             </div>
                             <%}%>
-<!--                            <div class="item">
-                                <img src="images/Pr1Ty1Ga1.jpg" />
-                            </div>
-                            <div class="item">
-                                <img src="images/Pr1Ty1Ga2.jpg" />
-                            </div>-->
                         </div>
                     </div>
                     <div class="col-md-6">
@@ -356,6 +346,7 @@
                                 </div>
                                 <div class="product-price-discount"><span>$39.00</span><span class="line-through">$29.00</span></div>
                                 <div class="product-releasedate"><label>Release Date: <%=product.getReleaseDate()%></label></div>
+                                <div class="product-seller"><label>Seller: <%=product.getSeller()%></label></div>
                             </div>
                             <p><%=product.getDescription()%></p>
                             <div class="row">
@@ -365,8 +356,6 @@
                                         <%for (ProductType productType : listProductType) {%>
                                         <option><%=productType.getSize()%></option>
                                             <%}%>
-                                        <option>M</option>
-                                        <option>L</option>
                                     </select>
                                 </div>
                                 <div class="col-md-6">
@@ -375,8 +364,6 @@
                                         <%for (ProductType productType : listProductType) {%>
                                         <option><%=productType.getColor()%></option>
                                             <%}%>
-                                        <option>Blue</option>
-                                        <option>Green</option>
                                     </select>
                                 </div>
                             </div>
