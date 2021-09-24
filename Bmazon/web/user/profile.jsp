@@ -13,6 +13,14 @@
 <!DOCTYPE html>
 <html>
     <head>
+        <%
+            User x = (User) request.getSession().getAttribute("currUser");
+
+            DBConnection dbCon = new DBConnection();
+            UserDAO daoUser = new UserDAO();
+//            DAOGalery daoGalery = new DAOGalery(dbCon);
+
+        %>       
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         <title>Your public Profile</title>
         <meta charset="UTF-8">
@@ -30,7 +38,7 @@
             }
 
             .cover {
-                background-image: url(${contextPath}/images/background_profile.jpg);
+                background-image: url(${contextPath}/images/<%= x.getBackgroundImage()%>);
                 background-size: cover;
                 background-repeat: no-repeat;
                 height: 230px;
@@ -46,14 +54,7 @@
     </head>
     <body>
         <jsp:include page="../header.jsp"/>
-        <%
-            User x = (User) request.getSession().getAttribute("currUser");
-
-            DBConnection dbCon = new DBConnection();
-            UserDAO daoUser = new UserDAO();
-//            DAOGalery daoGalery = new DAOGalery(dbCon);
-
-        %>
+        
         <div class="row py-5 px-4">
             <div class="col-md-10 mx-auto">
                 <!-- Profile widget -->
@@ -68,7 +69,7 @@
                                                 </div>-->
                         <div class="media align-items-end profile-head">
                             <div class="profile mr-3">
-                                <img src="${contextPath}/images/defaultPicture.jpg"
+                                <img src="${contextPath}/images/<%= x.getProfileImage()%>"
                                                            alt="..." width="180" class="rounded mb-2 img-thumbnail">
                                 <a href="${contextPath}/UserControllerMap?service=editProfile" class="btn btn-outline-dark btn-sm btn-block">Edit profile</a>
                             </div>

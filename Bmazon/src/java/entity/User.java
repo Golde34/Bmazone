@@ -12,6 +12,7 @@ import java.sql.Date;
  * @author Admin
  */
 public class User {
+
     //private profile
     private String userId;
     private String username;
@@ -23,8 +24,11 @@ public class User {
     private double wallet;
     //public profile
     private String fullname;
-    private String address; 
+    private String publicName;
+    private String address;
     private String profileImage;
+    private String backgroundImage;
+    private String occupation;
     private int gender;
     private Date DOB;
     private String bio;
@@ -41,7 +45,20 @@ public class User {
     public User() {
     }
 
-    public User(String username, String password, String email, String phoneNumber, int sell, double wallet, String fullname, String address, String profileImage, int gender, String bio, String Facebook, String Instagram, String Twitter, String Youtube, int activityPoint, int systemRole, int status) {
+    public User(String userId, String username, String password, String address, String bio, String Facebook, String Instagram, String Twitter, String Youtube) {
+        this.userId = userId;
+        this.username = username;
+        this.password = password;
+        this.address = address;
+        this.bio = bio;
+        this.Facebook = Facebook;
+        this.Instagram = Instagram;
+        this.Twitter = Twitter;
+        this.Youtube = Youtube;
+    }
+
+    public User(String userId, String username, String password, String email, String phoneNumber, int sell, double wallet, String fullname, String publicName, String address, String profileImage, String backgroundImage, String occupation, int gender, Date DOB, String bio, String Facebook, String Instagram, String Twitter, String Youtube, int activityPoint, int systemRole, int status) {
+        this.userId = userId;
         this.username = username;
         this.password = password;
         this.email = email;
@@ -49,8 +66,11 @@ public class User {
         this.sell = sell;
         this.wallet = wallet;
         this.fullname = fullname;
+        this.publicName = publicName;
         this.address = address;
         this.profileImage = profileImage;
+        this.backgroundImage = backgroundImage;
+        this.occupation = occupation;
         this.gender = gender;
         this.DOB = DOB;
         this.bio = bio;
@@ -63,8 +83,7 @@ public class User {
         this.status = status;
     }
 
-    public User(String userId, String username, String password, String email, String phoneNumber, int sell, double wallet, String fullname, String address, String profileImage, int gender, Date DOB, String bio, String Facebook, String Instagram, String Twitter, String Youtube, int activityPoint, int systemRole, int status) {
-        this.userId = userId;
+    public User(String username, String password, String email, String phoneNumber, int sell, double wallet, String fullname, String publicName, String address, String profileImage, String backgroundImage, String occupation, int gender, String bio, String Facebook, String Instagram, String Twitter, String Youtube, int activityPoint, int systemRole, int status) {
         this.username = username;
         this.password = password;
         this.email = email;
@@ -72,10 +91,12 @@ public class User {
         this.sell = sell;
         this.wallet = wallet;
         this.fullname = fullname;
+        this.publicName = publicName;
         this.address = address;
         this.profileImage = profileImage;
+        this.backgroundImage = backgroundImage;
+        this.occupation = occupation;
         this.gender = gender;
-        this.DOB = DOB;
         this.bio = bio;
         this.Facebook = Facebook;
         this.Instagram = Instagram;
@@ -84,32 +105,6 @@ public class User {
         this.activityPoint = activityPoint;
         this.systemRole = systemRole;
         this.status = status;
-    }
-
-    public User(String userId, String username, String password, String email, String phoneNumber, int sell, double wallet, String fullname, String address, String profileImage, int gender, Date DOB, String bio, String Facebook, String Instagram, String Twitter, String Youtube, int activityPoint, int systemRole) {
-        this.userId = userId;
-        this.username = username;
-        this.password = password;
-        this.email = email;
-        this.phoneNumber = phoneNumber;
-        this.sell = sell;
-        this.wallet = wallet;
-        this.fullname = fullname;
-        this.address = address;
-        this.profileImage = profileImage;
-        this.gender = gender;
-        this.DOB = DOB;
-        this.bio = bio;
-        this.Facebook = Facebook;
-        this.Instagram = Instagram;
-        this.Twitter = Twitter;
-        this.Youtube = Youtube;
-        this.activityPoint = activityPoint;
-        this.systemRole = systemRole;
-    }
-
-    public User(String userId, String name, String mail, String phone, String address) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
     public String getUserId() {
@@ -152,6 +147,22 @@ public class User {
         this.phoneNumber = phoneNumber;
     }
 
+    public int getGender() {
+        return gender;
+    }
+
+    public void setGender(int gender) {
+        this.gender = gender;
+    }
+
+    public Date getDOB() {
+        return DOB;
+    }
+
+    public void setDOB(Date DOB) {
+        this.DOB = DOB;
+    }
+
     public int getSell() {
         return sell;
     }
@@ -176,6 +187,14 @@ public class User {
         this.fullname = fullname;
     }
 
+    public String getPublicName() {
+        return publicName;
+    }
+
+    public void setPublicName(String publicName) {
+        this.publicName = publicName;
+    }
+
     public String getAddress() {
         return address;
     }
@@ -192,20 +211,20 @@ public class User {
         this.profileImage = profileImage;
     }
 
-    public int getGender() {
-        return gender;
+    public String getBackgroundImage() {
+        return backgroundImage;
     }
 
-    public void setGender(int gender) {
-        this.gender = gender;
+    public void setBackgroundImage(String backgroundImage) {
+        this.backgroundImage = backgroundImage;
     }
 
-    public Date getDOB() {
-        return DOB;
+    public String getOccupation() {
+        return occupation;
     }
 
-    public void setDOB(Date DOB) {
-        this.DOB = DOB;
+    public void setOccupation(String occupation) {
+        this.occupation = occupation;
     }
 
     public String getBio() {
@@ -271,4 +290,5 @@ public class User {
     public void setStatus(int status) {
         this.status = status;
     }
+
 }

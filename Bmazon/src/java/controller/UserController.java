@@ -91,7 +91,7 @@ public class UserController extends HttpServlet {
             }
             //Change Info Profile
             if (service.equalsIgnoreCase("changeInfo")) {
-                serviceChangeInfo(request, response);
+                serviceChangeInfoPublicProfile(request, response);
             }
         }
     }
@@ -114,7 +114,7 @@ public class UserController extends HttpServlet {
             request.setAttribute("userName", userName);
             request.setAttribute("userPass", userPass);
             request.setAttribute("mess", mess);
-            sendDispatcher(request, response, "jsp/login.jsp");
+            sendDispatcher(request, response, "loginAndSecurity/login.jsp");
         }
     }
 
@@ -135,22 +135,22 @@ public class UserController extends HttpServlet {
         if (!mail.equalsIgnoreCase(checkMail)) {
             mess = "Your mail is not correct!";
             request.setAttribute("mess", mess);
-            sendDispatcher(request, response, "jsp/forgot.jsp");
+            sendDispatcher(request, response, "loginAndSecurity/forgot.jsp");
         } else if (!phone.equalsIgnoreCase(checkPhone)) {
             mess = "Your phone is not correct!";
             request.setAttribute("mess", mess);
-            sendDispatcher(request, response, "jsp/forgot.jsp");
+            sendDispatcher(request, response, "loginAndSecurity/forgot.jsp");
         } else if (!mail.equalsIgnoreCase(checkMail) && !phone.equalsIgnoreCase(checkPhone)) {
             mess = "Your mail or your phone is not correct. Please re-enter.";
             request.setAttribute("mess", mess);
-            sendDispatcher(request, response, "jsp/forgot.jsp");
+            sendDispatcher(request, response, "loginAndSecurity/forgot.jsp");
         } else {
             daoUser.changePassword(username, newPassword);
             mess = "Change password successfully !!";
             HttpSession session = request.getSession();
             session.setAttribute("currUser", user);
             request.setAttribute("mess", mess);
-            sendDispatcher(request, response, "jsp/login.jsp");
+            sendDispatcher(request, response, "loginAndSecurity/login.jsp");
         }
     }
 
@@ -175,7 +175,9 @@ public class UserController extends HttpServlet {
             mess3 = "Change password successfully !!";
         }
         request.setAttribute("mess3", mess3);
-        sendDispatcher(request, response, "jsp/changepass.jsp");
+        sendDispatcher(request, response, "loginAndSecurity/changepass.jsp");
+//        request.setAttribute("mess", mess);
+//        sendDispatcher(request, response, "loginAndSecurity/changepass.jsp");
     }
 
     public void serviceRegister(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
@@ -207,6 +209,10 @@ public class UserController extends HttpServlet {
             mess2 = "Signup Successfully!";
             request.setAttribute("mess2", mess2);
             request.getRequestDispatcher("jsp/login.jsp").forward(request, response);
+//            daoUser.singup(username, password, email, phone, fname);
+//            mess = "Signup Successfully!";
+//            request.setAttribute("mess", mess);
+//            request.getRequestDispatcher("loginAndSecurity/login.jsp").forward(request, response);
             return;
         } else {
             mess2 = "Duplicate user!";
@@ -218,7 +224,8 @@ public class UserController extends HttpServlet {
         request.setAttribute("fullname", fullname);
         request.setAttribute("Email", Email);
         request.setAttribute("Phone", Phone);
-        request.getRequestDispatcher("jsp/login.jsp").include(request, response);
+//        request.getRequestDispatcher("jsp/login.jsp").include(request, response);
+        request.getRequestDispatcher("loginAndSecurity/login.jsp").include(request, response);
     }
 
     public void serviceInfo(HttpServletRequest request, HttpServletResponse response) {
@@ -233,23 +240,22 @@ public class UserController extends HttpServlet {
         sendDispatcher(request, response, "user/editProfile.jsp");
     }
 
-    private void serviceChangeInfo(HttpServletRequest request, HttpServletResponse response) {
+    private void serviceChangeInfoPublicProfile(HttpServletRequest request, HttpServletResponse response) {
         User x = (User) request.getSession().getAttribute("currUser");
         request.setAttribute("currUser", x);
-        String name = request.getParameter("name");
-        String mail = request.getParameter("mail");
-        String phone = request.getParameter("phone");
+        String name = request.getParameter("username");
+        String bio = request.getParameter("bio");
         String address = request.getParameter("address");
-        String pass = request.getParameter("pass");
-        User u = new User(x.getUserId(), name, mail, phone, address);
-        if (pass.equals(x.getPassword())) {
-            daoUser.updateinfo(u);
-            int currentUserID = Integer.parseInt(x.getUserId());
-            request.getSession().setAttribute("currUser", daoUser.getUserById(currentUserID));
-            sendDispatcher(request, response, "UserControllerMap?service=info");
-        }
-//        out.print("wrong pass");
-        sendDispatcherInclude(request, response, "UserControllerMap?service=edit");
+        String Facebook = request.getParameter("Facebook");
+        String Instagram = request.getParameter("Instagram");
+        String Twitter = request.getParameter("Twitter");
+        String Youtube = request.getParameter("Youtube");
+        User u = new User(x.getUserId(), name, x.getPassword(), bio, address, Facebook, Instagram, Twitter, Youtube);
+        daoUser.updatePublicInfo(u);
+        System.out.println(daoUser.updateInfoUserByAdmin(u));
+        int currentUserID = Integer.parseInt(x.getUserId());
+        request.getSession().setAttribute("currUser", daoUser.getUserById(currentUserID));
+        sendDispatcher(request, response, "UserControllerMap?service=info");
     }
 
     private void serviceAccount(HttpServletRequest request, HttpServletResponse response) {

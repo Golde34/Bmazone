@@ -26,7 +26,7 @@ public class UserDAO extends BaseDAO {
         UserDAO dao = new UserDAO();
         User x = dao.getUserById(3);
         x.setAddress("Hai Duong 2");
-        dao.updateInfoUser(x);
+        dao.updateInfoUserByAdmin(x);
         System.out.println(x.getAddress());
     }
 
@@ -42,7 +42,8 @@ public class UserDAO extends BaseDAO {
                         rs.getString("password"), rs.getString("email"),
                         rs.getString("phoneNumber"), rs.getInt("sell"),
                         rs.getDouble("wallet"), rs.getString("fullname"),
-                        rs.getString("address"), rs.getString("profileImage"),
+                        rs.getString("publicName"), rs.getString("address"), rs.getString("profileImage"),
+                        rs.getString("backgroundImage"), rs.getString("occupation"),
                         rs.getInt("gender"), rs.getDate("DOB"), rs.getString("bio"),
                         rs.getString("Facebook"), rs.getString("Instagram"),
                         rs.getString("Twitter"), rs.getString("Youtube"),
@@ -74,9 +75,10 @@ public class UserDAO extends BaseDAO {
 
     public int addUser(User obj) {
         int n = 0;
-        String sql = "INSERT INTO [User](username, password, email, phoneNumber, sell, wallet, fullname, address,"
-                + " profileImage, gender, DOB, bio, Facebook, Instagram, Twitter, Youtube, activityPoint, systemRole, status)"
-                + " values (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)";
+        String sql = "INSERT INTO [User](username, password, email, phoneNumber, sell, wallet, fullname, publicName, address,"
+                + " profileImage, backgroundImage, occupation, gender, DOB, bio, Facebook, Instagram, Twitter, Youtube,"
+                + " activityPoint, systemRole, status)"
+                + " values (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)";
         try {
             pre = conn.prepareStatement(sql);
             pre.setString(1, obj.getUsername());
@@ -86,18 +88,22 @@ public class UserDAO extends BaseDAO {
             pre.setInt(5, obj.getSell());
             pre.setDouble(6, obj.getWallet());
             pre.setString(7, obj.getFullname());
-            pre.setString(8, obj.getAddress());
-            pre.setString(9, obj.getProfileImage());
-            pre.setInt(10, obj.getGender());
-            pre.setDate(11, obj.getDOB());
-            pre.setString(12, obj.getBio());
-            pre.setString(13, obj.getFacebook());
-            pre.setString(14, obj.getInstagram());
-            pre.setString(15, obj.getTwitter());
-            pre.setString(16, obj.getYoutube());
-            pre.setInt(17, obj.getActivityPoint());
-            pre.setInt(18, obj.getSystemRole());
-            pre.setInt(19, obj.getStatus());
+            pre.setString(8, obj.getPublicName());
+            pre.setString(9, obj.getAddress());
+            pre.setString(10, obj.getProfileImage());
+            pre.setString(11, obj.getBackgroundImage());
+            pre.setString(12, obj.getOccupation());
+            pre.setInt(13, obj.getGender());
+            pre.setDate(14, obj.getDOB());
+            pre.setString(15, obj.getBio());
+            pre.setString(16, obj.getFacebook());
+            pre.setString(17, obj.getInstagram());
+            pre.setString(18, obj.getTwitter());
+            pre.setString(19, obj.getYoutube());
+            pre.setInt(20, obj.getActivityPoint());
+            pre.setInt(21, obj.getSystemRole());
+            pre.setInt(22, obj.getStatus());
+            pre.setString(23, obj.getUserId());
             n = pre.executeUpdate();
         } catch (SQLException ex) {
             Logger.getLogger(UserDAO.class.getName()).log(Level.SEVERE, null, ex);
@@ -105,10 +111,11 @@ public class UserDAO extends BaseDAO {
         return n;
     }
 
-    public int updateInfoUser(User obj) {
+    public int updateInfoUserByAdmin(User obj) {
         int n = 0;
-        String sql = "UPDATE [User] SET username=?, password=?, email=?, phoneNumber=?, sell=?, wallet=?, fullname=?, address=?,"
-                + " profileImage=?, gender=?, DOB=?, bio=?, Facebook=?, Instagram=?, Twitter=?, Youtube=?, activityPoint=?, systemRole=?, status=?"
+        String sql = "UPDATE [User] SET username=?, password=?, email=?, phoneNumber=?, sell=?, wallet=?, fullname=?, publicName=?, address=?,"
+                + " profileImage=?, backgroundImage=?, occupation=?, gender=?, DOB=?, bio=?, Facebook=?, Instagram=?, Twitter=?, "
+                + "Youtube=?, activityPoint=?, systemRole=?, status=?"
                 + " where userID=?";
         try {
             pre = conn.prepareStatement(sql);
@@ -119,19 +126,22 @@ public class UserDAO extends BaseDAO {
             pre.setInt(5, obj.getSell());
             pre.setDouble(6, obj.getWallet());
             pre.setString(7, obj.getFullname());
-            pre.setString(8, obj.getAddress());
-            pre.setString(9, obj.getProfileImage());
-            pre.setInt(10, obj.getGender());
-            pre.setDate(11, obj.getDOB());
-            pre.setString(12, obj.getBio());
-            pre.setString(13, obj.getFacebook());
-            pre.setString(14, obj.getInstagram());
-            pre.setString(15, obj.getTwitter());
-            pre.setString(16, obj.getYoutube());
-            pre.setInt(17, obj.getActivityPoint());
-            pre.setInt(18, obj.getSystemRole());
-            pre.setInt(19, obj.getStatus());
-            pre.setString(20, obj.getUserId());
+            pre.setString(8, obj.getPublicName());
+            pre.setString(9, obj.getAddress());
+            pre.setString(10, obj.getProfileImage());
+            pre.setString(11, obj.getBackgroundImage());
+            pre.setString(12, obj.getOccupation());
+            pre.setInt(13, obj.getGender());
+            pre.setDate(14, obj.getDOB());
+            pre.setString(15, obj.getBio());
+            pre.setString(16, obj.getFacebook());
+            pre.setString(17, obj.getInstagram());
+            pre.setString(18, obj.getTwitter());
+            pre.setString(19, obj.getYoutube());
+            pre.setInt(20, obj.getActivityPoint());
+            pre.setInt(21, obj.getSystemRole());
+            pre.setInt(22, obj.getStatus());
+            pre.setString(23, obj.getUserId());
             n = pre.executeUpdate();
         } catch (SQLException ex) {
             Logger.getLogger(UserDAO.class.getName()).log(Level.SEVERE, null, ex);
@@ -246,7 +256,8 @@ public class UserDAO extends BaseDAO {
                         rs.getString("password"), rs.getString("email"),
                         rs.getString("phoneNumber"), rs.getInt("sell"),
                         rs.getDouble("wallet"), rs.getString("fullname"),
-                        rs.getString("address"), rs.getString("profileImage"),
+                        rs.getString("publicName"), rs.getString("address"), rs.getString("profileImage"),
+                        rs.getString("backgroundImage"), rs.getString("occupation"),
                         rs.getInt("gender"), rs.getDate("DOB"), rs.getString("bio"),
                         rs.getString("Facebook"), rs.getString("Instagram"),
                         rs.getString("Twitter"), rs.getString("Youtube"),
@@ -269,7 +280,8 @@ public class UserDAO extends BaseDAO {
                         rs.getString("password"), rs.getString("email"),
                         rs.getString("phoneNumber"), rs.getInt("sell"),
                         rs.getDouble("wallet"), rs.getString("fullname"),
-                        rs.getString("address"), rs.getString("profileImage"),
+                        rs.getString("publicName"), rs.getString("address"), rs.getString("profileImage"),
+                        rs.getString("backgroundImage"), rs.getString("occupation"),
                         rs.getInt("gender"), rs.getDate("DOB"), rs.getString("bio"),
                         rs.getString("Facebook"), rs.getString("Instagram"),
                         rs.getString("Twitter"), rs.getString("Youtube"),
@@ -289,17 +301,18 @@ public class UserDAO extends BaseDAO {
         ResultSet rs = dbConn.getData(sql);
         try {
             while (rs.next()) {
-                User c = new User(rs.getString("userID"), rs.getString("username"),
+                User user = new User(rs.getString("userID"), rs.getString("username"),
                         rs.getString("password"), rs.getString("email"),
                         rs.getString("phoneNumber"), rs.getInt("sell"),
                         rs.getDouble("wallet"), rs.getString("fullname"),
-                        rs.getString("address"), rs.getString("profileImage"),
+                        rs.getString("publicName"), rs.getString("address"), rs.getString("profileImage"),
+                        rs.getString("backgroundImage"), rs.getString("occupation"),
                         rs.getInt("gender"), rs.getDate("DOB"), rs.getString("bio"),
                         rs.getString("Facebook"), rs.getString("Instagram"),
                         rs.getString("Twitter"), rs.getString("Youtube"),
                         rs.getInt("activityPoint"), rs.getInt("systemRole"),
                         rs.getInt("status"));
-                list.add(c);
+                list.add(user);
             }
         } catch (SQLException ex) {
             Logger.getLogger(UserDAO.class.getName()).log(Level.SEVERE, null, ex);
@@ -313,17 +326,18 @@ public class UserDAO extends BaseDAO {
         ResultSet rs = dbConn.getData(sql);
         try {
             while (rs.next()) {
-                User c = new User(rs.getString("userID"), rs.getString("username"),
+                User user = new User(rs.getString("userID"), rs.getString("username"),
                         rs.getString("password"), rs.getString("email"),
                         rs.getString("phoneNumber"), rs.getInt("sell"),
                         rs.getDouble("wallet"), rs.getString("fullname"),
-                        rs.getString("address"), rs.getString("profileImage"),
+                        rs.getString("publicName"), rs.getString("address"), rs.getString("profileImage"),
+                        rs.getString("backgroundImage"), rs.getString("occupation"),
                         rs.getInt("gender"), rs.getDate("DOB"), rs.getString("bio"),
                         rs.getString("Facebook"), rs.getString("Instagram"),
                         rs.getString("Twitter"), rs.getString("Youtube"),
                         rs.getInt("activityPoint"), rs.getInt("systemRole"),
                         rs.getInt("status"));
-                list.add(c);
+                list.add(user);
             }
         } catch (SQLException ex) {
             Logger.getLogger(UserDAO.class.getName()).log(Level.SEVERE, null, ex);
@@ -347,17 +361,18 @@ public class UserDAO extends BaseDAO {
         ResultSet rs = dbConn.getData(sql);
         try {
             while (rs.next()) {
-                User c = new User(rs.getString("userID"), rs.getString("username"),
+                User user = new User(rs.getString("userID"), rs.getString("username"),
                         rs.getString("password"), rs.getString("email"),
                         rs.getString("phoneNumber"), rs.getInt("sell"),
                         rs.getDouble("wallet"), rs.getString("fullname"),
-                        rs.getString("address"), rs.getString("profileImage"),
+                        rs.getString("publicName"), rs.getString("address"), rs.getString("profileImage"),
+                        rs.getString("backgroundImage"), rs.getString("occupation"),
                         rs.getInt("gender"), rs.getDate("DOB"), rs.getString("bio"),
                         rs.getString("Facebook"), rs.getString("Instagram"),
                         rs.getString("Twitter"), rs.getString("Youtube"),
                         rs.getInt("activityPoint"), rs.getInt("systemRole"),
                         rs.getInt("status"));
-                list.add(c);
+                list.add(user);
             }
         } catch (SQLException ex) {
             Logger.getLogger(UserDAO.class.getName()).log(Level.SEVERE, null, ex);
@@ -378,25 +393,21 @@ public class UserDAO extends BaseDAO {
         }
     }
 
-    public void updateinfo(User obj) {
-        String sql = "UPDATE [User] SET  email=?, phoneNumber=?, fullname=?, address=?,"
-                + " profileImage=?, gender=?, DOB=?, bio=?, Facebook=?, Instagram=?, Twitter=?, Youtube=? "
+    public void updatePublicInfo(User obj) {
+        String sql = "UPDATE [User] SET  username=?, address=?,"
+                + " bio=?, Facebook=?, Instagram=?, Twitter=?, Youtube=? , password=?"
                 + " where userID=?";
         try {
             pre = conn.prepareStatement(sql);
-            pre.setString(1, obj.getEmail());
-            pre.setString(2, obj.getPhoneNumber());
-            pre.setString(3, obj.getFullname());
-            pre.setString(4, obj.getAddress());
-            pre.setString(5, obj.getProfileImage());
-            pre.setInt(6, obj.getGender());
-            pre.setDate(7, obj.getDOB());
-            pre.setString(8, obj.getBio());
-            pre.setString(9, obj.getFacebook());
-            pre.setString(10, obj.getInstagram());
-            pre.setString(11, obj.getTwitter());
-            pre.setString(12, obj.getYoutube());
-            pre.setString(13, obj.getUserId());
+            pre.setString(1, obj.getUsername());
+            pre.setString(2, obj.getAddress());
+            pre.setString(3, obj.getBio());
+            pre.setString(4, obj.getFacebook());
+            pre.setString(5, obj.getInstagram());
+            pre.setString(6, obj.getTwitter());
+            pre.setString(7, obj.getYoutube());
+            pre.setString(8, obj.getPassword());
+            pre.setString(9, obj.getUserId());
             pre.executeUpdate();
         } catch (SQLException ex) {
             Logger.getLogger(UserDAO.class.getName()).log(Level.SEVERE, null, ex);

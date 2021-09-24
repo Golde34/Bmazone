@@ -130,7 +130,7 @@ public class AdminController extends HttpServlet {
             sendDispatcher(request, response, "admin/detail.jsp");
         }
         if (isExist == false) {
-            User user = new User(username, password, email, phone, 0, 0, fullname, address, "", gender, "", "", "", "", "", 0, role, 1);
+            User user = new User(username, password, email, phone, 0, 0, fullname,"", address, "","", "", gender, "", "", "", "" ,"", 0, role, 1);
             daouser.addUser(user);
             ArrayList<User> listUser = daouser.getAllUser();
             request.setAttribute("listUser", listUser);
@@ -169,7 +169,7 @@ public class AdminController extends HttpServlet {
             user.setAddress(address);
             user.setGender(gender);
             user.setSystemRole(role);
-            daouser.updateInfoUser(user);
+            daouser.updateInfoUserByAdmin(user);
             ArrayList<User> listUser = daouser.getAllUser();
             request.setAttribute("listUser", listUser);
             request.setAttribute("user", user);
