@@ -117,7 +117,7 @@
                                 <br><br>
                                 <div class="col-md-4"></div>
                                 <div class="col-md-4">
-                                    <a style="right: 50%;" href="profile.jsp" >        
+                                    <a style="right: 50%;" href="UserController?service=info" >        
                                         <button style="text-align:center; color:white;border-radius: 15px;height: 2em; width: 15em;" class="btn-danger" > Back to public profile
                                         </button> 
                                     </a> 

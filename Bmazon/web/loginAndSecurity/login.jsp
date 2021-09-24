@@ -50,7 +50,7 @@
                             </div>
                         </form>
                         <br>
-                        <a style="color: yellow" href="${contextPath}/jsp/forgot.jsp" >
+                        <a style="color: yellow" href="${contextPath}/loginAndSecurity/forgot.jsp" >
                             <i class="fas fa-angle-left"></i> Forgot Password
                         </a>
                         <div class="hr"></div>

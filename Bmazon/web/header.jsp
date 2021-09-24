@@ -93,7 +93,7 @@
 
                                     <li class="account-item has-icon ">
 
-                                        <a href="${contextPath}/jsp/login.jsp"class="nav-top-link nav-top-not-logged-in ">
+                                        <a href="${contextPath}/loginAndSecurity/login.jsp"class="nav-top-link nav-top-not-logged-in ">
                                             <span>
                                                 Login     / Register  </span>
                                         </a><!-- .account-login-link -->
