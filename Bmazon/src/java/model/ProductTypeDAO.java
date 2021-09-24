@@ -39,7 +39,7 @@ public class ProductTypeDAO extends BaseDAO {
             pre.setInt(2, p.getProductID());
             pre.setString(3, p.getSize());
             pre.setString(4, p.getColor());
-            pre.setDouble(5, p.getPrice());
+            pre.setString(5, p.getPrice());
             pre.setInt(6, p.getWareHouseID());
             pre.setInt(7, p.getQuantity());
             pre.setInt(8, p.getStatus());
@@ -56,7 +56,7 @@ public class ProductTypeDAO extends BaseDAO {
             pre.setInt(1, p.getProductID());
             pre.setString(2, p.getSize());
             pre.setString(3, p.getColor());
-            pre.setDouble(4, p.getPrice());
+            pre.setString(4, p.getPrice());
             pre.setInt(5, p.getWareHouseID());
             pre.setInt(6, p.getQuantity());
             pre.setInt(7, p.getStatus());
@@ -92,7 +92,7 @@ public class ProductTypeDAO extends BaseDAO {
                         rs.getInt(2),
                         rs.getString(3),
                         rs.getString(4),
-                        rs.getDouble(5),
+                        rs.getString(5),
                         rs.getInt(6),
                         rs.getInt(7),
                         rs.getInt(8)));
@@ -115,7 +115,7 @@ public class ProductTypeDAO extends BaseDAO {
                         rs.getInt(2),
                         rs.getString(3),
                         rs.getString(4),
-                        rs.getDouble(5),
+                        rs.getString(5),
                         rs.getInt(6),
                         rs.getInt(7),
                         rs.getInt(8));
@@ -138,7 +138,7 @@ public class ProductTypeDAO extends BaseDAO {
                         rs.getInt(2),
                         rs.getString(3),
                         rs.getString(4),
-                        rs.getDouble(5),
+                        rs.getString(5),
                         rs.getInt(6),
                         rs.getInt(7),
                         rs.getInt(8)));
@@ -161,7 +161,7 @@ public class ProductTypeDAO extends BaseDAO {
                         rs.getInt(2),
                         rs.getString(3),
                         rs.getString(4),
-                        rs.getDouble(5),
+                        rs.getString(5),
                         rs.getInt(6),
                         rs.getInt(7),
                         rs.getInt(8)));
@@ -199,6 +199,27 @@ public class ProductTypeDAO extends BaseDAO {
 //        }
 //        return false;
 //    }
+      public String getProductPrice(int pid) {
+        String price=null;
+        xSql = "SELECT price FROM ProductType WHERE productID = "+pid+" Order by price";
+        try {
+            pre = conn.prepareStatement(xSql);         
+            rs = pre.executeQuery();
+            while (rs.next()) {
+                
+                price=rs.getString("price");
+              
+            }
+        } catch (Exception e) {
+        }
+        return price;
+    }
+      public static void main(String[] args) {
+        ProductTypeDAO ptd= new ProductTypeDAO();
+         String s= ptd.getProductPrice(3);
+          System.out.println(s);
+        
+    }
 
 
 }
