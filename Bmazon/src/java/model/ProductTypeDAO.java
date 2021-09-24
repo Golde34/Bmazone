@@ -102,12 +102,12 @@ public class ProductTypeDAO extends BaseDAO {
         return list;
     }
 
-    public ProductType getProductTypeByPTypeID(int ProTypeId) {
+    public ProductType getProductTypeByPTypeID(String ProTypeId) {
         ProductType ptype = new ProductType();
-        xSql = "select * from ProductType where ProTypeId = ?";
+        xSql = "select * from ProductType where productTypeId = ?";
         try {
             pre = conn.prepareStatement(xSql);
-            pre.setInt(1, ProTypeId);
+            pre.setString(1, ProTypeId);
             rs = pre.executeQuery();
             while (rs.next()) {
                 ptype = new ProductType(
@@ -125,12 +125,12 @@ public class ProductTypeDAO extends BaseDAO {
         return ptype;
     }
 
-    public List<ProductType> getProductByProductID(String pid) {
+    public List<ProductType> getProductByProductID(int pid) {
         List<ProductType> list = new ArrayList<>();
-        xSql = "select * from ProductType where pid = ?";
+        xSql = "select * from ProductType where productID = ?";
         try {
             pre = conn.prepareStatement(xSql);
-            pre.setString(1, pid);
+            pre.setInt(1, pid);
             rs = pre.executeQuery();
             while (rs.next()) {
                 list.add(new ProductType(

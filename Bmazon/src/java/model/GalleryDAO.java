@@ -64,7 +64,7 @@ BaseDAO dbConn= new BaseDAO();
 
     public List<Gallery> getAllGalleryOfProduct(int pid) {
         List<Gallery> list = new ArrayList<>();
-        xSql = "select * from [Gallery] where productID = ?";
+        xSql = "select * from [Gallery] where productID ="+pid+"";
         try {
             pre = conn.prepareStatement(xSql);
             rs = pre.executeQuery();
@@ -117,10 +117,10 @@ BaseDAO dbConn= new BaseDAO();
         GalleryDAO g= new GalleryDAO();
          List<Gallery> list=g.getAllGalleryOfProduct(3);
          for (Gallery gallery : list) {
-             System.out.println(gallery);
+             System.out.println(gallery.getLink());
             
         }
-        System.out.println(g.getSampleOfProduct(1));
+        
     }
 
     

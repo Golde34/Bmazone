@@ -218,8 +218,11 @@ BaseDAO dbConn= new BaseDAO();
     }
 
     public Product getProductByID(int id) {
-        Product pro = null;
-        String sql = "SELECT * FROM [Bmazon].[dbo].[Product] where productID="  + id;
+
+
+        Product pro = new Product();
+        String sql = "SELECT * FROM [Bmazon].[dbo].[Product] where productID="+id+"";
+
         try {
             pre = conn.prepareStatement(sql);
             rs = pre.executeQuery();
@@ -370,4 +373,10 @@ BaseDAO dbConn= new BaseDAO();
         }
         return n;
     }
+    public static void main(String[] args) {
+        ProductDAO db = new ProductDAO();
+        
+        System.out.println(db.getProductByID(5));
+    }
 }
+

@@ -17,7 +17,11 @@
         <link rel="stylesheet" href="${contextPath}/css/login.css"type="text/css">
     </head>
     <body>
-        <% User account = (User) request.getSession().getAttribute("currUser"); %>
+        <% String mess = (String) request.getAttribute("mess");
+            if (mess == null) {
+                mess = "";
+            }
+            User account = (User) request.getSession().getAttribute("currUser"); %>
         <div class="login-wrap">
 	<div class="login-html">
             <h2 style="color: yellow" > Change PassWord</h2>
@@ -26,17 +30,21 @@
                             <form action="/Bmazon/UserControllerMap" method="get">
 				<div class="group">
 					<label for="user" class="label">Username</label>
-					<input id="user" type="text" name="username" placeholder="<%= account.getUsername() %>" class="input" required autofocus="" >
+                                        <input id="user" type="text" name="username"  class="input" readonly  value="<%= account.getUsername() %>">
 				</div>
 				<div class="group">
 					<label for="pass" class="label">Old Password</label>
-					<input id="pass" type="password" name="oldpass" class="input" placeholder="Password" data-type="password" required autofocus="" >
+					<input id="oldpass" type="password" name="oldpass" class="input" placeholder="Password" data-type="password" required autofocus="" >
 				</div>
 				<div class="group">
 					<label for="pass" class="label">New Password</label>
-					<input id="pass" type="password" name="newpass" class="input" placeholder="Repeat Password" data-type="password"required autofocus="" >
+					<input id="newpass" oninput="checkDup(this)" type="password" name="newpass" class="input" placeholder="New password" data-type="password"required autofocus="" >
 				</div>
-                                 <h6 style="color: yellow" style="font-size: small" >${mess}</h6>
+				<div class="group">
+					<label for="pass" class="label">Confirm New Password</label>
+					<input id="repass" oninput="check(this)" type="password" name="renewpass" class="input" placeholder="Re-New password" data-type="password"required autofocus="" >
+				</div>
+                                 <h6 style="color: yellow" style="font-size: small" >${mess3}</h6>
 				<div class="group">
 					<input type="submit" class="button" value="Submit">
                                         <input type="hidden" name="service" value="changepass">
@@ -49,4 +57,22 @@
 	</div>
 </div>
     </body>
+    <script language='javascript' type='text/javascript'>
+    function check(input) {
+        if (input.value != document.getElementById('newpass').value) {
+            input.setCustomValidity('Password Must be Matching.');
+        } else {
+            // input is valid -- reset the error message
+            input.setCustomValidity('');
+        }
+    }
+    function checkDup(input) {
+        if (input.value != document.getElementById('oldpass').value) {
+            input.setCustomValidity('');
+        } else {
+            // input is valid -- reset the error message
+            input.setCustomValidity('New Pass is duplicate with Old Pass.');
+        }
+    }
+    </script>
 </html>

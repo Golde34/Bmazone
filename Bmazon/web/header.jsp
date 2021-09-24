@@ -10,6 +10,8 @@
 <%@page import="model.GenreDAO"%>
 
 <%@ page contentType="text/html;charset=UTF-8" language="java" pageEncoding="UTF-8"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<c:set var="contextPath" value="${pageContext.request.contextPath}" />
 <%
     DBConnection dbCon = new DBConnection();
     CategoryDAO daoCate = new CategoryDAO();
@@ -32,7 +34,7 @@
                 html.className = html.className.replace(/\bno-js\b/, 'js')
             })(document.documentElement);</script>
         <title>BMAZON</title>
-        <link rel="stylesheet" href="css/1.css">
+        <link rel="stylesheet" href="${contextPath}/css/1.css">
         <link rel='stylesheet' id='contact-form-7-css'  href='http://mauweb.monamedia.net/lazada/wp-content/plugins/contact-form-7/includes/css/styles.css?ver=4.9.1' type='text/css' media='all' />
         <link rel='stylesheet' id='menu-image-css'  href='http://mauweb.monamedia.net/lazada/wp-content/plugins/menu-image/menu-image.css?ver=1.1' type='text/css' media='all' />
         <link rel='stylesheet' id='woof-css'  href='http://mauweb.monamedia.net/lazada/wp-content/plugins/woocommerce-products-filter/css/front.css?ver=4.8.14' type='text/css' media='all' />
@@ -51,12 +53,12 @@
         <script type='text/javascript' src='http://mauweb.monamedia.net/lazada/wp-includes/js/jquery/jquery.js?ver=1.12.4'></script>
         <script type='text/javascript' src='http://mauweb.monamedia.net/lazada/wp-includes/js/jquery/jquery-migrate.min.js?ver=1.4.1'></script>
         <link rel='https://api.w.org/' href='http://mauweb.monamedia.net/lazada/wp-json/' />
-        <link rel='stylesheet' href="css/home.css"  type='text/css'>
+        <link rel='stylesheet' href="${contextPath}/css/home.css"  type='text/css'>
         <style>.bg{opacity: 0; transition: opacity 1s; -webkit-transition: opacity 1s;} .bg-loaded{opacity: 1;}</style><!--[if IE]><link rel="stylesheet" type="text/css" href="http://mauweb.monamedia.net/lazada/wp-content/themes/flatsome/assets/css/ie-fallback.css"><script src="//cdnjs.cloudflare.com/ajax/libs/html5shiv/3.6.1/html5shiv.js"></script><script>var head = document.getElementsByTagName('head')[0],style = document.createElement('style');style.type = 'text/css';style.styleSheet.cssText = ':before,:after{content:none !important';head.appendChild(style);setTimeout(function(){head.removeChild(style);}, 0);</script><script src="http://mauweb.monamedia.net/lazada/wp-content/themes/flatsome/assets/libs/ie-flexibility.js"></script><![endif]--> 
         <script src="js/1.js"></script>
         <noscript><style>.woocommerce-product-gallery{ opacity: 1 !important; }</style></noscript>
-        <link rel='stylesheet' href="css/2.css"  type='text/css'>
-        <link rel='stylesheet' href="css/3.css"  type='text/css'> 
+        <link rel='stylesheet' href="${contextPath}/css/2.css"  type='text/css'>
+        <link rel='stylesheet' href="${contextPath}/css/3.css"  type='text/css'> 
 
         <script src="js/2.js"></script>
 
@@ -91,7 +93,7 @@
 
                                     <li class="account-item has-icon ">
 
-                                        <a href="jsp/login.jsp"class="nav-top-link nav-top-not-logged-in ">
+                                        <a href="${contextPath}/jsp/login.jsp"class="nav-top-link nav-top-not-logged-in ">
                                             <span>
                                                 Login     / Register  </span>
                                         </a><!-- .account-login-link -->
@@ -101,12 +103,12 @@
                                     <li class=" menu-item menu-item-type-taxonomy menu-item-object-product_cat menu-item-has-children has-dropdown"><a><span> Hello <%=x.getFullname()%></span></a>
                                         <ul class='nav-dropdown nav-dropdown-simple'>
                                             <%if (x.getSystemRole() == 1) {%>
-                                            <li  ><a href="AdminControllerMap" class="menu-image-title-after"><span >Admin Dashboard</span></a></li>
+                                            <li  ><a href="${contextPath}/AdminControllerMap" class="menu-image-title-after"><span >Admin Dashboard</span></a></li>
                                                 <%}%>
-
-                                            <li  ><a href="UserControllerMap?service=info" class="menu-image-title-after"><span >User profile</span></a></li>
-                                            <li  ><a href="UserControllerMap?service=changepass" class="menu-image-title-after"><span >Change Password</span></a></li>
-                                            <li  ><a href="UserControllerMap?service=logout" class="menu-image-title-after"><span >Logout</span></a></li>
+                                            <li  ><a href="${contextPath}/UserControllerMap?service=account" class="menu-image-title-after"><span >Account</span></a></li>
+                                            <li  ><a href="${contextPath}/UserControllerMap?service=info" class="menu-image-title-after"><span >User profile</span></a></li>
+                                            <li  ><a href="${contextPath}/UserControllerMap?service=changepass" class="menu-image-title-after"><span >Change Password</span></a></li>
+                                            <li  ><a href="${contextPath}/UserControllerMap?service=logout" class="menu-image-title-after"><span >Logout</span></a></li>
 
                                         </ul>
                                     </li>
@@ -127,7 +129,7 @@
                                 <!-- Header logo -->
                                 <a href="index.jsp" title="BMAZON" rel="home">
 
-                                    <img  width="124" height="75" src="images/fpt.png" class="header-logo-dark" /></a>
+                                    <img  width="124" height="75" src="${contextPath}/images/fpt.png" class="header-logo-dark" /></a>
                             </div>
 
                             <!-- Mobile Left Elements -->
@@ -185,7 +187,7 @@
                             <div class="flex-col hide-for-medium flex-right" style="background:black ">
                                 <ul class="header-nav header-nav-main nav nav-right  nav-uppercase">
                                     <li class="html custom html_nav_position_text"><img class="header_promotion" 
-                                                                                        src="images/FPT.jpg" alt="promotion" style="height: 40px;width: 170px;"></li>            </ul>
+                                                                                        src="${contextPath}/images/FPT.jpg" alt="promotion" style="height: 40px;width: 170px;"></li>            </ul>
                             </div>
 
                             <!-- Mobile Right Elements -->
