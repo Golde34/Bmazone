@@ -13,8 +13,8 @@
         <servlet-class>controller.AdminController</servlet-class>
     </servlet>
     <servlet>
-        <servlet-name>ProductDetail</servlet-name>
-        <servlet-class>controller.ProductDetail</servlet-class>
+        <servlet-name>ProductDetailController</servlet-name>
+        <servlet-class>controller.ProductDetailController</servlet-class>
     </servlet>
     <servlet-mapping>
         <servlet-name>HomePageController</servlet-name>
@@ -29,8 +29,8 @@
         <url-pattern>/AdminControllerMap</url-pattern>
     </servlet-mapping>
     <servlet-mapping>
-        <servlet-name>ProductDetail</servlet-name>
-        <url-pattern>/ProductDetailMap</url-pattern>
+        <servlet-name>ProductDetailController</servlet-name>
+        <url-pattern>/ProductDetailControllerMap</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>

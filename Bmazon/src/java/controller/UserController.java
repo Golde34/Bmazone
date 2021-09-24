@@ -250,7 +250,15 @@ public class UserController extends HttpServlet {
         String Instagram = request.getParameter("Instagram");
         String Twitter = request.getParameter("Twitter");
         String Youtube = request.getParameter("Youtube");
-        User u = new User(x.getUserId(), name, x.getPassword(), bio, address, Facebook, Instagram, Twitter, Youtube);
+        User u = x;
+        System.out.println(u.getFullname() + " " + u.getUsername());
+        u.setUsername(name);
+        u.setBio(bio);
+        u.setAddress(address);
+        u.setFacebook(Facebook);
+        u.setInstagram(Instagram);
+        u.setTwitter(Twitter);
+        u.setYoutube(Youtube);
         daoUser.updatePublicInfo(u);
         System.out.println(daoUser.updateInfoUserByAdmin(u));
         int currentUserID = Integer.parseInt(x.getUserId());

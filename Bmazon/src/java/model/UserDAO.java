@@ -394,8 +394,8 @@ public class UserDAO extends BaseDAO {
     }
 
     public void updatePublicInfo(User obj) {
-        String sql = "UPDATE [User] SET  username=?, address=?,"
-                + " bio=?, Facebook=?, Instagram=?, Twitter=?, Youtube=? , password=?"
+        String sql = "UPDATE [User] SET  username=?, [address]=?,"
+                + " bio=?, Facebook=?, Instagram=?, Twitter=?, Youtube=? , [password]=?"
                 + " where userID=?";
         try {
             pre = conn.prepareStatement(sql);

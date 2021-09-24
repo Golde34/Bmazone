@@ -27,7 +27,7 @@
             <h2 style="color: yellow" > Change PassWord</h2>
             <div class="login-form">
 			<div class="sign-up-html">
-                            <form action="/Bmazon/UserControllerMap" method="get">
+                            <form action="/Bmazon/UserControllerMap" method="post">
 				<div class="group">
 					<label for="user" class="label">Username</label>
                                         <input id="user" type="text" name="username"  class="input" readonly  value="<%= account.getUsername() %>">
