@@ -14,7 +14,7 @@ public class ProductType {
     private int productID;
     private String size;
     private String color;
-    private double price;
+    private String price;
     private int wareHouseID;
     private int quantity;
     private int status;
@@ -22,7 +22,7 @@ public class ProductType {
     public ProductType() {
     }
 
-    public ProductType(String productTypeId, int productID, String size, String color, double price, int wareHouseID, int quantity, int status) {
+    public ProductType(String productTypeId, int productID, String size, String color, String price, int wareHouseID, int quantity, int status) {
         this.productTypeId = productTypeId;
         this.productID = productID;
         this.size = size;
@@ -33,7 +33,7 @@ public class ProductType {
         this.status = status;
     }
 
-    public ProductType(String productTypeId, int productID, String size, String color, double price, int wareHouseID, int quantity) {
+    public ProductType(String productTypeId, int productID, String size, String color, String price, int wareHouseID, int quantity) {
         this.productTypeId = productTypeId;
         this.productID = productID;
         this.size = size;
@@ -75,13 +75,15 @@ public class ProductType {
         this.color = color;
     }
 
-    public double getPrice() {
+    public String getPrice() {
         return price;
     }
 
-    public void setPrice(double price) {
+    public void setPrice(String price) {
         this.price = price;
     }
+
+   
 
     public int getWareHouseID() {
         return wareHouseID;
