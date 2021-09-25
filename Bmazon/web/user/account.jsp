@@ -76,7 +76,7 @@
 
                 <!--Security-->
                 <div class="col-md-4">
-                    <a href="${contextPath}/jsp/changepass.jsp">
+                    <a href="UserControllerMap?service=editPrivateProfile">
                         <div class=" card shadow p-3 mb-5 bg-white rounded" style="width: 20rem;"> 
                             <div class="card-body">
                                 <div class="row">

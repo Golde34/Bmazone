@@ -9,6 +9,7 @@ import entity.Product;
 import entity.User;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.sql.Date;
 import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -84,7 +85,7 @@ public class UserController extends HttpServlet {
                 serviceInfo(request, response);
             }
 
-            //Edit profile Service
+            //Edit public profile Service
             //Edit Profile Page
             if (service.equalsIgnoreCase("editProfile")) {
                 serviceEditProfile(request, response);
@@ -92,6 +93,15 @@ public class UserController extends HttpServlet {
             //Change Info Profile
             if (service.equalsIgnoreCase("changeInfo")) {
                 serviceChangeInfoPublicProfile(request, response);
+            }
+
+            //Edit private profile service
+            if (service.equalsIgnoreCase("editPrivateProfile")) {
+                serviceEditPrivateProfile(request, response);
+            }
+            //Change info
+            if (service.equalsIgnoreCase("changePrivateInfo")) {
+                serviceChangeInfoPrivateProfile(request, response);
             }
         }
     }
@@ -245,15 +255,18 @@ public class UserController extends HttpServlet {
         request.setAttribute("currUser", x);
         String name = request.getParameter("username");
         String bio = request.getParameter("bio");
+        String dob = request.getParameter("dob");
+        String gender = request.getParameter("gender");
         String address = request.getParameter("address");
         String Facebook = request.getParameter("Facebook");
         String Instagram = request.getParameter("Instagram");
         String Twitter = request.getParameter("Twitter");
         String Youtube = request.getParameter("Youtube");
         User u = x;
-        System.out.println(u.getFullname() + " " + u.getUsername());
         u.setUsername(name);
         u.setBio(bio);
+        u.setGender(Integer.parseInt(gender));
+        u.setDOB(Date.valueOf(dob));
         u.setAddress(address);
         u.setFacebook(Facebook);
         u.setInstagram(Instagram);
@@ -270,6 +283,48 @@ public class UserController extends HttpServlet {
         User x = (User) request.getSession().getAttribute("currUser");
         request.setAttribute("currUser", x);
         sendDispatcher(request, response, "user/account.jsp");
+    }
+
+    private void serviceEditPrivateProfile(HttpServletRequest request, HttpServletResponse response) {
+        User x = (User) request.getSession().getAttribute("currUser");
+        request.setAttribute("currUser", x);
+        sendDispatcher(request, response, "user/editPrivateProfile.jsp");
+    }
+
+    private void serviceChangeInfoPrivateProfile(HttpServletRequest request, HttpServletResponse response) {
+        String mess = "";
+
+        User x = (User) request.getSession().getAttribute("currUser");
+        request.setAttribute("currUser", x);
+        String name = request.getParameter("name");
+        String mail = request.getParameter("mail");
+        String phone = request.getParameter("phone");
+        String pass = request.getParameter("pass");
+
+        if (daoUser.checkExistMail(mail) && !mail.equals(x.getEmail())) {            
+            mess = "This email is already in use by another account";
+            request.setAttribute("mess", mess);
+            sendDispatcher(request, response, "user/editPrivateProfile.jsp");
+        }
+        if (daoUser.checkExistPhone(phone) && !phone.equals(x.getPhoneNumber())) {
+            mess = "This phone number is already in use by another account";
+            request.setAttribute("mess", mess);
+            sendDispatcher(request, response, "user/editPrivateProfile.jsp");
+        }
+        if (x.getPassword().equals(pass)) {
+            User u = x;
+            u.setFullname(name);
+            u.setEmail(mail);
+            u.setPhoneNumber(phone);
+            daoUser.updatePrivateInfo(u);
+            int currentUserID = Integer.parseInt(x.getUserId());
+            request.getSession().setAttribute("currUser", daoUser.getUserById(currentUserID));
+            sendDispatcher(request, response, "UserControllerMap?service=account");
+        } else {
+            mess = "You must enter the correct password";
+            request.setAttribute("mess", mess);
+            sendDispatcher(request, response, "user/editPrivateProfile.jsp");
+        }
     }
 
     public void sendDispatcher(HttpServletRequest request, HttpServletResponse response, String path) {
@@ -332,5 +387,4 @@ public class UserController extends HttpServlet {
     public String getServletInfo() {
         return "Short description";
     }// </editor-fold>
-
 }
