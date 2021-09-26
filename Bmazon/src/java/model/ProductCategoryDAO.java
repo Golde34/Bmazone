@@ -5,6 +5,7 @@
  */
 package model;
 
+import entity.Product;
 import entity.ProductCategory;
 import java.sql.Connection;
 import java.sql.SQLException;
@@ -40,7 +41,7 @@ public class ProductCategoryDAO extends BaseDAO{
         }
         return list;
     }
-
+    
     public int addProductCategory(ProductCategory obj) {
         int n = 0;
         String sql = "INSERT INTO [Bmazon].[dbo].[ProductCategory]\n"

@@ -147,7 +147,7 @@ public class ProductTypeDAO extends BaseDAO {
         }
         return list;
     }
-
+    
     public ArrayList<ProductType> getProductByColor(String color) {
         ArrayList<ProductType> list = new ArrayList<>();
         xSql = "SELECT * FROM ProductType WHERE color like ?";

@@ -299,6 +299,30 @@ public class UserDAO extends BaseDAO {
         }
         return null;
     }
+    
+    public User getUserByProductId(int id) {
+        String sql = "select * from [User] u join Product p on u.userID = p.seller where p.productID="+id+"";
+        ResultSet rs = dbConn.getData(sql);
+        try {
+            if (rs.next()) {
+                User user = new User(rs.getString("userID"), rs.getString("username"),
+                        rs.getString("password"), rs.getString("email"),
+                        rs.getString("phoneNumber"), rs.getInt("sell"),
+                        rs.getDouble("wallet"), rs.getString("fullname"),
+                        rs.getString("publicName"), rs.getString("address"), rs.getString("profileImage"),
+                        rs.getString("backgroundImage"), rs.getString("occupation"),
+                        rs.getInt("gender"), rs.getDate("DOB"), rs.getString("bio"),
+                        rs.getString("Facebook"), rs.getString("Instagram"),
+                        rs.getString("Twitter"), rs.getString("Youtube"),
+                        rs.getInt("activityPoint"), rs.getInt("systemRole"),
+                        rs.getInt("status"));
+                return user;
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(UserDAO.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return null;
+    }
 
     public ArrayList<User> getAllUser() {
         ArrayList<User> list = new ArrayList<>();

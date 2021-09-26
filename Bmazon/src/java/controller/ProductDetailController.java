@@ -78,6 +78,8 @@ public class ProductDetailController extends HttpServlet {
         request.setAttribute("listGallery", listGallery);
         List<ProductType> listProductType = daoProductType.getProductByProductID(id);
         request.setAttribute("listProductType", listProductType);
+        ArrayList<Product> listRelated = daoProduct.getRelatedProductByProductID(id);
+        request.setAttribute("listRelated", listRelated);
         sendDispatcher(request, response, "product/productDetail.jsp");
     }
 
