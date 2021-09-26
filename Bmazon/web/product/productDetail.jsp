@@ -4,15 +4,24 @@
     Author     : AD
 --%>
 
+<%@page import="model.ProductTypeDAO"%>
+<%@page import="model.UserDAO"%>
+<%@page import="model.GalleryDAO"%>
+<%@page import="java.util.ArrayList"%>
 <%@page import="entity.ProductType"%>
 <%@page import="entity.Gallery"%>
 <%@page import="java.util.List"%>
 <%@page import="entity.Product"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%
+    ProductTypeDAO daoProductType = new ProductTypeDAO();
+    UserDAO daoUser = new UserDAO();
+    GalleryDAO daoGallery = new GalleryDAO();
     Product product = (Product) request.getAttribute("product");
     List<Gallery> listGallery = (List<Gallery>) request.getAttribute("listGallery");
     List<ProductType> listProductType = (List<ProductType>) request.getAttribute("listProductType");
+    ArrayList<Product> listRelated = (ArrayList<Product>) request.getAttribute("listRelated");
+    ArrayList<Gallery> listRelatedGallery = (ArrayList<Gallery>) request.getAttribute("listRelatedGallery");
 %>
 <!DOCTYPE html>
 <html>
@@ -22,8 +31,6 @@
         <link href="//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
         <script src="//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.min.js"></script>
         <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
-        <!------ Include the above in your HEAD tag ---------->
-
         <link href="https://fonts.googleapis.com/css?family=Poppins:300,400,500,600,700,800&display=swap" rel="stylesheet">
         <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/all.min.css">
         <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/assets/owl.carousel.min.css">
@@ -311,7 +318,7 @@
                         <div id="slider" class="owl-carousel product-slider">
                             <%for (Gallery gallery : listGallery) {%>
                             <div class="item">
-                                <%String str = "images/"+gallery.getLink();%>
+                                <%String str = "images/" + gallery.getLink();%>
                                 <img src="<%=str%>"/>
                             </div>
                             <%}%>
@@ -319,7 +326,7 @@
                         <div id="thumb" class="owl-carousel product-thumb">
                             <%for (Gallery gallery : listGallery) {%>
                             <div class="item">
-                                <%String str = "images/"+gallery.getLink();%>
+                                <%String str = "images/" + gallery.getLink();%>
                                 <img src="<%=str%>"/>
                             </div>
                             <%}%>
@@ -346,7 +353,7 @@
                                 </div>
                                 <div class="product-price-discount"><span>$39.00</span><span class="line-through">$29.00</span></div>
                                 <div class="product-releasedate"><label>Release Date: <%=product.getReleaseDate()%></label></div>
-                                <div class="product-seller"><label>Seller: <%=product.getSeller()%></label></div>
+                                <div class="product-seller"><label>Seller: <%=daoUser.getUserByProductId(product.getProductID()).getUsername()%></label></div>
                             </div>
                             <p><%=product.getDescription()%></p>
                             <div class="row">
@@ -355,7 +362,7 @@
                                     <select id="size" name="size" class="form-control">
                                         <%for (ProductType productType : listProductType) {%>
                                         <option><%=productType.getSize()%></option>
-                                            <%}%>
+                                        <%}%>
                                     </select>
                                 </div>
                                 <div class="col-md-6">
@@ -363,7 +370,7 @@
                                     <select id="color" name="color" class="form-control">
                                         <%for (ProductType productType : listProductType) {%>
                                         <option><%=productType.getColor()%></option>
-                                            <%}%>
+                                        <%}%>
                                     </select>
                                 </div>
                             </div>
@@ -391,7 +398,7 @@
                     </ul>
                     <div class="tab-content" id="myTabContent">
                         <div class="tab-pane fade show active" id="description" role="tabpanel" aria-labelledby="description-tab">
-                            Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum. Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam.
+                            <p><%=product.getDescription()%></p>
                         </div>
                         <div class="tab-pane fade" id="review" role="tabpanel" aria-labelledby="review-tab">
                             <div class="review-heading">REVIEWS</div>
@@ -436,6 +443,71 @@
                     </div>
                 </div>
             </div>
+        </div>
+
+        <div class="row row-collapse align-equal"  id="row-1706731289">
+            <h1>Related Products</h1>
+            <br>
+            <br>
+            <br>
+            <div class="col medium-10 small-12 large-10"  ><div class="col-inner"  >
+                    <div class="row large-columns-4 medium-columns- small-columns-2 row-collapse has-shadow row-box-shadow-1 slider row-slider slider-nav-reveal slider-nav-push"  data-flickity-options='{"imagesLoaded": true, "groupCells": "100%", "dragThreshold" : 5, "cellAlign": "left","wrapAround": true,"prevNextButtons": true,"percentPosition": true,"pageDots": false, "rightToLeft": false, "autoPlay" : 3000}'>
+                        <% for (Product pro : listRelated) {
+                                String str2 = "images/" + daoGallery.getSampleOfProduct(pro.getProductID());
+                        %>
+                        <div class="col" >
+                            <div class="col-inner">
+                                <div class="badge-container absolute left top z-1">
+                                    <div class="callout badge badge-square"><div class="badge-inner secondary on-sale"><span class="onsale">-50%</span></div></div>
+                                </div>
+                                <div class="product-small box has-hover box-normal box-text-bottom">
+                                    <div class="box-image" style="width:150px; height:150px ">
+                                        <div class="" >
+                                            <a href="ProductDetailControllerMap?service=getProductDetail&pid=<%=pro.getProductID()%>">
+                                                <img src="<%=str2%>"></a>
+                                        </div>
+                                        <div class="image-tools z-top top right show-on-hover">
+                                        </div>
+                                        <div class="image-tools grid-tools text-center hide-for-small bottom hover-slide-in show-on-hover">
+                                        </div>
+                                    </div><!-- box-image -->
+                                    <div class="box-text text-center" style="background-color:rgb(255, 255, 255);">
+                                        <div class="title-wrapper" >		
+                                            <p class="category uppercase is-smaller no-text-overflow product-cat op-7">   </p> <%--category--%>
+                                            <p class="name product-title"><a href=""> <%=pro.getProductName()%> </a></p>
+                                        </div> 
+                                        <div class="price-wrapper" 
+                                             <span class="price"><del><span class="woocommerce-Price-amount amount">290,000&nbsp;<span class="woocommerce-Price-currencySymbol">&#8363;</span></span></del> 
+                                                <ins><span class="woocommerce-Price-amount amount">145,000&nbsp;<span class="woocommerce-Price-currencySymbol">&#8363;</span></span></ins></span>
+                                        </div>							
+                                    </div><!-- box-text -->
+                                </div><!-- box -->
+                            </div><!-- .col-inner -->
+                        </div><!-- col -->
+                        <% }
+                        %>
+                    </div>
+                </div>
+            </div>
+            <%--Arrival LEFT PIC --%>          
+            <div class="col medium-2 small-12 large-2"  ><div class="col-inner"  >
+                    <div class="img has-hover x md-x lg-x y md-y lg-y" id="image_683044710">
+                        <div class="img-inner dark" >
+                            <img width="466" height="666" src="http://mauweb.monamedia.net/lazada/wp-content/uploads/2017/11/banner-deal.jpg" class="attachment-original size-original" alt="" srcset="http://mauweb.monamedia.net/lazada/wp-content/uploads/2017/11/banner-deal.jpg 466w, http://mauweb.monamedia.net/lazada/wp-content/uploads/2017/11/banner-deal-210x300.jpg 210w, http://mauweb.monamedia.net/lazada/wp-content/uploads/2017/11/banner-deal-17x24.jpg 17w, http://mauweb.monamedia.net/lazada/wp-content/uploads/2017/11/banner-deal-25x36.jpg 25w, http://mauweb.monamedia.net/lazada/wp-content/uploads/2017/11/banner-deal-34x48.jpg 34w" sizes="(max-width: 466px) 100vw, 466px" />						
+                        </div>
+                        <style scope="scope">
+                            #image_683044710 {
+                                width: 100%;
+                            }
+                        </style>
+                    </div>
+                </div>
+            </div>
+            <style scope="scope">
+                #row-1706731289 > .col > .col-inner {
+                    background-color: rgb(255, 255, 255);
+                }
+            </style>
         </div>
 
 
