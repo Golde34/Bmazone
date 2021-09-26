@@ -350,7 +350,7 @@
                                                     <div class="product-small box has-hover box-normal box-text-bottom">
                                                         <div class="box-image" style="width:150px; height:150px ">
                                                             <div class="" >
-                                                                <a href="HomepageControllerMap?service=detail">
+                                                                <a href="ProductDetailControllerMap?service=getProductDetail&pid=<%=pn.getProductID()%>">
 
                                                                     <img src="<%=str2%>"></a>
                                                             </div>
@@ -363,7 +363,7 @@
                                                         <div class="box-text text-center" style="background-color:rgb(255, 255, 255);">
                                                             <div class="title-wrapper" >		
                                                                 <p class="category uppercase is-smaller no-text-overflow product-cat op-7">   </p> <%--category--%>
-                                                                <p class="name product-title"><a href=""> <%=pn.getProductName()%> </a></p>
+                                                                <p class="name product-title"><a href="ProductDetailControllerMap?service=getProductDetail&pid=<%=pn.getProductID()%>""> <%=pn.getProductName()%> </a></p>
                                                             </div> 
                                                             <div class="price-wrapper" 
                                                                  <span class="price"><del><span class="woocommerce-Price-amount amount">290,000&nbsp;<span class="woocommerce-Price-currencySymbol">&#8363;</span></span></del> 
