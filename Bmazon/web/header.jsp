@@ -93,14 +93,14 @@
 
                                     <li class="account-item has-icon ">
 
-                                        <a href="${contextPath}/jsp/login.jsp"class="nav-top-link nav-top-not-logged-in ">
+                                        <a href="${contextPath}/loginAndSecurity/login.jsp"class="nav-top-link nav-top-not-logged-in ">
                                             <span>
                                                 Login     / Register  </span>
                                         </a><!-- .account-login-link -->
 
                                     </li>
                                     <%} else {%>
-                                    <li class=" menu-item menu-item-type-taxonomy menu-item-object-product_cat menu-item-has-children has-dropdown"><a><span> Hello <%=x.getFullname()%></span></a>
+                                    <li class=" menu-item menu-item-type-taxonomy menu-item-object-product_cat menu-item-has-children has-dropdown" style="cursor: pointer;"><a><span> Hello <%=x.getFullname()%></span></a>
                                         <ul class='nav-dropdown nav-dropdown-simple'>
                                             <%if (x.getSystemRole() == 1) {%>
                                             <li  ><a href="${contextPath}/AdminControllerMap" class="menu-image-title-after"><span >Admin Dashboard</span></a></li>

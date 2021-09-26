@@ -19,15 +19,20 @@ import java.util.logging.Logger;
  * @author Admin
  */
 public class UserDAO extends BaseDAO {
-   BaseDAO dbConn= new BaseDAO();
+
+    BaseDAO dbConn = new BaseDAO();
 
     public static void main(String[] args) {
-       
+
         UserDAO dao = new UserDAO();
-        User x = dao.getUserById(3);
-        x.setAddress("Hai Duong 2");
-        dao.updateInfoUserByAdmin(x);
-        System.out.println(x.getAddress());
+        String mail = "viet@gmail.com";
+        dao.checkExistMail(mail); 
+        if (!mail.equals("viet@gmail.com") && dao.checkExistMail(mail)) {
+            System.out.println("Mail nay da ton tai roi");
+            System.out.println(dao.checkExistMail(mail));
+        } else {
+            System.out.println("Not ok");
+        }
     }
 
     public User getUserLogin(String username, String password) {
@@ -394,8 +399,8 @@ public class UserDAO extends BaseDAO {
     }
 
     public void updatePublicInfo(User obj) {
-        String sql = "UPDATE [User] SET  username=?, address=?,"
-                + " bio=?, Facebook=?, Instagram=?, Twitter=?, Youtube=? , password=?"
+        String sql = "UPDATE [User] SET  username=?, [address]=?,"
+                + " bio=?, Facebook=?, Instagram=?, Twitter=?, Youtube=? , [password]=?"
                 + " where userID=?";
         try {
             pre = conn.prepareStatement(sql);
@@ -408,6 +413,22 @@ public class UserDAO extends BaseDAO {
             pre.setString(7, obj.getYoutube());
             pre.setString(8, obj.getPassword());
             pre.setString(9, obj.getUserId());
+            pre.executeUpdate();
+        } catch (SQLException ex) {
+            Logger.getLogger(UserDAO.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+    
+    public void updatePrivateInfo(User obj) {
+        String sql = "UPDATE [User] SET  fullname=?, email=?, phoneNumber=?, [password]=?"
+                + " where userID=?";
+        try {
+            pre = conn.prepareStatement(sql);
+            pre.setString(1, obj.getFullname());
+            pre.setString(2, obj.getEmail());
+            pre.setString(3, obj.getPhoneNumber());
+            pre.setString(4, obj.getPassword());
+            pre.setString(5, obj.getUserId());
             pre.executeUpdate();
         } catch (SQLException ex) {
             Logger.getLogger(UserDAO.class.getName()).log(Level.SEVERE, null, ex);
@@ -439,4 +460,6 @@ public class UserDAO extends BaseDAO {
         }
         return n;
     }
+
+    
 }

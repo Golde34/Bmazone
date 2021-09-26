@@ -5,6 +5,8 @@
 --%>
 <%@page import="entity.User"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<c:set var="contextPath" value="${pageContext.request.contextPath}" />
 <!DOCTYPE html>
 <html>
     <head>
@@ -66,9 +68,9 @@
                             <div class="box">
                                 <h2><strong>Your public name</strong></h2>
                                 <div class="col-md-12 ">
-                                    <input name="username" type="text" value="<%=x.getUsername()%>" style="width: 25rem;">
+                                    <input name="username" type="text" value="<%=x.getPublicName()%>" style="width: 25rem;">
                                     <p>This will not change the name associated with your account (<%=x.getFullname()%>)
-                                        <span><a style="color: red;" href="${contextPath}/UserControllerMap?service=editProfile">   Edit</a></span>
+                                        <span><a style="color: red;" href="${contextPath}/UserControllerMap?service=editPrivateProfile">   Edit</a></span>
                                     </p>
                                     <p>Your public name will be visible on your public profile page and elsewhere on Bmazon.</p>
                                     <br>
@@ -79,13 +81,27 @@
                                     <div class="row">
                                         <div class="col-md-6">
                                             <p>Bio</p>
-                                            <textarea name="bio" placeholder="Share a little about you" style="height: 40px;"></textarea>
+                                            <textarea name="bio" placeholder="Share a little about you"></textarea>
+                                            <p>Date of birth</p>
+                                            <input type="date" name="dob" value="<%=x.getDOB()%>">
                                         </div>
                                         <div class="col-md-6">
                                             <p>Location</p>
                                             <input name="address" type="text" value="<%= x.getAddress()%>" placeholder="Enter your location">
                                             <p>Occupation</p>
-                                            <input name="occupation" type="text" value="Occupation" placeholder="Enter your occupation">
+                                            <input name="occupation" type="text" value="<%= x.getOccupation()%>" placeholder="Enter your occupation">
+                                            <p>Gender</p>
+                                            <% if (x.getGender() == 0) {%>
+                                            <select name="gender">
+                                                <option value="0">Female</option>
+                                                <option value="1">Male</option>
+                                            </select>
+                                            <%} else {%>
+                                            <select name="gender">
+                                                <option value="1">Male</option>
+                                                <option value="0">Female</option>
+                                            </select>
+                                            <%}%>
                                         </div>
                                         <br>
                                     </div>
@@ -117,11 +133,11 @@
                                 <br><br>
                                 <div class="col-md-4"></div>
                                 <div class="col-md-4">
-                                    <a style="right: 50%;" href="profile.jsp" >        
+                                    <a style="right: 50%;" href="UserController?service=info" >        
                                         <button style="text-align:center; color:white;border-radius: 15px;height: 2em; width: 15em;" class="btn-danger" > Back to public profile
                                         </button> 
                                     </a> 
-                                    <a style="right: 50%;" href="profile.jsp" >        
+                                    <a style="right: 50%;" href="UserController?service=info" >        
                                         <button type="submit" style="text-align:center; color:white;border-radius: 15px;height: 2em; width: 8em;" class="btn-warning" > Save
                                         </button> 
                                     </a> 
