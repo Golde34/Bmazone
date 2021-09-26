@@ -32,53 +32,65 @@
         <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
         <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.bundle.min.js">
         <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+        <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.0.7/css/all.css">     
+        <link rel="stylesheet" href="${contextPath}/css/profile.css">
         <style>
-            .profile-head {
-                transform: translateY(5rem)
-            }
-
             .cover {
-                background-image: url(${contextPath}/images/<%= x.getBackgroundImage()%>);
+                background-color: black;
+                background-image: url(${contextPath}/upload/<%= x.getBackgroundImage()%>);
                 background-size: cover;
                 background-repeat: no-repeat;
+                background-position:center; 
                 height: 230px;
+                position: relative;
+                width: 100%;
+                margin-left: auto;
+                margin-right: auto;
             }
 
-            body {
-                background: #654ea3;
-                background: linear-gradient(to right, #e96443, #904e95);
-                min-height: 100vh;
-                overflow-x: hidden
-            }
         </style>
     </head>
     <body>
         <jsp:include page="../header.jsp"/>
-        
+
         <div class="row py-5 px-4">
             <div class="col-md-10 mx-auto">
                 <!-- Profile widget -->
                 <div class="bg-white shadow rounded overflow-hidden">
+                    <!--Avatar-->
                     <div class="px-4 pt-0 pb-4 cover">
-                        <!--                        <div class="a-row desktop cover-photo-edit-icon">
-                                                    <img alt="" src="//d1k8kvpjaf8geh.cloudfront.net/gp/profile/assets/camera-desktop-4aba2c5ff428bad7bee93a2e61a2ad5128cbdd58b770618a1fd108abca1e2f31.png">
-                                                    <span class="a-declarative" data-action="a-popover" data-a-popover="{&quot;name&quot;:&quot;cover-photo-edit-image-popover&quot;,&quot;dataStrategy&quot;:&quot;preload&quot;,&quot;position&quot;:&quot;triggerBottom&quot;,&quot;activate&quot;:&quot;onclick&quot;,&quot;closeButton&quot;:&quot;false&quot;,&quot;closeButtonLabel&quot;:&quot;cover-photo-upload-popover-close&quot;}">
-                                                        <div id="cover-photo-edit-popover-trigger" class="a-section edit-popover-trigger">
-                                                        </div>
-                                                    </span>
-                                                </div>-->
                         <div class="media align-items-end profile-head">
                             <div class="profile mr-3">
-                                <img src="${contextPath}/images/<%= x.getProfileImage()%>"
-                                                           alt="..." width="180" class="rounded mb-2 img-thumbnail">
+                                <div class="profilepic" style="background-color: #e2c147;width: 190px;height: 190px;">
+                                    <div class=" profilepic__image rounded mb-2 img-thumbnail" >
+                                        <object data="upload/<%= x.getProfileImage()%>" width="180" height="180"></object>
+                                    </div>
+                                    <a href="${contextPath}/UserControllerMap?service=uploadProfileImage">
+                                        <div class="profilepic__content">
+                                            <span class="profilepic__icon"><i class="fas fa-camera"></i></span>
+                                            <span class="profilepic__text">Upload Image</span>
+                                        </div> 
+                                    </a>
+                                </div>
                                 <a href="${contextPath}/UserControllerMap?service=editProfile" class="btn btn-outline-dark btn-sm btn-block">Edit profile</a>
+
                             </div>
                             <div class="media-body mb-5 text-white">
-                                <h4 class="mt-0 mb-0" style="color: white; font-size:30px;"><%=x.getFullname()%></h4>
-                                <p class="small mb-4"> <i class="fas fa-map-marker-alt mr-2"></i><%= x.getAddress()%></p>
+                                <h4 class="mt-0 mb-0" style="color: #96a2b8; font-size:30px;"><%=x.getPublicName()%>
+                                    <a href="${contextPath}/UserControllerMap?service=editProfile">   
+                                        <i class="fas fa-pencil-alt" style="color: #96a2b8;"></i></a>
+                                </h4>
+                                    <p class="mb-4" style="color: #96a2b8;"> <i class="fas fa-map-marker-alt mr-2"></i><%= x.getAddress()%></p>
                             </div>
                         </div>
+                        <div class="icon-background">
+                            <a href="${contextPath}/UserControllerMap?service=uploadBackgroundImage">
+                                <i class="fas fa-camera" style="font-size:2.5em; color: #96a2b8;"></i>
+                            </a>
+                        </div>
                     </div>
+
+                    <!--Information-->    
                     <div class="bg-light p-4 d-flex justify-content-end text-center">
                         <ul class="list-inline mb-0">
                             <li class="list-inline-item">

@@ -485,5 +485,15 @@ public class UserDAO extends BaseDAO {
         return n;
     }
 
-    
+    public int uploadBackgroundImage(User obj, String uploadImg) {
+        int n = 0;
+        String sql = "UPDATE [User] SET backgroundImage = '" + uploadImg + "' WHERE userID = " + obj.getUserId();
+        try {
+            Statement state = conn.createStatement();
+            n = state.executeUpdate(sql);
+        } catch (SQLException ex) {
+            Logger.getLogger(UserDAO.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return n;
+    }
 }
