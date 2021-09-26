@@ -57,7 +57,7 @@
                     </div>
                     <!--Sign up Service-->
                     <div class="sign-up-htm">
-                        <form action="/Bmazon/UserControllerMap" method="get">
+                        <form action="/Bmazon/UserControllerMap" method="POST">
                             <div class="group">
                                 <label for="user" class="label">Username</label>
                                 <input id="user" type="text" name="signupusername" value="${Username}" placeholder="Username"  class="input" required autofocus="" >

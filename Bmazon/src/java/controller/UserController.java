@@ -7,13 +7,20 @@ package controller;
 
 import entity.Product;
 import entity.User;
+import java.io.File;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.sql.Date;
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.servlet.RequestDispatcher;
+import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -21,6 +28,9 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import model.UserDAO;
 import model.DBConnection;
+import org.apache.commons.fileupload.FileItem;
+import org.apache.commons.fileupload.disk.DiskFileItemFactory;
+import org.apache.commons.fileupload.servlet.ServletFileUpload;
 
 /**
  *
@@ -102,6 +112,24 @@ public class UserController extends HttpServlet {
             //Change info
             if (service.equalsIgnoreCase("changePrivateInfo")) {
                 serviceChangeInfoPrivateProfile(request, response);
+            }
+
+            //Upload profile image
+            if (service.equalsIgnoreCase("uploadProfileImage")) {
+                serviceUploadProfileImage(request, response);
+            }
+            //Update
+            if (service.equalsIgnoreCase("updateProfileImage")) {
+                serviceUpdateProfileImage(request, response);
+            }
+            
+            //Upload background image
+            if (service.equalsIgnoreCase("uploadBackgroundImage")) {
+                serviceUploadBackgroundImage(request, response);
+            }
+            //Update
+            if (service.equalsIgnoreCase("updateBackgroundImage")) {
+                serviceUpdateBackgroundImage(request, response);
             }
         }
     }
@@ -253,25 +281,16 @@ public class UserController extends HttpServlet {
     private void serviceChangeInfoPublicProfile(HttpServletRequest request, HttpServletResponse response) {
         User x = (User) request.getSession().getAttribute("currUser");
         request.setAttribute("currUser", x);
-        String name = request.getParameter("username");
-        String bio = request.getParameter("bio");
-        String dob = request.getParameter("dob");
-        String gender = request.getParameter("gender");
-        String address = request.getParameter("address");
-        String Facebook = request.getParameter("Facebook");
-        String Instagram = request.getParameter("Instagram");
-        String Twitter = request.getParameter("Twitter");
-        String Youtube = request.getParameter("Youtube");
         User u = x;
-        u.setUsername(name);
-        u.setBio(bio);
-        u.setGender(Integer.parseInt(gender));
-        u.setDOB(Date.valueOf(dob));
-        u.setAddress(address);
-        u.setFacebook(Facebook);
-        u.setInstagram(Instagram);
-        u.setTwitter(Twitter);
-        u.setYoutube(Youtube);
+        u.setUsername(request.getParameter("username"));
+        u.setBio(request.getParameter("bio"));
+        u.setGender(Integer.parseInt(request.getParameter("gender")));
+        u.setDOB(Date.valueOf(request.getParameter("dob")));
+        u.setAddress(request.getParameter("address"));
+        u.setFacebook(request.getParameter("Facebook"));
+        u.setInstagram(request.getParameter("Instagram"));
+        u.setTwitter(request.getParameter("Twitter"));
+        u.setYoutube(request.getParameter("Youtube"));
         daoUser.updatePublicInfo(u);
         System.out.println(daoUser.updateInfoUserByAdmin(u));
         int currentUserID = Integer.parseInt(x.getUserId());
@@ -301,7 +320,7 @@ public class UserController extends HttpServlet {
         String phone = request.getParameter("phone");
         String pass = request.getParameter("pass");
 
-        if (daoUser.checkExistMail(mail) && !mail.equals(x.getEmail())) {            
+        if (daoUser.checkExistMail(mail) && !mail.equals(x.getEmail())) {
             mess = "This email is already in use by another account";
             request.setAttribute("mess", mess);
             sendDispatcher(request, response, "user/editPrivateProfile.jsp");
@@ -327,6 +346,102 @@ public class UserController extends HttpServlet {
         }
     }
 
+    private void serviceUploadProfileImage(HttpServletRequest request, HttpServletResponse response) {
+        User x = (User) request.getSession().getAttribute("currUser");
+        request.setAttribute("currUser", x);
+        sendDispatcher(request, response, "user/uploadProfileImage.jsp");
+    }
+
+    private void serviceUpdateProfileImage(HttpServletRequest request, HttpServletResponse response) {
+        String filename = null;
+        // Create a factory for disk-based file items
+        try {
+            DiskFileItemFactory factory = new DiskFileItemFactory();
+            ServletContext servletContext = this.getServletConfig().getServletContext();
+            File repository = (File) servletContext.getAttribute("javax.servlet.context.tempdir");
+            factory.setRepository(repository);
+            ServletFileUpload upload = new ServletFileUpload(factory);
+            List<FileItem> items = upload.parseRequest(request);
+            // Process the uploaded items
+            Iterator<FileItem> iter = items.iterator();
+            HashMap<String, String> fields = new HashMap<>();
+            while (iter.hasNext()) {
+                FileItem item = iter.next();
+                if (item.isFormField()) {
+                    fields.put(item.getFieldName(), item.getString());
+                    String name = item.getFieldName();
+                    String value = item.getString();
+                    System.out.println(name + " " + value);
+                } else {
+                    filename = item.getName();
+                    if (filename == null || filename.equals("")) {
+                        break;
+                    } else {
+                        Path path = Paths.get(filename);
+                        String storePath = servletContext.getRealPath("/upload");
+                        File uploadFile = new File(storePath + "/" + path.getFileName());
+                        item.write(uploadFile);
+                    }
+                }
+            }
+        } catch (Exception ex) {
+            Logger.getLogger(UserController.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        User x = (User) request.getSession().getAttribute("currUser");
+        x.setProfileImage(filename);
+        daoUser.uploadprofileImage(x, filename);
+        request.getSession().setAttribute("currUser", x);
+        sendDispatcher(request, response, "UserControllerMap?service=info");
+    }
+
+    private void serviceUploadBackgroundImage(HttpServletRequest request, HttpServletResponse response) {
+        User x = (User) request.getSession().getAttribute("currUser");
+        request.setAttribute("currUser", x);
+        sendDispatcher(request, response, "user/uploadBackgroundImage.jsp");
+    }
+
+    private void serviceUpdateBackgroundImage(HttpServletRequest request, HttpServletResponse response) {
+        String filename = null;
+        // Create a factory for disk-based file items
+        try {
+            DiskFileItemFactory factory = new DiskFileItemFactory();
+            ServletContext servletContext = this.getServletConfig().getServletContext();
+            File repository = (File) servletContext.getAttribute("javax.servlet.context.tempdir");
+            factory.setRepository(repository);
+            ServletFileUpload upload = new ServletFileUpload(factory);
+            List<FileItem> items = upload.parseRequest(request);
+            // Process the uploaded items
+            Iterator<FileItem> iter = items.iterator();
+            HashMap<String, String> fields = new HashMap<>();
+            while (iter.hasNext()) {
+                FileItem item = iter.next();
+                if (item.isFormField()) {
+                    fields.put(item.getFieldName(), item.getString());
+                    String name = item.getFieldName();
+                    String value = item.getString();
+                    System.out.println(name + " " + value);
+                } else {
+                    filename = item.getName();
+                    if (filename == null || filename.equals("")) {
+                        break;
+                    } else {
+                        Path path = Paths.get(filename);
+                        String storePath = servletContext.getRealPath("/upload");
+                        File uploadFile = new File(storePath + "/" + path.getFileName());
+                        item.write(uploadFile);
+                    }
+                }
+            }
+        } catch (Exception ex) {
+            Logger.getLogger(UserController.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        User x = (User) request.getSession().getAttribute("currUser");
+        x.setBackgroundImage(filename);
+        daoUser.uploadBackgroundImage(x, filename);
+        request.getSession().setAttribute("currUser", x);
+        sendDispatcher(request, response, "UserControllerMap?service=info");
+    }
+    
     public void sendDispatcher(HttpServletRequest request, HttpServletResponse response, String path) {
         try {
             RequestDispatcher rd = request.getRequestDispatcher(path);

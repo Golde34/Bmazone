@@ -294,6 +294,31 @@ BaseDAO dbConn= new BaseDAO();
         }
         return list;
     }
+    
+    public ArrayList<Product> getRelatedProductByProductID(int id){
+        ArrayList<Product> list = new ArrayList<>();
+        String sql = "SELECT * FROM Product a join ProductCategory b on a.productID=b.productID where b.categoryId=(SELECT categoryId FROM ProductCategory WHERE productID="+id+")";
+        try {
+            pre = conn.prepareStatement(sql);
+            rs = pre.executeQuery();
+            while (rs.next()) {
+                Product pro = new Product();
+                pro.setProductID(rs.getInt("productID"));
+                pro.setProductName(rs.getString("productName"));
+                pro.setDescription(rs.getString("description"));
+                pro.setRating(rs.getInt("rating"));
+                pro.setReleaseDate(rs.getDate("releaseDate"));
+                pro.setSeller(rs.getInt("seller"));
+                pro.setStatus(rs.getInt("status"));
+                list.add(pro);
+            }
+            rs.close();
+            pre.close();
+        } catch (SQLException e) {
+            Logger.getLogger(ProductDAO.class.getName()).log(Level.SEVERE, null, e);
+        }
+        return list;
+    }
 
     public int addProduct(Product obj) {
         int n = 0;

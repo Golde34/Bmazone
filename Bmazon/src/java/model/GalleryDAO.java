@@ -10,8 +10,11 @@ import entity.ProductType;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  *
@@ -80,6 +83,7 @@ BaseDAO dbConn= new BaseDAO();
         }
         return list;
     }
+    
     public String getSampleOfProduct(int pid) {
         String s=null;
         xSql = "select top 1 link from [Gallery] WHERE productID = '" + pid + "'";
@@ -120,6 +124,7 @@ BaseDAO dbConn= new BaseDAO();
              System.out.println(gallery.getLink());
             
         }
+        System.out.println(g.getSampleOfProduct(3));
         
     }
 
