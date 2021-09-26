@@ -84,7 +84,7 @@
             <main id="main" class="" style="">
 
 
-                <div id="content" role="main" class="content-area" style="background-color: #000">
+                <div id="content" role="main" class="content-area" >
 
 
                     <section class="section" id="section_2111671223">
@@ -239,8 +239,8 @@
 
                                             <% for (Product ps : ListSale) {
                                                     String str1 = "images/" + gallDAO.getSampleOfProduct(ps.getProductID());
-                                                    String price=ptDAO.getProductPrice(ps.getProductID());
-                                                    
+                                                    String price = ptDAO.getProductPrice(ps.getProductID());
+
 
                                             %>
 
@@ -254,7 +254,7 @@
                                                     <div class="product-small box has-hover box-normal box-text-bottom">
                                                         <div class="box-image" style="width:150px; height:150px ">
 
-                                                          
+
 
                                                             <div class=""  >
                                                                 <a href="ProductDetailMap?service=getProductDetail&pid=<%=ps.getProductID()%>">
@@ -274,7 +274,7 @@
                                                             </div> 
                                                             <div class="price-wrapper" 
                                                                  <span class="price"><del><span class="woocommerce-Price-amount amount">290,000&nbsp;<span class="woocommerce-Price-currencySymbol">&#8363;</span></span></del> 
-                                                                    <ins><span class="woocommerce-Price-amount amount"> <%=price %> <span class="woocommerce-Price-currencySymbol">&#8363;</span></span></ins></span>
+                                                                    <ins><span class="woocommerce-Price-amount amount"> <%=price%> <span class="woocommerce-Price-currencySymbol">&#8363;</span></span></ins></span>
                                                             </div>							
                                                         </div><!-- box-text -->
                                                     </div><!-- box -->
@@ -508,7 +508,7 @@
                         </style>
                     </section>
 
-                    <section class="section sec_oto_xemay" id="section_223985075">
+                    <section class="section sec_dien_thoai" id="section_1788051855">
                         <div class="bg section-bg fill bg-fill  bg-loaded" >
 
 
@@ -520,18 +520,17 @@
                         <div class="section-content relative">
 
                             <div class="gap-element" style="display:block; height:auto; padding-top:30px" class="clearfix"></div>
-                            <div class="row row-collapse"  id="row-1330870627">
-                                <div class="col small-12 large-12"  ><div class="col-inner"  >
-                                        <h4>Ô tô &amp; Xe máy &#8211; Deal hot trong ngày</h4>
+                            <div class="row row-collapse"  style="height: 30px">
+                                <div class="col small-12 large-12" ><div class="col-inner"   >
+                                        <h4><img src="images/Apple1.jpg"  style="height: 40px"></h4>
                                     </div></div>
 
-                                <style scope="scope">
 
-                                </style>
                             </div>
-                            <div class="row row-collapse align-equal"  id="row-818385982">
-                                <div class="col medium-10 small-12 large-10"  ><div class="col-inner"  >
+                            <br><br>
+                            <div class="row row-collapse align-equal"  id="row-803623343">
 
+                                <div class="col medium-12 small-12 large-12"  ><div class="col-inner"  >
 
                                         <div class="row large-columns-4 medium-columns- small-columns-2 row-collapse has-shadow row-box-shadow-1 slider row-slider slider-nav-reveal slider-nav-push"  data-flickity-options='{"imagesLoaded": true, "groupCells": "100%", "dragThreshold" : 5, "cellAlign": "left","wrapAround": true,"prevNextButtons": true,"percentPosition": true,"pageDots": false, "rightToLeft": false, "autoPlay" : false}'>
 
@@ -577,30 +576,12 @@
 
 
 
-
-
-
                                         </div>
-                                    </div></div>
-                                <div class="col medium-2 small-12 large-2"  ><div class="col-inner"  >
-                                        <div class="img has-hover x md-x lg-x y md-y lg-y" id="image_2009107627">
-                                            <div class="img-inner dark" >
-                                                <img width="466" height="666" src="http://mauweb.monamedia.net/lazada/wp-content/uploads/2017/11/banner-noi-that.jpg" class="attachment-original size-original" alt="" srcset="http://mauweb.monamedia.net/lazada/wp-content/uploads/2017/11/banner-noi-that.jpg 466w, http://mauweb.monamedia.net/lazada/wp-content/uploads/2017/11/banner-noi-that-210x300.jpg 210w, http://mauweb.monamedia.net/lazada/wp-content/uploads/2017/11/banner-noi-that-17x24.jpg 17w, http://mauweb.monamedia.net/lazada/wp-content/uploads/2017/11/banner-noi-that-25x36.jpg 25w, http://mauweb.monamedia.net/lazada/wp-content/uploads/2017/11/banner-noi-that-34x48.jpg 34w" sizes="(max-width: 466px) 100vw, 466px" />						
-                                            </div>
-
-                                            <style scope="scope">
-
-                                                #image_2009107627 {
-                                                    width: 100%;
-                                                }
-                                            </style>
-                                        </div>
-
                                     </div></div>
 
                                 <style scope="scope">
 
-                                    #row-1008069511 > .col > .col-inner {
+                                    #row-803623343 > .col > .col-inner {
                                         background-color: rgb(255, 255, 255);
                                     }
                                 </style>
@@ -610,14 +591,13 @@
 
                         <style scope="scope">
 
-                            #section_993802315 {
+                            #section_1788051855 {
                                 padding-top: 0px;
                                 padding-bottom: 0px;
                                 background-color: rgb(241, 241, 241);
                             }
                         </style>
                     </section>
-
                     <section class="section sec_top_sale" id="section_56152490">
                         <div class="bg section-bg fill bg-fill  bg-loaded" >
 
@@ -644,254 +624,73 @@
 
 
                                         <div class="row large-columns-5 medium-columns-3 small-columns-2 row-collapse has-shadow row-box-shadow-1 slider row-slider slider-nav-reveal slider-nav-push"  data-flickity-options='{"imagesLoaded": true, "groupCells": "100%", "dragThreshold" : 5, "cellAlign": "left","wrapAround": true,"prevNextButtons": true,"percentPosition": true,"pageDots": false, "rightToLeft": false, "autoPlay" : false}'>
+                                            <div class="shop-container">
+
+                                                <div class="woof_products_top_panel"></div>
+
+                                                <div class="products row row-small large-columns-4 medium-columns-3 small-columns-2 has-shadow row-box-shadow-1">
 
 
 
+                                                    <div class="product-small col has-hover post-1178 product type-product status-publish has-post-thumbnail product_cat-bach-hoa-online product_cat-do-hop-dong-goi first instock shipping-taxable purchasable product-type-simple">
+                                                        <div class="col-inner">
 
-                                            <div class="col" >
-                                                <div class="col-inner">
-
-                                                    <div class="badge-container absolute left top z-1">
-                                                        <div class="callout badge badge-square"><div class="badge-inner secondary on-sale"><span class="onsale">-50%</span></div></div>
-                                                    </div>
-                                                    <div class="product-small box has-hover box-normal box-text-bottom">
-                                                        <div class="box-image" style="width:74%;">
-                                                            <div class="" >
-                                                                <a href="http://mauweb.monamedia.net/lazada/san-pham/ao-so-mi-caro-kem-belt/">
-                                                                    <img width="300" height="300" src="http://mauweb.monamedia.net/lazada/wp-content/uploads/2017/10/AoSomiCaroNu-02-300x300.jpg" class="show-on-hover absolute fill hide-for-small back-image" alt="" srcset="http://mauweb.monamedia.net/lazada/wp-content/uploads/2017/10/AoSomiCaroNu-02-300x300.jpg 300w, http://mauweb.monamedia.net/lazada/wp-content/uploads/2017/10/AoSomiCaroNu-02-150x150.jpg 150w, http://mauweb.monamedia.net/lazada/wp-content/uploads/2017/10/AoSomiCaroNu-02-768x768.jpg 768w, http://mauweb.monamedia.net/lazada/wp-content/uploads/2017/10/AoSomiCaroNu-02-180x180.jpg 180w, http://mauweb.monamedia.net/lazada/wp-content/uploads/2017/10/AoSomiCaroNu-02-600x600.jpg 600w, http://mauweb.monamedia.net/lazada/wp-content/uploads/2017/10/AoSomiCaroNu-02-24x24.jpg 24w, http://mauweb.monamedia.net/lazada/wp-content/uploads/2017/10/AoSomiCaroNu-02-36x36.jpg 36w, http://mauweb.monamedia.net/lazada/wp-content/uploads/2017/10/AoSomiCaroNu-02-48x48.jpg 48w, http://mauweb.monamedia.net/lazada/wp-content/uploads/2017/10/AoSomiCaroNu-02.jpg 960w" sizes="(max-width: 300px) 100vw, 300px" /><img width="300" height="300" src="//mauweb.monamedia.net/lazada/wp-content/uploads/2017/10/AoSomiCaroNu-01-300x300.jpg" class="attachment-shop_catalog size-shop_catalog wp-post-image" alt="" srcset="//mauweb.monamedia.net/lazada/wp-content/uploads/2017/10/AoSomiCaroNu-01-300x300.jpg 300w, //mauweb.monamedia.net/lazada/wp-content/uploads/2017/10/AoSomiCaroNu-01-150x150.jpg 150w, //mauweb.monamedia.net/lazada/wp-content/uploads/2017/10/AoSomiCaroNu-01-768x768.jpg 768w, //mauweb.monamedia.net/lazada/wp-content/uploads/2017/10/AoSomiCaroNu-01-180x180.jpg 180w, //mauweb.monamedia.net/lazada/wp-content/uploads/2017/10/AoSomiCaroNu-01-600x600.jpg 600w, //mauweb.monamedia.net/lazada/wp-content/uploads/2017/10/AoSomiCaroNu-01-24x24.jpg 24w, //mauweb.monamedia.net/lazada/wp-content/uploads/2017/10/AoSomiCaroNu-01-36x36.jpg 36w, //mauweb.monamedia.net/lazada/wp-content/uploads/2017/10/AoSomiCaroNu-01-48x48.jpg 48w, //mauweb.monamedia.net/lazada/wp-content/uploads/2017/10/AoSomiCaroNu-01.jpg 960w" sizes="(max-width: 300px) 100vw, 300px" />									</a>
+                                                            <div class="badge-container absolute left top z-1">
                                                             </div>
-                                                            <div class="image-tools z-top top right show-on-hover">
-                                                            </div>
-                                                            <div class="image-tools grid-tools text-center hide-for-small bottom hover-slide-in show-on-hover">
-                                                            </div>
-                                                        </div><!-- box-image -->
+                                                            <div class="product-small box ">
+                                                                <div class="box-image">
+                                                                    <div class="image-fade_in_back">
+                                                                        <a href="http://mauweb.monamedia.net/lazada/san-pham/bo-2-nuoc-giat-omo-mactic-cua-truoc-2-7kg/">
+                                                                            <img width="300" height="300" src="//mauweb.monamedia.net/lazada/wp-content/uploads/2017/11/omo-matic-01-300x300.png" class="attachment-shop_catalog size-shop_catalog wp-post-image" alt="" srcset="//mauweb.monamedia.net/lazada/wp-content/uploads/2017/11/omo-matic-01-300x300.png 300w, //mauweb.monamedia.net/lazada/wp-content/uploads/2017/11/omo-matic-01-150x150.png 150w, //mauweb.monamedia.net/lazada/wp-content/uploads/2017/11/omo-matic-01-768x768.png 768w, //mauweb.monamedia.net/lazada/wp-content/uploads/2017/11/omo-matic-01-180x180.png 180w, //mauweb.monamedia.net/lazada/wp-content/uploads/2017/11/omo-matic-01-600x600.png 600w, //mauweb.monamedia.net/lazada/wp-content/uploads/2017/11/omo-matic-01-24x24.png 24w, //mauweb.monamedia.net/lazada/wp-content/uploads/2017/11/omo-matic-01-36x36.png 36w, //mauweb.monamedia.net/lazada/wp-content/uploads/2017/11/omo-matic-01-48x48.png 48w, //mauweb.monamedia.net/lazada/wp-content/uploads/2017/11/omo-matic-01.png 1024w" sizes="(max-width: 300px) 100vw, 300px" /><img width="300" height="300" src="http://mauweb.monamedia.net/lazada/wp-content/uploads/2017/11/omo-matic-01-300x300.png" class="show-on-hover absolute fill hide-for-small back-image" alt="" srcset="http://mauweb.monamedia.net/lazada/wp-content/uploads/2017/11/omo-matic-01-300x300.png 300w, http://mauweb.monamedia.net/lazada/wp-content/uploads/2017/11/omo-matic-01-150x150.png 150w, http://mauweb.monamedia.net/lazada/wp-content/uploads/2017/11/omo-matic-01-768x768.png 768w, http://mauweb.monamedia.net/lazada/wp-content/uploads/2017/11/omo-matic-01-180x180.png 180w, http://mauweb.monamedia.net/lazada/wp-content/uploads/2017/11/omo-matic-01-600x600.png 600w, http://mauweb.monamedia.net/lazada/wp-content/uploads/2017/11/omo-matic-01-24x24.png 24w, http://mauweb.monamedia.net/lazada/wp-content/uploads/2017/11/omo-matic-01-36x36.png 36w, http://mauweb.monamedia.net/lazada/wp-content/uploads/2017/11/omo-matic-01-48x48.png 48w, http://mauweb.monamedia.net/lazada/wp-content/uploads/2017/11/omo-matic-01.png 1024w" sizes="(max-width: 300px) 100vw, 300px" />				</a>
+                                                                    </div>
+                                                                    <div class="image-tools is-small top right show-on-hover">
+                                                                    </div>
+                                                                    <div class="image-tools is-small hide-for-small bottom left show-on-hover">
+                                                                    </div>
+                                                                    <div class="image-tools grid-tools text-center hide-for-small bottom hover-slide-in show-on-hover">
+                                                                    </div>
+                                                                </div><!-- box-image -->
 
-                                                        <div class="box-text text-center" >
-                                                            <div class="title-wrapper">		<p class="category uppercase is-smaller no-text-overflow product-cat op-7">
-                                                                    Áo		</p> <p class="name product-title"><a href="http://mauweb.monamedia.net/lazada/san-pham/ao-so-mi-caro-kem-belt/">Áo sơ mi caro kèm belt</a></p></div><div class="price-wrapper"><div class="star-rating"><span style="width:100%">Được xếp hạng <strong class="rating">5.00</strong> 5 sao</span></div>
-                                                                <span class="price"><del><span class="woocommerce-Price-amount amount">290,000&nbsp;<span class="woocommerce-Price-currencySymbol">&#8363;</span></span></del> <ins><span class="woocommerce-Price-amount amount">145,000&nbsp;<span class="woocommerce-Price-currencySymbol">&#8363;</span></span></ins></span>
-                                                            </div>							</div><!-- box-text -->
-                                                    </div><!-- box -->
-                                                </div><!-- .col-inner -->
-                                            </div><!-- col -->
+                                                                <div class="box-text box-text-products text-center grid-style-2">
+                                                                    <div class="title-wrapper">		<p class="category uppercase is-smaller no-text-overflow product-cat op-7">
+                                                                            Bách hóa online		</p> <p class="name product-title"><a href="http://mauweb.monamedia.net/lazada/san-pham/bo-2-nuoc-giat-omo-mactic-cua-truoc-2-7kg/">Bộ 2 nước giặt OMO Mactic cửa trước 2.7kg</a></p></div><div class="price-wrapper">
+                                                                        <span class="price"><span class="woocommerce-Price-amount amount">314,000&nbsp;<span class="woocommerce-Price-currencySymbol">&#8363;</span></span></span>
+                                                                    </div>		</div><!-- box-text -->
+                                                            </div><!-- box -->
+                                                        </div><!-- .col-inner -->
+                                                    </div><!-- col -->
 
-
-                                            <div class="col" >
-                                                <div class="col-inner">
-
-                                                    <div class="badge-container absolute left top z-1">
-                                                        <div class="callout badge badge-square"><div class="badge-inner secondary on-sale"><span class="onsale">-33%</span></div></div>
-                                                    </div>
-                                                    <div class="product-small box has-hover box-normal box-text-bottom">
-                                                        <div class="box-image" style="width:74%;">
-                                                            <div class="" >
-                                                                <a href="http://mauweb.monamedia.net/lazada/san-pham/xiaomi-note-4x-16gb-ram-3gb-2017-black-hang-nhap-khau/">
-                                                                    <img width="300" height="300" src="http://mauweb.monamedia.net/lazada/wp-content/uploads/2017/11/xiaomi-note-4x-04-300x300.png" class="show-on-hover absolute fill hide-for-small back-image" alt="" srcset="http://mauweb.monamedia.net/lazada/wp-content/uploads/2017/11/xiaomi-note-4x-04-300x300.png 300w, http://mauweb.monamedia.net/lazada/wp-content/uploads/2017/11/xiaomi-note-4x-04-150x150.png 150w, http://mauweb.monamedia.net/lazada/wp-content/uploads/2017/11/xiaomi-note-4x-04-768x770.png 768w, http://mauweb.monamedia.net/lazada/wp-content/uploads/2017/11/xiaomi-note-4x-04-180x180.png 180w, http://mauweb.monamedia.net/lazada/wp-content/uploads/2017/11/xiaomi-note-4x-04-600x600.png 600w, http://mauweb.monamedia.net/lazada/wp-content/uploads/2017/11/xiaomi-note-4x-04-24x24.png 24w, http://mauweb.monamedia.net/lazada/wp-content/uploads/2017/11/xiaomi-note-4x-04-36x36.png 36w, http://mauweb.monamedia.net/lazada/wp-content/uploads/2017/11/xiaomi-note-4x-04-48x48.png 48w, http://mauweb.monamedia.net/lazada/wp-content/uploads/2017/11/xiaomi-note-4x-04.png 943w" sizes="(max-width: 300px) 100vw, 300px" /><img width="300" height="300" src="//mauweb.monamedia.net/lazada/wp-content/uploads/2017/11/xiaomi-note-4x-03-300x300.png" class="attachment-shop_catalog size-shop_catalog wp-post-image" alt="" srcset="//mauweb.monamedia.net/lazada/wp-content/uploads/2017/11/xiaomi-note-4x-03-300x300.png 300w, //mauweb.monamedia.net/lazada/wp-content/uploads/2017/11/xiaomi-note-4x-03-150x150.png 150w, //mauweb.monamedia.net/lazada/wp-content/uploads/2017/11/xiaomi-note-4x-03-180x180.png 180w, //mauweb.monamedia.net/lazada/wp-content/uploads/2017/11/xiaomi-note-4x-03-600x600.png 600w, //mauweb.monamedia.net/lazada/wp-content/uploads/2017/11/xiaomi-note-4x-03-24x24.png 24w, //mauweb.monamedia.net/lazada/wp-content/uploads/2017/11/xiaomi-note-4x-03-36x36.png 36w, //mauweb.monamedia.net/lazada/wp-content/uploads/2017/11/xiaomi-note-4x-03-48x48.png 48w" sizes="(max-width: 300px) 100vw, 300px" />									</a>
-                                                            </div>
-                                                            <div class="image-tools z-top top right show-on-hover">
-                                                            </div>
-                                                            <div class="image-tools grid-tools text-center hide-for-small bottom hover-slide-in show-on-hover">
-                                                            </div>
-                                                        </div><!-- box-image -->
-
-                                                        <div class="box-text text-center" >
-                                                            <div class="title-wrapper">		<p class="category uppercase is-smaller no-text-overflow product-cat op-7">
-                                                                    Điện thoại		</p> <p class="name product-title"><a href="http://mauweb.monamedia.net/lazada/san-pham/xiaomi-note-4x-16gb-ram-3gb-2017-black-hang-nhap-khau/">Xiaomi Note 4X 16GB Ram 3GB 2017 ( Black) &#8211; Hàng nhập khẩu</a></p></div><div class="price-wrapper">
-                                                                <span class="price"><del><span class="woocommerce-Price-amount amount">4,127,732&nbsp;<span class="woocommerce-Price-currencySymbol">&#8363;</span></span></del> <ins><span class="woocommerce-Price-amount amount">2,761,999&nbsp;<span class="woocommerce-Price-currencySymbol">&#8363;</span></span></ins></span>
-                                                            </div>							</div><!-- box-text -->
-                                                    </div><!-- box -->
-                                                </div><!-- .col-inner -->
-                                            </div><!-- col -->
+                                                </div><!-- row -->
 
 
-                                            <div class="col" >
-                                                <div class="col-inner">
-
-                                                    <div class="badge-container absolute left top z-1">
-                                                        <div class="callout badge badge-square"><div class="badge-inner secondary on-sale"><span class="onsale">-40%</span></div></div>
-                                                    </div>
-                                                    <div class="product-small box has-hover box-normal box-text-bottom">
-                                                        <div class="box-image" style="width:74%;">
-                                                            <div class="" >
-                                                                <a href="http://mauweb.monamedia.net/lazada/san-pham/nhot-motul-xe-tay-ga-scooter-expert-le-10w40-800ml/">
-                                                                    <img width="300" height="300" src="http://mauweb.monamedia.net/lazada/wp-content/uploads/2017/11/nhot-motul-02-300x300.jpg" class="show-on-hover absolute fill hide-for-small back-image" alt="" srcset="http://mauweb.monamedia.net/lazada/wp-content/uploads/2017/11/nhot-motul-02-300x300.jpg 300w, http://mauweb.monamedia.net/lazada/wp-content/uploads/2017/11/nhot-motul-02-150x150.jpg 150w, http://mauweb.monamedia.net/lazada/wp-content/uploads/2017/11/nhot-motul-02-180x180.jpg 180w, http://mauweb.monamedia.net/lazada/wp-content/uploads/2017/11/nhot-motul-02-600x600.jpg 600w" sizes="(max-width: 300px) 100vw, 300px" /><img width="300" height="300" src="//mauweb.monamedia.net/lazada/wp-content/uploads/2017/11/nhot-motul-01-300x300.jpg" class="attachment-shop_catalog size-shop_catalog wp-post-image" alt="" srcset="//mauweb.monamedia.net/lazada/wp-content/uploads/2017/11/nhot-motul-01-300x300.jpg 300w, //mauweb.monamedia.net/lazada/wp-content/uploads/2017/11/nhot-motul-01-150x150.jpg 150w, //mauweb.monamedia.net/lazada/wp-content/uploads/2017/11/nhot-motul-01-768x768.jpg 768w, //mauweb.monamedia.net/lazada/wp-content/uploads/2017/11/nhot-motul-01-180x180.jpg 180w, //mauweb.monamedia.net/lazada/wp-content/uploads/2017/11/nhot-motul-01-600x600.jpg 600w, //mauweb.monamedia.net/lazada/wp-content/uploads/2017/11/nhot-motul-01-24x24.jpg 24w, //mauweb.monamedia.net/lazada/wp-content/uploads/2017/11/nhot-motul-01-36x36.jpg 36w, //mauweb.monamedia.net/lazada/wp-content/uploads/2017/11/nhot-motul-01-48x48.jpg 48w, //mauweb.monamedia.net/lazada/wp-content/uploads/2017/11/nhot-motul-01.jpg 850w" sizes="(max-width: 300px) 100vw, 300px" />									</a>
-                                                            </div>
-                                                            <div class="image-tools z-top top right show-on-hover">
-                                                            </div>
-                                                            <div class="image-tools grid-tools text-center hide-for-small bottom hover-slide-in show-on-hover">
-                                                            </div>
-                                                        </div><!-- box-image -->
-
-                                                        <div class="box-text text-center" >
-                                                            <div class="title-wrapper">		<p class="category uppercase is-smaller no-text-overflow product-cat op-7">
-                                                                    Chăm sóc		</p> <p class="name product-title"><a href="http://mauweb.monamedia.net/lazada/san-pham/nhot-motul-xe-tay-ga-scooter-expert-le-10w40-800ml/">Nhớt MOTUL xe tay ga Scooter Expert LE 10W40 800ml</a></p></div><div class="price-wrapper">
-                                                                <span class="price"><del><span class="woocommerce-Price-amount amount">159,000&nbsp;<span class="woocommerce-Price-currencySymbol">&#8363;</span></span></del> <ins><span class="woocommerce-Price-amount amount">95,000&nbsp;<span class="woocommerce-Price-currencySymbol">&#8363;</span></span></ins></span>
-                                                            </div>							</div><!-- box-text -->
-                                                    </div><!-- box -->
-                                                </div><!-- .col-inner -->
-                                            </div><!-- col -->
 
 
-                                            <div class="col" >
-                                                <div class="col-inner">
-
-                                                    <div class="badge-container absolute left top z-1">
-                                                        <div class="callout badge badge-square"><div class="badge-inner secondary on-sale"><span class="onsale">-19%</span></div></div>
-                                                    </div>
-                                                    <div class="product-small box has-hover box-normal box-text-bottom">
-                                                        <div class="box-image" style="width:74%;">
-                                                            <div class="" >
-                                                                <a href="http://mauweb.monamedia.net/lazada/san-pham/samsung-galaxy-j7-pro-2017-32gb-ram-3gb-den/">
-                                                                    <img width="300" height="300" src="http://mauweb.monamedia.net/lazada/wp-content/uploads/2017/11/samsung-j7-01-300x300.png" class="show-on-hover absolute fill hide-for-small back-image" alt="" srcset="http://mauweb.monamedia.net/lazada/wp-content/uploads/2017/11/samsung-j7-01-300x300.png 300w, http://mauweb.monamedia.net/lazada/wp-content/uploads/2017/11/samsung-j7-01-150x150.png 150w, http://mauweb.monamedia.net/lazada/wp-content/uploads/2017/11/samsung-j7-01-180x180.png 180w, http://mauweb.monamedia.net/lazada/wp-content/uploads/2017/11/samsung-j7-01-600x600.png 600w, http://mauweb.monamedia.net/lazada/wp-content/uploads/2017/11/samsung-j7-01-24x24.png 24w, http://mauweb.monamedia.net/lazada/wp-content/uploads/2017/11/samsung-j7-01-36x36.png 36w, http://mauweb.monamedia.net/lazada/wp-content/uploads/2017/11/samsung-j7-01-48x48.png 48w" sizes="(max-width: 300px) 100vw, 300px" /><img width="300" height="300" src="//mauweb.monamedia.net/lazada/wp-content/uploads/2017/11/samsung-j7-03-300x300.png" class="attachment-shop_catalog size-shop_catalog wp-post-image" alt="" srcset="//mauweb.monamedia.net/lazada/wp-content/uploads/2017/11/samsung-j7-03-300x300.png 300w, //mauweb.monamedia.net/lazada/wp-content/uploads/2017/11/samsung-j7-03-150x150.png 150w, //mauweb.monamedia.net/lazada/wp-content/uploads/2017/11/samsung-j7-03-180x180.png 180w, //mauweb.monamedia.net/lazada/wp-content/uploads/2017/11/samsung-j7-03-600x600.png 600w, //mauweb.monamedia.net/lazada/wp-content/uploads/2017/11/samsung-j7-03-24x24.png 24w, //mauweb.monamedia.net/lazada/wp-content/uploads/2017/11/samsung-j7-03-36x36.png 36w, //mauweb.monamedia.net/lazada/wp-content/uploads/2017/11/samsung-j7-03-48x48.png 48w" sizes="(max-width: 300px) 100vw, 300px" />									</a>
-                                                            </div>
-                                                            <div class="image-tools z-top top right show-on-hover">
-                                                            </div>
-                                                            <div class="image-tools grid-tools text-center hide-for-small bottom hover-slide-in show-on-hover">
-                                                            </div>
-                                                        </div><!-- box-image -->
-
-                                                        <div class="box-text text-center" >
-                                                            <div class="title-wrapper">		<p class="category uppercase is-smaller no-text-overflow product-cat op-7">
-                                                                    Điện thoại		</p> <p class="name product-title"><a href="http://mauweb.monamedia.net/lazada/san-pham/samsung-galaxy-j7-pro-2017-32gb-ram-3gb-den/">Samsung Galaxy J7 Pro 2017 32GB Ram 3GB (Đen)</a></p></div><div class="price-wrapper">
-                                                                <span class="price"><del><span class="woocommerce-Price-amount amount">6,990,000&nbsp;<span class="woocommerce-Price-currencySymbol">&#8363;</span></span></del> <ins><span class="woocommerce-Price-amount amount">5,684,000&nbsp;<span class="woocommerce-Price-currencySymbol">&#8363;</span></span></ins></span>
-                                                            </div>							</div><!-- box-text -->
-                                                    </div><!-- box -->
-                                                </div><!-- .col-inner -->
-                                            </div><!-- col -->
 
 
-                                            <div class="col" >
-                                                <div class="col-inner">
+                                            </div>
+                                        </div></div>
 
-                                                    <div class="badge-container absolute left top z-1">
-                                                        <div class="callout badge badge-square"><div class="badge-inner secondary on-sale"><span class="onsale">-18%</span></div></div>
-                                                    </div>
-                                                    <div class="product-small box has-hover box-normal box-text-bottom">
-                                                        <div class="box-image" style="width:74%;">
-                                                            <div class="" >
-                                                                <a href="http://mauweb.monamedia.net/lazada/san-pham/goi-om-brown-%e2%9d%a4%ef%b8%8f-cony/">
-                                                                    <img width="300" height="300" src="http://mauweb.monamedia.net/lazada/wp-content/uploads/2017/10/GauOm-02-300x300.jpg" class="show-on-hover absolute fill hide-for-small back-image" alt="" srcset="http://mauweb.monamedia.net/lazada/wp-content/uploads/2017/10/GauOm-02-300x300.jpg 300w, http://mauweb.monamedia.net/lazada/wp-content/uploads/2017/10/GauOm-02-150x150.jpg 150w, http://mauweb.monamedia.net/lazada/wp-content/uploads/2017/10/GauOm-02-180x180.jpg 180w" sizes="(max-width: 300px) 100vw, 300px" /><img width="300" height="300" src="//mauweb.monamedia.net/lazada/wp-content/uploads/2017/10/GauOm-01-300x300.jpg" class="attachment-shop_catalog size-shop_catalog wp-post-image" alt="" srcset="//mauweb.monamedia.net/lazada/wp-content/uploads/2017/10/GauOm-01-300x300.jpg 300w, //mauweb.monamedia.net/lazada/wp-content/uploads/2017/10/GauOm-01-150x150.jpg 150w, //mauweb.monamedia.net/lazada/wp-content/uploads/2017/10/GauOm-01-180x180.jpg 180w, //mauweb.monamedia.net/lazada/wp-content/uploads/2017/10/GauOm-01-600x600.jpg 600w, //mauweb.monamedia.net/lazada/wp-content/uploads/2017/10/GauOm-01-24x24.jpg 24w, //mauweb.monamedia.net/lazada/wp-content/uploads/2017/10/GauOm-01-36x36.jpg 36w, //mauweb.monamedia.net/lazada/wp-content/uploads/2017/10/GauOm-01-48x48.jpg 48w, //mauweb.monamedia.net/lazada/wp-content/uploads/2017/10/GauOm-01.jpg 640w" sizes="(max-width: 300px) 100vw, 300px" />									</a>
-                                                            </div>
-                                                            <div class="image-tools z-top top right show-on-hover">
-                                                            </div>
-                                                            <div class="image-tools grid-tools text-center hide-for-small bottom hover-slide-in show-on-hover">
-                                                            </div>
-                                                        </div><!-- box-image -->
+                                    <style scope="scope">
 
-                                                        <div class="box-text text-center" >
-                                                            <div class="title-wrapper">		<p class="category uppercase is-smaller no-text-overflow product-cat op-7">
-                                                                    Chăn		</p> <p class="name product-title"><a href="http://mauweb.monamedia.net/lazada/san-pham/goi-om-brown-%e2%9d%a4%ef%b8%8f-cony/">Gối ôm Brown  ❤️  Cony</a></p></div><div class="price-wrapper">
-                                                                <span class="price"><del><span class="woocommerce-Price-amount amount">170,000&nbsp;<span class="woocommerce-Price-currencySymbol">&#8363;</span></span></del> <ins><span class="woocommerce-Price-amount amount">140,000&nbsp;<span class="woocommerce-Price-currencySymbol">&#8363;</span></span></ins></span>
-                                                            </div>							</div><!-- box-text -->
-                                                    </div><!-- box -->
-                                                </div><!-- .col-inner -->
-                                            </div><!-- col -->
+                                        #row-1448676555 > .col > .col-inner {
+                                            background-color: rgb(255, 255, 255);
+                                        }
+                                    </style>
+                                </div>
+                                <div class="gap-element" style="display:block; height:auto; padding-top:60px" class="clearfix"></div>
+                            </div><!-- .section-content -->
 
 
-                                            <div class="col" >
-                                                <div class="col-inner">
+                            <style scope="scope">
 
-                                                    <div class="badge-container absolute left top z-1">
-                                                        <div class="callout badge badge-square"><div class="badge-inner secondary on-sale"><span class="onsale">-25%</span></div></div>
-                                                    </div>
-                                                    <div class="product-small box has-hover box-normal box-text-bottom">
-                                                        <div class="box-image" style="width:74%;">
-                                                            <div class="" >
-                                                                <a href="http://mauweb.monamedia.net/lazada/san-pham/keo-milo-cube-275g-100-vien/">
-                                                                    <img width="300" height="300" src="http://mauweb.monamedia.net/lazada/wp-content/uploads/2017/11/milo-cube-02-300x300.jpg" class="show-on-hover absolute fill hide-for-small back-image" alt="" srcset="http://mauweb.monamedia.net/lazada/wp-content/uploads/2017/11/milo-cube-02-300x300.jpg 300w, http://mauweb.monamedia.net/lazada/wp-content/uploads/2017/11/milo-cube-02-150x150.jpg 150w, http://mauweb.monamedia.net/lazada/wp-content/uploads/2017/11/milo-cube-02-768x768.jpg 768w, http://mauweb.monamedia.net/lazada/wp-content/uploads/2017/11/milo-cube-02-180x180.jpg 180w, http://mauweb.monamedia.net/lazada/wp-content/uploads/2017/11/milo-cube-02-600x600.jpg 600w, http://mauweb.monamedia.net/lazada/wp-content/uploads/2017/11/milo-cube-02-24x24.jpg 24w, http://mauweb.monamedia.net/lazada/wp-content/uploads/2017/11/milo-cube-02-36x36.jpg 36w, http://mauweb.monamedia.net/lazada/wp-content/uploads/2017/11/milo-cube-02-48x48.jpg 48w, http://mauweb.monamedia.net/lazada/wp-content/uploads/2017/11/milo-cube-02.jpg 960w" sizes="(max-width: 300px) 100vw, 300px" /><img width="300" height="300" src="//mauweb.monamedia.net/lazada/wp-content/uploads/2017/11/milo-cube-01-300x300.jpg" class="attachment-shop_catalog size-shop_catalog wp-post-image" alt="" srcset="//mauweb.monamedia.net/lazada/wp-content/uploads/2017/11/milo-cube-01-300x300.jpg 300w, //mauweb.monamedia.net/lazada/wp-content/uploads/2017/11/milo-cube-01-150x150.jpg 150w, //mauweb.monamedia.net/lazada/wp-content/uploads/2017/11/milo-cube-01-768x768.jpg 768w, //mauweb.monamedia.net/lazada/wp-content/uploads/2017/11/milo-cube-01-1024x1024.jpg 1024w, //mauweb.monamedia.net/lazada/wp-content/uploads/2017/11/milo-cube-01-180x180.jpg 180w, //mauweb.monamedia.net/lazada/wp-content/uploads/2017/11/milo-cube-01-600x600.jpg 600w, //mauweb.monamedia.net/lazada/wp-content/uploads/2017/11/milo-cube-01-24x24.jpg 24w, //mauweb.monamedia.net/lazada/wp-content/uploads/2017/11/milo-cube-01-36x36.jpg 36w, //mauweb.monamedia.net/lazada/wp-content/uploads/2017/11/milo-cube-01-48x48.jpg 48w, //mauweb.monamedia.net/lazada/wp-content/uploads/2017/11/milo-cube-01.jpg 1200w" sizes="(max-width: 300px) 100vw, 300px" />									</a>
-                                                            </div>
-                                                            <div class="image-tools z-top top right show-on-hover">
-                                                            </div>
-                                                            <div class="image-tools grid-tools text-center hide-for-small bottom hover-slide-in show-on-hover">
-                                                            </div>
-                                                        </div><!-- box-image -->
-
-                                                        <div class="box-text text-center" >
-                                                            <div class="title-wrapper">		<p class="category uppercase is-smaller no-text-overflow product-cat op-7">
-                                                                    Ăn vặt &amp; Bánh kẹo		</p> <p class="name product-title"><a href="http://mauweb.monamedia.net/lazada/san-pham/keo-milo-cube-275g-100-vien/">Kẹo MILO CUBE 275g &#8211; 100 viên</a></p></div><div class="price-wrapper">
-                                                                <span class="price"><del><span class="woocommerce-Price-amount amount">170,000&nbsp;<span class="woocommerce-Price-currencySymbol">&#8363;</span></span></del> <ins><span class="woocommerce-Price-amount amount">127,000&nbsp;<span class="woocommerce-Price-currencySymbol">&#8363;</span></span></ins></span>
-                                                            </div>							</div><!-- box-text -->
-                                                    </div><!-- box -->
-                                                </div><!-- .col-inner -->
-                                            </div><!-- col -->
-
-
-                                            <div class="col" >
-                                                <div class="col-inner">
-
-                                                    <div class="badge-container absolute left top z-1">
-                                                    </div>
-                                                    <div class="product-small box has-hover box-normal box-text-bottom">
-                                                        <div class="box-image" style="width:74%;">
-                                                            <div class="" >
-                                                                <a href="http://mauweb.monamedia.net/lazada/san-pham/set-the-thao-ao-khoac-day-keo/">
-                                                                    <img width="300" height="300" src="http://mauweb.monamedia.net/lazada/wp-content/uploads/2017/10/SetTheThao-02-300x300.jpg" class="show-on-hover absolute fill hide-for-small back-image" alt="" srcset="http://mauweb.monamedia.net/lazada/wp-content/uploads/2017/10/SetTheThao-02-300x300.jpg 300w, http://mauweb.monamedia.net/lazada/wp-content/uploads/2017/10/SetTheThao-02-150x150.jpg 150w, http://mauweb.monamedia.net/lazada/wp-content/uploads/2017/10/SetTheThao-02-180x180.jpg 180w, http://mauweb.monamedia.net/lazada/wp-content/uploads/2017/10/SetTheThao-02-600x600.jpg 600w, http://mauweb.monamedia.net/lazada/wp-content/uploads/2017/10/SetTheThao-02-24x24.jpg 24w, http://mauweb.monamedia.net/lazada/wp-content/uploads/2017/10/SetTheThao-02-36x36.jpg 36w, http://mauweb.monamedia.net/lazada/wp-content/uploads/2017/10/SetTheThao-02-48x48.jpg 48w, http://mauweb.monamedia.net/lazada/wp-content/uploads/2017/10/SetTheThao-02.jpg 750w" sizes="(max-width: 300px) 100vw, 300px" /><img width="300" height="300" src="//mauweb.monamedia.net/lazada/wp-content/uploads/2017/10/SetTheThao-01-300x300.jpg" class="attachment-shop_catalog size-shop_catalog wp-post-image" alt="" srcset="//mauweb.monamedia.net/lazada/wp-content/uploads/2017/10/SetTheThao-01-300x300.jpg 300w, //mauweb.monamedia.net/lazada/wp-content/uploads/2017/10/SetTheThao-01-150x150.jpg 150w, //mauweb.monamedia.net/lazada/wp-content/uploads/2017/10/SetTheThao-01-180x180.jpg 180w, //mauweb.monamedia.net/lazada/wp-content/uploads/2017/10/SetTheThao-01-24x24.jpg 24w, //mauweb.monamedia.net/lazada/wp-content/uploads/2017/10/SetTheThao-01-36x36.jpg 36w, //mauweb.monamedia.net/lazada/wp-content/uploads/2017/10/SetTheThao-01-48x48.jpg 48w, //mauweb.monamedia.net/lazada/wp-content/uploads/2017/10/SetTheThao-01.jpg 553w" sizes="(max-width: 300px) 100vw, 300px" />									</a>
-                                                            </div>
-                                                            <div class="image-tools z-top top right show-on-hover">
-                                                            </div>
-                                                            <div class="image-tools grid-tools text-center hide-for-small bottom hover-slide-in show-on-hover">
-                                                            </div>
-                                                        </div><!-- box-image -->
-
-                                                        <div class="box-text text-center" >
-                                                            <div class="title-wrapper">		<p class="category uppercase is-smaller no-text-overflow product-cat op-7">
-                                                                    Giày &amp; Trang phục thể thao		</p> <p class="name product-title"><a href="http://mauweb.monamedia.net/lazada/san-pham/set-the-thao-ao-khoac-day-keo/">Set Thể Thao Áo Khoác Dây Kéo</a></p></div><div class="price-wrapper">
-                                                                <span class="price"><span class="woocommerce-Price-amount amount">299,000&nbsp;<span class="woocommerce-Price-currencySymbol">&#8363;</span></span></span>
-                                                            </div>							</div><!-- box-text -->
-                                                    </div><!-- box -->
-                                                </div><!-- .col-inner -->
-                                            </div><!-- col -->
-
-
-                                            <div class="col" >
-                                                <div class="col-inner">
-
-                                                    <div class="badge-container absolute left top z-1">
-                                                    </div>
-                                                    <div class="product-small box has-hover box-normal box-text-bottom">
-                                                        <div class="box-image" style="width:74%;">
-                                                            <div class="" >
-                                                                <a href="http://mauweb.monamedia.net/lazada/san-pham/vo-case-xigmatek-shockwave/">
-                                                                    <img width="300" height="300" src="http://mauweb.monamedia.net/lazada/wp-content/uploads/2017/10/VoCase-03-300x300.jpg" class="show-on-hover absolute fill hide-for-small back-image" alt="" srcset="http://mauweb.monamedia.net/lazada/wp-content/uploads/2017/10/VoCase-03-300x300.jpg 300w, http://mauweb.monamedia.net/lazada/wp-content/uploads/2017/10/VoCase-03-150x150.jpg 150w, http://mauweb.monamedia.net/lazada/wp-content/uploads/2017/10/VoCase-03-180x180.jpg 180w, http://mauweb.monamedia.net/lazada/wp-content/uploads/2017/10/VoCase-03-24x24.jpg 24w, http://mauweb.monamedia.net/lazada/wp-content/uploads/2017/10/VoCase-03-36x36.jpg 36w, http://mauweb.monamedia.net/lazada/wp-content/uploads/2017/10/VoCase-03-48x48.jpg 48w, http://mauweb.monamedia.net/lazada/wp-content/uploads/2017/10/VoCase-03.jpg 374w" sizes="(max-width: 300px) 100vw, 300px" /><img width="300" height="300" src="//mauweb.monamedia.net/lazada/wp-content/uploads/2017/10/VoCase-01-300x300.jpg" class="attachment-shop_catalog size-shop_catalog wp-post-image" alt="" srcset="//mauweb.monamedia.net/lazada/wp-content/uploads/2017/10/VoCase-01-300x300.jpg 300w, //mauweb.monamedia.net/lazada/wp-content/uploads/2017/10/VoCase-01-150x150.jpg 150w, //mauweb.monamedia.net/lazada/wp-content/uploads/2017/10/VoCase-01-180x180.jpg 180w, //mauweb.monamedia.net/lazada/wp-content/uploads/2017/10/VoCase-01-24x24.jpg 24w, //mauweb.monamedia.net/lazada/wp-content/uploads/2017/10/VoCase-01-36x36.jpg 36w, //mauweb.monamedia.net/lazada/wp-content/uploads/2017/10/VoCase-01-48x48.jpg 48w, //mauweb.monamedia.net/lazada/wp-content/uploads/2017/10/VoCase-01.jpg 374w" sizes="(max-width: 300px) 100vw, 300px" />									</a>
-                                                            </div>
-                                                            <div class="image-tools z-top top right show-on-hover">
-                                                            </div>
-                                                            <div class="image-tools grid-tools text-center hide-for-small bottom hover-slide-in show-on-hover">
-                                                            </div>
-                                                        </div><!-- box-image -->
-
-                                                        <div class="box-text text-center" >
-                                                            <div class="title-wrapper">		<p class="category uppercase is-smaller no-text-overflow product-cat op-7">
-                                                                    Linh kiện máy tính		</p> <p class="name product-title"><a href="http://mauweb.monamedia.net/lazada/san-pham/vo-case-xigmatek-shockwave/">Vỏ Case Xigmatek Shockwave</a></p></div><div class="price-wrapper">
-                                                                <span class="price"><span class="woocommerce-Price-amount amount">890,000&nbsp;<span class="woocommerce-Price-currencySymbol">&#8363;</span></span></span>
-                                                            </div>							</div><!-- box-text -->
-                                                    </div><!-- box -->
-                                                </div><!-- .col-inner -->
-                                            </div><!-- col -->
-
-                                        </div>
-                                    </div></div>
-
-                                <style scope="scope">
-
-                                    #row-1448676555 > .col > .col-inner {
-                                        background-color: rgb(255, 255, 255);
-                                    }
-                                </style>
-                            </div>
-                            <div class="gap-element" style="display:block; height:auto; padding-top:60px" class="clearfix"></div>
-                        </div><!-- .section-content -->
-
-
-                        <style scope="scope">
-
-                            #section_56152490 {
-                                padding-top: 0px;
-                                padding-bottom: 0px;
-                                background-color: rgb(241, 241, 241);
-                            }
-                        </style>
+                                #section_56152490 {
+                                    padding-top: 0px;
+                                    padding-bottom: 0px;
+                                    background-color: rgb(241, 241, 241);
+                                }
+                            </style>
                     </section>
+
 
 
 
