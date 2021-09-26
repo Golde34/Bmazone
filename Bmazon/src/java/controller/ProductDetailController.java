@@ -28,7 +28,7 @@ import model.ProductTypeDAO;
  *
  * @author AD
  */
-public class ProductDetail extends HttpServlet {
+public class ProductDetailController extends HttpServlet {
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -78,7 +78,7 @@ public class ProductDetail extends HttpServlet {
         request.setAttribute("listGallery", listGallery);
         List<ProductType> listProductType = daoProductType.getProductByProductID(id);
         request.setAttribute("listProductType", listProductType);
-        sendDispatcher(request, response, "productDetail.jsp");
+        sendDispatcher(request, response, "product/productDetail.jsp");
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">

@@ -257,7 +257,7 @@
 
 
                                                             <div class=""  >
-                                                                <a href="ProductDetailMap?service=getProductDetail&pid=<%=ps.getProductID()%>">
+                                                                <a href="ProductDetailControllerMap?service=getProductDetail&pid=<%=ps.getProductID()%>">
 
 
                                                                     <img src="<%=str1%>"></a>
