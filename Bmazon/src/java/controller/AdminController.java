@@ -63,8 +63,8 @@ public class AdminController extends HttpServlet {
             }
 
             //User detail to add and update
-            if (service.equalsIgnoreCase("updatedetail") || service.equalsIgnoreCase("adddetail")) {
-                serviceEditDetail(service, request, response);
+            if (service.equalsIgnoreCase("updateuserdetail") || service.equalsIgnoreCase("adduserdetail")) {
+                serviceUserDetail(service, request, response);
             }
 
             //Add user
@@ -81,20 +81,80 @@ public class AdminController extends HttpServlet {
             if (service.equalsIgnoreCase("deleteuser")) {
                 serviceDeleteUser(request, response);
             }
-            
+
             //Product Manage
             if (service.equalsIgnoreCase("productmanagement")) {
                 serviceProductManagement(request, response);
             }
             
-            //Company Manage
+            //Product detail to add and update
+            if (service.equalsIgnoreCase("updateproductdetail") || service.equalsIgnoreCase("addproductdetail")) {
+                serviceProductDetail(service, request, response);
+            }
+            
+            //Add Product
+            if (service.equalsIgnoreCase("addproduct")) {
+                serviceAddProduct(request, response);
+            }
+            
+            //Update Product 
+            if (service.equalsIgnoreCase("updateproduct")) {
+                serviceUpdateProduct(request, response);
+            }
+
+            //Delete Product
+            if (service.equalsIgnoreCase("deleteproduct")) {
+                serviceDeleteProduct(request, response);
+            }
+
+            //Ship Company Manage
             if (service.equalsIgnoreCase("companymanagement")) {
                 serviceCompanyManagement(request, response);
             }
             
+            //Ship Company detail to add and update
+            if (service.equalsIgnoreCase("updatecompanydetail") || service.equalsIgnoreCase("addcompanydetail")) {
+                serviceCompanyDetail(service, request, response);
+            }
+            
+            //Add Ship Company
+            if (service.equalsIgnoreCase("addcompany")) {
+                serviceAddCompany(request, response);
+            }
+
+            //Update Ship Company 
+            if (service.equalsIgnoreCase("updatecompany")) {
+                serviceUpdateCompany(request, response);
+            }
+
+            //Delete Ship Company
+            if (service.equalsIgnoreCase("deletecompany")) {
+                serviceDeleteCompany(request, response);
+            }
+
             //Gallery Manage
             if (service.equalsIgnoreCase("gallerymanagement")) {
                 serviceGalleryManagement(request, response);
+            }
+            
+            //Gallery detail to add and update
+            if (service.equalsIgnoreCase("updategallerydetail") || service.equalsIgnoreCase("addgallerydetail")) {
+                serviceGalleryDetail(service, request, response);
+            }
+            
+            //Add Gallery
+            if (service.equalsIgnoreCase("addproduct")) {
+                serviceAddGallery(request, response);
+            }
+
+            //Update Gallery 
+            if (service.equalsIgnoreCase("updategallery")) {
+                serviceUpdateGallery(request, response);
+            }
+
+            //Delete Gallery
+            if (service.equalsIgnoreCase("deletegallery")) {
+                serviceDeleteGallery(request, response);
             }
         }
     }
@@ -113,9 +173,9 @@ public class AdminController extends HttpServlet {
         sendDispatcher(request, response, "admin/usermanagement.jsp");
     }
 
-    public void serviceEditDetail(String service, HttpServletRequest request, HttpServletResponse response) {
+    public void serviceUserDetail(String service, HttpServletRequest request, HttpServletResponse response) {
         request.setAttribute("service", service);
-        if (service.equalsIgnoreCase("adddetail")) {
+        if (service.equalsIgnoreCase("adduserdetail")) {
             sendDispatcher(request, response, "admin/userdetail.jsp");
             return;
         }
@@ -143,11 +203,11 @@ public class AdminController extends HttpServlet {
         if (isExist == true) {
             String mess = "Add fail because duplicate information";
             request.setAttribute("mess", mess);
-            request.setAttribute("service", "adddetail");
-            sendDispatcher(request, response, "admin/detail.jsp");
+            request.setAttribute("service", "adduserdetail");
+            sendDispatcher(request, response, "admin/userdetail.jsp");
         }
         if (isExist == false) {
-            User user = new User(username, password, email, phone, 0, 0, fullname,"", address, "","", "", gender, "", "", "", "" ,"", 0, role, 1);
+            User user = new User(username, password, email, phone, 0, 0, fullname, "", address, "", "", "", gender, "", "", "", "", "", 0, role, 1);
             daouser.addUser(user);
             ArrayList<User> listUser = daouser.getAllUser();
             request.setAttribute("listUser", listUser);
@@ -190,8 +250,8 @@ public class AdminController extends HttpServlet {
             ArrayList<User> listUser = daouser.getAllUser();
             request.setAttribute("listUser", listUser);
             request.setAttribute("user", user);
-            request.setAttribute("service", "updatedetail");
-            sendDispatcher(request, response, "admin/detail.jsp");
+            request.setAttribute("service", "updateuserdetail");
+            sendDispatcher(request, response, "admin/userdetail.jsp");
         }
     }
 
@@ -202,23 +262,150 @@ public class AdminController extends HttpServlet {
         request.setAttribute("listUser", listUser);
         sendDispatcher(request, response, "admin/usermanagement.jsp");
     }
-    
+
     public void serviceProductManagement(HttpServletRequest request, HttpServletResponse response) {
         ArrayList<Product> listProduct = daoproduct.getAllProduct();
         request.setAttribute("listProduct", listProduct);
         sendDispatcher(request, response, "admin/productmanagement.jsp");
     }
     
+    public void serviceProductDetail(String service, HttpServletRequest request, HttpServletResponse response) {
+        request.setAttribute("service", service);
+        if (service.equalsIgnoreCase("addduseretail")) {
+            sendDispatcher(request, response, "admin/userdetail.jsp");
+            return;
+        }
+        int id = Integer.parseInt(request.getParameter("userid"));
+        User user = daouser.getUserById(id);
+        request.setAttribute("user", user);
+        sendDispatcher(request, response, "admin/userdetail.jsp");
+    }
+    
+    public void serviceAddProduct(HttpServletRequest request, HttpServletResponse response) {
+        
+    }
+    
+    public void serviceDeleteProduct(HttpServletRequest request, HttpServletResponse response) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    public void serviceUpdateProduct(HttpServletRequest request, HttpServletResponse response) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
     public void serviceCompanyManagement(HttpServletRequest request, HttpServletResponse response) {
         List<ShipCompany> listCompany = daocompany.getAllShipCompany();
         request.setAttribute("listCompany", listCompany);
         sendDispatcher(request, response, "admin/companymanagement.jsp");
     }
     
+    public void serviceCompanyDetail(String service, HttpServletRequest request, HttpServletResponse response) {
+        request.setAttribute("service", service);
+        if (service.equalsIgnoreCase("addcompanydetail")) {
+            sendDispatcher(request, response, "admin/companydetail.jsp");
+            return;
+        }
+        int id = Integer.parseInt(request.getParameter("companyid"));
+        ShipCompany company = daocompany.getShipCompanyById(id);
+        request.setAttribute("company", company);
+        sendDispatcher(request, response, "admin/companydetail.jsp");
+    }
+    
+    public void serviceDeleteCompany(HttpServletRequest request, HttpServletResponse response) {
+        String id = request.getParameter("companyid");
+        daocompany.deleteShipCompany(id);
+        List<ShipCompany> listCompany = daocompany.getAllShipCompany();
+        request.setAttribute("listCompany", listCompany);
+        sendDispatcher(request, response, "admin/companymanagement.jsp");
+    }
+
+    public void serviceAddCompany(HttpServletRequest request, HttpServletResponse response) {
+        String companyname = request.getParameter("companyname");
+        String unitcost = request.getParameter("unitcost");
+        String commitdate = request.getParameter("commitdate");
+        boolean isExist = false;
+//        if (daouser.checkExistMail(email) == true
+//                || daouser.checkExistPhone(phone) == true
+//                || daouser.checkExistUserName(username) == true) {
+//            isExist = true;
+//        }
+        if (isExist == true) {
+            String mess = "Add fail because duplicate information";
+            request.setAttribute("mess", mess);
+            request.setAttribute("service", "addcompanydetail");
+            sendDispatcher(request, response, "admin/companydetail.jsp");
+        }
+        if (isExist == false) {
+            ShipCompany company = new ShipCompany();
+            company.setCommitDate(Integer.parseInt(commitdate));
+            company.setCompanyName(companyname);
+            company.setUnitCost(Double.parseDouble(unitcost));
+            company.setStatus(1);
+            daocompany.addShipCompany(company);
+            List<ShipCompany> listCompany = daocompany.getAllShipCompany();
+            request.setAttribute("listCompany", listCompany);
+            sendDispatcher(request, response, "admin/companymanagement.jsp");
+        }
+    }
+
+    public void serviceUpdateCompany(HttpServletRequest request, HttpServletResponse response) {
+        String companyname = request.getParameter("companyname");
+        String unitcost = request.getParameter("unitcost");
+        String commitdate = request.getParameter("commitdate");
+        boolean isExist = false;
+//                if (daouser.checkExistMail(email) == true
+//                        || daouser.checkExistPhone(phone) == true
+//                        || daouser.checkExistUserName(username) == true) {
+//                    isExist = true;
+//                }
+//                if (isExist == true) {
+//                    String mess = "Add fail because duplicate information";
+//                    request.setAttribute("mess", mess);
+//                    sendDispatcher(request, response, "admin/detail.jsp");
+//                }
+        if (isExist == false) {
+            String id = request.getParameter("id");
+            ShipCompany company = daocompany.getShipCompanyById(Integer.parseInt(id));
+            company.setCommitDate(Integer.parseInt(commitdate));
+            company.setCompanyName(companyname);
+            company.setUnitCost(Double.parseDouble(unitcost));
+            daocompany.editShipCompany(company);
+            List<ShipCompany> listCompany = daocompany.getAllShipCompany();
+            request.setAttribute("listCompany", listCompany);
+            request.setAttribute("company", company);
+            request.setAttribute("service", "updatecompanydetail");
+            sendDispatcher(request, response, "admin/companydetail.jsp");
+        }
+    }
+
     public void serviceGalleryManagement(HttpServletRequest request, HttpServletResponse response) {
         List<Gallery> listGallery = daogallery.getAllGallery();
         request.setAttribute("listGallery", listGallery);
         sendDispatcher(request, response, "admin/gallerymanagement.jsp");
+    }
+    
+    public void serviceGalleryDetail(String service, HttpServletRequest request, HttpServletResponse response) {
+        request.setAttribute("service", service);
+        if (service.equalsIgnoreCase("addduseretail")) {
+            sendDispatcher(request, response, "admin/userdetail.jsp");
+            return;
+        }
+        int id = Integer.parseInt(request.getParameter("userid"));
+        User user = daouser.getUserById(id);
+        request.setAttribute("user", user);
+        sendDispatcher(request, response, "admin/userdetail.jsp");
+    }
+    
+    public void serviceAddGallery(HttpServletRequest request, HttpServletResponse response) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    public void serviceDeleteGallery(HttpServletRequest request, HttpServletResponse response) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    public void serviceUpdateGallery(HttpServletRequest request, HttpServletResponse response) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
     public void sendDispatcher(HttpServletRequest request, HttpServletResponse response, String path) {

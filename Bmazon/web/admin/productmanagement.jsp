@@ -1,9 +1,11 @@
-<%@page import="java.util.ArrayList"%>
+<%@page import="model.ProductTypeDAO"%>
+<%@page import="java.util.*"%>
 <%@page import="entity.*"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <c:set var="contextPath" value="${pageContext.request.contextPath}" />
 <%
+    ProductTypeDAO producttypedao = new ProductTypeDAO();
     User curUser = (User) request.getSession().getAttribute("currUser");
     ArrayList<Product> listProduct = (ArrayList<Product>) request.getAttribute("listProduct");
 %>
@@ -28,6 +30,20 @@
         <link href="${contextPath}/css/nucleo-svg.css" rel="stylesheet" />
         <!-- CSS Files -->
         <link id="pagestyle" href="${contextPath}/css/soft-ui-dashboard.css?v=1.0.3" rel="stylesheet" />
+        <style>
+            table {
+                table-layout: fixed;
+            }
+            td {
+                word-break: break-all;
+            }
+            th,td{
+                padding: 5px 10px;
+            }
+            tr:nth-child(odd){
+                background-color: #eeeeee;
+            }
+        </style>
     </head>
 
     <body class="g-sidenav-show  bg-gray-100">
@@ -168,56 +184,64 @@
                                 <div class="card-header py-3" 
                                      style="display: flex;
                                      justify-content: space-between;">
-                                    <h6 class="m-0 font-weight-bold text-primary">User</h6>
-                                    <div class="ms-md-auto pe-md-3 d-flex align-items-center">
-                                        <div class="input-group">
-                                            <span class="input-group-text text-body"><i class="fas fa-search" aria-hidden="true"></i></span>
-                                            <input type="text" class="form-control" placeholder="Type here...">
+                                    <h6 class="m-0 font-weight-bold text-primary">Product</h6>
+                                    <a href="AdminControllerMap?service=adddetail">
+                                        <button class="border-radius-md border-white text-secondary">Add new product</button></a>
+                                </div>
+                                <div class="card-body">
+                                    <div class="table_head py-3" style="display: flex;
+                                         justify-content: space-between;">
+                                        <div class="rowNum">
+                                            <h6 style="display: inline">Select number of Rows</h6>
+                                            <div class="form-group" style="display: inline;">
+                                                <select name="state" id="maxRows" class="form-control" style="width:80px;display:inline;">
+                                                    <option value="5">5</option>
+                                                    <option value="10">10</option>
+                                                    <option value="20">20</option>
+                                                    <option value="5000">Show All</option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                        <div class="tb_search">
+                                            <input type="text" id="search_input_all" onkeyup="FilterkeyWord_all_table()" placeholder="Search.." class="form-control">
                                         </div>
                                     </div>
-                                    <a href="AdminControllerMap?service=adddetail">
-                                        <button>Add new user</button></a>
-                                </div>
-                                                                <div class="card-body">
-                                    <h6>Select number of Rows</h6>
-                                    <div class="form-group">
-                                        <select name="state" id="maxRows" class="form-control" style="width:100px;">
-                                            <option value="5">5</option>
-                                            <option value="10">10</option>
-                                            <option value="20">20</option>
-                                            <option value="5000">Show All</option>
-                                        </select>
+                                    <div class="table-responsive-md">
+                                        <table style="table-layout: fixed;width: 100%;text-align: center;"id="dataTable">
+                                            <thead>
+                                                <tr>
+                                                    <th style="width: 50%;">Product Name</th>
+                                                    <th style="width: 10%;">Color</th>
+                                                    <th style="width: 10%;">Size</th>
+                                                    <th style="width: 10%;">Price</th>
+                                                    <th style="width: 10%;">Warehouse</th>
+                                                    <th style="width: 5%;"></th>
+                                                    <th style="width: 5%;"></th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                <%for (Product product : listProduct) {
+                                                        List<ProductType> listProductType = producttypedao.getProductByProductID(product.getProductID());
+                                                        for (ProductType producttype : listProductType) {
+                                                %>
+                                                <tr>
+                                                    <td><div><%=product.getProductName()%></div></td>
+                                                    <td><div><%=producttype.getColor()%></div></td>
+                                                    <td><div><%=producttype.getSize()%></div></td>
+                                                    <td><div><%=producttype.getPrice()%></div></td>
+                                                    <td><div><%=producttype.getProductTypeId()%></div></td>
+                                                    <td><div>
+                                                            <a href="AdminControllerMap?service=updatedetail&userid=<%=producttype.getProductTypeId()%>"><span class="fas fa-edit"></span></a>
+                                                        </div></td>
+                                                    <td><div><a href="AdminControllerMap?service=deleteuser&userid=<%=producttype.getProductTypeId()%>" onclick="return confirm('Are you sure you want to Remove?');"><span class="fas fa-trash-alt"></span></a></div></td>
+                                                </tr>
+                                                <%}%>
+                                                <%}%>
+                                            </tbody>
+                                        </table>
                                     </div>
-                                    <table class="table" id="dataTable" width="100%" cellspacing="0"  style="text-align: center;">
-                                        <thead>
-                                            <tr>
-                                                <th>Username</th>
-                                                <th>Password</th>
-                                                <th>Email</th>
-                                                <th>Phone</th>
-                                                <th>Address</th>
-                                                <th></th>
-                                                <th></th>
-                                            </tr>
-                                        </thead>
-                                        <tbody>
-                                            <%for (Product product : listProduct) {%>
-                                            <tr>
-                                                <td><%=product.getProductName() %></td>
-                                                <td><%=product.getRating() %></td>
-                                                <td><%=product.getReleaseDate() %></td>
-                                                <td><%=product.getSeller() %></td>
-                                                <td><%=product.getStatus() %></td>
-                                                <td>
-                                                    <a href="AdminControllerMap?service=updatedetail&userid=<%=product.getProductID() %>"><span class="fas fa-edit"></span></a>
-                                                </td>
-                                                <td><a href="AdminControllerMap?service=deleteuser&userid=<%=product.getProductID() %>" onclick="return confirm('Are you sure you want to Remove?');"><span class="fas fa-trash-alt"></span></a></td>
-                                            </tr>
-                                            <%}%>
-                                        </tbody>
-                                    </table>
-                                        <div class="pagination-container" style="    display: flex;
-    justify-content: flex-end;cursor: pointer;">
+                                    <div class="pagination-container" style="    display: flex;
+                                         justify-content: flex-end;cursor: pointer;">
                                         <nav>
                                             <ul class="pagination"></ul>
                                         </nav>
@@ -243,65 +267,66 @@
         function getPagination(table) {
 
             $('#maxRows').on('change', function () {
-                $('.pagination').html('');						
-                var trnum = 0;									
-                var maxRows = parseInt($(this).val());			
+                $('.pagination').html('');
+                var trnum = 0;
+                var maxRows = parseInt($(this).val());
 
-                var totalRows = $(table + ' tbody tr').length;		
-                $(table + ' tr:gt(0)').each(function () {			
-                    trnum++;									
-                    if (trnum > maxRows) {						
+                var totalRows = $(table + ' tbody tr').length;
+                $(table + ' tr:gt(0)').each(function () {
+                    trnum++;
+                    if (trnum > maxRows) {
 
-                        $(this).hide();							
+                        $(this).hide();
                     }
                     if (trnum <= maxRows) {
                         $(this).show();
                     }// else fade in Important in case if it ..
-                });											
-                if (totalRows > maxRows) {						
-                    var pagenum = Math.ceil(totalRows / maxRows);	
+                });
+                if (totalRows > maxRows) {
+                    var pagenum = Math.ceil(totalRows / maxRows);
                     //	numbers of pages 
-                    for (var i = 1; i <= pagenum; ) {			
-                        $('.pagination').append('<li class="page-item" data-page="'+i+'">\
-      <a class="page-link">'+ i++ + '<span class="sr-only">(current)</span></a>\
+                    for (var i = 1; i <= pagenum; ) {
+                        $('.pagination').append('<li class="page-item" data-page="' + i + '">\
+    <a class="page-link">' + i++ + '<span class="sr-only">(current)</span></a>\
     </li>').show();
-                    }											i 
-                } 												
-                $('.pagination li:first-child').addClass('active'); 
+                    }
+                    i
+                }
+                $('.pagination li:first-child').addClass('active');
 
-                $('.pagination li').on('click', function (e) {		
+                $('.pagination li').on('click', function (e) {
                     e.preventDefault();
-                    var pageNum = $(this).attr('data-page');	
-                    var trIndex = 0;							
-                    $('.pagination li').removeClass('active');	
-                    $(this).addClass('active');					
+                    var pageNum = $(this).attr('data-page');
+                    var trIndex = 0;
+                    $('.pagination li').removeClass('active');
+                    $(this).addClass('active');
 
 
-                    $(table + ' tr:gt(0)').each(function () {		
-                        trIndex++;								
+                    $(table + ' tr:gt(0)').each(function () {
+                        trIndex++;
                         if (trIndex > (maxRows * pageNum) || trIndex <= ((maxRows * pageNum) - maxRows)) {
                             $(this).hide();
                         } else {
                             $(this).show();
-                        } 				
-                    }); 										
-                });										
+                        }
+                    });
+                });
             });
         }
 
         function FilterkeyWord_all_table() {
 
-// Count td if you want to search on all table instead of specific column
+    // Count td if you want to search on all table instead of specific column
 
-            var count = $('.table').children('tbody').children('tr:first-child').children('td').length;
-
+            var count = $('#dataTable').children('tbody').children('tr:first-child').children('td').length;
             // Declare variables
             var input, filter, table, tr, td, i;
             input = document.getElementById("search_input_all");
             var input_value = document.getElementById("search_input_all").value;
             filter = input.value.toLowerCase();
+            console.log(filter)
             if (input_value != '') {
-                table = document.getElementById("table-id");
+                table = document.getElementById("dataTable");
                 tr = table.getElementsByTagName("tr");
 
                 // Loop through all table rows, and hide those who don't match the search query

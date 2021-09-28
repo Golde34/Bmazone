@@ -18,8 +18,6 @@ import java.util.List;
  */
 public class ProductTypeDAO extends BaseDAO {
 
-    
-
     public void deleteProductType(String ProTypeId) {
         String sql = "delete from ProductType where prodụctTypeID = ?";
         try {
@@ -127,7 +125,7 @@ public class ProductTypeDAO extends BaseDAO {
 
     public List<ProductType> getProductByProductID(int pid) {
         List<ProductType> list = new ArrayList<>();
-        xSql = "select * from ProductType where productID = ?";
+        xSql = "select * from ProductType where productID = ? order by productID asc";
         try {
             pre = conn.prepareStatement(xSql);
             pre.setInt(1, pid);
@@ -147,7 +145,7 @@ public class ProductTypeDAO extends BaseDAO {
         }
         return list;
     }
-    
+
     public ArrayList<ProductType> getProductByColor(String color) {
         ArrayList<ProductType> list = new ArrayList<>();
         xSql = "SELECT * FROM ProductType WHERE color like ?";
@@ -199,27 +197,51 @@ public class ProductTypeDAO extends BaseDAO {
 //        }
 //        return false;
 //    }
-      public String getProductPrice(int pid) {
-        String price=null;
-        xSql = "SELECT price FROM ProductType WHERE productID = "+pid+" Order by price";
+    public String getProductPrice(int pid) {
+        String price = null;
+        xSql = "SELECT price FROM ProductType WHERE productID = " + pid + " Order by price";
         try {
-            pre = conn.prepareStatement(xSql);         
+            pre = conn.prepareStatement(xSql);
             rs = pre.executeQuery();
             while (rs.next()) {
-                
-                price=rs.getString("price");
-              
+
+                price = rs.getString("price");
+
             }
         } catch (Exception e) {
         }
         return price;
     }
-      public static void main(String[] args) {
-        ProductTypeDAO ptd= new ProductTypeDAO();
-         String s= ptd.getProductPrice(3);
-          System.out.println(s);
-        
+
+    public List<ProductType> searchProduct(String text) {
+        List<ProductType> list = new ArrayList<>();
+        xSql = "SELECT distinct *FROM [Bmazon].[dbo].[ProductType] where productTypeId like '%" + text + "%' or productID like '%" + text + "%' or size like '%" + text + "%' or color like '%" + text + "%' or price like '%" + text + "%' or wareHouseID like '%" + text + "%' or quantity like '%" + text + "%'";
+        try {
+            pre = conn.prepareStatement(xSql);
+            pre.setString(1, text);
+            rs = pre.executeQuery();
+            while (rs.next()) {
+                list.add(new ProductType(
+                        rs.getString(1),
+                        rs.getInt(2),
+                        rs.getString(3),
+                        rs.getString(4),
+                        rs.getString(5),
+                        rs.getInt(6),
+                        rs.getInt(7),
+                        rs.getInt(8)));
+            }
+        } catch (Exception e) {
+        }
+        return list;
     }
-
-
+    public static void main(String[] args) {
+        ProductTypeDAO dao = new ProductTypeDAO();
+        List<ProductType> list = dao.searchProduct("12");
+        for (ProductType productType : list) {
+            System.out.println(productType.getProductTypeId());
+        }
+    }
 }
+
+

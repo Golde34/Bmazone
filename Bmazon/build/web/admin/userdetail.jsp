@@ -72,7 +72,7 @@
                         </a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="../pages/billing.html">
+                        <a class="nav-link" href="AdminControllerMap?service=productmanagement">
                             <div class="icon icon-shape icon-sm shadow border-radius-md bg-white text-center me-2 d-flex align-items-center justify-content-center">
                                 <i class="fas fa-fw fa-tachometer-alt " style="color: black"></i>
                             </div>
@@ -80,19 +80,19 @@
                         </a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link  " href="../pages/virtual-reality.html">
+                        <a class="nav-link  " href="AdminControllerMap?service=companymanagement">
                             <div class="icon icon-shape icon-sm shadow border-radius-md bg-white text-center me-2 d-flex align-items-center justify-content-center">
                                 <i class="fas fa-fw fa-tachometer-alt" style="color: black"></i>
                             </div>
-                            <span class="nav-link-text ms-1">Company Management</span>
+                            <span class="nav-link-text ms-1">Ship Company Management</span>
                         </a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link  " href="../pages/rtl.html">
+                        <a class="nav-link  " href="AdminControllerMap?service=gallerymanagement">
                             <div class="icon icon-shape icon-sm shadow border-radius-md bg-white text-center me-2 d-flex align-items-center justify-content-center">
                                 <i class="fas fa-fw fa-tachometer-alt" style="color: black"></i>
                             </div>
-                            <span class="nav-link-text ms-1">Category Management</span>
+                            <span class="nav-link-text ms-1">Gallery Management</span>
                         </a>
                     </li>
                 </ul>
@@ -168,9 +168,6 @@
             </nav>
             <!-- End Navbar -->
             <div class="container-fluid py-4">
-                <div class="row mt-4">
-
-                </div>
                 <div class="row my-4">
                     <div class="col-lg-12 col-md-12 mb-md-0 mb-4">
                         <div class="card">
@@ -179,18 +176,12 @@
                                      style="display: flex;
                                      justify-content: space-between;">
                                     <h6 class="m-0 font-weight-bold text-primary">User</h6>
-                                    <div class="ms-md-auto pe-md-3 d-flex align-items-center">
-                                        <div class="input-group">
-                                            <span class="input-group-text text-body"><i class="fas fa-search" aria-hidden="true"></i></span>
-                                            <input type="text" class="form-control" placeholder="Type here...">
-                                        </div>
-                                    </div>
-                                    <a href="AdminControllerMap?service=adddetail">
+                                    <a href="AdminControllerMap?service=adduserdetail">
                                         <button>Add new user</button></a>
                                 </div>
                                 <div class="card-body">
                                     <form class="form" action="/Bmazon/AdminControllerMap" method="POST">
-                                        <%if (service.equalsIgnoreCase("adddetail")) {%>
+                                        <%if (service.equalsIgnoreCase("adduserdetail")) {%>
                                         <table class="table">
                                             <tr>
                                                 <td>Name</td>
@@ -247,7 +238,7 @@
                                             </tr>
                                         </table>
                                         <%}%>
-                                        <%if (service.equalsIgnoreCase("updatedetail")) {%>
+                                        <%if (service.equalsIgnoreCase("updateuserdetail")) {%>
                                         <table class="table table-striped">
                                             <tr>
                                                 <td>Name</td>

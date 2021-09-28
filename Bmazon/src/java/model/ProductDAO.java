@@ -23,7 +23,7 @@ BaseDAO dbConn= new BaseDAO();
 
     public ArrayList<Product> getAllProduct() {
         ArrayList<Product> list = new ArrayList<>();
-        String sql = "SELECT TOP 10 * FROM Product where status=1";
+        String sql = "SELECT * FROM Product where status=1";
         try {
             pre = conn.prepareStatement(sql);
             rs = pre.executeQuery();
@@ -319,6 +319,7 @@ BaseDAO dbConn= new BaseDAO();
         }
         return list;
     }
+    
 
     public int addProduct(Product obj) {
         int n = 0;
@@ -400,7 +401,6 @@ BaseDAO dbConn= new BaseDAO();
     }
     public static void main(String[] args) {
         ProductDAO db = new ProductDAO();
-        
         System.out.println(db.getProductByID(5));
     }
 }

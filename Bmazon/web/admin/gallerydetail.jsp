@@ -4,17 +4,13 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <c:set var="contextPath" value="${pageContext.request.contextPath}" />
 <%
-    User user = new User();
-    if (request.getAttribute("user") != null) {
-        user = (User) request.getAttribute("user");
-    }
+    ShipCompany company = (ShipCompany) request.getAttribute("company");
     String mess = (String) request.getAttribute("mess");
     if (mess == null) {
         mess = "";
     }
     String service = (String) request.getAttribute("service");
     User curUser = (User) request.getSession().getAttribute("currUser");
-    ArrayList<User> listUser = (ArrayList<User>) request.getAttribute("listUser");
 %>
 
 <!DOCTYPE html>
@@ -64,9 +60,9 @@
                         </a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link active" href="AdminControllerMap?service=usermanagement">
+                        <a class="nav-link" href="AdminControllerMap?service=usermanagement">
                             <div class="icon icon-shape icon-sm shadow border-radius-md bg-white text-center me-2 d-flex align-items-center justify-content-center">
-                                <i class="fas fa-fw fa-tachometer-alt"></i>
+                                <i class="fas fa-fw fa-tachometer-alt" style="color: black"></i>
                             </div>
                             <span class="nav-link-text ms-1">User Management</span>
                         </a>
@@ -74,17 +70,17 @@
                     <li class="nav-item">
                         <a class="nav-link" href="AdminControllerMap?service=productmanagement">
                             <div class="icon icon-shape icon-sm shadow border-radius-md bg-white text-center me-2 d-flex align-items-center justify-content-center">
-                                <i class="fas fa-fw fa-tachometer-alt " style="color: black"></i>
+                                <i class="fas fa-fw fa-tachometer-alt" style="color: black"></i>
                             </div>
                             <span class="nav-link-text ms-1 ">Product Management</span>
                         </a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link  " href="AdminControllerMap?service=companymanagement">
+                        <a class="nav-link active" href="AdminControllerMap?service=companymanagement">
                             <div class="icon icon-shape icon-sm shadow border-radius-md bg-white text-center me-2 d-flex align-items-center justify-content-center">
-                                <i class="fas fa-fw fa-tachometer-alt" style="color: black"></i>
+                                <i class="fas fa-fw fa-tachometer-alt"></i>
                             </div>
-                            <span class="nav-link-text ms-1">Ship Company Management</span>
+                            <span class="nav-link-text ms-1">Company Management</span>
                         </a>
                     </li>
                     <li class="nav-item">
@@ -175,123 +171,55 @@
                                 <div class="card-header py-3" 
                                      style="display: flex;
                                      justify-content: space-between;">
-                                    <h6 class="m-0 font-weight-bold text-primary">User</h6>
-                                    <a href="AdminControllerMap?service=adduserdetail">
-                                        <button>Add new user</button></a>
+                                    <h6 class="m-0 font-weight-bold text-primary">Company Detail</h6>
+                                    <a href="AdminControllerMap?service=addcompanydetail">
+                                        <button>Add new company</button></a>
                                 </div>
                                 <div class="card-body">
                                     <form class="form" action="/Bmazon/AdminControllerMap" method="POST">
-                                        <%if (service.equalsIgnoreCase("adduserdetail")) {%>
+                                        <%if (service.equalsIgnoreCase("addcompanydetail")) {%>
                                         <table class="table">
                                             <tr>
-                                                <td>Name</td>
-                                                <td><input type="text" name="username" class="input"><br></td>
+                                                <td>Company Name</td>
+                                                <td><input type="text" name="companyname" class="input"><br></td>
                                             </tr>
                                             <tr>
-                                                <td>Password</td>
-                                                <td><input type="text" name="password" class="input"><br></td>
+                                                <td>Unit Cost</td>
+                                                <td><input type="text" name="unitcost" class="input"><br></td>
                                             </tr>    
                                             <tr>
-                                                <td>Full Name<p></td>
-                                                <td><input type="text" name="fullname" class="input"><br></td>
-                                            </tr>
-                                            <tr>
-                                                <td>Phone<p></td>
-                                                <td><input type="text" name="phone" class="input"><br></td>
-                                            </tr>
-                                            <tr>
-                                                <td>Email<p></td>
-                                                <td><input type="text" name="email" class="input"> <br></td>
-                                            <tr>
-                                            <tr>
-                                                <td>Address<p></td>
-                                                <td><input type="text" name="address" class="input"><br></td>
-                                            <tr>
-                                            <tr>
-                                                <td><label>Gender</label></td>
-                                                <td>
-                                                    <div class="custom-select">
-                                                        <select name="gender">
-                                                            <option value="1">Male</option>
-                                                            <option value="0">Female</option>
-                                                        </select>
-                                                    </div>
-                                                </td>
-                                            </tr>
-                                            <tr>  
-                                                <td><label>System Role</label></td>
-                                                <td>
-                                                    <div class="custom-select">
-                                                        <select name="role">
-                                                            <option value="0">Customer</option>
-                                                            <option value="1">Admin</option>
-                                                        </select>
-                                                    </div>
-                                                </td>
+                                                <td>Commit Date<p></td>
+                                                <td><input type="text" name="commitdate" class="input"><br></td>
                                             </tr>
                                             <tr>
                                                 <td></td>
                                                 <td>
-                                                    <input type="submit" value="Add User" class="btn">
-                                                    <input type="hidden" value="adduser" name="service">
+                                                    <input type="submit" value="Add Company" class="btn">
+                                                    <input type="hidden" value="addcompany" name="service">
                                                 </td>
                                             </tr>
                                         </table>
                                         <%}%>
-                                        <%if (service.equalsIgnoreCase("updateuserdetail")) {%>
+                                        <%if (service.equalsIgnoreCase("updatecompanydetail")) {%>
                                         <table class="table table-striped">
                                             <tr>
-                                                <td>Name</td>
-                                                <td><input value="<%=user.getUsername()%>" type="text" name="username" class="input"><br></td>
+                                                <td>Company Name</td>
+                                                <td><input value="<%=company.getCompanyName() %>" type="text" name="companyname" class="input"><br></td>
                                             </tr>
                                             <tr>
-                                                <td>Password</td>
-                                                <td><input value="<%=user.getPassword()%>" type="text" name="password" class="input"><br></td>
+                                                <td>Unit Cost</td>
+                                                <td><input value="<%=company.getUnitCost() %>" type="text" name="unitcost" class="input"><br></td>
                                             </tr>    
                                             <tr>
-                                                <td>Full Name<p></td>
-                                                <td><input value="<%=user.getFullname()%>" type="text" name="fullname" class="input"><br></td>
-                                            </tr>
-                                            <tr>
-                                                <td>Phone<p></td>
-                                                <td><input value="<%=user.getPhoneNumber()%>" type="text" name="phone" class="input"><br></td>
-                                            </tr>
-                                            <tr>
-                                                <td>Email<p></td>
-                                                <td><input value="<%=user.getEmail()%>" type="text" name="email" class="input"> <br></td>
-                                            <tr>
-                                            <tr>
-                                                <td>Address<p></td>
-                                                <td><input value="<%=user.getAddress()%>" type="text" name="address" class="input"><br></td>
-                                            <tr>
-                                            <tr>
-                                                <td><label>Gender</label></td>
-                                                <td>
-                                                    <div class="custom-select">
-                                                        <select name="gender">
-                                                            <option <%if (user.getGender() == 1) {%> selected<%}%> value="1">Male</option>
-                                                            <option <%if (user.getGender() == 0) {%> selected<%}%> value="0">Female</option>
-                                                        </select>
-                                                    </div>
-                                                </td>
-                                            </tr>
-                                            <tr>  
-                                                <td><label>System Role</label></td>
-                                                <td>
-                                                    <div class="custom-select">
-                                                        <select name="role">
-                                                            <option <%if (user.getSystemRole() == 0) {%> selected<%}%> value="0">Customer</option>
-                                                            <option <%if (user.getSystemRole() == 1) {%> selected<%}%> value="1">Admin</option>
-                                                        </select>
-                                                    </div>
-                                                </td>
+                                                <td>Commit Date<p></td>
+                                                <td><input value="<%=company.getCommitDate() %>" type="text" name="commitdate" class="input"><br></td>
                                             </tr>
                                             <tr>
                                                 <td></td>
                                                 <td>
                                                     <input type="submit" value="Update User" class="btn">
-                                                    <input type="hidden" value="updateuser" name="service">
-                                                    <input type="hidden" value="<%=user.getUserId()%>" name="id">
+                                                    <input type="hidden" value="updatecompany" name="service">
+                                                    <input type="hidden" value="<%=company.getCompanyID() %>" name="id">
                                                 </td>
                                             </tr>
                                         </table>

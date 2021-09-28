@@ -166,25 +166,30 @@
                                 <div class="card-header py-3" 
                                      style="display: flex;
                                      justify-content: space-between;">
-                                    <h6 class="m-0 font-weight-bold text-primary">User</h6>
-                                    <div class="ms-md-auto pe-md-3 d-flex align-items-center">
-                                        <div class="input-group">
-                                            <span class="input-group-text text-body"><i class="fas fa-search" aria-hidden="true"></i></span>
-                                            <input type="text" class="form-control" placeholder="Type here...">
-                                        </div>
-                                    </div>
+                                    <h6 class="m-0 font-weight-bold text-primary">Gallery</h6>
                                     <a href="AdminControllerMap?service=adddetail">
                                         <button>Add new user</button></a>
                                 </div>
                                 <div class="card-body">
-                                    <h6>Select number of Rows</h6>
-                                    <div class="form-group">
-                                        <select name="state" id="maxRows" class="form-control" style="width:100px;">
-                                            <option value="5">5</option>
-                                            <option value="10">10</option>
-                                            <option value="20">20</option>
-                                            <option value="5000">Show All</option>
-                                        </select>
+                                    <div class="table_head py-3" style="display: flex;
+                                         justify-content: space-between;">
+                                        <div class="rowNum">
+                                            <h6 style="display: inline">Select number of Rows</h6>
+                                            <div class="form-group" style="display: inline;">
+                                                <select name="state" id="maxRows" class="form-control" style="width:80px;display:inline;">
+                                                    <option value="5">5</option>
+                                                    <option value="10">10</option>
+                                                    <option value="20">20</option>
+                                                    <option value="5000">Show All</option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                        <div class="ms-md-auto pe-md-3 d-flex align-items-center">
+                                            <div class="input-group">
+                                                <span class="input-group-text text-body"><i class="fas fa-search" aria-hidden="true"></i></span>
+                                                <input type="text" class="form-control" placeholder="Type here...">
+                                            </div>
+                                        </div>
                                     </div>
                                     <table class="table table-bordered table-striped" id="dataTable" style="text-align: center;">
                                         <thead>
@@ -214,8 +219,8 @@
                                             <%}%>
                                         </tbody>
                                     </table>
-                                     <div class="pagination-container" style="    display: flex;
-    justify-content: flex-end;cursor: pointer;">
+                                    <div class="pagination-container" style="    display: flex;
+                                         justify-content: flex-end;cursor: pointer;">
                                         <nav>
                                             <ul class="pagination"></ul>
                                         </nav>
@@ -240,102 +245,103 @@
         <!-- Control Center for Soft Dashboard: parallax effects, scripts for the example pages etc -->
 <!--        <script src="${contextPath}/js/soft-ui-dashboard.min.js?v=1.0.3"></script>-->
         <script>
-        getPagination('#dataTable');
-        $('#maxRows').trigger('change');
-        function getPagination(table) {
+                                                    getPagination('#dataTable');
+                                                    $('#maxRows').trigger('change');
+                                                    function getPagination(table) {
 
-            $('#maxRows').on('change', function () {
-                $('.pagination').html('');						
-                var trnum = 0;									
-                var maxRows = parseInt($(this).val());			
+                                                        $('#maxRows').on('change', function () {
+                                                            $('.pagination').html('');
+                                                            var trnum = 0;
+                                                            var maxRows = parseInt($(this).val());
 
-                var totalRows = $(table + ' tbody tr').length;		
-                $(table + ' tr:gt(0)').each(function () {			
-                    trnum++;									
-                    if (trnum > maxRows) {						
+                                                            var totalRows = $(table + ' tbody tr').length;
+                                                            $(table + ' tr:gt(0)').each(function () {
+                                                                trnum++;
+                                                                if (trnum > maxRows) {
 
-                        $(this).hide();							
-                    }
-                    if (trnum <= maxRows) {
-                        $(this).show();
-                    }// else fade in Important in case if it ..
-                });											
-                if (totalRows > maxRows) {						
-                    var pagenum = Math.ceil(totalRows / maxRows);	
-                    //	numbers of pages 
-                    for (var i = 1; i <= pagenum; ) {			
-                        $('.pagination').append('<li class="page-item" data-page="'+i+'">\
-      <a class="page-link">'+ i++ + '<span class="sr-only">(current)</span></a>\
+                                                                    $(this).hide();
+                                                                }
+                                                                if (trnum <= maxRows) {
+                                                                    $(this).show();
+                                                                }// else fade in Important in case if it ..
+                                                            });
+                                                            if (totalRows > maxRows) {
+                                                                var pagenum = Math.ceil(totalRows / maxRows);
+                                                                //	numbers of pages 
+                                                                for (var i = 1; i <= pagenum; ) {
+                                                                    $('.pagination').append('<li class="page-item" data-page="' + i + '">\
+      <a class="page-link">' + i++ + '<span class="sr-only">(current)</span></a>\
     </li>').show();
-                    }											i 
-                } 												
-                $('.pagination li:first-child').addClass('active'); 
+                                                                }
+                                                                i
+                                                            }
+                                                            $('.pagination li:first-child').addClass('active');
 
-                $('.pagination li').on('click', function (e) {		
-                    e.preventDefault();
-                    var pageNum = $(this).attr('data-page');	
-                    var trIndex = 0;							
-                    $('.pagination li').removeClass('active');	
-                    $(this).addClass('active');					
+                                                            $('.pagination li').on('click', function (e) {
+                                                                e.preventDefault();
+                                                                var pageNum = $(this).attr('data-page');
+                                                                var trIndex = 0;
+                                                                $('.pagination li').removeClass('active');
+                                                                $(this).addClass('active');
 
 
-                    $(table + ' tr:gt(0)').each(function () {		
-                        trIndex++;								
-                        if (trIndex > (maxRows * pageNum) || trIndex <= ((maxRows * pageNum) - maxRows)) {
-                            $(this).hide();
-                        } else {
-                            $(this).show();
-                        } 				
-                    }); 										
-                });										
-            });
-        }
+                                                                $(table + ' tr:gt(0)').each(function () {
+                                                                    trIndex++;
+                                                                    if (trIndex > (maxRows * pageNum) || trIndex <= ((maxRows * pageNum) - maxRows)) {
+                                                                        $(this).hide();
+                                                                    } else {
+                                                                        $(this).show();
+                                                                    }
+                                                                });
+                                                            });
+                                                        });
+                                                    }
 
-        function FilterkeyWord_all_table() {
+                                                    function FilterkeyWord_all_table() {
 
 // Count td if you want to search on all table instead of specific column
 
-            var count = $('.table').children('tbody').children('tr:first-child').children('td').length;
+                                                        var count = $('.table').children('tbody').children('tr:first-child').children('td').length;
 
-            // Declare variables
-            var input, filter, table, tr, td, i;
-            input = document.getElementById("search_input_all");
-            var input_value = document.getElementById("search_input_all").value;
-            filter = input.value.toLowerCase();
-            if (input_value != '') {
-                table = document.getElementById("table-id");
-                tr = table.getElementsByTagName("tr");
+                                                        // Declare variables
+                                                        var input, filter, table, tr, td, i;
+                                                        input = document.getElementById("search_input_all");
+                                                        var input_value = document.getElementById("search_input_all").value;
+                                                        filter = input.value.toLowerCase();
+                                                        if (input_value != '') {
+                                                            table = document.getElementById("table-id");
+                                                            tr = table.getElementsByTagName("tr");
 
-                // Loop through all table rows, and hide those who don't match the search query
-                for (i = 1; i < tr.length; i++) {
+                                                            // Loop through all table rows, and hide those who don't match the search query
+                                                            for (i = 1; i < tr.length; i++) {
 
-                    var flag = 0;
+                                                                var flag = 0;
 
-                    for (j = 0; j < count; j++) {
-                        td = tr[i].getElementsByTagName("td")[j];
-                        if (td) {
+                                                                for (j = 0; j < count; j++) {
+                                                                    td = tr[i].getElementsByTagName("td")[j];
+                                                                    if (td) {
 
-                            var td_text = td.innerHTML;
-                            if (td.innerHTML.toLowerCase().indexOf(filter) > -1) {
-                                //var td_text = td.innerHTML;  
-                                //td.innerHTML = 'shaban';
-                                flag = 1;
-                            } else {
-                                //DO NOTHING
-                            }
-                        }
-                    }
-                    if (flag == 1) {
-                        tr[i].style.display = "";
-                    } else {
-                        tr[i].style.display = "none";
-                    }
-                }
-            } else {
-                //RESET TABLE
-                $('#maxRows').trigger('change');
-            }
-        }
+                                                                        var td_text = td.innerHTML;
+                                                                        if (td.innerHTML.toLowerCase().indexOf(filter) > -1) {
+                                                                            //var td_text = td.innerHTML;  
+                                                                            //td.innerHTML = 'shaban';
+                                                                            flag = 1;
+                                                                        } else {
+                                                                            //DO NOTHING
+                                                                        }
+                                                                    }
+                                                                }
+                                                                if (flag == 1) {
+                                                                    tr[i].style.display = "";
+                                                                } else {
+                                                                    tr[i].style.display = "none";
+                                                                }
+                                                            }
+                                                        } else {
+                                                            //RESET TABLE
+                                                            $('#maxRows').trigger('change');
+                                                        }
+                                                    }
         </script>
     </body>
 
