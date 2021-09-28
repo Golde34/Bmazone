@@ -64,6 +64,24 @@ BaseDAO dbConn= new BaseDAO();
         return n;
     }
 
+    public List<Gallery> getAllGallery() {
+        List<Gallery> list = new ArrayList<>();
+        xSql = "select * from [Gallery] ";
+        try {
+            pre = conn.prepareStatement(xSql);
+            rs = pre.executeQuery();
+            while (rs.next()) {
+                list.add(new Gallery(
+                        rs.getInt(1),
+                        rs.getInt(2),
+                        rs.getString(3),
+                        rs.getString(4),
+                        rs.getInt(5)));
+            }
+        } catch (Exception e) {
+        }
+        return list;
+    }
 
     public List<Gallery> getAllGalleryOfProduct(int pid) {
         List<Gallery> list = new ArrayList<>();

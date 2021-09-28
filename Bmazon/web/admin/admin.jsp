@@ -50,7 +50,7 @@
             <div class="" id="sidenav-collapse-main">
                 <ul class="navbar-nav">
                     <li class="nav-item">
-                        <a class="nav-link active" href="../pages/dashboard.html">
+                        <a class="nav-link active" href="AdminControllerMap">
                             <div class="icon icon-shape icon-sm shadow border-radius-md bg-white text-center me-2 d-flex align-items-center justify-content-center">
                                 <i class="fas fa-fw fa-tachometer-alt"></i>
                             </div>
@@ -66,7 +66,7 @@
                         </a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link  " href="../pages/billing.html">
+                        <a class="nav-link  " href="AdminControllerMap?service=productmanagement">
                             <div class="icon icon-shape icon-sm shadow border-radius-md bg-white text-center me-2 d-flex align-items-center justify-content-center">
                                 <i class="fas fa-fw fa-tachometer-alt " style="color: black"></i>
                             </div>
@@ -74,7 +74,7 @@
                         </a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link  " href="../pages/virtual-reality.html">
+                        <a class="nav-link  " href="AdminControllerMap?service=companymanagement">
                             <div class="icon icon-shape icon-sm shadow border-radius-md bg-white text-center me-2 d-flex align-items-center justify-content-center">
                                 <i class="fas fa-fw fa-tachometer-alt" style="color: black"></i>
                             </div>
@@ -82,11 +82,11 @@
                         </a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link  " href="../pages/rtl.html">
+                        <a class="nav-link  " href="AdminControllerMap?service=gallerymanagement">
                             <div class="icon icon-shape icon-sm shadow border-radius-md bg-white text-center me-2 d-flex align-items-center justify-content-center">
                                 <i class="fas fa-fw fa-tachometer-alt" style="color: black"></i>
                             </div>
-                            <span class="nav-link-text ms-1">Category Management</span>
+                            <span class="nav-link-text ms-1">Gallery Management</span>
                         </a>
                     </li>
                 </ul>
@@ -111,8 +111,6 @@
                     <div class="collapse navbar-collapse mt-sm-0 mt-2 me-md-0 me-sm-4" id="navbar">
                         <div class="ms-md-auto pe-md-3 d-flex align-items-center">
                             <div class="input-group">
-                                <span class="input-group-text text-body"><i class="fas fa-search" aria-hidden="true"></i></span>
-                                <input type="text" class="form-control" placeholder="Type here...">
                             </div>
                         </div>
                         <ul class="navbar-nav  justify-content-end">

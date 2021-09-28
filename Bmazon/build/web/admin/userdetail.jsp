@@ -4,6 +4,15 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <c:set var="contextPath" value="${pageContext.request.contextPath}" />
 <%
+    User user = new User();
+    if (request.getAttribute("user") != null) {
+        user = (User) request.getAttribute("user");
+    }
+    String mess = (String) request.getAttribute("mess");
+    if (mess == null) {
+        mess = "";
+    }
+    String service = (String) request.getAttribute("service");
     User curUser = (User) request.getSession().getAttribute("currUser");
     ArrayList<User> listUser = (ArrayList<User>) request.getAttribute("listUser");
 %>
@@ -63,7 +72,7 @@
                         </a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link  " href="AdminControllerMap?service=productmanagement">
+                        <a class="nav-link" href="../pages/billing.html">
                             <div class="icon icon-shape icon-sm shadow border-radius-md bg-white text-center me-2 d-flex align-items-center justify-content-center">
                                 <i class="fas fa-fw fa-tachometer-alt " style="color: black"></i>
                             </div>
@@ -71,7 +80,7 @@
                         </a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link  " href="AdminControllerMap?service=companymanagement">
+                        <a class="nav-link  " href="../pages/virtual-reality.html">
                             <div class="icon icon-shape icon-sm shadow border-radius-md bg-white text-center me-2 d-flex align-items-center justify-content-center">
                                 <i class="fas fa-fw fa-tachometer-alt" style="color: black"></i>
                             </div>
@@ -79,11 +88,11 @@
                         </a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link  " href="AdminControllerMap?service=gallerymanagement">
+                        <a class="nav-link  " href="../pages/rtl.html">
                             <div class="icon icon-shape icon-sm shadow border-radius-md bg-white text-center me-2 d-flex align-items-center justify-content-center">
                                 <i class="fas fa-fw fa-tachometer-alt" style="color: black"></i>
                             </div>
-                            <span class="nav-link-text ms-1">Gallery Management</span>
+                            <span class="nav-link-text ms-1">Category Management</span>
                         </a>
                     </li>
                 </ul>
@@ -171,58 +180,132 @@
                                      justify-content: space-between;">
                                     <h6 class="m-0 font-weight-bold text-primary">User</h6>
                                     <div class="ms-md-auto pe-md-3 d-flex align-items-center">
-                                        <div class="input-group tb-search">
+                                        <div class="input-group">
                                             <span class="input-group-text text-body"><i class="fas fa-search" aria-hidden="true"></i></span>
-                                            <input type="text" id="search_input_all" onkeyup="FilterkeyWord_all_table()" class="form-control" placeholder="Type here...">
+                                            <input type="text" class="form-control" placeholder="Type here...">
                                         </div>
                                     </div>
                                     <a href="AdminControllerMap?service=adddetail">
                                         <button>Add new user</button></a>
                                 </div>
                                 <div class="card-body">
-                                    <h6>Select number of Rows</h6>
-                                    <div class="form-group">
-                                        <select name="state" id="maxRows" class="form-control" style="width:100px;">
-                                            <option value="5">5</option>
-                                            <option value="10">10</option>
-                                            <option value="20">20</option>
-                                            <option value="5000">Show All</option>
-                                        </select>
-                                    </div>
-                                    <table class="table" id="dataTable" width="100%" cellspacing="0"  style="text-align: center;">
-                                        <thead>
+                                    <form class="form" action="/Bmazon/AdminControllerMap" method="POST">
+                                        <%if (service.equalsIgnoreCase("adddetail")) {%>
+                                        <table class="table">
                                             <tr>
-                                                <th>Username</th>
-                                                <th>Password</th>
-                                                <th>Email</th>
-                                                <th>Phone</th>
-                                                <th>Address</th>
-                                                <th></th>
-                                                <th></th>
+                                                <td>Name</td>
+                                                <td><input type="text" name="username" class="input"><br></td>
                                             </tr>
-                                        </thead>
-                                        <tbody>
-                                            <%for (User user : listUser) {%>
                                             <tr>
-                                                <td><%=user.getUsername()%></td>
-                                                <td><%=user.getPassword()%></td>
-                                                <td><%=user.getEmail()%></td>
-                                                <td><%=user.getPhoneNumber()%></td>
-                                                <td><%=user.getAddress()%></td>
+                                                <td>Password</td>
+                                                <td><input type="text" name="password" class="input"><br></td>
+                                            </tr>    
+                                            <tr>
+                                                <td>Full Name<p></td>
+                                                <td><input type="text" name="fullname" class="input"><br></td>
+                                            </tr>
+                                            <tr>
+                                                <td>Phone<p></td>
+                                                <td><input type="text" name="phone" class="input"><br></td>
+                                            </tr>
+                                            <tr>
+                                                <td>Email<p></td>
+                                                <td><input type="text" name="email" class="input"> <br></td>
+                                            <tr>
+                                            <tr>
+                                                <td>Address<p></td>
+                                                <td><input type="text" name="address" class="input"><br></td>
+                                            <tr>
+                                            <tr>
+                                                <td><label>Gender</label></td>
                                                 <td>
-                                                    <a href="AdminControllerMap?service=updatedetail&userid=<%=user.getUserId()%>"><span class="fas fa-edit"></span></a>
+                                                    <div class="custom-select">
+                                                        <select name="gender">
+                                                            <option value="1">Male</option>
+                                                            <option value="0">Female</option>
+                                                        </select>
+                                                    </div>
                                                 </td>
-                                                <td><a href="AdminControllerMap?service=deleteuser&userid=<%=user.getUserId()%>" onclick="return confirm('Are you sure you want to Remove?');"><span class="fas fa-trash-alt"></span></a></td>
                                             </tr>
-                                            <%}%>
-                                        </tbody>
-                                    </table>
-                                        <div class="pagination-container" style="    display: flex;
-    justify-content: flex-end;cursor: pointer;">
-                                        <nav>
-                                            <ul class="pagination"></ul>
-                                        </nav>
-                                    </div>
+                                            <tr>  
+                                                <td><label>System Role</label></td>
+                                                <td>
+                                                    <div class="custom-select">
+                                                        <select name="role">
+                                                            <option value="0">Customer</option>
+                                                            <option value="1">Admin</option>
+                                                        </select>
+                                                    </div>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td></td>
+                                                <td>
+                                                    <input type="submit" value="Add User" class="btn">
+                                                    <input type="hidden" value="adduser" name="service">
+                                                </td>
+                                            </tr>
+                                        </table>
+                                        <%}%>
+                                        <%if (service.equalsIgnoreCase("updatedetail")) {%>
+                                        <table class="table table-striped">
+                                            <tr>
+                                                <td>Name</td>
+                                                <td><input value="<%=user.getUsername()%>" type="text" name="username" class="input"><br></td>
+                                            </tr>
+                                            <tr>
+                                                <td>Password</td>
+                                                <td><input value="<%=user.getPassword()%>" type="text" name="password" class="input"><br></td>
+                                            </tr>    
+                                            <tr>
+                                                <td>Full Name<p></td>
+                                                <td><input value="<%=user.getFullname()%>" type="text" name="fullname" class="input"><br></td>
+                                            </tr>
+                                            <tr>
+                                                <td>Phone<p></td>
+                                                <td><input value="<%=user.getPhoneNumber()%>" type="text" name="phone" class="input"><br></td>
+                                            </tr>
+                                            <tr>
+                                                <td>Email<p></td>
+                                                <td><input value="<%=user.getEmail()%>" type="text" name="email" class="input"> <br></td>
+                                            <tr>
+                                            <tr>
+                                                <td>Address<p></td>
+                                                <td><input value="<%=user.getAddress()%>" type="text" name="address" class="input"><br></td>
+                                            <tr>
+                                            <tr>
+                                                <td><label>Gender</label></td>
+                                                <td>
+                                                    <div class="custom-select">
+                                                        <select name="gender">
+                                                            <option <%if (user.getGender() == 1) {%> selected<%}%> value="1">Male</option>
+                                                            <option <%if (user.getGender() == 0) {%> selected<%}%> value="0">Female</option>
+                                                        </select>
+                                                    </div>
+                                                </td>
+                                            </tr>
+                                            <tr>  
+                                                <td><label>System Role</label></td>
+                                                <td>
+                                                    <div class="custom-select">
+                                                        <select name="role">
+                                                            <option <%if (user.getSystemRole() == 0) {%> selected<%}%> value="0">Customer</option>
+                                                            <option <%if (user.getSystemRole() == 1) {%> selected<%}%> value="1">Admin</option>
+                                                        </select>
+                                                    </div>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td></td>
+                                                <td>
+                                                    <input type="submit" value="Update User" class="btn">
+                                                    <input type="hidden" value="updateuser" name="service">
+                                                    <input type="hidden" value="<%=user.getUserId()%>" name="id">
+                                                </td>
+                                            </tr>
+                                        </table>
+                                        <%}%>
+                                    </form>
                                 </div>
                             </div>
                         </div>
@@ -237,109 +320,11 @@
         <script src="${contextPath}/js/plugins/perfect-scrollbar.min.js"></script>
         <script src="${contextPath}/js/plugins/smooth-scrollbar.min.js"></script>
         <script src="${contextPath}/js/plugins/chartjs.min.js"></script>
-        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
-        <script>
-        getPagination('#dataTable');
-        $('#maxRows').trigger('change');
-        function getPagination(table) {
+        <!-- Github buttons -->
+        <script async defer src="https://buttons.github.io/buttons.js"></script>
+        <!-- Control Center for Soft Dashboard: parallax effects, scripts for the example pages etc -->
+<!--        <script src="${contextPath}/js/soft-ui-dashboard.min.js?v=1.0.3"></script>-->
 
-            $('#maxRows').on('change', function () {
-                $('.pagination').html('');						
-                var trnum = 0;									
-                var maxRows = parseInt($(this).val());			
-
-                var totalRows = $(table + ' tbody tr').length;		
-                $(table + ' tr:gt(0)').each(function () {			
-                    trnum++;									
-                    if (trnum > maxRows) {						
-
-                        $(this).hide();							
-                    }
-                    if (trnum <= maxRows) {
-                        $(this).show();
-                    }// else fade in Important in case if it ..
-                });											
-                if (totalRows > maxRows) {						
-                    var pagenum = Math.ceil(totalRows / maxRows);	
-                    //	numbers of pages 
-                    for (var i = 1; i <= pagenum; ) {			
-                        $('.pagination').append('<li class="page-item" data-page="'+i+'">\
-      <a class="page-link">'+ i++ + '<span class="sr-only">(current)</span></a>\
-    </li>').show();
-                    }											i 
-                } 												
-                $('.pagination li:first-child').addClass('active'); 
-
-                $('.pagination li').on('click', function (e) {		
-                    e.preventDefault();
-                    var pageNum = $(this).attr('data-page');	
-                    var trIndex = 0;							
-                    $('.pagination li').removeClass('active');	
-                    $(this).addClass('active');					
-
-
-                    $(table + ' tr:gt(0)').each(function () {		
-                        trIndex++;								
-                        if (trIndex > (maxRows * pageNum) || trIndex <= ((maxRows * pageNum) - maxRows)) {
-                            $(this).hide();
-                        } else {
-                            $(this).show();
-                        } 				
-                    }); 										
-                });										
-            });
-        }
-
-        function FilterkeyWord_all_table() {
-
-// Count td if you want to search on all table instead of specific column
-
-            var count = $('.table').children('tbody').children('tr:first-child').children('td').length;
-
-            // Declare variables
-            var input, filter, table, tr, td, i;
-            input = document.getElementById("search_input_all");
-            var input_value = document.getElementById("search_input_all").value;
-            filter = input.value.toLowerCase();
-            if (input_value != '') {
-                table = document.getElementById("table-id");
-                tr = table.getElementsByTagName("tr");
-
-                // Loop through all table rows, and hide those who don't match the search query
-                for (i = 1; i < tr.length; i++) {
-
-                    var flag = 0;
-
-                    for (j = 0; j < count; j++) {
-                        td = tr[i].getElementsByTagName("td")[j];
-                        if (td) {
-
-                            var td_text = td.innerHTML;
-                            if (td.innerHTML.toLowerCase().indexOf(filter) > -1) {
-                                //var td_text = td.innerHTML;  
-                                //td.innerHTML = 'shaban';
-                                flag = 1;
-                            } else {
-                                //DO NOTHING
-                            }
-                        }
-                    }
-                    if (flag == 1) {
-                        tr[i].style.display = "";
-                    } else {
-                        tr[i].style.display = "none";
-                    }
-                }
-            } else {
-                //RESET TABLE
-                $('#maxRows').trigger('change');
-            }
-        }
-        </script>
     </body>
 
 </html>
-<!-- Github buttons -->
-<!--        <script async defer src="https://buttons.github.io/buttons.js"></script>-->
-<!-- Control Center for Soft Dashboard: parallax effects, scripts for the example pages etc -->
-<!--        <script src="${contextPath}/js/soft-ui-dashboard.min.js?v=1.0.3"></script>-->

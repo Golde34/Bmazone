@@ -1,11 +1,11 @@
-<%@page import="java.util.ArrayList"%>
+<%@page import="java.util.*"%>
 <%@page import="entity.*"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <c:set var="contextPath" value="${pageContext.request.contextPath}" />
 <%
     User curUser = (User) request.getSession().getAttribute("currUser");
-    ArrayList<User> listUser = (ArrayList<User>) request.getAttribute("listUser");
+    List<ShipCompany> listCompany = (List<ShipCompany>) request.getAttribute("listCompany");
 %>
 
 <!DOCTYPE html>
@@ -55,9 +55,9 @@
                         </a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link active" href="AdminControllerMap?service=usermanagement">
+                        <a class="nav-link" href="AdminControllerMap?service=usermanagement">
                             <div class="icon icon-shape icon-sm shadow border-radius-md bg-white text-center me-2 d-flex align-items-center justify-content-center">
-                                <i class="fas fa-fw fa-tachometer-alt"></i>
+                                <i class="fas fa-fw fa-tachometer-alt"  style="color: black"></i>
                             </div>
                             <span class="nav-link-text ms-1">User Management</span>
                         </a>
@@ -71,9 +71,9 @@
                         </a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link  " href="AdminControllerMap?service=companymanagement">
+                        <a class="nav-link active " href="AdminControllerMap?service=companymanagement">
                             <div class="icon icon-shape icon-sm shadow border-radius-md bg-white text-center me-2 d-flex align-items-center justify-content-center">
-                                <i class="fas fa-fw fa-tachometer-alt" style="color: black"></i>
+                                <i class="fas fa-fw fa-tachometer-alt"></i>
                             </div>
                             <span class="nav-link-text ms-1">Company Management</span>
                         </a>
@@ -171,9 +171,9 @@
                                      justify-content: space-between;">
                                     <h6 class="m-0 font-weight-bold text-primary">User</h6>
                                     <div class="ms-md-auto pe-md-3 d-flex align-items-center">
-                                        <div class="input-group tb-search">
+                                        <div class="input-group">
                                             <span class="input-group-text text-body"><i class="fas fa-search" aria-hidden="true"></i></span>
-                                            <input type="text" id="search_input_all" onkeyup="FilterkeyWord_all_table()" class="form-control" placeholder="Type here...">
+                                            <input type="text" class="form-control" placeholder="Type here...">
                                         </div>
                                     </div>
                                     <a href="AdminControllerMap?service=adddetail">
@@ -189,7 +189,7 @@
                                             <option value="5000">Show All</option>
                                         </select>
                                     </div>
-                                    <table class="table" id="dataTable" width="100%" cellspacing="0"  style="text-align: center;">
+                                    <table class="table table-bordered table-striped" id="dataTable" style="text-align: center;">
                                         <thead>
                                             <tr>
                                                 <th>Username</th>
@@ -202,22 +202,22 @@
                                             </tr>
                                         </thead>
                                         <tbody>
-                                            <%for (User user : listUser) {%>
-                                            <tr>
-                                                <td><%=user.getUsername()%></td>
-                                                <td><%=user.getPassword()%></td>
-                                                <td><%=user.getEmail()%></td>
-                                                <td><%=user.getPhoneNumber()%></td>
-                                                <td><%=user.getAddress()%></td>
-                                                <td>
-                                                    <a href="AdminControllerMap?service=updatedetail&userid=<%=user.getUserId()%>"><span class="fas fa-edit"></span></a>
-                                                </td>
-                                                <td><a href="AdminControllerMap?service=deleteuser&userid=<%=user.getUserId()%>" onclick="return confirm('Are you sure you want to Remove?');"><span class="fas fa-trash-alt"></span></a></td>
-                                            </tr>
-                                            <%}%>
+                                            <%for (ShipCompany company : listCompany) {%>
+                                                <tr>
+                                                    <td><%=company.getCompanyName() %></td>
+                                                    <td><%=company.getCommitDate() %></td>
+                                                    <td><%=company.getUnitCost() %></td>
+                                                    <td><%=company.getCompanyID()%></td>
+                                                    <td><%=company.getStatus() %></td>
+                                                    <td>
+                                                        <a href="AdminControllerMap?service=updatedetail&userid=<%=company.getCompanyID() %>"><span class="fas fa-edit"></span></a>
+                                                    </td>
+                                                    <td><a href="AdminControllerMap?service=deleteuser&userid=<%=company.getCompanyID() %>" onclick="return confirm('Are you sure you want to Remove?');"><span class="fas fa-trash-alt"></span></a></td>
+                                                </tr>
+                                                <%}%>
                                         </tbody>
                                     </table>
-                                        <div class="pagination-container" style="    display: flex;
+                                     <div class="pagination-container" style="    display: flex;
     justify-content: flex-end;cursor: pointer;">
                                         <nav>
                                             <ul class="pagination"></ul>
@@ -238,6 +238,10 @@
         <script src="${contextPath}/js/plugins/smooth-scrollbar.min.js"></script>
         <script src="${contextPath}/js/plugins/chartjs.min.js"></script>
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+        <!-- Github buttons -->
+        <script async defer src="https://buttons.github.io/buttons.js"></script>
+        <!-- Control Center for Soft Dashboard: parallax effects, scripts for the example pages etc -->
+<!--        <script src="${contextPath}/js/soft-ui-dashboard.min.js?v=1.0.3"></script>-->
         <script>
         getPagination('#dataTable');
         $('#maxRows').trigger('change');
@@ -339,7 +343,3 @@
     </body>
 
 </html>
-<!-- Github buttons -->
-<!--        <script async defer src="https://buttons.github.io/buttons.js"></script>-->
-<!-- Control Center for Soft Dashboard: parallax effects, scripts for the example pages etc -->
-<!--        <script src="${contextPath}/js/soft-ui-dashboard.min.js?v=1.0.3"></script>-->

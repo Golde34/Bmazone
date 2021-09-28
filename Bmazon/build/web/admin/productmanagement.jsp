@@ -5,12 +5,11 @@
 <c:set var="contextPath" value="${pageContext.request.contextPath}" />
 <%
     User curUser = (User) request.getSession().getAttribute("currUser");
-    ArrayList<User> listUser = (ArrayList<User>) request.getAttribute("listUser");
+    ArrayList<Product> listProduct = (ArrayList<Product>) request.getAttribute("listProduct");
 %>
 
 <!DOCTYPE html>
 <html lang="en">
-
     <head>
         <meta charset="utf-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
@@ -55,17 +54,17 @@
                         </a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link active" href="AdminControllerMap?service=usermanagement">
+                        <a class="nav-link " href="AdminControllerMap?service=usermanagement">
                             <div class="icon icon-shape icon-sm shadow border-radius-md bg-white text-center me-2 d-flex align-items-center justify-content-center">
-                                <i class="fas fa-fw fa-tachometer-alt"></i>
+                                <i class="fas fa-fw fa-tachometer-alt" style="color: black"></i>
                             </div>
                             <span class="nav-link-text ms-1">User Management</span>
                         </a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link  " href="AdminControllerMap?service=productmanagement">
+                        <a class="nav-link active " href="AdminControllerMap?service=productmanagement">
                             <div class="icon icon-shape icon-sm shadow border-radius-md bg-white text-center me-2 d-flex align-items-center justify-content-center">
-                                <i class="fas fa-fw fa-tachometer-alt " style="color: black"></i>
+                                <i class="fas fa-fw fa-tachometer-alt " ></i>
                             </div>
                             <span class="nav-link-text ms-1 ">Product Management</span>
                         </a>
@@ -171,15 +170,15 @@
                                      justify-content: space-between;">
                                     <h6 class="m-0 font-weight-bold text-primary">User</h6>
                                     <div class="ms-md-auto pe-md-3 d-flex align-items-center">
-                                        <div class="input-group tb-search">
+                                        <div class="input-group">
                                             <span class="input-group-text text-body"><i class="fas fa-search" aria-hidden="true"></i></span>
-                                            <input type="text" id="search_input_all" onkeyup="FilterkeyWord_all_table()" class="form-control" placeholder="Type here...">
+                                            <input type="text" class="form-control" placeholder="Type here...">
                                         </div>
                                     </div>
                                     <a href="AdminControllerMap?service=adddetail">
                                         <button>Add new user</button></a>
                                 </div>
-                                <div class="card-body">
+                                                                <div class="card-body">
                                     <h6>Select number of Rows</h6>
                                     <div class="form-group">
                                         <select name="state" id="maxRows" class="form-control" style="width:100px;">
@@ -202,17 +201,17 @@
                                             </tr>
                                         </thead>
                                         <tbody>
-                                            <%for (User user : listUser) {%>
+                                            <%for (Product product : listProduct) {%>
                                             <tr>
-                                                <td><%=user.getUsername()%></td>
-                                                <td><%=user.getPassword()%></td>
-                                                <td><%=user.getEmail()%></td>
-                                                <td><%=user.getPhoneNumber()%></td>
-                                                <td><%=user.getAddress()%></td>
+                                                <td><%=product.getProductName() %></td>
+                                                <td><%=product.getRating() %></td>
+                                                <td><%=product.getReleaseDate() %></td>
+                                                <td><%=product.getSeller() %></td>
+                                                <td><%=product.getStatus() %></td>
                                                 <td>
-                                                    <a href="AdminControllerMap?service=updatedetail&userid=<%=user.getUserId()%>"><span class="fas fa-edit"></span></a>
+                                                    <a href="AdminControllerMap?service=updatedetail&userid=<%=product.getProductID() %>"><span class="fas fa-edit"></span></a>
                                                 </td>
-                                                <td><a href="AdminControllerMap?service=deleteuser&userid=<%=user.getUserId()%>" onclick="return confirm('Are you sure you want to Remove?');"><span class="fas fa-trash-alt"></span></a></td>
+                                                <td><a href="AdminControllerMap?service=deleteuser&userid=<%=product.getProductID() %>" onclick="return confirm('Are you sure you want to Remove?');"><span class="fas fa-trash-alt"></span></a></td>
                                             </tr>
                                             <%}%>
                                         </tbody>

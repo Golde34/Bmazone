@@ -9,6 +9,7 @@ import entity.*;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.servlet.RequestDispatcher;
@@ -33,7 +34,8 @@ public class AdminController extends HttpServlet {
      * @throws ServletException if a servlet-specific error occurs
      * @throws IOException if an I/O error occurs
      */
-    
+    GalleryDAO daogallery = new GalleryDAO();
+    ShipCompanyDAO daocompany = new ShipCompanyDAO();
     ProductDAO daoproduct = new ProductDAO();
     CategoryDAO daocategory = new CategoryDAO();
     GenreDAO daogenre = new GenreDAO();
@@ -79,6 +81,21 @@ public class AdminController extends HttpServlet {
             if (service.equalsIgnoreCase("deleteuser")) {
                 serviceDeleteUser(request, response);
             }
+            
+            //Product Manage
+            if (service.equalsIgnoreCase("productmanagement")) {
+                serviceProductManagement(request, response);
+            }
+            
+            //Company Manage
+            if (service.equalsIgnoreCase("companymanagement")) {
+                serviceCompanyManagement(request, response);
+            }
+            
+            //Gallery Manage
+            if (service.equalsIgnoreCase("gallerymanagement")) {
+                serviceGalleryManagement(request, response);
+            }
         }
     }
 
@@ -99,13 +116,13 @@ public class AdminController extends HttpServlet {
     public void serviceEditDetail(String service, HttpServletRequest request, HttpServletResponse response) {
         request.setAttribute("service", service);
         if (service.equalsIgnoreCase("adddetail")) {
-            sendDispatcher(request, response, "admin/detail.jsp");
+            sendDispatcher(request, response, "admin/userdetail.jsp");
             return;
         }
         int id = Integer.parseInt(request.getParameter("userid"));
         User user = daouser.getUserById(id);
         request.setAttribute("user", user);
-        sendDispatcher(request, response, "admin/detail.jsp");
+        sendDispatcher(request, response, "admin/userdetail.jsp");
     }
 
     public void serviceAddUser(HttpServletRequest request, HttpServletResponse response) {
@@ -184,6 +201,24 @@ public class AdminController extends HttpServlet {
         ArrayList<User> listUser = daouser.getAllUser();
         request.setAttribute("listUser", listUser);
         sendDispatcher(request, response, "admin/usermanagement.jsp");
+    }
+    
+    public void serviceProductManagement(HttpServletRequest request, HttpServletResponse response) {
+        ArrayList<Product> listProduct = daoproduct.getAllProduct();
+        request.setAttribute("listProduct", listProduct);
+        sendDispatcher(request, response, "admin/productmanagement.jsp");
+    }
+    
+    public void serviceCompanyManagement(HttpServletRequest request, HttpServletResponse response) {
+        List<ShipCompany> listCompany = daocompany.getAllShipCompany();
+        request.setAttribute("listCompany", listCompany);
+        sendDispatcher(request, response, "admin/companymanagement.jsp");
+    }
+    
+    public void serviceGalleryManagement(HttpServletRequest request, HttpServletResponse response) {
+        List<Gallery> listGallery = daogallery.getAllGallery();
+        request.setAttribute("listGallery", listGallery);
+        sendDispatcher(request, response, "admin/gallerymanagement.jsp");
     }
 
     public void sendDispatcher(HttpServletRequest request, HttpServletResponse response, String path) {
