@@ -95,7 +95,7 @@
 
                 <!--Profile-->
                 <div class="col-md-4">
-                    <a href="${contextPath}/user/profile.jsp">
+                    <a href="UserControllerMap?service=info">
                         <div class=" card shadow p-3 mb-5 bg-white rounded" style="width: 20rem;"> 
                             <div class="card-body">
                                 <div class="row">
@@ -112,62 +112,6 @@
                     </a>
                 </div>
             </div>
-
-            <!--            <div class="row">
-                            <div class="col-md-4">
-                                <a href="#">
-                                    <div class=" card shadow p-3 mb-5 bg-white rounded" style="width: 20rem;"> 
-                                        <div class="card-body">
-                                            <div class="row">
-                                                <div class="col-md-4">
-                                                    <img alt="Your Order" src="https://images-na.ssl-images-amazon.com/images/G/01/x-locale/cs/help/images/gateway/self-service/order._CB660668735_.png">
-                                                </div>
-                                                <div class="col-md-8">
-                                                    <h5 class="card-title">Your Order</h5>
-                                                    <h6 class="card-subtitle mb-2 text-muted">Track, return, or buy things again </h6>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </a>
-                            </div>
-            
-                            <div class="col-md-4">
-                                <a href="#">
-                                    <div class=" card shadow p-3 mb-5 bg-white rounded" style="width: 20rem;"> 
-                                        <div class="card-body">
-                                            <div class="row">
-                                                <div class="col-md-4">
-                                                    <img alt="Your Order" src="https://images-na.ssl-images-amazon.com/images/G/01/x-locale/cs/help/images/gateway/self-service/order._CB660668735_.png">
-                                                </div>
-                                                <div class="col-md-8">
-                                                    <h5 class="card-title">Your Order</h5>
-                                                    <h6 class="card-subtitle mb-2 text-muted">Track, return, or buy things again </h6>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </a>
-                            </div>
-            
-                            <div class="col-md-4">
-                                <a href="#">
-                                    <div class=" card shadow p-3 mb-5 bg-white rounded" style="width: 20rem;"> 
-                                        <div class="card-body">
-                                            <div class="row">
-                                                <div class="col-md-4">
-                                                    <img alt="Your Order" src="https://images-na.ssl-images-amazon.com/images/G/01/x-locale/cs/help/images/gateway/self-service/order._CB660668735_.png">
-                                                </div>
-                                                <div class="col-md-8">
-                                                    <h5 class="card-title">Your Order</h5>
-                                                    <h6 class="card-subtitle mb-2 text-muted">Track, return, or buy things again </h6>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </a>
-                            </div>
-                        </div>-->
         </div>
         <br><br><br><br><br><br><br>
         <br><br><br><br><br><br><br>
