@@ -174,9 +174,6 @@
             </nav>
             <!-- End Navbar -->
             <div class="container-fluid py-4">
-                <div class="row mt-4">
-
-                </div>
                 <div class="row my-4">
                     <div class="col-lg-12 col-md-12 mb-md-0 mb-4">
                         <div class="card">
@@ -243,7 +240,14 @@
                                     <div class="pagination-container" style="    display: flex;
                                          justify-content: flex-end;cursor: pointer;">
                                         <nav>
-                                            <ul class="pagination"></ul>
+                                            <ul class="pagination">
+                                                <li class="page-item">
+                                                    <a class="page-link" href="#" aria-label="Previous">
+                                                        <span aria-hidden="true">&laquo;</span>
+                                                        <span class="sr-only">Previous</span>
+                                                    </a>
+                                                </li>
+                                            </ul>
                                         </nav>
                                     </div>
                                 </div>
@@ -262,103 +266,103 @@
         <script src="${contextPath}/js/plugins/chartjs.min.js"></script>
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
         <script>
-        getPagination('#dataTable');
-        $('#maxRows').trigger('change');
-        function getPagination(table) {
+                                                        getPagination('#dataTable');
+                                                        $('#maxRows').trigger('change');
+                                                        function getPagination(table) {
 
-            $('#maxRows').on('change', function () {
-                $('.pagination').html('');
-                var trnum = 0;
-                var maxRows = parseInt($(this).val());
+                                                            $('#maxRows').on('change', function () {
+                                                                $('.pagination').html('');
+                                                                var trnum = 0;
+                                                                var maxRows = parseInt($(this).val());
 
-                var totalRows = $(table + ' tbody tr').length;
-                $(table + ' tr:gt(0)').each(function () {
-                    trnum++;
-                    if (trnum > maxRows) {
+                                                                var totalRows = $(table + ' tbody tr').length;
+                                                                $(table + ' tr:gt(0)').each(function () {
+                                                                    trnum++;
+                                                                    if (trnum > maxRows) {
 
-                        $(this).hide();
-                    }
-                    if (trnum <= maxRows) {
-                        $(this).show();
-                    }// else fade in Important in case if it ..
-                });
-                if (totalRows > maxRows) {
-                    var pagenum = Math.ceil(totalRows / maxRows);
-                    //	numbers of pages 
-                    for (var i = 1; i <= pagenum; ) {
-                        $('.pagination').append('<li class="page-item" data-page="' + i + '">\
+                                                                        $(this).hide();
+                                                                    }
+                                                                    if (trnum <= maxRows) {
+                                                                        $(this).show();
+                                                                    }// else fade in Important in case if it ..
+                                                                });
+                                                                if (totalRows > maxRows) {
+                                                                    var pagenum = Math.ceil(totalRows / maxRows);
+                                                                    //	numbers of pages 
+                                                                    for (var i = 1; i <= pagenum; ) {
+                                                                        $('.pagination').append('<li class="page-item" data-page="' + i + '">\
     <a class="page-link">' + i++ + '<span class="sr-only">(current)</span></a>\
     </li>').show();
-                    }
-                    i
-                }
-                $('.pagination li:first-child').addClass('active');
+                                                                    }
+                                                                    i
+                                                                }
+                                                                $('.pagination li:first-child').addClass('active');
 
-                $('.pagination li').on('click', function (e) {
-                    e.preventDefault();
-                    var pageNum = $(this).attr('data-page');
-                    var trIndex = 0;
-                    $('.pagination li').removeClass('active');
-                    $(this).addClass('active');
+                                                                $('.pagination li').on('click', function (e) {
+                                                                    e.preventDefault();
+                                                                    var pageNum = $(this).attr('data-page');
+                                                                    var trIndex = 0;
+                                                                    $('.pagination li').removeClass('active');
+                                                                    $(this).addClass('active');
 
 
-                    $(table + ' tr:gt(0)').each(function () {
-                        trIndex++;
-                        if (trIndex > (maxRows * pageNum) || trIndex <= ((maxRows * pageNum) - maxRows)) {
-                            $(this).hide();
-                        } else {
-                            $(this).show();
-                        }
-                    });
-                });
-            });
-        }
+                                                                    $(table + ' tr:gt(0)').each(function () {
+                                                                        trIndex++;
+                                                                        if (trIndex > (maxRows * pageNum) || trIndex <= ((maxRows * pageNum) - maxRows)) {
+                                                                            $(this).hide();
+                                                                        } else {
+                                                                            $(this).show();
+                                                                        }
+                                                                    });
+                                                                });
+                                                            });
+                                                        }
 
-        function FilterkeyWord_all_table() {
+                                                        function FilterkeyWord_all_table() {
 
-    // Count td if you want to search on all table instead of specific column
+                                                            // Count td if you want to search on all table instead of specific column
 
-            var count = $('#dataTable').children('tbody').children('tr:first-child').children('td').length;
-            // Declare variables
-            var input, filter, table, tr, td, i;
-            input = document.getElementById("search_input_all");
-            var input_value = document.getElementById("search_input_all").value;
-            filter = input.value.toLowerCase();
-            console.log(filter)
-            if (input_value != '') {
-                table = document.getElementById("dataTable");
-                tr = table.getElementsByTagName("tr");
+                                                            var count = $('#dataTable').children('tbody').children('tr:first-child').children('td').length;
+                                                            // Declare variables
+                                                            var input, filter, table, tr, td, i;
+                                                            input = document.getElementById("search_input_all");
+                                                            var input_value = document.getElementById("search_input_all").value;
+                                                            filter = input.value.toLowerCase();
+                                                            console.log(filter)
+                                                            if (input_value != '') {
+                                                                table = document.getElementById("dataTable");
+                                                                tr = table.getElementsByTagName("tr");
 
-                // Loop through all table rows, and hide those who don't match the search query
-                for (i = 1; i < tr.length; i++) {
+                                                                // Loop through all table rows, and hide those who don't match the search query
+                                                                for (i = 1; i < tr.length; i++) {
 
-                    var flag = 0;
+                                                                    var flag = 0;
 
-                    for (j = 0; j < count; j++) {
-                        td = tr[i].getElementsByTagName("td")[j];
-                        if (td) {
+                                                                    for (j = 0; j < count; j++) {
+                                                                        td = tr[i].getElementsByTagName("td")[j];
+                                                                        if (td) {
 
-                            var td_text = td.innerHTML;
-                            if (td.innerHTML.toLowerCase().indexOf(filter) > -1) {
-                                //var td_text = td.innerHTML;  
-                                //td.innerHTML = 'shaban';
-                                flag = 1;
-                            } else {
-                                //DO NOTHING
-                            }
-                        }
-                    }
-                    if (flag == 1) {
-                        tr[i].style.display = "";
-                    } else {
-                        tr[i].style.display = "none";
-                    }
-                }
-            } else {
-                //RESET TABLE
-                $('#maxRows').trigger('change');
-            }
-        }
+                                                                            var td_text = td.innerHTML;
+                                                                            if (td.innerHTML.toLowerCase().indexOf(filter) > -1) {
+                                                                                //var td_text = td.innerHTML;  
+                                                                                //td.innerHTML = 'shaban';
+                                                                                flag = 1;
+                                                                            } else {
+                                                                                //DO NOTHING
+                                                                            }
+                                                                        }
+                                                                    }
+                                                                    if (flag == 1) {
+                                                                        tr[i].style.display = "";
+                                                                    } else {
+                                                                        tr[i].style.display = "none";
+                                                                    }
+                                                                }
+                                                            } else {
+                                                                //RESET TABLE
+                                                                $('#maxRows').trigger('change');
+                                                            }
+                                                        }
         </script>
     </body>
 

@@ -65,8 +65,8 @@
         <script src="js.home.js"></script>
     </head>
     <body class="home page-template page-template-page-blank page-template-page-blank-php page page-id-16 page-parent lightbox nav-dropdown-has-arrow" >
-       <div id="wrapper">
-          
+        <div id="wrapper">
+
 
             <header id="header" class="header has-sticky sticky-jump">
                 <div class="header-wrapper">
@@ -100,7 +100,8 @@
 
                                     </li>
                                     <%} else {%>
-                                    <li class=" menu-item menu-item-type-taxonomy menu-item-object-product_cat menu-item-has-children has-dropdown" style="cursor: pointer;"><a><span> Hello <%=x.getFullname()%></span></a>
+                                    <li class=" menu-item menu-item-type-taxonomy menu-item-object-product_cat menu-item-has-children has-dropdown" style="cursor: pointer;">
+                                        <a href="${contextPath}/UserControllerMap?service=account"><span> Hello <%=x.getFullname()%></span></a>
                                         <ul class='nav-dropdown nav-dropdown-simple'>
                                             <%if (x.getSystemRole() == 1) {%>
                                             <li  ><a href="${contextPath}/AdminControllerMap" class="menu-image-title-after"><span >Admin Dashboard</span></a></li>
@@ -117,7 +118,7 @@
                             </div><!-- .flex-col right -->
 
 
-                           
+
 
                         </div><!-- .flex-row -->
                     </div><!-- #header-top -->
@@ -133,10 +134,10 @@
                             </div>
 
                             <!-- Mobile Left Elements -->
-                           
+
 
                             <!-- Left Elements -->
-                              <div class="flex-col hide-for-medium flex-left
+                            <div class="flex-col hide-for-medium flex-left
                                  flex-grow" >
                                 <ul class="header-nav header-nav-main nav nav-left  nav-uppercase" >
                                     <li class="header-search-form search-form html relative has-icon">
@@ -156,7 +157,7 @@
                                                 </form>
                                             </div>	</div>
                                     </li><li>
-                                        <i>   <img src="iamges/car.png" style="height: 10px; width: 10px"></i>
+                                        <i>   <img src="images/car.png" style="height: 10px; width: 10px"></i>
 
                                         <a href="" title="Cart" class="header-cart-link is-small">
 
@@ -191,7 +192,7 @@
                             </div>
 
                             <!-- Mobile Right Elements -->
-                         
+
 
                         </div><!-- .header-inner -->
 
@@ -232,9 +233,9 @@
 
                     <div class="header-bg-container fill"><div class="header-bg-image fill"></div><div class="header-bg-color fill"></div></div><!-- .header-bg-container -->   </div><!-- header-wrapper-->
             </header>
-       </div>
-                                
-                                    
+        </div>
+
+
 
     </body>
 </html>

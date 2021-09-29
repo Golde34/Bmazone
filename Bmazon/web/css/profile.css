@@ -6,7 +6,8 @@ body {
     background: #654ea3;
     background: linear-gradient(to right, #e96443, #904e95);
     min-height: 100vh;
-    overflow-x: hidden
+    overflow-x: hidden;
+    font:600 'Open Sans',sans-serif;
 }
 
 .profilepic {
@@ -61,7 +62,18 @@ body {
 }
 
 .icon-background {
-                position: relative;
-                left: 96%;
-                bottom: 20%;
-            }
+    position: relative;
+    left: 96%;
+    bottom: 20%;
+}
+
+.left-component {
+    border: 1px solid #D5DBDB; 
+    background-color: #F5F5F5; 
+    box-shadow: 1px 2px 5px grey;
+}
+
+.right-component {
+    border: 1px solid #D5DBDB; 
+    box-shadow: 1px 2px 5px grey;
+}
