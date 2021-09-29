@@ -111,7 +111,7 @@
                                 <li >
                                     <h5 class="mb-0"><strong>About</strong></h5>
                                     <div class="p-4 rounded shadow-sm bg-light" style="background-color: #F5F7F5">
-                                        <p class="font-italic mb-0"><%= x.getBio() %></p>
+                                        <p class="font-italic mb-0">Web Developer</p>
                                         <p class="font-italic mb-0">Lives in New York</p>
                                         <p class="font-italic mb-0">Photographer</p>
                                     </div>

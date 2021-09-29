@@ -11,13 +11,7 @@
     <filter-mapping>
         <filter-name>authenticationFilter</filter-name>
         <servlet-name>SellerController</servlet-name>
-    </filter-mapping>
-    <filter-mapping>
-        <filter-name>authenticationFilter</filter-name>
         <servlet-name>AdminController</servlet-name>
-    </filter-mapping>
-    <filter-mapping>
-        <filter-name>authenticationFilter</filter-name>
         <servlet-name>UserController</servlet-name>
     </filter-mapping>
     <filter-mapping>
