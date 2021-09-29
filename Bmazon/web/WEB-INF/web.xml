@@ -11,13 +11,7 @@
     <filter-mapping>
         <filter-name>authenticationFilter</filter-name>
         <servlet-name>SellerController</servlet-name>
-    </filter-mapping>
-    <filter-mapping>
-        <filter-name>authenticationFilter</filter-name>
         <servlet-name>AdminController</servlet-name>
-    </filter-mapping>
-    <filter-mapping>
-        <filter-name>authenticationFilter</filter-name>
         <servlet-name>UserController</servlet-name>
     </filter-mapping>
     <filter-mapping>
@@ -44,6 +38,10 @@
         <servlet-name>SellerController</servlet-name>
         <servlet-class>controller.SellerController</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>LoginController</servlet-name>
+        <servlet-class>controller.LoginController</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>HomePageController</servlet-name>
         <url-pattern>/HomePageControllerMap</url-pattern>
@@ -63,6 +61,10 @@
     <servlet-mapping>
         <servlet-name>SellerController</servlet-name>
         <url-pattern>/SellerControllerMap</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>LoginController</servlet-name>
+        <url-pattern>/LoginControllerMap</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>

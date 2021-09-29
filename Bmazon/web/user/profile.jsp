@@ -46,8 +46,7 @@
                 width: 100%;
                 margin-left: auto;
                 margin-right: auto;
-            }
-
+            } 
         </style>
     </head>
     <body>
@@ -76,11 +75,11 @@
 
                             </div>
                             <div class="media-body mb-5 text-white">
-                                <h4 class="mt-0 mb-0" style="color: #96a2b8; font-size:30px;"><%=x.getPublicName()%>
+                                <h4 class="mt-0 mb-0" style="color: #ffffff; font-size:30px;"><%=x.getPublicName()%>
                                     <a href="${contextPath}/UserControllerMap?service=editProfile">   
                                         <i class="fas fa-pencil-alt" style="color: #96a2b8;"></i></a>
                                 </h4>
-                                    <p class="mb-4" style="color: #96a2b8;"> <i class="fas fa-map-marker-alt mr-2"></i><%= x.getAddress()%></p>
+                                <p class="mb-4" style="color: #ffffff;"> <i class="fas fa-map-marker-alt mr-2"></i><%= x.getAddress()%></p>
                             </div>
                         </div>
                         <div class="icon-background">
@@ -105,34 +104,45 @@
                         </ul>
                     </div>
                     <br>
-                    <div class="row">
-                        <div class="px-4 py-3 col-md-4">
-                            <ul> 
-                                <li >
-                                    <h5 class="mb-0"><strong>About</strong></h5>
-                                    <div class="p-4 rounded shadow-sm bg-light" style="background-color: #F5F7F5">
-                                        <p class="font-italic mb-0"><%= x.getBio() %></p>
-                                        <p class="font-italic mb-0">Lives in New York</p>
-                                        <p class="font-italic mb-0">Photographer</p>
+                    <div class="py-4 px-4">
+                        <div class="row">
+                            <div class="pr-lg-1 mb-2 col-md-4">
+                                <div class="left-component p-4 rounded shadow-sm">
+                                    <h4 class="mb-0"><strong>About</strong></h4>
+                                    <a style="color: #00669c;" href="${contextPath}/UserControllerMap?service=editProfile">
+                                        <p>Add more info about who you are</p></a>
+                                    <div style="font-size: 25px;" class="row col-md-12">
+                                        <a href="<%= x.getFacebook()%>" target="_blank" class="col-md-3">
+                                            <i class="fab fa-facebook-f"></i></a> 
+                                        <a href="<%= x.getInstagram()%>" target="_blank" class="col-md-3">
+                                            <i class="fab fa-instagram"></i></a>
+                                        <a href="<%= x.getTwitter()%>" target="_blank" class="col-md-3">
+                                            <i class="fab fa-twitter"></i></a>
+                                        <a href="<%= x.getYoutube()%>" target="_blank" class="col-md-3">
+                                            <i class="fab fa-youtube"></i></a>
+                                        <i class=""></i>
                                     </div>
-                                </li>
-                            </ul>
-                        </div>
-                        <div class="px-4 py-3 col-md-8">
+                                </div>
+                                <br>
+                                <div class="left-component p-4 rounded shadow-sm">
+                                    <h4 class="mb-0"><strong>Account</strong></h4>
+                                    <p style="color: #333">Check your orders, add payment options, manage your password and more.</p>
+                                    <a style="color: #00669c;" href="${contextPath}/UserControllerMap?service=account"> Go to your account</a>
+                                </div>
+                                <br>
+                                <div class="left-component p-4 rounded shadow-sm">
+                                    <h4 class="mb-0"><strong>Your list and your wishlist</strong></h4>
 
-                            <h5 class="mb-0"><strong>Your list and your wishlist</strong></h5>
-                            <div class="p-4 rounded shadow-sm bg-light" style="background-color: #F5F7F5">
-                                <p class="font-italic mb-0">Web Developer</p>
-                                <p class="font-italic mb-0">Lives in New York</p>
-                                <p class="font-italic mb-0">Photographer</p>
+                                </div>
                             </div>
 
-                            <!--                            <h5 class="mb-0"><strong>Insights</strong></h5>
-                                                        <div class="p-4 rounded bg-light" style="background-color: #F5F7F5">
-                                                            <p class="font-italic mb-0">Web Developer</p>
-                                                            <p class="font-italic mb-0">Lives in New York</p>
-                                                            <p class="font-italic mb-0">Photographer</p>
-                                                        </div>-->
+                            <div class="mb-2 pl-lg-1 col-md-8">
+                                <div class="right-component p-4 rounded shadow-sm bg-light">
+                                    <h3 class="mb-0"><strong>Activities</strong></h3>
+                                    <hr>
+                                    <p class="font-italic mb-0"><%=x.getPublicName()%> has no activities to share.</p>
+                                </div>
+                           </div>
                         </div>
                     </div>
                     <div class="py-4 px-4">
@@ -149,7 +159,6 @@
                 </div>
             </div>
         </div>
-    </div>
-    <jsp:include page="../footer.jsp"/>
-</body>
+        <jsp:include page="../footer.jsp"/>
+    </body>
 </html>

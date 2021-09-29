@@ -34,7 +34,7 @@
                 <div class="login-form">
                     <!--Sign in Service-->
                     <div class="sign-in-htm">
-                        <form action="/Bmazon/UserControllerMap" method="POST">
+                        <form action="/Bmazon/LoginControllerMap" method="POST">
                             <div class="group">
                                 <label for="user" class="label" >Username</label>
                                 <input id="user" type="text" name="username" placeholder="Username" value="${userName}" class="input" required autofocus="">
@@ -57,7 +57,7 @@
                     </div>
                     <!--Sign up Service-->
                     <div class="sign-up-htm">
-                        <form action="/Bmazon/UserControllerMap" method="POST">
+                        <form action="/Bmazon/LoginControllerMap" method="POST">
                             <div class="group">
                                 <label for="user" class="label">Username</label>
                                 <input id="user" type="text" name="signupusername" value="${Username}" placeholder="Username"  class="input" required autofocus="" >
