@@ -5,10 +5,7 @@
 <c:set var="contextPath" value="${pageContext.request.contextPath}" />
 <%
     User curUser = (User) request.getSession().getAttribute("currUser");
-    ArrayList<Product> listProduct = (ArrayList<Product>) request.getAttribute("listProduct");
     ArrayList<User> listUser = (ArrayList<User>) request.getAttribute("listUser");
-    ArrayList<Category> listCategory = (ArrayList<Category>) request.getAttribute("listCategory");
-    ArrayList<Genre> listGenre = (ArrayList<Genre>) request.getAttribute("listGenre");
 %>
 
 <!DOCTYPE html>
@@ -66,7 +63,7 @@
                         </a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="../pages/billing.html">
+                        <a class="nav-link  " href="AdminControllerMap?service=productmanagement">
                             <div class="icon icon-shape icon-sm shadow border-radius-md bg-white text-center me-2 d-flex align-items-center justify-content-center">
                                 <i class="fas fa-fw fa-tachometer-alt " style="color: black"></i>
                             </div>
@@ -74,7 +71,7 @@
                         </a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link  " href="../pages/virtual-reality.html">
+                        <a class="nav-link  " href="AdminControllerMap?service=companymanagement">
                             <div class="icon icon-shape icon-sm shadow border-radius-md bg-white text-center me-2 d-flex align-items-center justify-content-center">
                                 <i class="fas fa-fw fa-tachometer-alt" style="color: black"></i>
                             </div>
@@ -82,11 +79,11 @@
                         </a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link  " href="../pages/rtl.html">
+                        <a class="nav-link  " href="AdminControllerMap?service=gallerymanagement">
                             <div class="icon icon-shape icon-sm shadow border-radius-md bg-white text-center me-2 d-flex align-items-center justify-content-center">
                                 <i class="fas fa-fw fa-tachometer-alt" style="color: black"></i>
                             </div>
-                            <span class="nav-link-text ms-1">Category Management</span>
+                            <span class="nav-link-text ms-1">Gallery Management</span>
                         </a>
                     </li>
                 </ul>
@@ -162,9 +159,6 @@
             </nav>
             <!-- End Navbar -->
             <div class="container-fluid py-4">
-                <div class="row mt-4">
-
-                </div>
                 <div class="row my-4">
                     <div class="col-lg-12 col-md-12 mb-md-0 mb-4">
                         <div class="card">
@@ -173,45 +167,67 @@
                                      style="display: flex;
                                      justify-content: space-between;">
                                     <h6 class="m-0 font-weight-bold text-primary">User</h6>
-                                    <div class="ms-md-auto pe-md-3 d-flex align-items-center">
-                                        <div class="input-group">
-                                            <span class="input-group-text text-body"><i class="fas fa-search" aria-hidden="true"></i></span>
-                                            <input type="text" class="form-control" placeholder="Type here...">
-                                        </div>
-                                    </div>
-                                    <a href="AdminControllerMap?service=adddetail">
+                                    <a href="AdminControllerMap?service=adduserdetail">
                                         <button>Add new user</button></a>
                                 </div>
                                 <div class="card-body">
-                                    <div class="table-responsive">
-                                        <table class="table" id="dataTable" width="100%" cellspacing="0"  style="text-align: center;">
-                                            <thead>
-                                                <tr>
-                                                    <th>Username</th>
-                                                    <th>Password</th>
-                                                    <th>Email</th>
-                                                    <th>Phone</th>
-                                                    <th>Address</th>
-                                                    <th></th>
-                                                    <th></th>
-                                                </tr>
-                                            </thead>
-                                            <tbody>
-                                                <%for (User user : listUser) {%>
-                                                <tr>
-                                                    <td><%=user.getUsername()%></td>
-                                                    <td><%=user.getPassword()%></td>
-                                                    <td><%=user.getEmail()%></td>
-                                                    <td><%=user.getPhoneNumber()%></td>
-                                                    <td><%=user.getAddress()%></td>
-                                                    <td>
-                                                        <a href="AdminControllerMap?service=updatedetail&userid=<%=user.getUserId()%>"><span class="fas fa-edit"></span></a>
-                                                    </td>
-                                                    <td><a href="AdminControllerMap?service=deleteuser&userid=<%=user.getUserId()%>" onclick="return confirm('Are you sure you want to Remove?');"><span class="fas fa-trash-alt"></span></a></td>
-                                                </tr>
-                                                <%}%>
-                                            </tbody>
-                                        </table>
+                                    <div class="table_head py-3" style="display: flex;
+                                         justify-content: space-between;">
+                                        <div class="rowNum">
+                                            <h6 style="display: inline">Select number of Rows</h6>
+                                            <div class="form-group" style="display: inline;">
+                                                <select name="state" id="maxRows" class="form-control" style="width:80px;display:inline;">
+                                                    <option value="5">5</option>
+                                                    <option value="10">10</option>
+                                                    <option value="20">20</option>
+                                                    <option value="5000">Show All</option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                        <div class="tb_search">
+                                            <input type="text" id="search_input_all" onkeyup="FilterkeyWord_all_table()" placeholder="Search.." class="form-control">
+                                        </div>
+                                    </div>
+                                    <table class="table table-bordered table-striped" id="dataTable" style="text-align: center;">
+                                        <thead>
+                                            <tr>
+                                                <th>Username</th>
+                                                <th>Password</th>
+                                                <th>Email</th>
+                                                <th>Phone</th>
+                                                <th>Address</th>
+                                                <th></th>
+                                                <th></th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <%for (User user : listUser) {%>
+                                            <tr>
+                                                <td><%=user.getUsername()%></td>
+                                                <td><%=user.getPassword()%></td>
+                                                <td><%=user.getEmail()%></td>
+                                                <td><%=user.getPhoneNumber()%></td>
+                                                <td><%=user.getAddress()%></td>
+                                                <td>
+                                                    <a href="AdminControllerMap?service=updateuserdetail&userid=<%=user.getUserId()%>"><span class="fas fa-edit"></span></a>
+                                                </td>
+                                                <td><a href="AdminControllerMap?service=deleteuser&userid=<%=user.getUserId()%>" onclick="return confirm('Are you sure you want to Remove?');"><span class="fas fa-trash-alt"></span></a></td>
+                                            </tr>
+                                            <%}%>
+                                        </tbody>
+                                    </table>
+                                    <div class="pagination-container" style="    display: flex;
+                                         justify-content: flex-end;cursor: pointer;">
+                                        <nav>
+                                            <ul class="pagination">
+                                                <li class="page-item">
+                                                    <a class="page-link" href="#" aria-label="Previous">
+                                                        <span aria-hidden="true">&laquo;</span>
+                                                        <span class="sr-only">Previous</span>
+                                                    </a>
+                                                </li>
+                                            </ul>
+                                        </nav>
                                     </div>
                                 </div>
                             </div>
@@ -227,11 +243,110 @@
         <script src="${contextPath}/js/plugins/perfect-scrollbar.min.js"></script>
         <script src="${contextPath}/js/plugins/smooth-scrollbar.min.js"></script>
         <script src="${contextPath}/js/plugins/chartjs.min.js"></script>
-        <!-- Github buttons -->
-        <script async defer src="https://buttons.github.io/buttons.js"></script>
-        <!-- Control Center for Soft Dashboard: parallax effects, scripts for the example pages etc -->
-<!--        <script src="${contextPath}/js/soft-ui-dashboard.min.js?v=1.0.3"></script>-->
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+        <script>
+                                                    getPagination('#dataTable');
+                                                    $('#maxRows').trigger('change');
+                                                    function getPagination(table) {
 
+                                                        $('#maxRows').on('change', function () {
+                                                            $('.pagination').html('');
+                                                            var trnum = 0;
+                                                            var maxRows = parseInt($(this).val());
+
+                                                            var totalRows = $(table + ' tbody tr').length;
+                                                            $(table + ' tr:gt(0)').each(function () {
+                                                                trnum++;
+                                                                if (trnum > maxRows) {
+
+                                                                    $(this).hide();
+                                                                }
+                                                                if (trnum <= maxRows) {
+                                                                    $(this).show();
+                                                                }// else fade in Important in case if it ..
+                                                            });
+                                                            if (totalRows > maxRows) {
+                                                                var pagenum = Math.ceil(totalRows / maxRows);
+                                                                //	numbers of pages 
+                                                                for (var i = 1; i <= pagenum; ) {
+                                                                    $('.pagination').append('<li class="page-item" data-page="' + i + '">\
+      <a class="page-link">' + i++ + '<span class="sr-only">(current)</span></a>\
+    </li>').show();
+                                                                }
+                                                                i
+                                                            }
+                                                            $('.pagination li:first-child').addClass('active');
+
+                                                            $('.pagination li').on('click', function (e) {
+                                                                e.preventDefault();
+                                                                var pageNum = $(this).attr('data-page');
+                                                                var trIndex = 0;
+                                                                $('.pagination li').removeClass('active');
+                                                                $(this).addClass('active');
+
+
+                                                                $(table + ' tr:gt(0)').each(function () {
+                                                                    trIndex++;
+                                                                    if (trIndex > (maxRows * pageNum) || trIndex <= ((maxRows * pageNum) - maxRows)) {
+                                                                        $(this).hide();
+                                                                    } else {
+                                                                        $(this).show();
+                                                                    }
+                                                                });
+                                                            });
+                                                        });
+                                                    }
+
+                                                    function FilterkeyWord_all_table() {
+
+// Count td if you want to search on all table instead of specific column
+
+                                                        var count = $('#dataTable').children('tbody').children('tr:first-child').children('td').length;
+
+                                                        // Declare variables
+                                                        var input, filter, table, tr, td, i;
+                                                        input = document.getElementById("search_input_all");
+                                                        var input_value = document.getElementById("search_input_all").value;
+                                                        filter = input.value.toLowerCase();
+                                                        if (input_value != '') {
+                                                            table = document.getElementById("dataTable");
+                                                            tr = table.getElementsByTagName("tr");
+
+                                                            // Loop through all table rows, and hide those who don't match the search query
+                                                            for (i = 1; i < tr.length; i++) {
+
+                                                                var flag = 0;
+
+                                                                for (j = 0; j < count; j++) {
+                                                                    td = tr[i].getElementsByTagName("td")[j];
+                                                                    if (td) {
+
+                                                                        var td_text = td.innerHTML;
+                                                                        if (td.innerHTML.toLowerCase().indexOf(filter) > -1) {
+                                                                            //var td_text = td.innerHTML;  
+                                                                            //td.innerHTML = 'shaban';
+                                                                            flag = 1;
+                                                                        } else {
+                                                                            //DO NOTHING
+                                                                        }
+                                                                    }
+                                                                }
+                                                                if (flag == 1) {
+                                                                    tr[i].style.display = "";
+                                                                } else {
+                                                                    tr[i].style.display = "none";
+                                                                }
+                                                            }
+                                                        } else {
+                                                            //RESET TABLE
+                                                            $('#maxRows').trigger('change');
+                                                        }
+                                                    }
+        </script>
     </body>
 
 </html>
+<!-- Github buttons -->
+<!--        <script async defer src="https://buttons.github.io/buttons.js"></script>-->
+<!-- Control Center for Soft Dashboard: parallax effects, scripts for the example pages etc -->
+<!--        <script src="${contextPath}/js/soft-ui-dashboard.min.js?v=1.0.3"></script>-->

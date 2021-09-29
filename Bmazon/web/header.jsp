@@ -100,7 +100,8 @@
 
                                     </li>
                                     <%} else {%>
-                                    <li class=" menu-item menu-item-type-taxonomy menu-item-object-product_cat menu-item-has-children has-dropdown" style="cursor: pointer;"><a><span> Hello <%=x.getFullname()%></span></a>
+                                    <li class=" menu-item menu-item-type-taxonomy menu-item-object-product_cat menu-item-has-children has-dropdown" style="cursor: pointer;">
+                                        <a href="${contextPath}/UserControllerMap?service=account"><span> Hello <%=x.getFullname()%></span></a>
                                         <ul class='nav-dropdown nav-dropdown-simple'>
                                             <%if (x.getSystemRole() == 1) {%>
                                             <li  ><a href="${contextPath}/AdminControllerMap" class="menu-image-title-after"><span >Admin Dashboard</span></a></li>
@@ -158,7 +159,7 @@
                                                 </form>
                                             </div>	</div>
                                     </li><li>
-                                        <i>   <img src="iamges/car.png" style="height: 10px; width: 10px"></i>
+                                        <i>   <img src="images/car.png" style="height: 10px; width: 10px"></i>
 
                                         <a href="" title="Cart" class="header-cart-link is-small">
 

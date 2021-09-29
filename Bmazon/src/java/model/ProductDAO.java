@@ -10,6 +10,7 @@ import java.sql.Connection;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -23,7 +24,7 @@ BaseDAO dbConn= new BaseDAO();
 
     public ArrayList<Product> getAllProduct() {
         ArrayList<Product> list = new ArrayList<>();
-        String sql = "SELECT TOP 10 * FROM Product where status=1";
+        String sql = "SELECT * FROM Product where status=1";
         try {
             pre = conn.prepareStatement(sql);
             rs = pre.executeQuery();
@@ -192,7 +193,7 @@ BaseDAO dbConn= new BaseDAO();
         return list;
     }
 
-    public ArrayList<Product> getProductBySeller(int seller) {
+    public ArrayList<Product> getProductBySeller(String seller) {
         ArrayList<Product> list = new ArrayList<>();
         String sql = "SELECT * FROM [Bmazon].[dbo].[Product] where seller=" + seller;
         try {
@@ -216,7 +217,7 @@ BaseDAO dbConn= new BaseDAO();
         }
         return list;
     }
-
+    
     public ArrayList<Product> getProductByName(String name) {
         ArrayList<Product> list = new ArrayList<>();
         String sql = "SELECT * FROM [Bmazon].[dbo].[Product] where productName like '%" + name + "% OR description like''%" + name + "%" ;
@@ -346,6 +347,28 @@ BaseDAO dbConn= new BaseDAO();
         }
         return list;
     }
+    
+//    public List<Product> getProductBySeller(int userID) {
+//        List<Product> list = new ArrayList<>();
+//        xSql = "select * from Product where seller = ? and status = 1";
+//        try {
+//            pre = conn.prepareStatement(xSql);
+//            pre.setInt(1, userID);
+//            rs = pre.executeQuery();
+//            while (rs.next()) {
+//                list.add(new Product(
+//                        rs.getInt(1),
+//                        rs.getString(2),
+//                        rs.getString(3),
+//                        rs.getInt(4),
+//                        rs.getDate(5),
+//                        rs.getInt(6),
+//                        rs.getInt(7)));
+//            }
+//        } catch (Exception e) {
+//        }
+//        return list;
+//    }
 
     public int addProduct(Product obj) {
         int n = 0;
@@ -427,11 +450,15 @@ BaseDAO dbConn= new BaseDAO();
     }
     public static void main(String[] args) {
         ProductDAO db = new ProductDAO();
+
         
         ArrayList<Product> list= db.getProductByGenre(5);
         for (Product product : list) {
             System.out.println(product);
         }
+
+        System.out.println(db.getProductBySeller("1"));
+
     }
 }
 

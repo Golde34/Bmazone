@@ -45,7 +45,7 @@ public class ShipCompanyDAO extends BaseDAO{
 
     public int editShipCompany(ShipCompany sp) {
         int n = 0;
-        xSql = "update ShipCompany set [companyName] = ? [unitCost] = ? [commitDate] = ? [status] =? where [companyID] = ?";
+        xSql = "update ShipCompany set [companyName] = ? ,[unitCost] = ? ,[commitDate] = ? ,[status] =? where [companyID] = ?";
         try {
             pre = conn.prepareStatement(xSql);
             pre.setString(1, sp.getCompanyName());
@@ -57,6 +57,32 @@ public class ShipCompanyDAO extends BaseDAO{
         } catch (Exception e) {
         }
         return n;
+    }
+    public static void main(String[] args) {
+        ShipCompanyDAO dao = new ShipCompanyDAO();
+        ShipCompany s = dao.getShipCompanyById(4);
+        s.setCommitDate(10);
+        s.setCompanyName("b");
+        s.setUnitCost(10000);
+        dao.editShipCompany(s);
+    }
+    
+    public ShipCompany getShipCompanyById(int id) {
+        ShipCompany company = new ShipCompany();
+        xSql = "select * from ShipCompany where companyID = "+id;
+        try {
+            pre = conn.prepareStatement(xSql);
+            rs = pre.executeQuery();
+            if (rs.next()) {
+                company.setCommitDate(rs.getInt("commitDate"));
+                company.setCompanyName(rs.getString("companyName"));
+                company.setStatus(rs.getInt("status"));
+                company.setUnitCost(rs.getDouble("unitCost"));
+                company.setCompanyID(rs.getInt("companyID"));
+            }
+        } catch (Exception e) {
+        }
+        return company;
     }
 
     public List<ShipCompany> getAllShipCompany() {
