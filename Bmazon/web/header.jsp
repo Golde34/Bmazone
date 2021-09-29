@@ -65,8 +65,8 @@
         <script src="js.home.js"></script>
     </head>
     <body class="home page-template page-template-page-blank page-template-page-blank-php page page-id-16 page-parent lightbox nav-dropdown-has-arrow" >
-       <div id="wrapper">
-          
+        <div id="wrapper">
+
 
             <header id="header" class="header has-sticky sticky-jump">
                 <div class="header-wrapper">
@@ -117,7 +117,7 @@
                             </div><!-- .flex-col right -->
 
 
-                           
+
 
                         </div><!-- .flex-row -->
                     </div><!-- #header-top -->
@@ -133,19 +133,21 @@
                             </div>
 
                             <!-- Mobile Left Elements -->
-                           
+
 
                             <!-- Left Elements -->
-                              <div class="flex-col hide-for-medium flex-left
+                            <div class="flex-col hide-for-medium flex-left
                                  flex-grow" >
                                 <ul class="header-nav header-nav-main nav nav-left  nav-uppercase" >
                                     <li class="header-search-form search-form html relative has-icon">
                                         <div class="header-search-form-wrapper">
-                                            <div class="searchform-wrapper ux-search-box relative form- is-normal"><form method="get" class="searchform" action="" role="search">
+                                            <div class="searchform-wrapper ux-search-box relative form- is-normal">
+                                                <form method="POST" class="searchform" action="HomePageControllerMap?service=search" role="search">
                                                     <div class="flex-row relative">
                                                         <div class="flex-col flex-grow">
-                                                            <input type="search" class="search-field mb-0" name="" value="" placeholder="Find Product" />
-                                                            <input type="hidden" name="post_type" value="product" />
+                                                            <input type="search" class="search-field mb-0" name="search" value="" placeholder="Find Product" />
+
+
                                                         </div><!-- .flex-col -->
                                                         <div class="flex-col">
                                                             <button type="submit" class="ux-search-submit submit-button secondary button icon mb-0">
@@ -191,7 +193,7 @@
                             </div>
 
                             <!-- Mobile Right Elements -->
-                         
+
 
                         </div><!-- .header-inner -->
 
@@ -206,7 +208,7 @@
                                 <ul class="nav header-nav header-bottom-nav nav-center  nav-line-bottom nav-spacing-xsmall nav-uppercase">
                                     <% for (Category c : cateList) {%>
                                     <li  class="menu-item menu-item-type-taxonomy menu-item-object-product_cat menu-item-has-children has-dropdown" style=" margin-left: 70px">
-                                        <a href="HomeControllerMap?service=getProductByCate" class="menu-image-title-after nav-top-link">
+                                        <a href="${contextPath}/HomePageControllerMap?service=ByCate&cid=<%=c.getCategoryID()%>" class="menu-image-title-after nav-top-link">
                                             <span class="menu-image-title"><%=c.getCategoryName()%></span></a>
 
                                         <ul class='nav-dropdown nav-dropdown-simple'>
@@ -215,7 +217,7 @@
 
                                             %>
                                             <li class="menu-item menu-item-type-taxonomy menu-item-object-product_cat  ">
-                                                <a href="HomeControllerMap?service=getProductByGenre" class="menu-image-title-after">
+                                                <a href="${contextPath}/HomePageControllerMap?service=ByGenre&gid=<%=g.getGenreID()%>" class="menu-image-title-after">
                                                     <span class="menu-image-title"><%=g.getGenreName()%></span></a></li>
                                                     <% } %>
                                                     <% } %>
@@ -232,9 +234,9 @@
 
                     <div class="header-bg-container fill"><div class="header-bg-image fill"></div><div class="header-bg-color fill"></div></div><!-- .header-bg-container -->   </div><!-- header-wrapper-->
             </header>
-       </div>
-                                
-                                    
+        </div>
+
+
 
     </body>
 </html>

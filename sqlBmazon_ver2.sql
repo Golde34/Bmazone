@@ -50,6 +50,7 @@ CREATE TABLE [Genre] (
 	genreID int NOT NULL identity(1,1) PRIMARY KEY,
 	genreName nvarchar(255) NOT NULL,
 	categoryID int NOT NULL,
+	images nvarchar(255),
 	[status] bit,
 	FOREIGN KEY (categoryID) REFERENCES [Category]([categoryID])
 )
@@ -91,7 +92,7 @@ CREATE TABLE [ProductGenre] (
 CREATE Table [ProductCategory] (
 	productID int,
 	categoryId int,
-	[status] bit,
+	[status] bit,	
 	FOREIGN KEY (productID) REFERENCES [Product] (productID),
 	FOREIGN KEY (categoryID) REFERENCES [Category] (categoryID),
 )

@@ -14,6 +14,7 @@ public class Genre {
     private String genreName;
     private int categoryID;
     private int status;
+    private String images;
 
     public Genre() {
     }
@@ -29,6 +30,15 @@ public class Genre {
         this.genreName = genreName;
         this.categoryID = categoryID;
     }
+
+    public Genre(int genreID, String genreName, int categoryID, int status, String images) {
+        this.genreID = genreID;
+        this.genreName = genreName;
+        this.categoryID = categoryID;
+        this.status = status;
+        this.images = images;
+    }
+    
 
     public int getGenreID() {
         return genreID;
@@ -61,5 +71,14 @@ public class Genre {
     public void setStatus(int status) {
         this.status = status;
     }
+
+    public String getImages() {
+        return images;
+    }
+
+    public void setImages(String images) {
+        this.images = images;
+    }
+    
     
 }

@@ -162,7 +162,7 @@
                     </div><!-- .left -->
                 </div><!-- .container -->
             </div><!-- .absolute-footer -->
-            <a href="#top" class="back-to-top button invert plain is-outline hide-for-medium icon circle fixed bottom z-1" id="top-link"><i class="icon-angle-up" ></i></a>
+            <a href="#top" class="back-to-top button invert plain is-outline hide-for-medium fa fa-home  fixed bottom z-1" id="top-link"></i></a>
 
         </footer><!-- .footer-wrapper -->
  

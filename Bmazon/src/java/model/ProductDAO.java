@@ -48,7 +48,7 @@ BaseDAO dbConn= new BaseDAO();
 
     public ArrayList<Product> getTrueProduct() {
         ArrayList<Product> list = new ArrayList<>();
-        String sql = "SELECT TOP 10 * FROM Product";
+        String sql = "SELECT  * FROM Product order by releaseDate";
         try {
             pre = conn.prepareStatement(sql);
             rs = pre.executeQuery();
@@ -97,6 +97,31 @@ BaseDAO dbConn= new BaseDAO();
     public ArrayList<Product> getProductNew() {
         ArrayList<Product> list = new ArrayList<>();
         String sql = "SELECT TOP 8 * FROM Product order by releaseDate";
+        try {
+            pre = conn.prepareStatement(sql);
+            rs = pre.executeQuery();
+            while (rs.next()) {
+                Product pro = new Product();
+                pro.setProductID(rs.getInt("productID"));
+                pro.setProductName(rs.getString("productName"));
+                pro.setDescription(rs.getString("description"));
+                pro.setRating(rs.getInt("rating"));
+                pro.setReleaseDate(rs.getDate("releaseDate"));
+                pro.setSeller(rs.getInt("seller"));
+                pro.setStatus(rs.getInt("status"));
+                list.add(pro);
+            }
+            rs.close();
+            pre.close();
+        } catch (SQLException e) {
+            Logger.getLogger(ProductDAO.class.getName()).log(Level.SEVERE, null, e);
+        }
+        return list;
+        
+    }
+    public ArrayList<Product> getProducSuggest() {
+        ArrayList<Product> list = new ArrayList<>();
+        String sql = "SELECT TOP 16* FROM Product order by releaseDate";
         try {
             pre = conn.prepareStatement(sql);
             rs = pre.executeQuery();
@@ -194,7 +219,7 @@ BaseDAO dbConn= new BaseDAO();
 
     public ArrayList<Product> getProductByName(String name) {
         ArrayList<Product> list = new ArrayList<>();
-        String sql = "SELECT * FROM [Bmazon].[dbo].[Product] where productName like '%" + name + "%'";
+        String sql = "SELECT * FROM [Bmazon].[dbo].[Product] where productName like '%" + name + "% OR description like''%" + name + "%" ;
         try {
             pre = conn.prepareStatement(sql);
             rs = pre.executeQuery();
@@ -268,11 +293,11 @@ BaseDAO dbConn= new BaseDAO();
         }
         return list;
     }
-
+    
     public ArrayList<Product> getProductByGenre(int genreID) {
         ArrayList<Product> list = new ArrayList<>();
-        String sql = "SELECT * FROM [Bmazon].[dbo].[Product] as a join ProductGenre as b on a.productID=b.productID"
-                + "WHERE a.status=1 and b.genreID=" + genreID;
+        String sql ="SELECT * FROM [Bmazon].[dbo].[Product] as p join ProductGenre as pg on p.productID=pg.productID WHERE p.status=1 and pg.genreID="+ genreID;
+               
         try {
             pre = conn.prepareStatement(sql);
             rs = pre.executeQuery();
@@ -294,6 +319,8 @@ BaseDAO dbConn= new BaseDAO();
         }
         return list;
     }
+
+   
     
     public ArrayList<Product> getRelatedProductByProductID(int id){
         ArrayList<Product> list = new ArrayList<>();
@@ -401,7 +428,10 @@ BaseDAO dbConn= new BaseDAO();
     public static void main(String[] args) {
         ProductDAO db = new ProductDAO();
         
-        System.out.println(db.getProductByID(5));
+        ArrayList<Product> list= db.getProductByGenre(5);
+        for (Product product : list) {
+            System.out.println(product);
+        }
     }
 }
 
