@@ -159,9 +159,6 @@
             </nav>
             <!-- End Navbar -->
             <div class="container-fluid py-4">
-                <div class="row mt-4">
-
-                </div>
                 <div class="row my-4">
                     <div class="col-lg-12 col-md-12 mb-md-0 mb-4">
                         <div class="card">
@@ -187,11 +184,8 @@
                                                 </select>
                                             </div>
                                         </div>
-                                        <div class="ms-md-auto pe-md-3 d-flex align-items-center">
-                                            <div class="input-group">
-                                                <span class="input-group-text text-body"><i class="fas fa-search" aria-hidden="true"></i></span>
-                                                <input type="text" class="form-control" placeholder="Type here...">
-                                            </div>
+                                        <div class="tb_search">
+                                            <input type="text" id="search_input_all" onkeyup="FilterkeyWord_all_table()" placeholder="Search.." class="form-control">
                                         </div>
                                     </div>
                                     <table class="table table-bordered table-striped" id="dataTable" style="text-align: center;">
@@ -226,11 +220,11 @@
                                          justify-content: flex-end;cursor: pointer;">
                                         <nav>
                                             <ul class="pagination">
-                                                <li class="page-item disabled">
-                                                    <a class="page-link" href="#" tabindex="-1">Previous</a>
-                                                </li>
                                                 <li class="page-item">
-                                                    <a class="page-link" href="#">Next</a>
+                                                    <a class="page-link" href="#" aria-label="Previous">
+                                                        <span aria-hidden="true">&laquo;</span>
+                                                        <span class="sr-only">Previous</span>
+                                                    </a>
                                                 </li>
                                             </ul>
                                         </nav>
@@ -307,7 +301,7 @@
 
 // Count td if you want to search on all table instead of specific column
 
-                                                        var count = $('.table').children('tbody').children('tr:first-child').children('td').length;
+                                                        var count = $('#dataTable').children('tbody').children('tr:first-child').children('td').length;
 
                                                         // Declare variables
                                                         var input, filter, table, tr, td, i;
@@ -315,7 +309,7 @@
                                                         var input_value = document.getElementById("search_input_all").value;
                                                         filter = input.value.toLowerCase();
                                                         if (input_value != '') {
-                                                            table = document.getElementById("table-id");
+                                                            table = document.getElementById("dataTable");
                                                             tr = table.getElementsByTagName("tr");
 
                                                             // Loop through all table rows, and hide those who don't match the search query
