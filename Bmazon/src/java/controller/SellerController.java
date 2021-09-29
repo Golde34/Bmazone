@@ -41,7 +41,7 @@ public class SellerController extends HttpServlet {
             if (service == null) {
                 service = "SellerDashboard";
             }
-
+            //Seller Dashboard
             if (service.equalsIgnoreCase("SellerDashboard")) {
                 serviceSellerDashboard(request, response);
             }
@@ -95,7 +95,6 @@ public class SellerController extends HttpServlet {
 //
 //    public void serviceDeleteProduct(HttpServletRequest request, HttpServletResponse response) {
 //    }
-
     public void sendDispatcher(HttpServletRequest request, HttpServletResponse response, String path) {
         try {
             RequestDispatcher rd = request.getRequestDispatcher(path);
