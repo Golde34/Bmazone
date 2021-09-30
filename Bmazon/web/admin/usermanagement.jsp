@@ -200,7 +200,7 @@
                                                 <th></th>
                                             </tr>
                                         </thead>
-                                        <tbody>
+                                        <tbody id="user">
                                             <%for (User user : listUser) {%>
                                             <tr>
                                                 <td><%=user.getUsername()%></td>
@@ -249,6 +249,26 @@
         <script src="${contextPath}/js/plugins/chartjs.min.js"></script>
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
         <script src="${contextPath}/js/tablepagination.js"></script>
+        <script>
+            function searchByName(param) {
+                var txtSearch = param.value;
+                $.ajax({
+                    url: "/Bmazon/AdminControllerMap",
+                    type: "get",
+                    data: {
+                        search: txtSearch,
+                        service: "searchuser"
+                    },
+                    success: function (respone) {
+                        var text = document.getElementById("user");
+                        text.innerHTML = respone;
+                    },
+                    error: function (xhr) {
+                        //Do Something to handle error
+                    }
+                });
+            }
+        </script>
     </body>
 
 </html>

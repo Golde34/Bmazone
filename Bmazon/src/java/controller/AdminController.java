@@ -94,6 +94,11 @@ public class AdminController extends HttpServlet {
                 serviceProductDetail(service, request, response);
             }
 
+            //Search Product
+            if (service.equalsIgnoreCase("searchproduct")) {
+                serviceSearchProduct(request, response);
+            }
+
             //Add Product
             if (service.equalsIgnoreCase("addproduct")) {
                 serviceAddProduct(request, response);
@@ -283,6 +288,25 @@ public class AdminController extends HttpServlet {
         request.setAttribute("producttype", producttype);
         request.setAttribute("product", product);
         sendDispatcher(request, response, "admin/productdetail.jsp");
+    }
+    
+    public void serviceSearchProduct(HttpServletRequest request, HttpServletResponse response) throws IOException{
+        PrintWriter pr = response.getWriter();
+        String search = request.getParameter("search");
+        ArrayList<Product> listProduct= daoproduct.searchProduct(search);
+        for (Product product : listProduct) {
+            User user = daouser.getUserByProductId(product.getProductID());
+            pr.print("<tr>"+
+                    "<td><div>"+product.getProductName()+" </div></td>"+
+                    "<td><div>"+product.getDescription()+ "</div></td>"+
+                    "<td><div>"+product.getRating() +"</div></td>"+
+                    "<td><div>"+user.getFullname() +"</div></td>"+
+                    "<td><div>"+product.getReleaseDate() +"</div></td>"+
+                    "<td><div><a href=\"AdminControllerMap?service=updateproductdetail&producttypeid="+product.getProductID() +"\"><span class=\"fas fa-edit\"></span></a>"+
+                    "</div></td>"+
+                    "<td><div><a href=\"AdminControllerMap?service=deleteproduct&producttypeid="+product.getProductID() +"\" onclick=\"return confirm('Are you sure you want to Remove?');\"><span class=\"fas fa-trash-alt\"></span></a></div></td>"+"</tr>"
+                    );
+        }
     }
 
     public void serviceAddProduct(HttpServletRequest request, HttpServletResponse response) {

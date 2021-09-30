@@ -146,7 +146,7 @@
                                                 <form method="POST" class="searchform" action="HomePageControllerMap?service=search" role="search">
                                                     <div class="flex-row relative">
                                                         <div class="flex-col flex-grow">
-                                                            <input type="search" class="search-field mb-0" name="search" value="" placeholder="Find Product" />
+                                                            <input type="search" class="search-field mb-0" name="search" value="" placeholder="Find Product" required/>
 
 
                                                         </div><!-- .flex-col -->
@@ -235,6 +235,7 @@
 
                     <div class="header-bg-container fill"><div class="header-bg-image fill"></div><div class="header-bg-color fill"></div></div><!-- .header-bg-container -->   </div><!-- header-wrapper-->
             </header>
+            
         </div>
 
 

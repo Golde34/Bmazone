@@ -87,35 +87,3 @@ function limitPagging() {
     }
 }
 
-function FilterkeyWord_all_table() {
-    var count = $('#dataTable').children('tbody').children('tr:first-child').children('td').length;
-    var input, filter, table, tr, td, i;
-    input = document.getElementById("search_input_all");
-    var input_value = document.getElementById("search_input_all").value;
-    filter = input.value.toLowerCase();
-    if (input_value != '') {
-        table = document.getElementById("dataTable");
-        tr = table.getElementsByTagName("tr");
-        for (i = 1; i < tr.length; i++) {
-            var flag = 0;
-            for (j = 0; j < count; j++) {
-                td = tr[i].getElementsByTagName("td")[j];
-                if (td) {
-                    var td_text = td.innerHTML;
-                    if (td.innerHTML.toLowerCase().indexOf(filter) > -1) {
-                        flag = 1;
-                    }
-                }
-            }
-            if (flag == 1) {
-                tr[i].style.display = "";
-            } else {
-                tr[i].style.display = "none";
-            }
-        }
-    } else {
-        //RESET TABLE
-        $('#maxRows').trigger('change');
-    }
-}
-

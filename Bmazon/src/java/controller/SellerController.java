@@ -80,10 +80,16 @@ public class SellerController extends HttpServlet {
 
     public void serviceSellerDashboard(HttpServletRequest request, HttpServletResponse response) {
         User account = (User) request.getSession().getAttribute("currUser");
+<<<<<<< HEAD
         String seller =  account.getUserId();
         List<Product> listProduct = daoproduct.getProductBySeller(seller);
         request.setAttribute("listP", listProduct);
         sendDispatcher(request, response, "seller/dashboard.jsp");
+=======
+
+        
+//     
+>>>>>>> a4ab0fb4f6d94b2677c3b188171edd275c5645f0
     }
 
     public void serviceProductManagement(HttpServletRequest request, HttpServletResponse response) {
