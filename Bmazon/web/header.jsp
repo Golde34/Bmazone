@@ -146,7 +146,7 @@
                                                 <form method="POST" class="searchform" action="HomePageControllerMap?service=search" role="search">
                                                     <div class="flex-row relative">
                                                         <div class="flex-col flex-grow">
-                                                            <input type="search" class="search-field mb-0" name="search" value="" placeholder="Find Product" />
+                                                            <input type="search" class="search-field mb-0" name="search" value="" placeholder="Find Product" required/>
 
 
                                                         </div><!-- .flex-col -->
@@ -235,14 +235,7 @@
 
                     <div class="header-bg-container fill"><div class="header-bg-image fill"></div><div class="header-bg-color fill"></div></div><!-- .header-bg-container -->   </div><!-- header-wrapper-->
             </header>
-            <div id='ads-left'>
-                <div style='margin:0 0 5px 0; padding:0;width:200px;position:fixed; left:0; top:0;'>
-                    <a href='' target='_blank'><img border='0' height='665' src='images/ads.jpg' width='200'/></a>
-                </div></div>
-            <div id='ads-right'>
-                <div style='margin:0 0 5px 0; padding:0;width:200px;position:fixed; right:0; top:0;'>
-                    <a href='' target='_blank'><img border='0' height='665' src='images/ads.jpg' width='200'/></a>
-                </div></div>
+            
         </div>
 
 

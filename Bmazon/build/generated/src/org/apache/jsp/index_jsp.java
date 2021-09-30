@@ -62,6 +62,7 @@ public final class index_jsp extends org.apache.jasper.runtime.HttpJspBase
       org.apache.jasper.runtime.JspRuntimeLibrary.include(request, response, "header.jsp", out, false);
       out.write("\r\n");
       out.write("            <div class=\"main\">\r\n");
+      out.write("                \r\n");
       out.write("            ");
       org.apache.jasper.runtime.JspRuntimeLibrary.include(request, response, "menu.jsp", out, false);
       out.write("\r\n");

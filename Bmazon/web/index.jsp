@@ -19,6 +19,7 @@
         <div class="wrap">
             <jsp:include page="header.jsp"/>
             <div class="main">
+                
             <jsp:include page="menu.jsp"/>
             </div>
             <jsp:include page="footer.jsp"/>

@@ -26,7 +26,7 @@ public class ProductDAO extends BaseDAO {
 
     public ArrayList<Product> getAllProduct() {
         ArrayList<Product> list = new ArrayList<>();
-        String sql = "SELECT * FROM Product where status=1";
+        String sql = "SELECT * FROM Product ";
         try {
             pre = conn.prepareStatement(sql);
             rs = pre.executeQuery();
@@ -51,7 +51,7 @@ public class ProductDAO extends BaseDAO {
 
     public ArrayList<Product> getTrueProduct() {
         ArrayList<Product> list = new ArrayList<>();
-        String sql = "SELECT * FROM Product order by releaseDate";
+        String sql = "SELECT * FROM Product  where status=1 order by releaseDate";
         try {
             pre = conn.prepareStatement(sql);
             rs = pre.executeQuery();
@@ -173,9 +173,8 @@ public class ProductDAO extends BaseDAO {
         }
         return list;
     }
-    
 
-    public ArrayList<Product> getProducSuggest () {
+    public ArrayList<Product> getProducSuggest() {
         ArrayList<Product> list = new ArrayList<>();
         String sql = "SELECT TOP 16 * FROM Product order by releaseDate";
         try {
@@ -202,7 +201,7 @@ public class ProductDAO extends BaseDAO {
 
     public ArrayList<Product> getProductByName(String name) {
         ArrayList<Product> list = new ArrayList<>();
-        String sql = "SELECT * FROM [Bmazon].[dbo].[Product] where productName like '%" + name + "%'";
+        String sql = "SELECT * FROM [Bmazon].[dbo].[Product] where productName like '%" + name + "%' OR description like '%" + name + "%'";
         try {
             pre = conn.prepareStatement(sql);
             rs = pre.executeQuery();
@@ -227,7 +226,7 @@ public class ProductDAO extends BaseDAO {
 
     public Product getProductByID(int id) {
         Product pro = new Product();
-        String sql = "SELECT * FROM [Bmazon].[dbo].[Product] where productID=" + id + "";
+        String sql = "SELECT * FROM [Bmazon].[dbo].[Product] where productID=" + id;
 
         try {
             pre = conn.prepareStatement(sql);
@@ -277,8 +276,8 @@ public class ProductDAO extends BaseDAO {
 
     public ArrayList<Product> getProductByGenre(int genreID) {
         ArrayList<Product> list = new ArrayList<>();
-        String sql = "SELECT * FROM [Bmazon].[dbo].[Product] as a join ProductGenre as b on a.productID=b.productID"
-                + "WHERE a.status=1 and b.genreID=" + genreID;
+        String sql = "SELECT * FROM [Bmazon].[dbo].[Product] as a join ProductGenre as b on a.productID=b.productID WHERE a.status=1 and b.genreID=" + genreID;
+
         try {
             pre = conn.prepareStatement(sql);
             rs = pre.executeQuery();
@@ -403,5 +402,9 @@ public class ProductDAO extends BaseDAO {
             Logger.getLogger(ProductDAO.class.getName()).log(Level.SEVERE, null, ex);
         }
         return n;
+    }
+
+    public static void main(String[] args) {
+
     }
 }

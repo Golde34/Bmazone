@@ -66,7 +66,7 @@ public class HomePageController extends HttpServlet {
             if (service.equalsIgnoreCase("ByGenre")) {
                 serviceByGenre(request, response);
             }
-             if (service.equalsIgnoreCase("search")) {
+            if (service.equalsIgnoreCase("search")) {
                 serviceSearch(request, response);
             }
         }
@@ -100,6 +100,9 @@ public class HomePageController extends HttpServlet {
     public void serviceByCate(HttpServletRequest request, HttpServletResponse response) {
         int id = Integer.parseInt(request.getParameter("cid"));
         List<Product> ListP = proDAO.getProductByCategory(id);
+        String address;
+        address = "<a href=" + "HomePageControllerMap?service=ByCate&cid=" + id + ">" + cateDAO.getCategoryById(id) + "  </a> <span class=" + "divider" + ">&#47;</span>";
+        request.setAttribute("address", address);
         request.setAttribute("listP", ListP);
         sendDispatcher(request, response, "/list.jsp");
 
@@ -108,14 +111,28 @@ public class HomePageController extends HttpServlet {
     public void serviceByGenre(HttpServletRequest request, HttpServletResponse response) {
         int id = Integer.parseInt(request.getParameter("gid"));
         List<Product> ListP = proDAO.getProductByGenre(id);
+        String address;
+        address = "<a href=" + "HomePageControllerMap?service=ByCate&cid=" + genDAO.getGenreById(id).getCategoryID()+ ">" + cateDAO.getCategoryById(genDAO.getGenreById(id).getCategoryID()) + "  </a> <span class=" + "divider" + ">&#47;</span>";
+
+        address += "<a href=" + "HomePageControllerMap?service=ByGenre&gid=" + id + ">" + genDAO.getGenreById(id).getGenreName()+ "  </a> <span class=" + "divider" + ">&#47;</span>";
+        request.setAttribute("address", address);
         request.setAttribute("listP", ListP);
         sendDispatcher(request, response, "/list.jsp");
 
     }
-     public void serviceSearch(HttpServletRequest request, HttpServletResponse response) {
-        String str=request.getParameter("search");
+
+    public void serviceSearch(HttpServletRequest request, HttpServletResponse response) {
+        String str = request.getParameter("search").trim();
         List<Product> ListP = proDAO.getProductByName(str);
-        request.setAttribute("listP", ListP);
+        String address;
+        if (ListP.isEmpty()) {
+            address = "There are no results for " + str;
+            request.setAttribute("address", address);
+        } else {
+            address = "Results for " + str;
+            request.setAttribute("address", address);
+            request.setAttribute("listP", ListP);
+        }
         sendDispatcher(request, response, "/list.jsp");
 
     }

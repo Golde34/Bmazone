@@ -76,10 +76,7 @@
         <link rel='stylesheet' href="css/2.css"  type='text/css'>
         <link rel='stylesheet' href="css/3.css"  type='text/css'> 
         <link rel='stylesheet' href="css/slide.css"  type='text/css'> 
-
         <script src="js/2.js"></script>
-
-
         <script src="js.home.js"></script>
     </head>
     <body class="home page-template page-template-page-blank page-template-page-blank-php page page-id-16 page-parent lightbox nav-dropdown-has-arrow" >
@@ -87,14 +84,7 @@
         <div id="wrapper">
 
             <main id="main" class="" style="">
-                <div id='ads-left'>
-                    <div style='margin:0 0 5px 0; padding:0;width:200px;position:fixed; left:0; top:0;'>
-                        <a href='' target='_blank'><img border='0' height='665' src='images/ads.jpg' width='200'/></a>
-                    </div></div>
-                <div id='ads-right'>
-                    <div style='margin:0 0 5px 0; padding:0;width:200px;position:fixed; right:0; top:0;'>
-                        <a href='' target='_blank'><img border='0' height='665' src='images/ads.jpg' width='200'/></a>
-                    </div></div>
+
 
                 <div id="content" role="main" class="content-area" >
 
@@ -107,42 +97,37 @@
 
                                 <div class="section-content relative">
 
-
                                     <div class="row row-collapse"  id="row-1954119617">
 
-                                        <div class="col small-12 large-12"  >
+                                        <div class="col small-8 large-8"  >
                                             <div class="col-inner"  >
 
-                                                <div class="slideshow-container">
+                                                
+                            
+                                                        <img class="mySlides" src="images/slide1.jpg"  style="height: 495.7px;width: 800px">
+                                                        <img class="mySlides" src="images/slide2.jpg"  style="height: 495.7px;width: 800px">
+                                                        <img class="mySlides" src="images/slide3.jpg"  style="height: 495.7px;width: 800px">
+                                                        <div class="w3-center w3-container w3-section w3-large w3-text-white w3-display-bottommiddle" style="width:100%">
+                                                            <div class="w3-left w3-hover-text-khaki" onclick="plusDivs(-1)">&#10094;</div>
+                                                            <div class="w3-right w3-hover-text-khaki" onclick="plusDivs(1)">&#10095;</div>
+                                                            <span class="w3-badge demo w3-border w3-transparent w3-hover-white" onclick="currentDiv(1)"></span>
+                                                            <span class="w3-badge demo w3-border w3-transparent w3-hover-white" onclick="currentDiv(2)"></span>
+                                                            <span class="w3-badge demo w3-border w3-transparent w3-hover-white" onclick="currentDiv(3)"></span>
+                                                        </div>
+                                                    
 
-                                                    <div class="mySlides fade">
-                                                        <div class="numbertext">1 / 3</div>
-                                                        <img src="images/slide1.jpg" style="width:1000px ;height: 500px">
-                                                        <div class="text">Caption Text</div>
-                                                    </div>
-                                                    <div class="mySlides fade">
-                                                        <div class="numbertext">2 / 3</div>
-                                                        <img src="images/slide2.jpg" style="width:1000px ;height: 500px">
-                                                        <div class="text">Caption Two</div>
-                                                    </div>
-                                                    <div class="mySlides fade">
-                                                        <div class="numbertext">3 / 3</div>
-                                                        <img src="images/slide3.jpg" style="width:1000px ;height: 500px">
-                                                        <div class="text">Caption Three</div>
-                                                    </div>
-                                                    <a class="prev" onclick="plusSlides(-1)">&#10094;</a>
-                                                    <a class="next" onclick="plusSlides(1)">&#10095;</a>
-                                                </div>
-                                                <br>
-                                                <div style="text-align:center">
-                                                    <span class="dot" onclick="currentSlide(1)"></span> 
-                                                    <span class="dot" onclick="currentSlide(2)"></span> 
-                                                    <span class="dot" onclick="currentSlide(3)"></span> 
-                                                </div>
-                                                <script src="js/slide.js"></script>
+                                                   
+                                                     <script src="js/slide.js"></script>
 
                                             </div>
-                                        </div>                             
+                                        </div>    
+                                        <div class="col small-4 large-4"  >
+                                            <div class="col-inner"  >
+                                                <img src="images/im1.jpg" >
+                                                <img src="images/im2.jpg" >
+
+                                            </div>
+                                        </div>    
                                     </div>
                                 </div>
                                 <!-- .section-content -->
@@ -163,13 +148,16 @@
                                 background-color: rgb(241, 241, 241);
                             }
                         </style>
+                       
                     </section>
+                    
 
                     <section class="section sec_flash_sale" id="section_16406982">
+                        
 
                         <div class="section-content relative">
 
-
+ <br><br>
                             <div class="row row-collapse align-middle"  id="row-1888902941">
                                 <div class="col medium-2 small-12 large-2"  ><div class="col-inner"  >
                                         <div class="img has-hover x md-x lg-x y md-y lg-y" id="image_510021313">
