@@ -136,7 +136,7 @@
                                         </a>
                                     </li>
                                     <li class="mb-2">
-                                        <a class="dropdown-item border-radius-md" href="">
+                                        <a class="dropdown-item border-radius-md" href="${contextPath}/UserControllerMap">
                                             <div class="d-flex py-1">
                                                 <div class="d-flex flex-column justify-content-center">
                                                     <h6 class="text-sm font-weight-normal mb-1">
@@ -173,8 +173,6 @@
                                      style="display: flex;
                                      justify-content: space-between;">
                                     <h6 class="m-0 font-weight-bold text-primary">Company Detail</h6>
-                                    <a href="AdminControllerMap?service=addcompanydetail">
-                                        <button>Add new company</button></a>
                                 </div>
                                 <div class="card-body">
                                     <form class="form" action="/Bmazon/AdminControllerMap" method="POST">

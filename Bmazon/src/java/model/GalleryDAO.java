@@ -6,6 +6,7 @@
 package model;
 
 import entity.Gallery;
+import entity.Product;
 import entity.ProductType;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -23,11 +24,11 @@ import java.util.logging.Logger;
 public class GalleryDAO extends BaseDAO{
 BaseDAO dbConn= new BaseDAO();
    
-    public void deleteGallery(String ProTypeId) {
-        String sql = "delete from Gallery where prodụctTypeID = ?";
+    public void deleteGallery(int id) {
+        String sql = "delete from Gallery where galleryID = ?";
         try {
             pre = conn.prepareStatement(sql);
-            pre.setString(1, ProTypeId);
+            pre.setInt(1, id);
             pre.executeUpdate();
         } catch (Exception e) {
         }
@@ -50,7 +51,7 @@ BaseDAO dbConn= new BaseDAO();
 
     public int editGallery(Gallery g) {
         int n = 0;
-        xSql = "update Gallery set productID = ? productTypeID = ? link =? status = ? where galleryID = ?";
+        xSql = "update Gallery set productID = ?, productTypeID = ?, link =?, status = ? where galleryID = ?";
         try {
             pre = conn.prepareStatement(xSql);
             pre.setInt(1, g.getProductID());
@@ -63,10 +64,31 @@ BaseDAO dbConn= new BaseDAO();
         }
         return n;
     }
+    
+    public Gallery getGalleryById(int id) {
+        Gallery gallery = new Gallery();
+        String sql = "SELECT * FROM [Bmazon].[dbo].[Gallery] where galleryID="+id;
+        try {
+            pre = conn.prepareStatement(sql);
+            rs = pre.executeQuery();
+            if (rs.next()) {
+                gallery.setGalleryID(id);
+                gallery.setLink(rs.getString("link"));
+                gallery.setProductID(rs.getInt("productID"));
+                gallery.setProductTypeID(rs.getString("productTypeID"));
+                gallery.setStatus(rs.getInt("status"));
+            }
+            rs.close();
+            pre.close();
+        } catch (SQLException e) {
+            Logger.getLogger(ProductDAO.class.getName()).log(Level.SEVERE, null, e);
+        }
+        return gallery;
+    }
 
     public List<Gallery> getAllGallery() {
         List<Gallery> list = new ArrayList<>();
-        xSql = "select * from [Gallery] ";
+        xSql = "select * from [Gallery] order by productID asc";
         try {
             pre = conn.prepareStatement(xSql);
             rs = pre.executeQuery();
@@ -115,6 +137,7 @@ BaseDAO dbConn= new BaseDAO();
         }
         return s;
     }
+    
 
 //    public List<Gallery> getGalleryBySizeAndColor(ProductType p) {
 //        List<Gallery> list = new ArrayList<>();
@@ -137,14 +160,7 @@ BaseDAO dbConn= new BaseDAO();
 //    }
     public static void main(String[] args) {
         GalleryDAO g= new GalleryDAO();
-         List<Gallery> list=g.getAllGalleryOfProduct(3);
-         for (Gallery gallery : list) {
-             System.out.println(gallery.getLink());
-            
-        }
-        System.out.println(g.getSampleOfProduct(3));
-        
+        Gallery ga = g.getGalleryById(1);
+        System.out.println(ga.getLink());
     }
-
-    
 }

@@ -8,6 +8,7 @@ package controller;
 import entity.*;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.sql.Date;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
@@ -37,6 +38,7 @@ public class AdminController extends HttpServlet {
     GalleryDAO daogallery = new GalleryDAO();
     ShipCompanyDAO daocompany = new ShipCompanyDAO();
     ProductDAO daoproduct = new ProductDAO();
+    ProductTypeDAO daoproducttype = new ProductTypeDAO();
     CategoryDAO daocategory = new CategoryDAO();
     GenreDAO daogenre = new GenreDAO();
     UserDAO daouser = new UserDAO();
@@ -86,17 +88,17 @@ public class AdminController extends HttpServlet {
             if (service.equalsIgnoreCase("productmanagement")) {
                 serviceProductManagement(request, response);
             }
-            
+
             //Product detail to add and update
             if (service.equalsIgnoreCase("updateproductdetail") || service.equalsIgnoreCase("addproductdetail")) {
                 serviceProductDetail(service, request, response);
             }
-            
+
             //Add Product
             if (service.equalsIgnoreCase("addproduct")) {
                 serviceAddProduct(request, response);
             }
-            
+
             //Update Product 
             if (service.equalsIgnoreCase("updateproduct")) {
                 serviceUpdateProduct(request, response);
@@ -111,12 +113,12 @@ public class AdminController extends HttpServlet {
             if (service.equalsIgnoreCase("companymanagement")) {
                 serviceCompanyManagement(request, response);
             }
-            
+
             //Ship Company detail to add and update
             if (service.equalsIgnoreCase("updatecompanydetail") || service.equalsIgnoreCase("addcompanydetail")) {
                 serviceCompanyDetail(service, request, response);
             }
-            
+
             //Add Ship Company
             if (service.equalsIgnoreCase("addcompany")) {
                 serviceAddCompany(request, response);
@@ -136,12 +138,12 @@ public class AdminController extends HttpServlet {
             if (service.equalsIgnoreCase("gallerymanagement")) {
                 serviceGalleryManagement(request, response);
             }
-            
+
             //Gallery detail to add and update
             if (service.equalsIgnoreCase("updategallerydetail") || service.equalsIgnoreCase("addgallerydetail")) {
                 serviceGalleryDetail(service, request, response);
             }
-            
+
             //Add Gallery
             if (service.equalsIgnoreCase("addproduct")) {
                 serviceAddGallery(request, response);
@@ -268,25 +270,49 @@ public class AdminController extends HttpServlet {
         request.setAttribute("listProduct", listProduct);
         sendDispatcher(request, response, "admin/productmanagement.jsp");
     }
-    
+
     public void serviceProductDetail(String service, HttpServletRequest request, HttpServletResponse response) {
         request.setAttribute("service", service);
-        if (service.equalsIgnoreCase("addduseretail")) {
-            sendDispatcher(request, response, "admin/userdetail.jsp");
+        if (service.equalsIgnoreCase("addproductdetail")) {
+            sendDispatcher(request, response, "admin/productdetail.jsp");
             return;
         }
-        int id = Integer.parseInt(request.getParameter("userid"));
-        User user = daouser.getUserById(id);
-        request.setAttribute("user", user);
-        sendDispatcher(request, response, "admin/userdetail.jsp");
+        String id = request.getParameter("producttypeid");
+        ProductType producttype = daoproducttype.getProductTypeByPTypeID(id);
+        Product product = daoproduct.getProductByID(producttype.getProductID());
+        request.setAttribute("producttype", producttype);
+        request.setAttribute("product", product);
+        sendDispatcher(request, response, "admin/productdetail.jsp");
     }
-    
+
     public void serviceAddProduct(HttpServletRequest request, HttpServletResponse response) {
-        
+        String productname = request.getParameter("productname");
+        String color = request.getParameter("color");
+        String size = request.getParameter("size");
+        String price = request.getParameter("price");
+        String date = request.getParameter("date");
+        Product product = new Product();
+        product.setProductName(productname);
+        product.setReleaseDate(Date.valueOf(date));
+        ProductType producttype = new ProductType();
+        daoproduct.addProduct(product);
+        List<ProductType> listProductType = daoproducttype.getProductByProductID(product.getProductID());
+        String producttypeid = "Pr" + product.getProductID() + "Ty" + (listProductType.size() + 1);
+        producttype.setColor(color);
+        producttype.setPrice(price);
+        producttype.setSize(size);
+        daoproducttype.addProductType(producttype);
+        ArrayList<Product> listProduct = daoproduct.getAllProduct();
+        request.setAttribute("listProduct", listProduct);
+        sendDispatcher(request, response, "admin/productmanagement.jsp");
     }
-    
+
     public void serviceDeleteProduct(HttpServletRequest request, HttpServletResponse response) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        String id = request.getParameter("producttypeid");
+        daoproducttype.deleteProductType(id);
+        List<Product> listProduct = daoproduct.getAllProduct();
+        request.setAttribute("listProduct", listProduct);
+        sendDispatcher(request, response, "admin/productmanagement.jsp");
     }
 
     public void serviceUpdateProduct(HttpServletRequest request, HttpServletResponse response) {
@@ -298,7 +324,7 @@ public class AdminController extends HttpServlet {
         request.setAttribute("listCompany", listCompany);
         sendDispatcher(request, response, "admin/companymanagement.jsp");
     }
-    
+
     public void serviceCompanyDetail(String service, HttpServletRequest request, HttpServletResponse response) {
         request.setAttribute("service", service);
         if (service.equalsIgnoreCase("addcompanydetail")) {
@@ -310,7 +336,7 @@ public class AdminController extends HttpServlet {
         request.setAttribute("company", company);
         sendDispatcher(request, response, "admin/companydetail.jsp");
     }
-    
+
     public void serviceDeleteCompany(HttpServletRequest request, HttpServletResponse response) {
         String id = request.getParameter("companyid");
         daocompany.deleteShipCompany(id);
@@ -383,25 +409,33 @@ public class AdminController extends HttpServlet {
         request.setAttribute("listGallery", listGallery);
         sendDispatcher(request, response, "admin/gallerymanagement.jsp");
     }
-    
+
     public void serviceGalleryDetail(String service, HttpServletRequest request, HttpServletResponse response) {
         request.setAttribute("service", service);
-        if (service.equalsIgnoreCase("addduseretail")) {
-            sendDispatcher(request, response, "admin/userdetail.jsp");
+        if (service.equalsIgnoreCase("addgallerydetail")) {
+            sendDispatcher(request, response, "admin/gallerydetail.jsp");
             return;
         }
-        int id = Integer.parseInt(request.getParameter("userid"));
-        User user = daouser.getUserById(id);
-        request.setAttribute("user", user);
-        sendDispatcher(request, response, "admin/userdetail.jsp");
+        int id = Integer.parseInt(request.getParameter("galleryid"));
+        Gallery gallery = daogallery.getGalleryById(1);
+        Product product = daoproduct.getProductByID(gallery.getProductID());
+        ProductType producttype = daoproducttype.getProductTypeByPTypeID(gallery.getProductTypeID());
+        request.setAttribute("product", product);
+        request.setAttribute("producttype", producttype);
+        request.setAttribute("gallery", gallery);
+        sendDispatcher(request, response, "admin/gallerydetail.jsp");
     }
-    
+
     public void serviceAddGallery(HttpServletRequest request, HttpServletResponse response) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
     public void serviceDeleteGallery(HttpServletRequest request, HttpServletResponse response) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        String id = request.getParameter("galleryid");
+        daogallery.deleteGallery(Integer.parseInt(id));
+        List<Gallery> listGallery = daogallery.getAllGallery();
+        request.setAttribute("listGallery", listGallery);
+        sendDispatcher(request, response, "admin/gallerymanagement.jsp");
     }
 
     public void serviceUpdateGallery(HttpServletRequest request, HttpServletResponse response) {
