@@ -48,6 +48,13 @@ public class ProductDAO extends BaseDAO {
         }
         return list;
     }
+    public static void main(String[] args) {
+        ProductDAO dao = new ProductDAO();
+        ArrayList<Product> list = dao.getAllProduct();
+        for (Product product : list) {
+            System.out.println(product.getProductName());
+        }
+    }
 
     public ArrayList<Product> getTrueProduct() {
         ArrayList<Product> list = new ArrayList<>();
@@ -199,6 +206,56 @@ public class ProductDAO extends BaseDAO {
         return list;
     }
 
+    public ArrayList<Product> getProducSuggest() {
+        ArrayList<Product> list = new ArrayList<>();
+        String sql = "SELECT TOP 16 * FROM Product order by releaseDate";
+        try {
+            pre = conn.prepareStatement(sql);
+            rs = pre.executeQuery();
+            while (rs.next()) {
+                Product pro = new Product();
+                pro.setProductID(rs.getInt("productID"));
+                pro.setProductName(rs.getString("productName"));
+                pro.setDescription(rs.getString("description"));
+                pro.setRating(rs.getInt("rating"));
+                pro.setReleaseDate(rs.getDate("releaseDate"));
+                pro.setSeller(rs.getInt("seller"));
+                pro.setStatus(rs.getInt("status"));
+                list.add(pro);
+            }
+            rs.close();
+            pre.close();
+        } catch (SQLException e) {
+            Logger.getLogger(ProductDAO.class.getName()).log(Level.SEVERE, null, e);
+        }
+        return list;
+    }
+    
+    public ArrayList<Product> searchProduct(String text) {
+        ArrayList<Product> list = new ArrayList<>();
+        xSql = "SELECT * FROM [Bmazon].[dbo].[Product] where productID like '%"+text+"%' or productName like '%"+text+"%' or description like '%"+text+"%' or rating like '%"+text+"%'";
+        try {
+            pre = conn.prepareStatement(xSql);
+            rs = pre.executeQuery();
+            while (rs.next()) {
+                Product pro = new Product();
+                pro.setProductID(rs.getInt("productID"));
+                pro.setProductName(rs.getString("productName"));
+                pro.setDescription(rs.getString("description"));
+                pro.setRating(rs.getInt("rating"));
+                pro.setReleaseDate(rs.getDate("releaseDate"));
+                pro.setSeller(rs.getInt("seller"));
+                pro.setStatus(rs.getInt("status"));
+                list.add(pro);
+            }
+            rs.close();
+            pre.close();
+        } catch (SQLException e) {
+            Logger.getLogger(ProductDAO.class.getName()).log(Level.SEVERE, null, e);
+        }
+        return list;
+    }
+    
     public ArrayList<Product> getProductByName(String name) {
         ArrayList<Product> list = new ArrayList<>();
         String sql = "SELECT * FROM [Bmazon].[dbo].[Product] where productName like '%" + name + "%'";

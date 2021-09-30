@@ -19,21 +19,15 @@ import java.util.logging.Logger;
  * @author Admin
  */
 public class UserDAO extends BaseDAO {
-
+    
     BaseDAO dbConn = new BaseDAO();
 
     public static void main(String[] args) {
-
         UserDAO dao = new UserDAO();
-        String mail = "viet@gmail.com";
-        dao.checkExistMail(mail); 
-        if (!mail.equals("viet@gmail.com") && dao.checkExistMail(mail)) {
-            System.out.println("Mail nay da ton tai roi");
-            System.out.println(dao.checkExistMail(mail));
-        } else {
-            System.out.println("Not ok");
-        }
+        User user = dao.getUserByProductId(2);
+        System.out.println(user.getFullname());
     }
+    
 
     public User getUserLogin(String username, String password) {
         String sql = "SELECT * FROM [User] WHERE username = ? and password = ? and status = 1";

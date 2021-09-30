@@ -202,7 +202,7 @@
                                                 <th style="width: 5%"></th>
                                             </tr>
                                         </thead>
-                                        <tbody>
+                                        <tbody id="gallery">
                                             <%for (Gallery gallery : listGallery) {
                                             Product product = productdao.getProductByID(gallery.getProductID());
                                             ProductType producttype = producttypedao.getProductTypeByPTypeID(gallery.getProductTypeID());
@@ -254,6 +254,26 @@
         <script src="${contextPath}/js/plugins/chartjs.min.js"></script>
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
         <script src="${contextPath}/js/tablepagination.js"></script>
+        <script>
+            function searchByName(param) {
+                var txtSearch = param.value;
+                $.ajax({
+                    url: "/Bmazon/AdminControllerMap",
+                    type: "get",
+                    data: {
+                        search: txtSearch,
+                        service: "searchgallery"
+                    },
+                    success: function (respone) {
+                        var text = document.getElementById("gallery");
+                        text.innerHTML = respone;
+                    },
+                    error: function (xhr) {
+                        //Do Something to handle error
+                    }
+                });
+            }
+        </script>
         <!-- Github buttons -->
         <script async defer src="https://buttons.github.io/buttons.js"></script>
         <!-- Control Center for Soft Dashboard: parallax effects, scripts for the example pages etc -->

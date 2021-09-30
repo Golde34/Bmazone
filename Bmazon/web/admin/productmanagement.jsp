@@ -188,7 +188,7 @@
                                             </div>
                                         </div>
                                         <div class="tb_search">
-                                            <input type="text" id="search_input_all" onkeyup="FilterkeyWord_all_table()" placeholder="Search.." class="form-control">
+                                            <input type="text" id="search_input_all" oninput="searchByName(this)" placeholder="Search.." class="form-control">
                                         </div>
                                     </div>
                                     <div class="table-responsive-md">
@@ -204,24 +204,21 @@
                                                     <th style="width: 5%;"></th>
                                                 </tr>
                                             </thead>
-                                            <tbody>
+                                            <tbody id="product">
                                                 <%for (Product product : listProduct) {
-//                                                        List<ProductType> listProductType = producttypedao.getProductByProductID(product.getProductID());
-//                                                        for (ProductType producttype : listProductType) {
+                                                        User user = userdao.getUserByProductId(product.getProductID());
                                                 %>
                                                 <tr>
-                                                    <td><div><%=product.getProductName() %></div></td>
-                                                    <td><div><%=product.getDescription() %></div></td>
-                                                    <td><div><%=product.getRating() %></div></td>
-                                                    <%User user = userdao.getUserById(product.getProductID());%>
-                                                    <td><div><%=user.getFullname() %></div></td>
-                                                    <td><div><%=product.getReleaseDate() %></div></td>
-                                                    <td><div>
-                                                            <a href="AdminControllerMap?service=updateproductdetail&producttypeid=<%=product.getProductID() %>"><span class="fas fa-edit"></span></a>
+                                                    <td><div><%=product.getProductName()%></div></td>
+                                                    <td><div><%=product.getDescription()%></div></td>
+                                                    <td><div><%=product.getRating()%></div></td>
+                                                    <td><div><%=user.getFullname()%></div></td>
+                                                    <td><div><%=product.getReleaseDate()%></div></td>
+                                                    <td><div><a href="AdminControllerMap?service=updateproductdetail&producttypeid=<%=product.getProductID()%>"><span class="fas fa-edit"></span></a>
                                                         </div></td>
-                                                    <td><div><a href="AdminControllerMap?service=deleteproduct&producttypeid=<%=product.getProductID() %>" onclick="return confirm('Are you sure you want to Remove?');"><span class="fas fa-trash-alt"></span></a></div></td>
+                                                    <td><div><a href="AdminControllerMap?service=deleteproduct&producttypeid=<%=product.getProductID()%>" onclick="return confirm('Are you sure you want to Remove?');"><span class="fas fa-trash-alt"></span></a></div></td>
                                                 </tr>
-                                                
+
                                                 <%}%>
                                             </tbody>
                                         </table>
@@ -259,6 +256,26 @@
         <script src="${contextPath}/js/plugins/chartjs.min.js"></script>
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
         <script src="${contextPath}/js/tablepagination.js"></script>
+        <script>
+            function searchByName(param) {
+                var txtSearch = param.value;
+                $.ajax({
+                    url: "/Bmazon/AdminControllerMap",
+                    type: "get",
+                    data: {
+                        search: txtSearch,
+                        service: "searchproduct"
+                    },
+                    success: function (respone) {
+                        var text = document.getElementById("product");
+                        text.innerHTML = respone;
+                    },
+                    error: function (xhr) {
+                        //Do Something to handle error
+                    }
+                });
+            }
+        </script>
     </body>
 
 </html>
