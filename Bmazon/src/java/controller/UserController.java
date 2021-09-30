@@ -125,7 +125,7 @@ public class UserController extends HttpServlet {
     }
 
     public void serviceChangePassword(HttpServletRequest request, HttpServletResponse response) {
-        String mess3 = "";
+        String messChangepass = "";
 
         HttpSession session = request.getSession();
         User account = (User) session.getAttribute("currUser");
@@ -136,15 +136,15 @@ public class UserController extends HttpServlet {
         String newpass = request.getParameter("newpass");
 
 //        if (!newpass.equals(repass)) {
-//            mess3 = "You are only have permission to change pass of your own account";
+//            messChangepass = "You are only have permission to change pass of your own account";
 //        } else 
         if (!account.getPassword().equals(oldpass)) {
-            mess3 = "Old Password is not correct";
+            messChangepass = "Old Password is not correct";
         } else {
             daoUser.changePassword(user, newpass);
-            mess3 = "Change password successfully !!";
+            messChangepass = "Change password successfully !!";
         }
-        request.setAttribute("mess3", mess3);
+        request.setAttribute("messChangepass", messChangepass);
         sendDispatcher(request, response, "loginAndSecurity/changepass.jsp");
 //        request.setAttribute("mess", mess);
 //        sendDispatcher(request, response, "loginAndSecurity/changepass.jsp");

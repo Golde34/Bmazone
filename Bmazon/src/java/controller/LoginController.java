@@ -10,6 +10,7 @@ import entity.User;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.ArrayList;
+import java.util.Random;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.servlet.RequestDispatcher;
@@ -51,6 +52,11 @@ public class LoginController extends HttpServlet {
                 serviceLogin(request, response);
             }
 
+            //Login demo
+//            if (service.equalsIgnoreCase("loginDemo")) {
+//                serviceLoginDemo(request, response);
+//            }
+
             //register
             if (service.equalsIgnoreCase("register")) {
                 serviceRegister(request, response);
@@ -67,9 +73,14 @@ public class LoginController extends HttpServlet {
         String checkLogin = "checked";
         request.setAttribute("checkLogin", checkLogin);
         String userName = request.getParameter("username");
-        String mess = "";
+        String messLogin = "";
         String userPass = request.getParameter("password");
-        User log = daoUser.getUserLogin(userName, userPass);
+        User log = new User();
+        if (userName.contains("@")){
+            log = daoUser.getEmailLogin(userName, userPass);
+        } else {
+            log = daoUser.getUserLogin(userName, userPass);
+        }
         if (log != null) {
             request.getSession().setAttribute("currUser", log);
             request.getSession().setAttribute("role", log.getSystemRole());
@@ -77,33 +88,52 @@ public class LoginController extends HttpServlet {
             request.getSession().setAttribute("ShoppingCart", ShoppingCart);
             sendDispatcher(request, response, "index.jsp");
         } else {
-            mess = "Login failed, check your username or your password.";
-            request.setAttribute("userName", userName);
-            request.setAttribute("userPass", userPass);
-            request.setAttribute("mess", mess);
-            sendDispatcher(request, response, "loginAndSecurity/login.jsp");
+            messLogin = "Login failed, check your username/email or your password.";
+            request.setAttribute("usernameLogin", userName);
+            request.setAttribute("userpassLogin", userPass);
+            request.setAttribute("messLogin", messLogin);
+            sendDispatcher(request, response, "loginAndSecurity/loginPass.jsp");
         }
     }
+
+//    public void serviceLoginDemo(HttpServletRequest request, HttpServletResponse response) {
+//        String alphabet = "0123456789ABCDE";
+//        final int N = alphabet.length();
+//        Random r = new Random();
+//
+//        for (int i = 0; i < 5; i++) {
+//            System.out.print(alphabet.charAt(r.nextInt(N)));
+//        }
+//        String username = 
+//        String emailPass = request.getParameter("password");
+//        User log = daoUser.getEmailLogin(emailLogin, emailPass);
+//        if (log != null) {
+//            request.getSession().setAttribute("currUser", log);
+//            request.getSession().setAttribute("role", log.getSystemRole());
+//            ArrayList<Product> ShoppingCart = new ArrayList<>();
+//            request.getSession().setAttribute("ShoppingCart", ShoppingCart);
+//            sendDispatcher(request, response, "index.jsp");
+//        } else {
+//            request.setAttribute("emailLogin", emailLogin);
+//            request.setAttribute("userpassLogin", emailPass);
+//            request.setAttribute("messLoginEmail", messLoginEmail);
+//            sendDispatcher(request, response, "loginAndSecurity/loginGoogle.jsp");
+//        }
+//    }
 
     public void serviceRegister(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         String checkRegis = "checked";
         request.setAttribute("checkRegis", checkRegis);
-        String mess2 = "";
+        String messRegis = "";
         String Username = request.getParameter("signupusername");
         String Password = request.getParameter("signuppass");
         String Repassword = request.getParameter("resignuppass");
         String fullname = request.getParameter("fname");
         String Email = request.getParameter("email");
         String Phone = request.getParameter("phone");
-        request.setAttribute("Username", Username);
-        request.setAttribute("Password", Password);
-        request.setAttribute("Repassword", Repassword);
-        request.setAttribute("fullname", fullname);
-        request.setAttribute("Email", Email);
-        request.setAttribute("Phone", Phone);
 
         if (!Password.equals(Repassword)) {
-            request.setAttribute("mess2", "Password must be same as repeat password");
+            request.setAttribute("messRegis", "Password must be same as repeat password");
             request.getRequestDispatcher("login.jsp").include(request, response);
             return;
         }
@@ -111,8 +141,8 @@ public class LoginController extends HttpServlet {
         boolean exist = daoUser.checkExistUserName(Username);
         if (exist == false) {
             daoUser.singup(Username, Password, Email, Phone, fullname);
-            mess2 = "Signup Successfully!";
-            request.setAttribute("mess2", mess2);
+            messRegis = "Signup Successfully!";
+            request.setAttribute("messRegis", messRegis);
             request.getRequestDispatcher("jsp/login.jsp").forward(request, response);
 //            daoUser.singup(username, password, email, phone, fname);
 //            mess = "Signup Successfully!";
@@ -120,15 +150,15 @@ public class LoginController extends HttpServlet {
 //            request.getRequestDispatcher("loginAndSecurity/login.jsp").forward(request, response);
             return;
         } else {
-            mess2 = "Duplicate user!";
-            request.setAttribute("mess2", mess2);
+            messRegis = "Duplicate user!";
+            request.setAttribute("messRegis", messRegis);
         }
-        request.setAttribute("Username", Username);
-        request.setAttribute("Password", Password);
-        request.setAttribute("Repassword", Repassword);
-        request.setAttribute("fullname", fullname);
-        request.setAttribute("Email", Email);
-        request.setAttribute("Phone", Phone);
+        request.setAttribute("usernameRegis", Username);
+        request.setAttribute("passwordRegis", Password);
+        request.setAttribute("repasswordRegis", Repassword);
+        request.setAttribute("fullnameRegis", fullname);
+        request.setAttribute("emailRegis", Email);
+        request.setAttribute("phoneRegis", Phone);
 //        request.getRequestDispatcher("jsp/login.jsp").include(request, response);
         request.getRequestDispatcher("loginAndSecurity/login.jsp").include(request, response);
     }

@@ -61,6 +61,33 @@ public class UserDAO extends BaseDAO {
         }
         return null;
     }
+    
+    public User getEmailLogin(String email, String password) {
+        String sql = "SELECT * FROM [User] WHERE email = ? and password = ? and status = 1";
+        try {
+            pre = conn.prepareStatement(sql);
+            pre.setString(1, email);
+            pre.setString(2, password);
+            ResultSet rs = pre.executeQuery();
+            if (rs.next()) {
+                User user = new User(rs.getString("userID"), rs.getString("username"),
+                        rs.getString("password"), rs.getString("email"),
+                        rs.getString("phoneNumber"), rs.getInt("sell"),
+                        rs.getDouble("wallet"), rs.getString("fullname"),
+                        rs.getString("publicName"), rs.getString("address"), rs.getString("profileImage"),
+                        rs.getString("backgroundImage"), rs.getString("occupation"),
+                        rs.getInt("gender"), rs.getDate("DOB"), rs.getString("bio"),
+                        rs.getString("Facebook"), rs.getString("Instagram"),
+                        rs.getString("Twitter"), rs.getString("Youtube"),
+                        rs.getInt("activityPoint"), rs.getInt("systemRole"),
+                        rs.getInt("status"));
+                return user;
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(UserDAO.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return null;
+    }
 
     public void singup(String user, String pass, String email, String phone, String fname) {
         String sql = "INSERT INTO [User]([username],[password],[email],[phoneNumber],[fullname],[systemRole],[status])\n"

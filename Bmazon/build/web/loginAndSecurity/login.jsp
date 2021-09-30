@@ -14,98 +14,58 @@
         <title>Login Page</title>
         <link href="../css/login.css" rel="stylesheet" type="text/css"/>
         <link rel="stylesheet" href="${contextPath}/css/login.css"type="text/css">
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0-beta/css/materialize.min.css">
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0-beta/js/materialize.min.js"></script>
     </head>
     <body>
-        <%
-            String mess = (String) request.getAttribute("mess");
-            if (mess == null) {
-                mess = "";
+        <style>
+            body{
+                background-image: white;
             }
-            Object checkLogin = request.getAttribute("checkLogin");
-            Object checkRegis = request.getAttribute("checkRegis");
-            if (checkLogin == null) {
-                checkLogin = "checked";
-            }
-        %>
+        </style>
         <div class="login-wrap">
-            <div class="login-html" >
-                <input id="tab-1" type="radio" name="tab" class="sign-in" <%= checkLogin %> ><label for="tab-1" class="tab">Sign In</label>
-                <input id="tab-2" type="radio" name="tab" class="sign-up" <%= checkRegis %> ><label for="tab-2" class="tab">Sign Up</label> 
+            <div class="login-html">
                 <div class="login-form">
-                    <!--Sign in Service-->
-                    <div class="sign-in-htm">
-                        <form action="/Bmazon/LoginControllerMap" method="POST">
-                            <div class="group">
-                                <label for="user" class="label" >Username</label>
-                                <input id="user" type="text" name="username" placeholder="Username" value="${userName}" class="input" required autofocus="">
-                            </div>
-                            <div class="group">
-                                <label for="pass" class="label">Password</label>
-                                <input id="pass" type="password" name="password" placeholder="Password" value="${userPass}" class="input" data-type="password" required autofocus="">
-                            </div>
-                            <h6 style="color: yellow" style="font-size: small" ><%= mess%></h6>
-                            <div class="group">
-                                <input type="hidden" name="service" value="login">
-                                <input type="submit" class="button" value="Sign In">
-                            </div>
-                        </form>
+                    <div class="sign-up-html">
+                        <div class="col s12 m6 offset-m3 center-align">
+                            <a class="oauth-container btn darken-4 white black-text" href="#" style="text-transform:none; border-radius: 10px">
+                                <div class="left">
+                                    <img width="20px" style="margin-top:7px; margin-right:8px" alt="Google sign-in" 
+                                         src="https://upload.wikimedia.org/wikipedia/commons/thumb/5/53/Google_%22G%22_Logo.svg/512px-Google_%22G%22_Logo.svg.png" />
+                                </div>
+                                Sign in with Google
+                            </a>
+                        </div>
                         <br>
-                        <a style="color: yellow" href="${contextPath}/loginAndSecurity/forgot.jsp" >
-                            <i class="fas fa-angle-left"></i> Forgot Password
+                        <div class="col s12 m6 offset-m3 center-align">
+                            <a class="oauth-container btn darken-4 white black-text" href="${contextPath}/loginAndSecurity/loginPass.jsp" style="text-transform:none; border-radius: 10px">
+                                <div class="left">
+                                    <img width="20px" style="margin-top:7px; margin-right:8px" alt="User sign-in" 
+                                         src="https://png.pngtree.com/png-vector/20190511/ourmid/pngtree-vector-key-icon-png-image_1028662.jpg" />
+                                </div>
+                                Sign in with Password
+                            </a>
+                        </div>
+                        <br>
+                        
+                        <div class="col s12 m6 offset-m3 center-align">
+                        No account?<a style="color: blue" href="${contextPath}/LoginControllerMap?service=loginDemo" >
+                            <i class="fas fa-angle-left"></i> Request a demo here!
                         </a>
-                        <div class="hr"></div>
-                    </div>
-                    <!--Sign up Service-->
-                    <div class="sign-up-htm">
-                        <form action="/Bmazon/LoginControllerMap" method="POST">
-                            <div class="group">
-                                <label for="user" class="label">Username</label>
-                                <input id="user" type="text" name="signupusername" value="${Username}" placeholder="Username"  class="input" required autofocus="" >
-                            </div>
-                            <div class="group">
-                                <label for="pass" class="label">Password</label>
-                                <input id="password" type="password" name="signuppass" value="${Password}" class="input" placeholder="Password" data-type="password" required autofocus="" >
-                            </div>
-                            <div class="group">
-                                <label for="pass" class="label">Repeat Password</label>
-                                <input id="repassword" oninput="check(this)" type="password" name="resignuppass" value="${Repassword}" class="input" placeholder="Repeat Password" data-type="password"required autofocus="" >
-                            </div>
-                            <div class="group">
-                                <label for="pass" class="label">Full Name</label>
-                                <input id="name" type="text" name="fname" class="input" value="${fullname}" placeholder="NguyenVanA" required autofocus="" >
-                            </div>
-                            <div class="group">
-                                <label for="pass" class="label">Email</label>
-                                <input id="email" type="text" pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,4}$" name="email" value="${Email}" class="input" placeholder="abc@xyz.com" required autofocus="" >
-                            </div>
-                            <div class="group">
-                                <label for="pass" class="label">Phone</label>
-                                <input id="phone" type="text" pattern="([\+84|84|0]+(2|3|5|7|8|9)+([0-9]{8})" name="phone" value="${Phone}" class="input" placeholder="0987654321" required autofocus="" >
-                            </div>
-                            <h6 style="color: yellow;" style="font-size: small" >${mess2}</h6>
-                            <div class="group">
-                                <input type="submit" class="button" value="Sign Up">
-                                <input type="hidden" name="service" value="register">
-                            </div>
-                        </form>
-                        <div class="hr"></div>
-                        <div class="foot-lnk">
-                            <label for="tab-1">Already Member?</a>
                         </div>
                     </div>
                 </div>
             </div>
-        </div>
     </body>
     <script language='javascript' type='text/javascript'>
-    function check(input) {
-        if (input.value != document.getElementById('password').value) {
-            input.setCustomValidity('Password Must be Matching.');
-        } else {
-            // input is valid -- reset the error message
-            input.setCustomValidity('');
+        function check(input) {
+            if (input.value != document.getElementById('password').value) {
+                input.setCustomValidity('Password Must be Matching.');
+            } else {
+                // input is valid -- reset the error message
+                input.setCustomValidity('');
+            }
         }
-    }
     </script>
 
 </html>

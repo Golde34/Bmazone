@@ -13,6 +13,7 @@ import java.sql.Statement;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -174,7 +175,7 @@ public class ProductDAO extends BaseDAO {
         return list;
     }
 
-    public ArrayList<Product> getProductBySeller(int seller) {
+    public ArrayList<Product> getProductBySeller(String seller) {
         ArrayList<Product> list = new ArrayList<>();
         String sql = "SELECT * FROM [Bmazon].[dbo].[Product] where seller=" + seller;
         try {
@@ -198,6 +199,11 @@ public class ProductDAO extends BaseDAO {
         }
         return list;
     }
+//    public static void main(String[] args) {
+//        ProductDAO pDAO = new ProductDAO();
+//        List<Product> listProduct = pDAO.getProductBySeller("1");
+//        System.out.println(listProduct);
+//    }
 
     public ArrayList<Product> getProductByName(String name) {
         ArrayList<Product> list = new ArrayList<>();

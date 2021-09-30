@@ -1,4 +1,9 @@
 <%-- 
+    Document   : orderSeller
+    Created on : Sep 30, 2021, 2:15:00 PM
+    Author     : DELL
+--%>
+<%-- 
     Document   : dashboard
     Created on : Sep 26, 2021, 12:09:49 PM
     Author     : DELL
@@ -83,7 +88,7 @@
                     <!-- /.search form -->
                     <!-- sidebar menu: : style can be found in sidebar.less -->
                     <ul class="sidebar-menu">
-                        <li class="checked"><!-- class="tablinks" -->
+                        <li><!-- class="tablinks" -->
                             <!--<a href="" onclick="openObject(event, 'Dashboard')">-->
                                 
                             <a href="SellerControllerMap">
@@ -96,7 +101,7 @@
                             </a>
                         </li>
 
-                        <li>
+                        <li class="checked">
                             <a href="SellerControllerMap?service=ordermanagement">
                                 <i class="fa fa-globe"></i> <span>Order Management</span>
                             </a>
@@ -147,12 +152,11 @@
 
                     <!-- Main row -->
                     <!-- Dashboard -->
-                    <div class="row" id="Dashboard" name="tabcontent" style="display: block;">
-
+                    <div class="row" id="Order" name="tabcontent" style="display: none;">
                         <div class="col-md-8">
                             <section class="panel">
                                 <header class="panel-heading">
-                                    Order in Progress
+                                    Order completed
                                 </header>
                                 <div class="panel-body table-responsive">
                                     <table class="table table-hover">
@@ -172,8 +176,8 @@
                                                 <td>Nam</td>
                                                 <td>13/11/2001</td>
                                                 <td>300$</td>
-                                                <td><span class="label label-danger">in progress</span></td>
-                                                <td><span class="badge badge-info">50%</span></td>
+                                                <td><span class="label label-success">success</span></td>
+                                                <td><span class="badge badge-success">100%</span></td>
                                             </tr>
                                         </tbody>
                                     </table>
@@ -185,12 +189,13 @@
                         <div class="col-md-4">
                             <section class="panel">
                                 <header class="panel-heading">
-                                    Most spent customers
+                                    Biggest orders
                                 </header>
                                 <div class="panel-body">
                                 </div>
                             </section>
                         </div>
+
                     </div>
                     <!-- row end -->
                 </section><!-- /.content -->
@@ -202,16 +207,6 @@
         </div><!-- ./wrapper -->
 
     </body>
-        <script src="http://ajax.googleapis.com/ajax/libs/jquery/2.0.2/jquery.min.js"></script>
-        <script src="../js/seller/jquery.min.js" type="text/javascript"></script>
-        <script src="../js/seller/jquery-ui-1.10.3.min.js" type="text/javascript"></script>
-        <script src="../js/seller/bootstrap.min.js" type="text/javascript"></script>
-        <script src="../js/seller/plugins/daterangepicker/daterangepicker.js" type="text/javascript"></script>
-        <script src="../js/seller/plugins/chart.js" type="text/javascript"></script>
-        <script src="../js/seller/plugins/iCheck/icheck.min.js" type="text/javascript"></script>
-        <script src="../js/seller/plugins/fullcalendar/fullcalendar.js" type="text/javascript"></script>
-        <script src="../js/seller/Director/app.js" type="text/javascript"></script>
-        <script src="../js/seller/Director/dashboard.js" type="text/javascript"></script>
     <!--% }%-->
 
 <!--    <script>

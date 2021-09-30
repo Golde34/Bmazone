@@ -1,6 +1,6 @@
 <%-- 
-    Document   : dashboard
-    Created on : Sep 26, 2021, 12:09:49 PM
+    Document   : productSeller
+    Created on : Sep 30, 2021, 2:14:47 PM
     Author     : DELL
 --%>
 
@@ -48,13 +48,13 @@
     <!--% } else { %-->
     
 <%
+    ProductTypeDAO producttypedao = new ProductTypeDAO();
     User curUser = (User) request.getSession().getAttribute("currUser");
     ArrayList<Product> listP = (ArrayList<Product>) request.getAttribute("listP");
 %>
-
     <body class="skin-black">
-            <jsp:include page="headerSeller.jsp"/>
         <!-- header logo: style can be found in header.less -->
+            <jsp:include page="headerSeller.jsp"/>
         <div class="wrapper row-offcanvas row-offcanvas-left">
             <!-- Left side column. contains the logo and sidebar -->
             <aside class="left-side sidebar-offcanvas">
@@ -83,14 +83,14 @@
                     <!-- /.search form -->
                     <!-- sidebar menu: : style can be found in sidebar.less -->
                     <ul class="sidebar-menu">
-                        <li class="checked"><!-- class="tablinks" -->
+                        <li><!-- class="tablinks" -->
                             <!--<a href="" onclick="openObject(event, 'Dashboard')">-->
                                 
                             <a href="SellerControllerMap">
                                 <i class="fa fa-dashboard"></i> <span>Dashboard</span>
                             </a>
                         </li>
-                        <li>
+                        <li class="checked">
                             <a href="SellerControllerMap?service=productmanagement">
                                 <i class="fa fa-gavel"></i> <span>Product Management</span>
                             </a>
@@ -146,36 +146,46 @@
                     </div>
 
                     <!-- Main row -->
-                    <!-- Dashboard -->
-                    <div class="row" id="Dashboard" name="tabcontent" style="display: block;">
+                    <!-- Product management -->
+                    <div class="row" id="Product" name="tabcontent">
 
-                        <div class="col-md-8">
+                        <div class="col-md-8" style="height: 400px;overflow-y: scroll;">
                             <section class="panel">
                                 <header class="panel-heading">
-                                    Order in Progress
+                                    Product in shop
                                 </header>
                                 <div class="panel-body table-responsive">
                                     <table class="table table-hover">
                                         <thead>
-                                            <tr>
-                                                <th>Order ID</th>
-                                                <th>Customer</th>
-                                                <th>Required date</th>
-                                                <th>Total cost</th>
-                                                <th>Status</th>
-                                                <th>Progress</th>
-                                            </tr>
-                                        </thead>
-                                        <tbody>
-                                            <tr>
-                                                <td>1</td>
-                                                <td>Nam</td>
-                                                <td>13/11/2001</td>
-                                                <td>300$</td>
-                                                <td><span class="label label-danger">in progress</span></td>
-                                                <td><span class="badge badge-info">50%</span></td>
-                                            </tr>
-                                        </tbody>
+                                                <tr>
+                                                    <th>Product Name</th>
+                                                    <th>Color</th>
+                                                    <th>Size</th>
+                                                    <th>Price</th>
+                                                    <th>ProductTypeID</th>
+                                                    <th></th>
+                                                    <th></th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                <% for (Product product : listP) {
+                                                        List<ProductType> listProductType = producttypedao.getProductByProductID(product.getProductID());
+                                                        for (ProductType producttype : listProductType) {
+                                                %>
+                                                <tr>
+                                                    <td><%= product.getProductName() %></td>
+                                                    <td><%= producttype.getColor() %></td>
+                                                    <td><%= producttype.getSize() %></td>
+                                                    <td><%= producttype.getPrice() %></td>
+                                                    <td><%= producttype.getProductTypeId() %></td>
+                                                    <td>
+                                                            <a href="AdminControllerMap?service=updatedetail&userid=<%=producttype.getProductTypeId()%>"><span class="fas fa-edit"></span></a>
+                                                        </div></td>
+                                                    <td><div><a href="AdminControllerMap?service=deleteuser&userid=<%=producttype.getProductTypeId()%>" onclick="return confirm('Are you sure you want to Remove?');"><span class="fas fa-trash-alt"></span></a></div></td>
+                                                </tr>
+                                                <% } %>
+                                                <% } %>
+                                            </tbody>
                                     </table>
                                 </div>
                             </section>
@@ -185,13 +195,15 @@
                         <div class="col-md-4">
                             <section class="panel">
                                 <header class="panel-heading">
-                                    Most spent customers
+                                    Hot products
                                 </header>
                                 <div class="panel-body">
                                 </div>
                             </section>
                         </div>
+
                     </div>
+                    
                     <!-- row end -->
                 </section><!-- /.content -->
                 <div class="footer-main">
@@ -202,38 +214,6 @@
         </div><!-- ./wrapper -->
 
     </body>
-        <script src="http://ajax.googleapis.com/ajax/libs/jquery/2.0.2/jquery.min.js"></script>
-        <script src="../js/seller/jquery.min.js" type="text/javascript"></script>
-        <script src="../js/seller/jquery-ui-1.10.3.min.js" type="text/javascript"></script>
-        <script src="../js/seller/bootstrap.min.js" type="text/javascript"></script>
-        <script src="../js/seller/plugins/daterangepicker/daterangepicker.js" type="text/javascript"></script>
-        <script src="../js/seller/plugins/chart.js" type="text/javascript"></script>
-        <script src="../js/seller/plugins/iCheck/icheck.min.js" type="text/javascript"></script>
-        <script src="../js/seller/plugins/fullcalendar/fullcalendar.js" type="text/javascript"></script>
-        <script src="../js/seller/Director/app.js" type="text/javascript"></script>
-        <script src="../js/seller/Director/dashboard.js" type="text/javascript"></script>
     <!--% }%-->
 
-<!--    <script>
-                                function openObject(evt, Object) {
-                                    // Declare all variables
-                                    var i, tabcontent, tablinks;
-
-                                    // Get all elements with class="tabcontent" and hide them
-                                    tabcontent = document.getElementsByName("tabcontent");
-                                    for (i = 0; i < tabcontent.length; i++) {
-                                        tabcontent[i].style.display = "none";
-                                    }
-
-                                    // Get all elements with class="tablinks" and remove the class "active"
-                                    tablinks = document.getElementsByClassName("tablinks");
-                                    for (i = 0; i < tablinks.length; i++) {
-                                        tablinks[i].className = tablinks[i].className.replace(" active", "");
-                                    }
-
-                                    // Show the current tab, and add an "active" class to the link that opened the tab
-                                    document.getElementById(Object).style.display = "block";
-                                    evt.currentTarget.className += " active";
-                                }
-    </script>-->
 </html>
