@@ -50,6 +50,7 @@
                                 <input type="hidden" name="service" value="forgotPass">
                             </div>
                         </form>
+                        <a style="color: yellow" href="${contextPath}/loginAndSecurity/login.jsp" id="cancel_signup" ><i class="fas fa-angle-left"></i> Back to Login</a>
                         <div class="hr"></div>
                     </div>
                 </div>

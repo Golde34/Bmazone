@@ -4,6 +4,9 @@
     Author     : AD
 --%>
 
+
+<%@page import="model.ProductDAO"%>
+<%@page import="java.text.DecimalFormat"%>
 <%@page import="model.ProductTypeDAO"%>
 <%@page import="model.UserDAO"%>
 <%@page import="model.GalleryDAO"%>
@@ -13,10 +16,12 @@
 <%@page import="java.util.List"%>
 <%@page import="entity.Product"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
+<% DecimalFormat nf = new DecimalFormat("###,###,###");%>
 <%
     ProductTypeDAO daoProductType = new ProductTypeDAO();
     UserDAO daoUser = new UserDAO();
     GalleryDAO daoGallery = new GalleryDAO();
+    ProductDAO daoProduct = new ProductDAO();
     Product product = (Product) request.getAttribute("product");
     List<Gallery> listGallery = (List<Gallery>) request.getAttribute("listGallery");
     List<ProductType> listProductType = (List<ProductType>) request.getAttribute("listProductType");
@@ -112,14 +117,23 @@
             .owl-nav button span {
                 font-size: 45px;
             }
+            .owl-item active current{
+                width: 150px;
+            }
+            .owl-item active{
+                width: 150px;
+            }
             .product-thumb .item img {
                 height: 100px;
             }
             .product-name {
-                font-size: 22px;
+                font-size: 24px;
                 font-weight: 500;
-                line-height: 22px;
-                margin-bottom: 4px;
+                line-height: 30px;
+                margin-bottom: 8px;
+            }
+            .product-seller{
+                margin-bottom: 12px;
             }
             .product-price-discount {
                 font-size: 22px;
@@ -352,11 +366,12 @@
                                     </div>
                                     <span>3 Reviews</span>
                                 </div>
-                                <div class="product-price-discount"><span>$39.00</span><span class="line-through">$29.00</span></div>
-                                <div class="product-releasedate"><label>Release Date: <%=product.getReleaseDate()%></label></div>
-                                <div class="product-seller"><label>Seller: <%=daoUser.getUserByProductId(product.getProductID()).getUsername()%></label></div>
+                                <%double price1 = Double.parseDouble(daoProductType.getProductPrice(product.getProductID())); %>
+                                <div class="product-price-discount"><span><%=nf.format(price1)%>&nbsp; <span class="woocommerce-Price-currencySymbol">&#8363;</span></span><span class="line-through"><%=nf.format(price1 * 1.05)%>&nbsp; <span class="woocommerce-Price-currencySymbol">&#8363;</span></span></div>
+                                <div class="product-releasedate"><span>Release Date: <%=product.getReleaseDate()%></span></div>
+                                <div class="product-seller"><span>Seller: <%=daoUser.getUserByProductId(product.getProductID()).getUsername()%></span></div>
                             </div>
-                            <p><%=product.getDescription()%></p>
+
                             <div class="row">
                                 <div class="col-md-6">
                                     <label for="size">Size</label>
@@ -369,7 +384,7 @@
                                 <div class="col-md-6">
                                     <label for="color">Color</label>
                                     <select id="color" name="color" class="form-control">
-                                        <%=product.getProductID() %>
+                                        <%=product.getProductID()%>
                                         <%for (String productType : listColor) {%>
                                         <option><%=productType%></option>
                                         <%}%>
@@ -427,7 +442,7 @@
                                     <label>Your message</label>
                                     <textarea class="form-control" rows="10"></textarea>
                                 </div>
-                                
+
                                 <button class="round-black-btn">Submit Review</button>
                             </form>
                         </div>
@@ -437,7 +452,14 @@
         </div>
 
         <div class="row row-collapse align-equal"  id="row-1706731289">
-            <h1>Related Products</h1>
+            <div class="text">
+                <div class="col-inner text-center" >
+                    <h1>Related Products</h1>
+                </div>
+                <div class="col-inner text-left" >
+                    <p class="orange" style="float: left" ><a href="ProductDetailControllerMap?service=getRelatedProduct&pid=<%=product.getProductID()%>"><label>View All</label></a></p>
+                </div>
+            </div>              
             <br>
             <br>
             <br>
@@ -445,12 +467,10 @@
                     <div class="row large-columns-4 medium-columns- small-columns-2 row-collapse has-shadow row-box-shadow-1 slider row-slider slider-nav-reveal slider-nav-push"  data-flickity-options='{"imagesLoaded": true, "groupCells": "100%", "dragThreshold" : 5, "cellAlign": "left","wrapAround": true,"prevNextButtons": true,"percentPosition": true,"pageDots": false, "rightToLeft": false, "autoPlay" : 3000}'>
                         <% for (Product pro : listRelated) {
                                 String str2 = "images/" + daoGallery.getSampleOfProduct(pro.getProductID());
+                                double price2 = Double.parseDouble(daoProductType.getProductPrice(product.getProductID()));
                         %>
                         <div class="col" >
                             <div class="col-inner">
-                                <div class="badge-container absolute left top z-1">
-                                    <div class="callout badge badge-square"><div class="badge-inner secondary on-sale"><span class="onsale">-50%</span></div></div>
-                                </div>
                                 <div class="product-small box has-hover box-normal box-text-bottom">
                                     <div class="box-image" style="width:150px; height:150px ">
                                         <div class="" >
@@ -468,8 +488,8 @@
                                             <p class="name product-title"><a href=""> <%=pro.getProductName()%> </a></p>
                                         </div> 
                                         <div class="price-wrapper" 
-                                             <span class="price"><del><span class="woocommerce-Price-amount amount">290,000&nbsp;<span class="woocommerce-Price-currencySymbol">&#8363;</span></span></del> 
-                                                <ins><span class="woocommerce-Price-amount amount">145,000&nbsp;<span class="woocommerce-Price-currencySymbol">&#8363;</span></span></ins></span>
+                                             <span class="price"><del><span class="woocommerce-Price-amount amount"><%=nf.format(price2 * 1.05)%>&nbsp; <span class="woocommerce-Price-currencySymbol">&#8363;</span></span></del> 
+                                                <ins><span class="woocommerce-Price-amount amount"><%=nf.format(price2)%>&nbsp; <span class="woocommerce-Price-currencySymbol">&#8363;</span></span></ins></span>
                                         </div>							
                                     </div><!-- box-text -->
                                 </div><!-- box -->
