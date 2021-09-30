@@ -84,8 +84,8 @@ public class SellerController extends HttpServlet {
         List<Product> listProduct = daoproduct.getProductBySeller(seller);
         request.setAttribute("listP", listProduct);
         sendDispatcher(request, response, "seller/dashboard.jsp");
-        
     }
+    
     public void serviceProductManagement(HttpServletRequest request, HttpServletResponse response) {
         User account = (User) request.getSession().getAttribute("currUser");
         String seller =  account.getUserId();
@@ -96,6 +96,7 @@ public class SellerController extends HttpServlet {
     public void serviceOrderManagement(HttpServletRequest request, HttpServletResponse response) {
         sendDispatcher(request, response, "seller/orderSeller.jsp");
     }
+
 //    public void serviceEditDetail(String service, HttpServletRequest request, HttpServletResponse response) {
 //    }
 //
