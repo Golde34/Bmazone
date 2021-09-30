@@ -82,25 +82,24 @@ public class CategoryDAO extends BaseDAO{
         }
     }
 
-    public Category getCategoryById(int fcaId) {
-        String sql = "select * from Category where categoryID=" + fcaId;
-        Category x = null;
-        int categoryID;
-        String categoryName;
-        int status;
+    public String getCategoryById(int fcaId) {
+        String sql = "select categoryName from Category where categoryID=" + fcaId;
+       
+     
+        String categoryName=null;
+     
         try {
             pre = conn.prepareStatement(sql);
             rs = pre.executeQuery();
             while (rs.next()) {
-                categoryID = rs.getInt("caId");
-                categoryName = rs.getString("caName");
-                status = rs.getInt("status");
-                x = new Category(categoryID, categoryName, status);                
+                
+                categoryName = rs.getString("categoryName");
+                           
             }
         } catch (SQLException ex) {
             Logger.getLogger(CategoryDAO.class.getName()).log(Level.SEVERE, null, ex);
         }
-        return x;
+        return categoryName;
     }
     
     public int changeStatus(int id, int status) {
