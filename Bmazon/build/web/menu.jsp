@@ -87,8 +87,17 @@
         <div id="wrapper">
 
             <main id="main" class="" style="">
+                <div id='ads-left'>
+                    <div style='margin:0 0 5px 0; padding:0;width:200px;position:fixed; left:0; top:0;'>
+                        <a href='' target='_blank'><img border='0' height='665' src='images/ads.jpg' width='200'/></a>
+                    </div></div>
+                <div id='ads-right'>
+                    <div style='margin:0 0 5px 0; padding:0;width:200px;position:fixed; right:0; top:0;'>
+                        <a href='' target='_blank'><img border='0' height='665' src='images/ads.jpg' width='200'/></a>
+                    </div></div>
 
                 <div id="content" role="main" class="content-area" >
+
 
                     <section class="section" id="section_2111671223">                   
                         <div class="section-content relative">
@@ -98,7 +107,8 @@
 
                                 <div class="section-content relative">
 
-                                    <div class="row row-collapse"  id="row-1954119617" style=" f">
+
+                                    <div class="row row-collapse"  id="row-1954119617">
 
                                         <div class="col small-12 large-12"  >
                                             <div class="col-inner"  >
@@ -156,17 +166,10 @@
                     </section>
 
                     <section class="section sec_flash_sale" id="section_16406982">
-                        <div class="bg section-bg fill bg-fill  bg-loaded" >
-
-
-
-
-
-                        </div><!-- .section-bg -->
 
                         <div class="section-content relative">
 
-                            
+
                             <div class="row row-collapse align-middle"  id="row-1888902941">
                                 <div class="col medium-2 small-12 large-2"  ><div class="col-inner"  >
                                         <div class="img has-hover x md-x lg-x y md-y lg-y" id="image_510021313">
@@ -183,17 +186,17 @@
                                         </div>
 
                                     </div></div>
-                               
+
                                 <div class="col medium-12 small-12 large-12"  >
                                     <div class="col-inner text-right" >
                                         <p class="orange" style="float: right" ><a href="HomepageControllerMap?service=Sale">Xem Tất Cả &gt;</a></p>
                                     </div>
                                 </div>
 
-                              
+
                             </div>
                             <div class="row row-collapse"  id="row-698964333">
-                               
+
                                 <div class="col medium-12 small-12 large-12"  >
                                     <div class="col-inner"  >
 
@@ -357,16 +360,16 @@
                                     <div class="col-inner"  >
                                         <h4>New Arrival</h4>
                                     </div>
-                                      <div class="col-inner text-right" >
+                                    <div class="col-inner text-right" >
                                         <p class="orange" ><a href="HomepageControllerMap?service=Sale">Xem Tất Cả &gt;</a></p>
                                     </div>
                                 </div>
 
-                                
-                                  
-                                
+
+
+
                             </div>
-                            
+
                             <div class="row row-collapse align-equal"  id="row-1706731289">
                                 <div class="col medium-10 small-12 large-10"  ><div class="col-inner"  >
 

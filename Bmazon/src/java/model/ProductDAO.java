@@ -51,7 +51,7 @@ public class ProductDAO extends BaseDAO {
 
     public ArrayList<Product> getTrueProduct() {
         ArrayList<Product> list = new ArrayList<>();
-        String sql = "SELECT TOP 10 * FROM Product";
+        String sql = "SELECT * FROM Product order by releaseDate";
         try {
             pre = conn.prepareStatement(sql);
             rs = pre.executeQuery();
@@ -173,10 +173,11 @@ public class ProductDAO extends BaseDAO {
         }
         return list;
     }
+    
 
-    public ArrayList<Product> getProductBySeller(int seller) {
+    public ArrayList<Product> getProducSuggest () {
         ArrayList<Product> list = new ArrayList<>();
-        String sql = "SELECT * FROM [Bmazon].[dbo].[Product] where seller=" + seller;
+        String sql = "SELECT TOP 16 * FROM Product order by releaseDate";
         try {
             pre = conn.prepareStatement(sql);
             rs = pre.executeQuery();
