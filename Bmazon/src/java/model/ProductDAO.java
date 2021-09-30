@@ -7,8 +7,11 @@ package model;
 
 import entity.*;
 import java.sql.Connection;
+import java.sql.Date;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -17,9 +20,9 @@ import java.util.logging.Logger;
  *
  * @author Admin
  */
-public class ProductDAO extends BaseDAO{
-BaseDAO dbConn= new BaseDAO();
-   
+public class ProductDAO extends BaseDAO {
+
+    BaseDAO dbConn = new BaseDAO();
 
     public ArrayList<Product> getAllProduct() {
         ArrayList<Product> list = new ArrayList<>();
@@ -70,6 +73,7 @@ BaseDAO dbConn= new BaseDAO();
         }
         return list;
     }
+
     public ArrayList<Product> getProductSale() {
         ArrayList<Product> list = new ArrayList<>();
         String sql = "SELECT TOP 8 * FROM Product";
@@ -94,6 +98,7 @@ BaseDAO dbConn= new BaseDAO();
         }
         return list;
     }
+
     public ArrayList<Product> getProductNew() {
         ArrayList<Product> list = new ArrayList<>();
         String sql = "SELECT TOP 8 * FROM Product order by releaseDate";
@@ -118,7 +123,8 @@ BaseDAO dbConn= new BaseDAO();
         }
         return list;
     }
-     public ArrayList<Product> getProductApple() {
+
+    public ArrayList<Product> getProductApple() {
         ArrayList<Product> list = new ArrayList<>();
         String sql = "SELECT TOP 8 * FROM Product where description like '%apple%'";
         try {
@@ -142,7 +148,8 @@ BaseDAO dbConn= new BaseDAO();
         }
         return list;
     }
-      public ArrayList<Product> getProductGear() {
+
+    public ArrayList<Product> getProductGear() {
         ArrayList<Product> list = new ArrayList<>();
         String sql = "SELECT price * FROM Product where description like '%apple%'";
         try {
@@ -218,10 +225,8 @@ BaseDAO dbConn= new BaseDAO();
     }
 
     public Product getProductByID(int id) {
-
-
         Product pro = new Product();
-        String sql = "SELECT * FROM [Bmazon].[dbo].[Product] where productID="+id+"";
+        String sql = "SELECT * FROM [Bmazon].[dbo].[Product] where productID=" + id + "";
 
         try {
             pre = conn.prepareStatement(sql);
@@ -294,10 +299,10 @@ BaseDAO dbConn= new BaseDAO();
         }
         return list;
     }
-    
-    public ArrayList<Product> getRelatedProductByProductID(int id){
+
+    public ArrayList<Product> getRelatedProductByProductID(int id) {
         ArrayList<Product> list = new ArrayList<>();
-        String sql = "SELECT * FROM Product a join ProductCategory b on a.productID=b.productID where b.categoryId=(SELECT categoryId FROM ProductCategory WHERE productID="+id+")";
+        String sql = "SELECT * FROM Product a join ProductCategory b on a.productID=b.productID where b.categoryId=(SELECT categoryId FROM ProductCategory WHERE productID=" + id + ")";
         try {
             pre = conn.prepareStatement(sql);
             rs = pre.executeQuery();
@@ -319,7 +324,6 @@ BaseDAO dbConn= new BaseDAO();
         }
         return list;
     }
-    
 
     public int addProduct(Product obj) {
         int n = 0;
@@ -399,9 +403,4 @@ BaseDAO dbConn= new BaseDAO();
         }
         return n;
     }
-    public static void main(String[] args) {
-        ProductDAO db = new ProductDAO();
-        System.out.println(db.getProductByID(5));
-    }
 }
-

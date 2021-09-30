@@ -1,3 +1,4 @@
+<%@page import="model.UserDAO"%>
 <%@page import="model.ProductTypeDAO"%>
 <%@page import="java.util.*"%>
 <%@page import="entity.*"%>
@@ -5,6 +6,7 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <c:set var="contextPath" value="${pageContext.request.contextPath}" />
 <%
+    UserDAO userdao = new UserDAO();
     ProductTypeDAO producttypedao = new ProductTypeDAO();
     User curUser = (User) request.getSession().getAttribute("currUser");
     ArrayList<Product> listProduct = (ArrayList<Product>) request.getAttribute("listProduct");
@@ -30,20 +32,6 @@
         <link href="${contextPath}/css/nucleo-svg.css" rel="stylesheet" />
         <!-- CSS Files -->
         <link id="pagestyle" href="${contextPath}/css/soft-ui-dashboard.css?v=1.0.3" rel="stylesheet" />
-        <style>
-            table {
-                table-layout: fixed;
-            }
-            td {
-                word-break: break-all;
-            }
-            th,td{
-                padding: 5px 10px;
-            }
-            tr:nth-child(odd){
-                background-color: #eeeeee;
-            }
-        </style>
     </head>
 
     <body class="g-sidenav-show  bg-gray-100">
@@ -118,7 +106,7 @@
                                 </div>
                             </a>
                         </li>
-                        <h6 class="font-weight-bolder mb-0">Dashboard</h6>
+                        <h6 class="font-weight-bolder mb-0">Product Management</h6>
                     </nav>
                     <div class="collapse navbar-collapse mt-sm-0 mt-2 me-md-0 me-sm-4" id="navbar">
                         <div class="ms-md-auto pe-md-3 d-flex align-items-center">
@@ -145,7 +133,7 @@
                                         </a>
                                     </li>
                                     <li class="mb-2">
-                                        <a class="dropdown-item border-radius-md" href="">
+                                        <a class="dropdown-item border-radius-md" href="${contextPath}/UserControllerMap">
                                             <div class="d-flex py-1">
                                                 <div class="d-flex flex-column justify-content-center">
                                                     <h6 class="text-sm font-weight-normal mb-1">
@@ -181,9 +169,9 @@
                                 <div class="card-header py-3" 
                                      style="display: flex;
                                      justify-content: space-between;">
-                                    <h6 class="m-0 font-weight-bold text-primary">Product</h6>
-                                    <a href="AdminControllerMap?service=adddetail">
-                                        <button class="border-radius-md border-white text-secondary">Add new product</button></a>
+                                    <h6 class="m-0 font-weight-bold text-primary">Product Management</h6>
+                                    <a href="AdminControllerMap?service=addproductdetail">
+                                        <button>Add new product</button></a>
                                 </div>
                                 <div class="card-body">
                                     <div class="table_head py-3" style="display: flex;
@@ -204,48 +192,53 @@
                                         </div>
                                     </div>
                                     <div class="table-responsive-md">
-                                        <table style="table-layout: fixed;width: 100%;text-align: center;"id="dataTable">
+                                        <table style="table-layout: fixed;width: 100%;text-align: center;" id="dataTable">
                                             <thead>
                                                 <tr>
-                                                    <th style="width: 50%;">Product Name</th>
-                                                    <th style="width: 10%;">Color</th>
-                                                    <th style="width: 10%;">Size</th>
-                                                    <th style="width: 10%;">Price</th>
-                                                    <th style="width: 10%;">Warehouse</th>
+                                                    <th style="width: 30%;">Product Name</th>
+                                                    <th style="width: 30%;">Description</th>
+                                                    <th style="width: 10%;">Rating</th>
+                                                    <th style="width: 10%;">Seller</th>
+                                                    <th style="width: 10%;">Release Date</th>
                                                     <th style="width: 5%;"></th>
                                                     <th style="width: 5%;"></th>
                                                 </tr>
                                             </thead>
                                             <tbody>
                                                 <%for (Product product : listProduct) {
-                                                        List<ProductType> listProductType = producttypedao.getProductByProductID(product.getProductID());
-                                                        for (ProductType producttype : listProductType) {
+//                                                        List<ProductType> listProductType = producttypedao.getProductByProductID(product.getProductID());
+//                                                        for (ProductType producttype : listProductType) {
                                                 %>
                                                 <tr>
-                                                    <td><div><%=product.getProductName()%></div></td>
-                                                    <td><div><%=producttype.getColor()%></div></td>
-                                                    <td><div><%=producttype.getSize()%></div></td>
-                                                    <td><div><%=producttype.getPrice()%></div></td>
-                                                    <td><div><%=producttype.getProductTypeId()%></div></td>
+                                                    <td><div><%=product.getProductName() %></div></td>
+                                                    <td><div><%=product.getDescription() %></div></td>
+                                                    <td><div><%=product.getRating() %></div></td>
+                                                    <%User user = userdao.getUserById(product.getProductID());%>
+                                                    <td><div><%=user.getFullname() %></div></td>
+                                                    <td><div><%=product.getReleaseDate() %></div></td>
                                                     <td><div>
-                                                            <a href="AdminControllerMap?service=updatedetail&userid=<%=producttype.getProductTypeId()%>"><span class="fas fa-edit"></span></a>
+                                                            <a href="AdminControllerMap?service=updateproductdetail&producttypeid=<%=product.getProductID() %>"><span class="fas fa-edit"></span></a>
                                                         </div></td>
-                                                    <td><div><a href="AdminControllerMap?service=deleteuser&userid=<%=producttype.getProductTypeId()%>" onclick="return confirm('Are you sure you want to Remove?');"><span class="fas fa-trash-alt"></span></a></div></td>
+                                                    <td><div><a href="AdminControllerMap?service=deleteproduct&producttypeid=<%=product.getProductID() %>" onclick="return confirm('Are you sure you want to Remove?');"><span class="fas fa-trash-alt"></span></a></div></td>
                                                 </tr>
-                                                <%}%>
+                                                
                                                 <%}%>
                                             </tbody>
                                         </table>
                                     </div>
-                                    <div class="pagination-container" style="    display: flex;
+                                    <div class="pagination-container" style="display: flex;
                                          justify-content: flex-end;cursor: pointer;">
                                         <nav>
                                             <ul class="pagination">
-                                                <li class="page-item">
-                                                    <a class="page-link" href="#" aria-label="Previous">
-                                                        <span aria-hidden="true">&laquo;</span>
-                                                        <span class="sr-only">Previous</span>
-                                                    </a>
+                                                <li data-page="prev" class="page-item">
+                                                    <span aria-hidden="true">&laquo;
+                                                        <span class="sr-only">(current)</span>
+                                                    </span>
+                                                </li>
+                                                <li data-page="next" class="page-item" id="prev">
+                                                    <span aria-hidden="true">&raquo;
+                                                        <span class="sr-only">(current)</span>
+                                                    </span>
                                                 </li>
                                             </ul>
                                         </nav>
@@ -265,105 +258,7 @@
         <script src="${contextPath}/js/plugins/smooth-scrollbar.min.js"></script>
         <script src="${contextPath}/js/plugins/chartjs.min.js"></script>
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
-        <script>
-                                                        getPagination('#dataTable');
-                                                        $('#maxRows').trigger('change');
-                                                        function getPagination(table) {
-
-                                                            $('#maxRows').on('change', function () {
-                                                                $('.pagination').html('');
-                                                                var trnum = 0;
-                                                                var maxRows = parseInt($(this).val());
-
-                                                                var totalRows = $(table + ' tbody tr').length;
-                                                                $(table + ' tr:gt(0)').each(function () {
-                                                                    trnum++;
-                                                                    if (trnum > maxRows) {
-
-                                                                        $(this).hide();
-                                                                    }
-                                                                    if (trnum <= maxRows) {
-                                                                        $(this).show();
-                                                                    }// else fade in Important in case if it ..
-                                                                });
-                                                                if (totalRows > maxRows) {
-                                                                    var pagenum = Math.ceil(totalRows / maxRows);
-                                                                    //	numbers of pages 
-                                                                    for (var i = 1; i <= pagenum; ) {
-                                                                        $('.pagination').append('<li class="page-item" data-page="' + i + '">\
-    <a class="page-link">' + i++ + '<span class="sr-only">(current)</span></a>\
-    </li>').show();
-                                                                    }
-                                                                    i
-                                                                }
-                                                                $('.pagination li:first-child').addClass('active');
-
-                                                                $('.pagination li').on('click', function (e) {
-                                                                    e.preventDefault();
-                                                                    var pageNum = $(this).attr('data-page');
-                                                                    var trIndex = 0;
-                                                                    $('.pagination li').removeClass('active');
-                                                                    $(this).addClass('active');
-
-
-                                                                    $(table + ' tr:gt(0)').each(function () {
-                                                                        trIndex++;
-                                                                        if (trIndex > (maxRows * pageNum) || trIndex <= ((maxRows * pageNum) - maxRows)) {
-                                                                            $(this).hide();
-                                                                        } else {
-                                                                            $(this).show();
-                                                                        }
-                                                                    });
-                                                                });
-                                                            });
-                                                        }
-
-                                                        function FilterkeyWord_all_table() {
-
-                                                            // Count td if you want to search on all table instead of specific column
-
-                                                            var count = $('#dataTable').children('tbody').children('tr:first-child').children('td').length;
-                                                            // Declare variables
-                                                            var input, filter, table, tr, td, i;
-                                                            input = document.getElementById("search_input_all");
-                                                            var input_value = document.getElementById("search_input_all").value;
-                                                            filter = input.value.toLowerCase();
-                                                            console.log(filter)
-                                                            if (input_value != '') {
-                                                                table = document.getElementById("dataTable");
-                                                                tr = table.getElementsByTagName("tr");
-
-                                                                // Loop through all table rows, and hide those who don't match the search query
-                                                                for (i = 1; i < tr.length; i++) {
-
-                                                                    var flag = 0;
-
-                                                                    for (j = 0; j < count; j++) {
-                                                                        td = tr[i].getElementsByTagName("td")[j];
-                                                                        if (td) {
-
-                                                                            var td_text = td.innerHTML;
-                                                                            if (td.innerHTML.toLowerCase().indexOf(filter) > -1) {
-                                                                                //var td_text = td.innerHTML;  
-                                                                                //td.innerHTML = 'shaban';
-                                                                                flag = 1;
-                                                                            } else {
-                                                                                //DO NOTHING
-                                                                            }
-                                                                        }
-                                                                    }
-                                                                    if (flag == 1) {
-                                                                        tr[i].style.display = "";
-                                                                    } else {
-                                                                        tr[i].style.display = "none";
-                                                                    }
-                                                                }
-                                                            } else {
-                                                                //RESET TABLE
-                                                                $('#maxRows').trigger('change');
-                                                            }
-                                                        }
-        </script>
+        <script src="${contextPath}/js/tablepagination.js"></script>
     </body>
 
 </html>

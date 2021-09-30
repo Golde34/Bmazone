@@ -1,9 +1,12 @@
+<%@page import="model.*"%>
 <%@page import="java.util.*"%>
 <%@page import="entity.*"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <c:set var="contextPath" value="${pageContext.request.contextPath}" />
 <%
+    ProductDAO productdao = new ProductDAO();
+    ProductTypeDAO producttypedao = new ProductTypeDAO();
     User curUser = (User) request.getSession().getAttribute("currUser");
     List<Gallery> listGallery = (List<Gallery>) request.getAttribute("listGallery");
 %>
@@ -130,7 +133,7 @@
                                         </a>
                                     </li>
                                     <li class="mb-2">
-                                        <a class="dropdown-item border-radius-md" href="">
+                                        <a class="dropdown-item border-radius-md" href="${contextPath}/UserControllerMap">
                                             <div class="d-flex py-1">
                                                 <div class="d-flex flex-column justify-content-center">
                                                     <h6 class="text-sm font-weight-normal mb-1">
@@ -140,7 +143,7 @@
                                             </div>
                                         </a>
                                     </li>
-                                    <li>
+                                    <li class="mb-2">
                                         <a class="dropdown-item border-radius-md" href="${contextPath}/UserControllerMap?service=logout">
                                             <div class="d-flex py-1">
                                                 <div class="d-flex flex-column justify-content-center">
@@ -166,9 +169,9 @@
                                 <div class="card-header py-3" 
                                      style="display: flex;
                                      justify-content: space-between;">
-                                    <h6 class="m-0 font-weight-bold text-primary">Gallery</h6>
-                                    <a href="AdminControllerMap?service=adddetail">
-                                        <button>Add new user</button></a>
+                                    <h6 class="m-0 font-weight-bold text-primary">Gallery Management</h6>
+                                    <a href="AdminControllerMap?service=addgallerydetail">
+                                        <button>Add new gallery</button></a>
                                 </div>
                                 <div class="card-body">
                                     <div class="table_head py-3" style="display: flex;
@@ -184,45 +187,55 @@
                                                 </select>
                                             </div>
                                         </div>
-                                        <div class="ms-md-auto pe-md-3 d-flex align-items-center">
-                                            <div class="input-group">
-                                                <span class="input-group-text text-body"><i class="fas fa-search" aria-hidden="true"></i></span>
-                                                <input type="text" class="form-control" placeholder="Type here...">
-                                            </div>
+                                        <div class="tb_search">
+                                            <input type="text" id="search_input_all" onkeyup="FilterkeyWord_all_table()" placeholder="Search.." class="form-control">
                                         </div>
                                     </div>
-                                    <table class="table table-bordered table-striped" id="dataTable" style="text-align: center;">
+                                    <table id="dataTable" style="table-layout: fixed;width: 100%;text-align: center;">
                                         <thead>
                                             <tr>
-                                                <th>Username</th>
-                                                <th>Password</th>
-                                                <th>Email</th>
-                                                <th>Phone</th>
-                                                <th>Address</th>
-                                                <th></th>
-                                                <th></th>
+                                                <th style="width: 30%">Product Name</th>
+                                                <th style="width: 15%">Color</th>
+                                                <th style="width: 15%">Size</th>
+                                                <th style="width: 30%">Image</th>
+                                                <th style="width: 5%"></th>
+                                                <th style="width: 5%"></th>
                                             </tr>
                                         </thead>
                                         <tbody>
-                                            <%for (Gallery gallery : listGallery) {%>
+                                            <%for (Gallery gallery : listGallery) {
+                                            Product product = productdao.getProductByID(gallery.getProductID());
+                                            ProductType producttype = producttypedao.getProductTypeByPTypeID(gallery.getProductTypeID());
+                                            %>
                                             <tr>
-                                                <td><%=gallery.getLink()%></td>
-                                                <td><%=gallery.getProductTypeID()%></td>
-                                                <td><%=gallery.getGalleryID()%></td>
-                                                <td><%=gallery.getProductID()%></td>
-                                                <td><%=gallery.getStatus()%></td>
+                                                <td><%=product.getProductName() %></td>
+                                                <td><%=producttype.getColor() %></td>
+                                                <td><%=producttype.getSize() %></td>
+                                                <%String str = "images/"+gallery.getLink();%>
+                                                <td><img src="<%=str%>" width="100px" height="100px"></td>
                                                 <td>
-                                                    <a href="AdminControllerMap?service=updatedetail&userid=<%=gallery.getGalleryID()%>"><span class="fas fa-edit"></span></a>
+                                                    <a href="AdminControllerMap?service=updategallerydetail&galleryid=<%=gallery.getGalleryID()%>"><span class="fas fa-edit"></span></a>
                                                 </td>
-                                                <td><a href="AdminControllerMap?service=deleteuser&userid=<%=gallery.getGalleryID()%>" onclick="return confirm('Are you sure you want to Remove?');"><span class="fas fa-trash-alt"></span></a></td>
+                                                <td><a href="AdminControllerMap?service=deletegallery&galleryid=<%=gallery.getGalleryID()%>" onclick="return confirm('Are you sure you want to Remove?');"><span class="fas fa-trash-alt"></span></a></td>
                                             </tr>
                                             <%}%>
                                         </tbody>
                                     </table>
-                                    <div class="pagination-container" style="    display: flex;
+                                    <div class="pagination-container" style="display: flex;
                                          justify-content: flex-end;cursor: pointer;">
                                         <nav>
-                                            <ul class="pagination"></ul>
+                                            <ul class="pagination">
+                                                <li data-page="prev" class="page-item">
+                                                    <span aria-hidden="true">&laquo;
+                                                        <span class="sr-only">(current)</span>
+                                                    </span>
+                                                </li>
+                                                <li data-page="next" class="page-item" id="prev">
+                                                    <span aria-hidden="true">&raquo;
+                                                        <span class="sr-only">(current)</span>
+                                                    </span>
+                                                </li>
+                                            </ul>
                                         </nav>
                                     </div>
                                 </div>
@@ -240,109 +253,11 @@
         <script src="${contextPath}/js/plugins/smooth-scrollbar.min.js"></script>
         <script src="${contextPath}/js/plugins/chartjs.min.js"></script>
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+        <script src="${contextPath}/js/tablepagination.js"></script>
         <!-- Github buttons -->
         <script async defer src="https://buttons.github.io/buttons.js"></script>
         <!-- Control Center for Soft Dashboard: parallax effects, scripts for the example pages etc -->
 <!--        <script src="${contextPath}/js/soft-ui-dashboard.min.js?v=1.0.3"></script>-->
-        <script>
-                                                    getPagination('#dataTable');
-                                                    $('#maxRows').trigger('change');
-                                                    function getPagination(table) {
-
-                                                        $('#maxRows').on('change', function () {
-                                                            $('.pagination').html('');
-                                                            var trnum = 0;
-                                                            var maxRows = parseInt($(this).val());
-
-                                                            var totalRows = $(table + ' tbody tr').length;
-                                                            $(table + ' tr:gt(0)').each(function () {
-                                                                trnum++;
-                                                                if (trnum > maxRows) {
-
-                                                                    $(this).hide();
-                                                                }
-                                                                if (trnum <= maxRows) {
-                                                                    $(this).show();
-                                                                }// else fade in Important in case if it ..
-                                                            });
-                                                            if (totalRows > maxRows) {
-                                                                var pagenum = Math.ceil(totalRows / maxRows);
-                                                                //	numbers of pages 
-                                                                for (var i = 1; i <= pagenum; ) {
-                                                                    $('.pagination').append('<li class="page-item" data-page="' + i + '">\
-      <a class="page-link">' + i++ + '<span class="sr-only">(current)</span></a>\
-    </li>').show();
-                                                                }
-                                                                i
-                                                            }
-                                                            $('.pagination li:first-child').addClass('active');
-
-                                                            $('.pagination li').on('click', function (e) {
-                                                                e.preventDefault();
-                                                                var pageNum = $(this).attr('data-page');
-                                                                var trIndex = 0;
-                                                                $('.pagination li').removeClass('active');
-                                                                $(this).addClass('active');
-
-
-                                                                $(table + ' tr:gt(0)').each(function () {
-                                                                    trIndex++;
-                                                                    if (trIndex > (maxRows * pageNum) || trIndex <= ((maxRows * pageNum) - maxRows)) {
-                                                                        $(this).hide();
-                                                                    } else {
-                                                                        $(this).show();
-                                                                    }
-                                                                });
-                                                            });
-                                                        });
-                                                    }
-
-                                                    function FilterkeyWord_all_table() {
-
-// Count td if you want to search on all table instead of specific column
-
-                                                        var count = $('.table').children('tbody').children('tr:first-child').children('td').length;
-
-                                                        // Declare variables
-                                                        var input, filter, table, tr, td, i;
-                                                        input = document.getElementById("search_input_all");
-                                                        var input_value = document.getElementById("search_input_all").value;
-                                                        filter = input.value.toLowerCase();
-                                                        if (input_value != '') {
-                                                            table = document.getElementById("table-id");
-                                                            tr = table.getElementsByTagName("tr");
-
-                                                            // Loop through all table rows, and hide those who don't match the search query
-                                                            for (i = 1; i < tr.length; i++) {
-
-                                                                var flag = 0;
-
-                                                                for (j = 0; j < count; j++) {
-                                                                    td = tr[i].getElementsByTagName("td")[j];
-                                                                    if (td) {
-
-                                                                        var td_text = td.innerHTML;
-                                                                        if (td.innerHTML.toLowerCase().indexOf(filter) > -1) {
-                                                                            //var td_text = td.innerHTML;  
-                                                                            //td.innerHTML = 'shaban';
-                                                                            flag = 1;
-                                                                        } else {
-                                                                            //DO NOTHING
-                                                                        }
-                                                                    }
-                                                                }
-                                                                if (flag == 1) {
-                                                                    tr[i].style.display = "";
-                                                                } else {
-                                                                    tr[i].style.display = "none";
-                                                                }
-                                                            }
-                                                        } else {
-                                                            //RESET TABLE
-                                                            $('#maxRows').trigger('change');
-                                                        }
-                                                    }
-        </script>
     </body>
 
 </html>
