@@ -21,7 +21,8 @@
     List<Gallery> listGallery = (List<Gallery>) request.getAttribute("listGallery");
     List<ProductType> listProductType = (List<ProductType>) request.getAttribute("listProductType");
     ArrayList<Product> listRelated = (ArrayList<Product>) request.getAttribute("listRelated");
-    ArrayList<Gallery> listRelatedGallery = (ArrayList<Gallery>) request.getAttribute("listRelatedGallery");
+    ArrayList<String> listSize = (ArrayList<String>) request.getAttribute("listSize");
+    ArrayList<String> listColor = (ArrayList<String>) request.getAttribute("listColor");
 %>
 <!DOCTYPE html>
 <html>
@@ -360,22 +361,23 @@
                                 <div class="col-md-6">
                                     <label for="size">Size</label>
                                     <select id="size" name="size" class="form-control">
-                                        <%for (ProductType productType : listProductType) {%>
-                                        <option><%=productType.getSize()%></option>
+                                        <%for (String productType : listSize) {%>
+                                        <option><%=productType%></option>
                                         <%}%>
                                     </select>
                                 </div>
                                 <div class="col-md-6">
                                     <label for="color">Color</label>
                                     <select id="color" name="color" class="form-control">
-                                        <%for (ProductType productType : listProductType) {%>
-                                        <option><%=productType.getColor()%></option>
+                                        <%=product.getProductID() %>
+                                        <%for (String productType : listColor) {%>
+                                        <option><%=productType%></option>
                                         <%}%>
                                     </select>
                                 </div>
                             </div>
                             <div class="product-count">
-                                <label for="size">Quantity</label>
+                                <label for="quantity">Quantity</label>
                                 <form action="#" class="display-flex">
                                     <div class="qtyminus">-</div>
                                     <input type="text" name="quantity" value="1" class="qty">
@@ -425,18 +427,7 @@
                                     <label>Your message</label>
                                     <textarea class="form-control" rows="10"></textarea>
                                 </div>
-                                <div class="row">
-                                    <div class="col-md-6">
-                                        <div class="form-group">
-                                            <input type="text" name="" class="form-control" placeholder="Name*">
-                                        </div>
-                                    </div>
-                                    <div class="col-md-6">
-                                        <div class="form-group">
-                                            <input type="text" name="" class="form-control" placeholder="Email Id*">
-                                        </div>
-                                    </div>
-                                </div>
+                                
                                 <button class="round-black-btn">Submit Review</button>
                             </form>
                         </div>

@@ -4,25 +4,15 @@
     Author     : AD
 --%>
 
-<%@page import="model.ProductTypeDAO"%>
-<%@page import="model.UserDAO"%>
-<%@page import="model.GalleryDAO"%>
-<%@page import="java.util.ArrayList"%>
 <%@page import="entity.ProductType"%>
 <%@page import="entity.Gallery"%>
 <%@page import="java.util.List"%>
 <%@page import="entity.Product"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%
-    ProductTypeDAO daoProductType = new ProductTypeDAO();
-    UserDAO daoUser = new UserDAO();
-    GalleryDAO daoGallery = new GalleryDAO();
     Product product = (Product) request.getAttribute("product");
     List<Gallery> listGallery = (List<Gallery>) request.getAttribute("listGallery");
     List<ProductType> listProductType = (List<ProductType>) request.getAttribute("listProductType");
-    ArrayList<Product> listRelated = (ArrayList<Product>) request.getAttribute("listRelated");
-    ArrayList<String> listSize = (ArrayList<String>) request.getAttribute("listSize");
-    ArrayList<String> listColor = (ArrayList<String>) request.getAttribute("listColor");
 %>
 <!DOCTYPE html>
 <html>
@@ -32,13 +22,15 @@
         <link href="//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
         <script src="//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.min.js"></script>
         <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+        <!------ Include the above in your HEAD tag ---------->
+
         <link href="https://fonts.googleapis.com/css?family=Poppins:300,400,500,600,700,800&display=swap" rel="stylesheet">
         <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/all.min.css">
         <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/assets/owl.carousel.min.css">
         <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/assets/owl.theme.default.min.css">
         <script src="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/owl.carousel.min.js"></script>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
-        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity=" sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity=" sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script> 
         <script src="js/productDetail.js"></script>
         <style>
             .pd-wrap {
@@ -304,10 +296,14 @@
                 text-transform: uppercase;
                 cursor: pointer;
             }
+            .card-img-top{
+                height: 305.6px;
+                width: 305.6px;
+            }
         </style>
     </head>
     <body>
-        <jsp:include page="../header.jsp"/>
+        <jsp:include page="header.jsp"/>
 
         <div class="pd-wrap">
             <div class="container">
@@ -354,30 +350,28 @@
                                 </div>
                                 <div class="product-price-discount"><span>$39.00</span><span class="line-through">$29.00</span></div>
                                 <div class="product-releasedate"><label>Release Date: <%=product.getReleaseDate()%></label></div>
-                                <div class="product-seller"><label>Seller: <%=daoUser.getUserByProductId(product.getProductID()).getUsername()%></label></div>
+                                <div class="product-seller"><label>Seller: <%=product.getSeller()%></label></div>
                             </div>
-                            <p><%=product.getDescription()%></p>
                             <div class="row">
                                 <div class="col-md-6">
                                     <label for="size">Size</label>
                                     <select id="size" name="size" class="form-control">
-                                        <%for (String productType : listSize) {%>
-                                        <option><%=productType%></option>
+                                        <%for (ProductType productType : listProductType) {%>
+                                        <option><%=productType.getSize()%></option>
                                         <%}%>
                                     </select>
                                 </div>
                                 <div class="col-md-6">
                                     <label for="color">Color</label>
                                     <select id="color" name="color" class="form-control">
-                                        <%=product.getProductID() %>
-                                        <%for (String productType : listColor) {%>
-                                        <option><%=productType%></option>
+                                        <%for (ProductType productType : listProductType) {%>
+                                        <option><%=productType.getColor()%></option>
                                         <%}%>
                                     </select>
                                 </div>
                             </div>
                             <div class="product-count">
-                                <label for="quantity">Quantity</label>
+                                <label for="size">Quantity</label>
                                 <form action="#" class="display-flex">
                                     <div class="qtyminus">-</div>
                                     <input type="text" name="quantity" value="1" class="qty">
@@ -427,7 +421,18 @@
                                     <label>Your message</label>
                                     <textarea class="form-control" rows="10"></textarea>
                                 </div>
-                                
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <input type="text" name="" class="form-control" placeholder="Name*">
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <input type="text" name="" class="form-control" placeholder="Email Id*">
+                                        </div>
+                                    </div>
+                                </div>
                                 <button class="round-black-btn">Submit Review</button>
                             </form>
                         </div>
@@ -437,24 +442,28 @@
         </div>
 
         <div class="row row-collapse align-equal"  id="row-1706731289">
-            <h1>Related Products</h1>
-            <br>
-            <br>
-            <br>
             <div class="col medium-10 small-12 large-10"  ><div class="col-inner"  >
+
+
                     <div class="row large-columns-4 medium-columns- small-columns-2 row-collapse has-shadow row-box-shadow-1 slider row-slider slider-nav-reveal slider-nav-push"  data-flickity-options='{"imagesLoaded": true, "groupCells": "100%", "dragThreshold" : 5, "cellAlign": "left","wrapAround": true,"prevNextButtons": true,"percentPosition": true,"pageDots": false, "rightToLeft": false, "autoPlay" : 3000}'>
-                        <% for (Product pro : listRelated) {
-                                String str2 = "images/" + daoGallery.getSampleOfProduct(pro.getProductID());
+
+
+
+                        <% for (Product pn : ListNew) {
+                                String str2 = "images/" + gallDAO.getSampleOfProduct(pn.getProductID());
+
                         %>
                         <div class="col" >
                             <div class="col-inner">
+
                                 <div class="badge-container absolute left top z-1">
                                     <div class="callout badge badge-square"><div class="badge-inner secondary on-sale"><span class="onsale">-50%</span></div></div>
                                 </div>
                                 <div class="product-small box has-hover box-normal box-text-bottom">
                                     <div class="box-image" style="width:150px; height:150px ">
                                         <div class="" >
-                                            <a href="ProductDetailControllerMap?service=getProductDetail&pid=<%=pro.getProductID()%>">
+                                            <a href="HomepageControllerMap?service=detail">
+
                                                 <img src="<%=str2%>"></a>
                                         </div>
                                         <div class="image-tools z-top top right show-on-hover">
@@ -462,10 +471,11 @@
                                         <div class="image-tools grid-tools text-center hide-for-small bottom hover-slide-in show-on-hover">
                                         </div>
                                     </div><!-- box-image -->
+
                                     <div class="box-text text-center" style="background-color:rgb(255, 255, 255);">
                                         <div class="title-wrapper" >		
                                             <p class="category uppercase is-smaller no-text-overflow product-cat op-7">   </p> <%--category--%>
-                                            <p class="name product-title"><a href=""> <%=pro.getProductName()%> </a></p>
+                                            <p class="name product-title"><a href=""> <%=pn.getProductName()%> </a></p>
                                         </div> 
                                         <div class="price-wrapper" 
                                              <span class="price"><del><span class="woocommerce-Price-amount amount">290,000&nbsp;<span class="woocommerce-Price-currencySymbol">&#8363;</span></span></del> 
@@ -475,8 +485,10 @@
                                 </div><!-- box -->
                             </div><!-- .col-inner -->
                         </div><!-- col -->
-                        <% }
+
+                        <%    }
                         %>
+
                     </div>
                 </div>
             </div>
@@ -486,22 +498,24 @@
                         <div class="img-inner dark" >
                             <img width="466" height="666" src="http://mauweb.monamedia.net/lazada/wp-content/uploads/2017/11/banner-deal.jpg" class="attachment-original size-original" alt="" srcset="http://mauweb.monamedia.net/lazada/wp-content/uploads/2017/11/banner-deal.jpg 466w, http://mauweb.monamedia.net/lazada/wp-content/uploads/2017/11/banner-deal-210x300.jpg 210w, http://mauweb.monamedia.net/lazada/wp-content/uploads/2017/11/banner-deal-17x24.jpg 17w, http://mauweb.monamedia.net/lazada/wp-content/uploads/2017/11/banner-deal-25x36.jpg 25w, http://mauweb.monamedia.net/lazada/wp-content/uploads/2017/11/banner-deal-34x48.jpg 34w" sizes="(max-width: 466px) 100vw, 466px" />						
                         </div>
+
                         <style scope="scope">
+
                             #image_683044710 {
                                 width: 100%;
                             }
                         </style>
                     </div>
+
                 </div>
             </div>
             <style scope="scope">
+
                 #row-1706731289 > .col > .col-inner {
                     background-color: rgb(255, 255, 255);
                 }
             </style>
         </div>
 
-
-        <jsp:include page="../footer.jsp"/>
     </body>
 </html>
