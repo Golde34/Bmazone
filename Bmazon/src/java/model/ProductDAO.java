@@ -181,6 +181,7 @@ public class ProductDAO extends BaseDAO {
         return list;
     }
 
+<<<<<<< Updated upstream
     public ArrayList<Product> getProducSuggest() {
         ArrayList<Product> list = new ArrayList<>();
         String sql = "SELECT TOP 16 * FROM Product order by releaseDate";
@@ -206,6 +207,8 @@ public class ProductDAO extends BaseDAO {
         return list;
     }
 
+=======
+>>>>>>> Stashed changes
     public ArrayList<Product> getProducSuggest() {
         ArrayList<Product> list = new ArrayList<>();
         String sql = "SELECT TOP 16 * FROM Product order by releaseDate";
@@ -230,6 +233,7 @@ public class ProductDAO extends BaseDAO {
         }
         return list;
     }
+
     
     public ArrayList<Product> searchProduct(String text) {
         ArrayList<Product> list = new ArrayList<>();
