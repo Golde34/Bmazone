@@ -1,0 +1,130 @@
+@import url('https://fonts.googleapis.com/css2?family=Dancing+Script&display=swap');
+*{
+    margin: 0;
+    padding:0;
+    box-sizing: border-box;
+    font-family: serif;
+}
+
+.container{
+    display: flex;
+    max-width: 1200px;
+    flex-wrap: wrap;
+    padding: 40px 0;
+}
+.container .card{
+    position: ralative;
+    min-width: 320px;
+    height: 440px;
+    box-shadow: inset 5px 5px 5px rgba(0,0,0,0.05),
+        inset -5px -5px 5px rgba(255,255,255,0.5),
+        5px 5px 5px rgba(0,0,0,0.05),
+        -5px -5px 5px rgba(255,255,255,0.5);
+    border-radius: 15px;
+    margin: 30px;
+    background: transparent;
+}
+.container .card1{
+    position: ralative;
+    min-width: 720px;
+    height: 750px;
+    box-shadow: inset 5px 5px 5px rgba(0,0,0,0.05),
+        inset -5px -5px 5px rgba(255,255,255,0.5),
+        5px 5px 5px rgba(0,0,0,0.05),
+        -5px -5px 5px rgba(255,255,255,0.5);
+    border-radius: 15px;
+    margin: 30px;
+    background: transparent;
+}
+.container .card .box{
+    position: absolute;
+    top: 20px;left: 20px;right: 20px;bottom: 20px;
+    background: transparent;
+    box-shadow: 0 10px 20px rgba(0,0,0,0.1);
+    border-radius: 15px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.container .card1 .box1{
+    top: 20px;left: 20px;right: 20px;bottom: 20px;
+    background: rgba(0,0,0,0.7);
+    box-shadow: inset 5px 5px 5px rgba(0,0,0,0.05),
+        inset -5px -5px 5px rgba(255,255,255,0.5),
+        5px 5px 5px rgba(0,0,0,0.05),
+        -5px -5px 5px rgba(255,255,255,0.5);
+    border-radius: 15px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.container .card:hover .box{
+    transform: translateY(-50px);
+    box-shadow: 0 10px 20px rgba(0,0,0,0.2);
+    background: linear-gradient(100deg,cyan,white);
+    transition-duration: 0.8s;
+}
+.container .card .box .content{
+    padding: 20px;
+    text-align: center;
+}
+.container .card .box .content h2{
+    position: absolute;
+    top: 150px; right: 30px;left:20px; font-size: 3em; color:rgba(0,0,0,0.05);
+    /*    transition: 0.5s;*/
+    pointer-events: none;
+    color:white;
+    font-family: 'Dancing Script', cursive;
+}
+.container .card:hover .box .content h2{
+    display: none;
+}
+
+.container .card .box .content p{
+    font-size: 1.5em;
+    font-weight: 300;
+    color: #777;
+    z-index: 1;
+    transition: 0.5s;
+    color: transparent;
+}
+.container .card:hover .box .content h3,
+.container .card:hover .box .content p{
+    color: black;
+}
+
+.label{
+    font-size: 20px;
+    font-weight: normal;
+    color: white;
+}
+.input-group{
+    margin-top: 10px;
+    margin-bottom: 25px;
+    width: 600px;
+}
+.input-group-addon{
+    background: transparent;
+    border-radius: 0px;
+    border: 0px;
+    border-bottom: 1px solid white;
+    font-size: 18px;
+    color: gray;
+    
+}
+.form-control{
+    background: transparent;
+    border-radius: 0px;
+    border: 0px;
+    border-bottom: 1px solid white;
+    padding: 15px;
+    color: white;
+    font-size: 21px;
+}
+h1{
+      font-family: 'Dancing Script', cursive;
+      color:white;
+}
+
+
+
