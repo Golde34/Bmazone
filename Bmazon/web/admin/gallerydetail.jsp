@@ -1,16 +1,20 @@
-<%@page import="java.util.ArrayList"%>
+<%@page import="java.util.*"%>
 <%@page import="entity.*"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <c:set var="contextPath" value="${pageContext.request.contextPath}" />
 <%
     ShipCompany company = (ShipCompany) request.getAttribute("company");
+    Gallery gallery = (Gallery) request.getAttribute("gallery");
+    Product product = (Product) request.getAttribute(("product"));
+    ProductType producttype = (ProductType) request.getAttribute("producttype");
     String mess = (String) request.getAttribute("mess");
     if (mess == null) {
         mess = "";
     }
     String service = (String) request.getAttribute("service");
     User curUser = (User) request.getSession().getAttribute("currUser");
+    List<ShipCompany> listCompany = (ArrayList<ShipCompany>) request.getAttribute("listCompany");
 %>
 
 <!DOCTYPE html>
@@ -76,17 +80,17 @@
                         </a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link active" href="AdminControllerMap?service=companymanagement">
+                        <a class="nav-link" href="AdminControllerMap?service=companymanagement">
                             <div class="icon icon-shape icon-sm shadow border-radius-md bg-white text-center me-2 d-flex align-items-center justify-content-center">
-                                <i class="fas fa-fw fa-tachometer-alt"></i>
+                                <i class="fas fa-fw fa-tachometer-alt" style="color: black"></i>
                             </div>
                             <span class="nav-link-text ms-1">Company Management</span>
                         </a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link  " href="AdminControllerMap?service=gallerymanagement">
+                        <a class="nav-link active" href="AdminControllerMap?service=gallerymanagement">
                             <div class="icon icon-shape icon-sm shadow border-radius-md bg-white text-center me-2 d-flex align-items-center justify-content-center">
-                                <i class="fas fa-fw fa-tachometer-alt" style="color: black"></i>
+                                <i class="fas fa-fw fa-tachometer-alt"></i>
                             </div>
                             <span class="nav-link-text ms-1">Gallery Management</span>
                         </a>
@@ -135,7 +139,7 @@
                                         </a>
                                     </li>
                                     <li class="mb-2">
-                                        <a class="dropdown-item border-radius-md" href="">
+                                        <a class="dropdown-item border-radius-md" href="${contextPath}/UserControllerMap">
                                             <div class="d-flex py-1">
                                                 <div class="d-flex flex-column justify-content-center">
                                                     <h6 class="text-sm font-weight-normal mb-1">
@@ -171,55 +175,70 @@
                                 <div class="card-header py-3" 
                                      style="display: flex;
                                      justify-content: space-between;">
-                                    <h6 class="m-0 font-weight-bold text-primary">Company Detail</h6>
-                                    <a href="AdminControllerMap?service=addcompanydetail">
-                                        <button>Add new company</button></a>
+                                    <h6 class="m-0 font-weight-bold text-primary">Gallery Detail</h6>
                                 </div>
                                 <div class="card-body">
                                     <form class="form" action="/Bmazon/AdminControllerMap" method="POST">
-                                        <%if (service.equalsIgnoreCase("addcompanydetail")) {%>
-                                        <table class="table">
+                                        <%if (service.equalsIgnoreCase("addgallerydetail")) {%>
+                                        <table class="table table-striped">
                                             <tr>
-                                                <td>Company Name</td>
-                                                <td><input type="text" name="companyname" class="input"><br></td>
+                                                <td>Product Name</td>
+                                                <td>
+                                                    <textarea name="productname" rows="3"></textarea><br>
+                                                </td>
                                             </tr>
                                             <tr>
-                                                <td>Unit Cost</td>
-                                                <td><input type="text" name="unitcost" class="input"><br></td>
+                                                <td>Color</td>
+                                                <td><input type="text" name="color" class="input"><br></td>
                                             </tr>    
                                             <tr>
-                                                <td>Commit Date<p></td>
-                                                <td><input type="text" name="commitdate" class="input"><br></td>
+                                                <td>Size<p></td>
+                                                <td><input type="text" name="size" class="input"><br></td>
+                                            </tr>
+                                            <tr>
+                                                <td>Link<p></td>
+                                                <td>
+                                                    <input type="file" name="link" class="input"><br>
+                                                </td>
                                             </tr>
                                             <tr>
                                                 <td></td>
                                                 <td>
-                                                    <input type="submit" value="Add Company" class="btn">
-                                                    <input type="hidden" value="addcompany" name="service">
+                                                    <input type="submit" value="Update Gallery" class="btn">
+                                                    <input type="hidden" value="updategallery" name="service">
                                                 </td>
                                             </tr>
                                         </table>
                                         <%}%>
-                                        <%if (service.equalsIgnoreCase("updatecompanydetail")) {%>
+                                        <%if (service.equalsIgnoreCase("updategallerydetail")) {%>
                                         <table class="table table-striped">
                                             <tr>
-                                                <td>Company Name</td>
-                                                <td><input value="<%=company.getCompanyName() %>" type="text" name="companyname" class="input"><br></td>
+                                                <td>Product Name</td>
+                                                <td>
+                                                    <textarea name="productname" rows="3"><%=product.getProductName()%> </textarea><br>
+                                                </td>
                                             </tr>
                                             <tr>
-                                                <td>Unit Cost</td>
-                                                <td><input value="<%=company.getUnitCost() %>" type="text" name="unitcost" class="input"><br></td>
+                                                <td>Color</td>
+                                                <td><input value="<%=producttype.getColor()%>" type="text" name="unitcost" class="input"><br></td>
                                             </tr>    
                                             <tr>
-                                                <td>Commit Date<p></td>
-                                                <td><input value="<%=company.getCommitDate() %>" type="text" name="commitdate" class="input"><br></td>
+                                                <td>Size<p></td>
+                                                <td><input value="<%=producttype.getSize()%>" type="text" name="commitdate" class="input"><br></td>
+                                            </tr>
+                                            <tr>
+                                                <td>Link<p></td>
+                                                <td>
+                                                    <%String str = "images/" + gallery.getLink();%>
+                                                    <img src="<%=str%>" width="150px" height="150px"><br>
+                                                    <input type="file" name="commitdate" class="input"><br>
+                                                </td>
                                             </tr>
                                             <tr>
                                                 <td></td>
                                                 <td>
-                                                    <input type="submit" value="Update User" class="btn">
-                                                    <input type="hidden" value="updatecompany" name="service">
-                                                    <input type="hidden" value="<%=company.getCompanyID() %>" name="id">
+                                                    <input type="submit" value="Update Gallery" class="btn">
+                                                    <input type="hidden" value="updategallery" name="service">
                                                 </td>
                                             </tr>
                                         </table>

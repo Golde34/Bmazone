@@ -125,7 +125,7 @@ public class ProductTypeDAO extends BaseDAO {
 
     public List<ProductType> getProductByProductID(int pid) {
         List<ProductType> list = new ArrayList<>();
-        xSql = "select * from ProductType where productID = ? order by productID asc";
+        xSql = "select from ProductType where productID = ? order by productID asc";
         try {
             pre = conn.prepareStatement(xSql);
             pre.setInt(1, pid);
@@ -163,6 +163,34 @@ public class ProductTypeDAO extends BaseDAO {
                         rs.getInt(6),
                         rs.getInt(7),
                         rs.getInt(8)));
+            }
+        } catch (Exception e) {
+        }
+        return list;
+    }
+    
+    public ArrayList<String> getAllSizeOfProduct(int id){
+        ArrayList<String> list = new ArrayList<>();
+        xSql = "select distinct size from ProductType where productID = " + id + "";
+        try {
+            pre = conn.prepareStatement(xSql);
+            rs = pre.executeQuery();
+            while (rs.next()) {
+                list.add(rs.getString("size"));
+            }
+        } catch (Exception e) {
+        }
+        return list;
+    }
+    
+    public ArrayList<String> getAllColorOfProduct(int id){
+        ArrayList<String> list = new ArrayList<>();
+        xSql = "select distinct color from ProductType where productID = " + id + "";
+        try {
+            pre = conn.prepareStatement(xSql);
+            rs = pre.executeQuery();
+            while (rs.next()) {
+                list.add(rs.getString("color"));
             }
         } catch (Exception e) {
         }
@@ -237,9 +265,9 @@ public class ProductTypeDAO extends BaseDAO {
     }
     public static void main(String[] args) {
         ProductTypeDAO dao = new ProductTypeDAO();
-        List<ProductType> list = dao.searchProduct("12");
-        for (ProductType productType : list) {
-            System.out.println(productType.getProductTypeId());
+        ArrayList<String> list = dao.getAllSizeOfProduct(13);
+        for (String productType : list) {
+            System.out.println(productType);
         }
     }
 }

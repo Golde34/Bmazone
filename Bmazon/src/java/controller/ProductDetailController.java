@@ -80,6 +80,10 @@ public class ProductDetailController extends HttpServlet {
         request.setAttribute("listProductType", listProductType);
         ArrayList<Product> listRelated = daoProduct.getRelatedProductByProductID(id);
         request.setAttribute("listRelated", listRelated);
+        ArrayList<String> listSize = daoProductType.getAllSizeOfProduct(id);
+        request.setAttribute("listSize", listSize);
+        ArrayList<String> listColor = daoProductType.getAllColorOfProduct(id);
+        request.setAttribute("listColor", listColor);
         sendDispatcher(request, response, "product/productDetail.jsp");
     }
 
