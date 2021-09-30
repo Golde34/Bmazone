@@ -3,11 +3,6 @@
     Created on : Sep 30, 2021, 2:15:00 PM
     Author     : DELL
 --%>
-<%-- 
-    Document   : dashboard
-    Created on : Sep 26, 2021, 12:09:49 PM
-    Author     : DELL
---%>
 
 <%@page import="java.util.List"%>
 <%@page import="entity.ProductType"%>
@@ -231,4 +226,3 @@
                                     evt.currentTarget.className += " active";
                                 }
     </script>-->
-</html>

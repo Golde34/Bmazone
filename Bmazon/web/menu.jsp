@@ -31,7 +31,7 @@
     List<Product> ListSale = proDAO.getProductSale();
     List<Product> ListNew = proDAO.getProductNew();
     List<Product> ListApple = proDAO.getProductApple();
-    List<Product> ListSuggest = proDAO.getProductSuggest();
+    List<Product> ListSuggest = proDAO.getProducSuggest();
     List<Genre> ListGenre = genDAO.getHomeGenre();
 
 

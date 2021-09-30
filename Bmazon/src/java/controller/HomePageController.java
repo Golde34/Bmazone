@@ -78,7 +78,7 @@ public class HomePageController extends HttpServlet {
         List<Product> ListSale = proDAO.getProductSale();
         List<Product> ListNew = proDAO.getProductNew();
         List<Product> ListApple = proDAO.getProductApple();
-        List<Product> ListSuggest = proDAO.getProductSuggest();
+        List<Product> ListSuggest = proDAO.getProducSuggest();
         request.setAttribute("cateList", cateList);
         request.setAttribute("gerneList", gerneList);
         request.setAttribute("ListSale", ListSale);

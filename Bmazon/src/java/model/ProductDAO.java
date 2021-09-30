@@ -182,12 +182,32 @@ public class ProductDAO extends BaseDAO {
         return list;
     }
 
-<<<<<<< HEAD
     public ArrayList<Product> getProductBySeller(String seller) {
-=======
+        ArrayList<Product> list = new ArrayList<>();
+        String sql = "SELECT * FROM Product where seller = '" + seller + "'";
+        try {
+            pre = conn.prepareStatement(sql);
+            rs = pre.executeQuery();
+            while (rs.next()) {
+                Product pro = new Product();
+                pro.setProductID(rs.getInt("productID"));
+                pro.setProductName(rs.getString("productName"));
+                pro.setDescription(rs.getString("description"));
+                pro.setRating(rs.getInt("rating"));
+                pro.setReleaseDate(rs.getDate("releaseDate"));
+                pro.setSeller(rs.getInt("seller"));
+                pro.setStatus(rs.getInt("status"));
+                list.add(pro);
+            }
+            rs.close();
+            pre.close();
+        } catch (SQLException e) {
+            Logger.getLogger(ProductDAO.class.getName()).log(Level.SEVERE, null, e);
+        }
+        return list;
+    }
 
     public ArrayList<Product> getProducSuggest() {
->>>>>>> a4ab0fb4f6d94b2677c3b188171edd275c5645f0
         ArrayList<Product> list = new ArrayList<>();
         String sql = "SELECT TOP 16 * FROM Product order by releaseDate";
         try {
@@ -450,33 +470,5 @@ public class ProductDAO extends BaseDAO {
     }
 
 
-  
-
-
-    
-    public ArrayList<Product> getProductSuggest() {
-        ArrayList<Product> list = new ArrayList<>();
-        String sql = "SELECT TOP 16 * FROM Product order by releaseDate";
-        try {
-            pre = conn.prepareStatement(sql);
-            rs = pre.executeQuery();
-            while (rs.next()) {
-                Product pro = new Product();
-                pro.setProductID(rs.getInt("productID"));
-                pro.setProductName(rs.getString("productName"));
-                pro.setDescription(rs.getString("description"));
-                pro.setRating(rs.getInt("rating"));
-                pro.setReleaseDate(rs.getDate("releaseDate"));
-                pro.setSeller(rs.getInt("seller"));
-                pro.setStatus(rs.getInt("status"));
-                list.add(pro);
-            }
-            rs.close();
-            pre.close();
-        } catch (SQLException e) {
-            Logger.getLogger(ProductDAO.class.getName()).log(Level.SEVERE, null, e);
-        }
-        return list;
-
-    }
+ 
 }

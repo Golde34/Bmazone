@@ -85,7 +85,6 @@
                     <ul class="sidebar-menu">
                         <li><!-- class="tablinks" -->
                             <!--<a href="" onclick="openObject(event, 'Dashboard')">-->
-                                
                             <a href="SellerControllerMap">
                                 <i class="fa fa-dashboard"></i> <span>Dashboard</span>
                             </a>
@@ -173,18 +172,18 @@
                                                         for (ProductType producttype : listProductType) {
                                                 %>
                                                 <tr>
-                                                    <td><%= product.getProductName() %></td>
-                                                    <td><%= producttype.getColor() %></td>
-                                                    <td><%= producttype.getSize() %></td>
-                                                    <td><%= producttype.getPrice() %></td>
-                                                    <td><%= producttype.getProductTypeId() %></td>
-                                                    <td>
+                                                    <td><div><%=product.getProductName()%></div></td>
+                                                    <td><div><%=producttype.getColor()%></div></td>
+                                                    <td><div><%=producttype.getSize()%></div></td>
+                                                    <td><div><%=producttype.getPrice()%></div></td>
+                                                    <td><div><%=producttype.getProductTypeId()%></div></td>
+                                                    <td><div>
                                                             <a href="AdminControllerMap?service=updatedetail&userid=<%=producttype.getProductTypeId()%>"><span class="fas fa-edit"></span></a>
                                                         </div></td>
                                                     <td><div><a href="AdminControllerMap?service=deleteuser&userid=<%=producttype.getProductTypeId()%>" onclick="return confirm('Are you sure you want to Remove?');"><span class="fas fa-trash-alt"></span></a></div></td>
                                                 </tr>
-                                                <% } %>
-                                                <% } %>
+                                                <%}%>
+                                                <%}%>
                                             </tbody>
                                     </table>
                                 </div>
@@ -216,4 +215,26 @@
     </body>
     <!--% }%-->
 
+    <script>
+                                function openObject(evt, Object) {
+                                    // Declare all variables
+                                    var i, tabcontent, tablinks;
+
+                                    // Get all elements with class="tabcontent" and hide them
+                                    tabcontent = document.getElementsByName("tabcontent");
+                                    for (i = 0; i < tabcontent.length; i++) {
+                                        tabcontent[i].style.display = "none";
+                                    }
+
+                                    // Get all elements with class="tablinks" and remove the class "active"
+                                    tablinks = document.getElementsByClassName("tablinks");
+                                    for (i = 0; i < tablinks.length; i++) {
+                                        tablinks[i].className = tablinks[i].className.replace(" active", "");
+                                    }
+
+                                    // Show the current tab, and add an "active" class to the link that opened the tab
+                                    document.getElementById(Object).style.display = "block";
+                                    evt.currentTarget.className += " active";
+                                }
+    </script>
 </html>

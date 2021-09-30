@@ -11,16 +11,16 @@
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         <title>JSP Page</title>
-        <link href="../css/seller/bootstrap.min.css" rel="stylesheet" type="text/css" />
-        <link href="../css/seller/font-awesome.min.css" rel="stylesheet" type="text/css" />
-        <link href="../css/seller/ionicons.min.css" rel="stylesheet" type="text/css" />
-        <link href="../css/seller/morris/morris.css" rel="stylesheet" type="text/css" />
-        <link href="../css/seller/jvectormap/jquery-jvectormap-1.2.2.css" rel="stylesheet" type="text/css" />
-        <link href="../css/seller/datepicker/datepicker3.css" rel="stylesheet" type="text/css" />
-        <link href="../css/seller/daterangepicker/daterangepicker-bs3.css" rel="stylesheet" type="text/css" />
-        <link href="../css/seller/iCheck/all.css" rel="stylesheet" type="text/css" />
+        <link href="${contextPath}/css/seller/bootstrap.min.css" rel="stylesheet" type="text/css" />
+        <link href="${contextPath}/css/seller/font-awesome.min.css" rel="stylesheet" type="text/css" />
+        <link href="${contextPath}/css/seller/ionicons.min.css" rel="stylesheet" type="text/css" />
+        <link href="${contextPath}/css/seller/morris/morris.css" rel="stylesheet" type="text/css" />
+        <link href="${contextPath}/css/seller/jvectormap/jquery-jvectormap-1.2.2.css" rel="stylesheet" type="text/css" />
+        <link href="${contextPath}/css/seller/datepicker/datepicker3.css" rel="stylesheet" type="text/css" />
+        <link href="${contextPath}/css/seller/daterangepicker/daterangepicker-bs3.css" rel="stylesheet" type="text/css" />
+        <link href="${contextPath}/css/seller/iCheck/all.css" rel="stylesheet" type="text/css" />
         <link href='http://fonts.googleapis.com/css?family=Lato' rel='stylesheet' type='text/css'>
-        <link href="../css/seller/style.css" rel="stylesheet" type="text/css" />
+        <link href="${contextPath}/css/seller/style.css" rel="stylesheet" type="text/css" />
     </head>
     <body>
 <%
@@ -54,7 +54,7 @@
                                         <li>
                                             <a href="#">
                                                 <div class="pull-left">
-                                                    <img src="../images/seller/26115.jpg" class="img-circle" alt="User Image"/>
+                                                    <img src="${contextPath}/images/seller/26115.jpg" class="img-circle" alt="User Image"/>
                                                 </div>
                                                 <h4>
                                                     Customer 1
@@ -113,7 +113,6 @@
                     </ul>
                 </div>
             </nav>
-                            
         </header>
     </body>
         <script src="http://ajax.googleapis.com/ajax/libs/jquery/2.0.2/jquery.min.js"></script>
@@ -126,4 +125,16 @@
         <script src="../js/seller/plugins/fullcalendar/fullcalendar.js" type="text/javascript"></script>
         <script src="../js/seller/Director/app.js" type="text/javascript"></script>
         <script src="../js/seller/Director/dashboard.js" type="text/javascript"></script>
+        </header>
+    </body>
+        <script src="http://ajax.googleapis.com/ajax/libs/jquery/2.0.2/jquery.min.js"></script>
+        <script src="${contextPath}/js/seller/jquery.min.js" type="text/javascript"></script>
+        <script src="${contextPath}/js/seller/jquery-ui-1.10.3.min.js" type="text/javascript"></script>
+        <script src="${contextPath}/js/seller/bootstrap.min.js" type="text/javascript"></script>
+        <script src="${contextPath}/js/seller/plugins/daterangepicker/daterangepicker.js" type="text/javascript"></script>
+        <script src="${contextPath}/js/seller/plugins/chart.js" type="text/javascript"></script>
+        <script src="${contextPath}/js/seller/plugins/iCheck/icheck.min.js" type="text/javascript"></script>
+        <script src="${contextPath}/js/seller/plugins/fullcalendar/fullcalendar.js" type="text/javascript"></script>
+        <script src="${contextPath}/js/seller/Director/app.js" type="text/javascript"></script>
+        <script src="${contextPath}/js/seller/Director/dashboard.js" type="text/javascript"></script>
 </html>
