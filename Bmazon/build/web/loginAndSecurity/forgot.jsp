@@ -27,7 +27,7 @@
                 <h2 style="color: yellow" > Forgot Password</h2>
                 <div class="login-form">
                     <div class="sign-up-html">
-                        <form action="/Bmazon/UserControllerMap" method="POST">
+                        <form action="/Bmazon/LoginControllerMap" method="POST">
                             <div class="group">
                                 <label class="label">Username</label>
                                 <input type="text" name="username"  class="input" placeholder="Username">
