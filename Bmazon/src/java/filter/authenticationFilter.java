@@ -5,11 +5,13 @@
  */
 package filter;
 
+import entity.Product;
 import entity.User;
 import java.io.IOException;
 import java.io.PrintStream;
 import java.io.PrintWriter;
 import java.io.StringWriter;
+import java.util.ArrayList;
 import javax.servlet.Filter;
 import javax.servlet.FilterChain;
 import javax.servlet.FilterConfig;
@@ -18,6 +20,7 @@ import javax.servlet.ServletRequest;
 import javax.servlet.ServletResponse;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import model.UserDAO;
 
 /**
  *
@@ -109,11 +112,12 @@ public class authenticationFilter implements Filter {
         HttpServletRequest httprequest = (HttpServletRequest) request;
         HttpServletResponse httpresponse = (HttpServletResponse) response;
         User x = (User) httprequest.getSession().getAttribute("currUser");
-        String url = httprequest.getServletPath();
-
+        String url = httprequest.getRequestURL().toString();   
+        
         if (x == null && !url.contains("HomePageControllerMap")) {
             httpresponse.sendRedirect("HomePageControllerMap");
         }
+        
         Throwable problem = null;
         try {
             chain.doFilter(request, response);

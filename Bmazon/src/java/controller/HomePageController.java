@@ -21,6 +21,7 @@ import model.ProductDAO;
 import model.CategoryDAO;
 import model.GenreDAO;
 import entity.Genre;
+import java.util.List;
 import model.DBConnection;
 
 /**
@@ -38,37 +39,86 @@ public class HomePageController extends HttpServlet {
      * @throws ServletException if a servlet-specific error occurs
      * @throws IOException if an I/O error occurs
      */
-    
     DBConnection dbCon = new DBConnection();
-    CategoryDAO daoCategory = new CategoryDAO();
-    GenreDAO daoGenre = new GenreDAO();
-    ProductDAO daoProduct= new ProductDAO();
+    CategoryDAO cateDAO = new CategoryDAO();
+    GenreDAO genDAO = new GenreDAO();
+    ProductDAO proDAO = new ProductDAO();
 
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
         try (PrintWriter out = response.getWriter()) {
-            
+
             String service = request.getParameter("service");
-            
             if (service == null) {
-                service = "HomePage";
+                service = "Homepage";
+            }
+            if (service.equalsIgnoreCase("Homepage")) {
+                serviceHomepage(request, response);
             }
 
-            //Home.jsp
-            if (service.equalsIgnoreCase("HomePage")) {
-                serviceHomePage(request, response);
+            if (service.equalsIgnoreCase("list")) {
+                serviceList(request, response);
+            }
+            if (service.equalsIgnoreCase("ByCate")) {
+                serviceByCate(request, response);
+            }
+            if (service.equalsIgnoreCase("ByGenre")) {
+                serviceByGenre(request, response);
+            }
+             if (service.equalsIgnoreCase("search")) {
+                serviceSearch(request, response);
             }
         }
     }
 
-    public void serviceHomePage(HttpServletRequest request, HttpServletResponse response) {
-        ArrayList<Product> ListP = daoProduct.getProductSale();
-        request.setAttribute("listP", ListP);
-            sendDispatcher(request, response, "/index.jsp");;
-        
+    public void serviceHomepage(HttpServletRequest request, HttpServletResponse response) {
+        List<Category> cateList = cateDAO.getTrueCategories();
+        List<Genre> gerneList = genDAO.getTrueGenres();
+        List<Product> ListSale = proDAO.getProductSale();
+        List<Product> ListNew = proDAO.getProductNew();
+        List<Product> ListApple = proDAO.getProductApple();
+        List<Product> ListSuggest = proDAO.getProducSuggest();
+        request.setAttribute("cateList", cateList);
+        request.setAttribute("gerneList", gerneList);
+        request.setAttribute("ListSale", ListSale);
+        request.setAttribute("ListNew", ListNew);
+        request.setAttribute("listApple", ListApple);
+        request.setAttribute("listSuggest", ListSuggest);
+        sendDispatcher(request, response, "/index.jsp");
+
     }
-    
+
+    public void serviceList(HttpServletRequest request, HttpServletResponse response) {
+        List<Product> ListP = proDAO.getTrueProduct();
+        request.setAttribute("listP", ListP);
+
+        sendDispatcher(request, response, "/list.jsp");
+
+    }
+
+    public void serviceByCate(HttpServletRequest request, HttpServletResponse response) {
+        int id = Integer.parseInt(request.getParameter("cid"));
+        List<Product> ListP = proDAO.getProductByCategory(id);
+        request.setAttribute("listP", ListP);
+        sendDispatcher(request, response, "/list.jsp");
+
+    }
+
+    public void serviceByGenre(HttpServletRequest request, HttpServletResponse response) {
+        int id = Integer.parseInt(request.getParameter("gid"));
+        List<Product> ListP = proDAO.getProductByGenre(id);
+        request.setAttribute("listP", ListP);
+        sendDispatcher(request, response, "/list.jsp");
+
+    }
+     public void serviceSearch(HttpServletRequest request, HttpServletResponse response) {
+        String str=request.getParameter("search");
+        List<Product> ListP = proDAO.getProductByName(str);
+        request.setAttribute("listP", ListP);
+        sendDispatcher(request, response, "/list.jsp");
+
+    }
 
     public void sendDispatcher(HttpServletRequest request, HttpServletResponse response, String path) {
         try {

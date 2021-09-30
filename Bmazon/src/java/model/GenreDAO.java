@@ -60,6 +60,31 @@ BaseDAO dbConn= new BaseDAO();
         }
         return list;
     }
+     public ArrayList<Genre> getHomeGenre() {
+        String sql = "select top 16* from Genre";
+        ArrayList<Genre> list = new ArrayList<>();
+        Genre x = null;
+        int genreID;
+        String genreName,images;
+        int categoryID;
+        int status;
+        try {
+            pre = conn.prepareStatement(sql);
+            rs = pre.executeQuery();
+            while (rs.next()) {
+                genreID = rs.getInt("genreID");
+                genreName = rs.getString("genreName");
+                categoryID = rs.getInt("categoryID");
+                images=rs.getString("images");
+                status = rs.getInt("status");
+                x = new Genre(genreID, genreName, categoryID, status, images);
+                list.add(x);
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(CategoryDAO.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return list;
+    }
 
     public void insertGenre(Genre gen) {
         String sql = "Insert into Genre(genreName,categoryID,status) values (?,?,?)";
@@ -67,7 +92,8 @@ BaseDAO dbConn= new BaseDAO();
             pre = conn.prepareStatement(sql);
             pre.setString(1, gen.getGenreName());
             pre.setInt(2, gen.getCategoryID());
-            pre.setInt(3, gen.getStatus());
+            pre.setString(3, gen.getImages());
+            pre.setInt(4, gen.getStatus());
             pre.executeUpdate();
         } catch (SQLException ex) {
             Logger.getLogger(CategoryDAO.class.getName()).log(Level.SEVERE, null, ex);

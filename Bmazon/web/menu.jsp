@@ -1,3 +1,6 @@
+<%@page import="java.text.DecimalFormat"%>
+<%@page import="java.text.NumberFormat"%>
+<%@page import="java.util.Locale"%>
 <%@page import="java.util.Collections"%>
 <%@page import="java.util.Collection"%>
 <%@page import="java.util.List"%>
@@ -14,8 +17,10 @@
 <%@page import="model.GenreDAO"%>
 <%@page import="model.ProductTypeDAO"%>
 <%@page import="entity.ProductType"%>
+<c:set var="contextPath" value="${pageContext.request.contextPath}" />
 
 <%@ page contentType="text/html;charset=UTF-8" language="java" pageEncoding="UTF-8"%>
+<% DecimalFormat nf = new DecimalFormat("###,###,###");%>
 <%
 
     CategoryDAO daoCate = new CategoryDAO();
@@ -23,11 +28,11 @@
     ProductDAO proDAO = new ProductDAO();
     GalleryDAO gallDAO = new GalleryDAO();
     ProductTypeDAO ptDAO = new ProductTypeDAO();
-    List<Category> cateList = daoCate.getTrueCategories();
-    List<Genre> gerneList = genDAO.getTrueGenres();
     List<Product> ListSale = proDAO.getProductSale();
     List<Product> ListNew = proDAO.getProductNew();
     List<Product> ListApple = proDAO.getProductApple();
+    List<Product> ListSuggest = proDAO.getProducSuggest();
+    List<Genre> ListGenre = genDAO.getHomeGenre();
 
 
 %>
@@ -83,77 +88,54 @@
 
             <main id="main" class="" style="">
 
-
                 <div id="content" role="main" class="content-area" >
 
-
-                    <section class="section" id="section_2111671223">
-                        <div class="bg section-bg fill bg-fill  bg-loaded" >
-
-
-
-
-
-                        </div><!-- .section-bg -->
-
+                    <section class="section" id="section_2111671223">                   
                         <div class="section-content relative">
 
                             <div class="gap-element" style="display:block; height:auto; padding-top:5px" class="clearfix"></div>
                             <section class="section sec_tab_banner" id="section_992612852">
-                                <div class="bg section-bg fill bg-fill  bg-loaded" >
-
-
-
-
-
-                                </div><!-- .section-bg -->
 
                                 <div class="section-content relative">
 
-                                    <div class="row row-collapse"  id="row-1954119617">
+                                    <div class="row row-collapse"  id="row-1954119617" style=" f">
 
-                                        <div class="col small-12 large-12"  ><div class="col-inner"  >
-                                                <div>
-                                                    <div class="slideshow-container">
+                                        <div class="col small-12 large-12"  >
+                                            <div class="col-inner"  >
 
-                                                        <div class="mySlides fade">
-                                                            <div class="numbertext">1 / 3</div>
-                                                            <img src="images/slide1.jpg" style="width:1000px ;height: 500px">
-                                                            <div class="text">Caption Text</div>
-                                                        </div>
+                                                <div class="slideshow-container">
 
-                                                        <div class="mySlides fade">
-                                                            <div class="numbertext">2 / 3</div>
-                                                            <img src="images/slide2.jpg" style="width:1000px ;height: 500px">
-                                                            <div class="text">Caption Two</div>
-                                                        </div>
-
-                                                        <div class="mySlides fade">
-                                                            <div class="numbertext">3 / 3</div>
-                                                            <img src="images/slide3.jpg" style="width:1000px ;height: 500px">
-                                                            <div class="text">Caption Three</div>
-                                                        </div>
-
-                                                        <a class="prev" onclick="plusSlides(-1)">&#10094;</a>
-                                                        <a class="next" onclick="plusSlides(1)">&#10095;</a>
-
+                                                    <div class="mySlides fade">
+                                                        <div class="numbertext">1 / 3</div>
+                                                        <img src="images/slide1.jpg" style="width:1000px ;height: 500px">
+                                                        <div class="text">Caption Text</div>
                                                     </div>
-                                                    <br>
-
-                                                    <div style="text-align:center">
-                                                        <span class="dot" onclick="currentSlide(1)"></span> 
-                                                        <span class="dot" onclick="currentSlide(2)"></span> 
-                                                        <span class="dot" onclick="currentSlide(3)"></span> 
+                                                    <div class="mySlides fade">
+                                                        <div class="numbertext">2 / 3</div>
+                                                        <img src="images/slide2.jpg" style="width:1000px ;height: 500px">
+                                                        <div class="text">Caption Two</div>
                                                     </div>
-                                                    <script src="js/slide.js"></script>
+                                                    <div class="mySlides fade">
+                                                        <div class="numbertext">3 / 3</div>
+                                                        <img src="images/slide3.jpg" style="width:1000px ;height: 500px">
+                                                        <div class="text">Caption Three</div>
+                                                    </div>
+                                                    <a class="prev" onclick="plusSlides(-1)">&#10094;</a>
+                                                    <a class="next" onclick="plusSlides(1)">&#10095;</a>
                                                 </div>
+                                                <br>
+                                                <div style="text-align:center">
+                                                    <span class="dot" onclick="currentSlide(1)"></span> 
+                                                    <span class="dot" onclick="currentSlide(2)"></span> 
+                                                    <span class="dot" onclick="currentSlide(3)"></span> 
+                                                </div>
+                                                <script src="js/slide.js"></script>
+
                                             </div>
                                         </div>                             
                                     </div>
-
-                                </div><!-- .section-content -->
-
-
+                                </div>
+                                <!-- .section-content -->
                                 <style scope="scope">
 
                                     #section_992612852 {
@@ -162,10 +144,7 @@
                                     }
                                 </style>
                             </section>
-
                         </div><!-- .section-content -->
-
-
                         <style scope="scope">
 
                             #section_2111671223 {
@@ -176,7 +155,7 @@
                         </style>
                     </section>
 
-                    <section class="section sec_flash_sale" id="section_1352472076">
+                    <section class="section sec_flash_sale" id="section_16406982">
                         <div class="bg section-bg fill bg-fill  bg-loaded" >
 
 
@@ -187,64 +166,45 @@
 
                         <div class="section-content relative">
 
-                            <div class="gap-element" style="display:block; height:auto; padding-top:30px" class="clearfix"></div>
-                            <div class="row row-collapse align-middle"  id="row-1649239858">
+                            
+                            <div class="row row-collapse align-middle"  id="row-1888902941">
                                 <div class="col medium-2 small-12 large-2"  ><div class="col-inner"  >
-                                        <div class="img has-hover x md-x lg-x y md-y lg-y" id="image_1627766676">
+                                        <div class="img has-hover x md-x lg-x y md-y lg-y" id="image_510021313">
                                             <div class="img-inner dark" >
                                                 <img width="480" height="92" src="http://mauweb.monamedia.net/lazada/wp-content/uploads/2017/10/flash-sale.png" class="attachment-original size-original" alt="" srcset="http://mauweb.monamedia.net/lazada/wp-content/uploads/2017/10/flash-sale.png 480w, http://mauweb.monamedia.net/lazada/wp-content/uploads/2017/10/flash-sale-300x58.png 300w, http://mauweb.monamedia.net/lazada/wp-content/uploads/2017/10/flash-sale-24x5.png 24w, http://mauweb.monamedia.net/lazada/wp-content/uploads/2017/10/flash-sale-36x7.png 36w, http://mauweb.monamedia.net/lazada/wp-content/uploads/2017/10/flash-sale-48x9.png 48w" sizes="(max-width: 480px) 100vw, 480px" />						
                                             </div>
 
                                             <style scope="scope">
 
-                                                #image_1627766676 {
+                                                #image_510021313 {
                                                     width: 75%;
                                                 }
                                             </style>
                                         </div>
 
                                     </div></div>
-                                <div class="col medium-2 small-12 large-2"  ><div class="col-inner" style="padding:0px 0px 0px 0px;" >
+                               
+                                <div class="col medium-12 small-12 large-12"  >
+                                    <div class="col-inner text-right" >
+                                        <p class="orange" style="float: right" ><a href="HomepageControllerMap?service=Sale">Xem Tất Cả &gt;</a></p>
+                                    </div>
+                                </div>
 
-
-                                    </div></div>
-                                <div class="col medium-8 small-12 large-8"  ><div class="col-inner text-right"  >
-                                        <p class="orange"><a href="">Xem Tất Cả &gt;</a></p>
-                                    </div></div>
-
-                                <style scope="scope">
-
-                                </style>
+                              
                             </div>
-                            <div class="row row-collapse"  id="row-1976639540">
-                                <div class="col medium-2 small-12 large-2"  ><div class="col-inner"  >
-                                        <div class="img has-hover x md-x lg-x y md-y lg-y" id="image_1911105025">
-                                            <div class="img-inner dark" >
-                                                <img width="466" height="666" src="http://mauweb.monamedia.net/lazada/wp-content/uploads/2017/11/banner-flash-sale.jpg" class="attachment-original size-original" alt="" srcset="http://mauweb.monamedia.net/lazada/wp-content/uploads/2017/11/banner-flash-sale.jpg 466w, http://mauweb.monamedia.net/lazada/wp-content/uploads/2017/11/banner-flash-sale-210x300.jpg 210w, http://mauweb.monamedia.net/lazada/wp-content/uploads/2017/11/banner-flash-sale-17x24.jpg 17w, http://mauweb.monamedia.net/lazada/wp-content/uploads/2017/11/banner-flash-sale-25x36.jpg 25w, http://mauweb.monamedia.net/lazada/wp-content/uploads/2017/11/banner-flash-sale-34x48.jpg 34w" sizes="(max-width: 466px) 100vw, 466px" />						
-                                            </div>
-
-                                            <style scope="scope">
-
-                                                #image_1911105025 {
-                                                    width: 100%;
-                                                }
-                                            </style>
-                                        </div>
-
-                                    </div></div>
-                                <div class="col medium-10 small-12 large-10"  ><div class="col-inner"  >
+                            <div class="row row-collapse"  id="row-698964333">
+                               
+                                <div class="col medium-12 small-12 large-12"  >
+                                    <div class="col-inner"  >
 
 
-                                        <div class="row large-columns-4 medium-columns- small-columns-2 row-collapse has-shadow row-box-shadow-1 slider row-slider slider-nav-reveal slider-nav-push"  data-flickity-options='{"imagesLoaded": true, "groupCells": "100%", "dragThreshold" : 5, "cellAlign": "left","wrapAround": true,"prevNextButtons": true,"percentPosition": true,"pageDots": false, "rightToLeft": false, "autoPlay" : false}'>
-
-                                            <% for (Product ps : ListSale) {
-                                                    String str1 = "images/" + gallDAO.getSampleOfProduct(ps.getProductID());
-                                                    String price = ptDAO.getProductPrice(ps.getProductID());
+                                        <div class="row large-columns-5 medium-columns-5 small-columns-5 row-collapse has-shadow row-box-shadow-1 slider row-slider slider-nav-reveal slider-nav-push"  data-flickity-options='{"imagesLoaded": true, "groupCells": "100%", "dragThreshold" : 5, "cellAlign": "left","wrapAround": true,"prevNextButtons": true,"percentPosition": true,"pageDots": false, "rightToLeft": false, "autoPlay" : false}'>
+                                            <% for (Product p : ListNew) {
+                                                    String str = "images/" + gallDAO.getSampleOfProduct(p.getProductID());
+                                                    double price = Double.parseDouble(ptDAO.getProductPrice(p.getProductID()));
 
 
                                             %>
-
-
                                             <div class="col" >
                                                 <div class="col-inner">
 
@@ -253,14 +213,11 @@
                                                     </div>
                                                     <div class="product-small box has-hover box-normal box-text-bottom">
                                                         <div class="box-image" style="width:150px; height:150px ">
-
-
-
                                                             <div class=""  >
-                                                                <a href="ProductDetailControllerMap?service=getProductDetail&pid=<%=ps.getProductID()%>">
+                                                                <a href="ProductDetailControllerMap?service=getProductDetail&pid=<%=p.getProductID()%>">
 
 
-                                                                    <img src="<%=str1%>"></a>
+                                                                    <img src="<%=str%>"></a>
                                                             </div>
                                                             <div class="image-tools z-top top right show-on-hover">
                                                             </div>
@@ -269,12 +226,185 @@
                                                         </div><!-- box-image -->
 
                                                         <div class="box-text text-center" style="background-color:rgb(255, 255, 255);">
-                                                            <div class="title-wrapper" >		<p class="category uppercase is-smaller no-text-overflow product-cat op-7">
-                                                                </p> <p class="name product-title"><a href="ProductDetailControllerMap?service=getProductDetail&pid=<%=ps.getProductID()%>"> <%=ps.getProductName()%> <br></a></p>
+                                                            <div class="title-wrapper" >
+                                                                <p class="category uppercase is-smaller no-text-overflow product-cat op-7"></p> 
+                                                                <p class="name product-title"><a href="ProductDetailControllerMap?service=getProductDetail&pid=<%=p.getProductID()%>"> <%=p.getProductName()%> <br></a></p>
                                                             </div> 
                                                             <div class="price-wrapper" 
-                                                                 <span class="price"><del><span class="woocommerce-Price-amount amount">290,000&nbsp;<span class="woocommerce-Price-currencySymbol">&#8363;</span></span></del> 
-                                                                    <ins><span class="woocommerce-Price-amount amount"> <%=price%> <span class="woocommerce-Price-currencySymbol">&#8363;</span></span></ins></span>
+                                                                 <span class="price">
+
+                                                                    <ins><span class="woocommerce-Price-amount amount"><%=nf.format(price)%>&nbsp; <span class="woocommerce-Price-currencySymbol">&#8363;</span></span></ins></span>
+                                                            </div>							
+                                                        </div><!-- box-text -->
+                                                    </div><!-- box -->
+                                                </div><!-- .col-inner -->
+                                            </div><!-- col -->
+                                            <%
+
+                                                }
+                                            %>
+
+                                        </div>
+                                    </div>
+                                </div>
+
+                            </div>
+                        </div><!-- .section-content -->
+
+
+                        <style scope="scope">
+
+                            #section_16406982 {
+                                padding-top: 0px;
+                                padding-bottom: 0px;
+                                background-color: rgb(241, 241, 241);
+                            }
+                        </style>
+                    </section>
+
+
+                    <section class="section sec_danh_muc" id="section_1885747892">
+                        <div class="section-content relative">
+
+                            <div class="gap-element" style="display:block; height:auto; padding-top:30px" class="clearfix"></div>
+                            <div class="row row-collapse"  id="row-1147262871">
+                                <div class="col small-12 large-12"  ><div class="col-inner"  >
+                                        <h3>DANH MỤC</h3>
+                                        <div class="slider-wrapper relative " id="slider-1053478107" >
+                                            <div class="slider slider-nav-circle slider-nav-large slider-nav-light slider-style-normal"
+                                                 data-flickity-options='{
+                                                 "cellAlign": "center",
+                                                 "imagesLoaded": true,
+                                                 "lazyLoad": 1,
+                                                 "freeScroll": false,
+                                                 "wrapAround": true,
+                                                 "autoPlay": false,
+                                                 "pauseAutoPlayOnHover" : true,
+                                                 "prevNextButtons": true,
+                                                 "contain" : true,
+                                                 "adaptiveHeight" : true,
+                                                 "dragThreshold" : 5,
+                                                 "percentPosition": true,
+                                                 "pageDots": true,
+                                                 "rightToLeft": false,
+                                                 "draggable": true,
+                                                 "selectedAttraction": 0.1,
+                                                 "parallax" : 0,
+                                                 "friction": 0.6        }'
+                                                 >
+
+                                                <div class="row row-collapse"  id="row-75835749">
+                                                    <div class="col small-12 large-12"  ><div class="col-inner"  >
+
+
+                                                            <div class="row large-columns-8 medium-columns-3 small-columns-2 row-collapse has-shadow row-box-shadow-1">
+                                                                <% for (Genre g : ListGenre) {
+                                                                        String str = "images/Genre/" + g.getImages();
+                                                                %>
+                                                                <div class="product-category col" >
+                                                                    <div class="col-inner">
+                                                                        <a href="HomePageControllerMap?service=ByGenre&gid=<%=g.getGenreID()%>">               
+                                                                            <div class="box box-category has-hover box-normal ">
+                                                                                <div class="box-image" style="width:50%;">
+                                                                                    <div class="" >
+                                                                                        <img src="<%=str%>"  width="300" height="300" />          
+                                                                                    </div>
+                                                                                </div><!-- box-image -->
+                                                                                <div class="box-text text-center" >
+                                                                                    <div class="box-text-inner">
+                                                                                        <h5 class="uppercase header-title">
+                                                                                            <%=g.getGenreName()%>                   </h5>
+
+                                                                                    </div><!-- .box-text-inner -->
+                                                                                </div><!-- .box-text -->
+                                                                            </div><!-- .box -->
+                                                                        </a>            </div><!-- .col-inner -->
+                                                                </div><!-- .col -->
+                                                                <%
+
+                                                                    }
+                                                                %>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+
+
+                                                </div>
+
+                                            </div>
+
+                                        </div><!-- .ux-slider-wrapper -->
+                                    </div>
+                                </div>    
+                            </div>
+                        </div><!-- .section-content -->
+                        <style scope="scope">
+
+                            #section_1885747892 {
+                                padding-top: 0px;
+                                padding-bottom: 0px;
+                                background-color: rgb(241, 241, 241);
+                            }
+                        </style>
+                    </section>
+
+                    <section class="section sec_top_deal" id="section_1299208273">
+                        <div class="section-content relative">
+
+                            <div class="gap-element" style="display:block; height:auto; padding-top:30px" class="clearfix"></div>
+                            <div class="row row-collapse"  id="row-7631193">
+                                <div class="col small-12 large-12"  >
+                                    <div class="col-inner"  >
+                                        <h4>New Arrival</h4>
+                                    </div>
+                                      <div class="col-inner text-right" >
+                                        <p class="orange" ><a href="HomepageControllerMap?service=Sale">Xem Tất Cả &gt;</a></p>
+                                    </div>
+                                </div>
+
+                                
+                                  
+                                
+                            </div>
+                            
+                            <div class="row row-collapse align-equal"  id="row-1706731289">
+                                <div class="col medium-10 small-12 large-10"  ><div class="col-inner"  >
+
+                                        <div class="row large-columns-4 medium-columns- small-columns-2 row-collapse has-shadow row-box-shadow-1 slider row-slider slider-nav-reveal slider-nav-push"  data-flickity-options='{"imagesLoaded": true, "groupCells": "100%", "dragThreshold" : 5, "cellAlign": "left","wrapAround": true,"prevNextButtons": true,"percentPosition": true,"pageDots": false, "rightToLeft": false, "autoPlay" : false}'>
+
+                                            <% for (Product ps : ListNew) {
+                                                    String str = "images/" + gallDAO.getSampleOfProduct(ps.getProductID());
+                                                    double price = Double.parseDouble(ptDAO.getProductPrice(ps.getProductID()));
+
+
+                                            %>
+                                            <div class="col" >
+                                                <div class="col-inner">
+
+                                                    <div class="badge-container absolute left top z-1">
+                                                        <div class="callout badge badge-square"><div class="badge-inner secondary on-sale"><span class="onsale">-50%</span></div></div>
+                                                    </div>
+                                                    <div class="product-small box has-hover box-normal box-text-bottom">
+                                                        <div class="box-image" style="width:150px; height:150px ">
+                                                            <div class=""  >
+                                                                <a href="ProductDetailControllerMap?service=getProductDetail&pid=<%=ps.getProductID()%>">
+                                                                    <img src="<%=str%>"></a>
+                                                            </div>
+                                                            <div class="image-tools z-top top right show-on-hover">
+                                                            </div>
+                                                            <div class="image-tools grid-tools text-center hide-for-small bottom hover-slide-in show-on-hover">
+                                                            </div>
+                                                        </div><!-- box-image -->
+
+                                                        <div class="box-text text-center" style="background-color:rgb(255, 255, 255);">
+                                                            <div class="title-wrapper" >
+                                                                <p class="category uppercase is-smaller no-text-overflow product-cat op-7"></p> 
+                                                                <p class="name product-title"><a href="ProductDetailControllerMap?service=getProductDetail&pid=<%=ps.getProductID()%>"> <%=ps.getProductName()%> <br></a></p>
+                                                            </div> 
+                                                            <div class="price-wrapper" 
+                                                                 <span class="price">
+
+                                                                    <ins><span class="woocommerce-Price-amount amount"><%=nf.format(price)%>&nbsp; <span class="woocommerce-Price-currencySymbol">&#8363;</span></span></ins></span>
                                                             </div>							
                                                         </div><!-- box-text -->
                                                     </div><!-- box -->
@@ -286,100 +416,6 @@
                                             %>
 
 
-
-                                        </div>
-                                    </div></div>
-
-
-                            </div>
-                        </div><!-- .section-content -->
-
-
-                        <style scope="scope">
-
-                            #section_1352472076 {
-                                padding-top: 0px;
-                                padding-bottom: 0px;
-                                background-color: rgb(241, 241, 241);
-                            }
-                        </style>
-                    </section>
-
-
-
-
-
-
-
-                    <section class="section sec_top_deal" id="section_1299208273">
-                        <div class="bg section-bg fill bg-fill  bg-loaded" >
-
-
-
-
-
-                        </div><!-- .section-bg -->
-
-                        <div class="section-content relative">
-
-                            <div class="gap-element" style="display:block; height:auto; padding-top:30px" class="clearfix"></div>
-                            <div class="row row-collapse"  id="row-7631193">
-                                <div class="col small-12 large-12"  ><div class="col-inner"  >
-                                        <h4>New Arrival</h4>
-                                    </div></div>
-
-                            </div>
-                            <div class="row row-collapse align-equal"  id="row-1706731289">
-                                <div class="col medium-10 small-12 large-10"  ><div class="col-inner"  >
-
-
-                                        <div class="row large-columns-4 medium-columns- small-columns-2 row-collapse has-shadow row-box-shadow-1 slider row-slider slider-nav-reveal slider-nav-push"  data-flickity-options='{"imagesLoaded": true, "groupCells": "100%", "dragThreshold" : 5, "cellAlign": "left","wrapAround": true,"prevNextButtons": true,"percentPosition": true,"pageDots": false, "rightToLeft": false, "autoPlay" : 3000}'>
-
-
-
-                                            <% for (Product pn : ListNew) {
-                                                    String str2 = "images/" + gallDAO.getSampleOfProduct(pn.getProductID());
-
-                                            %>
-                                            <div class="col" >
-                                                <div class="col-inner">
-
-                                                    <div class="badge-container absolute left top z-1">
-                                                        <div class="callout badge badge-square"><div class="badge-inner secondary on-sale"><span class="onsale">-50%</span></div></div>
-                                                    </div>
-                                                    <div class="product-small box has-hover box-normal box-text-bottom">
-                                                        <div class="box-image" style="width:150px; height:150px ">
-                                                            <div class="" >
-                                                                <a href="ProductDetailControllerMap?service=getProductDetail&pid=<%=pn.getProductID()%>">
-
-                                                                    <img src="<%=str2%>"></a>
-                                                            </div>
-                                                            <div class="image-tools z-top top right show-on-hover">
-                                                            </div>
-                                                            <div class="image-tools grid-tools text-center hide-for-small bottom hover-slide-in show-on-hover">
-                                                            </div>
-                                                        </div><!-- box-image -->
-
-                                                        <div class="box-text text-center" style="background-color:rgb(255, 255, 255);">
-                                                            <div class="title-wrapper" >		
-                                                                <p class="category uppercase is-smaller no-text-overflow product-cat op-7">   </p> <%--category--%>
-
-                                                                <p class="name product-title"><a href="ProductDetailControllerMap?service=getProductDetail&pid=<%=pn.getProductID()%>""> <%=pn.getProductName()%> </a></p>
-]
-                                                                <p class="name product-title"><a href="ProductDetailControllerMap?service=getProductDetail&pid=<%=pn.getProductID()%>"> <%=pn.getProductName()%> </a></p>
-
-                                                            </div> 
-                                                            <div class="price-wrapper" 
-                                                                 <span class="price"><del><span class="woocommerce-Price-amount amount">290,000&nbsp;<span class="woocommerce-Price-currencySymbol">&#8363;</span></span></del> 
-                                                                    <ins><span class="woocommerce-Price-amount amount">145,000&nbsp;<span class="woocommerce-Price-currencySymbol">&#8363;</span></span></ins></span>
-                                                            </div>							
-                                                        </div><!-- box-text -->
-                                                    </div><!-- box -->
-                                                </div><!-- .col-inner -->
-                                            </div><!-- col -->
-
-                                            <%    }
-                                            %>
 
                                         </div>
                                     </div>
@@ -422,13 +458,6 @@
                     </section>
 
                     <section class="section sec_dien_thoai" id="section_1788051855">
-                        <div class="bg section-bg fill bg-fill  bg-loaded" >
-
-
-
-
-
-                        </div><!-- .section-bg -->
 
                         <div class="section-content relative">
 
@@ -447,8 +476,10 @@
 
                                         <div class="row large-columns-4 medium-columns- small-columns-2 row-collapse has-shadow row-box-shadow-1 slider row-slider slider-nav-reveal slider-nav-push"  data-flickity-options='{"imagesLoaded": true, "groupCells": "100%", "dragThreshold" : 5, "cellAlign": "left","wrapAround": true,"prevNextButtons": true,"percentPosition": true,"pageDots": false, "rightToLeft": false, "autoPlay" : false}'>
 
-                                            <% for (Product pa : ListApple) {
-                                                    String str3 = "images/" + gallDAO.getSampleOfProduct(pa.getProductID());
+                                            <% for (Product ps : ListApple) {
+                                                    String str = "images/" + gallDAO.getSampleOfProduct(ps.getProductID());
+                                                    double price = Double.parseDouble(ptDAO.getProductPrice(ps.getProductID()));
+
 
                                             %>
                                             <div class="col" >
@@ -459,10 +490,14 @@
                                                     </div>
                                                     <div class="product-small box has-hover box-normal box-text-bottom">
                                                         <div class="box-image" style="width:150px; height:150px ">
-                                                            <div class="" >
-                                                                <a href="ProductDetailControllerMap?service=getProductDetail&pid=<%=pa.getProductID()%>">
 
-                                                                    <img src="<%=str3%>"></a>
+
+
+                                                            <div class=""  >
+                                                                <a href="ProductDetailControllerMap?service=getProductDetail&pid=<%=ps.getProductID()%>">
+
+
+                                                                    <img src="<%=str%>"></a>
                                                             </div>
                                                             <div class="image-tools z-top top right show-on-hover">
                                                             </div>
@@ -471,20 +506,22 @@
                                                         </div><!-- box-image -->
 
                                                         <div class="box-text text-center" style="background-color:rgb(255, 255, 255);">
-                                                            <div class="title-wrapper" >		
-                                                                <p class="category uppercase is-smaller no-text-overflow product-cat op-7">   </p> <%--category--%>
-                                                                <p class="name product-title"><a href="ProductDetailControllerMap?service=getProductDetail&pid=<%=pa.getProductID()%>"> <%=pa.getProductName()%> </a></p>
+                                                            <div class="title-wrapper" >
+                                                                <p class="category uppercase is-smaller no-text-overflow product-cat op-7"></p> 
+                                                                <p class="name product-title"><a href="ProductDetailControllerMap?service=getProductDetail&pid=<%=ps.getProductID()%>"> <%=ps.getProductName()%> <br></a></p>
                                                             </div> 
                                                             <div class="price-wrapper" 
-                                                                 <span class="price"><del><span class="woocommerce-Price-amount amount">290,000&nbsp;<span class="woocommerce-Price-currencySymbol">&#8363;</span></span></del> 
-                                                                    <ins><span class="woocommerce-Price-amount amount">145,000&nbsp;<span class="woocommerce-Price-currencySymbol">&#8363;</span></span></ins></span>
+                                                                 <span class="price">
+
+                                                                    <ins><span class="woocommerce-Price-amount amount"><%=nf.format(price)%>&nbsp; <span class="woocommerce-Price-currencySymbol">&#8363;</span></span></ins></span>
                                                             </div>							
                                                         </div><!-- box-text -->
                                                     </div><!-- box -->
                                                 </div><!-- .col-inner -->
                                             </div><!-- col -->
+                                            <%
 
-                                            <%    }
+                                                }
                                             %>
 
 
@@ -512,191 +549,101 @@
                         </style>
                     </section>
 
-                    <section class="section sec_dien_thoai" id="section_1788051855">
-                        <div class="bg section-bg fill bg-fill  bg-loaded" >
 
 
 
-
-
-                        </div><!-- .section-bg -->
-
+                    <section class="section sec_dien_thoai" id="section_1788051855">                 
                         <div class="section-content relative">
 
                             <div class="gap-element" style="display:block; height:auto; padding-top:30px" class="clearfix"></div>
                             <div class="row row-collapse"  style="height: 30px">
                                 <div class="col small-12 large-12" ><div class="col-inner"   >
                                         <h4><img src="images/Apple1.jpg"  style="height: 40px"></h4>
-                                    </div></div>
-
-
-                            </div>
-                            <br><br>
-                            <div class="row row-collapse align-equal"  id="row-803623343">
-
-                                <div class="col medium-12 small-12 large-12"  ><div class="col-inner"  >
-
-                                        <div class="row large-columns-4 medium-columns- small-columns-2 row-collapse has-shadow row-box-shadow-1 slider row-slider slider-nav-reveal slider-nav-push"  data-flickity-options='{"imagesLoaded": true, "groupCells": "100%", "dragThreshold" : 5, "cellAlign": "left","wrapAround": true,"prevNextButtons": true,"percentPosition": true,"pageDots": false, "rightToLeft": false, "autoPlay" : false}'>
-
-                                            <% for (Product pa : ListApple) {
-                                                    String str3 = "images/" + gallDAO.getSampleOfProduct(pa.getProductID());
-
-                                            %>
-                                            <div class="col" >
-                                                <div class="col-inner">
-
-                                                    <div class="badge-container absolute left top z-1">
-                                                        <div class="callout badge badge-square"><div class="badge-inner secondary on-sale"><span class="onsale">-50%</span></div></div>
-                                                    </div>
-                                                    <div class="product-small box has-hover box-normal box-text-bottom">
-                                                        <div class="box-image" style="width:150px; height:150px ">
-                                                            <div class="" >
-                                                                <a href="ProductDetailControllerMap?service=getProductDetail&pid=<%=pa.getProductID()%>">
-
-                                                                    <img src="<%=str3%>"></a>
-                                                            </div>
-                                                            <div class="image-tools z-top top right show-on-hover">
-                                                            </div>
-                                                            <div class="image-tools grid-tools text-center hide-for-small bottom hover-slide-in show-on-hover">
-                                                            </div>
-                                                        </div><!-- box-image -->
-
-                                                        <div class="box-text text-center" style="background-color:rgb(255, 255, 255);">
-                                                            <div class="title-wrapper" >		
-                                                                <p class="category uppercase is-smaller no-text-overflow product-cat op-7">   </p> <%--category--%>
-                                                                <p class="name product-title"><a href="ProductDetailControllerMap?service=getProductDetail&pid=<%=pa.getProductID()%>"> <%=pa.getProductName()%> </a></p>
-                                                            </div> 
-                                                            <div class="price-wrapper" 
-                                                                 <span class="price"><del><span class="woocommerce-Price-amount amount">290,000&nbsp;<span class="woocommerce-Price-currencySymbol">&#8363;</span></span></del> 
-                                                                    <ins><span class="woocommerce-Price-amount amount">145,000&nbsp;<span class="woocommerce-Price-currencySymbol">&#8363;</span></span></ins></span>
-                                                            </div>							
-                                                        </div><!-- box-text -->
-                                                    </div><!-- box -->
-                                                </div><!-- .col-inner -->
-                                            </div><!-- col -->
-
-                                            <%    }
-                                            %>
-
-
-
-                                        </div>
-                                    </div></div>
-
-                                <style scope="scope">
-
-                                    #row-803623343 > .col > .col-inner {
-                                        background-color: rgb(255, 255, 255);
-                                    }
-                                </style>
-                            </div>
-                        </div><!-- .section-content -->
-
-
-                        <style scope="scope">
-
-                            #section_1788051855 {
-                                padding-top: 0px;
-                                padding-bottom: 0px;
-                                background-color: rgb(241, 241, 241);
-                            }
-                        </style>
-                    </section>
-                    <section class="section sec_top_sale" id="section_56152490">
-                        <div class="bg section-bg fill bg-fill  bg-loaded" >
-
-
-
-
-
-                        </div><!-- .section-bg -->
-
-                        <div class="section-content relative">
-
-                            <div class="gap-element" style="display:block; height:auto; padding-top:30px" class="clearfix"></div>
-                            <div class="row row-collapse"  id="row-649522308">
-                                <div class="col small-12 large-12"  ><div class="col-inner"  >
-                                        <h4>Top Sellers</h4>
-                                    </div></div>
-
-                                <style scope="scope">
-
-                                </style>
-                            </div>
-                            <div class="row row-collapse align-equal"  id="row-1448676555">
-                                <div class="col small-12 large-12"  ><div class="col-inner"  >
-
-
-                                        <div class="row large-columns-5 medium-columns-3 small-columns-2 row-collapse has-shadow row-box-shadow-1 slider row-slider slider-nav-reveal slider-nav-push"  data-flickity-options='{"imagesLoaded": true, "groupCells": "100%", "dragThreshold" : 5, "cellAlign": "left","wrapAround": true,"prevNextButtons": true,"percentPosition": true,"pageDots": false, "rightToLeft": false, "autoPlay" : false}'>
-                                            <div class="shop-container">
-
-                                                <div class="woof_products_top_panel"></div>
-
-                                                <div class="products row row-small large-columns-4 medium-columns-3 small-columns-2 has-shadow row-box-shadow-1">
-
-
-
-                                                    <div class="product-small col has-hover post-1178 product type-product status-publish has-post-thumbnail product_cat-bach-hoa-online product_cat-do-hop-dong-goi first instock shipping-taxable purchasable product-type-simple">
-                                                        <div class="col-inner">
-
-                                                            <div class="badge-container absolute left top z-1">
-                                                            </div>
-                                                            <div class="product-small box ">
-                                                                <div class="box-image">
-                                                                    <div class="image-fade_in_back">
-                                                                        <a href="http://mauweb.monamedia.net/lazada/san-pham/bo-2-nuoc-giat-omo-mactic-cua-truoc-2-7kg/">
-                                                                            <img width="300" height="300" src="//mauweb.monamedia.net/lazada/wp-content/uploads/2017/11/omo-matic-01-300x300.png" class="attachment-shop_catalog size-shop_catalog wp-post-image" alt="" srcset="//mauweb.monamedia.net/lazada/wp-content/uploads/2017/11/omo-matic-01-300x300.png 300w, //mauweb.monamedia.net/lazada/wp-content/uploads/2017/11/omo-matic-01-150x150.png 150w, //mauweb.monamedia.net/lazada/wp-content/uploads/2017/11/omo-matic-01-768x768.png 768w, //mauweb.monamedia.net/lazada/wp-content/uploads/2017/11/omo-matic-01-180x180.png 180w, //mauweb.monamedia.net/lazada/wp-content/uploads/2017/11/omo-matic-01-600x600.png 600w, //mauweb.monamedia.net/lazada/wp-content/uploads/2017/11/omo-matic-01-24x24.png 24w, //mauweb.monamedia.net/lazada/wp-content/uploads/2017/11/omo-matic-01-36x36.png 36w, //mauweb.monamedia.net/lazada/wp-content/uploads/2017/11/omo-matic-01-48x48.png 48w, //mauweb.monamedia.net/lazada/wp-content/uploads/2017/11/omo-matic-01.png 1024w" sizes="(max-width: 300px) 100vw, 300px" /><img width="300" height="300" src="http://mauweb.monamedia.net/lazada/wp-content/uploads/2017/11/omo-matic-01-300x300.png" class="show-on-hover absolute fill hide-for-small back-image" alt="" srcset="http://mauweb.monamedia.net/lazada/wp-content/uploads/2017/11/omo-matic-01-300x300.png 300w, http://mauweb.monamedia.net/lazada/wp-content/uploads/2017/11/omo-matic-01-150x150.png 150w, http://mauweb.monamedia.net/lazada/wp-content/uploads/2017/11/omo-matic-01-768x768.png 768w, http://mauweb.monamedia.net/lazada/wp-content/uploads/2017/11/omo-matic-01-180x180.png 180w, http://mauweb.monamedia.net/lazada/wp-content/uploads/2017/11/omo-matic-01-600x600.png 600w, http://mauweb.monamedia.net/lazada/wp-content/uploads/2017/11/omo-matic-01-24x24.png 24w, http://mauweb.monamedia.net/lazada/wp-content/uploads/2017/11/omo-matic-01-36x36.png 36w, http://mauweb.monamedia.net/lazada/wp-content/uploads/2017/11/omo-matic-01-48x48.png 48w, http://mauweb.monamedia.net/lazada/wp-content/uploads/2017/11/omo-matic-01.png 1024w" sizes="(max-width: 300px) 100vw, 300px" />				</a>
-                                                                    </div>
-                                                                    <div class="image-tools is-small top right show-on-hover">
-                                                                    </div>
-                                                                    <div class="image-tools is-small hide-for-small bottom left show-on-hover">
-                                                                    </div>
-                                                                    <div class="image-tools grid-tools text-center hide-for-small bottom hover-slide-in show-on-hover">
-                                                                    </div>
-                                                                </div><!-- box-image -->
-
-                                                                <div class="box-text box-text-products text-center grid-style-2">
-                                                                    <div class="title-wrapper">		<p class="category uppercase is-smaller no-text-overflow product-cat op-7">
-                                                                            Bách hóa online		</p> <p class="name product-title"><a href="http://mauweb.monamedia.net/lazada/san-pham/bo-2-nuoc-giat-omo-mactic-cua-truoc-2-7kg/">Bộ 2 nước giặt OMO Mactic cửa trước 2.7kg</a></p></div><div class="price-wrapper">
-                                                                        <span class="price"><span class="woocommerce-Price-amount amount">314,000&nbsp;<span class="woocommerce-Price-currencySymbol">&#8363;</span></span></span>
-                                                                    </div>		</div><!-- box-text -->
-                                                            </div><!-- box -->
-                                                        </div><!-- .col-inner -->
-                                                    </div><!-- col -->
-
-                                                </div><!-- row -->
-
-
-
-
-
-
-                                            </div>
-                                        </div></div>
-
-                                    <style scope="scope">
-
-                                        #row-1448676555 > .col > .col-inner {
-                                            background-color: rgb(255, 255, 255);
-                                        }
-                                    </style>
+                                    </div>
                                 </div>
-                                <div class="gap-element" style="display:block; height:auto; padding-top:60px" class="clearfix"></div>
-                            </div><!-- .section-content -->
+                            </div>
+                            <br><br>
+                            <div class="row row-collapse align-equal"  id="row-803623343">
+
+                                <div class="col medium-12 small-12 large-12"  ><div class="col-inner"  >
+
+                                        <div class="row large-columns-4 medium-columns- small-columns-2 row-collapse has-shadow row-box-shadow-1 "  >
+
+                                            <% for (Product ps : ListSuggest) {
+                                                    String str = "images/" + gallDAO.getSampleOfProduct(ps.getProductID());
+                                                    double price = Double.parseDouble(ptDAO.getProductPrice(ps.getProductID()));
 
 
-                            <style scope="scope">
+                                            %>
+                                            <div class="col" >
+                                                <div class="col-inner">
 
-                                #section_56152490 {
-                                    padding-top: 0px;
-                                    padding-bottom: 0px;
-                                    background-color: rgb(241, 241, 241);
-                                }
-                            </style>
+                                                    <div class="badge-container absolute left top z-1">
+                                                        <div class="callout badge badge-square"><div class="badge-inner secondary on-sale"><span class="onsale">-50%</span></div></div>
+                                                    </div>
+                                                    <div class="product-small box has-hover box-normal box-text-bottom">
+                                                        <div class="box-image" style="width:150px; height:150px ">
+
+
+
+                                                            <div class=""  >
+                                                                <a href="ProductDetailControllerMap?service=getProductDetail&pid=<%=ps.getProductID()%>">
+
+
+                                                                    <img src="<%=str%>"></a>
+                                                            </div>
+                                                            <div class="image-tools z-top top right show-on-hover">
+                                                            </div>
+                                                            <div class="image-tools grid-tools text-center hide-for-small bottom hover-slide-in show-on-hover">
+                                                            </div>
+                                                        </div><!-- box-image -->
+
+                                                        <div class="box-text text-center" style="background-color:rgb(255, 255, 255);">
+                                                            <div class="title-wrapper" >
+                                                                <p class="category uppercase is-smaller no-text-overflow product-cat op-7"></p> 
+                                                                <p class="name product-title"><a href="ProductDetailControllerMap?service=getProductDetail&pid=<%=ps.getProductID()%>"> <%=ps.getProductName()%> <br></a></p>
+                                                            </div> 
+                                                            <div class="price-wrapper" 
+                                                                 <span class="price">
+
+                                                                    <ins><span class="woocommerce-Price-amount amount"><%=nf.format(price)%>&nbsp; <span class="woocommerce-Price-currencySymbol">&#8363;</span></span></ins></span>
+                                                            </div>							
+                                                        </div><!-- box-text -->
+                                                    </div><!-- box -->
+                                                </div><!-- .col-inner -->
+                                            </div><!-- col -->
+                                            <%
+
+                                                }
+                                            %>
+
+                                            <button class="button" onclick="window.location.href = 'HomePageControllerMap?service=list'" style=" border-radius: 5px;margin: auto; ">View More</button>
+
+                                        </div>
+                                    </div></div>
+
+                                <style scope="scope">
+
+                                    #row-803623343 > .col > .col-inner {
+                                        background-color: rgb(255, 255, 255);
+                                    }
+                                </style>
+                            </div>
+                        </div><!-- .section-content -->
+
+
+                        <style scope="scope">
+
+                            #section_1788051855 {
+                                padding-top: 0px;
+                                padding-bottom: 0px;
+                                background-color: rgb(241, 241, 241);
+                            }
+                        </style>
+
+
+
                     </section>
-
-
-
 
                 </div>
 
@@ -704,7 +651,7 @@
 
             </main>
         </div>
-
+        <br><br><br><br>
 
 
     </body>
