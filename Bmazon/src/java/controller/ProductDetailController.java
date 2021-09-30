@@ -67,6 +67,10 @@ public class ProductDetailController extends HttpServlet {
             if(service.equalsIgnoreCase("getProductDetail")){
                 serviceProductDetail(request, response);               
             }
+            
+            if(service.equalsIgnoreCase("getRelatedProduct")){
+                serviceRelatedProduct(request, response);               
+            }
         }
     }
     
@@ -87,6 +91,18 @@ public class ProductDetailController extends HttpServlet {
         sendDispatcher(request, response, "product/productDetail.jsp");
     }
 
+    public void serviceRelatedProduct(HttpServletRequest request, HttpServletResponse response){
+        int id = Integer.parseInt(request.getParameter("pid"));
+        Product product = daoProduct.getProductByID(id);
+        request.setAttribute("product", product);
+        List<Gallery> listGallery = daoGallery.getAllGalleryOfProduct(id);
+        request.setAttribute("listGallery", listGallery);
+        List<ProductType> listProductType = daoProductType.getProductByProductID(id);
+        request.setAttribute("listProductType", listProductType);
+        ArrayList<Product> listRelated = daoProduct.getRelatedProductByProductID(id);
+        request.setAttribute("listRelated", listRelated);
+        sendDispatcher(request, response, "product/relatedProduct.jsp");
+    }
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
     /**
      * Handles the HTTP <code>GET</code> method.
