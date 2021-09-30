@@ -1,2 +1,9 @@
 /Bmazon/nbproject/private
+/Bmazon/dist/Bmazon/build/web/WEB-INF
+Bmazon/build/generated
+Bmazon/build/web/admin
+Bmazon/build/web/seller
+Bmazon/build/web/user
+Bmazon/build/web/loginAndSecurity
+Bmazon/build/web/product
 /Bmazon/dist/
