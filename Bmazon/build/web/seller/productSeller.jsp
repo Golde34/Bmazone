@@ -146,8 +146,6 @@
 
                     <!-- Main row -->
                     <!-- Product management -->
-                    <div class="row" id="Product" name="tabcontent">
-
                         <div class="col-md-8" style="height: 400px;overflow-y: scroll;">
                             <section class="panel">
                                 <header class="panel-heading">

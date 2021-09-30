@@ -54,7 +54,6 @@
 
     <body class="skin-black">
             <jsp:include page="headerSeller.jsp"/>
-        <!-- header logo: style can be found in header.less -->
         <div class="wrapper row-offcanvas row-offcanvas-left">
             <!-- Left side column. contains the logo and sidebar -->
             <aside class="left-side sidebar-offcanvas">
@@ -85,7 +84,6 @@
                     <ul class="sidebar-menu">
                         <li class="checked"><!-- class="tablinks" -->
                             <!--<a href="" onclick="openObject(event, 'Dashboard')">-->
-                                
                             <a href="SellerControllerMap">
                                 <i class="fa fa-dashboard"></i> <span>Dashboard</span>
                             </a>

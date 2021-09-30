@@ -115,17 +115,6 @@
             </nav>
         </header>
     </body>
-        <script src="http://ajax.googleapis.com/ajax/libs/jquery/2.0.2/jquery.min.js"></script>
-        <script src="../js/seller/jquery.min.js" type="text/javascript"></script>
-        <script src="../js/seller/jquery-ui-1.10.3.min.js" type="text/javascript"></script>
-        <script src="../js/seller/bootstrap.min.js" type="text/javascript"></script>
-        <script src="../js/seller/plugins/daterangepicker/daterangepicker.js" type="text/javascript"></script>
-        <script src="../js/seller/plugins/chart.js" type="text/javascript"></script>
-        <script src="../js/seller/plugins/iCheck/icheck.min.js" type="text/javascript"></script>
-        <script src="../js/seller/plugins/fullcalendar/fullcalendar.js" type="text/javascript"></script>
-        <script src="../js/seller/Director/app.js" type="text/javascript"></script>
-        <script src="../js/seller/Director/dashboard.js" type="text/javascript"></script>
-        </header>
     </body>
         <script src="http://ajax.googleapis.com/ajax/libs/jquery/2.0.2/jquery.min.js"></script>
         <script src="${contextPath}/js/seller/jquery.min.js" type="text/javascript"></script>

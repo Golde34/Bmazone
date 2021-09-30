@@ -92,7 +92,6 @@ public class SellerController extends HttpServlet {
         List<Product> listProduct = daoproduct.getProductBySeller(seller);
         request.setAttribute("listP", listProduct);
         sendDispatcher(request, response, "seller/productSeller.jsp");
-        
     }
     public void serviceOrderManagement(HttpServletRequest request, HttpServletResponse response) {
         sendDispatcher(request, response, "seller/orderSeller.jsp");
