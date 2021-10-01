@@ -68,7 +68,12 @@ public class AdminController extends HttpServlet {
             if (service.equalsIgnoreCase("updateuserdetail") || service.equalsIgnoreCase("adduserdetail")) {
                 serviceUserDetail(service, request, response);
             }
-
+            
+            //Search User
+            if(service.equalsIgnoreCase("searchuser")){
+                serviceSearchUser(request,response);
+            }
+            
             //Add user
             if (service.equalsIgnoreCase("adduser")) {
                 serviceAddUser(request, response);
@@ -123,6 +128,11 @@ public class AdminController extends HttpServlet {
             if (service.equalsIgnoreCase("updatecompanydetail") || service.equalsIgnoreCase("addcompanydetail")) {
                 serviceCompanyDetail(service, request, response);
             }
+            
+            //Search Ship Company
+            if(service.equalsIgnoreCase("searchcompany")){
+                serviceSearchCompany(request,response);
+            }
 
             //Add Ship Company
             if (service.equalsIgnoreCase("addcompany")) {
@@ -147,6 +157,11 @@ public class AdminController extends HttpServlet {
             //Gallery detail to add and update
             if (service.equalsIgnoreCase("updategallerydetail") || service.equalsIgnoreCase("addgallerydetail")) {
                 serviceGalleryDetail(service, request, response);
+            }
+            
+            //Search Gallery
+            if(service.equalsIgnoreCase("searchgallery")){
+                serviceSearchGallery(request,response);
             }
 
             //Add Gallery
@@ -191,6 +206,25 @@ public class AdminController extends HttpServlet {
         request.setAttribute("user", user);
         sendDispatcher(request, response, "admin/userdetail.jsp");
     }
+    
+    public void serviceSearchUser(HttpServletRequest request, HttpServletResponse response) throws IOException{
+        PrintWriter pr = response.getWriter();
+        String search = request.getParameter("search");
+        ArrayList<User> listUser= daouser.searchUser(search);
+        for (User user : listUser) {
+            pr.print("<tr>"+
+                    "<td>"+user.getUsername()+" </td>"+
+                    "<td>"+user.getPassword()+ "</td>"+
+                    "<td>"+user.getEmail() +"</td>"+
+                    "<td>"+user.getFullname() +"</td>"+
+                    "<td>"+user.getPhoneNumber() +"</td>"+
+                    "<td>"+user.getAddress() +"</td>"+
+                    "<td><div><a href=\"AdminControllerMap?service=updateuserdetail&userid="+user.getUserId() +"\"><span class=\"fas fa-edit\"></span></a>"+
+                    "</div></td>"+
+                    "<td><div><a href=\"AdminControllerMap?service=deleteuser&userid="+user.getUserId() +"\" onclick=\"return confirm('Are you sure you want to Remove?');\"><span class=\"fas fa-trash-alt\"></span></a></div></td>"+"</tr>"
+                    );
+        }
+    }
 
     public void serviceAddUser(HttpServletRequest request, HttpServletResponse response) {
         String username = request.getParameter("username");
@@ -218,7 +252,10 @@ public class AdminController extends HttpServlet {
             daouser.addUser(user);
             ArrayList<User> listUser = daouser.getAllUser();
             request.setAttribute("listUser", listUser);
-            sendDispatcher(request, response, "admin/usermanagement.jsp");
+            String mess="Add successfully";
+            request.setAttribute("mess", mess);
+            request.setAttribute("service", "adduserdetail");
+            sendDispatcher(request, response, "admin/userdetail.jsp");
         }
     }
 
@@ -258,6 +295,8 @@ public class AdminController extends HttpServlet {
             request.setAttribute("listUser", listUser);
             request.setAttribute("user", user);
             request.setAttribute("service", "updateuserdetail");
+            String mess="Update successfully";
+            request.setAttribute("mess", mess);
             sendDispatcher(request, response, "admin/userdetail.jsp");
         }
     }
@@ -360,6 +399,22 @@ public class AdminController extends HttpServlet {
         request.setAttribute("company", company);
         sendDispatcher(request, response, "admin/companydetail.jsp");
     }
+    
+    public void serviceSearchCompany(HttpServletRequest request, HttpServletResponse response) throws IOException{
+        PrintWriter pr = response.getWriter();
+        String search = request.getParameter("search");
+        List<ShipCompany> listCompany = daocompany.searchShipCompany(search);
+        for (ShipCompany company : listCompany) {
+            pr.print("<tr>"+
+                    "<td><div>"+company.getCompanyName()+" </div></td>"+
+                    "<td><div>"+company.getCommitDate()+ "</div></td>"+
+                    "<td><div>"+company.getUnitCost() +"</div></td>"+
+                    "<td><div><a href=\"AdminControllerMap?service=updatecompanydetail&companyid="+company.getCompanyID() +"\"><span class=\"fas fa-edit\"></span></a>"+
+                    "</div></td>"+
+                    "<td><div><a href=\"AdminControllerMap?service=deletecompany&companyid="+company.getCompanyID() +"\" onclick=\"return confirm('Are you sure you want to Remove?');\"><span class=\"fas fa-trash-alt\"></span></a></div></td>"+"</tr>"
+                    );
+        }
+    }
 
     public void serviceDeleteCompany(HttpServletRequest request, HttpServletResponse response) {
         String id = request.getParameter("companyid");
@@ -374,11 +429,9 @@ public class AdminController extends HttpServlet {
         String unitcost = request.getParameter("unitcost");
         String commitdate = request.getParameter("commitdate");
         boolean isExist = false;
-//        if (daouser.checkExistMail(email) == true
-//                || daouser.checkExistPhone(phone) == true
-//                || daouser.checkExistUserName(username) == true) {
-//            isExist = true;
-//        }
+        if (daocompany.checkExistCompanyName(companyname)) {
+            isExist = true;
+        }
         if (isExist == true) {
             String mess = "Add fail because duplicate information";
             request.setAttribute("mess", mess);
@@ -393,6 +446,8 @@ public class AdminController extends HttpServlet {
             company.setStatus(1);
             daocompany.addShipCompany(company);
             List<ShipCompany> listCompany = daocompany.getAllShipCompany();
+            String mess="Add successfully";
+            request.setAttribute("mess", mess);
             request.setAttribute("listCompany", listCompany);
             sendDispatcher(request, response, "admin/companymanagement.jsp");
         }
@@ -423,6 +478,8 @@ public class AdminController extends HttpServlet {
             List<ShipCompany> listCompany = daocompany.getAllShipCompany();
             request.setAttribute("listCompany", listCompany);
             request.setAttribute("company", company);
+            String mess="Update successfully";
+            request.setAttribute("mess", mess);
             request.setAttribute("service", "updatecompanydetail");
             sendDispatcher(request, response, "admin/companydetail.jsp");
         }
@@ -448,6 +505,25 @@ public class AdminController extends HttpServlet {
         request.setAttribute("producttype", producttype);
         request.setAttribute("gallery", gallery);
         sendDispatcher(request, response, "admin/gallerydetail.jsp");
+    }
+    
+    public void serviceSearchGallery(HttpServletRequest request, HttpServletResponse response) throws IOException{
+        PrintWriter pr = response.getWriter();
+        String search = request.getParameter("search");
+        ArrayList<User> listUser= daouser.searchUser(search);
+        for (User user : listUser) {
+            pr.print("<tr>"+
+                    "<td>"+user.getUsername()+" </td>"+
+                    "<td>"+user.getPassword()+ "</td>"+
+                    "<td>"+user.getEmail() +"</td>"+
+                    "<td>"+user.getFullname() +"</td>"+
+                    "<td>"+user.getPhoneNumber() +"</td>"+
+                    "<td>"+user.getAddress() +"</td>"+
+                    "<td><div><a href=\"AdminControllerMap?service=updateuserdetail&userid="+user.getUserId() +"\"><span class=\"fas fa-edit\"></span></a>"+
+                    "</div></td>"+
+                    "<td><div><a href=\"AdminControllerMap?service=deleteuser&userid="+user.getUserId() +"\" onclick=\"return confirm('Are you sure you want to Remove?');\"><span class=\"fas fa-trash-alt\"></span></a></div></td>"+"</tr>"
+                    );
+        }
     }
 
     public void serviceAddGallery(HttpServletRequest request, HttpServletResponse response) {

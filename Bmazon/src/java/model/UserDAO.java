@@ -24,8 +24,9 @@ public class UserDAO extends BaseDAO {
 
     public static void main(String[] args) {
         UserDAO dao = new UserDAO();
-        User user = dao.getUserByProductId(2);
-        System.out.println(user.getFullname());
+        User x = new User();
+        x.setUsername("A");
+        dao.addUser(x);
     }
     
 
@@ -129,12 +130,37 @@ public class UserDAO extends BaseDAO {
             pre.setInt(20, obj.getActivityPoint());
             pre.setInt(21, obj.getSystemRole());
             pre.setInt(22, obj.getStatus());
-            pre.setString(23, obj.getUserId());
             n = pre.executeUpdate();
         } catch (SQLException ex) {
             Logger.getLogger(UserDAO.class.getName()).log(Level.SEVERE, null, ex);
         }
         return n;
+    }
+    
+    
+    public ArrayList<User> searchUser(String text){
+        ArrayList<User> list = new ArrayList<>();
+        xSql="SELECT * FROM [Bmazon].[dbo].[User] where userID like '%"+text+"%' or username like '%"+text+"%' or email like '%"+text+"%' or fullname like '%"+text+"%' or address like '%"+text+"%'";
+        ResultSet rs = dbConn.getData(xSql);
+        try {
+            while (rs.next()) {
+                User user = new User(rs.getString("userID"), rs.getString("username"),
+                        rs.getString("password"), rs.getString("email"),
+                        rs.getString("phoneNumber"), rs.getInt("sell"),
+                        rs.getDouble("wallet"), rs.getString("fullname"),
+                        rs.getString("publicName"), rs.getString("address"), rs.getString("profileImage"),
+                        rs.getString("backgroundImage"), rs.getString("occupation"),
+                        rs.getInt("gender"), rs.getDate("DOB"), rs.getString("bio"),
+                        rs.getString("Facebook"), rs.getString("Instagram"),
+                        rs.getString("Twitter"), rs.getString("Youtube"),
+                        rs.getInt("activityPoint"), rs.getInt("systemRole"),
+                        rs.getInt("status"));
+                list.add(user);
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(UserDAO.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return list;
     }
 
     public int updateInfoUserByAdmin(User obj) {
