@@ -123,7 +123,7 @@
                                         </div>    
                                         <div class="col small-4 large-4"  >
                                             <div class="col-inner"  >
-                                                <img src="images/im1.jpg" >
+                                                <img src="images/imiphone.jpg" >
                                                 <img src="images/im2.jpg" >
 
                                             </div>

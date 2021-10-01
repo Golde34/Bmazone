@@ -1,0 +1,336 @@
+body, p {
+    line-height: 160%!important;
+    font-size: 14px;
+}
+
+/*chỉnh kích thước container*/
+.container{
+    padding-left: 0px;
+    padding-right: 0px;
+    max-width: 1200px;
+}
+
+.row.row-collapse {
+    max-width: 1200px;
+}
+.row.row-large {
+    max-width: 1200px;
+}
+.full-width .ubermenu-nav, .container, .row {
+    max-width: 1200px;
+}
+
+/*----------header-----------*/
+/*style cho menu top bar trái*/
+.topbarlink > a{
+    color: #a8b2b7;
+    font-size: 12px;
+    text-transform: uppercase;
+    margin-right: 25px;
+}
+.topbarlink > a:hover{
+    color: #fff;
+}
+
+/*style tài khoản ở topbar*/
+#top-bar .header-account-title
+{
+    color: #a8b2b7;
+    font-size: 12px;
+    text-transform: uppercase;
+    margin-right: 25px;
+}
+#top-bar .header-account-title:hover
+{
+    color: #fff;
+}
+
+/*style language*/
+#top-bar .nav-small .nav>li>a, 
+#top-bar .nav.nav-small>li>a {
+    vertical-align: top;
+    padding-top: 5px;
+    padding-bottom: 5px;
+    font-weight: normal;
+    text-transform: uppercase;
+}
+
+/*border khung search*/
+li.html .row, li.html form, li.html select, li.html input {
+    height: 38px;
+    background-color: #fff;
+}
+.searchform .button.icon {
+    margin: 0px;
+    height: 38px;
+    width: 38px;
+
+}
+.searchform .button.icon i {
+    font-size: 1.3em;
+    color: #fff;
+}
+.searchform{
+    background-color: #fff;
+}
+
+/*style background hồng xiên cho header*/
+.header-main {
+    background-image: linear-gradient(135deg, transparent, transparent calc(50% + 250px), #c60a4e calc(50% + 250px), #d30b4d 90% ) !important;
+    border-bottom: 1px solid #11252F;
+}
+
+/*style header_bottom menu (thay .header:not(.transparent) bằng .header-bottom)*/
+.header-bottom .header-nav.nav > li > a{
+    padding-left: 10px;
+    padding-right: 10px;
+}
+.header-bottom .header-nav.nav > li > a:hover {
+    color: #000 !important;
+    background-color: #fff;
+    padding-left: 10px;
+    padding-right: 10px;
+}
+.header-bottom .header-nav.nav > li:last-child > a {
+    color: #ff531d;
+}
+.header-bottom .header-nav.nav > li:last-child > a:hover {
+    color: #000;
+}
+/*----------end header-----------*/
+
+
+/*----------content-----------*/
+/*remove button add to cart*/
+.add-to-cart-button {
+    display: none;
+}
+
+/*chỉnh khoảng cách dòng của giá*/
+.price {
+    line-height: 160%;
+}
+
+/*căn đều chiều cao các sản phẩm đều nhau trong row*/
+.has-shadow>.col>.col-inner {
+    background-color: #FFF;
+    height: 100%;
+}
+/*chỉnh độ cao sản phẩm trong slide*/
+.sec_flash_sale .box-text.text-center,
+.sec_top_deal .box-text.text-center,
+.sec_dien_thoai .box-text.text-center,
+.sec_oto_xemay .box-text.text-center,
+.sec_nhacua_noithat .box-text.text-center,
+.sec_bachhoa .box-text.text-center,
+.sec_top_sale .box-text.text-center{
+    padding-left: 10px;
+    padding-right: 10px;
+    height: 100px;
+}
+
+/*chỉnh nhãn Giảm giá*/
+.badge-inner {
+    line-height: 1.2;
+    font-size: 12px;
+}
+
+/*----style tab banner------*/
+.sec_tab_banner .nav-tabs+.tab-panels {
+    border: 0px solid #ddd;
+    background-color: #fff;
+    padding: 0px;
+    margin-top: 5px;
+}
+.sec_tab_banner .nav-tabs>li>a {
+    border-top: 2px solid #ddd;
+    border-left: 1px solid #ddd;
+    border-right: 1px solid #ddd;
+    background-color: #cdd6da;
+    padding-left: 15px;
+    padding-right: 15px;
+    width: 195px;
+    margin-right: 4px;
+}
+.sec_tab_banner .nav-tabs>li:first-child>a {
+    background: #f36f36;
+    color: #fff;
+}
+.sec_tab_banner .nav-tabs>li>a:hover {
+    background: #596d78;
+    color: #fff;
+}
+.sec_tab_banner .nav-tabs>li:last-child>a {
+    border-top: 2px solid #ddd;
+    border-left: 1px solid #ddd;
+    border-right: 1px solid #ddd;
+    background-color: rgba(0,0,0,0.04);
+    padding-left: 15px;
+    padding-right: 15px;
+    width: 395px;
+    margin-right: 0px;
+    margin-left: 198px;
+    position: right;
+    color: #fff;
+    background-image: linear-gradient(263deg,#f5ac24,#f57224);
+}
+/*-------end style tab banner------*/
+
+/*-------style tab bán hàng------*/
+.sec_tab_ban_hang .container .section, .row .sec_tab_ban_hang{
+    padding-left: 0px;
+    padding-right: 0px;
+}
+.sec_tab_ban_hang .nav-tabs+.tab-panels {
+    border: 0px solid #ddd;
+    background-color: #fff;
+    padding: 30px;
+    margin-top: 0px;
+}
+.sec_tab_ban_hang .nav-tabs > li > a {
+    width: 298px;
+    font-size: 16px;
+    line-height: 20px;
+    font-weight: 400;
+    color: #383838;
+    background: #dadada;
+    text-align: center;
+    float: left;
+    padding: 20px 10px;
+    border-bottom: 4px solid #c4c2c2;
+}
+.sec_tab_ban_hang .nav-tabs > li.active > a {
+    color: #fff;
+    background: #f37022;
+    border-bottom: 4px solid #c5c3c3;
+    width: 298px;
+}
+/*-------end style tab bán hàng------*/
+
+/*style xu_huong_tim_kiem*/
+.xu_huong_tim_kiem p.product-cat {
+    margin-top: .1em;
+    margin-bottom: .1em;
+    font-size: 110%;
+    font-style: bold;
+}
+.xu_huong_tim_kiem p.product-title{
+    display: none;
+}
+.xu_huong_tim_kiem .price-wrapper{
+    display: none;
+}
+.xu_huong_tim_kiem .badge-container{
+    display: none;
+}
+
+/*style section danh mục*/
+.sec_danh_muc .box-image img {
+    max-width: 100%;
+    width: 100%;
+    -webkit-transform: translateZ(0);
+    transform: translateZ(0);
+    margin: 0 auto;
+    padding: 10px;
+}
+
+/*chỉnh khoảng cách trong khung thêm vào giỏ*/
+.cart{
+    margin-bottom: 1.3em;
+    margin-top: 1.3em;
+}
+
+.row_tab_ban_hang{
+    border: 1px solid #eee;
+    margin-top: 10px;
+}
+.row_tab_ban_hang .has-icon-bg .icon .icon-inner {
+    color: #446084;
+    position: absolute;
+    height: 100%;
+    width: 100%;
+    top: 0;
+    border: 2px solid currentColor;
+    border-radius: 100%;
+    transition: all .3s;
+    background: rgb(156, 167, 59);
+}
+/*----------end content-----------*/
+
+
+/*----------footer-----------*/
+/*---style block footer 01---*/
+.block_footer_01{
+    font-size: 12px;
+    font-weight: 200;
+    line-height: 140%!important;
+}
+.block_footer_01 p{
+    font-size: 12px;
+    font-weight: 200;
+}
+.block_footer_01 li {
+    margin-bottom: 0px;
+    display: table-header-group;
+}
+
+.block_footer_01 .wpcf7 p {
+    padding: 0;
+    margin: 0;
+    display: flex;
+}
+
+
+.block_footer_01 #email_nhan_tin{
+    width: 370px;
+    height: 40px;
+    background-color: #102632;
+    border: 0px
+}
+
+.block_footer_01 .wpcf7 span.wpcf7-list-item{
+    margin: 0.9em 1.2em 0 0.1em;
+}
+/*---end style block footer 01---*/
+
+/*---style block footer 03---*/
+.block_footer_03{
+    font-size: 12px;
+    font-weight: 200;
+}
+.block_footer_03 p{
+    font-size: 12px;
+    font-weight: 200;
+    text-align: justify;
+}
+
+.block_footer_03 ul.menu>li,
+.block_footer_03 >.widget>ul>li {
+    list-style: none;
+    margin-bottom: .3em;
+    text-align: left;
+    margin: 0;
+    display: inline-block;
+    border-right: 1px solid rgba(0, 0, 0, 0.54);
+    border-top: 0px solid #ececec;
+    padding: 0px 5px 0px 0px;
+    font-size: 12px;
+    height: 16px;
+
+}
+.block_footer_03 ul.menu>li>a, .block_footer_03 ul.menu>li>span:first-child, 
+.sec_danh_muc >.widget>ul>li>a, .sec_danh_muc >.widget>ul>li>span:first-child {
+    display: inline-block;
+    padding: 0px;
+    -webkit-flex: 1;
+    -ms-flex: 1;
+    flex: 1;
+}
+.block_footer_03 ul ul, 
+.block_footer_03 ul ol, 
+.block_footer_03 ol ol, 
+.block_footer_03 ol ul {
+    margin: 10px 0px;
+}
+body {font-family: "Lato", sans-serif}
+.mySlides {display: none}

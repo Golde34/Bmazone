@@ -28,7 +28,8 @@
     ProductDAO proDAO = new ProductDAO();
     GalleryDAO gallDAO = new GalleryDAO();
     ProductTypeDAO ptDAO = new ProductTypeDAO();
-    
+    int total = ListSuggest.size();
+
 
 %>
 <!DOCTYPE html>
@@ -71,15 +72,18 @@
         <link rel='stylesheet' href="css/2.css"  type='text/css'>
         <link rel='stylesheet' href="css/3.css"  type='text/css'> 
         <link rel='stylesheet' href="css/slide.css"  type='text/css'> 
-
         <script src="js/2.js"></script>
-
-
         <script src="js.home.js"></script>
+        <script src="https://code.jquery.com/jquery-3.2.1.js" ></script>
+        <!-- JS tạo nút bấm di chuyển trang start -->
+        <script src="js/pag1.js"></script>
+        <!-- JS tạo nút bấm di chuyển trang end -->
+        <script src="js/pag2.js" type="text/javascript"></script>
+
     </head>
     <body class="home page-template page-template-page-blank page-template-page-blank-php page page-id-16 page-parent lightbox nav-dropdown-has-arrow" >
 
-
+        <input   id="totalnumber" type="hidden" value="<%=total%>" >
         <div id="wrapper">
 
             <div class="shop-page-title category-page-title page-title ">
@@ -89,8 +93,10 @@
                         <div class="is-large">
                             <nav class="woocommerce-breadcrumb breadcrumbs">
                                 <a href="HomePageControllerMap">Home </a> <span class="divider">&#47;</span> 
-                                <a href="HomePageControllerMap?service=list">Product</a> <span class="divider">&#47;</span> 
+                                <a href="HomePageControllerMap?service=list" >Product</a> <span class="divider">&#47;</span> 
                                 ${address} 
+                                <a id="a" ></a> <span class="divider">&#47;</span> 
+
 
 
 
@@ -118,12 +124,12 @@
                             <aside id="woof_widget-2" class="widget WOOF_Widget">        
                                 <div class="widget widget-woof">
                                     <span class="widget-title shop-sidebar">Blog </span>
-                                   
+
 
 
                                 </div>
                             </aside>
-                          	
+
                         </div><!-- .sidebar-inner -->
                     </div><!-- #shop-sidebar -->
 
@@ -139,7 +145,7 @@
                                         double price = Double.parseDouble(ptDAO.getProductPrice(pa.getProductID()));
 
                                 %>
-                                <div class="product-small col has-hover post-1178 product type-product status-publish has-post-thumbnail product_cat-bach-hoa-online product_cat-do-hop-dong-goi first instock shipping-taxable purchasable product-type-simple">
+                                <div class="product-small col product type-product status-publish has-post-thumbnail product_cat-bach-hoa-online product_cat-do-hop-dong-goi first instock shipping-taxable purchasable product-type-simple">
                                     <div class="col-inner">
 
                                         <div class="badge-container absolute left top z-1">
@@ -176,12 +182,14 @@
                             </div>
                         </div>
                         <div class="container">
+
                             <nav class="woocommerce-pagination">
                                 <ul class="page-numbers nav-pagination links text-center">
-
+                                    <ul id="pagination"onclick="topFunction()"class="page-numbers nav-pagination links text-center" ></ul>
                                 </ul>
                             </nav>
                         </div>
+
                     </div>
 
 

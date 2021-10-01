@@ -13,6 +13,7 @@ import java.sql.Statement;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -52,6 +53,31 @@ public class ProductDAO extends BaseDAO {
     public ArrayList<Product> getTrueProduct() {
         ArrayList<Product> list = new ArrayList<>();
         String sql = "SELECT * FROM Product  where status=1 order by releaseDate";
+        try {
+            pre = conn.prepareStatement(sql);
+            rs = pre.executeQuery();
+            while (rs.next()) {
+                Product pro = new Product();
+                pro.setProductID(rs.getInt("productID"));
+                pro.setProductName(rs.getString("productName"));
+                pro.setDescription(rs.getString("description"));
+                pro.setRating(rs.getInt("rating"));
+                pro.setReleaseDate(rs.getDate("releaseDate"));
+                pro.setSeller(rs.getInt("seller"));
+                pro.setStatus(rs.getInt("status"));
+                list.add(pro);
+            }
+            rs.close();
+            pre.close();
+        } catch (SQLException e) {
+            Logger.getLogger(ProductDAO.class.getName()).log(Level.SEVERE, null, e);
+        }
+        return list;
+    }
+     public ArrayList<Product> getTrueProductPaging(int total, int end) {
+        ArrayList<Product> list = new ArrayList<>();
+        String sql = "SELECT * FROM Product  where status=1 order by releaseDate OFFSET "+ total+" ROWS \n"
+                +"FETCH NEXT "+end +" ROWS ONLY";
         try {
             pre = conn.prepareStatement(sql);
             rs = pre.executeQuery();
@@ -174,7 +200,7 @@ public class ProductDAO extends BaseDAO {
         return list;
     }
 
-    public ArrayList<Product> getProducSuggest() {
+    public ArrayList<Product> getProductSuggest() {
         ArrayList<Product> list = new ArrayList<>();
         String sql = "SELECT TOP 16 * FROM Product order by releaseDate";
         try {
@@ -403,35 +429,22 @@ public class ProductDAO extends BaseDAO {
         }
         return n;
     }
+    public static void main(String[] args) {
+       ProductDAO dao = new ProductDAO();
+       List<Product> s= dao.getTrueProductPaging(1, 20);
+       
+           for (Product product : s) {
+               System.out.println(product);
+        }
+ 
+        
+    }
+            
 
 
   
 
 
     
-    public ArrayList<Product> getProductSuggest() {
-        ArrayList<Product> list = new ArrayList<>();
-        String sql = "SELECT TOP 16 * FROM Product order by releaseDate";
-        try {
-            pre = conn.prepareStatement(sql);
-            rs = pre.executeQuery();
-            while (rs.next()) {
-                Product pro = new Product();
-                pro.setProductID(rs.getInt("productID"));
-                pro.setProductName(rs.getString("productName"));
-                pro.setDescription(rs.getString("description"));
-                pro.setRating(rs.getInt("rating"));
-                pro.setReleaseDate(rs.getDate("releaseDate"));
-                pro.setSeller(rs.getInt("seller"));
-                pro.setStatus(rs.getInt("status"));
-                list.add(pro);
-            }
-            rs.close();
-            pre.close();
-        } catch (SQLException e) {
-            Logger.getLogger(ProductDAO.class.getName()).log(Level.SEVERE, null, e);
-        }
-        return list;
-
-    }
+   
 }
