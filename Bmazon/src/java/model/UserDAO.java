@@ -137,7 +137,10 @@ public class UserDAO extends BaseDAO {
         return n;
     }
     
+<<<<<<< Updated upstream
     
+=======
+>>>>>>> Stashed changes
     public ArrayList<User> searchUser(String text){
         ArrayList<User> list = new ArrayList<>();
         xSql="SELECT * FROM [Bmazon].[dbo].[User] where userID like '%"+text+"%' or username like '%"+text+"%' or email like '%"+text+"%' or fullname like '%"+text+"%' or address like '%"+text+"%'";

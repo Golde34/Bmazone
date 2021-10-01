@@ -33,7 +33,11 @@ public class ShipCompanyDAO extends BaseDAO{
     }
     
     public boolean checkExistCompanyName(String companyname) {
+<<<<<<< Updated upstream
         xSql = "SELECT * FROM [Bmazon].[dbo].[ShipCompany] where companyName like '"+companyname+"'";
+=======
+        String sql = "SELECT * FROM [ShipCompany] WHERE companyName = '" + companyname + "'";
+>>>>>>> Stashed changes
         try {
             pre = conn.prepareStatement(xSql);
             rs = pre.executeQuery();
