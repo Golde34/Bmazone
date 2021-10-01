@@ -38,7 +38,7 @@
         <aside class="sidenav navbar navbar-vertical navbar-expand-xs border-0 border-radius-xl my-3 fixed-start ms-3 " id="sidenav-main">
             <div class="sidenav-header">
                 <i class="fas fa-times p-3 cursor-pointer text-secondary opacity-5 position-absolute end-0 top-0 d-none d-xl-none" aria-hidden="true" id="iconSidenav"></i>
-                <a class="sidebar-brand d-flex align-items-center justify-content-center" href="${contextPath}/UserControllerMap">
+                <a class="sidebar-brand d-flex align-items-center justify-content-center" href="${contextPath}/HomePageControllerMap">
                     <div class="sidebar-brand-icon">
                         <i class="fab fa-blogger"></i>
                     </div>
@@ -118,7 +118,7 @@
                                 <a href="javascript:;" class="nav-link text-body p-0" id="dropdownMenuButton" data-bs-toggle="dropdown" aria-expanded="false">
                                     <span class="mr-2 d-none d-lg-inline text-gray-600 small"><%=curUser.getFullname()%></span>
                                     <img class="img-profile rounded-circle"
-                                         src="${contextPath}/images/defaultPicture.jpg" width="30px" height="30px">
+                                         src="${contextPath}/upload/<%=curUser.getProfileImage()%>" width="30px" height="30px">
                                 </a>
                                 <ul class="dropdown-menu  dropdown-menu-end  px-2 py-3 me-sm-n4" aria-labelledby="dropdownMenuButton">
                                     <li class="mb-2">
@@ -202,7 +202,7 @@
                                                 <th style="width: 5%"></th>
                                             </tr>
                                         </thead>
-                                        <tbody>
+                                        <tbody id="gallery">
                                             <%for (Gallery gallery : listGallery) {
                                             Product product = productdao.getProductByID(gallery.getProductID());
                                             ProductType producttype = producttypedao.getProductTypeByPTypeID(gallery.getProductTypeID());
@@ -254,6 +254,26 @@
         <script src="${contextPath}/js/plugins/chartjs.min.js"></script>
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
         <script src="${contextPath}/js/tablepagination.js"></script>
+        <script>
+            function searchByName(param) {
+                var txtSearch = param.value;
+                $.ajax({
+                    url: "/Bmazon/AdminControllerMap",
+                    type: "get",
+                    data: {
+                        search: txtSearch,
+                        service: "searchgallery"
+                    },
+                    success: function (respone) {
+                        var text = document.getElementById("gallery");
+                        text.innerHTML = respone;
+                    },
+                    error: function (xhr) {
+                        //Do Something to handle error
+                    }
+                });
+            }
+        </script>
         <!-- Github buttons -->
         <script async defer src="https://buttons.github.io/buttons.js"></script>
         <!-- Control Center for Soft Dashboard: parallax effects, scripts for the example pages etc -->

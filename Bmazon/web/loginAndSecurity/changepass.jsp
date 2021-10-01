@@ -44,7 +44,7 @@
 					<label for="pass" class="label">Confirm New Password</label>
 					<input id="repass" oninput="check(this)" type="password" name="renewpass" class="input" placeholder="Re-New password" data-type="password"required autofocus="" >
 				</div>
-                                 <h6 style="color: yellow" style="font-size: small" >${mess3}</h6>
+                                 <h6 style="color: yellow" style="font-size: small" >${messChangepass}</h6>
 				<div class="group">
 					<input type="submit" class="button" value="Submit">
                                         <input type="hidden" name="service" value="changepass">

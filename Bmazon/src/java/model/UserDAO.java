@@ -19,27 +19,49 @@ import java.util.logging.Logger;
  * @author Admin
  */
 public class UserDAO extends BaseDAO {
-
+    
     BaseDAO dbConn = new BaseDAO();
 
     public static void main(String[] args) {
-
         UserDAO dao = new UserDAO();
-        String mail = "viet@gmail.com";
-        dao.checkExistMail(mail); 
-        if (!mail.equals("viet@gmail.com") && dao.checkExistMail(mail)) {
-            System.out.println("Mail nay da ton tai roi");
-            System.out.println(dao.checkExistMail(mail));
-        } else {
-            System.out.println("Not ok");
-        }
+        User x = new User();
+        x.setUsername("A");
+        dao.addUser(x);
     }
+    
 
     public User getUserLogin(String username, String password) {
         String sql = "SELECT * FROM [User] WHERE username = ? and password = ? and status = 1";
         try {
             pre = conn.prepareStatement(sql);
             pre.setString(1, username);
+            pre.setString(2, password);
+            ResultSet rs = pre.executeQuery();
+            if (rs.next()) {
+                User user = new User(rs.getString("userID"), rs.getString("username"),
+                        rs.getString("password"), rs.getString("email"),
+                        rs.getString("phoneNumber"), rs.getInt("sell"),
+                        rs.getDouble("wallet"), rs.getString("fullname"),
+                        rs.getString("publicName"), rs.getString("address"), rs.getString("profileImage"),
+                        rs.getString("backgroundImage"), rs.getString("occupation"),
+                        rs.getInt("gender"), rs.getDate("DOB"), rs.getString("bio"),
+                        rs.getString("Facebook"), rs.getString("Instagram"),
+                        rs.getString("Twitter"), rs.getString("Youtube"),
+                        rs.getInt("activityPoint"), rs.getInt("systemRole"),
+                        rs.getInt("status"));
+                return user;
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(UserDAO.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return null;
+    }
+    
+    public User getEmailLogin(String email, String password) {
+        String sql = "SELECT * FROM [User] WHERE email = ? and password = ? and status = 1";
+        try {
+            pre = conn.prepareStatement(sql);
+            pre.setString(1, email);
             pre.setString(2, password);
             ResultSet rs = pre.executeQuery();
             if (rs.next()) {
@@ -108,12 +130,35 @@ public class UserDAO extends BaseDAO {
             pre.setInt(20, obj.getActivityPoint());
             pre.setInt(21, obj.getSystemRole());
             pre.setInt(22, obj.getStatus());
-            pre.setString(23, obj.getUserId());
             n = pre.executeUpdate();
         } catch (SQLException ex) {
             Logger.getLogger(UserDAO.class.getName()).log(Level.SEVERE, null, ex);
         }
         return n;
+    }
+    public ArrayList<User> searchUser(String text){
+        ArrayList<User> list = new ArrayList<>();
+        xSql="SELECT * FROM [Bmazon].[dbo].[User] where userID like '%"+text+"%' or username like '%"+text+"%' or email like '%"+text+"%' or fullname like '%"+text+"%' or address like '%"+text+"%'";
+        ResultSet rs = dbConn.getData(xSql);
+        try {
+            while (rs.next()) {
+                User user = new User(rs.getString("userID"), rs.getString("username"),
+                        rs.getString("password"), rs.getString("email"),
+                        rs.getString("phoneNumber"), rs.getInt("sell"),
+                        rs.getDouble("wallet"), rs.getString("fullname"),
+                        rs.getString("publicName"), rs.getString("address"), rs.getString("profileImage"),
+                        rs.getString("backgroundImage"), rs.getString("occupation"),
+                        rs.getInt("gender"), rs.getDate("DOB"), rs.getString("bio"),
+                        rs.getString("Facebook"), rs.getString("Instagram"),
+                        rs.getString("Twitter"), rs.getString("Youtube"),
+                        rs.getInt("activityPoint"), rs.getInt("systemRole"),
+                        rs.getInt("status"));
+                list.add(user);
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(UserDAO.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return list;
     }
 
     public int updateInfoUserByAdmin(User obj) {

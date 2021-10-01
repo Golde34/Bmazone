@@ -1,111 +1,110 @@
-<%-- 
-    Document   : login
-    Created on : Jun 29, 2021, 11:45:24 PM
-    Author     : DELL
---%>
+<%-- Document : login Created on : Jun 29, 2021, 11:45:24 PM Author : DELL --%>
 
-<%@page contentType="text/html" pageEncoding="UTF-8"%>
-<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<%@page contentType="text/html" pageEncoding="UTF-8" %>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <c:set var="contextPath" value="${pageContext.request.contextPath}" />
 <!DOCTYPE html>
 <html>
+
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         <title>Login Page</title>
-        <link href="../css/login.css" rel="stylesheet" type="text/css"/>
+        <!--css, js-->
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
+              integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm"
+              crossorigin="anonymous">
+        <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.3.1/css/all.css"
+              integrity="sha384-mzrmE5qonljUremFsqc01SB46JvROS7bZs3IO2EmfFsd15uHvIt+Y8vEf7N7fWAU"
+              crossorigin="anonymous">
         <link rel="stylesheet" href="${contextPath}/css/login.css"type="text/css">
+
     </head>
+
     <body>
-        <%
-            String mess = (String) request.getAttribute("mess");
+        <% Object mess = request.getAttribute("mess");
             if (mess == null) {
                 mess = "";
-            }
-            Object checkLogin = request.getAttribute("checkLogin");
-            Object checkRegis = request.getAttribute("checkRegis");
-            if (checkLogin == null) {
-                checkLogin = "checked";
-            }
-        %>
-        <div class="login-wrap">
-            <div class="login-html" >
-                <input id="tab-1" type="radio" name="tab" class="sign-in" <%= checkLogin %> ><label for="tab-1" class="tab">Sign In</label>
-                <input id="tab-2" type="radio" name="tab" class="sign-up" <%= checkRegis %> ><label for="tab-2" class="tab">Sign Up</label> 
-                <div class="login-form">
-                    <!--Sign in Service-->
-                    <div class="sign-in-htm">
-                        <form action="/Bmazon/LoginControllerMap" method="POST">
-                            <div class="group">
-                                <label for="user" class="label" >Username</label>
-                                <input id="user" type="text" name="username" placeholder="Username" value="${userName}" class="input" required autofocus="">
-                            </div>
-                            <div class="group">
-                                <label for="pass" class="label">Password</label>
-                                <input id="pass" type="password" name="password" placeholder="Password" value="${userPass}" class="input" data-type="password" required autofocus="">
-                            </div>
-                            <h6 style="color: yellow" style="font-size: small" ><%= mess%></h6>
-                            <div class="group">
-                                <input type="hidden" name="service" value="login">
-                                <input type="submit" class="button" value="Sign In">
-                            </div>
-                        </form>
+            }%>
+        <div class="container">
+            <div class="col-lg-4"></div>
+            <div class="col-lg-5">
+                <div id="logreg-forms">
+                    <form class="form-signin" action="/Bmazon/LoginControllerMap" method="POST">
+                        <p style="font-size: 30px;"> Sign-In</p>
+                        <!--sign in-->
+                        <label for="user" class="label">Username</label>
+                        <input id="user" type="text" name="username" placeholder="Username"
+                               value="${usernameLogin}" class="form-control" required autofocus="">
+                        <label for="pass" class="label">Password</label>
+                        <input id="pass" type="password" name="password" placeholder="Password"
+                               value="${userpassLogin}" class="form-control" data-type="password" required autofocus="">
                         <br>
-                        <a style="color: yellow" href="${contextPath}/loginAndSecurity/forgot.jsp" >
-                            <i class="fas fa-angle-left"></i> Forgot Password
-                        </a>
-                        <div class="hr"></div>
-                    </div>
-                    <!--Sign up Service-->
-                    <div class="sign-up-htm">
-                        <form action="/Bmazon/LoginControllerMap" method="POST">
-                            <div class="group">
-                                <label for="user" class="label">Username</label>
-                                <input id="user" type="text" name="signupusername" value="${Username}" placeholder="Username"  class="input" required autofocus="" >
+
+                        <p class="text-right" style="font-size: 12px;"><%= mess.toString()%></p>
+                        <input type="hidden" name="service" value="login">
+                        <button class="btn btn-secondary btn-block buttonSignIn" type="submit"><i
+                                class="fas fa-sign-in-alt"></i> Sign-In</button>
+                        <!--forgot-->
+                        <a style="font-size: 15px; text-align: right; color: #415a70"
+                           href="${contextPath}/loginAndSecurity/forgot.jsp">
+                            <i class="fas fa-angle-left"></i> Forgot Password</a>
+                        <hr>
+                        <p style="font-size: 15px; color: #3C589C">Wanna sign in by another way?</p>
+                        <div class="row">       
+                            <div class="col-md-6 googleButton">
+                                <a href="${contextPath}/loginAndSecurity/googleLogin.jsp">
+                                    <u><img width="20px" style="color: #415a70;" alt="Google sign-in"
+                                             src="https://upload.wikimedia.org/wikipedia/commons/thumb/5/53/Google_%22G%22_Logo.svg/512px-Google_%22G%22_Logo.svg.png" />
+                                        Sign in with Google</u>
+                                </a>
                             </div>
-                            <div class="group">
-                                <label for="pass" class="label">Password</label>
-                                <input id="password" type="password" name="signuppass" value="${Password}" class="input" placeholder="Password" data-type="password" required autofocus="" >
+                            <div class="col-md-6 facebookButton">
+                                <a href="${contextPath}/loginAndSecurity/facebookLogin.jsp">
+                                    <u><img width="20px" style="color: #415a70;" alt="Facebook sign-in"
+                                             src="https://upload.wikimedia.org/wikipedia/en/thumb/0/04/Facebook_f_logo_%282021%29.svg/100px-Facebook_f_logo_%282021%29.svg.png" />
+                                        Sign in with Facebook</u>
+                                </a>
                             </div>
-                            <div class="group">
-                                <label for="pass" class="label">Repeat Password</label>
-                                <input id="repassword" oninput="check(this)" type="password" name="resignuppass" value="${Repassword}" class="input" placeholder="Repeat Password" data-type="password"required autofocus="" >
-                            </div>
-                            <div class="group">
-                                <label for="pass" class="label">Full Name</label>
-                                <input id="name" type="text" name="fname" class="input" value="${fullname}" placeholder="NguyenVanA" required autofocus="" >
-                            </div>
-                            <div class="group">
-                                <label for="pass" class="label">Email</label>
-                                <input id="email" type="text" pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,4}$" name="email" value="${Email}" class="input" placeholder="abc@xyz.com" required autofocus="" >
-                            </div>
-                            <div class="group">
-                                <label for="pass" class="label">Phone</label>
-                                <input id="phone" type="text" pattern="([\+84|84|0]+(2|3|5|7|8|9)+([0-9]{8})" name="phone" value="${Phone}" class="input" placeholder="0987654321" required autofocus="" >
-                            </div>
-                            <h6 style="color: yellow;" style="font-size: small" >${mess2}</h6>
-                            <div class="group">
-                                <input type="submit" class="button" value="Sign Up">
-                                <input type="hidden" name="service" value="register">
-                            </div>
-                        </form>
-                        <div class="hr"></div>
-                        <div class="foot-lnk">
-                            <label for="tab-1">Already Member?</a>
-                        </div>
-                    </div>
+                        </div>                     
+                        <hr>
+                        <p style="font-size: 15px; color: #3C589C">Don't have an account?</p>
+                        <a href="${contextPath}/loginAndSecurity/register.jsp"><button class="btn btn-secondary btn-block buttonSignUp" type="button" id="btn-signup"><i
+                                    class="fas fa-user-plus"></i> Create your New Account</button></a>
+                    </form>
                 </div>
             </div>
+            <div class="col-lg-3"></div>
+            <hr>
         </div>
+
     </body>
-    <script language='javascript' type='text/javascript'>
-    function check(input) {
-        if (input.value != document.getElementById('password').value) {
-            input.setCustomValidity('Password Must be Matching.');
-        } else {
-            // input is valid -- reset the error message
-            input.setCustomValidity('');
-        }
-    }
-    </script>
+
+    <p style="text-align:center">
+        <a href="http://bit.ly/2RjWFMfunction toggleResetPswd(e){
+           e.preventDefault();
+           $('#logreg-forms .form-signin').toggle() // display:block or none
+           $('#logreg-forms .form-reset').toggle() // display:block or none
+           }
+
+           function toggleSignUp(e){
+           e.preventDefault();
+           $('#logreg-forms .form-signin').toggle(); // display:block or none
+           $('#logreg-forms .form-signup').toggle(); // display:block or none
+           }
+
+           $(()=>{
+           // Login Register Form
+           $('#logreg-forms #forgot_pswd').click(toggleResetPswd);
+           $('#logreg-forms #cancel_reset').click(toggleResetPswd);
+           $('#logreg-forms #btn-signup').click(toggleSignUp);
+           $('#logreg-forms #cancel_signup').click(toggleSignUp);
+           })g" target="_blank" style="color:black">By Bmazon</a>
+    </p>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"
+            integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
+    crossorigin="anonymous"></script>
+    <script src="/script.js"></script>
 
 </html>

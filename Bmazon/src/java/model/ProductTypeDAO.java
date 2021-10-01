@@ -125,7 +125,7 @@ public class ProductTypeDAO extends BaseDAO {
 
     public List<ProductType> getProductByProductID(int pid) {
         List<ProductType> list = new ArrayList<>();
-        xSql = "select from ProductType where productID = ? order by productID asc";
+        xSql = "select * from ProductType where productID = ? order by productID asc";
         try {
             pre = conn.prepareStatement(xSql);
             pre.setInt(1, pid);
@@ -265,10 +265,8 @@ public class ProductTypeDAO extends BaseDAO {
     }
     public static void main(String[] args) {
         ProductTypeDAO dao = new ProductTypeDAO();
-        ArrayList<String> list = dao.getAllSizeOfProduct(13);
-        for (String productType : list) {
-            System.out.println(productType);
-        }
+        List<ProductType> list = dao.getProductByProductID(2);
+            System.out.println(list + "@");
     }
 }
 

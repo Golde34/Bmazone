@@ -41,7 +41,7 @@
         <aside class="sidenav navbar navbar-vertical navbar-expand-xs border-0 border-radius-xl my-3 fixed-start ms-3 " id="sidenav-main">
             <div class="sidenav-header">
                 <i class="fas fa-times p-3 cursor-pointer text-secondary opacity-5 position-absolute end-0 top-0 d-none d-xl-none" aria-hidden="true" id="iconSidenav"></i>
-                <a class="sidebar-brand d-flex align-items-center justify-content-center" href="${contextPath}/UserControllerMap">
+                <a class="sidebar-brand d-flex align-items-center justify-content-center" href="${contextPath}/HomePageControllerMap">
                     <div class="sidebar-brand-icon">
                         <i class="fab fa-blogger"></i>
                     </div>
@@ -121,7 +121,7 @@
                                 <a href="javascript:;" class="nav-link text-body p-0" id="dropdownMenuButton" data-bs-toggle="dropdown" aria-expanded="false">
                                     <span class="mr-2 d-none d-lg-inline text-gray-600 small"><%=curUser.getFullname()%></span>
                                     <img class="img-profile rounded-circle"
-                                         src="${contextPath}/images/defaultPicture.jpg" width="30px" height="30px">
+                                         src="${contextPath}/upload/<%=curUser.getProfileImage()%>" width="30px" height="30px">
                                 </a>
                                 <ul class="dropdown-menu  dropdown-menu-end  px-2 py-3 me-sm-n4" aria-labelledby="dropdownMenuButton">
                                     <li class="mb-2">
@@ -172,7 +172,8 @@
                                 <div class="card-header py-3" 
                                      style="display: flex;
                                      justify-content: space-between;">
-                                    <h6 class="m-0 font-weight-bold text-primary">Company Detail</h6>
+                                    <h3 class="m-0 font-weight-bold text-primary">Company Detail</h3>
+                                    <h6 class="text-success mt-3"><%=mess%></h6>
                                 </div>
                                 <div class="card-body">
                                     <form class="form" action="/Bmazon/AdminControllerMap" method="POST">

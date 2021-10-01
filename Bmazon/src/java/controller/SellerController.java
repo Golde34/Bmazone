@@ -47,9 +47,14 @@ public class SellerController extends HttpServlet {
             }
 
             //Product Management
-//            if (service.equalsIgnoreCase("productmanagement")) {
-//                serviceProductManagement(request, response);
-//            }
+            if (service.equalsIgnoreCase("productmanagement")) {
+                serviceProductManagement(request, response);
+            }
+            
+            //Order Management
+            if (service.equalsIgnoreCase("ordermanagement")) {
+                serviceOrderManagement(request, response);
+            }
 //
 //            //Product detail to add and update
 //            if (service.equalsIgnoreCase("updatedetail") || service.equalsIgnoreCase("adddetail")) {
@@ -75,13 +80,22 @@ public class SellerController extends HttpServlet {
 
     public void serviceSellerDashboard(HttpServletRequest request, HttpServletResponse response) {
         User account = (User) request.getSession().getAttribute("currUser");
-
-        
-//     
+        String seller =  account.getUserId();
+        List<Product> listProduct = daoproduct.getProductBySeller(seller);
+        request.setAttribute("listP", listProduct);
+        sendDispatcher(request, response, "seller/dashboard.jsp");
     }
-
-//    public void serviceProductManagement(HttpServletRequest request, HttpServletResponse response) {
-//    }
+    
+    public void serviceProductManagement(HttpServletRequest request, HttpServletResponse response) {
+        User account = (User) request.getSession().getAttribute("currUser");
+        String seller =  account.getUserId();
+        List<Product> listProduct = daoproduct.getProductBySeller(seller);
+        request.setAttribute("listP", listProduct);
+        sendDispatcher(request, response, "seller/productSeller.jsp");
+    }
+    public void serviceOrderManagement(HttpServletRequest request, HttpServletResponse response) {
+        sendDispatcher(request, response, "seller/orderSeller.jsp");
+    }
 
 //    public void serviceEditDetail(String service, HttpServletRequest request, HttpServletResponse response) {
 //    }
