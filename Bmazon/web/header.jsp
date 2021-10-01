@@ -103,11 +103,15 @@
                                     <li class=" menu-item menu-item-type-taxonomy menu-item-object-product_cat menu-item-has-children has-dropdown" style="cursor: pointer;">
                                         <a href="${contextPath}/UserControllerMap?service=account"><span> Hello <%=x.getFullname()%></span></a>
                                         <ul class='nav-dropdown nav-dropdown-simple'>
-                                            <%if (x.getSystemRole() == 1) {%>
+                                            <% if (x.getSystemRole() == 1) {%>
                                             <li  ><a href="${contextPath}/AdminControllerMap" class="menu-image-title-after"><span >Admin Dashboard</span></a></li>
                                                 <%}%>
+                                            <% if (x.getSell() == 1) { %>
+                                            <li  ><a href="${contextPath}/SellerControllerMap" class="menu-image-title-after"><span >Seller Dashboard</span></a></li>
+                                            <%}%>
                                             <li  ><a href="${contextPath}/UserControllerMap?service=account" class="menu-image-title-after"><span >Account</span></a></li>
                                             <li  ><a href="${contextPath}/UserControllerMap?service=info" class="menu-image-title-after"><span >User profile</span></a></li>
+                                            
                                             <li  ><a href="${contextPath}/UserControllerMap?service=changepass" class="menu-image-title-after"><span >Change Password</span></a></li>
                                             <li  ><a href="${contextPath}/UserControllerMap?service=logout" class="menu-image-title-after"><span >Logout</span></a></li>
 

@@ -54,9 +54,9 @@
         <div class="container">
             <h1>Your Account</h1>
             <br>
-            <div class="row">
+            <div class="row" style="padding: 15px;">
                 <!--Order-->
-                <div class="col-md-4">
+                <div class="col-lg-4 col-md-5">
                     <a href="#">
                         <div class=" card shadow p-3 mb-5 bg-white rounded" style="width: 20rem;"> 
                             <div class="card-body">
@@ -75,7 +75,7 @@
                 </div>
 
                 <!--Security-->
-                <div class="col-md-4">
+                <div class="col-lg-4 col-md-5">
                     <a href="UserControllerMap?service=editPrivateProfile">
                         <div class=" card shadow p-3 mb-5 bg-white rounded" style="width: 20rem;"> 
                             <div class="card-body">
@@ -94,7 +94,7 @@
                 </div>
 
                 <!--Profile-->
-                <div class="col-md-4">
+                <div class="col-lg-4 col-md-5">
                     <a href="UserControllerMap?service=info">
                         <div class=" card shadow p-3 mb-5 bg-white rounded" style="width: 20rem;"> 
                             <div class="card-body">

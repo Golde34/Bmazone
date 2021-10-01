@@ -33,7 +33,7 @@
         <link href="${contextPath}/css/seller/iCheck/all.css" rel="stylesheet" type="text/css" />
         <link href='http://fonts.googleapis.com/css?family=Lato' rel='stylesheet' type='text/css'>
         <link href="${contextPath}/css/seller/style.css" rel="stylesheet" type="text/css" />
-
+        <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.0.7/css/all.css"> 
 
         <style type="text/css">
 

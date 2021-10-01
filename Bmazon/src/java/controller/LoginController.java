@@ -53,10 +53,9 @@ public class LoginController extends HttpServlet {
             }
 
             //Login demo
-//            if (service.equalsIgnoreCase("loginDemo")) {
-//                serviceLoginDemo(request, response);
-//            }
-
+            if (service.equalsIgnoreCase("googleLogin")) {
+                serviceGoogleLogin(request, response);
+            }
             //register
             if (service.equalsIgnoreCase("register")) {
                 serviceRegister(request, response);
@@ -76,11 +75,8 @@ public class LoginController extends HttpServlet {
         String messLogin = "";
         String userPass = request.getParameter("password");
         User log = new User();
-        if (userName.contains("@")){
-            log = daoUser.getEmailLogin(userName, userPass);
-        } else {
-            log = daoUser.getUserLogin(userName, userPass);
-        }
+
+        log = daoUser.getUserLogin(userName, userPass);
         if (log != null) {
             request.getSession().setAttribute("currUser", log);
             request.getSession().setAttribute("role", log.getSystemRole());
@@ -88,38 +84,13 @@ public class LoginController extends HttpServlet {
             request.getSession().setAttribute("ShoppingCart", ShoppingCart);
             sendDispatcher(request, response, "index.jsp");
         } else {
-            messLogin = "Login failed, check your username/email or your password.";
+            messLogin = "Login failed, check your username or your password.";
             request.setAttribute("usernameLogin", userName);
             request.setAttribute("userpassLogin", userPass);
-            request.setAttribute("messLogin", messLogin);
-            sendDispatcher(request, response, "loginAndSecurity/loginPass.jsp");
+            request.setAttribute("mess", messLogin);
+            sendDispatcher(request, response, "loginAndSecurity/login.jsp");
         }
     }
-
-//    public void serviceLoginDemo(HttpServletRequest request, HttpServletResponse response) {
-//        String alphabet = "0123456789ABCDE";
-//        final int N = alphabet.length();
-//        Random r = new Random();
-//
-//        for (int i = 0; i < 5; i++) {
-//            System.out.print(alphabet.charAt(r.nextInt(N)));
-//        }
-//        String username = 
-//        String emailPass = request.getParameter("password");
-//        User log = daoUser.getEmailLogin(emailLogin, emailPass);
-//        if (log != null) {
-//            request.getSession().setAttribute("currUser", log);
-//            request.getSession().setAttribute("role", log.getSystemRole());
-//            ArrayList<Product> ShoppingCart = new ArrayList<>();
-//            request.getSession().setAttribute("ShoppingCart", ShoppingCart);
-//            sendDispatcher(request, response, "index.jsp");
-//        } else {
-//            request.setAttribute("emailLogin", emailLogin);
-//            request.setAttribute("userpassLogin", emailPass);
-//            request.setAttribute("messLoginEmail", messLoginEmail);
-//            sendDispatcher(request, response, "loginAndSecurity/loginGoogle.jsp");
-//        }
-//    }
 
     public void serviceRegister(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         String checkRegis = "checked";
@@ -188,6 +159,51 @@ public class LoginController extends HttpServlet {
             daoUser.changePassword(username, newPassword);
             mess = "Change password successfully !!";
             sendDispatcher(request, response, "loginAndSecurity/login.jsp");
+        }
+    }
+
+    public void serviceGoogleLogin(HttpServletRequest request, HttpServletResponse response) {
+        String userName = request.getParameter("username");
+        String messLogin = "";
+        String userPass = "guess";
+        User log = null;
+        if (userName.contains("@")) {
+            log = new User(userName, messLogin, userName, "", 0, 0, "", "", "", "", "", "", 0, "", "", "", "", "", 0, 0, 0);
+        } else {
+            messLogin = "This is a not an email";
+        }
+        if (log != null) {
+            request.getSession().setAttribute("currUser", log);
+            request.getSession().setAttribute("role", log.getSystemRole());
+            ArrayList<Product> ShoppingCart = new ArrayList<>();
+            request.getSession().setAttribute("ShoppingCart", ShoppingCart);
+            sendDispatcher(request, response, "index.jsp");
+        } else {
+            request.setAttribute("usernameLogin", userName);
+            request.setAttribute("userpassLogin", userPass);
+            request.setAttribute("mess", messLogin);
+            sendDispatcher(request, response, "loginAndSecurity/googleLogin.jsp");
+        }
+    }
+
+    public void serviceFacebookLogin(HttpServletRequest request, HttpServletResponse response) {
+        String userName = "f" + request.getParameter("username");
+        String messLogin = "";
+        String userPass = "guess";
+        User log = null;
+        log = new User(userName, messLogin, "", "", 0, 0, "", "", "", "", "", "", 0, "", "", "", "", "", 0, 0, 0);
+        if (log != null) {
+            request.getSession().setAttribute("currUser", log);
+            request.getSession().setAttribute("role", log.getSystemRole());
+            ArrayList<Product> ShoppingCart = new ArrayList<>();
+            request.getSession().setAttribute("ShoppingCart", ShoppingCart);
+            sendDispatcher(request, response, "index.jsp");
+        } else {
+            messLogin = "Login failed!";
+            request.setAttribute("usernameLogin", userName);
+            request.setAttribute("userpassLogin", userPass);
+            request.setAttribute("mess", messLogin);
+            sendDispatcher(request, response, "loginAndSecurity/facebookLogin.jsp");
         }
     }
 

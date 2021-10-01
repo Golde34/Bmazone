@@ -33,8 +33,7 @@
         <link href="${contextPath}/css/seller/iCheck/all.css" rel="stylesheet" type="text/css" />
         <link href='http://fonts.googleapis.com/css?family=Lato' rel='stylesheet' type='text/css'>
         <link href="${contextPath}/css/seller/style.css" rel="stylesheet" type="text/css" />
-
-
+        <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.0.7/css/all.css"> 
         <style type="text/css">
 
         </style>
@@ -46,15 +45,15 @@
     %-->
     <!--    <h2>You must be seller to access this</h2>-->
     <!--% } else { %-->
-    
-<%
-    ProductTypeDAO producttypedao = new ProductTypeDAO();
-    User curUser = (User) request.getSession().getAttribute("currUser");
-    ArrayList<Product> listP = (ArrayList<Product>) request.getAttribute("listP");
-%>
+
+    <%
+        ProductTypeDAO producttypedao = new ProductTypeDAO();
+        User curUser = (User) request.getSession().getAttribute("currUser");
+        ArrayList<Product> listP = (ArrayList<Product>) request.getAttribute("listP");
+    %>
     <body class="skin-black">
         <!-- header logo: style can be found in header.less -->
-            <jsp:include page="headerSeller.jsp"/>
+        <jsp:include page="headerSeller.jsp"/>
         <div class="wrapper row-offcanvas row-offcanvas-left">
             <!-- Left side column. contains the logo and sidebar -->
             <aside class="left-side sidebar-offcanvas">
@@ -66,7 +65,7 @@
                             <img src="${contextPath}/images/seller/26115.jpg" class="img-circle" alt="User Image" />
                         </div>
                         <div class="pull-left info">
-                            <p>Hello, <%= curUser.getUsername() %></p>
+                            <p>Hello, <%= curUser.getUsername()%></p>
 
                             <a href="#"><i class="fa fa-circle text-success"></i> Online</a>
                         </div>
@@ -119,7 +118,7 @@
                             <div class="sm-st clearfix">
                                 <span class="sm-st-icon st-red"><i class="fa fa-check-square-o"></i></span>
                                 <div class="sm-st-info">
-                                    <span> <%= listP.size() %> </span>
+                                    <span> <%= listP.size()%> </span>
                                     Total Product
                                 </div>
                             </div>
@@ -146,61 +145,61 @@
 
                     <!-- Main row -->
                     <!-- Product management -->
-                        <div class="col-md-8" style="height: 400px;overflow-y: scroll;">
-                            <section class="panel">
-                                <header class="panel-heading">
-                                    Product in shop
-                                </header>
-                                <div class="panel-body table-responsive">
-                                    <table class="table table-hover">
-                                        <thead>
-                                                <tr>
-                                                    <th>Product Name</th>
-                                                    <th>Color</th>
-                                                    <th>Size</th>
-                                                    <th>Price</th>
-                                                    <th>ProductTypeID</th>
-                                                    <th></th>
-                                                    <th></th>
-                                                </tr>
-                                            </thead>
-                                            <tbody>
-                                                <% for (Product product : listP) {
-                                                        List<ProductType> listProductType = producttypedao.getProductByProductID(product.getProductID());
-                                                        for (ProductType producttype : listProductType) {
-                                                %>
-                                                <tr>
-                                                    <td><div><%=product.getProductName()%></div></td>
-                                                    <td><div><%=producttype.getColor()%></div></td>
-                                                    <td><div><%=producttype.getSize()%></div></td>
-                                                    <td><div><%=producttype.getPrice()%></div></td>
-                                                    <td><div><%=producttype.getProductTypeId()%></div></td>
-                                                    <td><div>
-                                                            <a href="AdminControllerMap?service=updatedetail&userid=<%=producttype.getProductTypeId()%>"><span class="fas fa-edit"></span></a>
-                                                        </div></td>
-                                                    <td><div><a href="AdminControllerMap?service=deleteuser&userid=<%=producttype.getProductTypeId()%>" onclick="return confirm('Are you sure you want to Remove?');"><span class="fas fa-trash-alt"></span></a></div></td>
-                                                </tr>
-                                                <%}%>
-                                                <%}%>
-                                            </tbody>
-                                    </table>
-                                </div>
-                            </section>
+                    <div class="col-md-8" style="height: 400px;overflow-y: scroll;">
+                        <section class="panel">
+                            <header class="panel-heading">
+                                Product in shop
+                            </header>
+                            <div class="panel-body table-responsive">
+                                <table class="table table-hover">
+                                    <thead>
+                                        <tr>
+                                            <th>Product Name</th>
+                                            <th>Color</th>
+                                            <th>Size</th>
+                                            <th>Price</th>
+                                            <th>ProductTypeID</th>
+                                            <th></th>
+                                            <th></th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <% for (Product product : listP) {
+                                                List<ProductType> listProductType = producttypedao.getProductByProductID(product.getProductID());
+                                                for (ProductType producttype : listProductType) {
+                                        %>
+                                        <tr>
+                                            <td><div><%=product.getProductName()%></div></td>
+                                            <td><div><%=producttype.getColor()%></div></td>
+                                            <td><div><%=producttype.getSize()%></div></td>
+                                            <td><div><%=producttype.getPrice()%></div></td>
+                                            <td><div><%=producttype.getProductTypeId()%></div></td>
+                                            <td><div>
+                                                    <a href="AdminControllerMap?service=updatedetail&userid=<%=producttype.getProductTypeId()%>"><span class="fas fa-edit"></span></a>
+                                                </div></td>
+                                            <td><div><a href="AdminControllerMap?service=deleteuser&userid=<%=producttype.getProductTypeId()%>" onclick="return confirm('Are you sure you want to Remove?');"><span class="fas fa-trash-alt"></span></a></div></td>
+                                        </tr>
+                                        <%}%>
+                                        <%}%>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </section>
 
 
-                        </div><!--end col-6 -->
-                        <div class="col-md-4">
-                            <section class="panel">
-                                <header class="panel-heading">
-                                    Hot products
-                                </header>
-                                <div class="panel-body">
-                                </div>
-                            </section>
-                        </div>
+                    </div><!--end col-6 -->
+                    <div class="col-md-4">
+                        <section class="panel">
+                            <header class="panel-heading">
+                                Hot products
+                            </header>
+                            <div class="panel-body">
+                            </div>
+                        </section>
+                    </div>
 
                     </div>
-                    
+
                     <!-- row end -->
                 </section><!-- /.content -->
                 <div class="footer-main">
@@ -214,25 +213,25 @@
     <!--% }%-->
 
     <script>
-                                function openObject(evt, Object) {
-                                    // Declare all variables
-                                    var i, tabcontent, tablinks;
+        function openObject(evt, Object) {
+            // Declare all variables
+            var i, tabcontent, tablinks;
 
-                                    // Get all elements with class="tabcontent" and hide them
-                                    tabcontent = document.getElementsByName("tabcontent");
-                                    for (i = 0; i < tabcontent.length; i++) {
-                                        tabcontent[i].style.display = "none";
-                                    }
+            // Get all elements with class="tabcontent" and hide them
+            tabcontent = document.getElementsByName("tabcontent");
+            for (i = 0; i < tabcontent.length; i++) {
+                tabcontent[i].style.display = "none";
+            }
 
-                                    // Get all elements with class="tablinks" and remove the class "active"
-                                    tablinks = document.getElementsByClassName("tablinks");
-                                    for (i = 0; i < tablinks.length; i++) {
-                                        tablinks[i].className = tablinks[i].className.replace(" active", "");
-                                    }
+            // Get all elements with class="tablinks" and remove the class "active"
+            tablinks = document.getElementsByClassName("tablinks");
+            for (i = 0; i < tablinks.length; i++) {
+                tablinks[i].className = tablinks[i].className.replace(" active", "");
+            }
 
-                                    // Show the current tab, and add an "active" class to the link that opened the tab
-                                    document.getElementById(Object).style.display = "block";
-                                    evt.currentTarget.className += " active";
-                                }
+            // Show the current tab, and add an "active" class to the link that opened the tab
+            document.getElementById(Object).style.display = "block";
+            evt.currentTarget.className += " active";
+        }
     </script>
 </html>

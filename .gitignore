@@ -1,9 +1,14 @@
 /Bmazon/nbproject/private
-/Bmazon/dist/Bmazon/build/web/WEB-INF
+Bmazon/build/web/WEB-INF/classes
 Bmazon/build/generated
 Bmazon/build/web/admin
 Bmazon/build/web/seller
 Bmazon/build/web/user
 Bmazon/build/web/loginAndSecurity
 Bmazon/build/web/product
-/Bmazon/dist/
+Bmazon/build/web/WEB-INF
+Bmazon/build/web/css
+Bmazon/build/web/fonts
+Bmazon/build/web/scss
+Bmazon/build/web/js
+Bmazon/build/web/images

@@ -21,13 +21,14 @@
         <link href="${contextPath}/css/seller/iCheck/all.css" rel="stylesheet" type="text/css" />
         <link href='http://fonts.googleapis.com/css?family=Lato' rel='stylesheet' type='text/css'>
         <link href="${contextPath}/css/seller/style.css" rel="stylesheet" type="text/css" />
+        <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.0.7/css/all.css"> 
     </head>
     <body>
-<%
-    User curUser = (User) request.getSession().getAttribute("currUser");
-%>
+        <%
+            User curUser = (User) request.getSession().getAttribute("currUser");
+        %>
         <header class="header">
-            <a href="#" class="logo">
+            <a href="HomePageControllerMap?service=HomePage" class="logo">
                 Bmazon
             </a>
             <!-- Header Navbar: style can be found in header.less -->
@@ -72,7 +73,7 @@
                         <li class="dropdown user user-menu">
                             <a href="#" class="dropdown-toggle" data-toggle="dropdown">
                                 <i class="fa fa-user"></i>
-                                <span><%= curUser.getFullname() %>  <i class="caret"></i></span>
+                                <span><%= curUser.getFullname()%>  <i class="caret"></i></span>
                             </a>
                             <ul class="dropdown-menu dropdown-custom dropdown-menu-right">
                                 <li class="dropdown-header text-center">Account</li>
@@ -115,14 +116,14 @@
             </nav>
         </header>
     </body>
-        <script src="http://ajax.googleapis.com/ajax/libs/jquery/2.0.2/jquery.min.js"></script>
-        <script src="${contextPath}/js/seller/jquery.min.js" type="text/javascript"></script>
-        <script src="${contextPath}/js/seller/jquery-ui-1.10.3.min.js" type="text/javascript"></script>
-        <script src="${contextPath}/js/seller/bootstrap.min.js" type="text/javascript"></script>
-        <script src="${contextPath}/js/seller/plugins/daterangepicker/daterangepicker.js" type="text/javascript"></script>
-        <script src="${contextPath}/js/seller/plugins/chart.js" type="text/javascript"></script>
-        <script src="${contextPath}/js/seller/plugins/iCheck/icheck.min.js" type="text/javascript"></script>
-        <script src="${contextPath}/js/seller/plugins/fullcalendar/fullcalendar.js" type="text/javascript"></script>
-        <script src="${contextPath}/js/seller/Director/app.js" type="text/javascript"></script>
-        <script src="${contextPath}/js/seller/Director/dashboard.js" type="text/javascript"></script>
+    <script src="http://ajax.googleapis.com/ajax/libs/jquery/2.0.2/jquery.min.js"></script>
+    <script src="${contextPath}/js/seller/jquery.min.js" type="text/javascript"></script>
+    <script src="${contextPath}/js/seller/jquery-ui-1.10.3.min.js" type="text/javascript"></script>
+    <script src="${contextPath}/js/seller/bootstrap.min.js" type="text/javascript"></script>
+    <script src="${contextPath}/js/seller/plugins/daterangepicker/daterangepicker.js" type="text/javascript"></script>
+    <script src="${contextPath}/js/seller/plugins/chart.js" type="text/javascript"></script>
+    <script src="${contextPath}/js/seller/plugins/iCheck/icheck.min.js" type="text/javascript"></script>
+    <script src="${contextPath}/js/seller/plugins/fullcalendar/fullcalendar.js" type="text/javascript"></script>
+    <script src="${contextPath}/js/seller/Director/app.js" type="text/javascript"></script>
+    <script src="${contextPath}/js/seller/Director/dashboard.js" type="text/javascript"></script>
 </html>

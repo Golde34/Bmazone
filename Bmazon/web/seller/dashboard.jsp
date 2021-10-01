@@ -33,8 +33,7 @@
         <link href="${contextPath}/css/seller/iCheck/all.css" rel="stylesheet" type="text/css" />
         <link href='http://fonts.googleapis.com/css?family=Lato' rel='stylesheet' type='text/css'>
         <link href="${contextPath}/css/seller/style.css" rel="stylesheet" type="text/css" />
-
-
+        <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.0.7/css/all.css"> 
         <style type="text/css">
 
         </style>
@@ -46,14 +45,14 @@
     %-->
     <!--    <h2>You must be seller to access this</h2>-->
     <!--% } else { %-->
-    
-<%
-    User curUser = (User) request.getSession().getAttribute("currUser");
-    ArrayList<Product> listP = (ArrayList<Product>) request.getAttribute("listP");
-%>
+
+    <%
+        User curUser = (User) request.getSession().getAttribute("currUser");
+        ArrayList<Product> listP = (ArrayList<Product>) request.getAttribute("listP");
+    %>
 
     <body class="skin-black">
-            <jsp:include page="headerSeller.jsp"/>
+        <jsp:include page="headerSeller.jsp"/>
         <div class="wrapper row-offcanvas row-offcanvas-left">
             <!-- Left side column. contains the logo and sidebar -->
             <aside class="left-side sidebar-offcanvas">
@@ -65,7 +64,7 @@
                             <img src="${contextPath}/images/seller/26115.jpg" class="img-circle" alt="User Image" />
                         </div>
                         <div class="pull-left info">
-                            <p>Hello, <%= curUser.getUsername() %></p>
+                            <p>Hello, <%= curUser.getUsername()%></p>
 
                             <a href="#"><i class="fa fa-circle text-success"></i> Online</a>
                         </div>
@@ -118,7 +117,7 @@
                             <div class="sm-st clearfix">
                                 <span class="sm-st-icon st-red"><i class="fa fa-check-square-o"></i></span>
                                 <div class="sm-st-info">
-                                    <span> <%= listP.size() %> </span>
+                                    <span> <%= listP.size()%> </span>
                                     Total Product
                                 </div>
                             </div>
@@ -200,38 +199,38 @@
         </div><!-- ./wrapper -->
 
     </body>
-        <script src="http://ajax.googleapis.com/ajax/libs/jquery/2.0.2/jquery.min.js"></script>
-        <script src="../js/seller/jquery.min.js" type="text/javascript"></script>
-        <script src="../js/seller/jquery-ui-1.10.3.min.js" type="text/javascript"></script>
-        <script src="../js/seller/bootstrap.min.js" type="text/javascript"></script>
-        <script src="../js/seller/plugins/daterangepicker/daterangepicker.js" type="text/javascript"></script>
-        <script src="../js/seller/plugins/chart.js" type="text/javascript"></script>
-        <script src="../js/seller/plugins/iCheck/icheck.min.js" type="text/javascript"></script>
-        <script src="../js/seller/plugins/fullcalendar/fullcalendar.js" type="text/javascript"></script>
-        <script src="../js/seller/Director/app.js" type="text/javascript"></script>
-        <script src="../js/seller/Director/dashboard.js" type="text/javascript"></script>
+    <script src="http://ajax.googleapis.com/ajax/libs/jquery/2.0.2/jquery.min.js"></script>
+    <script src="../js/seller/jquery.min.js" type="text/javascript"></script>
+    <script src="../js/seller/jquery-ui-1.10.3.min.js" type="text/javascript"></script>
+    <script src="../js/seller/bootstrap.min.js" type="text/javascript"></script>
+    <script src="../js/seller/plugins/daterangepicker/daterangepicker.js" type="text/javascript"></script>
+    <script src="../js/seller/plugins/chart.js" type="text/javascript"></script>
+    <script src="../js/seller/plugins/iCheck/icheck.min.js" type="text/javascript"></script>
+    <script src="../js/seller/plugins/fullcalendar/fullcalendar.js" type="text/javascript"></script>
+    <script src="../js/seller/Director/app.js" type="text/javascript"></script>
+    <script src="../js/seller/Director/dashboard.js" type="text/javascript"></script>
     <!--% }%-->
 
-<!--    <script>
-                                function openObject(evt, Object) {
-                                    // Declare all variables
-                                    var i, tabcontent, tablinks;
-
-                                    // Get all elements with class="tabcontent" and hide them
-                                    tabcontent = document.getElementsByName("tabcontent");
-                                    for (i = 0; i < tabcontent.length; i++) {
-                                        tabcontent[i].style.display = "none";
+    <!--    <script>
+                                    function openObject(evt, Object) {
+                                        // Declare all variables
+                                        var i, tabcontent, tablinks;
+    
+                                        // Get all elements with class="tabcontent" and hide them
+                                        tabcontent = document.getElementsByName("tabcontent");
+                                        for (i = 0; i < tabcontent.length; i++) {
+                                            tabcontent[i].style.display = "none";
+                                        }
+    
+                                        // Get all elements with class="tablinks" and remove the class "active"
+                                        tablinks = document.getElementsByClassName("tablinks");
+                                        for (i = 0; i < tablinks.length; i++) {
+                                            tablinks[i].className = tablinks[i].className.replace(" active", "");
+                                        }
+    
+                                        // Show the current tab, and add an "active" class to the link that opened the tab
+                                        document.getElementById(Object).style.display = "block";
+                                        evt.currentTarget.className += " active";
                                     }
-
-                                    // Get all elements with class="tablinks" and remove the class "active"
-                                    tablinks = document.getElementsByClassName("tablinks");
-                                    for (i = 0; i < tablinks.length; i++) {
-                                        tablinks[i].className = tablinks[i].className.replace(" active", "");
-                                    }
-
-                                    // Show the current tab, and add an "active" class to the link that opened the tab
-                                    document.getElementById(Object).style.display = "block";
-                                    evt.currentTarget.className += " active";
-                                }
-    </script>-->
+        </script>-->
 </html>
