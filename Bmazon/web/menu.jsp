@@ -31,7 +31,7 @@
     List<Product> ListSale = proDAO.getProductSale();
     List<Product> ListNew = proDAO.getProductNew();
     List<Product> ListApple = proDAO.getProductApple();
-    List<Product> ListSuggest = proDAO.getProducSuggest();
+    List<Product> ListSuggest = proDAO.getProductSuggest();
     List<Genre> ListGenre = genDAO.getHomeGenre();
 
 
@@ -77,18 +77,17 @@
         <link rel='stylesheet' href="css/3.css"  type='text/css'> 
         <link rel='stylesheet' href="css/slide.css"  type='text/css'> 
         <script src="js/2.js"></script>
-        <script src="js.home.js"></script>
+        <script src="js/home.js"></script>
     </head>
     <body class="home page-template page-template-page-blank page-template-page-blank-php page page-id-16 page-parent lightbox nav-dropdown-has-arrow" >
 
         <div id="wrapper">
 
-            <main id="main" class="" style="">
 
+            <main id="main" class="" style="">
+                
 
                 <div id="content" role="main" class="content-area" >
-
-
                     <section class="section" id="section_2111671223">                   
                         <div class="section-content relative">
 
@@ -102,28 +101,28 @@
                                         <div class="col small-8 large-8"  >
                                             <div class="col-inner"  >
 
-                                                
-                            
-                                                        <img class="mySlides" src="images/slide1.jpg"  style="height: 495.7px;width: 800px">
-                                                        <img class="mySlides" src="images/slide2.jpg"  style="height: 495.7px;width: 800px">
-                                                        <img class="mySlides" src="images/slide3.jpg"  style="height: 495.7px;width: 800px">
-                                                        <div class="w3-center w3-container w3-section w3-large w3-text-white w3-display-bottommiddle" style="width:100%">
-                                                            <div class="w3-left w3-hover-text-khaki" onclick="plusDivs(-1)">&#10094;</div>
-                                                            <div class="w3-right w3-hover-text-khaki" onclick="plusDivs(1)">&#10095;</div>
-                                                            <span class="w3-badge demo w3-border w3-transparent w3-hover-white" onclick="currentDiv(1)"></span>
-                                                            <span class="w3-badge demo w3-border w3-transparent w3-hover-white" onclick="currentDiv(2)"></span>
-                                                            <span class="w3-badge demo w3-border w3-transparent w3-hover-white" onclick="currentDiv(3)"></span>
-                                                        </div>
-                                                    
 
-                                                   
-                                                     <script src="js/slide.js"></script>
+
+                                                <img class="mySlides" src="images/slide1.jpg"  style="height: 495.7px;width: 800px">
+                                                <img class="mySlides" src="images/slide2.jpg"  style="height: 495.7px;width: 800px">
+                                                <img class="mySlides" src="images/slide3.jpg"  style="height: 495.7px;width: 800px">
+                                                <div class="w3-center w3-container w3-section w3-large w3-text-white w3-display-bottommiddle" style="width:100%">
+                                                    <div class="w3-left w3-hover-text-khaki" onclick="plusDivs(-1)">&#10094;</div>
+                                                    <div class="w3-right w3-hover-text-khaki" onclick="plusDivs(1)">&#10095;</div>
+                                                    <span class="w3-badge demo w3-border w3-transparent w3-hover-white" onclick="currentDiv(1)"></span>
+                                                    <span class="w3-badge demo w3-border w3-transparent w3-hover-white" onclick="currentDiv(2)"></span>
+                                                    <span class="w3-badge demo w3-border w3-transparent w3-hover-white" onclick="currentDiv(3)"></span>
+                                                </div>
+
+
+
+                                                <script src="js/slide.js"></script>
 
                                             </div>
                                         </div>    
                                         <div class="col small-4 large-4"  >
                                             <div class="col-inner"  >
-                                                <img src="images/imiphone.jpg" >
+                                                <img src="images/im1.jpg" >
                                                 <img src="images/im2.jpg" >
 
                                             </div>
@@ -148,16 +147,12 @@
                                 background-color: rgb(241, 241, 241);
                             }
                         </style>
-                       
+
                     </section>
                     
-
                     <section class="section sec_flash_sale" id="section_16406982">
-                        
-
                         <div class="section-content relative">
-
- <br><br>
+                            <br><br>
                             <div class="row row-collapse align-middle"  id="row-1888902941">
                                 <div class="col medium-2 small-12 large-2"  ><div class="col-inner"  >
                                         <div class="img has-hover x md-x lg-x y md-y lg-y" id="image_510021313">
@@ -177,7 +172,7 @@
 
                                 <div class="col medium-12 small-12 large-12"  >
                                     <div class="col-inner text-right" >
-                                        <p class="orange" style="float: right" ><a href="HomepageControllerMap?service=Sale">Xem Tất Cả &gt;</a></p>
+                                        <p class="orange" style="float: right" ><a href="HomePageControllerMap?service=list">Xem Tất Cả &gt;</a></p>
                                     </div>
                                 </div>
 
@@ -187,8 +182,6 @@
 
                                 <div class="col medium-12 small-12 large-12"  >
                                     <div class="col-inner"  >
-
-
                                         <div class="row large-columns-5 medium-columns-5 small-columns-5 row-collapse has-shadow row-box-shadow-1 slider row-slider slider-nav-reveal slider-nav-push"  data-flickity-options='{"imagesLoaded": true, "groupCells": "100%", "dragThreshold" : 5, "cellAlign": "left","wrapAround": true,"prevNextButtons": true,"percentPosition": true,"pageDots": false, "rightToLeft": false, "autoPlay" : false}'>
                                             <% for (Product p : ListNew) {
                                                     String str = "images/" + gallDAO.getSampleOfProduct(p.getProductID());
@@ -198,22 +191,13 @@
                                             %>
                                             <div class="col" >
                                                 <div class="col-inner">
-
                                                     <div class="badge-container absolute left top z-1">
                                                         <div class="callout badge badge-square"><div class="badge-inner secondary on-sale"><span class="onsale">-50%</span></div></div>
                                                     </div>
                                                     <div class="product-small box has-hover box-normal box-text-bottom">
                                                         <div class="box-image" style="width:150px; height:150px ">
-                                                            <div class=""  >
                                                                 <a href="ProductDetailControllerMap?service=getProductDetail&pid=<%=p.getProductID()%>">
-
-
                                                                     <img src="<%=str%>"></a>
-                                                            </div>
-                                                            <div class="image-tools z-top top right show-on-hover">
-                                                            </div>
-                                                            <div class="image-tools grid-tools text-center hide-for-small bottom hover-slide-in show-on-hover">
-                                                            </div>
                                                         </div><!-- box-image -->
 
                                                         <div class="box-text text-center" style="background-color:rgb(255, 255, 255);">
@@ -231,18 +215,13 @@
                                                 </div><!-- .col-inner -->
                                             </div><!-- col -->
                                             <%
-
                                                 }
                                             %>
-
                                         </div>
                                     </div>
                                 </div>
-
                             </div>
                         </div><!-- .section-content -->
-
-
                         <style scope="scope">
 
                             #section_16406982 {
@@ -256,11 +235,11 @@
 
                     <section class="section sec_danh_muc" id="section_1885747892">
                         <div class="section-content relative">
-
                             <div class="gap-element" style="display:block; height:auto; padding-top:30px" class="clearfix"></div>
                             <div class="row row-collapse"  id="row-1147262871">
-                                <div class="col small-12 large-12"  ><div class="col-inner"  >
-                                        <h3>DANH MỤC</h3>
+                                <div class="col small-12 large-12"  >
+                                    <div class="col-inner"  >
+                                        <h3>Categories</h3>
                                         <div class="slider-wrapper relative " id="slider-1053478107" >
                                             <div class="slider slider-nav-circle slider-nav-large slider-nav-light slider-style-normal"
                                                  data-flickity-options='{
@@ -318,12 +297,8 @@
                                                             </div>
                                                         </div>
                                                     </div>
-
-
                                                 </div>
-
                                             </div>
-
                                         </div><!-- .ux-slider-wrapper -->
                                     </div>
                                 </div>    
@@ -346,15 +321,12 @@
                             <div class="row row-collapse"  id="row-7631193">
                                 <div class="col small-12 large-12"  >
                                     <div class="col-inner"  >
-                                        <h4>New Arrival</h4>
+                                        <h3>New Arrival</h3>
                                     </div>
                                     <div class="col-inner text-right" >
-                                        <p class="orange" ><a href="HomepageControllerMap?service=Sale">Xem Tất Cả &gt;</a></p>
+                                        <p class="orange" ><a href="HomePageControllerMap?service=list">Xem Tất Cả &gt;</a></p>
                                     </div>
                                 </div>
-
-
-
 
                             </div>
 
@@ -371,20 +343,13 @@
                                             %>
                                             <div class="col" >
                                                 <div class="col-inner">
-
                                                     <div class="badge-container absolute left top z-1">
                                                         <div class="callout badge badge-square"><div class="badge-inner secondary on-sale"><span class="onsale">-50%</span></div></div>
                                                     </div>
                                                     <div class="product-small box has-hover box-normal box-text-bottom">
                                                         <div class="box-image" style="width:150px; height:150px ">
-                                                            <div class=""  >
-                                                                <a href="ProductDetailControllerMap?service=getProductDetail&pid=<%=ps.getProductID()%>">
-                                                                    <img src="<%=str%>"></a>
-                                                            </div>
-                                                            <div class="image-tools z-top top right show-on-hover">
-                                                            </div>
-                                                            <div class="image-tools grid-tools text-center hide-for-small bottom hover-slide-in show-on-hover">
-                                                            </div>
+                                                            <a href="ProductDetailControllerMap?service=getProductDetail&pid=<%=ps.getProductID()%>">
+                                                                <img src="<%=str%>"></a>
                                                         </div><!-- box-image -->
 
                                                         <div class="box-text text-center" style="background-color:rgb(255, 255, 255);">
@@ -402,12 +367,8 @@
                                                 </div><!-- .col-inner -->
                                             </div><!-- col -->
                                             <%
-
                                                 }
                                             %>
-
-
-
                                         </div>
                                     </div>
                                 </div>
@@ -436,8 +397,6 @@
                                 </style>
                             </div>
                         </div><!-- .section-content -->
-
-
                         <style scope="scope">
 
                             #section_1299208273 {
@@ -456,8 +415,11 @@
                             <div class="row row-collapse"  style="height: 30px">
                                 <div class="col small-12 large-12" ><div class="col-inner"   >
                                         <h4><img src="images/Apple1.jpg"  style="height: 40px"></h4>
-                                    </div></div>
-
+                                    </div>
+                                    <div class="col-inner text-right" >
+                                        <p class="orange" ><a href="HomepageControllerMap?service=">Xem Tất Cả &gt;</a></p>
+                                    </div>
+                                </div>
 
                             </div>
                             <br><br>
@@ -481,15 +443,8 @@
                                                     </div>
                                                     <div class="product-small box has-hover box-normal box-text-bottom">
                                                         <div class="box-image" style="width:150px; height:150px ">
-
-
-
-                                                            <div class=""  >
-                                                                <a href="ProductDetailControllerMap?service=getProductDetail&pid=<%=ps.getProductID()%>">
-
-
-                                                                    <img src="<%=str%>"></a>
-                                                            </div>
+                                                            <a href="ProductDetailControllerMap?service=getProductDetail&pid=<%=ps.getProductID()%>">
+                                                                <img src="<%=str%>"></a>
                                                             <div class="image-tools z-top top right show-on-hover">
                                                             </div>
                                                             <div class="image-tools grid-tools text-center hide-for-small bottom hover-slide-in show-on-hover">
@@ -549,7 +504,7 @@
                             <div class="gap-element" style="display:block; height:auto; padding-top:30px" class="clearfix"></div>
                             <div class="row row-collapse"  style="height: 30px">
                                 <div class="col small-12 large-12" ><div class="col-inner"   >
-                                        <h4><img src="images/Apple1.jpg"  style="height: 40px"></h4>
+                                        <h3>Suggest For You</h3>
                                     </div>
                                 </div>
                             </div>
@@ -607,11 +562,12 @@
 
                                                 }
                                             %>
-
+                                                                                                                 
                                             <button class="button" onclick="window.location.href = 'HomePageControllerMap?service=list'" style=" border-radius: 5px;margin: auto; ">View More</button>
 
                                         </div>
-                                    </div></div>
+                                    </div>
+                                </div>
 
                                 <style scope="scope">
 
@@ -622,7 +578,6 @@
                             </div>
                         </div><!-- .section-content -->
 
-
                         <style scope="scope">
 
                             #section_1788051855 {
@@ -631,19 +586,10 @@
                                 background-color: rgb(241, 241, 241);
                             }
                         </style>
-
-
-
                     </section>
-
                 </div>
-
-
-
             </main>
         </div>
-        <br><br><br><br>
-
-
+                                                                      <br><br><br><br>
     </body>
 </html>

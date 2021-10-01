@@ -73,18 +73,15 @@ public class HomePageController extends HttpServlet {
     }
 
     public void serviceHomepage(HttpServletRequest request, HttpServletResponse response) {
-        List<Category> cateList = cateDAO.getTrueCategories();
-        List<Genre> gerneList = genDAO.getTrueGenres();
+
         List<Product> ListSale = proDAO.getProductSale();
         List<Product> ListNew = proDAO.getProductNew();
         List<Product> ListApple = proDAO.getProductApple();
-        List<Product> ListSuggest = proDAO.getProducSuggest();
-        request.setAttribute("cateList", cateList);
-        request.setAttribute("gerneList", gerneList);
+        List<Product> ListSuggest = proDAO.getProductSuggest();
         request.setAttribute("ListSale", ListSale);
         request.setAttribute("ListNew", ListNew);
-        request.setAttribute("listApple", ListApple);
-        request.setAttribute("listSuggest", ListSuggest);
+        request.setAttribute("ListApple", ListApple);
+        request.setAttribute("ListSuggest", ListSuggest);
         sendDispatcher(request, response, "/index.jsp");
 
     }
@@ -128,14 +125,11 @@ public class HomePageController extends HttpServlet {
         String str = request.getParameter("search").trim();
         List<Product> ListP = proDAO.getProductByName(str);
         String address;
-        if (ListP.isEmpty()) {
-            address = "There are no results for " + str;
-            request.setAttribute("address", address);
-        } else {
-            address = "Results for " + str;
-            request.setAttribute("address", address);
-            request.setAttribute("listP", ListP);
-        }
+
+        address = "<a>" + " Results for " + str + "  </a> <span class=" + "divider" + ">&#47;</span>";
+        request.setAttribute("address", address);
+        request.setAttribute("listP", ListP);
+
         sendDispatcher(request, response, "/list.jsp");
 
     }

@@ -233,7 +233,7 @@ public class ProductDAO extends BaseDAO {
         return list;
     }
 
-    public ArrayList<Product> getProducSuggest() {
+    public ArrayList<Product> getProductSuggest() {
 
         ArrayList<Product> list = new ArrayList<>();
         String sql = "SELECT TOP 16 * FROM Product order by releaseDate";

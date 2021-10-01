@@ -78,7 +78,7 @@
         <!-- JS tạo nút bấm di chuyển trang start -->
         <script src="js/pag1.js"></script>
         <!-- JS tạo nút bấm di chuyển trang end -->
-        <script src="js/pag2.js" type="text/javascript"></script>
+        <script src="js/pag2.js"></script>
 
     </head>
     <body class="home page-template page-template-page-blank page-template-page-blank-php page page-id-16 page-parent lightbox nav-dropdown-has-arrow" >
@@ -95,11 +95,7 @@
                                 <a href="HomePageControllerMap">Home </a> <span class="divider">&#47;</span> 
                                 <a href="HomePageControllerMap?service=list" >Product</a> <span class="divider">&#47;</span> 
                                 ${address} 
-                                <a id="a" ></a> <span class="divider">&#47;</span> 
-
-
-
-
+                                <a id="a" ></a> 
                         </div>
                         <div class="category-filtering category-filter-row show-for-medium">
                             <a href="#" data-open="#shop-sidebar" data-visible-after="true" data-pos="left" class="filter-button uppercase plain">
@@ -125,8 +121,6 @@
                                 <div class="widget widget-woof">
                                     <span class="widget-title shop-sidebar">Blog </span>
 
-
-
                                 </div>
                             </aside>
 
@@ -137,7 +131,11 @@
                     <div class="col large-10">      
 
                         <div class="shop-container">
-
+                            <%if (total == 0) {%>
+                            <h1>THERE ARE NO RESULTS</h1 >
+                            
+                            <% }
+                            %>
 
                             <div class="products row row-small large-columns-5 medium-columns-3 small-columns-2 has-shadow row-box-shadow-1" id="1">
                                 <% for (Product pa : ListSuggest) {
@@ -153,15 +151,9 @@
                                         </div>
                                         <div class="product-small box has-hover box-normal box-text-bottom">
                                             <div class="box-image" style="width:150px; height:150px ">
-                                                <div class="" >
-                                                    <a href="ProductDetailControllerMap?service=getProductDetail&pid=<%=pa.getProductID()%>">
+                                                <a href="ProductDetailControllerMap?service=getProductDetail&pid=<%=pa.getProductID()%>">
+                                                    <img src="<%=str%>"></a>
 
-                                                        <img src="<%=str%>"></a>
-                                                </div>
-                                                <div class="image-tools z-top top right show-on-hover">
-                                                </div>
-                                                <div class="image-tools grid-tools text-center hide-for-small bottom hover-slide-in show-on-hover">
-                                                </div>
                                             </div><!-- box-image -->
 
                                             <div class="box-text text-center" style="background-color:rgb(255, 255, 255);">
