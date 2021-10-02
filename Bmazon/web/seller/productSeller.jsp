@@ -84,7 +84,7 @@
                     <ul class="sidebar-menu">
                         <li><!-- class="tablinks" -->
                             <!--<a href="" onclick="openObject(event, 'Dashboard')">-->
-                            <a href="SellerControllerMap">
+                            <a href="SellerControllerMap?service=SellerDashboard">
                                 <i class="fa fa-dashboard"></i> <span>Dashboard</span>
                             </a>
                         </li>

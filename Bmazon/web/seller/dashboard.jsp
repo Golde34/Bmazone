@@ -199,38 +199,4 @@
         </div><!-- ./wrapper -->
 
     </body>
-    <script src="http://ajax.googleapis.com/ajax/libs/jquery/2.0.2/jquery.min.js"></script>
-    <script src="${contextPath}/js/seller/jquery.min.js" type="text/javascript"></script>
-    <script src="${contextPath}/js/seller/jquery-ui-1.10.3.min.js" type="text/javascript"></script>
-    <script src="${contextPath}/js/seller/bootstrap.min.js" type="text/javascript"></script>
-    <script src="${contextPath}/js/seller/plugins/daterangepicker/daterangepicker.js" type="text/javascript"></script>
-    <script src="${contextPath}/js/seller/plugins/chart.js" type="text/javascript"></script>
-    <script src="${contextPath}/js/seller/plugins/iCheck/icheck.min.js" type="text/javascript"></script>
-    <script src="${contextPath}/js/seller/plugins/fullcalendar/fullcalendar.js" type="text/javascript"></script>
-    <script src="${contextPath}/js/seller/Director/app.js" type="text/javascript"></script>
-    <script src="${contextPath}/js/seller/Director/dashboard.js" type="text/javascript"></script>
-    <!--% }%-->
-
-    <!--    <script>
-                                    function openObject(evt, Object) {
-                                        // Declare all variables
-                                        var i, tabcontent, tablinks;
-    
-                                        // Get all elements with class="tabcontent" and hide them
-                                        tabcontent = document.getElementsByName("tabcontent");
-                                        for (i = 0; i < tabcontent.length; i++) {
-                                            tabcontent[i].style.display = "none";
-                                        }
-    
-                                        // Get all elements with class="tablinks" and remove the class "active"
-                                        tablinks = document.getElementsByClassName("tablinks");
-                                        for (i = 0; i < tablinks.length; i++) {
-                                            tablinks[i].className = tablinks[i].className.replace(" active", "");
-                                        }
-    
-                                        // Show the current tab, and add an "active" class to the link that opened the tab
-                                        document.getElementById(Object).style.display = "block";
-                                        evt.currentTarget.className += " active";
-                                    }
-        </script>-->
 </html>
