@@ -133,7 +133,7 @@
                                         </a>
                                     </li>
                                     <li class="mb-2">
-                                        <a class="dropdown-item border-radius-md" href="">
+                                        <a class="dropdown-item border-radius-md" href="${contextPath}/HomePageControllerMap">
                                             <div class="d-flex py-1">
                                                 <div class="d-flex flex-column justify-content-center">
                                                     <h6 class="text-sm font-weight-normal mb-1">

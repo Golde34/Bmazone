@@ -16,9 +16,9 @@
     <body>
         
         <div class="wrap">
-            <jsp:include page="header.jsp"/>          
+            <jsp:include page="../header.jsp"/>          
              <jsp:include page="listmenu.jsp"/>
-            <jsp:include page="footer.jsp"/>
+            <jsp:include page="../footer.jsp"/>
         </div>
        
     </body>

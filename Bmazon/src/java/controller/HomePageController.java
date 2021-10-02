@@ -92,7 +92,7 @@ public class HomePageController extends HttpServlet {
         request.setAttribute("total", total);
 
         request.setAttribute("listP", ListP);
-        sendDispatcher(request, response, "/list.jsp");
+        sendDispatcher(request, response, "productList/list.jsp");
 
     }
 
@@ -104,7 +104,7 @@ public class HomePageController extends HttpServlet {
         request.setAttribute("address", address);
 
         request.setAttribute("listP", ListP);
-        sendDispatcher(request, response, "/list.jsp");
+        sendDispatcher(request, response, "productList/list.jsp");
 
     }
 
@@ -117,7 +117,7 @@ public class HomePageController extends HttpServlet {
         address += "<a href=" + "HomePageControllerMap?service=ByGenre&gid=" + id + ">" + genDAO.getGenreById(id).getGenreName() + "  </a> <span class=" + "divider" + ">&#47;</span>";
         request.setAttribute("address", address);
         request.setAttribute("listP", ListP);
-        sendDispatcher(request, response, "/list.jsp");
+        sendDispatcher(request, response, "productList/list.jsp");
 
     }
 
@@ -130,7 +130,7 @@ public class HomePageController extends HttpServlet {
         request.setAttribute("address", address);
         request.setAttribute("listP", ListP);
 
-        sendDispatcher(request, response, "/list.jsp");
+        sendDispatcher(request, response, "productList/list.jsp");
 
     }
 
