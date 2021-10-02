@@ -50,7 +50,11 @@
         ProductTypeDAO producttypedao = new ProductTypeDAO();
         User curUser = (User) request.getSession().getAttribute("currUser");
         ArrayList<Product> listP = (ArrayList<Product>) request.getAttribute("listP");
+        if(curUser.getSell() != 1) {
     %>
+
+    <h2>You must be seller to access this</h2>
+    <% } else { %>
     <body class="skin-black">
         <!-- header logo: style can be found in header.less -->
         <jsp:include page="headerSeller.jsp"/>
@@ -210,28 +214,6 @@
         </div><!-- ./wrapper -->
 
     </body>
-    <!--% }%-->
+    <% }%>
 
-    <script>
-        function openObject(evt, Object) {
-            // Declare all variables
-            var i, tabcontent, tablinks;
-
-            // Get all elements with class="tabcontent" and hide them
-            tabcontent = document.getElementsByName("tabcontent");
-            for (i = 0; i < tabcontent.length; i++) {
-                tabcontent[i].style.display = "none";
-            }
-
-            // Get all elements with class="tablinks" and remove the class "active"
-            tablinks = document.getElementsByClassName("tablinks");
-            for (i = 0; i < tablinks.length; i++) {
-                tablinks[i].className = tablinks[i].className.replace(" active", "");
-            }
-
-            // Show the current tab, and add an "active" class to the link that opened the tab
-            document.getElementById(Object).style.display = "block";
-            evt.currentTarget.className += " active";
-        }
-    </script>
 </html>

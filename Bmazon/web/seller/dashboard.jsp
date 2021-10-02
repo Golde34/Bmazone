@@ -39,18 +39,15 @@
         </style>
     </head>
 
-    <!--%
-        Account account = (Account) session.getAttribute("account");
-        if (account == null || account.isIsAdmin() == false) {
-    %-->
-    <!--    <h2>You must be seller to access this</h2>-->
-    <!--% } else { %-->
 
     <%
         User curUser = (User) request.getSession().getAttribute("currUser");
         ArrayList<Product> listP = (ArrayList<Product>) request.getAttribute("listP");
+        if(curUser.getSell() != 1) {
     %>
 
+    <h2>You must be seller to access this</h2>
+    <% } else { %>
     <body class="skin-black">
         <jsp:include page="headerSeller.jsp"/>
         <div class="wrapper row-offcanvas row-offcanvas-left">
@@ -199,4 +196,6 @@
         </div><!-- ./wrapper -->
 
     </body>
+    <% }%>
+
 </html>
