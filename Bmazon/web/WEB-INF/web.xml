@@ -32,6 +32,10 @@
         <filter-name>authenticationFilter</filter-name>
         <servlet-name>SellerController</servlet-name>
     </filter-mapping>
+    <error-page>
+        <error-code>404</error-code>
+        <location>/Error404.html</location>
+    </error-page>
     <servlet>
         <servlet-name>HomePageController</servlet-name>
         <servlet-class>controller.HomePageController</servlet-class>
