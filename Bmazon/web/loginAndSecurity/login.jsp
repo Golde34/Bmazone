@@ -34,10 +34,10 @@
                         <p style="font-size: 30px;"> Sign-In</p>
                         <!--sign in-->
                         <label for="user" class="label">Username</label>
-                        <input id="user" type="text" name="username" placeholder="Username"
+                        <input id="user" type="text" name="username" placeholder="Username" pattern="^\S+$"
                                value="${usernameLogin}" class="form-control" required autofocus="">
                         <label for="pass" class="label">Password</label>
-                        <input id="pass" type="password" name="password" placeholder="Password"
+                        <input id="pass" type="password" name="password" placeholder="Password" pattern="^\S+$"
                                value="${userpassLogin}" class="form-control" data-type="password" required autofocus="">
                         <br>
 

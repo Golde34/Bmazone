@@ -40,13 +40,13 @@
                         <input id="user" type="text" name="username"  class="form-control" readonly  value="<%= account.getUsername()%>">
 
                         <label for="pass" class="label">Old Password</label>
-                        <input id="oldpass" type="password" name="oldpass" class="form-control" placeholder="Password" data-type="password" required autofocus="" >
+                        <input id="oldpass" type="password" pattern="^\S+$" name="oldpass" class="form-control" placeholder="Password" data-type="password" required autofocus="" >
 
                         <label for="pass" class="label">New Password</label>
-                        <input id="newpass" oninput="checkDup(this)" type="password" name="newpass" class="form-control" placeholder="New password" data-type="password"required autofocus="" >
+                        <input id="newpass" oninput="checkDup(this)" type="password" pattern="^\S+$" name="newpass" class="form-control" placeholder="New password" data-type="password"required autofocus="" >
 
                         <label for="pass" class="label">Confirm New Password</label>
-                        <input id="repass" oninput="check(this)" type="password" name="renewpass" class="form-control" placeholder="Re-New password" data-type="password"required autofocus="" >
+                        <input id="repass" oninput="check(this)" type="password" pattern="^\S+$" name="renewpass" class="form-control" placeholder="Re-New password" data-type="password"required autofocus="" >
 
                         <p class="text-right" style="font-size: 12px;"><%= mess.toString()%></p>
                             <input type="hidden" name="service" value="changepass">
