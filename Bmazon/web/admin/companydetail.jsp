@@ -172,7 +172,8 @@
                                 <div class="card-header py-3" 
                                      style="display: flex;
                                      justify-content: space-between;">
-                                    <h6 class="m-0 font-weight-bold text-primary">Company Detail</h6>
+                                    <h3 class="m-0 font-weight-bold text-primary">Company Detail</h3>
+                                    <h6 class="text-success mt-3"><%=mess%></h6>
                                 </div>
                                 <div class="card-body">
                                     <form class="form" action="/Bmazon/AdminControllerMap" method="POST">

@@ -9,8 +9,11 @@ import entity.ShipCompany;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  *
@@ -27,6 +30,20 @@ public class ShipCompanyDAO extends BaseDAO{
             pre.executeUpdate();
         } catch (Exception e) {
         }
+    }
+    
+    public boolean checkExistCompanyName(String companyname) {
+        xSql = "SELECT * FROM [Bmazon].[dbo].[ShipCompany] where companyName like '"+companyname+"'";
+        try {
+            pre = conn.prepareStatement(xSql);
+            rs = pre.executeQuery();
+            if (rs.next()) {
+                return true;
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(UserDAO.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return false;
     }
 
     public void addShipCompany(ShipCompany sp) {
@@ -60,11 +77,8 @@ public class ShipCompanyDAO extends BaseDAO{
     }
     public static void main(String[] args) {
         ShipCompanyDAO dao = new ShipCompanyDAO();
-        ShipCompany s = dao.getShipCompanyById(4);
-        s.setCommitDate(10);
-        s.setCompanyName("b");
-        s.setUnitCost(10000);
-        dao.editShipCompany(s);
+        boolean check =dao.checkExistCompanyName("FPT");
+        System.out.println(check);
     }
     
     public ShipCompany getShipCompanyById(int id) {
@@ -85,6 +99,25 @@ public class ShipCompanyDAO extends BaseDAO{
         return company;
     }
 
+    public List<ShipCompany> searchShipCompany(String text) {
+        List<ShipCompany> list = new ArrayList<>();
+        xSql = "SELECT * FROM [Bmazon].[dbo].[ShipCompany] where companyName like '%"+text+"%' or unitCost like '%"+text+"%' or commitDate like '%"+text+"%'";
+        try {
+            pre = conn.prepareStatement(xSql);
+            rs = pre.executeQuery();
+            while (rs.next()) {
+                list.add(new ShipCompany(
+                        rs.getInt(1),
+                        rs.getString(2),
+                        rs.getDouble(3),
+                        rs.getInt(4),
+                        rs.getInt(5)));
+            }
+        } catch (Exception e) {
+        }
+        return list;
+    }
+    
     public List<ShipCompany> getAllShipCompany() {
         List<ShipCompany> list = new ArrayList<>();
         xSql = "select * from ShipCompany where [status] = 1";

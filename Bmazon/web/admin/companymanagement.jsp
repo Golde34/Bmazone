@@ -188,7 +188,7 @@
                                             </div>
                                         </div>
                                         <div class="tb_search">
-                                            <input type="text" id="search_input_all" onkeyup="FilterkeyWord_all_table()" placeholder="Search.." class="form-control">
+                                            <input type="text" oninput="searchByName(this)" placeholder="Search.." class="form-control">
                                         </div>
                                     </div>
                                     <table class="table table-bordered table-striped" id="dataTable" style="text-align: center;">
@@ -261,6 +261,7 @@
                     success: function (respone) {
                         var text = document.getElementById("company");
                         text.innerHTML = respone;
+                        getPagination('#dataTable');
                     },
                     error: function (xhr) {
                         //Do Something to handle error

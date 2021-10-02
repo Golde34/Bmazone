@@ -132,7 +132,7 @@
                             <!-- Logo -->
                             <div id="logo" class="flex-col logo">
                                 <!-- Header logo -->
-                                <a href="index.jsp" title="BMAZON" rel="home">
+                                <a href="HomePageControllerMap" title="BMAZON" rel="home">
 
                                     <img  width="124" height="75" src="${contextPath}/images/fpt.png" class="header-logo-dark" /></a>
                             </div>

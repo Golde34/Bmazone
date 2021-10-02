@@ -28,7 +28,8 @@
     ProductDAO proDAO = new ProductDAO();
     GalleryDAO gallDAO = new GalleryDAO();
     ProductTypeDAO ptDAO = new ProductTypeDAO();
-    
+    int total = ListSuggest.size();
+
 
 %>
 <!DOCTYPE html>
@@ -71,15 +72,18 @@
         <link rel='stylesheet' href="css/2.css"  type='text/css'>
         <link rel='stylesheet' href="css/3.css"  type='text/css'> 
         <link rel='stylesheet' href="css/slide.css"  type='text/css'> 
-
         <script src="js/2.js"></script>
-
-
         <script src="js.home.js"></script>
+        <script src="https://code.jquery.com/jquery-3.2.1.js" ></script>
+        <!-- JS tạo nút bấm di chuyển trang start -->
+        <script src="js/pag1.js"></script>
+        <!-- JS tạo nút bấm di chuyển trang end -->
+        <script src="js/pag2.js"></script>
+
     </head>
     <body class="home page-template page-template-page-blank page-template-page-blank-php page page-id-16 page-parent lightbox nav-dropdown-has-arrow" >
 
-
+        <input   id="totalnumber" type="hidden" value="<%=total%>" >
         <div id="wrapper">
 
             <div class="shop-page-title category-page-title page-title ">
@@ -89,11 +93,9 @@
                         <div class="is-large">
                             <nav class="woocommerce-breadcrumb breadcrumbs">
                                 <a href="HomePageControllerMap">Home </a> <span class="divider">&#47;</span> 
-                                <a href="HomePageControllerMap?service=list">Product</a> <span class="divider">&#47;</span> 
+                                <a href="HomePageControllerMap?service=list" >Product</a> <span class="divider">&#47;</span> 
                                 ${address} 
-
-
-
+                                <a id="a" ></a> 
                         </div>
                         <div class="category-filtering category-filter-row show-for-medium">
                             <a href="#" data-open="#shop-sidebar" data-visible-after="true" data-pos="left" class="filter-button uppercase plain">
@@ -118,12 +120,10 @@
                             <aside id="woof_widget-2" class="widget WOOF_Widget">        
                                 <div class="widget widget-woof">
                                     <span class="widget-title shop-sidebar">Blog </span>
-                                   
-
 
                                 </div>
                             </aside>
-                          	
+
                         </div><!-- .sidebar-inner -->
                     </div><!-- #shop-sidebar -->
 
@@ -131,7 +131,11 @@
                     <div class="col large-10">      
 
                         <div class="shop-container">
-
+                            <%if (total == 0) {%>
+                            <h1>THERE ARE NO RESULTS</h1 >
+                            
+                            <% }
+                            %>
 
                             <div class="products row row-small large-columns-5 medium-columns-3 small-columns-2 has-shadow row-box-shadow-1" id="1">
                                 <% for (Product pa : ListSuggest) {
@@ -139,7 +143,7 @@
                                         double price = Double.parseDouble(ptDAO.getProductPrice(pa.getProductID()));
 
                                 %>
-                                <div class="product-small col has-hover post-1178 product type-product status-publish has-post-thumbnail product_cat-bach-hoa-online product_cat-do-hop-dong-goi first instock shipping-taxable purchasable product-type-simple">
+                                <div class="product-small col product type-product status-publish has-post-thumbnail product_cat-bach-hoa-online product_cat-do-hop-dong-goi first instock shipping-taxable purchasable product-type-simple">
                                     <div class="col-inner">
 
                                         <div class="badge-container absolute left top z-1">
@@ -147,15 +151,9 @@
                                         </div>
                                         <div class="product-small box has-hover box-normal box-text-bottom">
                                             <div class="box-image" style="width:150px; height:150px ">
-                                                <div class="" >
-                                                    <a href="ProductDetailControllerMap?service=getProductDetail&pid=<%=pa.getProductID()%>">
+                                                <a href="ProductDetailControllerMap?service=getProductDetail&pid=<%=pa.getProductID()%>">
+                                                    <img src="<%=str%>"></a>
 
-                                                        <img src="<%=str%>"></a>
-                                                </div>
-                                                <div class="image-tools z-top top right show-on-hover">
-                                                </div>
-                                                <div class="image-tools grid-tools text-center hide-for-small bottom hover-slide-in show-on-hover">
-                                                </div>
                                             </div><!-- box-image -->
 
                                             <div class="box-text text-center" style="background-color:rgb(255, 255, 255);">
@@ -176,12 +174,14 @@
                             </div>
                         </div>
                         <div class="container">
+
                             <nav class="woocommerce-pagination">
                                 <ul class="page-numbers nav-pagination links text-center">
-
+                                    <ul id="pagination"onclick="topFunction()"class="page-numbers nav-pagination links text-center" ></ul>
                                 </ul>
                             </nav>
                         </div>
+
                     </div>
 
 

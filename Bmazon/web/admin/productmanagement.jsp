@@ -33,7 +33,14 @@
         <!-- CSS Files -->
         <link id="pagestyle" href="${contextPath}/css/soft-ui-dashboard.css?v=1.0.3" rel="stylesheet" />
     </head>
-
+    <style>
+        th,td{
+            padding: 12px 15px;
+        }
+        tbody tr:nth-of-type(even){
+            background-color: #f2f2f2;
+        }
+    </style>
     <body class="g-sidenav-show  bg-gray-100">
         <aside class="sidenav navbar navbar-vertical navbar-expand-xs border-0 border-radius-xl my-3 fixed-start ms-3 " id="sidenav-main">
             <div class="sidenav-header">
@@ -188,11 +195,11 @@
                                             </div>
                                         </div>
                                         <div class="tb_search">
-                                            <input type="text" id="search_input_all" oninput="searchByName(this)" placeholder="Search.." class="form-control">
+                                            <input type="text" oninput="searchByName(this)" placeholder="Search.." class="form-control">
                                         </div>
                                     </div>
                                     <div class="table-responsive-md">
-                                        <table style="table-layout: fixed;width: 100%;text-align: center;" id="dataTable">
+                                        <table class="table-bordered" style="table-layout: fixed;width: 100%;text-align: center;" id="dataTable">
                                             <thead>
                                                 <tr>
                                                     <th style="width: 30%;">Product Name</th>
@@ -209,11 +216,11 @@
                                                         User user = userdao.getUserByProductId(product.getProductID());
                                                 %>
                                                 <tr>
-                                                    <td><div><%=product.getProductName()%></div></td>
-                                                    <td><div><%=product.getDescription()%></div></td>
-                                                    <td><div><%=product.getRating()%></div></td>
-                                                    <td><div><%=user.getFullname()%></div></td>
-                                                    <td><div><%=product.getReleaseDate()%></div></td>
+                                                    <td><%=product.getProductName()%></td>
+                                                    <td><%=product.getDescription()%></td>
+                                                    <td><%=product.getRating()%></td>
+                                                    <td><%=user.getFullname()%></td>
+                                                    <td><%=product.getReleaseDate()%></td>
                                                     <td><div><a href="AdminControllerMap?service=updateproductdetail&producttypeid=<%=product.getProductID()%>"><span class="fas fa-edit"></span></a>
                                                         </div></td>
                                                     <td><div><a href="AdminControllerMap?service=deleteproduct&producttypeid=<%=product.getProductID()%>" onclick="return confirm('Are you sure you want to Remove?');"><span class="fas fa-trash-alt"></span></a></div></td>
@@ -223,19 +230,30 @@
                                             </tbody>
                                         </table>
                                     </div>
-                                    <div class="pagination-container" style="display: flex;
-                                         justify-content: flex-end;cursor: pointer;">
+                                    <div class="pagination-container mt-4" style="display: flex;
+                                         justify-content: space-around;cursor: pointer;">
                                         <nav>
                                             <ul class="pagination">
+<!--                                                <li data-page="first" class="page-item">
+                                                    <a class="page-link" aria-label="Previous">
+                                                        <span aria-hidden="true"><i class="fas fa-backward"></i>
+                                                            <span class="sr-only">(current)</span> 
+                                                        </span>
+                                                    </a>
+                                                </li>-->
                                                 <li data-page="prev" class="page-item">
-                                                    <span aria-hidden="true">&laquo;
-                                                        <span class="sr-only">(current)</span>
-                                                    </span>
+                                                    <a class="page-link" aria-label="Previous">
+                                                        <span aria-hidden="true"><i class="fas fa-arrow-left"></i>
+                                                            <span class="sr-only">(current)</span> 
+                                                        </span>
+                                                    </a>
                                                 </li>
                                                 <li data-page="next" class="page-item" id="prev">
-                                                    <span aria-hidden="true">&raquo;
-                                                        <span class="sr-only">(current)</span>
-                                                    </span>
+                                                    <a class="page-link" aria-label="Next">
+                                                        <span aria-hidden="true"><i class="fas fa-arrow-right"></i>
+                                                            <span class="sr-only">(current)</span> 
+                                                        </span>
+                                                    </a>
                                                 </li>
                                             </ul>
                                         </nav>
@@ -269,6 +287,7 @@
                     success: function (respone) {
                         var text = document.getElementById("product");
                         text.innerHTML = respone;
+                        getPagination('#dataTable');
                     },
                     error: function (xhr) {
                         //Do Something to handle error

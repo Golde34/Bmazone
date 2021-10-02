@@ -172,17 +172,16 @@
                     <div class="col-lg-12 col-md-12 mb-md-0 mb-4">
                         <div class="card">
                             <div class="card-body px-0 pb-2">
-                                <div class="card-header py-3" 
-                                     style="display: flex;
-                                     justify-content: space-between;">
-                                    <h6 class="m-0 font-weight-bold text-primary">User Management</h6>
+                                <div class="card-header py-3" >
+                                    <h3 class="m-0 font-weight-bold text-primary">User Management</h3>
+                                    <h6 class="text-success mt-3"><%=mess%></h6>
                                 </div>
                                 <div class="card-body">
                                     <form class="form" action="/Bmazon/AdminControllerMap" method="POST">
                                         <%if (service.equalsIgnoreCase("adduserdetail")) {%>
                                         <table class="table">
                                             <tr>
-                                                <td>Name</td>
+                                                <td>User Name</td>
                                                 <td><input type="text" name="username" class="input"><br></td>
                                             </tr>
                                             <tr>
@@ -239,7 +238,7 @@
                                         <%if (service.equalsIgnoreCase("updateuserdetail")) {%>
                                         <table class="table table-striped">
                                             <tr>
-                                                <td>Name</td>
+                                                <td>User Name</td>
                                                 <td><input value="<%=user.getUsername()%>" type="text" name="username" class="input"><br></td>
                                             </tr>
                                             <tr>
