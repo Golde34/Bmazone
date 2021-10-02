@@ -6,6 +6,10 @@
 <%
     ShipCompany company = (ShipCompany) request.getAttribute("company");
     String mess = (String) request.getAttribute("mess");
+    String state = (String) request.getAttribute("state");
+    if (state == null) {
+        state = "";
+    }
     if (mess == null) {
         mess = "";
     }
@@ -39,7 +43,7 @@
                 <i class="fas fa-times p-3 cursor-pointer text-secondary opacity-5 position-absolute end-0 top-0 d-none d-xl-none" aria-hidden="true" id="iconSidenav"></i>
                 <a class="sidebar-brand d-flex align-items-center justify-content-center" href="${contextPath}/HomePageControllerMap">
                     <div class="sidebar-brand-icon">
-<img  width="124" height="75" src="${contextPath}/images/fpt.png" class="header-logo-dark" />
+                        <img  width="124" height="75" src="${contextPath}/images/fpt.png" class="header-logo-dark" />
                     </div>
                     <!--                    <div class="sidebar-brand-text mx-3 my-3">Bmazon</div>-->
                 </a>
@@ -100,11 +104,17 @@
                         <div class="col-lg-12 col-md-12 mb-md-0 mb-4">
                             <div class="card">
                                 <div class="card-body px-0 pb-2">
-                                    <div class="card-header py-3" 
+<!--                                     
                                          style="display: flex;
-                                         justify-content: space-between;">
+                                         justify-content: space-between;"-->
+                                    <div class="card-header py-3">
                                         <h3 class="m-0 font-weight-bold text-primary">Company Detail</h3>
-                                        <h6 class="text-success mt-3"><%=mess%></h6>
+                                    <% if (state.equals("success")) {%>
+                                    <h6 class="text-success mt-3">${mess}</h6>
+                                    <%}%>
+                                    <% if (state.equals("fail")) {%>
+                                    <h6 class="text-danger mt-3">${mess}</h6>
+                                    <%}%>
                                 </div>
                                 <div class="card-body">
                                     <form class="needs-validation" novalidate action="/Bmazon/AdminControllerMap" method="POST">

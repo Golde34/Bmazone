@@ -119,7 +119,7 @@
                                             </div>
                                         </div>
                                         <div class="tb_search">
-                                            <input style="width: 100%;" type="text" id="search_input_all" onkeyup="FilterkeyWord_all_table()" placeholder="Search.." class="form-control">
+                                            <input style="width: 100%;" type="text" oninput="searchByName(this)" placeholder="Search.." class="form-control">
                                         </div>
                                     </div>
                                     <table id="dataTable" style="table-layout: fixed;width: 100%;text-align: center;">

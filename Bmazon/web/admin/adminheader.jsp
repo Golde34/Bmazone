@@ -70,7 +70,7 @@
                                     </a>
                                 </li>
                                 <li class="mb-2">
-                                    <a class="dropdown-item border-radius-md" href="${contextPath}/UserControllerMap?service=logout">
+                                    <a class="dropdown-item border-radius-md" href="UserControllerMap?service=logout">
                                         <div class="d-flex py-1">
                                             <div class="d-flex flex-column justify-content-center">
                                                 <h6 class="text-sm font-weight-normal mb-1">

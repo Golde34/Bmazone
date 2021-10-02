@@ -8,6 +8,10 @@
     if (request.getAttribute("user") != null) {
         user = (User) request.getAttribute("user");
     }
+    String state = (String) request.getAttribute("state");
+    if (state == null) {
+        state = "";
+    }
     String mess = (String) request.getAttribute("mess");
     if (mess == null) {
         mess = "";
@@ -105,7 +109,12 @@
                                 <div class="card-body px-0 pb-2">
                                     <div class="card-header py-3" >
                                         <h3 class="m-0 font-weight-bold text-primary">User Management</h3>
-                                        <h6 class="text-success mt-3"><%=mess%></h6>
+                                    <% if (state.equals("success")) {%>
+                                    <h6 class="text-success mt-3">${mess}</h6>
+                                    <%}%>
+                                    <% if (state.equals("fail")) {%>
+                                    <h6 class="text-danger mt-3">${mess}</h6>
+                                    <%}%>
                                 </div>
                                 <div class="card-body">
                                     <form class="needs-validation" novalidate action="/Bmazon/AdminControllerMap" method="POST">
@@ -233,7 +242,7 @@
                                             <tr>
                                                 <td>Phone</td>
                                                 <td>
-                                                    <input pattern=".*\S+.*" class="form-control" value="<%=user.getPhoneNumber()%>" type="text" name="phone" required>
+                                                    <input pattern="(09|03|07|08|05)+([0-9]{8})" class="form-control" value="<%=user.getPhoneNumber()%>" type="text" name="phone" required>
                                                     <div class="invalid-feedback">
                                                         Invalid input
                                                     </div>
@@ -269,8 +278,9 @@
                                             <tr>
                                                 <td></td>
                                                 <td>
-                                                    <input type="submit" value="Add User" class="btn btn-primary">
-                                                    <input type="hidden" value="adduser" name="service">
+                                                    <input type="submit" value="Update User" class="btn btn-primary">
+                                                    <input type="hidden" value="updateuser" name="service">
+                                                    <input type="hidden" value="<%=user.getUserId()%>" name="id">
                                                 </td>
                                             </tr>
                                         </table>
