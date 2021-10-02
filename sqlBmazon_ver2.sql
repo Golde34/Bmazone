@@ -17,7 +17,7 @@ CREATE TABLE [User] (
 	[password] nvarchar(255) NOT NULL,
 	email nvarchar(255),
 	phoneNumber nvarchar(255),
-	sell bit,
+	sell int,
 	wallet money,
 	--public profile
 	fullname nvarchar(255),
@@ -73,13 +73,6 @@ CREATE TABLE [Product] (
 	FOREIGN KEY (seller) REFERENCES [User](userID),
 )
 
-CREATE TABLE Comment (
-	productID int,
-	userID int,
-	content nvarchar(255),
-	FOREIGN KEY (productID) REFERENCES [Product] (productID),
-	FOREIGN KEY (userID) REFERENCES [User](userID),
-)
 
 CREATE TABLE [ProductGenre] (
 	productID int,
@@ -159,3 +152,18 @@ CREATE TABLE OrderDetail(
     FOREIGN KEY (productTypeID) references [ProductType](productTypeID),
 )
 
+CREATE TABLE [Comment](
+	commentID int not null identity(1,1) PRIMARY KEY,
+	productID int not null,
+	[userId] int not null,
+	content nvarchar(max),
+	rating int not null CHECK(rating >= 0 AND rating <= 5),
+	status bit,
+	FOREIGN KEY ([userId]) REFERENCES dbo.[User]([userId]),
+	FOREIGN KEY ([productID]) REFERENCES [Product]([productID]),
+)
+
+--CREATE TABLE Sale
+--CREATE TABLE Seller
+--CREATE TABLE ShopDetail
+--Sua insert rating thanh 5 sao
