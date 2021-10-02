@@ -269,16 +269,16 @@ public class AdminController extends HttpServlet {
         int gender = Integer.parseInt(request.getParameter("gender"));
         int role = Integer.parseInt(request.getParameter("role"));
         boolean isExist = false;
-//                if (daouser.checkExistMail(email) == true
-//                        || daouser.checkExistPhone(phone) == true
-//                        || daouser.checkExistUserName(username) == true) {
-//                    isExist = true;
-//                }
-//                if (isExist == true) {
-//                    String mess = "Add fail because duplicate information";
-//                    request.setAttribute("mess", mess);
-//                    sendDispatcher(request, response, "admin/detail.jsp");
-//                }
+        if (daouser.checkExistMail(email) == true
+                || daouser.checkExistPhone(phone) == true
+                || daouser.checkExistUserName(username) == true) {
+            isExist = true;
+        }
+        if (isExist == true) {
+            String mess = "Add fail because duplicate information";
+            request.setAttribute("mess", mess);
+            sendDispatcher(request, response, "admin/detail.jsp");
+        }
         if (isExist == false) {
             String id = request.getParameter("id");
             User user = daouser.getUserById(Integer.parseInt(id));

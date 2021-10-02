@@ -42,9 +42,9 @@
                     <ul class="navbar-nav  justify-content-end">
                         <li class="nav-item dropdown pe-2 d-flex align-items-center">
                             <a href="javascript:;" class="nav-link text-body p-0" id="dropdownMenuButton" data-bs-toggle="dropdown" aria-expanded="false">
-                                <object style="border-radius: 50%;" data="upload/<%= curUser.getProfileImage()%>" width="30px" height="30px"></object>
-                                <span class="mr-2 d-none d-lg-inline text-gray-600 small" style="font-size: 15px;"><%=curUser.getFullname()%></span>
-                                
+                                <span class="mr-2 d-none d-lg-inline text-gray-600 small"><%=curUser.getFullname()%></span>
+                                <img class="img-profile rounded-circle"
+                                     src="upload/<%= curUser.getProfileImage()%>" width="30px" height="30px">
                             </a>
                             <ul class="dropdown-menu  dropdown-menu-end  px-2 py-3 me-sm-n4" aria-labelledby="dropdownMenuButton">
                                 <li class="mb-2">

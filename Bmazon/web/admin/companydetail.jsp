@@ -27,12 +27,8 @@
         </title>
         <!--     Fonts and icons     -->
         <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,400,600,700" rel="stylesheet" />
-        <!-- Nucleo Icons -->
-        <link href="${contextPath}/css/nucleo-icons.css" rel="stylesheet" />
-        <link href="${contextPath}/css/nucleo-svg.css" rel="stylesheet" />
         <!-- Font Awesome Icons -->
         <script src="https://kit.fontawesome.com/42d5adcbca.js" crossorigin="anonymous"></script>
-        <link href="${contextPath}/css/nucleo-svg.css" rel="stylesheet" />
         <!-- CSS Files -->
         <link id="pagestyle" href="${contextPath}/css/soft-ui-dashboard.css?v=1.0.3" rel="stylesheet" />
     </head>
@@ -43,9 +39,9 @@
                 <i class="fas fa-times p-3 cursor-pointer text-secondary opacity-5 position-absolute end-0 top-0 d-none d-xl-none" aria-hidden="true" id="iconSidenav"></i>
                 <a class="sidebar-brand d-flex align-items-center justify-content-center" href="${contextPath}/HomePageControllerMap">
                     <div class="sidebar-brand-icon">
-                        <i class="fab fa-blogger"></i>
+<img  width="124" height="75" src="${contextPath}/images/fpt.png" class="header-logo-dark" />
                     </div>
-                    <div class="sidebar-brand-text mx-3 my-3">Bmazon</div>
+                    <!--                    <div class="sidebar-brand-text mx-3 my-3">Bmazon</div>-->
                 </a>
             </div>
             <hr class="horizontal dark mt-0">
@@ -98,49 +94,49 @@
         <main class="main-content position-relative max-height-vh-100 h-100 mt-1 border-radius-lg ">
             <!-- Navbar -->
             <jsp:include page="adminheader.jsp"></jsp:include>
-            <!-- End Navbar -->
-            <div class="container-fluid py-4">
-                <div class="row my-4">
-                    <div class="col-lg-12 col-md-12 mb-md-0 mb-4">
-                        <div class="card">
-                            <div class="card-body px-0 pb-2">
-                                <div class="card-header py-3" 
-                                     style="display: flex;
-                                     justify-content: space-between;">
-                                    <h3 class="m-0 font-weight-bold text-primary">Company Detail</h3>
-                                    <h6 class="text-success mt-3"><%=mess%></h6>
+                <!-- End Navbar -->
+                <div class="container-fluid py-4">
+                    <div class="row my-4">
+                        <div class="col-lg-12 col-md-12 mb-md-0 mb-4">
+                            <div class="card">
+                                <div class="card-body px-0 pb-2">
+                                    <div class="card-header py-3" 
+                                         style="display: flex;
+                                         justify-content: space-between;">
+                                        <h3 class="m-0 font-weight-bold text-primary">Company Detail</h3>
+                                        <h6 class="text-success mt-3"><%=mess%></h6>
                                 </div>
                                 <div class="card-body">
-                                    <form class="form" action="/Bmazon/AdminControllerMap" method="POST">
+                                    <form class="needs-validation" novalidate action="/Bmazon/AdminControllerMap" method="POST">
                                         <%if (service.equalsIgnoreCase("addcompanydetail")) {%>
-                                        <table class="table">
-                                            <div class="form-group">
-                                                <tr>
-                                                    <td>Company Name</td>
-                                                    <td>
-                                                        <input type="text" name="companyname"><br>
-                                                        <span clas="form-message"></span>
-                                                    </td>
-                                                </tr>
-                                            </div>
-                                            <div class="form-group">
-                                                <tr>
-                                                    <td>Unit Cost</td>
-                                                    <td>
-                                                        <input type="text" name="unitcost"><br>
-                                                        <span clas="form-message"></span>
-                                                    </td>
-                                                </tr>
-                                            </div> 
-                                            <div class="form-group">
-                                                <tr>
-                                                    <td>Commit Date</td>
-                                                    <td>
-                                                        <input type="text" name="commitdate"><br>
-                                                        <span clas="form-message"></span>
-                                                    </td>
-                                                </tr>
-                                            </div>
+                                        <table class="table table-striped">
+                                            <tr>
+                                                <td>Company Name</td>
+                                                <td>
+                                                    <input pattern=".*\S+.*" class="form-control" type="text" name="companyname" required>
+                                                    <div class="invalid-feedback">
+                                                        Invalid input
+                                                    </div>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td>Unit Cost</td>
+                                                <td>
+                                                    <input pattern="^[0-9]*$" class="form-control" type="text" name="unitcost" required>
+                                                    <div class="invalid-feedback">
+                                                        Invalid input
+                                                    </div>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td>Commit Date</td>
+                                                <td>
+                                                    <input pattern="^[0-9]*$" class="form-control" type="text" name="commitdate" required>
+                                                    <div class="invalid-feedback">
+                                                        Invalid input
+                                                    </div>
+                                                </td>
+                                            </tr>
                                             <tr>
                                                 <td></td>
                                                 <td>
@@ -152,33 +148,33 @@
                                         <%}%>
                                         <%if (service.equalsIgnoreCase("updatecompanydetail")) {%>
                                         <table class="table table-striped">
-                                            <div class="form-group">
-                                                <tr>
-                                                    <td>Company Name</td>
-                                                    <td>
-                                                        <input value="<%=company.getCompanyName()%>" type="text" name="companyname"><br>
-                                                        <span clas="form-message"></span>
-                                                    </td>
-                                                </tr>
-                                            </div>
-                                            <div class="form-group">
-                                                <tr>
-                                                    <td>Unit Cost</td>
-                                                    <td>
-                                                        <input value="<%=company.getUnitCost()%>" type="text" name="unitcost"><br>
-                                                        <span clas="form-message"></span>
-                                                    </td>
-                                                </tr>
-                                            </div>  
-                                            <div class="form-group">
-                                                <tr>
-                                                    <td>Commit Date</td>
-                                                    <td>
-                                                        <input value="<%=company.getCommitDate()%>" type="text" name="commitdate"><br>
-                                                        <span clas="form-message"></span>
-                                                    </td>
-                                                </tr>
-                                            </div>
+                                            <tr>
+                                                <td>Company Name</td>
+                                                <td>
+                                                    <input pattern=".*\S+.*" class="form-control" value="<%=company.getCompanyName()%>" type="text" name="companyname" required>
+                                                    <div class="invalid-feedback">
+                                                        Invalid input
+                                                    </div>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td>Unit Cost</td>
+                                                <td>
+                                                    <input pattern="^[0-9]*$" class="form-control" value="<%=company.getUnitCost()%>" type="text" name="unitcost" required>
+                                                    <div class="invalid-feedback">
+                                                        Invalid input
+                                                    </div>
+                                                </td>
+                                            </tr> 
+                                            <tr>
+                                                <td>Commit Date</td>
+                                                <td>
+                                                    <input pattern="^[0-9]*$" class="form-control" value="<%=company.getCommitDate()%>" type="text" name="commitdate" required>
+                                                    <div class="invalid-feedback">
+                                                        Invalid input
+                                                    </div>
+                                                </td>
+                                            </tr>
                                             <tr>
                                                 <td></td>
                                                 <td>
@@ -204,6 +200,22 @@
         <script src="${contextPath}/js/plugins/perfect-scrollbar.min.js"></script>
         <script src="${contextPath}/js/plugins/smooth-scrollbar.min.js"></script>
         <script src="${contextPath}/js/plugins/chartjs.min.js"></script>
+        <script>
+            (function () {
+                'use strict'
+                var forms = document.querySelectorAll('.needs-validation')
+                Array.prototype.slice.call(forms)
+                        .forEach(function (form) {
+                            form.addEventListener('submit', function (event) {
+                                if (!form.checkValidity()) {
+                                    event.preventDefault()
+                                    event.stopPropagation()
+                                }
+                                form.classList.add('was-validated')
+                            }, false)
+                        })
+            })()
+        </script>
         <!-- Github buttons -->
         <script async defer src="https://buttons.github.io/buttons.js"></script>
         <!-- Control Center for Soft Dashboard: parallax effects, scripts for the example pages etc -->

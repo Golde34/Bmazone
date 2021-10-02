@@ -24,12 +24,8 @@
         </title>
         <!--     Fonts and icons     -->
         <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,400,600,700" rel="stylesheet" />
-        <!-- Nucleo Icons -->
-        <link href="${contextPath}/css/nucleo-icons.css" rel="stylesheet" />
-        <link href="${contextPath}/css/nucleo-svg.css" rel="stylesheet" />
         <!-- Font Awesome Icons -->
         <script src="https://kit.fontawesome.com/42d5adcbca.js" crossorigin="anonymous"></script>
-        <link href="${contextPath}/css/nucleo-svg.css" rel="stylesheet" />
         <!-- CSS Files -->
         <link id="pagestyle" href="${contextPath}/css/soft-ui-dashboard.css?v=1.0.3" rel="stylesheet" />
     </head>
@@ -123,7 +119,7 @@
                                             </div>
                                         </div>
                                         <div class="tb_search">
-                                            <input type="text" id="search_input_all" onkeyup="FilterkeyWord_all_table()" placeholder="Search.." class="form-control">
+                                            <input style="width: 100%;" type="text" id="search_input_all" onkeyup="FilterkeyWord_all_table()" placeholder="Search.." class="form-control">
                                         </div>
                                     </div>
                                     <table id="dataTable" style="table-layout: fixed;width: 100%;text-align: center;">

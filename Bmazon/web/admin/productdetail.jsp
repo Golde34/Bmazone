@@ -31,12 +31,8 @@
         </title>
         <!--     Fonts and icons     -->
         <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,400,600,700" rel="stylesheet" />
-        <!-- Nucleo Icons -->
-        <link href="${contextPath}/css/nucleo-icons.css" rel="stylesheet" />
-        <link href="${contextPath}/css/nucleo-svg.css" rel="stylesheet" />
         <!-- Font Awesome Icons -->
         <script src="https://kit.fontawesome.com/42d5adcbca.js" crossorigin="anonymous"></script>
-        <link href="${contextPath}/css/nucleo-svg.css" rel="stylesheet" />
         <!-- CSS Files -->
         <link id="pagestyle" href="${contextPath}/css/soft-ui-dashboard.css?v=1.0.3" rel="stylesheet" />
     </head>
@@ -47,9 +43,9 @@
                 <i class="fas fa-times p-3 cursor-pointer text-secondary opacity-5 position-absolute end-0 top-0 d-none d-xl-none" aria-hidden="true" id="iconSidenav"></i>
                 <a class="sidebar-brand d-flex align-items-center justify-content-center" href="${contextPath}/HomePageControllerMap">
                     <div class="sidebar-brand-icon">
-                        <i class="fab fa-blogger"></i>
+                        <img  width="124" height="75" src="${contextPath}/images/fpt.png" class="header-logo-dark" />
                     </div>
-                    <div class="sidebar-brand-text mx-3 my-3">Bmazon</div>
+<!--                    <div class="sidebar-brand-text mx-3 my-3">Bmazon</div>-->
                 </a>
             </div>
             <hr class="horizontal dark mt-0">
