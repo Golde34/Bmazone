@@ -147,7 +147,7 @@
 
             </main><!-- #main -->
         </div>
-        =
+        
 
         <jsp:include page="../footer.jsp"/>
     </body>

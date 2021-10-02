@@ -366,7 +366,7 @@
                                     </div>
                                     <span>3 Reviews</span>
                                 </div>
-                                <%double price1 = Double.parseDouble(daoProductType.getProductPrice(product.getProductID())); %>
+                                <%double price1 = Double.parseDouble(daoProductType.getProductPrice(product.getProductID()));%>
                                 <div class="product-price-discount"><span><%=nf.format(price1)%>&nbsp; <span class="woocommerce-Price-currencySymbol">&#8363;</span></span><span class="line-through"><%=nf.format(price1 * 1.05)%>&nbsp; <span class="woocommerce-Price-currencySymbol">&#8363;</span></span></div>
                                 <div class="product-releasedate"><span>Release Date: <%=product.getReleaseDate()%></span></div>
                                 <div class="product-seller"><span>Seller: <%=daoUser.getUserByProductId(product.getProductID()).getUsername()%></span></div>
@@ -450,76 +450,86 @@
                 </div>
             </div>
         </div>
+        
+        <section class="section sec_dien_thoai" id="section_1788051855">
 
-        <div class="row row-collapse align-equal"  id="row-1706731289">
-            <div class="text">
-                <div class="col-inner text-center" >
-                    <h1>Related Products</h1>
-                </div>
-                <div class="col-inner text-left" >
-                    <p class="orange" style="float: left" ><a href="ProductDetailControllerMap?service=getRelatedProduct&pid=<%=product.getProductID()%>"><label>View All</label></a></p>
-                </div>
-            </div>              
-            <br>
-            <br>
-            <br>
-            <div class="col medium-10 small-12 large-10"  ><div class="col-inner"  >
-                    <div class="row large-columns-4 medium-columns- small-columns-2 row-collapse has-shadow row-box-shadow-1 slider row-slider slider-nav-reveal slider-nav-push"  data-flickity-options='{"imagesLoaded": true, "groupCells": "100%", "dragThreshold" : 5, "cellAlign": "left","wrapAround": true,"prevNextButtons": true,"percentPosition": true,"pageDots": false, "rightToLeft": false, "autoPlay" : 3000}'>
-                        <% for (Product pro : listRelated) {
-                                String str2 = "images/" + daoGallery.getSampleOfProduct(pro.getProductID());
-                                double price2 = Double.parseDouble(daoProductType.getProductPrice(product.getProductID()));
-                        %>
-                        <div class="col" >
-                            <div class="col-inner">
-                                <div class="product-small box has-hover box-normal box-text-bottom">
-                                    <div class="box-image" style="width:150px; height:150px ">
-                                        <div class="" >
-                                            <a href="ProductDetailControllerMap?service=getProductDetail&pid=<%=pro.getProductID()%>">
-                                                <img src="<%=str2%>"></a>
-                                        </div>
-                                        <div class="image-tools z-top top right show-on-hover">
-                                        </div>
-                                        <div class="image-tools grid-tools text-center hide-for-small bottom hover-slide-in show-on-hover">
-                                        </div>
-                                    </div><!-- box-image -->
-                                    <div class="box-text text-center" style="background-color:rgb(255, 255, 255);">
-                                        <div class="title-wrapper" >		
-                                            <p class="category uppercase is-smaller no-text-overflow product-cat op-7">   </p> <%--category--%>
-                                            <p class="name product-title"><a href=""> <%=pro.getProductName()%> </a></p>
-                                        </div> 
-                                        <div class="price-wrapper" 
-                                             <span class="price"><del><span class="woocommerce-Price-amount amount"><%=nf.format(price2 * 1.05)%>&nbsp; <span class="woocommerce-Price-currencySymbol">&#8363;</span></span></del> 
-                                                <ins><span class="woocommerce-Price-amount amount"><%=nf.format(price2)%>&nbsp; <span class="woocommerce-Price-currencySymbol">&#8363;</span></span></ins></span>
-                                        </div>							
-                                    </div><!-- box-text -->
-                                </div><!-- box -->
-                            </div><!-- .col-inner -->
-                        </div><!-- col -->
-                        <% }
-                        %>
-                    </div>
-                </div>
-            </div>
-            <%--Arrival LEFT PIC --%>          
-            <div class="col medium-2 small-12 large-2"  ><div class="col-inner"  >
-                    <div class="img has-hover x md-x lg-x y md-y lg-y" id="image_683044710">
-                        <div class="img-inner dark" >
-                            <img width="466" height="666" src="http://mauweb.monamedia.net/lazada/wp-content/uploads/2017/11/banner-deal.jpg" class="attachment-original size-original" alt="" srcset="http://mauweb.monamedia.net/lazada/wp-content/uploads/2017/11/banner-deal.jpg 466w, http://mauweb.monamedia.net/lazada/wp-content/uploads/2017/11/banner-deal-210x300.jpg 210w, http://mauweb.monamedia.net/lazada/wp-content/uploads/2017/11/banner-deal-17x24.jpg 17w, http://mauweb.monamedia.net/lazada/wp-content/uploads/2017/11/banner-deal-25x36.jpg 25w, http://mauweb.monamedia.net/lazada/wp-content/uploads/2017/11/banner-deal-34x48.jpg 34w" sizes="(max-width: 466px) 100vw, 466px" />						
+            <div class="section-content relative">
+
+                <div class="gap-element" style="display:block; height:auto; padding-top:30px" class="clearfix"></div>
+                
+                <br><br>
+
+                <div class="row row-collapse align-equal"  id="row-1706731289">
+                    <div class="text">
+                        <div class="col-inner text-center" >
+                            <h1>Related Products</h1>
                         </div>
-                        <style scope="scope">
-                            #image_683044710 {
-                                width: 100%;
-                            }
-                        </style>
+                        <div class="col-inner text-left" >
+                            <p class="orange" style="float: right" ><a href="ProductDetailControllerMap?service=getRelatedProduct&pid=<%=product.getProductID()%>"><label>View All</label></a></p>
+                        </div>
+                    </div>              
+                    <br>
+                    <br>
+                    <br>
+                    <div class="col medium-12 small-12 large-12" >
+                        <div class="col-inner"  >
+                            <div class="row large-columns-5 medium-columns- small-columns-2 row-collapse has-shadow row-box-shadow-1 slider row-slider slider-nav-reveal slider-nav-push"  data-flickity-options='{"imagesLoaded": true, "groupCells": "100%", "dragThreshold" : 5, "cellAlign": "left","wrapAround": true,"prevNextButtons": true,"percentPosition": true,"pageDots": false, "rightToLeft": false, "autoPlay" : 3000}'>
+                                <% for (Product pro : listRelated) {
+                                        String str2 = "images/" + daoGallery.getSampleOfProduct(pro.getProductID());
+                                        double price2 = Double.parseDouble(daoProductType.getProductPrice(product.getProductID()));
+                                %>
+                                <div class="col" >
+                                    <div class="col-inner">
+                                        <div class="product-small box has-hover box-normal box-text-bottom">
+                                            <div class="box-image" style="width:150px; height:150px ">
+                                                <div class="" >
+                                                    <a href="ProductDetailControllerMap?service=getProductDetail&pid=<%=pro.getProductID()%>">
+                                                        <img src="<%=str2%>"></a>
+                                                </div>
+
+                                            </div><!-- box-image -->
+                                            <div class="box-text text-center" style="background-color:rgb(255, 255, 255);">
+                                                <div class="title-wrapper" >		
+                                                    <p class="category uppercase is-smaller no-text-overflow product-cat op-7">   </p> <%--category--%>
+                                                    <p class="name product-title"><a href=""> <%=pro.getProductName()%> </a></p>
+                                                </div> 
+                                                <div class="price-wrapper" 
+                                                     <span class="price"><del><span class="woocommerce-Price-amount amount"><%=nf.format(price2 * 1.05)%>&nbsp; <span class="woocommerce-Price-currencySymbol">&#8363;</span></span></del> 
+                                                        <ins><span class="woocommerce-Price-amount amount"><%=nf.format(price2)%>&nbsp; <span class="woocommerce-Price-currencySymbol">&#8363;</span></span></ins></span>
+                                                </div>							
+                                            </div><!-- box-text -->
+                                        </div><!-- box -->
+                                    </div><!-- .col-inner -->
+                                </div><!-- col -->
+                                <% }
+                                %>
+                            </div>
+                        </div>
                     </div>
+                    <%--Arrival LEFT PIC --%>          
+
+                    <style scope="scope">
+                        #row-1706731289 > .col > .col-inner {
+                            background-color: rgb(255, 255, 255);
+                        }
+                    </style>
                 </div>
-            </div>
-            <style scope="scope">
-                #row-1706731289 > .col > .col-inner {
-                    background-color: rgb(255, 255, 255);
-                }
-            </style>
-        </div>
+
+
+                <style scope="scope">
+
+                    #section_1788051855 {
+                        padding-top: 0px;
+                        padding-bottom: 0px;
+                        
+                    }
+                </style>
+        </section>
+                    <br><br><br>
+
+
+
+
 
 
         <jsp:include page="../footer.jsp"/>

@@ -177,7 +177,7 @@
 
                             <nav class="woocommerce-pagination">
                                 <ul class="page-numbers nav-pagination links text-center">
-                                    <ul id="pagination"onclick="topFunction()"class="page-numbers nav-pagination links text-center" ></ul>
+                                    <ul id="pagination"onclick="topFunction()"class="page-numbers nav-pagination links text-center" style="font-size: 15px;"></ul>
                                 </ul>
                             </nav>
                         </div>
