@@ -40,9 +40,9 @@
                 <i class="fas fa-times p-3 cursor-pointer text-secondary opacity-5 position-absolute end-0 top-0 d-none d-xl-none" aria-hidden="true" id="iconSidenav"></i>
                 <a class="sidebar-brand d-flex align-items-center justify-content-center" href="${contextPath}/HomePageControllerMap">
                     <div class="sidebar-brand-icon">
-                        <i class="fab fa-blogger"></i>
+                        <img  width="124" height="75" src="${contextPath}/images/fpt.png" class="header-logo-dark" />
                     </div>
-                    <div class="sidebar-brand-text mx-3 my-3">Bmazon</div>
+<!--                    <div class="sidebar-brand-text mx-3 my-3">Bmazon</div>-->
                 </a>
             </div>
             <hr class="horizontal dark mt-0">
@@ -60,7 +60,7 @@
                     <li class="nav-item">
                         <a class="nav-link " href="AdminControllerMap?service=usermanagement">
                             <div class="icon icon-shape icon-sm shadow border-radius-md bg-white text-center me-2 d-flex align-items-center justify-content-center">
-                                <i class="fas fa-fw fa-tachometer-alt" style="color: black"></i>
+                                <i class="fas fa-users" style="color: black"></i>
                             </div>
                             <span class="nav-link-text ms-1">User Management</span>
                         </a>
@@ -68,7 +68,7 @@
                     <li class="nav-item">
                         <a class="nav-link  " href="AdminControllerMap?service=productmanagement">
                             <div class="icon icon-shape icon-sm shadow border-radius-md bg-white text-center me-2 d-flex align-items-center justify-content-center">
-                                <i class="fas fa-fw fa-tachometer-alt " style="color: black"></i>
+                                <i class="fas fa-layer-group" style="color: black"></i>
                             </div>
                             <span class="nav-link-text ms-1 ">Product Management</span>
                         </a>
@@ -76,7 +76,7 @@
                     <li class="nav-item">
                         <a class="nav-link  " href="AdminControllerMap?service=companymanagement">
                             <div class="icon icon-shape icon-sm shadow border-radius-md bg-white text-center me-2 d-flex align-items-center justify-content-center">
-                                <i class="fas fa-fw fa-tachometer-alt" style="color: black"></i>
+                                <i class="far fa-building" style="color: black"></i>
                             </div>
                             <span class="nav-link-text ms-1">Company Management</span>
                         </a>
@@ -84,7 +84,7 @@
                     <li class="nav-item">
                         <a class="nav-link  " href="AdminControllerMap?service=gallerymanagement">
                             <div class="icon icon-shape icon-sm shadow border-radius-md bg-white text-center me-2 d-flex align-items-center justify-content-center">
-                                <i class="fas fa-fw fa-tachometer-alt" style="color: black"></i>
+                                <i class="far fa-images" style="color: black"></i>
                             </div>
                             <span class="nav-link-text ms-1">Gallery Management</span>
                         </a>
@@ -94,72 +94,7 @@
         </aside>
         <main class="main-content position-relative max-height-vh-100 h-100 mt-1 border-radius-lg ">
             <!-- Navbar -->
-            <nav class="navbar navbar-main navbar-expand-lg px-0 mx-4 shadow-none border-radius-xl" id="navbarBlur" navbar-scroll="true">
-                <div class="container-fluid py-1 px-3">
-                    <nav aria-label="breadcrumb">
-                        <li class="nav-item d-xl-none ps-3 d-flex align-items-center">
-                            <a href="javascript:;" class="nav-link text-body p-0" id="iconNavbarSidenav">
-                                <div class="sidenav-toggler-inner">
-                                    <i class="sidenav-toggler-line"></i>
-                                    <i class="sidenav-toggler-line"></i>
-                                    <i class="sidenav-toggler-line"></i>
-                                </div>
-                            </a>
-                        </li>
-                        <h6 class="font-weight-bolder mb-0">Dashboard</h6>
-                    </nav>
-                    <div class="collapse navbar-collapse mt-sm-0 mt-2 me-md-0 me-sm-4" id="navbar">
-                        <div class="ms-md-auto pe-md-3 d-flex align-items-center">
-                            <div class="input-group">
-                            </div>
-                        </div>
-                        <ul class="navbar-nav  justify-content-end">
-                            <li class="nav-item dropdown pe-2 d-flex align-items-center">
-                                <a href="javascript:;" class="nav-link text-body p-0" id="dropdownMenuButton" data-bs-toggle="dropdown" aria-expanded="false">
-                                    <span class="mr-2 d-none d-lg-inline text-gray-600 small"><%=curUser.getFullname()%></span>
-                                    <img class="img-profile rounded-circle"
-                                         src="${contextPath}/upload/<%=curUser.getProfileImage()%>" width="30px" height="30px">
-                                </a>
-                                <ul class="dropdown-menu  dropdown-menu-end  px-2 py-3 me-sm-n4" aria-labelledby="dropdownMenuButton">
-                                    <li class="mb-2">
-                                        <a class="dropdown-item border-radius-md" href="${contextPath}/UserControllerMap?service=info">
-                                            <div class="d-flex py-1">
-                                                <div class="d-flex flex-column justify-content-center">
-                                                    <h6 class="text-sm font-weight-normal mb-1">
-                                                        Profile
-                                                    </h6>
-                                                </div>
-                                            </div>
-                                        </a>
-                                    </li>
-                                    <li class="mb-2">
-                                        <a class="dropdown-item border-radius-md" href="${contextPath}/HomePageControllerMap">
-                                            <div class="d-flex py-1">
-                                                <div class="d-flex flex-column justify-content-center">
-                                                    <h6 class="text-sm font-weight-normal mb-1">
-                                                        Shopping
-                                                    </h6>
-                                                </div>
-                                            </div>
-                                        </a>
-                                    </li>
-                                    <li>
-                                        <a class="dropdown-item border-radius-md" href="${contextPath}/UserControllerMap?service=logout">
-                                            <div class="d-flex py-1">
-                                                <div class="d-flex flex-column justify-content-center">
-                                                    <h6 class="text-sm font-weight-normal mb-1">
-                                                        Log out
-                                                    </h6>
-                                                </div>
-                                            </div>
-                                        </a>
-                                    </li>
-                                </ul>
-                            </li>
-                        </ul>
-                    </div>
-                </div>
-            </nav>
+            <jsp:include page="adminheader.jsp"></jsp:include>
             <!-- End Navbar -->
             <div class="container-fluid py-4">
                 <div class="row">
