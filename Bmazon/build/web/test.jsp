@@ -1,11 +1,12 @@
 <%-- 
-    Document   : orderSeller
-    Created on : Sep 30, 2021, 2:15:00 PM
-    Author     : DELL
+    Document   : test
+    Created on : Sep 29, 2021, 3:30:40 PM
+    Author     : bacon
 --%>
 
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
+
 <html>
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
