@@ -34,11 +34,11 @@
                         <p style="font-size: 30px;"> Sign-Up</p>
                         <!--sign up-->
                         <label for="user" class="label">Username</label>
-                        <input id="user" type="text" name="signupusername" placeholder="Username"
+                        <input id="user" type="text" name="signupusername" placeholder="Username" pattern="^\S+$"
                                value="${usernameRegis}" class="form-control" required autofocus="">
 
                         <label for="fullname" class="label">Full Name</label>
-                        <input id="fullname" type="text" name="fname" class="form-control" value="${fullnameRegis}" placeholder="Your full name" required autofocus="" >
+                        <input id="fullname" type="text" pattern=".*\S+.*" name="fname" class="form-control" value="${fullnameRegis}" placeholder="Your full name" required autofocus="" >
 
                         <label for="email" class="label">Email</label>
                         <input id="email" type="text" pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,4}$" name="email" value="${emailRegis}" class="form-control" placeholder="Your email" required autofocus="" >
@@ -47,11 +47,11 @@
                         <input id="phone" type="text" pattern="(0[3|5|7|8|9])+([0-9]{8})\b" name="phone" value="${phoneRegis}" class="form-control" placeholder="Your phone" required autofocus="" >
 
                         <label for="pass" class="label">Password</label>
-                        <input id="pass" type="password" name="signuppass" placeholder="Password"
+                        <input id="pass" type="password" name="signuppass" placeholder="Password" pattern="^\S+$"
                                value="${passwordRegis}" class="form-control" data-type="password" required autofocus="">
 
-                        <label for="pass" class="label">Repeat Password</label>
-                        <input id="repassword" oninput="check(this)" type="password" name="resignuppass" value="${repasswordRegis}" class="form-control" placeholder="Repeat Password" data-type="password"required autofocus="" >
+                        <label for="pass" class="label">Repeat Password</label> 
+                        <input id="repassword" oninput="check(this)" type="password" pattern="^\S+$" name="resignuppass" value="${repasswordRegis}" class="form-control" placeholder="Repeat Password" data-type="password"required autofocus="" >
 
                         <br>
 

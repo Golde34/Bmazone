@@ -34,7 +34,7 @@
                         <p style="font-size: 30px;"> Sign-In</p>
                         <!--sign in-->
                         <label for="user" class="label">Username</label>
-                        <input id="user" type="text" name="username" placeholder="Enter your facebook account"
+                        <input id="user" type="text" pattern=".*\S+.*" name="username" placeholder="Enter your facebook account"
                                class="form-control" required autofocus="">
 
                         <p class="text-right" style="font-size: 12px;"><%= mess.toString()%></p>
