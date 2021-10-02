@@ -27,11 +27,11 @@
                 mess = "";
             }%>
         <div class="container">
-            <div class="col-lg-4"></div>
-            <div class="col-lg-5">
+            <div class="col-md-3"></div>
+            <div class="col-md-6">
                 <div id="logreg-forms">
                     <form class="form-signin" action="/Bmazon/LoginControllerMap" method="POST">
-                        <p style="font-size: 30px;"> Sign-In</p>
+                        <p style="font-size: 30px;"> Sign-Up</p>
                         <!--sign up-->
                         <label for="user" class="label">Username</label>
                         <input id="user" type="text" name="signupusername" placeholder="Username"
@@ -44,7 +44,7 @@
                         <input id="email" type="text" pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,4}$" name="email" value="${emailRegis}" class="form-control" placeholder="Your email" required autofocus="" >
 
                         <label for="phone" class="label">Phone</label>
-                        <input id="phone" type="text" pattern="([\+84|84|0]+(2|3|5|7|8|9)+([0-9]{8})" name="phone" value="${phoneRegis}" class="form-control" placeholder="Your phone" required autofocus="" >
+                        <input id="phone" type="text" pattern="(0[3|5|7|8|9])+([0-9]{8})\b" name="phone" value="${phoneRegis}" class="form-control" placeholder="Your phone" required autofocus="" >
 
                         <label for="pass" class="label">Password</label>
                         <input id="pass" type="password" name="signuppass" placeholder="Password"

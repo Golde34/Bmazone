@@ -13,66 +13,72 @@
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         <title>ChangePass</title>
-        <link href="../css/login.css" rel="stylesheet" type="text/css"/>
+        <!--css, js-->
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
+              integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm"
+              crossorigin="anonymous">
+        <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.3.1/css/all.css"
+              integrity="sha384-mzrmE5qonljUremFsqc01SB46JvROS7bZs3IO2EmfFsd15uHvIt+Y8vEf7N7fWAU"
+              crossorigin="anonymous">
         <link rel="stylesheet" href="${contextPath}/css/login.css"type="text/css">
+
     </head>
     <body>
-        <% String mess = (String) request.getAttribute("mess");
+        <% String mess = (String) request.getAttribute("messChangepass");
             if (mess == null) {
                 mess = "";
             }
-            User account = (User) request.getSession().getAttribute("currUser"); %>
-        <div class="login-wrap">
-	<div class="login-html">
-            <h2 style="color: yellow" > Change PassWord</h2>
-            <div class="login-form">
-			<div class="sign-up-html">
-                            <form action="/Bmazon/UserControllerMap" method="post">
-				<div class="group">
-					<label for="user" class="label">Username</label>
-                                        <input id="user" type="text" name="username"  class="input" readonly  value="<%= account.getUsername() %>">
-				</div>
-				<div class="group">
-					<label for="pass" class="label">Old Password</label>
-					<input id="oldpass" type="password" name="oldpass" class="input" placeholder="Password" data-type="password" required autofocus="" >
-				</div>
-				<div class="group">
-					<label for="pass" class="label">New Password</label>
-					<input id="newpass" oninput="checkDup(this)" type="password" name="newpass" class="input" placeholder="New password" data-type="password"required autofocus="" >
-				</div>
-				<div class="group">
-					<label for="pass" class="label">Confirm New Password</label>
-					<input id="repass" oninput="check(this)" type="password" name="renewpass" class="input" placeholder="Re-New password" data-type="password"required autofocus="" >
-				</div>
-                                 <h6 style="color: yellow" style="font-size: small" >${messChangepass}</h6>
-				<div class="group">
-					<input type="submit" class="button" value="Submit">
-                                        <input type="hidden" name="service" value="changepass">
-				</div>
-                            </form>
-                            <a style="color: yellow" href="index.jsp" id="cancel_signup" ><i class="fas fa-angle-left"></i> Back to homepage</a>
-				<div class="hr"></div>
-			</div>
-		</div>
-	</div>
-</div>
-    </body>
-    <script language='javascript' type='text/javascript'>
-    function check(input) {
-        if (input.value != document.getElementById('newpass').value) {
-            input.setCustomValidity('Password Must be Matching.');
-        } else {
-            // input is valid -- reset the error message
-            input.setCustomValidity('');
-        }
-    }
-    function checkDup(input) {
-        if (input.value != document.getElementById('oldpass').value) {
-            input.setCustomValidity('');
-        } else {
-            // input is valid -- reset the error message
-            input.setCustomValidity('New Pass is duplicate with Old Pass.');
-        }
-    }
-    </script>
+            User account = (User) request.getSession().getAttribute("currUser");%>
+        <div class="container">
+            <div class="col-md-3"></div>
+            <div class="col-md-6">
+                <div id="logreg-forms">
+                    <form action="/Bmazon/UserControllerMap" method="post">
+                        <p style="font-size: 30px;"> Change Password</p>
+                        <label for="user" class="label">Username</label>
+                        <input id="user" type="text" name="username"  class="form-control" readonly  value="<%= account.getUsername()%>">
+
+                        <label for="pass" class="label">Old Password</label>
+                        <input id="oldpass" type="password" name="oldpass" class="form-control" placeholder="Password" data-type="password" required autofocus="" >
+
+                        <label for="pass" class="label">New Password</label>
+                        <input id="newpass" oninput="checkDup(this)" type="password" name="newpass" class="form-control" placeholder="New password" data-type="password"required autofocus="" >
+
+                        <label for="pass" class="label">Confirm New Password</label>
+                        <input id="repass" oninput="check(this)" type="password" name="renewpass" class="form-control" placeholder="Re-New password" data-type="password"required autofocus="" >
+
+                        <p class="text-right" style="font-size: 12px;"><%= mess.toString()%></p>
+                            <input type="hidden" name="service" value="changepass">
+                            <button class="btn btn-secondary btn-block buttonSignIn" type="submit"><i
+                                    class="fas fa-sign-in-alt"></i> Submit </button>
+                        <br>
+                        <div class="row">
+                            <a class="col-md-6" style="font-size: 15px;" href="${contextPath}/HomePageControllerMap" id="cancel_signup" > Back to HomePage</a>
+                        </div>
+                    </form>
+                </div>
+
+            </div>
+            <div class="col-lg-3"></div>
+            <hr>
+        </div>
+        <script language='javascript' type='text/javascript'>
+            function check(input) {
+                if (input.value != document.getElementById('newpass').value) {
+                    input.setCustomValidity('New Password not Matching.');
+                } else {
+                    // input is valid -- reset the error message
+                    input.setCustomValidity('');
+                }
+            }
+            function checkDup(input) {
+                if (input.value != document.getElementById('oldpass').value) {
+                    input.setCustomValidity('');
+                } else {
+                    // input is valid -- reset the error message
+                    input.setCustomValidity('New Pass is duplicate with Old Pass.');
+                }
+            }
+        </script>
 </html>

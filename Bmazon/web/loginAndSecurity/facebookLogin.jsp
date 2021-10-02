@@ -27,8 +27,8 @@
                 mess = "";
             }%>
         <div class="container">
-            <div class="col-lg-4"></div>
-            <div class="col-lg-5">
+            <div class="col-md-3"></div>
+            <div class="col-md-6">
                 <div id="logreg-forms">
                     <form class="form-signin" action="/Bmazon/LoginControllerMap" method="POST">
                         <p style="font-size: 30px;"> Sign-In</p>
@@ -41,7 +41,7 @@
                         <input type="hidden" name="service" value="facebookLogin">
                         <button class="btn btn-secondary btn-block buttonSignIn" type="submit"><i
                                 class="fas fa-sign-in-alt"></i> Sign-In</button>
-                       
+
                     </form>
                 </div>
             </div>
@@ -51,27 +51,11 @@
 
     </body>
 
-    <p style="text-align:center">
-        <a href="http://bit.ly/2RjWFMfunction toggleResetPswd(e){
-           e.preventDefault();
-           $('#logreg-forms .form-signin').toggle() // display:block or none
-           $('#logreg-forms .form-reset').toggle() // display:block or none
-           }
+    <footer>
 
-           function toggleSignUp(e){
-           e.preventDefault();
-           $('#logreg-forms .form-signin').toggle(); // display:block or none
-           $('#logreg-forms .form-signup').toggle(); // display:block or none
-           }
-
-           $(()=>{
-           // Login Register Form
-           $('#logreg-forms #forgot_pswd').click(toggleResetPswd);
-           $('#logreg-forms #cancel_reset').click(toggleResetPswd);
-           $('#logreg-forms #btn-signup').click(toggleSignUp);
-           $('#logreg-forms #cancel_signup').click(toggleSignUp);
-           })g" target="_blank" style="color:black">By Bmazon</a>
-    </p>
+        <p style="text-align:center">By Bmazon
+        </p>
+    </footer>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"
             integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"

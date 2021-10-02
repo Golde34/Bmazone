@@ -96,7 +96,7 @@
                             </a>
                         </li>
 
-                        <li class="checked">
+                        <li class="active">
                             <a href="SellerControllerMap?service=ordermanagement">
                                 <i class="fa fa-globe"></i> <span>Order Management</span>
                             </a>
@@ -147,7 +147,7 @@
 
                     <!-- Main row -->
                     <!-- Dashboard -->
-                    <div class="row" id="Order" name="tabcontent" style="display: none;">
+                    <div class="row" id="Order" name="tabcontent" style="display: block;">
                         <div class="col-md-8">
                             <section class="panel">
                                 <header class="panel-heading">

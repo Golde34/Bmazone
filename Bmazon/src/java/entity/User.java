@@ -107,6 +107,19 @@ public class User {
         this.status = status;
     }
 
+    public User(String username, String password, String email, int sell, String fullname,String publicName, int systemRole, int status) {
+        this.username = username;
+        this.password = password;
+        this.email = email;
+        this.sell = sell;
+        this.fullname = fullname;
+        this.publicName = publicName;
+        this.systemRole = systemRole;
+        this.status = status;
+    }
+    
+    
+
     public String getUserId() {
         return userId;
     }

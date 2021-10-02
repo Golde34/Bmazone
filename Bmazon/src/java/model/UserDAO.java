@@ -84,8 +84,8 @@ public class UserDAO extends BaseDAO {
     }
 
     public void singup(String user, String pass, String email, String phone, String fname) {
-        String sql = "INSERT INTO [User]([username],[password],[email],[phoneNumber],[fullname],[systemRole],[status])\n"
-                + "     VALUES	(?,?,?,?,?,0,1)";
+        String sql = "INSERT INTO [User]([username],[password],[email],[phoneNumber],[sell],[fullname],[systemRole],[status])\n"
+                + "     VALUES	(?,?,?,?,0,?,0,1)";
 
         try {
             pre = conn.prepareStatement(sql);

@@ -88,7 +88,7 @@
                                 <i class="fa fa-dashboard"></i> <span>Dashboard</span>
                             </a>
                         </li>
-                        <li class="checked">
+                        <li class="active">
                             <a href="SellerControllerMap?service=productmanagement">
                                 <i class="fa fa-gavel"></i> <span>Product Management</span>
                             </a>

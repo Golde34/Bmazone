@@ -27,8 +27,8 @@
                 mess = "";
             }%>
         <div class="container">
-            <div class="col-lg-4"></div>
-            <div class="col-lg-5">
+            <div class="col-md-3"></div>
+            <div class="col-md-6">
                 <div id="logreg-forms">
                     <form class="form-signin" action="/Bmazon/LoginControllerMap" method="POST">
                         <p style="font-size: 30px;"> Sign-In</p>
@@ -51,17 +51,17 @@
                             <i class="fas fa-angle-left"></i> Forgot Password</a>
                         <hr>
                         <p style="font-size: 15px; color: #3C589C">Wanna sign in by another way?</p>
-                        <div class="row">       
+                        <div class="row">
                             <div class="col-md-6 googleButton">
-                                <a href="${contextPath}/loginAndSecurity/googleLogin.jsp">
-                                    <u><img width="20px" style="color: #415a70;" alt="Google sign-in"
+                                <a href="${contextPath}/loginAndSecurity/googleLogin.jsp" >
+                                    <u style="text-decoration: none;"><img width="20px" style="color: #415a70;" alt="Google sign-in"
                                              src="https://upload.wikimedia.org/wikipedia/commons/thumb/5/53/Google_%22G%22_Logo.svg/512px-Google_%22G%22_Logo.svg.png" />
                                         Sign in with Google</u>
                                 </a>
                             </div>
                             <div class="col-md-6 facebookButton">
-                                <a href="${contextPath}/loginAndSecurity/facebookLogin.jsp">
-                                    <u><img width="20px" style="color: #415a70;" alt="Facebook sign-in"
+                                <a href="${contextPath}/loginAndSecurity/facebookLogin.jsp" >
+                                    <u style="text-decoration: none;"><img width="20px" style="color: #415a70;" alt="Facebook sign-in"
                                              src="https://upload.wikimedia.org/wikipedia/en/thumb/0/04/Facebook_f_logo_%282021%29.svg/100px-Facebook_f_logo_%282021%29.svg.png" />
                                         Sign in with Facebook</u>
                                 </a>
@@ -71,7 +71,6 @@
                         <p style="font-size: 15px; color: #3C589C">Don't have an account?</p>
                         <a href="${contextPath}/loginAndSecurity/register.jsp"><button class="btn btn-secondary btn-block buttonSignUp" type="button" id="btn-signup"><i
                                     class="fas fa-user-plus"></i> Create your New Account</button></a>
-                    </form>
                 </div>
             </div>
             <div class="col-lg-3"></div>
