@@ -122,7 +122,7 @@
                                             <tr>
                                                 <td>Company Name</td>
                                                 <td>
-                                                    <input pattern="^[^\s]+(\s+[^\s]+)*$" class="form-control" type="text" name="companyname" required>
+                                                    <input pattern="^[^\s]+(\s+[^\s]+)*$" class="form-control" type="text" value="${companyname}" name="companyname" required>
                                                     <div class="invalid-feedback">
                                                         Not blank and no space at beginning or ending
                                                     </div>
@@ -131,7 +131,7 @@
                                             <tr>
                                                 <td>Unit Cost</td>
                                                 <td>
-                                                    <input pattern="^[0-9]*$" class="form-control" type="text" name="unitcost" required>
+                                                    <input pattern="^[0-9]*$" class="form-control" type="text" value="${unitcost}" name="unitcost" required>
                                                     <div class="invalid-feedback">
                                                         Only number
                                                     </div>
@@ -140,7 +140,7 @@
                                             <tr>
                                                 <td>Commit Date</td>
                                                 <td>
-                                                    <input pattern="^[0-9]*$" class="form-control" type="text" name="commitdate" required>
+                                                    <input pattern="^[0-9]*$" class="form-control" type="text" value="${commitdate}" name="commitdate" required>
                                                     <div class="invalid-feedback">
                                                         Only number
                                                     </div>

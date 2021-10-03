@@ -242,6 +242,12 @@ public class AdminController extends HttpServlet {
             isExist = true;
         }
         if (isExist == true) {
+            request.setAttribute("username", username);
+            request.setAttribute("password", password);
+            request.setAttribute("fullname", fullname);
+            request.setAttribute("email", email);
+            request.setAttribute("phone", phone);
+            request.setAttribute("address", address);
             String mess = "Add fail because duplicate information";
             request.setAttribute("mess", mess);
             String state = "fail";
@@ -443,6 +449,9 @@ public class AdminController extends HttpServlet {
             isExist = true;
         }
         if (isExist == true) {
+            request.setAttribute("companyname", companyname);
+            request.setAttribute("unitcost", unitcost);
+            request.setAttribute("commitdate", commitdate);
             String state = "fail";
             request.setAttribute("state", state);
             String mess = "Add fail because duplicate information";

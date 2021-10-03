@@ -123,7 +123,7 @@ public class LoginController extends HttpServlet {
 
         boolean exist = daoUser.checkExistUserName(Username);
         if (exist == false) {
-            daoUser.singup(Username, Password, Email, Phone, fullname);
+            daoUser.addUserRegister(new User(Username, Password, Email, Phone, 0, 0, fullname, Username, "", "", "", "", 0, "", "", "", "", "", 0, 0, 1));
             messRegis = "Signup Successfully!";
 //            daoUser.singup(username, password, email, phone, fname);
 //            mess = "Signup Successfully!";

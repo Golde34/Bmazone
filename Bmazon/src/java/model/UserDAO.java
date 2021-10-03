@@ -84,22 +84,42 @@ public class UserDAO extends BaseDAO {
         return null;
     }
 
-    public void singup(String user, String pass, String email, String phone, String fname) {
-        String sql = "INSERT INTO [User]([username],[password],[email],[phoneNumber],[sell],[fullname],[systemRole],[status])\n"
-                + "     VALUES	(?,?,?,?,0,?,0,1)";
-
+    public int addUserRegister(User obj) {
+        int n = 0;
+        String sql = "INSERT INTO [User](username, password, email, phoneNumber, sell, wallet, fullname, publicName, address,"
+                + " profileImage, backgroundImage, occupation, gender, DOB, bio, Facebook, Instagram, Twitter, Youtube,"
+                + " activityPoint, systemRole, status)"
+                + " values (?,?,?,?,?,?,?,?,?,?,?,?,?,GETDATE(),?,?,?,?,?,?,?,?)";
         try {
             pre = conn.prepareStatement(sql);
-            pre.setString(1, user);
-            pre.setString(2, pass);
-            pre.setString(3, email);
-            pre.setString(4, phone);
-            pre.setString(5, fname);
-            pre.executeUpdate();
-        } catch (Exception e) {
+            pre.setString(1, obj.getUsername());
+            pre.setString(2, obj.getPassword());
+            pre.setString(3, obj.getEmail());
+            pre.setString(4, obj.getPhoneNumber());
+            pre.setInt(5, obj.getSell());
+            pre.setDouble(6, obj.getWallet());
+            pre.setString(7, obj.getFullname());
+            pre.setString(8, obj.getPublicName());
+            pre.setString(9, obj.getAddress());
+            pre.setString(10, obj.getProfileImage());
+            pre.setString(11, obj.getBackgroundImage());
+            pre.setString(12, obj.getOccupation());
+            pre.setInt(13, obj.getGender());
+            pre.setString(14, obj.getBio());
+            pre.setString(15, obj.getFacebook());
+            pre.setString(16, obj.getInstagram());
+            pre.setString(17, obj.getTwitter());
+            pre.setString(18, obj.getYoutube());
+            pre.setInt(19, obj.getActivityPoint());
+            pre.setInt(20, obj.getSystemRole());
+            pre.setInt(21, obj.getStatus());
+            n = pre.executeUpdate();
+        } catch (SQLException ex) {
+            Logger.getLogger(UserDAO.class.getName()).log(Level.SEVERE, null, ex);
         }
+        return n;
     }
-
+    
     public int addUser(User obj) {
         int n = 0;
         String sql = "INSERT INTO [User](username, password, email, phoneNumber, sell, wallet, fullname, publicName, address,"

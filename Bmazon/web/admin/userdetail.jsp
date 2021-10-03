@@ -125,7 +125,7 @@
                                             <tr>
                                                 <td>User Name</td>
                                                 <td>
-                                                    <input pattern="[^' ']+" class="form-control" type="text" name="username" required>
+                                                    <input pattern="[^' ']+" class="form-control" type="text" value="${username}" name="username" required>
                                                     <div class="invalid-feedback">
                                                         Not blank and no space at beginning or ending
                                                     </div>
@@ -134,7 +134,7 @@
                                             <tr>
                                                 <td>Password</td>
                                                 <td>
-                                                    <input pattern="[^' ']+" class="form-control" type="text" name="password" required>
+                                                    <input pattern="[^' ']+" class="form-control" type="text" value="${password}" name="password" required>
                                                     <div class="invalid-feedback">
                                                         Not blank and no space
                                                     </div>
@@ -143,7 +143,7 @@
                                             <tr>
                                                 <td>Full Name</td>
                                                 <td>
-                                                    <input pattern="[^' ']+" class="form-control" type="text" name="fullname" required>
+                                                    <input pattern="^[^\s]+(\s+[^\s]+)*$" class="form-control" type="text" value="${fullname}" name="fullname" required>
                                                     <div class="invalid-feedback">
                                                         Not blank and no space
                                                     </div>
@@ -152,7 +152,7 @@
                                             <tr>
                                                 <td>Email</td>
                                                 <td>
-                                                    <input pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{1,4}$" class="form-control" type="text" name="email" required>
+                                                    <input pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{1,4}$" class="form-control" type="text" value="${email}" name="email" required>
                                                     <div class="invalid-feedback">
                                                         Input correct email patter : abc@xyz.com
                                                     </div>
@@ -161,7 +161,7 @@
                                             <tr>
                                                 <td>Phone</td>
                                                 <td>
-                                                    <input pattern="(09|03|07|08|05)+([0-9]{8})" class="form-control" type="text" name="phone" required>
+                                                    <input pattern="(09|03|07|08|05)+([0-9]{8})" class="form-control" type="text" value="${phone}" name="phone" required>
                                                     <div class="invalid-feedback">
                                                         Input correct phone number in Viet Nam
                                                     </div>
@@ -170,8 +170,7 @@
                                             <tr>
                                                 <td>Address</td>
                                                 <td>
-                                                    <input class="form-control" type="text" name="address">
-                                                    <input pattern="^[^\s]+(\s+[^\s]+)*$" class="form-control" type="text" name="address" required>
+                                                    <input pattern="^[^\s]+(\s+[^\s]+)*$" class="form-control" type="text" value="${address}" name="address" required>
                                                     <div class="invalid-feedback">
                                                         Not blank and no space at beginning or ending
                                                     </div>
@@ -227,7 +226,7 @@
                                             <tr>
                                                 <td>Full Name</td>
                                                 <td>
-                                                    <input pattern="[^' ']+" class="form-control" value="<%=user.getFullname()%>" type="text" name="fullname" required>
+                                                    <input pattern="^[^\s]+(\s+[^\s]+)*$" class="form-control" value="<%=user.getFullname()%>" type="text" name="fullname" required>
                                                     <div class="invalid-feedback">
                                                         Not blank and no space
                                                     </div>
@@ -254,7 +253,6 @@
                                             <tr>
                                                 <td>Address</td>
                                                 <td>
-                                                    <input class="form-control" value="<%=user.getAddress()%>" type="text" name="address">
                                                     <input pattern="^[^\s]+(\s+[^\s]+)*$" class="form-control" value="<%=user.getAddress()%>" type="text" name="address" required>
                                                     <div class="invalid-feedback">
                                                         Not blank and no space at beginning or ending

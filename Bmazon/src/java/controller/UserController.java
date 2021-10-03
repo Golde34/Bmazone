@@ -171,6 +171,7 @@ public class UserController extends HttpServlet {
         u.setBio(request.getParameter("bio"));
         u.setGender(Integer.parseInt(request.getParameter("gender")));
         u.setDOB(Date.valueOf(request.getParameter("dob")));
+        u.setOccupation(request.getParameter("occupation"));
         u.setAddress(request.getParameter("address"));
         u.setFacebook(request.getParameter("Facebook"));
         u.setInstagram(request.getParameter("Instagram"));
