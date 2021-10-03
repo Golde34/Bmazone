@@ -109,7 +109,7 @@
                                 <div class="card-body px-0 pb-2" >    
                                     <div class="card-header py-3" style="display: flex;
                                          justify-content: space-between;">
-                                        <h3 class="m-0 font-weight-bold text-primary">Company Detail</h3>
+                                        <h3 class="m-0 font-weight-bold text-primary">User Detail</h3>
                                         <a href="AdminControllerMap?service=usermanagement"><btn class="btn btn-primary">User Management</btn></a>
                                     </div>
                                 <% if (state.equals("success")) {%>
@@ -170,10 +170,7 @@
                                             <tr>
                                                 <td>Address</td>
                                                 <td>
-                                                    <input pattern="[^' ']+" class="form-control" type="text" name="address" required>
-                                                    <div class="invalid-feedback">
-                                                        Not blank and no space
-                                                    </div>
+                                                    <input class="form-control" type="text" name="address">
                                                 </td>
                                             </tr>
                                             <tr>
@@ -253,10 +250,7 @@
                                             <tr>
                                                 <td>Address</td>
                                                 <td>
-                                                    <input pattern="[^' ']+" class="form-control" value="<%=user.getAddress()%>" type="text" name="address" required>
-                                                    <div class="invalid-feedback">
-                                                        Not blank and no space
-                                                    </div>
+                                                    <input class="form-control" value="<%=user.getAddress()%>" type="text" name="address">
                                                 </td>
                                             </tr>
                                             <tr>
