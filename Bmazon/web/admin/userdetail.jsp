@@ -127,7 +127,7 @@
                                                 <td>
                                                     <input pattern="[^' ']+" class="form-control" type="text" name="username" required>
                                                     <div class="invalid-feedback">
-                                                        Not blank and no space
+                                                        Not blank and no space at beginning or ending
                                                     </div>
                                                 </td>
                                             </tr>
@@ -171,6 +171,10 @@
                                                 <td>Address</td>
                                                 <td>
                                                     <input class="form-control" type="text" name="address">
+                                                    <input pattern="^[^\s]+(\s+[^\s]+)*$" class="form-control" type="text" name="address" required>
+                                                    <div class="invalid-feedback">
+                                                        Not blank and no space at beginning or ending
+                                                    </div>
                                                 </td>
                                             </tr>
                                             <tr>
@@ -207,7 +211,7 @@
                                                 <td>
                                                     <input pattern="[^' ']+" class="form-control" value="<%=user.getUsername()%>" type="text" name="username" required>
                                                     <div class="invalid-feedback">
-                                                        Not blank and no space
+                                                        Not blank and no space at beginning or ending
                                                     </div>
                                                 </td>
                                             </tr>
@@ -251,6 +255,10 @@
                                                 <td>Address</td>
                                                 <td>
                                                     <input class="form-control" value="<%=user.getAddress()%>" type="text" name="address">
+                                                    <input pattern="^[^\s]+(\s+[^\s]+)*$" class="form-control" value="<%=user.getAddress()%>" type="text" name="address" required>
+                                                    <div class="invalid-feedback">
+                                                        Not blank and no space at beginning or ending
+                                                    </div>
                                                 </td>
                                             </tr>
                                             <tr>
