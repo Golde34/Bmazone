@@ -57,7 +57,7 @@ public class UserController extends HttpServlet {
             String service = request.getParameter("service");
 
             if (service == null) {
-                service = "HomePage";
+                service = "info";
             }
 
             //Logout service

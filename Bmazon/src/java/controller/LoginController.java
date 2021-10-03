@@ -166,7 +166,8 @@ public class LoginController extends HttpServlet {
         } else {
             daoUser.changePassword(username, newPassword);
             mess = "Change password successfully !!";
-            sendDispatcher(request, response, "loginAndSecurity/login.jsp");
+            request.setAttribute("mess", mess);
+            sendDispatcher(request, response, "loginAndSecurity/forgot.jsp");
         }
     }
 

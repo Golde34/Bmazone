@@ -16,6 +16,18 @@
         <filter-name>sessionFilter</filter-name>
         <filter-class>filter.sessionFilter</filter-class>
     </filter>
+    <filter>
+        <filter-name>sellerFilter</filter-name>
+        <filter-class>filter.sellerFilter</filter-class>
+    </filter>
+    <error-page>
+        <error-code>404</error-code>
+        <location>/Error404.html</location>
+    </error-page>
+    <filter-mapping>
+        <filter-name>sellerFilter</filter-name>
+        <servlet-name>SellerController</servlet-name>
+    </filter-mapping>
     <filter-mapping>
         <filter-name>sessionFilter</filter-name>
         <url-pattern>/*</url-pattern>
@@ -32,10 +44,14 @@
         <filter-name>authenticationFilter</filter-name>
         <servlet-name>SellerController</servlet-name>
     </filter-mapping>
-    <error-page>
-        <error-code>404</error-code>
-        <location>/Error404.html</location>
-    </error-page>
+    <filter-mapping>
+        <filter-name>authenticationFilter</filter-name>
+        <servlet-name>AdminController</servlet-name>
+    </filter-mapping>
+    <filter-mapping>
+        <filter-name>authenticationFilter</filter-name>
+        <servlet-name>UserController</servlet-name>
+    </filter-mapping>
     <servlet>
         <servlet-name>HomePageController</servlet-name>
         <servlet-class>controller.HomePageController</servlet-class>

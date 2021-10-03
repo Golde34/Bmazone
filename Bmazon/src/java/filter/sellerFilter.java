@@ -5,6 +5,7 @@
  */
 package filter;
 
+import entity.User;
 import java.io.IOException;
 import java.io.PrintStream;
 import java.io.PrintWriter;
@@ -22,7 +23,7 @@ import javax.servlet.http.HttpServletResponse;
  *
  * @author Admin
  */
-public class routerFilter implements Filter {
+public class sellerFilter implements Filter {
     
     private static final boolean debug = true;
 
@@ -31,13 +32,13 @@ public class routerFilter implements Filter {
     // configured. 
     private FilterConfig filterConfig = null;
     
-    public routerFilter() {
+    public sellerFilter() {
     }    
     
     private void doBeforeProcessing(ServletRequest request, ServletResponse response)
             throws IOException, ServletException {
         if (debug) {
-            log("routerFilter:DoBeforeProcessing");
+            log("sellerFilter:DoBeforeProcessing");
         }
 
         // Write code here to process the request and/or response before
@@ -65,7 +66,7 @@ public class routerFilter implements Filter {
     private void doAfterProcessing(ServletRequest request, ServletResponse response)
             throws IOException, ServletException {
         if (debug) {
-            log("routerFilter:DoAfterProcessing");
+            log("sellerFilter:DoAfterProcessing");
         }
 
         // Write code here to process the request and/or response after
@@ -101,15 +102,19 @@ public class routerFilter implements Filter {
             throws IOException, ServletException {
         
         if (debug) {
-            log("routerFilter:doFilter()");
+            log("sellerFilter:doFilter()");
         }
         
         doBeforeProcessing(request, response);
-        HttpServletRequest httpRequest = (HttpServletRequest) request;
-        HttpServletResponse httpResponse = (HttpServletResponse) response;
-        String url = httpRequest.getServletPath();
-        if (url.contains("footer.jsp") || url.contains("header.jsp")) {
-            httpResponse.sendRedirect("HomePageControllerMap?service=HomePage");
+        HttpServletRequest httprequest = (HttpServletRequest) request;
+        HttpServletResponse httpresponse = (HttpServletResponse) response;
+        User x = (User) httprequest.getSession().getAttribute("currUser");
+        String url = httprequest.getRequestURL().toString();   
+        if(x==null){
+            chain.doFilter(request, response);
+        }
+        if (x.getSell()==0 && x!=null) {
+            httpresponse.sendRedirect("HomePageControllerMap");
         }
         Throwable problem = null;
         try {
@@ -166,7 +171,7 @@ public class routerFilter implements Filter {
         this.filterConfig = filterConfig;
         if (filterConfig != null) {
             if (debug) {                
-                log("routerFilter:Initializing filter");
+                log("sellerFilter:Initializing filter");
             }
         }
     }
@@ -177,9 +182,9 @@ public class routerFilter implements Filter {
     @Override
     public String toString() {
         if (filterConfig == null) {
-            return ("routerFilter()");
+            return ("sellerFilter()");
         }
-        StringBuffer sb = new StringBuffer("routerFilter(");
+        StringBuffer sb = new StringBuffer("sellerFilter(");
         sb.append(filterConfig);
         sb.append(")");
         return (sb.toString());
