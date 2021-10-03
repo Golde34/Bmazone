@@ -134,13 +134,14 @@ public class UserController extends HttpServlet {
         String xUser = request.getParameter("username");
         String oldpass = request.getParameter("oldpass");
         String newpass = request.getParameter("newpass");
+        String repass = request.getParameter("renewpass");
 
 //        if (!newpass.equals(repass)) {
 //            messChangepass = "You are only have permission to change pass of your own account";
 //        } else 
-        if (!account.getPassword().equals(oldpass)) {
+        if (!account.getPassword().equals(oldpass) && oldpass != null) {
             messChangepass = "Old Password is not correct";
-        } else {
+        } else if (account.getPassword().equals(oldpass) && oldpass != null && newpass.equals(repass)) {
             daoUser.changePassword(user, newpass);
             messChangepass = "Change password successfully !!";
         }
