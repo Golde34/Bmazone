@@ -162,7 +162,7 @@
                                                 <td>
                                                     <input pattern="^[^\s]+(\s+[^\s]+)*$" class="form-control" value="<%=company.getCompanyName()%>" type="text" name="companyname" required>
                                                     <div class="invalid-feedback">
-                                                        Not blank and no space
+                                                        Not blank and no space at beginning or ending
                                                     </div>
                                                 </td>
                                             </tr>
