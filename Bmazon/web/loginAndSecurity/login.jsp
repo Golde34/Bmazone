@@ -41,7 +41,7 @@
                                value="${userpassLogin}" class="form-control" data-type="password" required autofocus="">
                         <br>
 
-                        <p class="text-right" style="font-size: 12px;"><%= mess.toString()%></p>
+                        <p class="text-right text-danger" style="font-size: 12px;"><%= mess.toString()%></p>
                         <input type="hidden" name="service" value="login">
                         <button class="btn btn-secondary btn-block buttonSignIn" type="submit"><i
                                 class="fas fa-sign-in-alt"></i> Sign-In</button>
