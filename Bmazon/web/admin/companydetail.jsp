@@ -103,19 +103,18 @@
                     <div class="row my-4">
                         <div class="col-lg-12 col-md-12 mb-md-0 mb-4">
                             <div class="card">
-                                <div class="card-body px-0 pb-2">
-<!--                                     
-                                         style="display: flex;
-                                         justify-content: space-between;"-->
-                                    <div class="card-header py-3">
+                                <div class="card-body px-0 pb-2" >    
+                                    <div class="card-header py-3" style="display: flex;
+                                     justify-content: space-between;">
                                         <h3 class="m-0 font-weight-bold text-primary">Company Detail</h3>
-                                    <% if (state.equals("success")) {%>
-                                    <h6 class="text-success mt-3">${mess}</h6>
-                                    <%}%>
-                                    <% if (state.equals("fail")) {%>
-                                    <h6 class="text-danger mt-3">${mess}</h6>
-                                    <%}%>
-                                </div>
+                                        <a href="AdminControllerMap?service=companymanagement"><btn class="btn btn-primary">Company Management</btn></a>
+                                    </div>
+                                <% if (state.equals("success")) {%>
+                                <h6 class="text-success mt-3 px-4">${mess}</h6>
+                                <%}%>
+                                <% if (state.equals("fail")) {%>
+                                <h6 class="text-danger mt-3 px-4">${mess}</h6>
+                                <%}%>
                                 <div class="card-body">
                                     <form class="needs-validation" novalidate action="/Bmazon/AdminControllerMap" method="POST">
                                         <%if (service.equalsIgnoreCase("addcompanydetail")) {%>
@@ -123,9 +122,9 @@
                                             <tr>
                                                 <td>Company Name</td>
                                                 <td>
-                                                    <input pattern=".*\S+.*" class="form-control" type="text" name="companyname" required>
+                                                    <input pattern="[^' ']+" class="form-control" type="text" name="companyname" required>
                                                     <div class="invalid-feedback">
-                                                        Invalid input
+                                                        Not blank and no space
                                                     </div>
                                                 </td>
                                             </tr>
@@ -134,7 +133,7 @@
                                                 <td>
                                                     <input pattern="^[0-9]*$" class="form-control" type="text" name="unitcost" required>
                                                     <div class="invalid-feedback">
-                                                        Invalid input
+                                                        Only number
                                                     </div>
                                                 </td>
                                             </tr>
@@ -143,7 +142,7 @@
                                                 <td>
                                                     <input pattern="^[0-9]*$" class="form-control" type="text" name="commitdate" required>
                                                     <div class="invalid-feedback">
-                                                        Invalid input
+                                                        Only number
                                                     </div>
                                                 </td>
                                             </tr>
@@ -161,18 +160,19 @@
                                             <tr>
                                                 <td>Company Name</td>
                                                 <td>
-                                                    <input pattern=".*\S+.*" class="form-control" value="<%=company.getCompanyName()%>" type="text" name="companyname" required>
+                                                    <input pattern="[^' ']+" class="form-control" value="<%=company.getCompanyName()%>" type="text" name="companyname" required>
                                                     <div class="invalid-feedback">
-                                                        Invalid input
+                                                        Not blank and no space
                                                     </div>
                                                 </td>
                                             </tr>
                                             <tr>
                                                 <td>Unit Cost</td>
                                                 <td>
-                                                    <input pattern="^[0-9]*$" class="form-control" value="<%=company.getUnitCost()%>" type="text" name="unitcost" required>
+                                                    <% int unit= (int) company.getUnitCost();%>
+                                                    <input pattern="^[0-9]*$" class="form-control" value="<%=unit%>" type="text" name="unitcost" required>
                                                     <div class="invalid-feedback">
-                                                        Invalid input
+                                                        Only Number
                                                     </div>
                                                 </td>
                                             </tr> 
@@ -181,7 +181,7 @@
                                                 <td>
                                                     <input pattern="^[0-9]*$" class="form-control" value="<%=company.getCommitDate()%>" type="text" name="commitdate" required>
                                                     <div class="invalid-feedback">
-                                                        Invalid input
+                                                        Only Number
                                                     </div>
                                                 </td>
                                             </tr>

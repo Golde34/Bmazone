@@ -95,7 +95,7 @@
                                 <div class="card-header py-3" 
                                      style="display: flex;
                                      justify-content: space-between;">
-                                    <h6 class="m-0 font-weight-bold text-primary">User Management</h6>
+                                    <h3 class="m-0 font-weight-bold text-primary">User Management</h3>
                                     <a href="AdminControllerMap?service=adduserdetail">
                                         <button class="btn-primary btn">Add new user</button></a>
                                 </div>

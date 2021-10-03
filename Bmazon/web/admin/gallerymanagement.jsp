@@ -100,7 +100,7 @@
                                 <div class="card-header py-3" 
                                      style="display: flex;
                                      justify-content: space-between;">
-                                    <h6 class="m-0 font-weight-bold text-primary">Gallery Management</h6>
+                                    <h3 class="m-0 font-weight-bold text-primary">Gallery Management</h3>
                                     <a href="AdminControllerMap?service=addgallerydetail">
                                         <button class="btn btn-primary">Add new gallery</button></a>
                                 </div>

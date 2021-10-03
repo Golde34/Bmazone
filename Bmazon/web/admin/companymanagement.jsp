@@ -100,7 +100,7 @@
                                 <div class="card-header py-3" 
                                      style="display: flex;
                                      justify-content: space-between;">
-                                    <h6 class="m-0 font-weight-bold text-primary">Ship Company Management</h6>
+                                    <h3 class="m-0 font-weight-bold text-primary">Ship Company Management</h3>
                                     <a href="AdminControllerMap?service=addcompanydetail">
                                         <button class="btn-primary btn">Add new company</button></a>
                                 </div>
@@ -135,9 +135,10 @@
                                         <tbody id="company">
                                             <%for (ShipCompany company : listCompany) {%>
                                             <tr>
+                                                <% int unit = (int) company.getUnitCost();%>
                                                 <td><%=company.getCompanyName()%></td>
                                                 <td><%=company.getCommitDate()%></td>
-                                                <td><%=company.getUnitCost()%></td>
+                                                <td><%=unit%></td>
                                                 <td>
                                                     <a href="AdminControllerMap?service=updatecompanydetail&companyid=<%=company.getCompanyID()%>"><span class="fas fa-edit"></span></a>
                                                 </td>

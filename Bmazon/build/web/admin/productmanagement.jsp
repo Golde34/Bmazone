@@ -107,7 +107,7 @@
                                 <div class="card-header py-3" 
                                      style="display: flex;
                                      justify-content: space-between;">
-                                    <h6 class="m-0 font-weight-bold text-primary">Product Management</h6>
+                                    <h3 class="m-0 font-weight-bold text-primary">Product Management</h3>
                                     <a href="AdminControllerMap?service=addproductdetail">
                                         <button class="btn btn-primary">Add new product</button></a>
                                 </div>

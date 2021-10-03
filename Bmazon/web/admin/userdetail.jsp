@@ -106,16 +106,18 @@
                     <div class="row my-4">
                         <div class="col-lg-12 col-md-12 mb-md-0 mb-4">
                             <div class="card">
-                                <div class="card-body px-0 pb-2">
-                                    <div class="card-header py-3" >
-                                        <h3 class="m-0 font-weight-bold text-primary">User Management</h3>
-                                    <% if (state.equals("success")) {%>
-                                    <h6 class="text-success mt-3">${mess}</h6>
-                                    <%}%>
-                                    <% if (state.equals("fail")) {%>
-                                    <h6 class="text-danger mt-3">${mess}</h6>
-                                    <%}%>
-                                </div>
+                                <div class="card-body px-0 pb-2" >    
+                                    <div class="card-header py-3" style="display: flex;
+                                         justify-content: space-between;">
+                                        <h3 class="m-0 font-weight-bold text-primary">Company Detail</h3>
+                                        <a href="AdminControllerMap?service=usermanagement"><btn class="btn btn-primary">User Management</btn></a>
+                                    </div>
+                                <% if (state.equals("success")) {%>
+                                <h6 class="text-success mt-3 px-4">${mess}</h6>
+                                <%}%>
+                                <% if (state.equals("fail")) {%>
+                                <h6 class="text-danger mt-3 px-4">${mess}</h6>
+                                <%}%>
                                 <div class="card-body">
                                     <form class="needs-validation" novalidate action="/Bmazon/AdminControllerMap" method="POST">
                                         <%if (service.equalsIgnoreCase("adduserdetail")) {%>
@@ -123,27 +125,27 @@
                                             <tr>
                                                 <td>User Name</td>
                                                 <td>
-                                                    <input pattern=".*\S+.*" class="form-control" type="text" name="username" required>
+                                                    <input pattern="[^' ']+" class="form-control" type="text" name="username" required>
                                                     <div class="invalid-feedback">
-                                                        Invalid input
+                                                        Not blank and no space
                                                     </div>
                                                 </td>
                                             </tr>
                                             <tr>
                                                 <td>Password</td>
                                                 <td>
-                                                    <input pattern=".*\S+.*" class="form-control" type="text" name="password" required>
+                                                    <input pattern="[^' ']+" class="form-control" type="text" name="password" required>
                                                     <div class="invalid-feedback">
-                                                        Invalid input
+                                                        Not blank and no space
                                                     </div>
                                                 </td>
                                             </tr>
                                             <tr>
                                                 <td>Full Name</td>
                                                 <td>
-                                                    <input pattern=".*\S+.*" class="form-control" type="text" name="fullname" required>
+                                                    <input pattern="[^' ']+" class="form-control" type="text" name="fullname" required>
                                                     <div class="invalid-feedback">
-                                                        Invalid input
+                                                        Not blank and no space
                                                     </div>
                                                 </td>
                                             </tr>
@@ -152,7 +154,7 @@
                                                 <td>
                                                     <input pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{1,4}$" class="form-control" type="text" name="email" required>
                                                     <div class="invalid-feedback">
-                                                        Invalid input
+                                                        Input correct email patter : abc@xyz.com
                                                     </div>
                                                 </td>
                                             </tr>
@@ -161,16 +163,16 @@
                                                 <td>
                                                     <input pattern="(09|03|07|08|05)+([0-9]{8})" class="form-control" type="text" name="phone" required>
                                                     <div class="invalid-feedback">
-                                                        Invalid input
+                                                        Input correct phone number in Viet Nam
                                                     </div>
                                                 </td>
                                             </tr>
                                             <tr>
                                                 <td>Address</td>
                                                 <td>
-                                                    <input pattern=".*\S+.*" class="form-control" type="text" name="address" required>
+                                                    <input pattern="[^' ']+" class="form-control" type="text" name="address" required>
                                                     <div class="invalid-feedback">
-                                                        Invalid input
+                                                        Not blank and no space
                                                     </div>
                                                 </td>
                                             </tr>
@@ -206,27 +208,27 @@
                                             <tr>
                                                 <td>User Name</td>
                                                 <td>
-                                                    <input pattern=".*\S+.*" class="form-control" value="<%=user.getUsername()%>" type="text" name="username" required>
+                                                    <input pattern="[^' ']+" class="form-control" value="<%=user.getUsername()%>" type="text" name="username" required>
                                                     <div class="invalid-feedback">
-                                                        Invalid input
+                                                        Not blank and no space
                                                     </div>
                                                 </td>
                                             </tr>
                                             <tr>
                                                 <td>Password</td>
                                                 <td>
-                                                    <input pattern=".*\S+.*" class="form-control" value="<%=user.getPassword()%>" type="text" name="password" required>
+                                                    <input pattern="[^' ']+" class="form-control" value="<%=user.getPassword()%>" type="text" name="password" required>
                                                     <div class="invalid-feedback">
-                                                        Invalid input
+                                                        Not blank and no space
                                                     </div>
                                                 </td>
                                             </tr>
                                             <tr>
                                                 <td>Full Name</td>
                                                 <td>
-                                                    <input pattern=".*\S+.*" class="form-control" value="<%=user.getFullname()%>" type="text" name="fullname" required>
+                                                    <input pattern="[^' ']+" class="form-control" value="<%=user.getFullname()%>" type="text" name="fullname" required>
                                                     <div class="invalid-feedback">
-                                                        Invalid input
+                                                        Not blank and no space
                                                     </div>
                                                 </td>
                                             </tr>
@@ -235,7 +237,7 @@
                                                 <td>
                                                     <input pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,4}$" class="form-control" value="<%=user.getEmail()%>" type="text" name="email" required>
                                                     <div class="invalid-feedback">
-                                                        Invalid input
+                                                        Input correct email patter : abc@xyz.com
                                                     </div>
                                                 </td>
                                             </tr>
@@ -244,16 +246,16 @@
                                                 <td>
                                                     <input pattern="(09|03|07|08|05)+([0-9]{8})" class="form-control" value="<%=user.getPhoneNumber()%>" type="text" name="phone" required>
                                                     <div class="invalid-feedback">
-                                                        Invalid input
+                                                        Input correct phone number in Viet Nam
                                                     </div>
                                                 </td>
                                             </tr>
                                             <tr>
                                                 <td>Address</td>
                                                 <td>
-                                                    <input pattern=".*\S+.*" class="form-control" value="<%=user.getAddress()%>" type="text" name="address" required>
+                                                    <input pattern="[^' ']+" class="form-control" value="<%=user.getAddress()%>" type="text" name="address" required>
                                                     <div class="invalid-feedback">
-                                                        Invalid input
+                                                        Not blank and no space
                                                     </div>
                                                 </td>
                                             </tr>
