@@ -1,6 +1,9 @@
 body {
     background-color: #F6FAFB;
     font-family: "Amazon Ember", Arial, sans-serif;
+    background-image: url("../images/background_color.jpg");
+    background-repeat: no-repeat;
+    background-size: cover;
 }
 
 p {

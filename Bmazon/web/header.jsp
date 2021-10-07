@@ -89,15 +89,16 @@
                                     <li class="html custom html_nav_position_text_top"><p class="topbarlink"><a href="#">Check Order</a></p></li>
                                         <%User x = (User) request.getSession().getAttribute("currUser");%>
                                         <%if (x == null) {%>
-
-
                                     <li class="account-item has-icon ">
-
                                         <a href="${contextPath}/loginAndSecurity/login.jsp"class="nav-top-link nav-top-not-logged-in ">
-                                            <span>
-                                                Login     / Register  </span>
+                                            <span> Login </span>
                                         </a><!-- .account-login-link -->
-
+                                    </li>
+                                    <p style="color: white; font-size: 12px; ">/</p>
+                                    <li class="account-item has-icon ">
+                                        <a href="${contextPath}/loginAndSecurity/register.jsp"class="nav-top-link nav-top-not-logged-in ">
+                                            <span> Register </span>
+                                        </a><!-- .account-login-link -->
                                     </li>
                                     <%} else {%>
                                     <li class=" menu-item menu-item-type-taxonomy menu-item-object-product_cat menu-item-has-children has-dropdown" style="cursor: pointer;">

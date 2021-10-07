@@ -19,7 +19,7 @@ import java.util.logging.Logger;
  * @author Admin
  */
 public class UserDAO extends BaseDAO {
-    
+
     BaseDAO dbConn = new BaseDAO();
 
     public static void main(String[] args) {
@@ -28,7 +28,6 @@ public class UserDAO extends BaseDAO {
         x.setUsername("A");
         dao.addUser(x);
     }
-    
 
     public User getUserLogin(String username, String password) {
         String sql = "SELECT * FROM [User] WHERE username = ? and password = ? and status = 1";
@@ -56,7 +55,7 @@ public class UserDAO extends BaseDAO {
         }
         return null;
     }
-    
+
     public User getEmailLogin(String email, String password) {
         String sql = "SELECT * FROM [User] WHERE email = ? and password = ? and status = 1";
         try {
@@ -119,7 +118,7 @@ public class UserDAO extends BaseDAO {
         }
         return n;
     }
-    
+
     public int addUser(User obj) {
         int n = 0;
         String sql = "INSERT INTO [User](username, password, email, phoneNumber, sell, wallet, fullname, publicName, address,"
@@ -156,9 +155,10 @@ public class UserDAO extends BaseDAO {
         }
         return n;
     }
-    public ArrayList<User> searchUser(String text){
+
+    public ArrayList<User> searchUser(String text) {
         ArrayList<User> list = new ArrayList<>();
-        xSql="SELECT * FROM [Bmazon].[dbo].[User] where userID like '%"+text+"%' or username like '%"+text+"%' or email like '%"+text+"%' or fullname like '%"+text+"%' or address like '%"+text+"%'";
+        xSql = "SELECT * FROM [Bmazon].[dbo].[User] where userID like '%" + text + "%' or username like '%" + text + "%' or email like '%" + text + "%' or fullname like '%" + text + "%' or address like '%" + text + "%'";
         ResultSet rs = dbConn.getData(xSql);
         try {
             while (rs.next()) {
@@ -179,44 +179,6 @@ public class UserDAO extends BaseDAO {
             Logger.getLogger(UserDAO.class.getName()).log(Level.SEVERE, null, ex);
         }
         return list;
-    }
-
-    public int updateInfoUserByAdmin(User obj) {
-        int n = 0;
-        String sql = "UPDATE [User] SET username=?, password=?, email=?, phoneNumber=?, sell=?, wallet=?, fullname=?, publicName=?, address=?,"
-                + " profileImage=?, backgroundImage=?, occupation=?, gender=?, DOB=?, bio=?, Facebook=?, Instagram=?, Twitter=?, "
-                + "Youtube=?, activityPoint=?, systemRole=?, status=?"
-                + " where userID=?";
-        try {
-            pre = conn.prepareStatement(sql);
-            pre.setString(1, obj.getUsername());
-            pre.setString(2, obj.getPassword());
-            pre.setString(3, obj.getEmail());
-            pre.setString(4, obj.getPhoneNumber());
-            pre.setInt(5, obj.getSell());
-            pre.setDouble(6, obj.getWallet());
-            pre.setString(7, obj.getFullname());
-            pre.setString(8, obj.getPublicName());
-            pre.setString(9, obj.getAddress());
-            pre.setString(10, obj.getProfileImage());
-            pre.setString(11, obj.getBackgroundImage());
-            pre.setString(12, obj.getOccupation());
-            pre.setInt(13, obj.getGender());
-            pre.setDate(14, obj.getDOB());
-            pre.setString(15, obj.getBio());
-            pre.setString(16, obj.getFacebook());
-            pre.setString(17, obj.getInstagram());
-            pre.setString(18, obj.getTwitter());
-            pre.setString(19, obj.getYoutube());
-            pre.setInt(20, obj.getActivityPoint());
-            pre.setInt(21, obj.getSystemRole());
-            pre.setInt(22, obj.getStatus());
-            pre.setString(23, obj.getUserId());
-            n = pre.executeUpdate();
-        } catch (SQLException ex) {
-            Logger.getLogger(UserDAO.class.getName()).log(Level.SEVERE, null, ex);
-        }
-        return n;
     }
 
     public int changePassword(String username, String newPass) {
@@ -259,19 +221,12 @@ public class UserDAO extends BaseDAO {
         return n;
     }
 
-    public int removeCustomer(int id) {
+    public int removeUser(int id) {
         int n = 0;
-        String sql = "SELECT * FROM ([User] AS a JOIN [Order] as b on a.userID = b.userID ) Join [Product] as c on a.userID=c.seller"
-                + "WHERE a.userID = " + id;
-        ResultSet rs = dbConn.getData(sql);
+        String sql = "DELETE [User] WHERE userID = " + id;
         try {
-            if (rs.next()) {
-                n = changeStatus(rs.getInt("userID"), 0);
-            } else {
-                String sqlDelete = "DELETE FROM User WHERE userID = " + id;
-                Statement state = conn.createStatement();
-                n = state.executeUpdate(sqlDelete);
-            }
+            Statement state = conn.createStatement();
+            n = state.executeUpdate(sql);
         } catch (SQLException ex) {
             Logger.getLogger(UserDAO.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -364,9 +319,9 @@ public class UserDAO extends BaseDAO {
         }
         return null;
     }
-    
+
     public User getUserByProductId(int id) {
-        String sql = "select * from [User] u join Product p on u.userID = p.seller where p.productID="+id+"";
+        String sql = "select * from [User] u join Product p on u.userID = p.seller where p.productID=" + id + "";
         ResultSet rs = dbConn.getData(sql);
         try {
             if (rs.next()) {
@@ -474,6 +429,44 @@ public class UserDAO extends BaseDAO {
         return list;
     }
 
+    public int updateInfoUserByAdmin(User obj) {
+        int n = 0;
+        String sql = "UPDATE [User] SET username=?, password=?, email=?, phoneNumber=?, sell=?, wallet=?, fullname=?, publicName=?, address=?,"
+                + " profileImage=?, backgroundImage=?, occupation=?, gender=?, DOB=?, bio=?, Facebook=?, Instagram=?, Twitter=?, "
+                + "Youtube=?, activityPoint=?, systemRole=?, status=?"
+                + " where userID=?";
+        try {
+            pre = conn.prepareStatement(sql);
+            pre.setString(1, obj.getUsername());
+            pre.setString(2, obj.getPassword());
+            pre.setString(3, obj.getEmail());
+            pre.setString(4, obj.getPhoneNumber());
+            pre.setInt(5, obj.getSell());
+            pre.setDouble(6, obj.getWallet());
+            pre.setString(7, obj.getFullname());
+            pre.setString(8, obj.getPublicName());
+            pre.setString(9, obj.getAddress());
+            pre.setString(10, obj.getProfileImage());
+            pre.setString(11, obj.getBackgroundImage());
+            pre.setString(12, obj.getOccupation());
+            pre.setInt(13, obj.getGender());
+            pre.setDate(14, obj.getDOB());
+            pre.setString(15, obj.getBio());
+            pre.setString(16, obj.getFacebook());
+            pre.setString(17, obj.getInstagram());
+            pre.setString(18, obj.getTwitter());
+            pre.setString(19, obj.getYoutube());
+            pre.setInt(20, obj.getActivityPoint());
+            pre.setInt(21, obj.getSystemRole());
+            pre.setInt(22, obj.getStatus());
+            pre.setString(23, obj.getUserId());
+            n = pre.executeUpdate();
+        } catch (SQLException ex) {
+            Logger.getLogger(UserDAO.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return n;
+    }
+
     public void updateWalletUser(User obj, double amount) {
 
         String sql = "UPDATE [User] SET wallet=? where userID=?";
@@ -507,7 +500,7 @@ public class UserDAO extends BaseDAO {
             Logger.getLogger(UserDAO.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
-    
+
     public void updatePrivateInfo(User obj) {
         String sql = "UPDATE [User] SET  fullname=?, email=?, phoneNumber=?, [password]=?"
                 + " where userID=?";

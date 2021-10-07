@@ -18,7 +18,6 @@
               integrity="sha384-mzrmE5qonljUremFsqc01SB46JvROS7bZs3IO2EmfFsd15uHvIt+Y8vEf7N7fWAU"
               crossorigin="anonymous">
         <link rel="stylesheet" href="${contextPath}/css/login.css"type="text/css">
-
     </head>
 
     <body>

@@ -30,38 +30,34 @@
             }
         %>
         <div class="container">
-            <div class="col-lg-4"></div>
-            <div class="col-lg-5">
-                <div id="logreg-forms">
-                    <form class="form-signin" action="/Bmazon/LoginControllerMap" method="POST">
-                        <p style="font-size: 30px;"> Forgot password</p>
-                        <!--sign in-->
-                        <label for="user" class="label">Username</label>
-                        <input id="user" type="text" name="username" placeholder="Username" class="form-control" required >
-                        <!--Email-->
-                        <label class="label">Enter Email</label>
-                        <input type="text" name="mail" pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,4}$" class="form-control" 
-                               id="mail" placeholder="Email" required autofocus="" >
-                        <!--Phone-->
-                        <label class="label">Enter Phone</label>
-                        <input type="text" name="phone" pattern="([\+84|84|0]+(2|3|5|7|8|9)+([0-9]{8})" class="form-control" id="phone" placeholder="Phone" required>
-                        <!--Confirm password-->
-                        <label class="label">Confirm New Password</label>
-                        <input id="confirm_password" type="Password" name="confirm-password" class="form-control" 
-                               placeholder="New password" required autofocus="" >
-                        <!--Submit-->
-                        <p class="text-right" style="font-size: 12px;"><%= mess.toString()%></p>
-                        <input type="hidden" name="service" value="forgotPass">
-                        <button class="btn btn-secondary btn-block buttonSignIn" type="submit"><i
-                                class="fas fa-sign-in-alt"></i> Submit</button>
-                        <div class="row"> 
-                            <a class="col-md-6" style="font-size: 15px;" href="${contextPath}/loginAndSecurity/login.jsp" id="cancel_signup" > Back to Login</a>
-                            <a class="col-md-6 text-right" style="font-size: 15px;" href="${contextPath}/HomePageControllerMap" id="cancel_signup" > Back to HomePage</a>
-                        </div>
-                    </form>
-                </div>
+            <div id="logreg-forms">
+                <form class="form-signin" action="/Bmazon/LoginControllerMap" method="POST">
+                    <p style="font-size: 30px;"> Forgot password</p>
+                    <!--sign in-->
+                    <label for="user" class="label">Username</label>
+                    <input id="user" type="text" name="username" placeholder="Username" class="form-control" required >
+                    <!--Email-->
+                    <label class="label">Enter Email</label>
+                    <input type="text" name="mail" pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,4}$" class="form-control" 
+                           id="mail" placeholder="Email" required autofocus="" >
+                    <!--Phone-->
+                    <label class="label">Enter Phone</label>
+                    <input type="text" name="phone" pattern="([\+84|84|0]+(2|3|5|7|8|9)+([0-9]{8})" class="form-control" id="phone" placeholder="Phone" required>
+                    <!--Confirm password-->
+                    <label class="label">Confirm New Password</label>
+                    <input id="confirm_password" type="Password" name="confirm-password" class="form-control" 
+                           placeholder="New password" required autofocus="" >
+                    <!--Submit-->
+                    <p class="text-right" style="font-size: 12px;"><%= mess.toString()%></p>
+                    <input type="hidden" name="service" value="forgotPass">
+                    <button class="btn btn-secondary btn-block buttonSignIn" type="submit"><i
+                            class="fas fa-sign-in-alt"></i> Submit</button>
+                    <div class="row"> 
+                        <a class="col-md-6" style="font-size: 15px;" href="${contextPath}/loginAndSecurity/login.jsp" id="cancel_signup" > Back to Login</a>
+                        <a class="col-md-6 text-right" style="font-size: 15px;" href="${contextPath}/HomePageControllerMap" id="cancel_signup" > Back to HomePage</a>
+                    </div>
+                </form>
             </div>
-            <div class="col-lg-3"></div>
             <hr>
         </div>
     </body>
