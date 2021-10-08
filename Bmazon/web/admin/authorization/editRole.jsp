@@ -107,7 +107,7 @@
                                 </div>
                                 <div class="card-body">
                                     <form class="form" action="/Bmazon/AdminControllerMap" method="POST">
-                                        <%if (service.equalsIgnoreCase("addproductdetail")) {%>
+                                        <%if (service.equalsIgnoreCase("addRoleDetail")) {%>
                                         <table class="table">
                                             <tr>
                                                 <td>Role ID</td>
@@ -138,39 +138,6 @@
                                             </tr>
                                         </table>
                                         <%}%>
-                                        <%//if (service.equalsIgnoreCase("updateRole")) {%>
-<!--                                        <table class="table table-striped">
-                                            <tr>
-                                                <td>Product Name</td>
-                                                <td><input value="<%=//product.getProductName()%>" type="text" name="productname" class="input"><br></td>
-                                            </tr>
-                                            <tr>
-                                                <td>Description</td>
-                                                <td><input value="<%=//product.getDescription()%>" type="text" name="size" class="input"><br></td>
-                                            </tr>    
-                                            <tr>
-                                                <td>Rating</td>
-                                                <td><input value="<%=//product.getRating()%>" type="text" name="price" class="input"><br></td>
-                                            </tr>
-                                            <tr>
-                                                <td>Seller</td>
-                                                <%//User user = userdao.getUserById(product.getProductID());%>
-                                                <td><input value="<%=//user.getFullname()%>" type="text" name="color" class="input"><br></td>
-                                            </tr>
-                                            <tr>
-                                                <td>Release Date</td>
-                                                <td><input value="<%=//product.getReleaseDate()%>" type="date" name="price" class="input"><br></td>
-                                            </tr>
-                                            <tr>
-                                                <td></td>
-                                                <td>
-                                                    <input type="submit" value="Update Product" class="btn btn-primary">
-                                                    <input type="hidden" value="updateproduct" name="service">
-                                                    <input type="hidden" value="<%=//producttype.getProductTypeId()%>" name="id">
-                                                </td>
-                                            </tr>
-                                        </table>-->
-                                        <%//}%>
                                     </form>
                                 </div>
                             </div>
