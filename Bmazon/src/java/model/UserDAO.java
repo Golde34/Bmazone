@@ -21,14 +21,6 @@ import java.util.logging.Logger;
 public class UserDAO extends BaseDAO {
 
     BaseDAO dbConn = new BaseDAO();
-
-    public static void main(String[] args) {
-        UserDAO dao = new UserDAO();
-        User x = new User();
-        x.setUsername("A");
-        dao.addUser(x);
-    }
-
     public User getUserLogin(String username, String password) {
         String sql = "SELECT * FROM [User] WHERE username = ? and password = ? and status = 1";
         try {
@@ -257,6 +249,58 @@ public class UserDAO extends BaseDAO {
             Logger.getLogger(UserDAO.class.getName()).log(Level.SEVERE, null, ex);
         }
         return false;
+    }
+
+    public static void main(String[] args) {
+        UserDAO dao = new UserDAO();
+        int num = dao.getPageNumber(" ");
+        System.out.println(num);
+    }
+
+    public int getPageNumber(String search) {
+        int num = 0;
+        xSql = "SELECT COUNT(*) FROM [Bmazon].[dbo].[User] where status=1 and (fullname like '%" + search + "%' or email like '%" + search + "%' or phoneNumber like '%" + search + "%' or address like '%" + search + "%')";
+        ResultSet rs =dbConn.getData(xSql);
+        try {
+            if(rs.next()){
+                num=rs.getInt(1);
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(UserDAO.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return num;
+    }
+
+    public ArrayList<User> pagingUser(int index, int numOfRow, String search) {
+        ArrayList<User> list = new ArrayList<>();
+        xSql = "declare @PageNo INT =" + index + "\n"
+                + "declare @PageSize INT=" + numOfRow + "\n"
+                + "SELECT * from(\n"
+                + "SELECT *,\n"
+                + "ROW_NUMBER() over (order by userID) as RowNum\n"
+                + "  FROM [Bmazon].[dbo].[User] where status=1 and (fullname like '%" + search + "%' or email like '%" + search + "%' or phoneNumber like '%" + search + "%'\n"
+                + "  or address like '%" + search + "%'))T\n"
+                + "where T.RowNum between ((@PageNo-1)*@PageSize)+1 and (@PageNo*@PageSize)";
+        ResultSet rs = dbConn.getData(xSql);
+        try {
+            while (rs.next()) {
+                User user = new User(rs.getString("userID"), rs.getString("username"),
+                        rs.getString("password"), rs.getString("email"),
+                        rs.getString("phoneNumber"), rs.getInt("sell"),
+                        rs.getDouble("wallet"), rs.getString("fullname"),
+                        rs.getString("publicName"), rs.getString("address"), rs.getString("profileImage"),
+                        rs.getString("backgroundImage"), rs.getString("occupation"),
+                        rs.getInt("gender"), rs.getDate("DOB"), rs.getString("bio"),
+                        rs.getString("Facebook"), rs.getString("Instagram"),
+                        rs.getString("Twitter"), rs.getString("Youtube"),
+                        rs.getInt("activityPoint"), rs.getInt("systemRole"),
+                        rs.getInt("status"));
+                list.add(user);
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(UserDAO.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return list;
     }
 
     public boolean checkExistMail(String mail) {

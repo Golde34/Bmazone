@@ -69,6 +69,11 @@ public class AdminController extends HttpServlet {
                 serviceUserDetail(service, request, response);
             }
 
+            //Paging User
+            if (service.equalsIgnoreCase("paging")) {
+                servicePagingUser(request, response);
+            }
+
             //Search User
             if (service.equalsIgnoreCase("searchuser")) {
                 serviceSearchUser(request, response);
@@ -188,11 +193,16 @@ public class AdminController extends HttpServlet {
         request.setAttribute(("listUser"), listUser);
         sendDispatcher(request, response, "admin/admin.jsp");
     }
+    // <editor-fold defaultstate="collapsed" desc="User methods. Click on the + sign on the left to edit the code.">
 
     public void serviceUserManagement(HttpServletRequest request, HttpServletResponse response) {
-        ArrayList<User> listUser = daouser.getAllUser();
-        request.setAttribute("listUser", listUser);
-        sendDispatcher(request, response, "admin/usermanagement.jsp");
+        ArrayList<User> listPaging = daouser.pagingUser(1, 5,"");
+        ArrayList<User> listUser =  daouser.getAllUser();
+        int total = listUser.size()/5;
+        request.setAttribute("index", 1);
+        request.setAttribute("total", total+1);
+        request.setAttribute("listUser", listPaging);
+        sendDispatcher(request, response, "admin/paging.jsp");
     }
 
     public void serviceUserDetail(String service, HttpServletRequest request, HttpServletResponse response) {
@@ -205,6 +215,40 @@ public class AdminController extends HttpServlet {
         User user = daouser.getUserById(id);
         request.setAttribute("user", user);
         sendDispatcher(request, response, "admin/userdetail.jsp");
+    }
+    
+    public void servicePagingUser(HttpServletRequest request, HttpServletResponse response) throws IOException {
+        PrintWriter pr = response.getWriter();
+        int index=1, numOfRow=5;
+        String search = request.getParameter("search");
+        if(request.getParameter("index")!=null){
+            index=Integer.parseInt(request.getParameter("index"));
+        }
+        if(request.getParameter("row")!=null){
+            numOfRow=Integer.parseInt(request.getParameter("row"));
+        }
+        ArrayList<User> listPaging = daouser.pagingUser(index, numOfRow,search);
+        ArrayList<User> listUser =  daouser.getAllUser();
+        int totalResult = daouser.getPageNumber(search);
+        int totalPage = listUser.size()/numOfRow;
+        request.setAttribute("index", index);
+        request.setAttribute("total", totalPage+1);
+        request.setAttribute("listUser", listPaging);
+        for (User user : listPaging) {
+            pr.print("<tr>"
+                    + "<td>" + user.getUsername() + " </td>"
+                    + "<td>" + user.getPassword() + "</td>"
+                    + "<td>" + user.getEmail() + "</td>"
+                    + "<td>" + user.getFullname() + "</td>"
+                    + "<td>" + user.getPhoneNumber() + "</td>"
+                    + "<td>" + user.getAddress() + "</td>"
+                    + "<td><div><a href=\"AdminControllerMap?service=updateuserdetail&userid=" + user.getUserId() + "\"><span class=\"fas fa-edit\"></span></a>"
+                    + "</div></td>"
+                    + "<td><div><a href=\"AdminControllerMap?service=deleteuser&userid=" + user.getUserId() + "\" onclick=\"return confirm('Are you sure you want to Remove?');\"><span class=\"fas fa-trash-alt\"></span></a></div></td>" + "</tr>"
+            );
+        }
+        if(request.getParameter("row")==null)
+        sendDispatcher(request, response, "admin/paging.jsp");
     }
 
     public void serviceSearchUser(HttpServletRequest request, HttpServletResponse response) throws IOException {
@@ -323,8 +367,8 @@ public class AdminController extends HttpServlet {
         ArrayList<User> listUser = daouser.getAllUser();
         request.setAttribute("listUser", listUser);
         sendDispatcher(request, response, "admin/usermanagement.jsp");
-    }
-
+    }// </editor-fold>
+    // <editor-fold defaultstate="collapsed" desc="Product methods. Click on the + sign on the left to edit the code.">
     public void serviceProductManagement(HttpServletRequest request, HttpServletResponse response) {
         ArrayList<Product> listProduct = daoproduct.getAllProduct();
         request.setAttribute("listProduct", listProduct);
@@ -396,8 +440,8 @@ public class AdminController extends HttpServlet {
 
     public void serviceUpdateProduct(HttpServletRequest request, HttpServletResponse response) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
-
+    }//</editor-fold>
+    // <editor-fold defaultstate="collapsed" desc="Company methods. Click on the + sign on the left to edit the code.">
     public void serviceCompanyManagement(HttpServletRequest request, HttpServletResponse response) {
         List<ShipCompany> listCompany = daocompany.getAllShipCompany();
         request.setAttribute("listCompany", listCompany);
@@ -510,8 +554,8 @@ public class AdminController extends HttpServlet {
             request.setAttribute("service", "updatecompanydetail");
             sendDispatcher(request, response, "admin/companydetail.jsp");
         }
-    }
-
+    }//</editor-fold>
+    // <editor-fold defaultstate="collapsed" desc="Gallery methods. Click on the + sign on the left to edit the code.">
     public void serviceGalleryManagement(HttpServletRequest request, HttpServletResponse response) {
         List<Gallery> listGallery = daogallery.getAllGallery();
         request.setAttribute("listGallery", listGallery);
@@ -567,7 +611,7 @@ public class AdminController extends HttpServlet {
 
     public void serviceUpdateGallery(HttpServletRequest request, HttpServletResponse response) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
+    }//</editor-fold>
 
     public void sendDispatcher(HttpServletRequest request, HttpServletResponse response, String path) {
         try {
@@ -618,5 +662,6 @@ public class AdminController extends HttpServlet {
     public String getServletInfo() {
         return "Short description";
     }// </editor-fold>
+
 
 }
