@@ -6,7 +6,7 @@
 package controller;
 
 import entity.Product;
-import entity.SendEmailRegis;
+import entity.SendEmail;
 import entity.User;
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -21,6 +21,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import model.DBConnection;
+import model.RandomString;
 import model.UserDAO;
 
 /**
@@ -180,12 +181,13 @@ public class LoginController extends HttpServlet {
         request.setAttribute("phoneRegis", Phone);
         request.setAttribute("mess", messRegis);
         if (isExist == false) {
-            SendEmailRegis sm = new SendEmailRegis();
+            String option = "register";
+            SendEmail sm = new SendEmail();
             //get the 6-digit code
             String code = sm.getRandom();
 
             //call the send email method
-            boolean test = sm.sendEmail(Username, Email, code);
+            boolean test = sm.sendEmail(Username, Email, code, option);
             //check if the email send successfully
             if (test == true) {
                 session.setAttribute("usernameRegis", Username);
@@ -237,29 +239,25 @@ public class LoginController extends HttpServlet {
     }
 
     public void serviceForgotPassword(HttpServletRequest request, HttpServletResponse response) {
-        String mess;
+        SendEmail s = new SendEmail();
+        String mess = "";
         String username = request.getParameter("username");
-        String newPassword = request.getParameter("confirm-password");
-        String checkMail = request.getParameter("mail");
-        String checkPhone = request.getParameter("phone");
-        User user = daoUser.getUserByUsername(username);
-        String mail = user.getEmail();
-        String phone = user.getPhoneNumber();
-        if (!mail.equalsIgnoreCase(checkMail)) {
-            mess = "Your mail is not correct!";
-            request.setAttribute("mess", mess);
-            sendDispatcher(request, response, "loginAndSecurity/forgot.jsp");
-        } else if (!phone.equalsIgnoreCase(checkPhone)) {
-            mess = "Your phone is not correct!";
-            request.setAttribute("mess", mess);
-            sendDispatcher(request, response, "loginAndSecurity/forgot.jsp");
-        } else if (!mail.equalsIgnoreCase(checkMail) && !phone.equalsIgnoreCase(checkPhone)) {
-            mess = "Your mail or your phone is not correct. Please re-enter.";
-            request.setAttribute("mess", mess);
-            sendDispatcher(request, response, "loginAndSecurity/forgot.jsp");
+        String email = request.getParameter("mail");
+        boolean exist = daoUser.checkExistUserNameAndMail(username, email);       
+        if (exist == true) {
+            String option = "forgot";
+            String password = new RandomString().randomString(6);
+            daoUser.updatePassword(username, email, password);
+            boolean test = s.sendEmail(username, email, password, option);
+            if (test == true) {
+                sendDispatcher(request, response, "loginAndSecurity/resetSuccess.jsp");
+                // include: xu ly xong thang path quay lai, forward: ko quay lai.
+            } else {
+                request.setAttribute("mess", "Failed to send reset email");
+                sendDispatcher(request, response, "loginAndSecurity/forgot.jsp");
+            }
         } else {
-            daoUser.changePassword(username, newPassword);
-            mess = "Change password successfully !!";
+            mess = "Your username or your mail does not exist!";
             request.setAttribute("mess", mess);
             sendDispatcher(request, response, "loginAndSecurity/forgot.jsp");
         }

@@ -40,13 +40,6 @@
                     <label class="label">Enter Email</label>
                     <input type="text" name="mail" pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,4}$" class="form-control" 
                            id="mail" placeholder="Email" required autofocus="" >
-                    <!--Phone-->
-                    <label class="label">Enter Phone</label>
-                    <input type="text" name="phone" pattern="([\+84|84|0]+(2|3|5|7|8|9)+([0-9]{8})" class="form-control" id="phone" placeholder="Phone" required>
-                    <!--Confirm password-->
-                    <label class="label">Confirm New Password</label>
-                    <input id="confirm_password" type="Password" name="confirm-password" class="form-control" 
-                           placeholder="New password" required autofocus="" >
                     <!--Submit-->
                     <p class="text-right" style="font-size: 12px;"><%= mess.toString()%></p>
                     <input type="hidden" name="service" value="forgotPass">

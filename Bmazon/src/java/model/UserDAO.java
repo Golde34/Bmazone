@@ -315,6 +315,19 @@ public class UserDAO extends BaseDAO {
         }
         return false;
     }
+    
+    public boolean checkExistUserNameAndMail(String username, String mail){
+        String sql = "SELECT * FROM [User] WHERE username = '" + username + "' and email = '" + mail + "' and status = 1";
+        ResultSet rs = dbConn.getData(sql);
+        try {
+            if (rs.next()) {
+                return true;
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(UserDAO.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return false;
+    }
 
     public User getUserByUsername(String username) {
         String sql = "SELECT * FROM [User] WHERE username = '" + username + "' and status=1";
@@ -471,6 +484,17 @@ public class UserDAO extends BaseDAO {
             Logger.getLogger(UserDAO.class.getName()).log(Level.SEVERE, null, ex);
         }
         return list;
+    }
+    
+    public boolean updatePassword(String username, String mail, String password){
+        String sql = "UPDATE [User] SET password = '" + password + "' WHERE username = '" + username + "' and email = '" + mail + "'";
+        try {
+            pre = conn.prepareStatement(sql);
+            pre.executeUpdate();
+        } catch (SQLException ex) {
+            Logger.getLogger(UserDAO.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return false;
     }
 
     public int updateInfoUserByAdmin(User obj) {
