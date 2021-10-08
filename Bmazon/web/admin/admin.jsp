@@ -86,6 +86,17 @@
                         </a>
                     </li>
                 </ul>
+                <hr>
+                <ul class="navbar-nav">
+                    <li class="nav-item">
+                        <a class="nav-link" href="AdminControllerMap?service=userAuthorization">
+                            <div class="icon icon-shape icon-sm shadow border-radius-md bg-white text-center me-2 d-flex align-items-center justify-content-center">
+                                <i class="fas fa-building" style="color: black"></i>
+                            </div>
+                            <span class="nav-link-text ms-1">User Authorization</span>
+                        </a>
+                    </li>
+                </ul>
             </div>
         </aside>
         <main class="main-content position-relative max-height-vh-100 h-100 mt-1 border-radius-lg ">

@@ -43,7 +43,8 @@ public class AdminController extends HttpServlet {
     GenreDAO daogenre = new GenreDAO();
     UserDAO daouser = new UserDAO();
     WareHouseDAO daowarehouse = new WareHouseDAO();
-
+    RoleDAO daorole = new RoleDAO();
+    
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
@@ -52,6 +53,11 @@ public class AdminController extends HttpServlet {
 
             if (service == null) {
                 service = "AdminDashBoard";
+            }
+
+            //User Authorization
+            if (service.equalsIgnoreCase("userAuthorization")) {
+                serviceUserAuthorization(request, response);
             }
 
             //Admin Dashboard
@@ -63,32 +69,26 @@ public class AdminController extends HttpServlet {
             if (service.equalsIgnoreCase("usermanagement")) {
                 serviceUserManagement(request, response);
             }
-
             //User detail to add and update
             if (service.equalsIgnoreCase("updateuserdetail") || service.equalsIgnoreCase("adduserdetail")) {
                 serviceUserDetail(service, request, response);
             }
-
             //Paging User
             if (service.equalsIgnoreCase("paging")) {
                 servicePagingUser(request, response);
             }
-
             //Search User
             if (service.equalsIgnoreCase("searchuser")) {
                 serviceSearchUser(request, response);
             }
-
             //Add user
             if (service.equalsIgnoreCase("adduser")) {
                 serviceAddUser(request, response);
             }
-
             //Update User 
             if (service.equalsIgnoreCase("updateuser")) {
                 serviceUpdateUser(request, response);
             }
-
             //Delete user
             if (service.equalsIgnoreCase("deleteuser")) {
                 serviceDeleteUser(request, response);
@@ -98,27 +98,22 @@ public class AdminController extends HttpServlet {
             if (service.equalsIgnoreCase("productmanagement")) {
                 serviceProductManagement(request, response);
             }
-
             //Product detail to add and update
             if (service.equalsIgnoreCase("updateproductdetail") || service.equalsIgnoreCase("addproductdetail")) {
                 serviceProductDetail(service, request, response);
             }
-
             //Search Product
             if (service.equalsIgnoreCase("searchproduct")) {
                 serviceSearchProduct(request, response);
             }
-
             //Add Product
             if (service.equalsIgnoreCase("addproduct")) {
                 serviceAddProduct(request, response);
             }
-
             //Update Product 
             if (service.equalsIgnoreCase("updateproduct")) {
                 serviceUpdateProduct(request, response);
             }
-
             //Delete Product
             if (service.equalsIgnoreCase("deleteproduct")) {
                 serviceDeleteProduct(request, response);
@@ -128,27 +123,22 @@ public class AdminController extends HttpServlet {
             if (service.equalsIgnoreCase("companymanagement")) {
                 serviceCompanyManagement(request, response);
             }
-
             //Ship Company detail to add and update
             if (service.equalsIgnoreCase("updatecompanydetail") || service.equalsIgnoreCase("addcompanydetail")) {
                 serviceCompanyDetail(service, request, response);
             }
-
             //Search Ship Company
             if (service.equalsIgnoreCase("searchcompany")) {
                 serviceSearchCompany(request, response);
             }
-
             //Add Ship Company
             if (service.equalsIgnoreCase("addcompany")) {
                 serviceAddCompany(request, response);
             }
-
             //Update Ship Company 
             if (service.equalsIgnoreCase("updatecompany")) {
                 serviceUpdateCompany(request, response);
             }
-
             //Delete Ship Company
             if (service.equalsIgnoreCase("deletecompany")) {
                 serviceDeleteCompany(request, response);
@@ -158,31 +148,52 @@ public class AdminController extends HttpServlet {
             if (service.equalsIgnoreCase("gallerymanagement")) {
                 serviceGalleryManagement(request, response);
             }
-
             //Gallery detail to add and update
             if (service.equalsIgnoreCase("updategallerydetail") || service.equalsIgnoreCase("addgallerydetail")) {
                 serviceGalleryDetail(service, request, response);
             }
-
             //Search Gallery
             if (service.equalsIgnoreCase("searchgallery")) {
                 serviceSearchGallery(request, response);
             }
-
             //Add Gallery
             if (service.equalsIgnoreCase("addproduct")) {
                 serviceAddGallery(request, response);
             }
-
             //Update Gallery 
             if (service.equalsIgnoreCase("updategallery")) {
                 serviceUpdateGallery(request, response);
             }
-
             //Delete Gallery
             if (service.equalsIgnoreCase("deletegallery")) {
                 serviceDeleteGallery(request, response);
             }
+
+            //Role Display
+            if (service.equalsIgnoreCase("roleDisplay")) {
+                serviceRoleDisplay(service, request, response);
+            }
+            //Role Detail
+            if (service.equalsIgnoreCase("updateRoleDetail") || service.equalsIgnoreCase("addRoleDetail")) {
+                serviceRoleDetail(service, request, response);
+            }
+            //Add role
+            if (service.equalsIgnoreCase("addRole")) {
+                serviceAddRole(request, response);
+            }
+            //Update role
+            if (service.equalsIgnoreCase("updateRole")) {
+                serviceUpdateRole(request, response);
+            }
+            //Delete role
+            if (service.equalsIgnoreCase("deleteRole")) {
+                serviceDeleteRole(request, response);
+            }
+            //Search role
+            if (service.equalsIgnoreCase("searchRole")) {
+                serviceSearchRole(request, response);
+            }
+
         }
     }
 
@@ -196,11 +207,11 @@ public class AdminController extends HttpServlet {
     // <editor-fold defaultstate="collapsed" desc="User methods. Click on the + sign on the left to edit the code.">
 
     public void serviceUserManagement(HttpServletRequest request, HttpServletResponse response) {
-        ArrayList<User> listPaging = daouser.pagingUser(1, 5,"");
-        ArrayList<User> listUser =  daouser.getAllUser();
-        int total = listUser.size()/5;
+        ArrayList<User> listPaging = daouser.pagingUser(1, 5, "");
+        ArrayList<User> listUser = daouser.getAllUser();
+        int total = listUser.size() / 5;
         request.setAttribute("index", 1);
-        request.setAttribute("total", total+1);
+        request.setAttribute("total", total + 1);
         request.setAttribute("listUser", listPaging);
         sendDispatcher(request, response, "admin/paging.jsp");
     }
@@ -216,23 +227,23 @@ public class AdminController extends HttpServlet {
         request.setAttribute("user", user);
         sendDispatcher(request, response, "admin/userdetail.jsp");
     }
-    
+
     public void servicePagingUser(HttpServletRequest request, HttpServletResponse response) throws IOException {
         PrintWriter pr = response.getWriter();
-        int index=1, numOfRow=5;
+        int index = 1, numOfRow = 5;
         String search = request.getParameter("search");
-        if(request.getParameter("index")!=null){
-            index=Integer.parseInt(request.getParameter("index"));
+        if (request.getParameter("index") != null) {
+            index = Integer.parseInt(request.getParameter("index"));
         }
-        if(request.getParameter("row")!=null){
-            numOfRow=Integer.parseInt(request.getParameter("row"));
+        if (request.getParameter("row") != null) {
+            numOfRow = Integer.parseInt(request.getParameter("row"));
         }
-        ArrayList<User> listPaging = daouser.pagingUser(index, numOfRow,search);
-        ArrayList<User> listUser =  daouser.getAllUser();
+        ArrayList<User> listPaging = daouser.pagingUser(index, numOfRow, search);
+        ArrayList<User> listUser = daouser.getAllUser();
         int totalResult = daouser.getPageNumber(search);
-        int totalPage = listUser.size()/numOfRow;
+        int totalPage = listUser.size() / numOfRow;
         request.setAttribute("index", index);
-        request.setAttribute("total", totalPage+1);
+        request.setAttribute("total", totalPage + 1);
         request.setAttribute("listUser", listPaging);
         for (User user : listPaging) {
             pr.print("<tr>"
@@ -247,8 +258,9 @@ public class AdminController extends HttpServlet {
                     + "<td><div><a href=\"AdminControllerMap?service=deleteuser&userid=" + user.getUserId() + "\" onclick=\"return confirm('Are you sure you want to Remove?');\"><span class=\"fas fa-trash-alt\"></span></a></div></td>" + "</tr>"
             );
         }
-        if(request.getParameter("row")==null)
-        sendDispatcher(request, response, "admin/paging.jsp");
+        if (request.getParameter("row") == null) {
+            sendDispatcher(request, response, "admin/paging.jsp");
+        }
     }
 
     public void serviceSearchUser(HttpServletRequest request, HttpServletResponse response) throws IOException {
@@ -369,6 +381,7 @@ public class AdminController extends HttpServlet {
         sendDispatcher(request, response, "admin/usermanagement.jsp");
     }// </editor-fold>
     // <editor-fold defaultstate="collapsed" desc="Product methods. Click on the + sign on the left to edit the code.">
+
     public void serviceProductManagement(HttpServletRequest request, HttpServletResponse response) {
         ArrayList<Product> listProduct = daoproduct.getAllProduct();
         request.setAttribute("listProduct", listProduct);
@@ -442,6 +455,7 @@ public class AdminController extends HttpServlet {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }//</editor-fold>
     // <editor-fold defaultstate="collapsed" desc="Company methods. Click on the + sign on the left to edit the code.">
+
     public void serviceCompanyManagement(HttpServletRequest request, HttpServletResponse response) {
         List<ShipCompany> listCompany = daocompany.getAllShipCompany();
         request.setAttribute("listCompany", listCompany);
@@ -556,6 +570,7 @@ public class AdminController extends HttpServlet {
         }
     }//</editor-fold>
     // <editor-fold defaultstate="collapsed" desc="Gallery methods. Click on the + sign on the left to edit the code.">
+
     public void serviceGalleryManagement(HttpServletRequest request, HttpServletResponse response) {
         List<Gallery> listGallery = daogallery.getAllGallery();
         request.setAttribute("listGallery", listGallery);
@@ -613,6 +628,75 @@ public class AdminController extends HttpServlet {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }//</editor-fold>
 
+    public void serviceUserAuthorization(HttpServletRequest request, HttpServletResponse response) {
+        ArrayList<User> listUser = daouser.getAllUser();
+        request.setAttribute("listUser", listUser);
+        sendDispatcher(request, response, "admin/authorization/userAuthorization.jsp");
+    }
+
+    public void serviceRoleDisplay(String service, HttpServletRequest request, HttpServletResponse response) {
+        List<Role> role = daorole.getAllRole();
+        request.setAttribute("role", role);
+        sendDispatcher(request, response, "admin/authorization/roleAuthorization.jsp");
+    }
+    
+    public void serviceRoleDetail(String service, HttpServletRequest request, HttpServletResponse response) {
+        request.setAttribute("service", service);
+        if (service.equalsIgnoreCase("addRoleDetail")) {
+            sendDispatcher(request, response, "admin/authorization/editRole.jsp");
+            return;
+        }
+        List<Role> role = daorole.getAllRole();
+        request.setAttribute("role", role);
+        sendDispatcher(request, response, "admin/authorization/editRole.jsp");
+    }
+
+    public void serviceAddRole(HttpServletRequest request, HttpServletResponse response) {
+        int roleID = Integer.parseInt(request.getParameter("roleID"));
+        String roleName = request.getParameter("roleName");
+        int adminPermission = Integer.parseInt(request.getParameter("adminPermission"));
+        int sellerPermission = Integer.parseInt(request.getParameter("sellerPermission"));
+        int customerPermission = Integer.parseInt(request.getParameter("customerPermission"));
+        Role newRole = new Role();
+        newRole.setRoleID(roleID);
+        newRole.setRoleName(roleName);
+        newRole.setAdminPermission(adminPermission);
+        newRole.setSellerPermission(sellerPermission);
+        newRole.setCustomerPermission(customerPermission);
+        daorole.addRole(newRole);
+        List<Role> listRole = daorole.getAllRole();
+        request.setAttribute("listRole", listRole);
+        sendDispatcher(request, response, "admin/authorization/roleAuthorization.jsp");
+    }
+
+    public void serviceUpdateRole(HttpServletRequest request, HttpServletResponse response) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    public void serviceDeleteRole(HttpServletRequest request, HttpServletResponse response) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    public void serviceSearchRole(HttpServletRequest request, HttpServletResponse response) throws IOException {
+        PrintWriter pr = response.getWriter();
+        String search = request.getParameter("search");
+        List<Role> listRole = daorole.searchRole(search);
+        for (Role role : listRole) {
+            pr.print("<tr>"
+                    + "<td><div>" + role.getRoleID() + " </div></td>"
+                    + "<td><div>" + role.getRoleName() + "</div></td>"
+                    + "<td><div>" + role.getAdminPermission() + "</div></td>"
+                    + "<td><div>" + role.getSellerPermission() + "</div></td>"
+                    + "<td><div>" + role.getCustomerPermission() + "</div></td>"
+                    + "<td><div>" + role.getStatus() + "</div></td>"
+                    + "<td><div><a href=\"AdminControllerMap?service=updateproductdetail&producttypeid=" + role.getRoleID() + "\"><span class=\"fas fa-edit\"></span></a>"
+                    + "</div></td>"
+                    + "<td><div><a href=\"AdminControllerMap?service=deleteproduct&producttypeid=" + role.getRoleID() + "\" onclick=\"return confirm('Are you sure you want to Remove?');\"><span class=\"fas fa-trash-alt\"></span></a></div></td>" + "</tr>"
+            );
+        }
+    }
+    
+    
     public void sendDispatcher(HttpServletRequest request, HttpServletResponse response, String path) {
         try {
             RequestDispatcher rd = request.getRequestDispatcher(path);
@@ -624,17 +708,17 @@ public class AdminController extends HttpServlet {
         }
     }
 
-    // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
-    /**
-     * Handles the HTTP <code>GET</code> method.
-     *
-     * @param request servlet request
-     * @param response servlet response
-     * @throws ServletException if a servlet-specific error occurs
-     * @throws IOException if an I/O error occurs
-     */
-    @Override
-    protected void doGet(HttpServletRequest request, HttpServletResponse response)
+// <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
+/**
+ * Handles the HTTP <code>GET</code> method.
+ *
+ * @param request servlet request
+ * @param response servlet response
+ * @throws ServletException if a servlet-specific error occurs
+ * @throws IOException if an I/O error occurs
+ */
+@Override
+        protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         processRequest(request, response);
     }
@@ -648,7 +732,7 @@ public class AdminController extends HttpServlet {
      * @throws IOException if an I/O error occurs
      */
     @Override
-    protected void doPost(HttpServletRequest request, HttpServletResponse response)
+        protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         processRequest(request, response);
     }
@@ -659,7 +743,7 @@ public class AdminController extends HttpServlet {
      * @return a String containing servlet description
      */
     @Override
-    public String getServletInfo() {
+        public String getServletInfo() {
         return "Short description";
     }// </editor-fold>
 

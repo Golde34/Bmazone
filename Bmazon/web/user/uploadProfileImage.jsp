@@ -60,7 +60,7 @@
                 <div class="col-md-4"></div>
             </div>
         </form>
-        <a href="index.jsp">Go to home</a>
+        <a href="HomePageCOntrollerMap">Go to home</a>
         <a href="UserControllerMap?service=info">Go to profile</a>
         <script>
             const wrapper = document.querySelector(".wrapper");
