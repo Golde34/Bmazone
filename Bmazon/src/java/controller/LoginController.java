@@ -6,6 +6,7 @@
 package controller;
 
 import entity.Product;
+import entity.SendEmailRegis;
 import entity.User;
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -67,6 +68,10 @@ public class LoginController extends HttpServlet {
                 serviceRegister(request, response);
             }
 
+            //verify
+            if (service.equalsIgnoreCase("verify")) {
+                serviceVerifyAccount(request, response);
+            }
             //Forgot password
             if (service.equalsIgnoreCase("forgotPass")) {
                 serviceForgotPassword(request, response);
@@ -74,9 +79,42 @@ public class LoginController extends HttpServlet {
         }
     }
 
+//    public void sendEmail(String toEmail, String subject, String body) {
+//        try {
+//            Properties props = new Properties();
+//            props.put("mail.smtp.host", "smtp.gmail.com"); //SMTP Host
+//            props.put("mail.smtp.port", "587"); //TLS Port
+//            props.put("mail.smtp.auth", "true"); //enable authentication
+//            props.put("mail.smtp.starttls.enable", "true"); //enable STARTTLS
+//            Authenticator auth = new Authenticator() {
+//                @Override
+//                protected PasswordAuthentication getPasswordAuthentication() {
+//                    return new PasswordAuthentication(fromEmail, password);
+//                }
+//            };
+//            Session session = Session.getInstance(props, auth);
+//            MimeMessage msg = new MimeMessage(session);
+//            //set message headers
+//            msg.addHeader("Content-type", "text/HTML; charset=UTF-8");
+//            msg.addHeader("format", "flowed");
+//            msg.addHeader("Content-Transfer-Encoding", "8bit");
+//            msg.setFrom(new InternetAddress(fromEmail, "Quiz Practice System"));
+//            msg.setReplyTo(InternetAddress.parse(fromEmail, false));
+//            msg.setSubject(subject, "UTF-8");
+//            msg.setText(body, "UTF-8");
+//            msg.setSentDate(new Date());
+//            msg.setRecipients(Message.RecipientType.TO, InternetAddress.parse(toEmail, false));
+//            Transport.send(msg);
+////            System.out.println("Gui mail thanh cong");
+//        } catch (MessagingException ex) {
+//            Logger.getLogger(SystemEmail.class.getName()).log(Level.SEVERE, null, ex);
+//        } catch (UnsupportedEncodingException ex) {
+//            Logger.getLogger(SystemEmail.class.getName()).log(Level.SEVERE, null, ex);
+//        }
+//    }\
     public void serviceLogin(HttpServletRequest request, HttpServletResponse response) {
-        String checkLogin = "checked";
-        request.setAttribute("checkLogin", checkLogin);
+//        String checkLogin = "checked";
+//        request.setAttribute("checkLogin", checkLogin);
         String userName = request.getParameter("username");
         String messLogin = "";
         String userPass = request.getParameter("password");
@@ -101,6 +139,7 @@ public class LoginController extends HttpServlet {
     public void serviceRegister(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 //        String checkRegis = "checked";
 //        request.setAttribute("checkRegis", checkRegis);
+        HttpSession session = request.getSession();
         String messRegis = "";
         String Username = request.getParameter("signupusername");
         String Password = request.getParameter("signuppass");
@@ -120,17 +159,18 @@ public class LoginController extends HttpServlet {
             request.getRequestDispatcher("loginAndSecurity/register.jsp").include(request, response);
             return;
         }
-
-        boolean exist = daoUser.checkExistUserName(Username);
-        if (exist == false) {
-            daoUser.addUserRegister(new User(Username, Password, Email, Phone, 0, 0, fullname, Username, "", "", "", "", 0, "", "", "", "", "", 0, 0, 1));
-            messRegis = "Signup Successfully!";
-//            daoUser.singup(username, password, email, phone, fname);
-//            mess = "Signup Successfully!";
-//            request.setAttribute("mess", mess);
-//            request.getRequestDispatcher("loginAndSecurity/login.jsp").forward(request, response);
+        boolean isExist = false;
+        if (daoUser.checkExistUserName(Username) == true) {
+            messRegis = "Duplicate username!";
+            isExist = true;
+        } else if (daoUser.checkExistMail(Email) == true) {
+            messRegis = "Duplicate mail!";
+            isExist = true;
+        } else if (daoUser.checkExistPhone(Phone) == true) {
+            messRegis = "Duplicate phone!";
+            isExist = true;
         } else {
-            messRegis = "Duplicate user!";
+            isExist = false;
         }
         request.setAttribute("usernameRegis", Username);
         request.setAttribute("passwordRegis", Password);
@@ -139,7 +179,61 @@ public class LoginController extends HttpServlet {
         request.setAttribute("emailRegis", Email);
         request.setAttribute("phoneRegis", Phone);
         request.setAttribute("mess", messRegis);
-        request.getRequestDispatcher("loginAndSecurity/register.jsp").include(request, response);
+        if (isExist == false) {
+            SendEmailRegis sm = new SendEmailRegis();
+            //get the 6-digit code
+            String code = sm.getRandom();
+
+            //call the send email method
+            boolean test = sm.sendEmail(Username, Email, code);
+            //check if the email send successfully
+            if (test == true) {
+                session.setAttribute("usernameRegis", Username);
+                session.setAttribute("passwordRegis", Password);
+                session.setAttribute("repasswordRegis", Repassword);
+                session.setAttribute("fullnameRegis", fullname);
+                session.setAttribute("emailRegis", Email);
+                session.setAttribute("phoneRegis", Phone);
+                session.setAttribute("authcode", code);
+                sendDispatcher(request, response, "loginAndSecurity/verify.jsp");
+                // include: xu ly xong thang path quay lai, forward: ko quay lai.
+            } else {
+                request.setAttribute("mess", "Failed to send verification email");
+                sendDispatcher(request, response, "loginAndSecurity/register.jsp");
+            }
+        } else {
+            sendDispatcher(request, response, "loginAndSecurity/register.jsp");
+        }
+    }
+
+    public void serviceVerifyAccount(HttpServletRequest request, HttpServletResponse response) {
+        // get code user submit
+        HttpSession session = request.getSession();
+        String verifyCode = request.getParameter("veriCode");
+        String messVeri = "";
+
+        //get data from serviceRegister
+        String Username = (String) session.getAttribute("usernameRegis");
+        String Password = (String) session.getAttribute("passwordRegis");
+        String Repassword = (String) session.getAttribute("repasswordRegis");
+        String fullname = (String) session.getAttribute("fullnameRegis");
+        String Email = (String) session.getAttribute("emailRegis");
+        String Phone = (String) session.getAttribute("phoneRegis");
+
+        //get code generated
+        String authCode = (String) session.getAttribute("authcode");
+        if (verifyCode.equals(authCode)) {
+            daoUser.addUserRegister(new User(Username, Password, Email, Phone, 0, 0, fullname, Username, "", "", "", "", 0, "", "", "", "", "", 0, 0, 1));
+            messVeri = "Signup Successfully!";
+            request.setAttribute("mess", messVeri);
+            sendDispatcher(request, response, "loginAndSecurity/register.jsp");
+        } else {
+            messVeri = "Verification code is not right!";
+            request.setAttribute("veriCode", verifyCode);
+            request.setAttribute("mess", messVeri);
+            sendDispatcher(request, response, "loginAndSecurity/verify.jsp");
+        }
+
     }
 
     public void serviceForgotPassword(HttpServletRequest request, HttpServletResponse response) {
