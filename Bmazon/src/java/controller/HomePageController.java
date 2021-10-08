@@ -123,12 +123,29 @@ public class HomePageController extends HttpServlet {
 
     public void serviceSearch(HttpServletRequest request, HttpServletResponse response) {
         String str = request.getParameter("search").trim();
-        List<Product> ListP = proDAO.getProductByName(str);
+        int count=proDAO.totalSearchProduct(str);
         String address;
+        int size=20;
+        int index=count/size;
+        int page;
+        String page1 = request.getParameter("page");
+        if (page1==null) {
+            page=1;
+        }else{
+            page=Integer.parseInt(page1);
+        } 
+       
+        if (count%size!=0) {
+            index+=1;
+        }
+        List<Product> ListP= proDAO.getProductByName(page, str);
 
         address = "<a>" + " Results for " + str + "  </a> <span class=" + "divider" + ">&#47;</span>";
         request.setAttribute("address", address);
+        request.setAttribute("index", index);
         request.setAttribute("listP", ListP);
+        request.setAttribute("search", str);
+        request.setAttribute("count", count);
 
         sendDispatcher(request, response, "productList/list.jsp");
 
