@@ -22,13 +22,13 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <% DecimalFormat nf = new DecimalFormat("###,###,###");%>
 <%
-    List<Product> ListSuggest = (List<Product>) request.getAttribute("listP");
+    List<Product> ListProduct = (List<Product>) request.getAttribute("listP");
     CategoryDAO daoCate = new CategoryDAO();
     GenreDAO genDAO = new GenreDAO();
     ProductDAO proDAO = new ProductDAO();
     GalleryDAO gallDAO = new GalleryDAO();
     ProductTypeDAO ptDAO = new ProductTypeDAO();
-    int total = ListSuggest.size();
+    int total = ListProduct.size();
 
 
 %>
@@ -74,11 +74,7 @@
         <link rel='stylesheet' href="css/slide.css"  type='text/css'> 
         <script src="js/2.js"></script>
         <script src="js.home.js"></script>
-        <script src="https://code.jquery.com/jquery-3.2.1.js" ></script>
-        <!-- JS tạo nút bấm di chuyển trang start -->
-        <script src="js/pag1.js"></script>
-        <!-- JS tạo nút bấm di chuyển trang end -->
-        <script src="js/pag2.js"></script>
+        
 
     </head>
     <body class="home page-template page-template-page-blank page-template-page-blank-php page page-id-16 page-parent lightbox nav-dropdown-has-arrow" >
@@ -95,7 +91,8 @@
                                 <a href="HomePageControllerMap">Home </a> <span class="divider">&#47;</span> 
                                 <a href="HomePageControllerMap?service=list" >Product</a> <span class="divider">&#47;</span> 
                                 ${address} 
-                                <a id="a" ></a> 
+                                <a href="" >${count}</a> <span class="divider">&#47;</span> 
+                                
                         </div>
                         <div class="category-filtering category-filter-row show-for-medium">
                             <a href="#" data-open="#shop-sidebar" data-visible-after="true" data-pos="left" class="filter-button uppercase plain">
@@ -138,7 +135,7 @@
                             %>
 
                             <div class="products row row-small large-columns-5 medium-columns-3 small-columns-2 has-shadow row-box-shadow-1" id="1">
-                                <% for (Product pa : ListSuggest) {
+                                <% for (Product pa : ListProduct) {
                                         String str = "images/" + gallDAO.getSampleOfProduct(pa.getProductID());
                                         double price = Double.parseDouble(ptDAO.getProductPrice(pa.getProductID()));
 
@@ -173,14 +170,15 @@
                                 %>
                             </div>
                         </div>
-                        <div class="container">
-
-                            <nav class="woocommerce-pagination">
-                                <ul class="page-numbers nav-pagination links text-center">
-                                    <ul id="pagination"onclick="topFunction()"class="page-numbers nav-pagination links text-center" style="font-size: 15px;"></ul>
-                                </ul>
-                            </nav>
-                        </div>
+                       <div class="container">
+                                <nav class="woocommerce-pagination">
+                                    <ul class="page-numbers nav-pagination links text-center">
+                                        <c:forEach  begin="1" end="${index}" var="i">
+                                        <li><a class='' href="HomePageControllerMap?service=search&page=${i}">${i}</a></li>
+                                        </c:forEach>
+                                        </ul>
+                                </nav>
+                            </div>
 
                     </div>
 

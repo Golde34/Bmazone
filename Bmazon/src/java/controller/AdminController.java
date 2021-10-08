@@ -62,9 +62,11 @@ public class AdminController extends HttpServlet {
 
             //Admin Dashboard
             if (service.equalsIgnoreCase("AdminDashBoard")) {
-                serviceAdminDashboard(request, response);
+                serviceAdminDashboard(service, request, response);
             }
 
+            
+            
             //User Management
             if (service.equalsIgnoreCase("usermanagement")) {
                 serviceUserManagement(request, response);
@@ -94,6 +96,8 @@ public class AdminController extends HttpServlet {
                 serviceDeleteUser(request, response);
             }
 
+            
+            
             //Product Manage
             if (service.equalsIgnoreCase("productmanagement")) {
                 serviceProductManagement(request, response);
@@ -119,6 +123,8 @@ public class AdminController extends HttpServlet {
                 serviceDeleteProduct(request, response);
             }
 
+            
+            
             //Ship Company Manage
             if (service.equalsIgnoreCase("companymanagement")) {
                 serviceCompanyManagement(request, response);
@@ -144,6 +150,8 @@ public class AdminController extends HttpServlet {
                 serviceDeleteCompany(request, response);
             }
 
+            
+            
             //Gallery Manage
             if (service.equalsIgnoreCase("gallerymanagement")) {
                 serviceGalleryManagement(request, response);
@@ -169,6 +177,8 @@ public class AdminController extends HttpServlet {
                 serviceDeleteGallery(request, response);
             }
 
+            
+            
             //Role Display
             if (service.equalsIgnoreCase("roleDisplay")) {
                 serviceRoleDisplay(service, request, response);
@@ -193,17 +203,18 @@ public class AdminController extends HttpServlet {
             if (service.equalsIgnoreCase("searchRole")) {
                 serviceSearchRole(request, response);
             }
-
         }
     }
 
-    public void serviceAdminDashboard(HttpServletRequest request, HttpServletResponse response) {
+    public void serviceAdminDashboard(String service, HttpServletRequest request, HttpServletResponse response) {
+        request.setAttribute("service", service);
         ArrayList<Product> listProduct = daoproduct.getAllProduct();
         request.setAttribute("listProduct", listProduct);
         ArrayList<User> listUser = daouser.getAllUser();
         request.setAttribute(("listUser"), listUser);
         sendDispatcher(request, response, "admin/admin.jsp");
     }
+    
     // <editor-fold defaultstate="collapsed" desc="User methods. Click on the + sign on the left to edit the code.">
 
     public void serviceUserManagement(HttpServletRequest request, HttpServletResponse response) {
@@ -380,6 +391,7 @@ public class AdminController extends HttpServlet {
         request.setAttribute("listUser", listUser);
         sendDispatcher(request, response, "admin/usermanagement.jsp");
     }// </editor-fold>
+    
     // <editor-fold defaultstate="collapsed" desc="Product methods. Click on the + sign on the left to edit the code.">
 
     public void serviceProductManagement(HttpServletRequest request, HttpServletResponse response) {
@@ -454,6 +466,7 @@ public class AdminController extends HttpServlet {
     public void serviceUpdateProduct(HttpServletRequest request, HttpServletResponse response) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }//</editor-fold>
+    
     // <editor-fold defaultstate="collapsed" desc="Company methods. Click on the + sign on the left to edit the code.">
 
     public void serviceCompanyManagement(HttpServletRequest request, HttpServletResponse response) {
@@ -569,6 +582,7 @@ public class AdminController extends HttpServlet {
             sendDispatcher(request, response, "admin/companydetail.jsp");
         }
     }//</editor-fold>
+    
     // <editor-fold defaultstate="collapsed" desc="Gallery methods. Click on the + sign on the left to edit the code.">
 
     public void serviceGalleryManagement(HttpServletRequest request, HttpServletResponse response) {
@@ -628,6 +642,7 @@ public class AdminController extends HttpServlet {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }//</editor-fold>
 
+    // <editor-fold defaultstate="collapsed" desc="Role methods. Click on the + sign on the left to edit the code.">
     public void serviceUserAuthorization(HttpServletRequest request, HttpServletResponse response) {
         ArrayList<User> listUser = daouser.getAllUser();
         request.setAttribute("listUser", listUser);
@@ -694,8 +709,7 @@ public class AdminController extends HttpServlet {
                     + "<td><div><a href=\"AdminControllerMap?service=deleteproduct&producttypeid=" + role.getRoleID() + "\" onclick=\"return confirm('Are you sure you want to Remove?');\"><span class=\"fas fa-trash-alt\"></span></a></div></td>" + "</tr>"
             );
         }
-    }
-    
+    }//</editor-fold>
     
     public void sendDispatcher(HttpServletRequest request, HttpServletResponse response, String path) {
         try {
