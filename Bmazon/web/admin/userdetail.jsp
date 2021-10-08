@@ -185,7 +185,7 @@
                                                     </select>
                                                 </td>
                                             </tr>
-                                            <tr>  
+<!--                                            <tr>  
                                                 <td>System Role</td>
                                                 <td>
                                                     <select class="form-control" name="role">
@@ -193,7 +193,7 @@
                                                         <option value="1">Admin</option>
                                                     </select>
                                                 </td>
-                                            <tr>
+                                            <tr>-->
                                             <tr>
                                                 <td></td>
                                                 <td>
@@ -268,7 +268,7 @@
                                                     </select>
                                                 </td>
                                             </tr>
-                                            <tr>  
+<!--                              //               <tr>  
                                                 <td>System Role</td>
                                                 <td>
                                                     <select class="form-control" name="role">
@@ -276,7 +276,7 @@
                                                         <option <%if (user.getSystemRole() == 1) {%> selected<%}%> value="1">Admin</option>
                                                     </select>
                                                 </td>
-                                            <tr>
+                                            <tr>-->
                                             <tr>
                                                 <td></td>
                                                 <td>

@@ -20,7 +20,6 @@ import java.util.logging.Logger;
  * @author DELL
  */
 public class ShipCompanyDAO extends BaseDAO{
-
     
     public void deleteShipCompany(String companyID) {
         String sql = "delete from ShipCompany where [companyID] = ?";
@@ -75,6 +74,7 @@ public class ShipCompanyDAO extends BaseDAO{
         }
         return n;
     }
+    
     public static void main(String[] args) {
         ShipCompanyDAO dao = new ShipCompanyDAO();
         boolean check =dao.checkExistCompanyName("FPT");
