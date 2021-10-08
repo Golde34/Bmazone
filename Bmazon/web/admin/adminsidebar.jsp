@@ -63,7 +63,7 @@
                         <a class="nav-link active" href="AdminControllerMap?service=usermanagement">
                         <%}else{%>
                         <a class="nav-link" href="AdminControllerMap?service=usermanagement">
-                        <%{%>
+                        <%}%>
                             <div class="icon icon-shape icon-sm shadow border-radius-md bg-white text-center me-2 d-flex align-items-center justify-content-center">
                                 <%if (service.equalsIgnoreCase("usermanagement") || service.equalsIgnoreCase("updateuserdetail") || service.equalsIgnoreCase("adduserdetail")) {%> 
                                 <i class="fas fa-users"></i>
