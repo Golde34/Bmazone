@@ -31,7 +31,9 @@
     </head>
 
     <body class="g-sidenav-show  bg-gray-100">
-        <jsp:include page="adminsidebar.jsp"></jsp:include>
+        <aside class="sidenav navbar navbar-vertical navbar-expand-xs border-0 border-radius-xl my-3 fixed-start ms-3 " id="sidenav-main">
+            <jsp:include page="adminsidebar.jsp"></jsp:include>
+        </aside>
         <main class="main-content position-relative max-height-vh-100 h-100 mt-1 border-radius-lg ">
             <!-- Navbar -->
             <jsp:include page="adminheader.jsp"></jsp:include>
