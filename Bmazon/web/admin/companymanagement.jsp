@@ -4,6 +4,8 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <c:set var="contextPath" value="${pageContext.request.contextPath}" />
 <%
+    int index = (Integer) request.getAttribute("index");
+    int total = (Integer) request.getAttribute("total");
     User curUser = (User) request.getSession().getAttribute("currUser");
     List<ShipCompany> listCompany = (List<ShipCompany>) request.getAttribute("listCompany");
 %>
@@ -56,7 +58,7 @@
                                         <div class="rowNum">
                                             <h6 style="display: inline">Select number of Rows</h6>
                                             <div class="form-group" style="display: inline;">
-                                                <select name="state" id="maxRows" class="form-control" style="width:80px;display:inline;">
+                                                <select onchange="pagination()" name="state" id="maxRows" class="form-control" style="width:80px;display:inline;">
                                                     <option value="5">5</option>
                                                     <option value="10">10</option>
                                                     <option value="20">20</option>
@@ -65,7 +67,7 @@
                                             </div>
                                         </div>
                                         <div class="tb_search">
-                                            <input style="width: 100%;" type="text" oninput="searchByName(this)" placeholder="Search.." class="form-control">
+                                            <input id="search" style="width: 100%;" type="text" oninput="pagination()" placeholder="Search.." class="form-control">
                                         </div>
                                     </div>
                                     <table class="table table-bordered table-striped" id="dataTable" style="text-align: center;">
@@ -96,24 +98,41 @@
                                     <div class="pagination-container mt-4" style="display: flex;
                                          justify-content: space-around;cursor: pointer;">
                                         <nav>
-                                            <ul class="pagination">
-<!--                                                <li data-page="first" class="page-item">
-                                                    <a class="page-link" aria-label="Previous">
+                                            <ul class="pagination" id="showpage">
+                                                <li data-repair="first" class="page-item">
+                                                    <a class="page-link" aria-label="First">
                                                         <span aria-hidden="true"><i class="fas fa-backward"></i>
                                                             <span class="sr-only">(current)</span> 
                                                         </span>
                                                     </a>
-                                                </li>-->
-                                                <li data-page="prev" class="page-item">
+                                                </li>
+                                                <li data-repair="prev" class="page-item">
                                                     <a class="page-link" aria-label="Previous">
                                                         <span aria-hidden="true"><i class="fas fa-arrow-left"></i>
                                                             <span class="sr-only">(current)</span> 
                                                         </span>
                                                     </a>
                                                 </li>
-                                                <li data-page="next" class="page-item" id="next">
+                                                <%for (int i = 1; i <= total; i++) {%>
+                                                <%if (index == i) {%>
+                                                <li  class="page-item active" data-repair="<%=i%>">
+                                                <%} else {%><li  class="page-item" data-repair="<%=i%>"> <%}%>
+                                                    <a class="page-link">
+                                                        <div class="index"><%=i%></div>
+                                                        <span class="sr-only">(current)</span>
+                                                    </a>
+                                                </li>
+                                                <%}%>
+                                                <li data-repair="next" class="page-item">
                                                     <a class="page-link" aria-label="Next">
                                                         <span aria-hidden="true"><i class="fas fa-arrow-right"></i>
+                                                            <span class="sr-only">(current)</span> 
+                                                        </span>
+                                                    </a>
+                                                </li>
+                                                <li data-repair="last" class="page-item">
+                                                    <a class="page-link" aria-label="Last">
+                                                        <span aria-hidden="true"><i class="fas fa-forward"></i>
                                                             <span class="sr-only">(current)</span> 
                                                         </span>
                                                     </a>
@@ -136,21 +155,52 @@
         <script src="${contextPath}/js/plugins/smooth-scrollbar.min.js"></script>
         <script src="${contextPath}/js/plugins/chartjs.min.js"></script>
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
-        <script src="${contextPath}/js/tablepagination.js"></script>
         <script>
-            function searchByName(param) {
-                var txtSearch = param.value;
+            var pageNum;
+            $(document).on('click', '.pagination li', function () {
+                pageNum = $(this).data('repair');
+                pagination();
+            });
+            function pagination() {
+                var row = document.getElementById("maxRows").value;
+                var search = document.getElementById("search").value;
+                console.log(row);
+                console.log(search);
+                console.log(pageNum);
                 $.ajax({
                     url: "/Bmazon/AdminControllerMap",
                     type: "get",
                     data: {
-                        search: txtSearch,
-                        service: "searchcompany"
+                        search: search,
+                        row: row,
+                        index: pageNum,
+                        service: "pagingcompany"
                     },
                     success: function (respone) {
                         var text = document.getElementById("company");
                         text.innerHTML = respone;
-                        getPagination('#dataTable');
+                        showpage();
+                    },
+                    error: function (xhr) {
+                        //Do Something to handle error
+                    }
+                });
+            }
+            function showpage() {
+                var row = document.getElementById("maxRows").value;
+                var search = document.getElementById("search").value;
+                $.ajax({
+                    url: "/Bmazon/AdminControllerMap",
+                    type: "get",
+                    data: {
+                        search: search,
+                        row: row,
+                        index: pageNum,
+                        service: "showpagecompany"
+                    },
+                    success: function (respone) {
+                        var text = document.getElementById("showpage");
+                        text.innerHTML = respone;
                     },
                     error: function (xhr) {
                         //Do Something to handle error

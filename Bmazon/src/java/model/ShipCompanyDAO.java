@@ -19,8 +19,10 @@ import java.util.logging.Logger;
  *
  * @author DELL
  */
-public class ShipCompanyDAO extends BaseDAO{
-    
+public class ShipCompanyDAO extends BaseDAO {
+
+    BaseDAO dbConn = new BaseDAO();
+
     public void deleteShipCompany(String companyID) {
         String sql = "delete from ShipCompany where [companyID] = ?";
         try {
@@ -30,9 +32,9 @@ public class ShipCompanyDAO extends BaseDAO{
         } catch (Exception e) {
         }
     }
-    
+
     public boolean checkExistCompanyName(String companyname) {
-        xSql = "SELECT * FROM [Bmazon].[dbo].[ShipCompany] where companyName like '"+companyname+"'";
+        xSql = "SELECT * FROM [Bmazon].[dbo].[ShipCompany] where companyName like '" + companyname + "'";
         try {
             pre = conn.prepareStatement(xSql);
             rs = pre.executeQuery();
@@ -74,16 +76,10 @@ public class ShipCompanyDAO extends BaseDAO{
         }
         return n;
     }
-    
-    public static void main(String[] args) {
-        ShipCompanyDAO dao = new ShipCompanyDAO();
-        boolean check =dao.checkExistCompanyName("FPT");
-        System.out.println(check);
-    }
-    
+
     public ShipCompany getShipCompanyById(int id) {
         ShipCompany company = new ShipCompany();
-        xSql = "select * from ShipCompany where companyID = "+id;
+        xSql = "select * from ShipCompany where companyID = " + id;
         try {
             pre = conn.prepareStatement(xSql);
             rs = pre.executeQuery();
@@ -99,9 +95,35 @@ public class ShipCompanyDAO extends BaseDAO{
         return company;
     }
 
-    public List<ShipCompany> searchShipCompany(String text) {
+    public int getPageNumber(String search) {
+        int num = 0;
+        xSql = "SELECT COUNT(*) FROM [Bmazon].[dbo].[ShipCompany] where status=1 and (companyName like '%" + search + "%' or commitDate like '%" + search + "%' or unitCost like '%" + search + "%')";
+        ResultSet rs = dbConn.getData(xSql);
+        try {
+            if (rs.next()) {
+                num = rs.getInt(1);
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(UserDAO.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return num;
+    }
+    public static void main(String[] args) {
+        ShipCompanyDAO dao = new ShipCompanyDAO();
+        List<ShipCompany> list = dao.getAllPagingShipCompany(1, 5, "h");
+        for (ShipCompany shipCompany : list) {
+            System.out.println(shipCompany.getCompanyName());
+        }
+    }
+    public List<ShipCompany> getAllPagingShipCompany(int index, int numOfRow, String search) {
         List<ShipCompany> list = new ArrayList<>();
-        xSql = "SELECT * FROM [Bmazon].[dbo].[ShipCompany] where companyName like '%"+text+"%' or unitCost like '%"+text+"%' or commitDate like '%"+text+"%'";
+        xSql = "declare @PageNo INT =" + index + "\n"
+                + "declare @PageSize INT=" + numOfRow + "\n"
+                + "SELECT * from(\n"
+                + "SELECT *,\n"
+                + "ROW_NUMBER() over (order by companyID) as RowNum\n"
+                + "  FROM [Bmazon].[dbo].[ShipCompany] where status=1 and (companyName like '%" + search + "%' or commitDate like '%" + search + "%' or unitCost like '%" + search + "%'))T\n"
+                + "where T.RowNum between ((@PageNo-1)*@PageSize)+1 and (@PageNo*@PageSize)";
         try {
             pre = conn.prepareStatement(xSql);
             rs = pre.executeQuery();
@@ -113,11 +135,12 @@ public class ShipCompanyDAO extends BaseDAO{
                         rs.getInt(4),
                         rs.getInt(5)));
             }
-        } catch (Exception e) {
+        } catch (SQLException ex) {
+            Logger.getLogger(UserDAO.class.getName()).log(Level.SEVERE, null, ex);
         }
         return list;
     }
-    
+
     public List<ShipCompany> getAllShipCompany() {
         List<ShipCompany> list = new ArrayList<>();
         xSql = "select * from ShipCompany where [status] = 1";
