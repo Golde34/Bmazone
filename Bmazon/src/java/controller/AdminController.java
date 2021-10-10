@@ -44,7 +44,7 @@ public class AdminController extends HttpServlet {
     UserDAO daouser = new UserDAO();
     WareHouseDAO daowarehouse = new WareHouseDAO();
     RoleDAO daorole = new RoleDAO();
-    
+
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
@@ -65,8 +65,7 @@ public class AdminController extends HttpServlet {
                 serviceAdminDashboard(service, request, response);
             }
 
-            
-            
+            // <editor-fold defaultstate="collapsed" desc="User service. Click on the + sign on the left to edit the code.">
             //User Management
             if (service.equalsIgnoreCase("usermanagement")) {
                 serviceUserManagement(service, request, response);
@@ -78,6 +77,10 @@ public class AdminController extends HttpServlet {
             //Paging User
             if (service.equalsIgnoreCase("paging")) {
                 servicePagingUser(service, request, response);
+            }
+            //Show Page User
+            if (service.equalsIgnoreCase("showpage")) {
+                serviceShowPageUser(request, response);
             }
             //Search User
             if (service.equalsIgnoreCase("searchuser")) {
@@ -95,9 +98,9 @@ public class AdminController extends HttpServlet {
             if (service.equalsIgnoreCase("deleteuser")) {
                 serviceDeleteUser(service, request, response);
             }
+            //</editor-fold>
 
-            
-            
+            // <editor-fold defaultstate="collapsed" desc="Product service. Click on the + sign on the left to edit the code.">
             //Product Manage
             if (service.equalsIgnoreCase("productmanagement")) {
                 serviceProductManagement(service, request, response);
@@ -122,9 +125,9 @@ public class AdminController extends HttpServlet {
             if (service.equalsIgnoreCase("deleteproduct")) {
                 serviceDeleteProduct(service, request, response);
             }
+            //</editor-fold>
 
-            
-            
+            // <editor-fold defaultstate="collapsed" desc="Ship Company service. Click on the + sign on the left to edit the code.">
             //Ship Company Manage
             if (service.equalsIgnoreCase("companymanagement")) {
                 serviceCompanyManagement(service, request, response);
@@ -149,9 +152,9 @@ public class AdminController extends HttpServlet {
             if (service.equalsIgnoreCase("deletecompany")) {
                 serviceDeleteCompany(service, request, response);
             }
+            //</editor-fold>
 
-            
-            
+            // <editor-fold defaultstate="collapsed" desc="Gallery service. Click on the + sign on the left to edit the code.">
             //Gallery Manage
             if (service.equalsIgnoreCase("gallerymanagement")) {
                 serviceGalleryManagement(service, request, response);
@@ -176,9 +179,9 @@ public class AdminController extends HttpServlet {
             if (service.equalsIgnoreCase("deletegallery")) {
                 serviceDeleteGallery(service, request, response);
             }
+            //</editor-fold>
 
-            
-            
+            // <editor-fold defaultstate="collapsed" desc="Role serive. Click on the + sign on the left to edit the code.">
             //Role Display
             if (service.equalsIgnoreCase("roleDisplay")) {
                 serviceRoleDisplay(service, request, response);
@@ -203,6 +206,7 @@ public class AdminController extends HttpServlet {
             if (service.equalsIgnoreCase("searchRole")) {
                 serviceSearchRole(service, request, response);
             }
+            //</editor-fold>
         }
     }
 
@@ -214,9 +218,8 @@ public class AdminController extends HttpServlet {
         request.setAttribute(("listUser"), listUser);
         sendDispatcher(request, response, "admin/admin.jsp");
     }
-    
-    // <editor-fold defaultstate="collapsed" desc="User methods. Click on the + sign on the left to edit the code.">
 
+    // <editor-fold defaultstate="collapsed" desc="User methods. Click on the + sign on the left to edit the code.">
     public void serviceUserManagement(String service, HttpServletRequest request, HttpServletResponse response) {
         ArrayList<User> listPaging = daouser.pagingUser(1, 5, "");
         ArrayList<User> listUser = daouser.getAllUser();
@@ -272,6 +275,67 @@ public class AdminController extends HttpServlet {
                     + "<td><div><a href=\"AdminControllerMap?service=deleteuser&userid=" + user.getUserId() + "\" onclick=\"return confirm('Are you sure you want to Remove?');\"><span class=\"fas fa-trash-alt\"></span></a></div></td>" + "</tr>"
             );
         }
+        if (request.getParameter("row") == null) {
+            sendDispatcher(request, response, "admin/paging.jsp");
+        }
+    }
+    
+    public void serviceShowPageUser(HttpServletRequest request, HttpServletResponse response) throws IOException {
+        PrintWriter pr = response.getWriter();
+        int index = 1, numOfRow = 5;
+        String search = request.getParameter("search");
+        if (request.getParameter("index") != null) {
+            index = Integer.parseInt(request.getParameter("index"));
+        }
+        if (request.getParameter("row") != null) {
+            numOfRow = Integer.parseInt(request.getParameter("row"));
+        }
+        ArrayList<User> listPaging = daouser.pagingUser(index, numOfRow, search);
+        ArrayList<User> listUser = daouser.getAllUser();
+        int totalResult = daouser.getPageNumber(search);
+        int totalPage = listUser.size() / numOfRow;
+        request.setAttribute("index", index);
+        request.setAttribute("total", totalPage + 1);
+        request.setAttribute("listUser", listPaging);
+        pr.print("<li data-repair=\"first\" class=\"page-item\">");
+        pr.print("<a class=\"page-link\" aria-label=\"First\">");
+        pr.print("<span aria-hidden=\"true\"><i class=\"fas fa-backward\"></i>");
+        pr.print("<span class=\"sr-only\">(current)</span> ");
+        pr.print("</span>");
+        pr.print("</a>");
+        pr.print("</li>");
+        pr.print("<li data-repair=\"prev\" class=\"page-item\">");
+        pr.print("<a class=\"page-link\" aria-label=\"Previous\">");
+        pr.print("<span aria-hidden=\"true\"><i class=\"fas fa-arrow-left\"></i>");
+        pr.print("<span class=\"sr-only\">(current)</span> ");
+        pr.print("</span>");
+        pr.print("</a>");
+        pr.print("</li>");
+        for (int i = 1; i <= totalPage+1; i++) {
+            if(index==i)
+                pr.print("<li  class=\"page-item active\" data-repair=\""+i+"\">");
+            else
+                pr.print("<li  class=\"page-item\" data-repair=\""+i+"\">");
+            pr.print("<a class=\"page-link\">");
+            pr.print("<div class=\"index\">"+i+"</div>");
+            pr.print("<span class=\"sr-only\">(current)</span>");
+            pr.print("</a>");
+            pr.print("</li>");
+        }
+        pr.print("<li data-repair=\"next\" class=\"page-item\">");
+        pr.print("<a class=\"page-link\" aria-label=\"Next\">");
+        pr.print("<span aria-hidden=\"true\"><i class=\"fas fa-arrow-right\"></i>");
+        pr.print("<span class=\"sr-only\">(current)</span> ");
+        pr.print("</span>");
+        pr.print("</a>");
+        pr.print("</li>");
+        pr.print("<li data-repair=\"last\" class=\"page-item\">");
+        pr.print("<a class=\"page-link\" aria-label=\"Last\">");
+        pr.print("<span aria-hidden=\"true\"><i class=\"fas fa-forward\"></i>");
+        pr.print("<span class=\"sr-only\">(current)</span> ");
+        pr.print("</span>");
+        pr.print("</a>");
+        pr.print("</li>");
         if (request.getParameter("row") == null) {
             sendDispatcher(request, response, "admin/paging.jsp");
         }
@@ -398,9 +462,8 @@ public class AdminController extends HttpServlet {
         request.setAttribute("listUser", listUser);
         sendDispatcher(request, response, "admin/usermanagement.jsp");
     }// </editor-fold>
-    
-    // <editor-fold defaultstate="collapsed" desc="Product methods. Click on the + sign on the left to edit the code.">
 
+    // <editor-fold defaultstate="collapsed" desc="Product methods. Click on the + sign on the left to edit the code.">
     public void serviceProductManagement(String service, HttpServletRequest request, HttpServletResponse response) {
         request.setAttribute("service", service);
         ArrayList<Product> listProduct = daoproduct.getAllProduct();
@@ -478,9 +541,8 @@ public class AdminController extends HttpServlet {
         request.setAttribute("service", service);
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }//</editor-fold>
-    
-    // <editor-fold defaultstate="collapsed" desc="Company methods. Click on the + sign on the left to edit the code.">
 
+    // <editor-fold defaultstate="collapsed" desc="Company methods. Click on the + sign on the left to edit the code.">
     public void serviceCompanyManagement(String service, HttpServletRequest request, HttpServletResponse response) {
         request.setAttribute("service", service);
         List<ShipCompany> listCompany = daocompany.getAllShipCompany();
@@ -599,9 +661,8 @@ public class AdminController extends HttpServlet {
             sendDispatcher(request, response, "admin/companydetail.jsp");
         }
     }//</editor-fold>
-    
-    // <editor-fold defaultstate="collapsed" desc="Gallery methods. Click on the + sign on the left to edit the code.">
 
+    // <editor-fold defaultstate="collapsed" desc="Gallery methods. Click on the + sign on the left to edit the code.">
     public void serviceGalleryManagement(String service, HttpServletRequest request, HttpServletResponse response) {
         request.setAttribute("service", service);
         List<Gallery> listGallery = daogallery.getAllGallery();
@@ -676,7 +737,7 @@ public class AdminController extends HttpServlet {
         request.setAttribute("role", role);
         sendDispatcher(request, response, "admin/authorization/roleAuthorization.jsp");
     }
-    
+
     public void serviceRoleDetail(String service, HttpServletRequest request, HttpServletResponse response) {
         request.setAttribute("service", service);
         if (service.equalsIgnoreCase("addRoleDetail")) {
@@ -734,7 +795,7 @@ public class AdminController extends HttpServlet {
             );
         }
     }//</editor-fold>
-    
+
     public void sendDispatcher(HttpServletRequest request, HttpServletResponse response, String path) {
         try {
             RequestDispatcher rd = request.getRequestDispatcher(path);
@@ -747,16 +808,16 @@ public class AdminController extends HttpServlet {
     }
 
 // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
-/**
- * Handles the HTTP <code>GET</code> method.
- *
- * @param request servlet request
- * @param response servlet response
- * @throws ServletException if a servlet-specific error occurs
- * @throws IOException if an I/O error occurs
- */
-@Override
-        protected void doGet(HttpServletRequest request, HttpServletResponse response)
+    /**
+     * Handles the HTTP <code>GET</code> method.
+     *
+     * @param request servlet request
+     * @param response servlet response
+     * @throws ServletException if a servlet-specific error occurs
+     * @throws IOException if an I/O error occurs
+     */
+    @Override
+    protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         processRequest(request, response);
     }
@@ -770,7 +831,7 @@ public class AdminController extends HttpServlet {
      * @throws IOException if an I/O error occurs
      */
     @Override
-        protected void doPost(HttpServletRequest request, HttpServletResponse response)
+    protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         processRequest(request, response);
     }
@@ -781,9 +842,8 @@ public class AdminController extends HttpServlet {
      * @return a String containing servlet description
      */
     @Override
-        public String getServletInfo() {
+    public String getServletInfo() {
         return "Short description";
     }// </editor-fold>
-
 
 }

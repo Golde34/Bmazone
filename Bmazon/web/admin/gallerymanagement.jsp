@@ -30,6 +30,14 @@
         <link id="pagestyle" href="${contextPath}/css/soft-ui-dashboard.css?v=1.0.3" rel="stylesheet" />
     </head>
 
+    <style>
+        th,td{
+            padding: 12px 15px;
+        }
+        tbody tr:nth-child(odd){
+            background-color: #f2f2f2;
+        }
+    </style>
     <body class="g-sidenav-show  bg-gray-100">
         <aside class="sidenav navbar navbar-vertical navbar-expand-xs border-0 border-radius-xl my-3 fixed-start ms-3 " id="sidenav-main">
             <jsp:include page="adminsidebar.jsp"></jsp:include>
@@ -68,7 +76,7 @@
                                             <input style="width: 100%;" type="text" oninput="searchByName(this)" placeholder="Search.." class="form-control">
                                         </div>
                                     </div>
-                                    <table id="dataTable" style="table-layout: fixed;width: 100%;text-align: center;">
+                                    <table id="dataTable" class="table-bordered" style="table-layout: fixed;width: 100%;text-align: center;">
                                         <thead>
                                             <tr>
                                                 <th style="width: 30%">Product Name</th>

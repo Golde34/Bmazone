@@ -33,8 +33,8 @@
         th,td{
             padding: 12px 15px;
         }
-        th{
-            background-color: rgba(236,230,255,0.5);
+        tbody tr:nth-child(odd){
+            background-color: #f2f2f2;
         }
     </style>
     <body class="g-sidenav-show  bg-gray-100">
