@@ -66,8 +66,8 @@
                                         <%if (service.equalsIgnoreCase("addcompanydetail")) {%>
                                         <table class="table table-striped">
                                             <tr>
-                                                <td>Company Name</td>
-                                                <td>
+                                                <td style="width: 30%;">Company Name</td>
+                                                <td style="width: 70%;">
                                                     <input pattern="^[^\s]+(\s+[^\s]+)*$" class="form-control" type="text" value="${companyname}" name="companyname" required>
                                                     <div class="invalid-feedback">
                                                         Not blank and no space at beginning or ending

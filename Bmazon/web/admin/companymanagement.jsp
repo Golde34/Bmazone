@@ -5,7 +5,9 @@
 <c:set var="contextPath" value="${pageContext.request.contextPath}" />
 <%
     int index = (Integer) request.getAttribute("index");
-    int total = (Integer) request.getAttribute("total");
+    int totalPage = (Integer) request.getAttribute("totalPage");
+    int prev = index == 1 ? 1 : index - 1;
+    int next = index == totalPage ? totalPage : index + 1;
     User curUser = (User) request.getSession().getAttribute("currUser");
     List<ShipCompany> listCompany = (List<ShipCompany>) request.getAttribute("listCompany");
 %>
@@ -32,55 +34,55 @@
     <body class="g-sidenav-show  bg-gray-100">
         <aside class="sidenav navbar navbar-vertical navbar-expand-xs border-0 border-radius-xl my-3 fixed-start ms-3 " id="sidenav-main">
             <jsp:include page="adminsidebar.jsp"></jsp:include>
-        </aside>
-        <main class="main-content position-relative max-height-vh-100 h-100 mt-1 border-radius-lg ">
-            <!-- Navbar -->
+            </aside>
+            <main class="main-content position-relative max-height-vh-100 h-100 mt-1 border-radius-lg ">
+                <!-- Navbar -->
             <jsp:include page="adminheader.jsp"></jsp:include>
-            <!-- End Navbar -->
-            <div class="container-fluid py-4">
-                <div class="row mt-4">
+                <!-- End Navbar -->
+                <div class="container-fluid py-4">
+                    <div class="row mt-4">
 
-                </div>
-                <div class="row my-4">
-                    <div class="col-lg-12 col-md-12 mb-md-0 mb-4">
-                        <div class="card">
-                            <div class="card-body px-0 pb-2">
-                                <div class="card-header py-3" 
-                                     style="display: flex;
-                                     justify-content: space-between;">
-                                    <h3 class="m-0 font-weight-bold text-primary">Ship Company Management</h3>
-                                    <a href="AdminControllerMap?service=addcompanydetail">
-                                        <button class="btn-primary btn">Add new company</button></a>
-                                </div>
-                                <div class="card-body">
-                                    <div class="table_head py-3" style="display: flex;
+                    </div>
+                    <div class="row my-4">
+                        <div class="col-lg-12 col-md-12 mb-md-0 mb-4">
+                            <div class="card">
+                                <div class="card-body px-0 pb-2">
+                                    <div class="card-header py-3" 
+                                         style="display: flex;
                                          justify-content: space-between;">
-                                        <div class="rowNum">
-                                            <h6 style="display: inline">Select number of Rows</h6>
-                                            <div class="form-group" style="display: inline;">
-                                                <select onchange="pagination()" name="state" id="maxRows" class="form-control" style="width:80px;display:inline;">
-                                                    <option value="5">5</option>
-                                                    <option value="10">10</option>
-                                                    <option value="20">20</option>
-                                                    <option value="5000">Show All</option>
-                                                </select>
+                                        <h3 class="m-0 font-weight-bold text-primary">Ship Company Management</h3>
+                                        <a href="AdminControllerMap?service=addcompanydetail">
+                                            <button class="btn-primary btn">Add new company</button></a>
+                                    </div>
+                                    <div class="card-body">
+                                        <div class="table_head py-3" style="display: flex;
+                                             justify-content: space-between;">
+                                            <div class="rowNum">
+                                                <h6 style="display: inline">Select number of Rows</h6>
+                                                <div class="form-group" style="display: inline;">
+                                                    <select onchange="pagination()" name="state" id="maxRows" class="form-control" style="width:80px;display:inline;">
+                                                        <option value="5">5</option>
+                                                        <option value="10">10</option>
+                                                        <option value="20">20</option>
+                                                        <option value="5000">Show All</option>
+                                                    </select>
+                                                </div>
+                                            </div>
+                                            <div class="tb_search">
+                                                <input id="search" style="width: 100%;" type="text" oninput="pagination()" placeholder="Search.." class="form-control">
                                             </div>
                                         </div>
-                                        <div class="tb_search">
-                                            <input id="search" style="width: 100%;" type="text" oninput="pagination()" placeholder="Search.." class="form-control">
-                                        </div>
-                                    </div>
-                                    <table class="table table-bordered table-striped" id="dataTable" style="text-align: center;">
-                                        <thead>
-                                            <tr>
-                                                <th>Company Name</th>
-                                                <th>Commit Date</th>
-                                                <th>Unit Cost</th>
-                                                <th></th>
-                                                <th></th>
-                                            </tr>
-                                        </thead>
-                                        <tbody id="company">
+                                        <table class="table table-bordered table-striped" id="dataTable" style="text-align: center;">
+                                            <thead>
+                                                <tr>
+                                                    <th>Company Name</th>
+                                                    <th>Commit Date</th>
+                                                    <th>Unit Cost</th>
+                                                    <th></th>
+                                                    <th></th>
+                                                </tr>
+                                            </thead>
+                                            <tbody id="company">
                                             <%for (ShipCompany company : listCompany) {%>
                                             <tr>
                                                 <% int unit = (int) company.getUnitCost();%>
@@ -98,22 +100,24 @@
                                     <div class="pagination-container mt-4" style="display: flex;
                                          justify-content: space-around;cursor: pointer;">
                                         <nav>
+                                            <%if (totalPage > 1) {%>
                                             <ul class="pagination" id="showpage">
-                                                <li data-repair="first" class="page-item">
+                                                <li data-repair="1" class="page-item">
                                                     <a class="page-link" aria-label="First">
                                                         <span aria-hidden="true"><i class="fas fa-backward"></i>
                                                             <span class="sr-only">(current)</span> 
                                                         </span>
                                                     </a>
                                                 </li>
-                                                <li data-repair="prev" class="page-item">
+                                                <li data-repair="<%=prev%>" class="page-item">
                                                     <a class="page-link" aria-label="Previous">
                                                         <span aria-hidden="true"><i class="fas fa-arrow-left"></i>
                                                             <span class="sr-only">(current)</span> 
                                                         </span>
                                                     </a>
                                                 </li>
-                                                <%for (int i = 1; i <= total; i++) {%>
+                                                <%int limit = totalPage>5 ? 5 : totalPage;%>
+                                                <%for (int i = index; i <= limit; i++) {%>
                                                 <%if (index == i) {%>
                                                 <li  class="page-item active" data-repair="<%=i%>">
                                                 <%} else {%><li  class="page-item" data-repair="<%=i%>"> <%}%>
@@ -123,14 +127,14 @@
                                                     </a>
                                                 </li>
                                                 <%}%>
-                                                <li data-repair="next" class="page-item">
+                                                <li data-repair="<%=next%>" class="page-item">
                                                     <a class="page-link" aria-label="Next">
                                                         <span aria-hidden="true"><i class="fas fa-arrow-right"></i>
                                                             <span class="sr-only">(current)</span> 
                                                         </span>
                                                     </a>
                                                 </li>
-                                                <li data-repair="last" class="page-item">
+                                                <li data-repair="<%=totalPage%>" class="page-item">
                                                     <a class="page-link" aria-label="Last">
                                                         <span aria-hidden="true"><i class="fas fa-forward"></i>
                                                             <span class="sr-only">(current)</span> 
@@ -138,6 +142,7 @@
                                                     </a>
                                                 </li>
                                             </ul>
+                                            <%}%>
                                         </nav>
                                     </div>
                                 </div>
@@ -151,9 +156,6 @@
         <!--   Core JS Files   -->
         <script src="${contextPath}/js/core/popper.min.js"></script>
         <script src="${contextPath}/js/core/bootstrap.min.js"></script>
-        <script src="${contextPath}/js/plugins/perfect-scrollbar.min.js"></script>
-        <script src="${contextPath}/js/plugins/smooth-scrollbar.min.js"></script>
-        <script src="${contextPath}/js/plugins/chartjs.min.js"></script>
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
         <script>
             var pageNum;
@@ -209,7 +211,7 @@
             }
         </script>
         <!-- Github buttons -->
-        <script async defer src="https://buttons.github.io/buttons.js"></script>
+        <!--        <script async defer src="https://buttons.github.io/buttons.js"></script>-->
         <!-- Control Center for Soft Dashboard: parallax effects, scripts for the example pages etc -->
 <!--        <script src="${contextPath}/js/soft-ui-dashboard.min.js?v=1.0.3"></script>-->
     </body>

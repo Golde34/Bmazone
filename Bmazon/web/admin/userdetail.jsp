@@ -69,8 +69,8 @@
                                         <%if (service.equalsIgnoreCase("adduserdetail")) {%>
                                         <table class="table table-striped">
                                             <tr>
-                                                <td>User Name</td>
-                                                <td>
+                                                <td style="width: 30%">User Name</td>
+                                                <td style="width: 70%">
                                                     <input pattern="[^' ']+" class="form-control" type="text" value="${username}" name="username" required>
                                                     <div class="invalid-feedback">
                                                         Not blank and no space at beginning or ending

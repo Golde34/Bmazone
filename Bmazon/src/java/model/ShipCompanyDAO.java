@@ -110,7 +110,7 @@ public class ShipCompanyDAO extends BaseDAO {
     }
     public static void main(String[] args) {
         ShipCompanyDAO dao = new ShipCompanyDAO();
-        List<ShipCompany> list = dao.getAllPagingShipCompany(1, 5, "h");
+        List<ShipCompany> list = dao.getAllPagingShipCompany(1, 5, "");
         for (ShipCompany shipCompany : list) {
             System.out.println(shipCompany.getCompanyName());
         }

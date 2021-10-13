@@ -1,11 +1,13 @@
-<%@page import="java.util.ArrayList"%>
+<%@page import="java.util.*"%>
 <%@page import="entity.*"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <c:set var="contextPath" value="${pageContext.request.contextPath}" />
 <%
     int index = (Integer) request.getAttribute("index");
-    int total = (Integer) request.getAttribute("total");
+    int totalPage = (Integer) request.getAttribute("totalPage");
+    int prev = index == 1 ? 1 : index-1;
+    int next = index == totalPage ? totalPage : index+1;
     User curUser = (User) request.getSession().getAttribute("currUser");
     ArrayList<User> listUser = (ArrayList<User>) request.getAttribute("listUser");
 %>
@@ -99,22 +101,24 @@
                                     <div class="pagination-container mt-4" style="display: flex;
                                          justify-content: space-around;cursor: pointer;">
                                         <nav>
+                                            <%if (totalPage > 1) {%>
                                             <ul class="pagination" id="showpage">
-                                                <li data-repair="first" class="page-item">
+                                                <li data-repair="1" class="page-item">
                                                     <a class="page-link" aria-label="First">
                                                         <span aria-hidden="true"><i class="fas fa-backward"></i>
                                                             <span class="sr-only">(current)</span> 
                                                         </span>
                                                     </a>
                                                 </li>
-                                                <li data-repair="prev" class="page-item">
+                                                <li data-repair="<%=prev%>" class="page-item">
                                                     <a class="page-link" aria-label="Previous">
                                                         <span aria-hidden="true"><i class="fas fa-arrow-left"></i>
                                                             <span class="sr-only">(current)</span> 
                                                         </span>
                                                     </a>
                                                 </li>
-                                                <%for (int i = 1; i <= total; i++) {%>
+                                                <%int limit = totalPage>5 ? 5 : totalPage;%>
+                                                <%for (int i = 1; i <= limit; i++) {%>
                                                 <%if (index == i) {%>
                                                 <li  class="page-item active" data-repair="<%=i%>">
                                                 <%} else {%><li  class="page-item" data-repair="<%=i%>"> <%}%>
@@ -124,14 +128,14 @@
                                                     </a>
                                                 </li>
                                                 <%}%>
-                                                <li data-repair="next" class="page-item">
+                                                <li data-repair="<%=next%>" class="page-item">
                                                     <a class="page-link" aria-label="Next">
                                                         <span aria-hidden="true"><i class="fas fa-arrow-right"></i>
                                                             <span class="sr-only">(current)</span> 
                                                         </span>
                                                     </a>
                                                 </li>
-                                                <li data-repair="last" class="page-item">
+                                                <li data-repair="<%=totalPage%>" class="page-item">
                                                     <a class="page-link" aria-label="Last">
                                                         <span aria-hidden="true"><i class="fas fa-forward"></i>
                                                             <span class="sr-only">(current)</span> 
@@ -139,6 +143,7 @@
                                                     </a>
                                                 </li>
                                             </ul>
+                                            <%}%>
                                         </nav>
                                     </div>
                                 </div>
@@ -157,57 +162,57 @@
         <script src="${contextPath}/js/plugins/chartjs.min.js"></script>
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
         <script>
-            var pageNum;
-            $(document).on('click', '.pagination li', function () {
-                pageNum = $(this).data('repair');
-                pagination();
+        var pageNum;
+        $(document).on('click', '.pagination li', function () {
+            pageNum = $(this).data('repair');
+            pagination();
+        });
+        function pagination() {
+            var row = document.getElementById("maxRows").value;
+            var search = document.getElementById("search").value;
+            console.log(row);
+            console.log(search);
+            console.log(pageNum);
+            $.ajax({
+                url: "/Bmazon/AdminControllerMap",
+                type: "get",
+                data: {
+                    search: search,
+                    row: row,
+                    index: pageNum,
+                    service: "paginguser"
+                },
+                success: function (respone) {
+                    var text = document.getElementById("user");
+                    text.innerHTML = respone;
+                    showpage();
+                },
+                error: function (xhr) {
+                    //Do Something to handle error
+                }
             });
-            function pagination() {
-                var row = document.getElementById("maxRows").value;
-                var search = document.getElementById("search").value;
-                console.log(row);
-                console.log(search);
-                console.log(pageNum);
-                $.ajax({
-                    url: "/Bmazon/AdminControllerMap",
-                    type: "get",
-                    data: {
-                        search: search,
-                        row: row,
-                        index: pageNum,
-                        service: "paginguser"
-                    },
-                    success: function (respone) {
-                        var text = document.getElementById("user");
-                        text.innerHTML = respone;
-                        showpage();
-                    },
-                    error: function (xhr) {
-                        //Do Something to handle error
-                    }
-                });
-            }
-            function showpage() {
-                var row = document.getElementById("maxRows").value;
-                var search = document.getElementById("search").value;
-                $.ajax({
-                    url: "/Bmazon/AdminControllerMap",
-                    type: "get",
-                    data: {
-                        search: search,
-                        row: row,
-                        index: pageNum,
-                        service: "showpageuser"
-                    },
-                    success: function (respone) {
-                        var text = document.getElementById("showpage");
-                        text.innerHTML = respone;
-                    },
-                    error: function (xhr) {
-                        //Do Something to handle error
-                    }
-                });
-            }
+        }
+        function showpage() {
+            var row = document.getElementById("maxRows").value;
+            var search = document.getElementById("search").value;
+            $.ajax({
+                url: "/Bmazon/AdminControllerMap",
+                type: "get",
+                data: {
+                    search: search,
+                    row: row,
+                    index: pageNum,
+                    service: "showpageuser"
+                },
+                success: function (respone) {
+                    var text = document.getElementById("showpage");
+                    text.innerHTML = respone;
+                },
+                error: function (xhr) {
+                    //Do Something to handle error
+                }
+            });
+        }
         </script>
     </body>
 

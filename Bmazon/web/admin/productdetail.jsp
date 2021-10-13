@@ -40,44 +40,44 @@
     <body class="g-sidenav-show  bg-gray-100">
         <aside class="sidenav navbar navbar-vertical navbar-expand-xs border-0 border-radius-xl my-3 fixed-start ms-3 " id="sidenav-main">
             <jsp:include page="adminsidebar.jsp"></jsp:include>
-        </aside>
-        <main class="main-content position-relative max-height-vh-100 h-100 mt-1 border-radius-lg ">
-            <!-- Navbar -->
+            </aside>
+            <main class="main-content position-relative max-height-vh-100 h-100 mt-1 border-radius-lg ">
+                <!-- Navbar -->
             <jsp:include page="adminheader.jsp"></jsp:include>
-            <!-- End Navbar -->
-            <div class="container-fluid py-4">
-                <div class="row my-4">
-                    <div class="col-lg-12 col-md-12 mb-md-0 mb-4">
-                        <div class="card">
-                            <div class="card-body px-0 pb-2">
-                                <div class="card-header py-3" 
-                                     style="display: flex;
-                                     justify-content: space-between;">
-                                    <h6 class="m-0 font-weight-bold text-primary">Product Detail</h6>
-                                </div>
-                                <div class="card-body">
-                                    <form class="form" action="/Bmazon/AdminControllerMap" method="POST">
+                <!-- End Navbar -->
+                <div class="container-fluid py-4">
+                    <div class="row my-4">
+                        <div class="col-lg-12 col-md-12 mb-md-0 mb-4">
+                            <div class="card">
+                                <div class="card-body px-0 pb-2">
+                                    <div class="card-header py-3" 
+                                         style="display: flex;
+                                         justify-content: space-between;">
+                                        <h6 class="m-0 font-weight-bold text-primary">Product Detail</h6>
+                                    </div>
+                                    <div class="card-body">
+                                        <form class="needs-validation" novalidate="" action="/Bmazon/AdminControllerMap" method="POST">
                                         <%if (service.equalsIgnoreCase("addproductdetail")) {%>
                                         <table class="table">
                                             <tr>
-                                                <td>Product Name</td>
-                                                <td><input type="text" name="productname" class="input"><br></td>
+                                                <td style="width: 30%;">Product Name</td>
+                                                <td style="width: 70%;"><textarea class="form-control" name="productname"></textarea></td>
                                             </tr>
                                             <tr>
                                                 <td>Description</td>
-                                                <td><input type="text" name="size" class="input"><br></td>
+                                                <td><textarea class="form-control" name="description" rows="7"></textarea></td>
                                             </tr>    
                                             <tr>
                                                 <td>Rating<p></td>
-                                                <td><input type="text" name="color" class="input"><br></td>
+                                                <td><input class="form-control" type="text" name="rating" class="input"></td>
                                             </tr>
                                             <tr>
                                                 <td>Seller<p></td>
-                                                <td><input type="text" name="price" class="input"><br></td>
+                                                <td><input class="form-control" class="form-control" type="text" name="seller" class="input"></td>
                                             </tr>
                                             <tr>
                                                 <td>Release Date<p></td>
-                                                <td><input type="date" name="date" class="input"><br></td>
+                                                <td><input class="form-control" type="date" name="date" class="input"></td>
                                             </tr>
                                             <tr>
                                                 <td></td>
@@ -91,32 +91,32 @@
                                         <%if (service.equalsIgnoreCase("updateproductdetail")) {%>
                                         <table class="table table-striped">
                                             <tr>
-                                                <td>Product Name</td>
-                                                <td><input value="<%=product.getProductName()%>" type="text" name="productname" class="input"><br></td>
+                                                <td style="width: 30%;">Product Name</td>
+                                                <td style="width: 70%;"><textarea class="form-control" name="productname"><%=product.getProductName()%></textarea></td>
                                             </tr>
                                             <tr>
                                                 <td>Description</td>
-                                                <td><input value="<%=product.getDescription()%>" type="text" name="size" class="input"><br></td>
+                                                <td><textarea class="form-control" name="description" rows="7"><%=product.getDescription()%></textarea></td>
                                             </tr>    
                                             <tr>
                                                 <td>Rating</td>
-                                                <td><input value="<%=product.getRating()%>" type="text" name="price" class="input"><br></td>
+                                                <td><input class="form-control" value="<%=product.getRating()%>" type="text" name="rating" class="input"></td>
                                             </tr>
                                             <tr>
                                                 <td>Seller</td>
                                                 <%User user = userdao.getUserById(product.getProductID());%>
-                                                <td><input value="<%=user.getFullname()%>" type="text" name="color" class="input"><br></td>
+                                                <td><input class="form-control" value="<%=user.getFullname()%>" type="text" name="seller" class="input"></td>
                                             </tr>
                                             <tr>
                                                 <td>Release Date</td>
-                                                <td><input value="<%=product.getReleaseDate()%>" type="date" name="price" class="input"><br></td>
+                                                <td><input class="form-control" value="<%=product.getReleaseDate()%>" type="date" name="date" class="input"></td>
                                             </tr>
                                             <tr>
                                                 <td></td>
                                                 <td>
                                                     <input type="submit" value="Update Product" class="btn btn-primary">
                                                     <input type="hidden" value="updateproduct" name="service">
-                                                    <input type="hidden" value="<%=producttype.getProductTypeId()%>" name="id">
+                                                    <input type="hidden" value="<%=product.getProductID()%>" name="id">
                                                 </td>
                                             </tr>
                                         </table>
@@ -138,6 +138,22 @@
         <script src="${contextPath}/js/plugins/chartjs.min.js"></script>
         <!-- Github buttons -->
         <script async defer src="https://buttons.github.io/buttons.js"></script>
+        <script>
+            (function () {
+                'use strict'
+                var forms = document.querySelectorAll('.needs-validation')
+                Array.prototype.slice.call(forms)
+                        .forEach(function (form) {
+                            form.addEventListener('submit', function (event) {
+                                if (!form.checkValidity()) {
+                                    event.preventDefault()
+                                    event.stopPropagation()
+                                }
+                                form.classList.add('was-validated')
+                            }, false)
+                        })
+            })()
+        </script>
         <!-- Control Center for Soft Dashboard: parallax effects, scripts for the example pages etc -->
 <!--        <script src="${contextPath}/js/soft-ui-dashboard.min.js?v=1.0.3"></script>-->
 

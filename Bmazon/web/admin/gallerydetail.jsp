@@ -92,7 +92,7 @@
                                             <tr>
                                                 <td>Product Name</td>
                                                 <td>
-                                                    <textarea name="productname" rows="3"><%=product.getProductName()%> </textarea><br>
+                                                    <textarea class="form-control" name="productname" rows="3"><%=product.getProductName()%> </textarea><br>
                                                 </td>
                                             </tr>
                                             <tr>
