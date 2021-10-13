@@ -9,6 +9,7 @@ package entity;
  *
  * @author DELL
  */
+import java.security.SecureRandom;
 import java.util.Properties;
 import java.util.Random;
 import javax.mail.Authenticator;
@@ -28,8 +29,16 @@ public class SendEmail {
         int number = rnd.nextInt(999999);
         return String.format("%06d", number);
     }
-    
-    
+
+    public String randomString(int len) {
+        String AB = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz";
+        SecureRandom rnd = new SecureRandom();
+        StringBuilder sb = new StringBuilder(len);
+        for (int i = 0; i < len; i++) {
+            sb.append(AB.charAt(rnd.nextInt(AB.length())));
+        }
+        return sb.toString();
+    }
 
     //send email to the user email
     public boolean sendEmail(String username, String email, String code, String option) {
@@ -81,7 +90,7 @@ public class SendEmail {
                 //set message text
                 msg.setText("Hello, " + username + ". Please verify your account using this code: " + code);
             } else {
-                msg.setSubject("The new password send to from Bmazon");
+                msg.setSubject("User Email Verification for Bmazon user");
                 msg.setContent(addTable(code), "text/html; charset=UTF-8");
             }
 

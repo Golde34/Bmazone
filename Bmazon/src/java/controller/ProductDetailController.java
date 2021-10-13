@@ -5,6 +5,7 @@
  */
 package controller;
 
+import entity.Comment;
 import entity.Gallery;
 import entity.Product;
 import entity.ProductType;
@@ -20,6 +21,7 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import model.CommentDAO;
 import model.DBConnection;
 import model.GalleryDAO;
 import model.ProductDAO;
@@ -53,6 +55,7 @@ public class ProductDetailController extends HttpServlet {
     ProductDAO daoProduct = new ProductDAO();
     GalleryDAO daoGallery = new GalleryDAO();
     ProductTypeDAO daoProductType = new ProductTypeDAO();
+    CommentDAO daoComment = new CommentDAO();
 
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
@@ -71,6 +74,7 @@ public class ProductDetailController extends HttpServlet {
 
             if (service.equalsIgnoreCase("getRelatedProduct")) {
                 serviceRelatedProduct(request, response);
+
             }
             if (service.equalsIgnoreCase("getPrice")) {
                 serviceGetPrice(request, response);
@@ -92,6 +96,13 @@ public class ProductDetailController extends HttpServlet {
         request.setAttribute("listSize", listSize);
         ArrayList<String> listColor = daoProductType.getAllColorOfProduct(id);
         request.setAttribute("listColor", listColor);
+        ArrayList<Comment> comments = daoComment.getCommentsByProductId(id);
+        request.setAttribute("comments", comments);
+        int count = 0;
+        for (Comment comment : comments) {
+            count++;
+        }
+        request.setAttribute("count", count);
         sendDispatcher(request, response, "product/productDetail.jsp");
     }
 

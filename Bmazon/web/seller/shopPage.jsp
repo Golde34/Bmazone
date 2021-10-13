@@ -26,9 +26,7 @@
     UserDAO daoUser = new UserDAO();
     GalleryDAO daoGallery = new GalleryDAO();
     Product product = (Product) request.getAttribute("product");
-    List<Gallery> listGallery = (List<Gallery>) request.getAttribute("listGallery");
-    List<ProductType> listProductType = (List<ProductType>) request.getAttribute("listProductType");
-    ArrayList<Product> listRelated = (ArrayList<Product>) request.getAttribute("listRelated");
+    List<Product> listProduct = (List<Product>) request.getAttribute("listProduct");
 %>
 <!DOCTYPE html>
 <!--[if IE 9 ]> <html lang="vi" class="ie9 loading-site no-js"> <![endif]-->
@@ -40,35 +38,27 @@
         <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
         <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Lato">
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
+        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.bundle.min.js">
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+        <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.0.7/css/all.css">
         <script>(function (html) {
                 html.className = html.className.replace(/\bno-js\b/, 'js')
             })(document.documentElement);</script>
         <title>BMAZON</title>
-        <link rel="stylesheet" href="css/1.css">
-        <link rel='stylesheet' id='contact-form-7-css'  href='http://mauweb.monamedia.net/lazada/wp-content/plugins/contact-form-7/includes/css/styles.css?ver=4.9.1' type='text/css' media='all' />
-        <link rel='stylesheet' id='menu-image-css'  href='http://mauweb.monamedia.net/lazada/wp-content/plugins/menu-image/menu-image.css?ver=1.1' type='text/css' media='all' />
-        <link rel='stylesheet' id='woof-css'  href='http://mauweb.monamedia.net/lazada/wp-content/plugins/woocommerce-products-filter/css/front.css?ver=4.8.14' type='text/css' media='all' />
-        <link rel='stylesheet' id='chosen-drop-down-css'  href='http://mauweb.monamedia.net/lazada/wp-content/plugins/woocommerce-products-filter/js/chosen/chosen.min.css?ver=4.8.14' type='text/css' media='all' />
-        <link rel='stylesheet' id='woof_by_text_html_items-css'  href='http://mauweb.monamedia.net/lazada/wp-content/plugins/woocommerce-products-filter/ext/by_text/css/by_text.css?ver=4.8.14' type='text/css' media='all' />
-        <link rel='stylesheet' id='woof_color_html_items-css'  href='http://mauweb.monamedia.net/lazada/wp-content/plugins/woocommerce-products-filter/ext/color/css/html_types/color.css?ver=4.8.14' type='text/css' media='all' />
-        <link rel='stylesheet' id='woof_label_html_items-css'  href='http://mauweb.monamedia.net/lazada/wp-content/plugins/woocommerce-products-filter/ext/label/css/html_types/label.css?ver=4.8.14' type='text/css' media='all' />
-        <link rel='stylesheet' id='woof_select_hierarchy_html_items-css'  href='http://mauweb.monamedia.net/lazada/wp-content/plugins/woocommerce-products-filter/ext/select_hierarchy/css/html_types/select_hierarchy.css?ver=4.8.14' type='text/css' media='all' />
-        <link rel='stylesheet' id='woof_select_radio_check_html_items-css'  href='http://mauweb.monamedia.net/lazada/wp-content/plugins/woocommerce-products-filter/ext/select_radio_check/css/html_types/select_radio_check.css?ver=4.8.14' type='text/css' media='all' />
-        <link rel='stylesheet' id='flatsome-icons-css'  href='http://mauweb.monamedia.net/lazada/wp-content/themes/flatsome/assets/css/fl-icons.css?ver=3.3' type='text/css' media='all' />
-        <link rel='stylesheet' id='easy-social-share-buttons-css'  href='http://mauweb.monamedia.net/lazada/wp-content/plugins/easy-social-share-buttons3/assets/css/default-retina/easy-social-share-buttons.css?ver=3.7.3' type='text/css' media='all' />
-        <link rel='stylesheet' id='essb-cct-style-css'  href='http://mauweb.monamedia.net/lazada/wp-content/plugins/easy-social-share-buttons3/lib/modules/click-to-tweet/assets/css/styles.css?ver=3.7.3' type='text/css' media='all' />
-        <link rel='stylesheet' id='flatsome-main-css'  href='http://mauweb.monamedia.net/lazada/wp-content/themes/flatsome/assets/css/flatsome.css?ver=3.4.0' type='text/css' media='all' />
-        <link rel='stylesheet' id='flatsome-shop-css'  href='http://mauweb.monamedia.net/lazada/wp-content/themes/flatsome/assets/css/flatsome-shop.css?ver=3.4.0' type='text/css' media='all' />
-        <link rel='stylesheet' id='flatsome-style-css'  href='http://mauweb.monamedia.net/lazada/wp-content/themes/flatsome-child/style.css?ver=3.4.0' type='text/css' media='all' />
-        <script type='text/javascript' src='http://mauweb.monamedia.net/lazada/wp-includes/js/jquery/jquery.js?ver=1.12.4'></script>
-        <script type='text/javascript' src='http://mauweb.monamedia.net/lazada/wp-includes/js/jquery/jquery-migrate.min.js?ver=1.4.1'></script>
-        <link rel='https://api.w.org/' href='http://mauweb.monamedia.net/lazada/wp-json/' />
+
         <link rel='stylesheet' href="css/home.css"  type='text/css'>
         <style>
             .bg{opacity: 0; transition: opacity 1s; -webkit-transition: opacity 1s;} 
             .bg-loaded{opacity: 1;}
-            .col-inner text-center{
-
+            .col-md-3 img{
+                margin: auto;
+                height: 100px;
+                width: 100px;
+                border-radius: 100%;
+            }
+            .col-md-5{
+                padding: 10px;
             }
         </style><!--[if IE]><link rel="stylesheet" type="text/css" href="http://mauweb.monamedia.net/lazada/wp-content/themes/flatsome/assets/css/ie-fallback.css"><script src="//cdnjs.cloudflare.com/ajax/libs/html5shiv/3.6.1/html5shiv.js"></script><script>var head = document.getElementsByTagName('head')[0],style = document.createElement('style');style.type = 'text/css';style.styleSheet.cssText = ':before,:after{content:none !important';head.appendChild(style);setTimeout(function(){head.removeChild(style);}, 0);</script><script src="http://mauweb.monamedia.net/lazada/wp-content/themes/flatsome/assets/libs/ie-flexibility.js"></script><![endif]--> 
         <script src="js/1.js"></script>
@@ -78,14 +68,29 @@
         <link rel='stylesheet' href="css/slide.css"  type='text/css'> 
         <script src="js/2.js"></script>
         <script src="js.home.js"></script>
-        
+
     </head>
     <body class="home page-template page-template-page-blank page-template-page-blank-php page page-id-16 page-parent lightbox nav-dropdown-has-arrow" >
         <jsp:include page="../header.jsp"/>
 
-        <div class="col-inner text-center" >
-            <h1>Related Products</h1>
+
+        <div class="row">
+            <div class="col-md-3" style="background-color: silver">
+                <div class="row">
+                    <img class="col-md-5" src="images/Apple1.jpg">
+                    <div class="col-md-7">
+                        <h1 style="text-align: center; margin-top: 35px;">Apple Shop</h1>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-9" style="background-color: green;">
+                 
+
+            </div>
         </div>
+
+
+
         <div id="wrapper">
             <br><br><br>
             <main id="main" class="">
@@ -93,9 +98,9 @@
                     <div class="shop-container">
 
                         <div class="products row row-small large-columns-5 medium-columns-3 small-columns-2 has-shadow row-box-shadow-1" id="1">
-                            <% for (Product pro : listRelated) {
+                            <% for (Product pro : listProduct) {
                                     String str = "images/" + daoGallery.getSampleOfProduct(pro.getProductID());
-                                    double price = Double.parseDouble(daoProductType.getProductPrice(product.getProductID()));
+                                    double price = Double.parseDouble(daoProductType.getProductPrice(pro.getProductID()));
 
                             %>
                             <div class="product-small col has-hover post-1178 product type-product status-publish has-post-thumbnail product_cat-bach-hoa-online product_cat-do-hop-dong-goi first instock shipping-taxable purchasable product-type-simple">
@@ -142,7 +147,7 @@
 
             </main><!-- #main -->
         </div>
-        
+
 
         <jsp:include page="../footer.jsp"/>
     </body>

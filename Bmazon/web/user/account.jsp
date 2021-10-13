@@ -111,6 +111,25 @@
                         </div>
                     </a>
                 </div>
+
+                <!--Top Up-->
+                <div class="col-lg-4 col-md-5">
+                    <a href="UserControllerMap?service=topUp">
+                        <div class=" card shadow p-3 mb-5 bg-white rounded" style="width: 20rem;"> 
+                            <div class="card-body">
+                                <div class="row">
+                                    <div class="col-md-4">
+                                        <img alt="Top Up" src="https://images-na.ssl-images-amazon.com/images/G/01/x-locale/cs/help/images/gateway/self-service/payment._CB660668735_.png">
+                                    </div>
+                                    <div class="col-md-8">
+                                        <h5 class="card-title">Top Up</h5>
+                                        <h6 class="card-subtitle mb-2 text-muted">Manage your balance </h6>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </a>
+                </div>
             </div>
         </div>
         <br><br><br><br><br><br><br>

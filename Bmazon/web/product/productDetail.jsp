@@ -5,6 +5,7 @@
 --%>
 
 
+<%@page import="entity.Comment"%>
 <%@page import="model.ProductDAO"%>
 <%@page import="java.text.DecimalFormat"%>
 <%@page import="model.ProductTypeDAO"%>
@@ -28,6 +29,7 @@
     ArrayList<Product> listRelated = (ArrayList<Product>) request.getAttribute("listRelated");
     ArrayList<String> listSize = (ArrayList<String>) request.getAttribute("listSize");
     ArrayList<String> listColor = (ArrayList<String>) request.getAttribute("listColor");
+    ArrayList<Comment> comments = (ArrayList<Comment>) request.getAttribute("comments");
 %>
 <!DOCTYPE html>
 <html>
@@ -394,6 +396,7 @@
                                         </select>
                                     </div>
                                 </div>
+
                                 <div class="product-count">
                                     <label for="quantity">Quantity</label>
                                     <form action="#" class="display-flex">
@@ -406,6 +409,8 @@
                                         <button type="submit" class="round-black-btn" >Add to Cart</button>
 
                                
+
+
                                 <div class="product-price-discount">
                                     <span>
                                         <span id="price"><%=nf.format(price1)%></span>&nbsp;
@@ -418,7 +423,7 @@
                                     </span>
                                 </div>
                                 <div class="product-releasedate"><span>Release Date: <%=product.getReleaseDate()%></span></div>
-                                <div class="product-seller"><span>Seller: <%=daoUser.getUserByProductId(product.getProductID()).getUsername()%></span></div>
+                                <div class="product-seller"><a href="HomePageControllerMap?service=shopPage&sid=<%=daoUser.getUserByProductId(product.getProductID()).getUserId()%>"><span>Seller: <%=daoUser.getUserByProductId(product.getProductID()).getUsername()%></span></a></div>
                             </div>
 
                             <div class="row">
@@ -442,6 +447,7 @@
                             </div>
                         </div>
                     </div>
+
                 </form>
 
                 <div class="product-info-tabs">
@@ -475,19 +481,56 @@
                                             <label for="star2" title="text">2 stars</label>
                                             <input type="radio" id="star1" name="rate" value="1" />
                                             <label for="star1" title="text">1 star</label>
+
+                </div>
+
+                
+                    <div class="product-info-tabs">
+                        <ul class="nav nav-tabs" id="myTab" role="tablist">
+                            <li class="nav-item">
+                                <a class="nav-link active" id="description-tab" data-toggle="tab" href="#description" role="tab" aria-controls="description" aria-selected="true">Description</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" id="review-tab" data-toggle="tab" href="#review" role="tab" aria-controls="review" aria-selected="false">Reviews (${count})</a>
+                            </li>
+                        </ul>
+                        <div class="tab-content" id="myTabContent">
+                            <div class="tab-pane fade show active" id="description" role="tabpanel" aria-labelledby="description-tab">
+                                <p><%=product.getDescription()%></p>
+                            </div>
+                            <div class="tab-pane fade" id="review" role="tabpanel" aria-labelledby="review-tab">
+                                <div class="review-heading">REVIEWS</div>
+                                <p class="mb-20">There are no reviews yet.</p>
+                                <form action="ProductDetailControllerMap" class="review-form">
+                                    <div class="form-group">
+                                        <label>Your rating</label>
+                                        <div class="reviews-counter">
+                                            <div class="rate">
+                                                <input type="radio" id="star5" name="rate" value="5" />
+                                                <label for="star5" title="text">5 stars</label>
+                                                <input type="radio" id="star4" name="rate" value="4" />
+                                                <label for="star4" title="text">4 stars</label>
+                                                <input type="radio" id="star3" name="rate" value="3" />
+                                                <label for="star3" title="text">3 stars</label>
+                                                <input type="radio" id="star2" name="rate" value="2" />
+                                                <label for="star2" title="text">2 stars</label>
+                                                <input type="radio" id="star1" name="rate" value="1" />
+                                                <label for="star1" title="text">1 star</label>
+                                            </div>
+
                                         </div>
                                     </div>
-                                </div>
-                                <div class="form-group">
-                                    <label>Your message</label>
-                                    <textarea class="form-control" rows="10"></textarea>
-                                </div>
+                                    <div class="form-group">
+                                        <label>Your message</label>
+                                        <textarea class="form-control" rows="10"></textarea>
+                                    </div>
 
-                                <button class="round-black-btn">Submit Review</button>
-                            </form>
+                                    <button class="round-black-btn">Submit Review</button>
+                                </form>
+                            </div>
                         </div>
                     </div>
-                </div>
+                
             </div>
         </div>
 

@@ -70,6 +70,9 @@ public class HomePageController extends HttpServlet {
             if (service.equalsIgnoreCase("search")) {
                 serviceSearch(request, response);
             }
+            if (service.equalsIgnoreCase("shopPage")) {
+                serviceShopPage(request, response);
+            }
         }
     }
 
@@ -125,8 +128,9 @@ public class HomePageController extends HttpServlet {
 
     public void serviceSearch(HttpServletRequest request, HttpServletResponse response) {
         String str = request.getParameter("search").trim();
-        int count=proDAO.totalSearchProduct(str);
+        int count = proDAO.totalSearchProduct(str);
         String address;
+
         int size=20;
         int total=count/size;
         int page,end;
@@ -161,8 +165,9 @@ public class HomePageController extends HttpServlet {
             request.setAttribute("next", next);
             request.setAttribute("previous", previous);
             
+
         }
-        List<Product> ListP= proDAO.getProductByName(page, str);
+        List<Product> ListP = proDAO.getProductByName(page, str);
 
         address = "<a>" + " Results for " + str + "  </a> <span class=" + "divider" + ">&#47;</span>";
         request.setAttribute("address", address);
@@ -174,6 +179,16 @@ public class HomePageController extends HttpServlet {
 
         sendDispatcher(request, response, "productList/list.jsp");
 
+    }
+
+    public void serviceShopPage(HttpServletRequest request, HttpServletResponse response) {
+
+        String seller = request.getParameter("sid");
+
+        List<Product> listProduct = proDAO.getProductBySeller(seller);
+        request.setAttribute("listProduct", listProduct);
+
+        sendDispatcher(request, response, "seller/shopPage.jsp");
     }
 
     public void sendDispatcher(HttpServletRequest request, HttpServletResponse response, String path) {

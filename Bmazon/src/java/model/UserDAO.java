@@ -228,8 +228,6 @@ public class UserDAO extends BaseDAO {
 
     public static void main(String[] args) {
         UserDAO dao = new UserDAO();
-        int num = dao.getPageNumber(" ");
-        System.out.println(num);
     }
 
     public int getPageNumber(String search) {
@@ -461,7 +459,7 @@ public class UserDAO extends BaseDAO {
         return list;
     }
     
-    public boolean updatePassword(String username, String mail, String password){
+    public void updatePassword(String username, String mail, String password){
         String sql = "UPDATE [User] SET password = '" + password + "' WHERE username = '" + username + "' and email = '" + mail + "'";
         try {
             pre = conn.prepareStatement(sql);
@@ -469,7 +467,6 @@ public class UserDAO extends BaseDAO {
         } catch (SQLException ex) {
             Logger.getLogger(UserDAO.class.getName()).log(Level.SEVERE, null, ex);
         }
-        return false;
     }
 
     public int updateInfoUserByAdmin(User obj) {

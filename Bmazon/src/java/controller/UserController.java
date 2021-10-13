@@ -116,6 +116,11 @@ public class UserController extends HttpServlet {
             if (service.equalsIgnoreCase("updateBackgroundImage")) {
                 serviceUpdateBackgroundImage(request, response);
             }
+            
+            //Top Up
+            if(service.equalsIgnoreCase("topUp")){
+                serviceTopUp(request, response);
+            }
         }
     }
 
@@ -326,6 +331,28 @@ public class UserController extends HttpServlet {
         daoUser.uploadBackgroundImage(x, filename);
         request.getSession().setAttribute("currUser", x);
         sendDispatcher(request, response, "UserControllerMap?service=info");
+    }
+    
+    private void serviceTopUp(HttpServletRequest request, HttpServletResponse response){
+        String mess = "";
+
+        User x = (User) request.getSession().getAttribute("currUser");
+        request.setAttribute("currUser", x);
+        String name = request.getParameter("name");
+        String mail = request.getParameter("mail");
+        String phone = request.getParameter("phone");
+        String pass = request.getParameter("pass");
+
+//        if (x.getPassword().equals(pass)) {
+//            int currentUserID = Integer.parseInt(x.getUserId());
+//            request.getSession().setAttribute("currUser", daoUser.getUserById(currentUserID));
+//            sendDispatcher(request, response, "UserControllerMap?service=account");
+//        } else {
+//            mess = "You must enter the correct password";
+//            request.setAttribute("mess", mess);
+//            sendDispatcher(request, response, "user/editPrivateProfile.jsp");
+//        }
+         sendDispatcher(request, response, "user/topUp.jsp");
     }
 
     public void sendDispatcher(HttpServletRequest request, HttpServletResponse response, String path) {

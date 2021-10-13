@@ -145,13 +145,9 @@ public class ProductTypeDAO extends BaseDAO {
         }
         return list;
     }
-
+   
     
-    public static void main(String[] args) {
-        ProductTypeDAO dao = new ProductTypeDAO();
-        ProductType pt = dao.getProductTypeByColorAndSize("green", "64GB", "13");
-        System.out.println(pt.getPrice());
-    }
+   
     public ProductType getProductTypeByColorAndSize(String color,String size,String productID){
         ProductType pt= new ProductType();
         xSql="select pt.* from Product p join ProductType pt on p.productID = pt.productID where p.productID = "+productID+" and pt.size = '"+size+"' and pt.color = '"+color+"'";

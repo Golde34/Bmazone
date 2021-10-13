@@ -21,7 +21,6 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import model.DBConnection;
-import model.RandomString;
 import model.UserDAO;
 import entity.CartItem;
 
@@ -247,11 +246,11 @@ public class LoginController extends HttpServlet {
         boolean exist = daoUser.checkExistUserNameAndMail(username, email);       
         if (exist == true) {
             String option = "forgot";
-            String password = new RandomString().randomString(6);
+            String password = s.randomString(6);
             daoUser.updatePassword(username, email, password);
             boolean test = s.sendEmail(username, email, password, option);
             if (test == true) {
-                sendDispatcher(request, response, "loginAndSecurity/resetSuccess.jsp");
+                sendDispatcher(request, response, "loginAndSecurity/notification.jsp");
                 // include: xu ly xong thang path quay lai, forward: ko quay lai.
             } else {
                 request.setAttribute("mess", "Failed to send reset email");
@@ -299,6 +298,11 @@ public class LoginController extends HttpServlet {
             Logger.getLogger(UserController.class
                     .getName()).log(Level.SEVERE, null, ex);
         }
+    }
+    
+    public String getSiteURL(HttpServletRequest request){
+        String siteURL = request.getRequestURL().toString();
+        return siteURL.replace(request.getServletPath(), "");
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
