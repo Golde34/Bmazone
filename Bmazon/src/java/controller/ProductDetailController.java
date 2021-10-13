@@ -10,6 +10,7 @@ import entity.Product;
 import entity.ProductType;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
@@ -47,7 +48,7 @@ public class ProductDetailController extends HttpServlet {
             Logger.getLogger(HomePageController.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
-    
+
     DBConnection dbCon = new DBConnection();
     ProductDAO daoProduct = new ProductDAO();
     GalleryDAO daoGallery = new GalleryDAO();
@@ -57,24 +58,27 @@ public class ProductDetailController extends HttpServlet {
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
         try (PrintWriter out = response.getWriter()) {
-            
+
             String service = request.getParameter("service");
 
             if (service == null) {
                 service = "";
             }
-            
-            if(service.equalsIgnoreCase("getProductDetail")){
-                serviceProductDetail(request, response);               
+
+            if (service.equalsIgnoreCase("getProductDetail")) {
+                serviceProductDetail(request, response);
             }
-            
-            if(service.equalsIgnoreCase("getRelatedProduct")){
-                serviceRelatedProduct(request, response);               
+
+            if (service.equalsIgnoreCase("getRelatedProduct")) {
+                serviceRelatedProduct(request, response);
+            }
+            if (service.equalsIgnoreCase("getPrice")) {
+                serviceGetPrice(request, response);
             }
         }
     }
-    
-    public void serviceProductDetail(HttpServletRequest request, HttpServletResponse response){
+
+    public void serviceProductDetail(HttpServletRequest request, HttpServletResponse response) {
         int id = Integer.parseInt(request.getParameter("pid"));
         Product product = daoProduct.getProductByID(id);
         request.setAttribute("product", product);
@@ -91,7 +95,7 @@ public class ProductDetailController extends HttpServlet {
         sendDispatcher(request, response, "product/productDetail.jsp");
     }
 
-    public void serviceRelatedProduct(HttpServletRequest request, HttpServletResponse response){
+    public void serviceRelatedProduct(HttpServletRequest request, HttpServletResponse response) {
         int id = Integer.parseInt(request.getParameter("pid"));
         Product product = daoProduct.getProductByID(id);
         request.setAttribute("product", product);
@@ -103,6 +107,19 @@ public class ProductDetailController extends HttpServlet {
         request.setAttribute("listRelated", listRelated);
         sendDispatcher(request, response, "product/relatedProduct.jsp");
     }
+
+    private void serviceGetPrice(HttpServletRequest request, HttpServletResponse response) throws IOException {
+        PrintWriter pr = response.getWriter();
+        String size = request.getParameter("size");
+        String color = request.getParameter("color");
+        String productId = request.getParameter("pid");
+        ProductType pt = daoProductType.getProductTypeByColorAndSize(color, size, productId);
+        DecimalFormat nf = new DecimalFormat("###,###,###");
+        Double price = Double.parseDouble(pt.getPrice());
+        String price1 = nf.format(price);
+        pr.print(price1);
+    }
+
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
     /**
      * Handles the HTTP <code>GET</code> method.

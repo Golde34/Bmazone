@@ -1,3 +1,4 @@
+<%@page import="java.text.SimpleDateFormat"%>
 <%@page import="model.UserDAO"%>
 <%@page import="model.ProductTypeDAO"%>
 <%@page import="java.util.*"%>
@@ -7,9 +8,13 @@
 <c:set var="contextPath" value="${pageContext.request.contextPath}" />
 <%
     UserDAO userdao = new UserDAO();
-    ProductTypeDAO producttypedao = new ProductTypeDAO();
+    int index = (Integer) request.getAttribute("index");
+    int totalPage = (Integer) request.getAttribute("totalPage");
+    int prev = index == 1 ? 1 : index-1;
+    int next = index == totalPage ? totalPage : index+1;
     User curUser = (User) request.getSession().getAttribute("currUser");
-    ArrayList<Product> listProduct = (ArrayList<Product>) request.getAttribute("listProduct");
+    List<Product> listProduct = (List<Product>) request.getAttribute("listProduct");
+    SimpleDateFormat dateformat = new SimpleDateFormat("dd/MM/yyyy");
 %>
 
 <!DOCTYPE html>
@@ -33,67 +38,13 @@
         th,td{
             padding: 12px 15px;
         }
-        th{
-            background-color: rgba(236,230,255,0.5);
+        tbody tr:nth-child(odd){
+            background-color: #f2f2f2;
         }
     </style>
     <body class="g-sidenav-show  bg-gray-100">
         <aside class="sidenav navbar navbar-vertical navbar-expand-xs border-0 border-radius-xl my-3 fixed-start ms-3 " id="sidenav-main">
-            <div class="sidenav-header">
-                <i class="fas fa-times p-3 cursor-pointer text-secondary opacity-5 position-absolute end-0 top-0 d-none d-xl-none" aria-hidden="true" id="iconSidenav"></i>
-                <a class="sidebar-brand d-flex align-items-center justify-content-center" href="${contextPath}/HomePageControllerMap">
-                    <div class="sidebar-brand-icon">
-                        <img  width="124" height="75" src="${contextPath}/images/fpt.png" class="header-logo-dark" />
-                    </div>
-<!--                    <div class="sidebar-brand-text mx-3 my-3">Bmazon</div>-->
-                </a>
-            </div>
-            <hr class="horizontal dark mt-0">
-            <!--            collapse navbar-collapse w-auto max-height-vh-100 h-100-->
-            <div class="" id="sidenav-collapse-main">
-                <ul class="navbar-nav">
-                    <li class="nav-item">
-                        <a class="nav-link" href="AdminControllerMap">
-                            <div class="icon icon-shape icon-sm shadow border-radius-md bg-white text-center me-2 d-flex align-items-center justify-content-center">
-                                <i class="fas fa-fw fa-tachometer-alt" style="color: black"></i>
-                            </div>
-                            <span class="nav-link-text ms-1">Dashboard</span>
-                        </a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link " href="AdminControllerMap?service=usermanagement">
-                            <div class="icon icon-shape icon-sm shadow border-radius-md bg-white text-center me-2 d-flex align-items-center justify-content-center">
-                                <i class="fas fa-users" style="color: black"></i>
-                            </div>
-                            <span class="nav-link-text ms-1">User Management</span>
-                        </a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link active " href="AdminControllerMap?service=productmanagement">
-                            <div class="icon icon-shape icon-sm shadow border-radius-md bg-white text-center me-2 d-flex align-items-center justify-content-center">
-                                <i class="fas fa-layer-group" ></i>
-                            </div>
-                            <span class="nav-link-text ms-1 ">Product Management</span>
-                        </a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link  " href="AdminControllerMap?service=companymanagement">
-                            <div class="icon icon-shape icon-sm shadow border-radius-md bg-white text-center me-2 d-flex align-items-center justify-content-center">
-                                <i class="far fa-building" style="color: black"></i>
-                            </div>
-                            <span class="nav-link-text ms-1">Company Management</span>
-                        </a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link  " href="AdminControllerMap?service=gallerymanagement">
-                            <div class="icon icon-shape icon-sm shadow border-radius-md bg-white text-center me-2 d-flex align-items-center justify-content-center">
-                                <i class="far fa-images" style="color: black"></i>
-                            </div>
-                            <span class="nav-link-text ms-1">Gallery Management</span>
-                        </a>
-                    </li>
-                </ul>
-            </div>
+            <jsp:include page="adminsidebar.jsp"></jsp:include>
         </aside>
         <main class="main-content position-relative max-height-vh-100 h-100 mt-1 border-radius-lg ">
             <!-- Navbar -->
@@ -117,7 +68,7 @@
                                         <div class="rowNum">
                                             <h6 style="display: inline">Select number of Rows</h6>
                                             <div class="form-group" style="display: inline;">
-                                                <select name="state" id="maxRows" class="form-control" style="width:80px;display:inline;">
+                                                <select onchange="changeRowAndSearch()" name="state" id="maxRows" class="form-control" style="width:80px;display:inline;">
                                                     <option value="5">5</option>
                                                     <option value="10">10</option>
                                                     <option value="20">20</option>
@@ -126,7 +77,7 @@
                                             </div>
                                         </div>
                                         <div class="tb_search">
-                                            <input style="width: 100%;" type="text" oninput="searchByName(this)" placeholder="Search.." class="form-control">
+                                            <input id="search" style="width: 100%;" type="text" oninput="changeRowAndSearch()" placeholder="Search.." class="form-control">
                                         </div>
                                     </div>
                                     <div class="table-responsive-md">
@@ -135,9 +86,9 @@
                                                 <tr>
                                                     <th style="width: 30%;">Product Name</th>
                                                     <th style="width: 30%;">Description</th>
-                                                    <th style="width: 10%;">Rating</th>
+                                                    <th style="width: 8%;">Rating</th>
                                                     <th style="width: 10%;">Seller</th>
-                                                    <th style="width: 10%;">Release Date</th>
+                                                    <th style="width: 12%;">Release Date</th>
                                                     <th style="width: 5%;"></th>
                                                     <th style="width: 5%;"></th>
                                                 </tr>
@@ -151,10 +102,10 @@
                                                     <td><%=product.getDescription()%></td>
                                                     <td><%=product.getRating()%></td>
                                                     <td><%=user.getFullname()%></td>
-                                                    <td><%=product.getReleaseDate()%></td>
-                                                    <td><div><a href="AdminControllerMap?service=updateproductdetail&producttypeid=<%=product.getProductID()%>"><span class="fas fa-edit"></span></a>
+                                                    <td><%=dateformat.format(product.getReleaseDate())%></td>
+                                                    <td><div><a href="AdminControllerMap?service=updateproductdetail&productid=<%=product.getProductID()%>"><span class="fas fa-edit"></span></a>
                                                         </div></td>
-                                                    <td><div><a href="AdminControllerMap?service=deleteproduct&producttypeid=<%=product.getProductID()%>" onclick="return confirm('Are you sure you want to Remove?');"><span class="fas fa-trash-alt"></span></a></div></td>
+                                                    <td><div><a href="AdminControllerMap?service=deleteproduct&productid=<%=product.getProductID()%>" onclick="return confirm('Are you sure you want to Remove?');"><span class="fas fa-trash-alt"></span></a></div></td>
                                                 </tr>
 
                                                 <%}%>
@@ -164,22 +115,49 @@
                                     <div class="pagination-container mt-4" style="display: flex;
                                          justify-content: space-around;cursor: pointer;">
                                         <nav>
-                                            <ul class="pagination">
-                                                <li data-page="prev" class="page-item" id="prev">
+                                            <%if (totalPage > 1) {%>
+                                            <ul class="pagination" id="showpage">
+                                                <li data-repair="1" class="page-item">
+                                                    <a class="page-link" aria-label="First">
+                                                        <span aria-hidden="true"><i class="fas fa-backward"></i>
+                                                            <span class="sr-only">(current)</span> 
+                                                        </span>
+                                                    </a>
+                                                </li>
+                                                <li data-repair="<%=prev%>" class="page-item">
                                                     <a class="page-link" aria-label="Previous">
                                                         <span aria-hidden="true"><i class="fas fa-arrow-left"></i>
                                                             <span class="sr-only">(current)</span> 
                                                         </span>
                                                     </a>
                                                 </li>
-                                                <li data-page="next" class="page-item" id="next">
+                                                <%int limit = totalPage>5 ? 5 : totalPage;%>
+                                                <%for (int i = 1; i <= limit; i++) {%>
+                                                <%if (index == i) {%>
+                                                <li  class="page-item active" data-repair="<%=i%>">
+                                                <%} else {%><li  class="page-item" data-repair="<%=i%>"> <%}%>
+                                                    <a class="page-link">
+                                                        <div class="index"><%=i%></div>
+                                                        <span class="sr-only">(current)</span>
+                                                    </a>
+                                                </li>
+                                                <%}%>
+                                                <li data-repair="<%=next%>" class="page-item">
                                                     <a class="page-link" aria-label="Next">
                                                         <span aria-hidden="true"><i class="fas fa-arrow-right"></i>
                                                             <span class="sr-only">(current)</span> 
                                                         </span>
                                                     </a>
                                                 </li>
+                                                <li data-repair="<%=totalPage%>" class="page-item">
+                                                    <a class="page-link" aria-label="Last">
+                                                        <span aria-hidden="true"><i class="fas fa-forward"></i>
+                                                            <span class="sr-only">(current)</span> 
+                                                        </span>
+                                                    </a>
+                                                </li>
                                             </ul>
+                                            <%}%>
                                         </nav>
                                     </div>
                                 </div>
@@ -193,31 +171,84 @@
         <!--   Core JS Files   -->
         <script src="${contextPath}/js/core/popper.min.js"></script>
         <script src="${contextPath}/js/core/bootstrap.min.js"></script>
-        <script src="${contextPath}/js/plugins/perfect-scrollbar.min.js"></script>
-        <script src="${contextPath}/js/plugins/smooth-scrollbar.min.js"></script>
-        <script src="${contextPath}/js/plugins/chartjs.min.js"></script>
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
-        <script src="${contextPath}/js/tablepagination.js"></script>
         <script>
-            function searchByName(param) {
-                var txtSearch = param.value;
-                $.ajax({
-                    url: "/Bmazon/AdminControllerMap",
-                    type: "get",
-                    data: {
-                        search: txtSearch,
-                        service: "searchproduct"
-                    },
-                    success: function (respone) {
-                        var text = document.getElementById("product");
-                        text.innerHTML = respone;
-                        getPagination('#dataTable');
-                    },
-                    error: function (xhr) {
-                        //Do Something to handle error
-                    }
-                });
-            }
+        var pageNum;
+        $(document).on('click', '.pagination li', function () {
+            pageNum = $(this).data('repair');
+            changeIndex();
+        });
+        function changeRowAndSearch() {
+            var row = document.getElementById("maxRows").value;
+            var search = document.getElementById("search").value;
+            console.log(row);
+            console.log(search);
+            console.log(pageNum);
+            $.ajax({
+                url: "/Bmazon/AdminControllerMap",
+                type: "get",
+                data: {
+                    search: search,
+                    row: row,
+                    index: 1,
+                    service: "pagingproduct"
+                },
+                success: function (respone) {
+                    var text = document.getElementById("product");
+                    text.innerHTML = respone;
+                    showpage();
+                },
+                error: function (xhr) {
+                    //Do Something to handle error
+                }
+            });
+        }
+        function changeIndex() {
+            var row = document.getElementById("maxRows").value;
+            var search = document.getElementById("search").value;
+            console.log(row);
+            console.log(search);
+            console.log(pageNum);
+            $.ajax({
+                url: "/Bmazon/AdminControllerMap",
+                type: "get",
+                data: {
+                    search: search,
+                    row: row,
+                    index: pageNum,
+                    service: "pagingproduct"
+                },
+                success: function (respone) {
+                    var text = document.getElementById("product");
+                    text.innerHTML = respone;
+                    showpage();
+                },
+                error: function (xhr) {
+                    //Do Something to handle error
+                }
+            });
+        }
+        function showpage() {
+            var row = document.getElementById("maxRows").value;
+            var search = document.getElementById("search").value;
+            $.ajax({
+                url: "/Bmazon/AdminControllerMap",
+                type: "get",
+                data: {
+                    search: search,
+                    row: row,
+                    index: pageNum,
+                    service: "showpageproduct"
+                },
+                success: function (respone) {
+                    var text = document.getElementById("showpage");
+                    text.innerHTML = respone;
+                },
+                error: function (xhr) {
+                    //Do Something to handle error
+                }
+            });
+        }
         </script>
     </body>
 

@@ -9,6 +9,7 @@ import entity.*;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.sql.Date;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
@@ -44,7 +45,7 @@ public class AdminController extends HttpServlet {
     UserDAO daouser = new UserDAO();
     WareHouseDAO daowarehouse = new WareHouseDAO();
     RoleDAO daorole = new RoleDAO();
-    
+
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
@@ -57,7 +58,7 @@ public class AdminController extends HttpServlet {
 
             //User Authorization
             if (service.equalsIgnoreCase("userAuthorization")) {
-                serviceUserAuthorization(request, response);
+                serviceUserAuthorization(service, request, response);
             }
 
             //Admin Dashboard
@@ -65,120 +66,124 @@ public class AdminController extends HttpServlet {
                 serviceAdminDashboard(service, request, response);
             }
 
-            
-            
+            // <editor-fold defaultstate="collapsed" desc="User service. Click on the + sign on the left to edit the code.">
             //User Management
             if (service.equalsIgnoreCase("usermanagement")) {
-                serviceUserManagement(request, response);
+                serviceUserManagement(service, request, response);
             }
             //User detail to add and update
             if (service.equalsIgnoreCase("updateuserdetail") || service.equalsIgnoreCase("adduserdetail")) {
                 serviceUserDetail(service, request, response);
             }
             //Paging User
-            if (service.equalsIgnoreCase("paging")) {
-                servicePagingUser(request, response);
+            if (service.equalsIgnoreCase("paginguser")) {
+                servicePagingUser(service, request, response);
             }
-            //Search User
-            if (service.equalsIgnoreCase("searchuser")) {
-                serviceSearchUser(request, response);
+            //Show Page User
+            if (service.equalsIgnoreCase("showpageuser")) {
+                serviceShowPageUser(request, response);
             }
             //Add user
             if (service.equalsIgnoreCase("adduser")) {
-                serviceAddUser(request, response);
+                serviceAddUser(service, request, response);
             }
             //Update User 
             if (service.equalsIgnoreCase("updateuser")) {
-                serviceUpdateUser(request, response);
+                serviceUpdateUser(service, request, response);
             }
             //Delete user
             if (service.equalsIgnoreCase("deleteuser")) {
-                serviceDeleteUser(request, response);
+                serviceDeleteUser(service, request, response);
             }
+            //</editor-fold>
 
-            
-            
+            // <editor-fold defaultstate="collapsed" desc="Product service. Click on the + sign on the left to edit the code.">
             //Product Manage
             if (service.equalsIgnoreCase("productmanagement")) {
-                serviceProductManagement(request, response);
+                serviceProductManagement(service, request, response);
             }
             //Product detail to add and update
             if (service.equalsIgnoreCase("updateproductdetail") || service.equalsIgnoreCase("addproductdetail")) {
                 serviceProductDetail(service, request, response);
             }
-            //Search Product
-            if (service.equalsIgnoreCase("searchproduct")) {
-                serviceSearchProduct(request, response);
+            //Paging Product
+            if (service.equalsIgnoreCase("pagingproduct")) {
+                servicePagingProduct(service, request, response);
+            }
+            //Show Page Product
+            if (service.equalsIgnoreCase("showpageproduct")) {
+                serviceShowPageProduct(request, response);
             }
             //Add Product
             if (service.equalsIgnoreCase("addproduct")) {
-                serviceAddProduct(request, response);
+                serviceAddProduct(service, request, response);
             }
             //Update Product 
             if (service.equalsIgnoreCase("updateproduct")) {
-                serviceUpdateProduct(request, response);
+                serviceUpdateProduct(service, request, response);
             }
             //Delete Product
             if (service.equalsIgnoreCase("deleteproduct")) {
-                serviceDeleteProduct(request, response);
+                serviceDeleteProduct(service, request, response);
             }
+            //</editor-fold>
 
-            
-            
+            // <editor-fold defaultstate="collapsed" desc="Ship Company service. Click on the + sign on the left to edit the code.">
             //Ship Company Manage
             if (service.equalsIgnoreCase("companymanagement")) {
-                serviceCompanyManagement(request, response);
+                serviceCompanyManagement(service, request, response);
+            }
+            //Paging User
+            if (service.equalsIgnoreCase("pagingcompany")) {
+                servicePagingCompany(service, request, response);
+            }
+            //Show Page User
+            if (service.equalsIgnoreCase("showpagecompany")) {
+                serviceShowPageCompany(request, response);
             }
             //Ship Company detail to add and update
             if (service.equalsIgnoreCase("updatecompanydetail") || service.equalsIgnoreCase("addcompanydetail")) {
                 serviceCompanyDetail(service, request, response);
             }
-            //Search Ship Company
-            if (service.equalsIgnoreCase("searchcompany")) {
-                serviceSearchCompany(request, response);
-            }
+
             //Add Ship Company
             if (service.equalsIgnoreCase("addcompany")) {
-                serviceAddCompany(request, response);
+                serviceAddCompany(service, request, response);
             }
             //Update Ship Company 
             if (service.equalsIgnoreCase("updatecompany")) {
-                serviceUpdateCompany(request, response);
+                serviceUpdateCompany(service, request, response);
             }
             //Delete Ship Company
             if (service.equalsIgnoreCase("deletecompany")) {
-                serviceDeleteCompany(request, response);
+                serviceDeleteCompany(service, request, response);
             }
+            //</editor-fold>
 
-            
-            
+            // <editor-fold defaultstate="collapsed" desc="Gallery service. Click on the + sign on the left to edit the code.">
             //Gallery Manage
             if (service.equalsIgnoreCase("gallerymanagement")) {
-                serviceGalleryManagement(request, response);
+                serviceGalleryManagement(service, request, response);
             }
             //Gallery detail to add and update
             if (service.equalsIgnoreCase("updategallerydetail") || service.equalsIgnoreCase("addgallerydetail")) {
                 serviceGalleryDetail(service, request, response);
             }
-            //Search Gallery
-            if (service.equalsIgnoreCase("searchgallery")) {
-                serviceSearchGallery(request, response);
-            }
             //Add Gallery
             if (service.equalsIgnoreCase("addproduct")) {
-                serviceAddGallery(request, response);
+                serviceAddGallery(service, request, response);
             }
             //Update Gallery 
             if (service.equalsIgnoreCase("updategallery")) {
-                serviceUpdateGallery(request, response);
+                serviceUpdateGallery(service, request, response);
             }
             //Delete Gallery
             if (service.equalsIgnoreCase("deletegallery")) {
-                serviceDeleteGallery(request, response);
+                serviceDeleteGallery(service, request, response);
             }
+            //</editor-fold>
 
-            
-            
+            // <editor-fold defaultstate="collapsed" desc="Role serive. Click on the + sign on the left to edit the code.">
             //Role Display
             if (service.equalsIgnoreCase("roleDisplay")) {
                 serviceRoleDisplay(service, request, response);
@@ -189,20 +194,21 @@ public class AdminController extends HttpServlet {
             }
             //Add role
             if (service.equalsIgnoreCase("addRole")) {
-                serviceAddRole(request, response);
+                serviceAddRole(service, request, response);
             }
             //Update role
             if (service.equalsIgnoreCase("updateRole")) {
-                serviceUpdateRole(request, response);
+                serviceUpdateRole(service, request, response);
             }
             //Delete role
             if (service.equalsIgnoreCase("deleteRole")) {
-                serviceDeleteRole(request, response);
+                serviceDeleteRole(service, request, response);
             }
             //Search role
             if (service.equalsIgnoreCase("searchRole")) {
-                serviceSearchRole(request, response);
+                serviceSearchRole(service, request, response);
             }
+            //</editor-fold>
         }
     }
 
@@ -214,17 +220,20 @@ public class AdminController extends HttpServlet {
         request.setAttribute(("listUser"), listUser);
         sendDispatcher(request, response, "admin/admin.jsp");
     }
-    
-    // <editor-fold defaultstate="collapsed" desc="User methods. Click on the + sign on the left to edit the code.">
 
-    public void serviceUserManagement(HttpServletRequest request, HttpServletResponse response) {
-        ArrayList<User> listPaging = daouser.pagingUser(1, 5, "");
+    // <editor-fold defaultstate="collapsed" desc="User methods. Click on the + sign on the left to edit the code.">
+    public void serviceUserManagement(String service, HttpServletRequest request, HttpServletResponse response) {
+        ArrayList<User> listPaging = daouser.getAllPagingUser(1, 5, "");
         ArrayList<User> listUser = daouser.getAllUser();
-        int total = listUser.size() / 5;
+        int totalPage = listUser.size() / 5;
+        if (listUser.size() != totalPage * 5) {
+            totalPage += 1;
+        }
         request.setAttribute("index", 1);
-        request.setAttribute("total", total + 1);
+        request.setAttribute("totalPage", totalPage);
         request.setAttribute("listUser", listPaging);
-        sendDispatcher(request, response, "admin/paging.jsp");
+        request.setAttribute("service", service);
+        sendDispatcher(request, response, "admin/usermanagement.jsp");
     }
 
     public void serviceUserDetail(String service, HttpServletRequest request, HttpServletResponse response) {
@@ -236,25 +245,24 @@ public class AdminController extends HttpServlet {
         int id = Integer.parseInt(request.getParameter("userid"));
         User user = daouser.getUserById(id);
         request.setAttribute("user", user);
+        request.setAttribute("service", service);
         sendDispatcher(request, response, "admin/userdetail.jsp");
     }
 
-    public void servicePagingUser(HttpServletRequest request, HttpServletResponse response) throws IOException {
+    public void servicePagingUser(String service, HttpServletRequest request, HttpServletResponse response) throws IOException {
+        int lastPage = 1;
         PrintWriter pr = response.getWriter();
+        request.setAttribute("service", service);
         int index = 1, numOfRow = 5;
         String search = request.getParameter("search");
-        if (request.getParameter("index") != null) {
-            index = Integer.parseInt(request.getParameter("index"));
-        }
         if (request.getParameter("row") != null) {
             numOfRow = Integer.parseInt(request.getParameter("row"));
         }
-        ArrayList<User> listPaging = daouser.pagingUser(index, numOfRow, search);
-        ArrayList<User> listUser = daouser.getAllUser();
-        int totalResult = daouser.getPageNumber(search);
-        int totalPage = listUser.size() / numOfRow;
+        if (request.getParameter("index") != null) {
+            index = Integer.parseInt(request.getParameter("index"));
+        }
+        ArrayList<User> listPaging = daouser.getAllPagingUser(index, numOfRow, search);
         request.setAttribute("index", index);
-        request.setAttribute("total", totalPage + 1);
         request.setAttribute("listUser", listPaging);
         for (User user : listPaging) {
             pr.print("<tr>"
@@ -270,30 +278,82 @@ public class AdminController extends HttpServlet {
             );
         }
         if (request.getParameter("row") == null) {
-            sendDispatcher(request, response, "admin/paging.jsp");
+            sendDispatcher(request, response, "admin/usermanagement.jsp");
         }
     }
 
-    public void serviceSearchUser(HttpServletRequest request, HttpServletResponse response) throws IOException {
+    public void serviceShowPageUser(HttpServletRequest request, HttpServletResponse response) throws IOException {
         PrintWriter pr = response.getWriter();
+        int index = 1, numOfRow = 5;
         String search = request.getParameter("search");
-        ArrayList<User> listUser = daouser.searchUser(search);
-        for (User user : listUser) {
-            pr.print("<tr>"
-                    + "<td>" + user.getUsername() + " </td>"
-                    + "<td>" + user.getPassword() + "</td>"
-                    + "<td>" + user.getEmail() + "</td>"
-                    + "<td>" + user.getFullname() + "</td>"
-                    + "<td>" + user.getPhoneNumber() + "</td>"
-                    + "<td>" + user.getAddress() + "</td>"
-                    + "<td><div><a href=\"AdminControllerMap?service=updateuserdetail&userid=" + user.getUserId() + "\"><span class=\"fas fa-edit\"></span></a>"
-                    + "</div></td>"
-                    + "<td><div><a href=\"AdminControllerMap?service=deleteuser&userid=" + user.getUserId() + "\" onclick=\"return confirm('Are you sure you want to Remove?');\"><span class=\"fas fa-trash-alt\"></span></a></div></td>" + "</tr>"
-            );
+        if (request.getParameter("index") != null) {
+            index = Integer.parseInt(request.getParameter("index"));
+        }
+        if (request.getParameter("row") != null) {
+            numOfRow = Integer.parseInt(request.getParameter("row"));
+        }
+        int totalResult = daouser.getPageNumber(search);
+        int totalPage = totalResult / numOfRow;
+        if (totalResult != numOfRow * totalPage) {
+            totalPage += 1;
+        }
+        int prev = index == 1 ? 1 : index - 1;
+        int next = index == totalPage ? totalPage : index + 1;
+        if (totalResult > numOfRow) {
+            pr.print("<li data-repair=\"1\" class=\"page-item\">");
+            pr.print("<a class=\"page-link\" aria-label=\"First\">");
+            pr.print("<span aria-hidden=\"true\"><i class=\"fas fa-backward\"></i>");
+            pr.print("<span class=\"sr-only\">(current)</span> ");
+            pr.print("</span>");
+            pr.print("</a>");
+            pr.print("</li>");
+            pr.print("<li data-repair=\"" + prev + "\" class=\"page-item\">");
+            pr.print("<a class=\"page-link\" aria-label=\"Previous\">");
+            pr.print("<span aria-hidden=\"true\"><i class=\"fas fa-arrow-left\"></i>");
+            pr.print("<span class=\"sr-only\">(current)</span> ");
+            pr.print("</span>");
+            pr.print("</a>");
+            pr.print("</li>");
+            for (int i = 1; i <= totalPage; i++) {
+                if(i < index - 2) continue;
+                if(index<3){
+                    if(i >5) break;
+                }else{
+                    if(i>index+2) break;
+                }
+                if (index == i) {
+                    pr.print("<li  class=\"page-item active\" data-repair=\"" + i + "\">");
+                } else {
+                    pr.print("<li  class=\"page-item\" data-repair=\"" + i + "\">");
+                }
+                pr.print("<a class=\"page-link\">");
+                pr.print("<div class=\"index\">" + i + "</div>");
+                pr.print("<span class=\"sr-only\">(current)</span>");
+                pr.print("</a>");
+                pr.print("</li>");
+            }
+            pr.print("<li data-repair=\"" + next + "\" class=\"page-item\">");
+            pr.print("<a class=\"page-link\" aria-label=\"Next\">");
+            pr.print("<span aria-hidden=\"true\"><i class=\"fas fa-arrow-right\"></i>");
+            pr.print("<span class=\"sr-only\">(current)</span> ");
+            pr.print("</span>");
+            pr.print("</a>");
+            pr.print("</li>");
+            pr.print("<li data-repair=\"" + totalPage + "\" class=\"page-item\">");
+            pr.print("<a class=\"page-link\" aria-label=\"Last\">");
+            pr.print("<span aria-hidden=\"true\"><i class=\"fas fa-forward\"></i>");
+            pr.print("<span class=\"sr-only\">(current)</span> ");
+            pr.print("</span>");
+            pr.print("</a>");
+            pr.print("</li>");
+        }
+        if (request.getParameter("row") == null) {
+            sendDispatcher(request, response, "admin/usermanagement.jsp");
         }
     }
 
-    public void serviceAddUser(HttpServletRequest request, HttpServletResponse response) {
+    public void serviceAddUser(String service, HttpServletRequest request, HttpServletResponse response) {
+        request.setAttribute("service", service);
         String username = request.getParameter("username");
         String password = request.getParameter("password");
         String fullname = request.getParameter("fullname");
@@ -301,7 +361,6 @@ public class AdminController extends HttpServlet {
         String phone = request.getParameter("phone");
         String address = request.getParameter("address");
         int gender = Integer.parseInt(request.getParameter("gender"));
-        int role = Integer.parseInt(request.getParameter("role"));
         boolean isExist = false;
         if (daouser.checkExistMail(email) == true
                 || daouser.checkExistPhone(phone) == true
@@ -323,12 +382,12 @@ public class AdminController extends HttpServlet {
             sendDispatcher(request, response, "admin/userdetail.jsp");
         }
         if (isExist == false) {
-            User user = new User(username, password, email, phone, 0, 0, fullname, "", address, "", "", "", gender, "", "", "", "", "", 0, role, 1);
+            User user = new User(username, password, email, phone, 0, 0, fullname, "", address, "", "", "", gender, "", "", "", "", "", 0, 0, 1);
             daouser.addUser(user);
-            ArrayList<User> listUser = daouser.getAllUser();
+            ArrayList<User> listPaging = daouser.getAllPagingUser(1, 5, "");
             String state = "success";
             request.setAttribute("state", state);
-            request.setAttribute("listUser", listUser);
+            request.setAttribute("listUser", listPaging);
             String mess = "Add successfully";
             request.setAttribute("mess", mess);
             request.setAttribute("service", "adduserdetail");
@@ -336,7 +395,8 @@ public class AdminController extends HttpServlet {
         }
     }
 
-    public void serviceUpdateUser(HttpServletRequest request, HttpServletResponse response) {
+    public void serviceUpdateUser(String service, HttpServletRequest request, HttpServletResponse response) {
+        request.setAttribute("service", service);
         String id = request.getParameter("id");
         User user = daouser.getUserById(Integer.parseInt(id));
         String username = request.getParameter("username");
@@ -346,7 +406,6 @@ public class AdminController extends HttpServlet {
         String phone = request.getParameter("phone");
         String address = request.getParameter("address");
         int gender = Integer.parseInt(request.getParameter("gender"));
-        int role = Integer.parseInt(request.getParameter("role"));
         boolean isExist = false;
         if ((daouser.checkExistMail(email) && !email.equalsIgnoreCase(user.getEmail()))
                 || (daouser.checkExistPhone(phone) && !phone.equalsIgnoreCase(user.getPhoneNumber()))
@@ -370,12 +429,11 @@ public class AdminController extends HttpServlet {
             user.setPhoneNumber(phone);
             user.setAddress(address);
             user.setGender(gender);
-            user.setSystemRole(role);
             daouser.updateInfoUserByAdmin(user);
             String state = "success";
             request.setAttribute("state", state);
-            ArrayList<User> listUser = daouser.getAllUser();
-            request.setAttribute("listUser", listUser);
+            ArrayList<User> listPaging = daouser.getAllPagingUser(1, 5, "");
+            request.setAttribute("listUser", listPaging);
             request.setAttribute("user", user);
             request.setAttribute("service", "updateuserdetail");
             String mess = "Update successfully";
@@ -384,20 +442,139 @@ public class AdminController extends HttpServlet {
         }
     }
 
-    public void serviceDeleteUser(HttpServletRequest request, HttpServletResponse response) {
+    public void serviceDeleteUser(String service, HttpServletRequest request, HttpServletResponse response) {
         int id = Integer.parseInt(request.getParameter("userid"));
         daouser.changeStatus(id, 0);
+        ArrayList<User> listPaging = daouser.getAllPagingUser(1, 5, "");
         ArrayList<User> listUser = daouser.getAllUser();
-        request.setAttribute("listUser", listUser);
+        int totalPage = listUser.size() / 5;
+        if (listUser.size() != totalPage * 5) {
+            totalPage += 1;
+        }
+        request.setAttribute("index", 1);
+        request.setAttribute("totalPage", totalPage);
+        request.setAttribute("listUser", listPaging);
+        request.setAttribute("service", service);
         sendDispatcher(request, response, "admin/usermanagement.jsp");
     }// </editor-fold>
-    
-    // <editor-fold defaultstate="collapsed" desc="Product methods. Click on the + sign on the left to edit the code.">
 
-    public void serviceProductManagement(HttpServletRequest request, HttpServletResponse response) {
+    // <editor-fold defaultstate="collapsed" desc="Product methods. Click on the + sign on the left to edit the code.">
+    public void serviceProductManagement(String service, HttpServletRequest request, HttpServletResponse response) {
+        ArrayList<Product> listPaging = daoproduct.getAllPagingProduct(1, 5, "");
         ArrayList<Product> listProduct = daoproduct.getAllProduct();
-        request.setAttribute("listProduct", listProduct);
+        int totalPage = listProduct.size() / 5;
+        if (listProduct.size() != 5 * totalPage) {
+            totalPage += 1;
+        }
+        request.setAttribute("index", 1);
+        request.setAttribute("totalPage", totalPage);
+        request.setAttribute("listProduct", listPaging);
+        request.setAttribute("service", service);
         sendDispatcher(request, response, "admin/productmanagement.jsp");
+    }
+
+    public void servicePagingProduct(String service, HttpServletRequest request, HttpServletResponse response) throws IOException {
+        PrintWriter pr = response.getWriter();
+        SimpleDateFormat dateformat = new SimpleDateFormat("dd/MM/yyyy");
+        request.setAttribute("service", service);
+        int index = 1, numOfRow = 5;
+        String search = request.getParameter("search");
+        if (request.getParameter("row") != null) {
+            numOfRow = Integer.parseInt(request.getParameter("row"));
+        }
+        if (request.getParameter("index") != null) {
+            index = Integer.parseInt(request.getParameter("index"));
+        }
+        ArrayList<Product> listPaging = daoproduct.getAllPagingProduct(index, numOfRow, search);
+        request.setAttribute("index", index);
+        request.setAttribute("listProduct", listPaging);
+        for (Product product : listPaging) {
+            User user = daouser.getUserByProductId(product.getProductID());
+            pr.print("<tr>"
+                    + "<td><div>" + product.getProductName() + " </div></td>"
+                    + "<td><div>" + product.getDescription() + "</div></td>"
+                    + "<td><div>" + product.getRating() + "</div></td>"
+                    + "<td><div>" + user.getFullname() + "</div></td>"
+                    + "<td><div>" + dateformat.format(product.getReleaseDate()) + "</div></td>"
+                    + "<td><div><a href=\"AdminControllerMap?service=updateproductdetail&productid=" + product.getProductID() + "\"><span class=\"fas fa-edit\"></span></a>"
+                    + "</div></td>"
+                    + "<td><div><a href=\"AdminControllerMap?service=deleteproduct&productid=" + product.getProductID() + "\" onclick=\"return confirm('Are you sure you want to Remove?');\"><span class=\"fas fa-trash-alt\"></span></a></div></td>" + "</tr>"
+            );
+        }
+        if (request.getParameter("row") == null) {
+            sendDispatcher(request, response, "admin/productmanagement.jsp");
+        }
+    }
+
+    public void serviceShowPageProduct(HttpServletRequest request, HttpServletResponse response) throws IOException {
+        PrintWriter pr = response.getWriter();
+        int index = 1, numOfRow = 5;
+        String search = request.getParameter("search");
+        if (request.getParameter("index") != null) {
+            index = Integer.parseInt(request.getParameter("index"));
+        }
+        if (request.getParameter("row") != null) {
+            numOfRow = Integer.parseInt(request.getParameter("row"));
+        }
+        ArrayList<Product> listPaging = daoproduct.getAllPagingProduct(index, numOfRow, search);
+        int totalResult = daoproduct.getPageNumber(search);
+        int totalPage = totalResult / numOfRow;
+        if (totalResult != numOfRow * totalPage) {
+            totalPage += 1;
+        }
+        int prev = index == 1 ? 1 : index - 1;
+        int next = index == totalPage ? totalPage : index + 1;
+        if (totalResult > numOfRow) {
+            pr.print("<li data-repair=\"1\" class=\"page-item\">");
+            pr.print("<a class=\"page-link\" aria-label=\"First\">");
+            pr.print("<span aria-hidden=\"true\"><i class=\"fas fa-backward\"></i>");
+            pr.print("<span class=\"sr-only\">(current)</span> ");
+            pr.print("</span>");
+            pr.print("</a>");
+            pr.print("</li>");
+            pr.print("<li data-repair=\"" + prev + "\" class=\"page-item\">");
+            pr.print("<a class=\"page-link\" aria-label=\"Previous\">");
+            pr.print("<span aria-hidden=\"true\"><i class=\"fas fa-arrow-left\"></i>");
+            pr.print("<span class=\"sr-only\">(current)</span> ");
+            pr.print("</span>");
+            pr.print("</a>");
+            pr.print("</li>");
+            for (int i = 1; i <= totalPage; i++) {
+                if(i < index - 2) continue;
+                if(index<3){
+                    if(i >5) break;
+                }else{
+                    if(i>index+2) break;
+                }
+                if (index == i) {
+                    pr.print("<li  class=\"page-item active\" data-repair=\"" + i + "\">");
+                } else {
+                    pr.print("<li  class=\"page-item\" data-repair=\"" + i + "\">");
+                }
+                pr.print("<a class=\"page-link\">");
+                pr.print("<div class=\"index\">" + i + "</div>");
+                pr.print("<span class=\"sr-only\">(current)</span>");
+                pr.print("</a>");
+                pr.print("</li>");
+            }
+            pr.print("<li data-repair=\"" + next + "\" class=\"page-item\">");
+            pr.print("<a class=\"page-link\" aria-label=\"Next\">");
+            pr.print("<span aria-hidden=\"true\"><i class=\"fas fa-arrow-right\"></i>");
+            pr.print("<span class=\"sr-only\">(current)</span> ");
+            pr.print("</span>");
+            pr.print("</a>");
+            pr.print("</li>");
+            pr.print("<li data-repair=\"" + totalPage + "\" class=\"page-item\">");
+            pr.print("<a class=\"page-link\" aria-label=\"Last\">");
+            pr.print("<span aria-hidden=\"true\"><i class=\"fas fa-forward\"></i>");
+            pr.print("<span class=\"sr-only\">(current)</span> ");
+            pr.print("</span>");
+            pr.print("</a>");
+            pr.print("</li>");
+        }
+        if (request.getParameter("row") == null) {
+            sendDispatcher(request, response, "admin/productmanagement.jsp");
+        }
     }
 
     public void serviceProductDetail(String service, HttpServletRequest request, HttpServletResponse response) {
@@ -406,34 +583,14 @@ public class AdminController extends HttpServlet {
             sendDispatcher(request, response, "admin/productdetail.jsp");
             return;
         }
-        String id = request.getParameter("producttypeid");
-        ProductType producttype = daoproducttype.getProductTypeByPTypeID(id);
-        Product product = daoproduct.getProductByID(producttype.getProductID());
-        request.setAttribute("producttype", producttype);
+        String id = request.getParameter("productid");
+        Product product = daoproduct.getProductByID(Integer.parseInt(id));
         request.setAttribute("product", product);
         sendDispatcher(request, response, "admin/productdetail.jsp");
     }
 
-    public void serviceSearchProduct(HttpServletRequest request, HttpServletResponse response) throws IOException {
-        PrintWriter pr = response.getWriter();
-        String search = request.getParameter("search");
-        ArrayList<Product> listProduct = daoproduct.searchProduct(search);
-        for (Product product : listProduct) {
-            User user = daouser.getUserByProductId(product.getProductID());
-            pr.print("<tr>"
-                    + "<td><div>" + product.getProductName() + " </div></td>"
-                    + "<td><div>" + product.getDescription() + "</div></td>"
-                    + "<td><div>" + product.getRating() + "</div></td>"
-                    + "<td><div>" + user.getFullname() + "</div></td>"
-                    + "<td><div>" + product.getReleaseDate() + "</div></td>"
-                    + "<td><div><a href=\"AdminControllerMap?service=updateproductdetail&producttypeid=" + product.getProductID() + "\"><span class=\"fas fa-edit\"></span></a>"
-                    + "</div></td>"
-                    + "<td><div><a href=\"AdminControllerMap?service=deleteproduct&producttypeid=" + product.getProductID() + "\" onclick=\"return confirm('Are you sure you want to Remove?');\"><span class=\"fas fa-trash-alt\"></span></a></div></td>" + "</tr>"
-            );
-        }
-    }
-
-    public void serviceAddProduct(HttpServletRequest request, HttpServletResponse response) {
+    public void serviceAddProduct(String service, HttpServletRequest request, HttpServletResponse response) {
+        request.setAttribute("service", service);
         String productname = request.getParameter("productname");
         String color = request.getParameter("color");
         String size = request.getParameter("size");
@@ -455,7 +612,8 @@ public class AdminController extends HttpServlet {
         sendDispatcher(request, response, "admin/productmanagement.jsp");
     }
 
-    public void serviceDeleteProduct(HttpServletRequest request, HttpServletResponse response) {
+    public void serviceDeleteProduct(String service, HttpServletRequest request, HttpServletResponse response) {
+        request.setAttribute("service", service);
         String id = request.getParameter("producttypeid");
         daoproducttype.deleteProductType(id);
         List<Product> listProduct = daoproduct.getAllProduct();
@@ -463,16 +621,123 @@ public class AdminController extends HttpServlet {
         sendDispatcher(request, response, "admin/productmanagement.jsp");
     }
 
-    public void serviceUpdateProduct(HttpServletRequest request, HttpServletResponse response) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    public void serviceUpdateProduct(String service, HttpServletRequest request, HttpServletResponse response) {
+        request.setAttribute("service", service);
+        
     }//</editor-fold>
-    
-    // <editor-fold defaultstate="collapsed" desc="Company methods. Click on the + sign on the left to edit the code.">
 
-    public void serviceCompanyManagement(HttpServletRequest request, HttpServletResponse response) {
+    // <editor-fold defaultstate="collapsed" desc="Company methods. Click on the + sign on the left to edit the code.">
+    public void serviceCompanyManagement(String service, HttpServletRequest request, HttpServletResponse response) {
+        List<ShipCompany> listPaging = daocompany.getAllPagingShipCompany(1, 5, "");
         List<ShipCompany> listCompany = daocompany.getAllShipCompany();
-        request.setAttribute("listCompany", listCompany);
+        int totalPage = listCompany.size() / 5;
+        if (listCompany.size() > 5) {
+            totalPage += 1;
+        }
+        request.setAttribute("index", 1);
+        request.setAttribute("totalPage", totalPage);
+        request.setAttribute("listCompany", listPaging);
+        request.setAttribute("service", service);
         sendDispatcher(request, response, "admin/companymanagement.jsp");
+    }
+
+    public void servicePagingCompany(String service, HttpServletRequest request, HttpServletResponse response) throws IOException {
+        PrintWriter pr = response.getWriter();
+        request.setAttribute("service", service);
+        int index = 1, numOfRow = 5;
+        String search = request.getParameter("search");
+        if (request.getParameter("index") != null) {
+            index = Integer.parseInt(request.getParameter("index"));
+        }
+        if (request.getParameter("row") != null) {
+            numOfRow = Integer.parseInt(request.getParameter("row"));
+        }
+        List<ShipCompany> listPaging = daocompany.getAllPagingShipCompany(index, numOfRow, search);
+        request.setAttribute("index", index);
+        request.setAttribute("listCompany", listPaging);
+        for (ShipCompany company : listPaging) {
+            pr.print("<tr>"
+                    + "<td><div>" + company.getCompanyName() + " </div></td>"
+                    + "<td><div>" + company.getCommitDate() + "</div></td>"
+                    + "<td><div>" + (int) company.getUnitCost() + "</div></td>"
+                    + "<td><div><a href=\"AdminControllerMap?service=updatecompanydetail&companyid=" + company.getCompanyID() + "\"><span class=\"fas fa-edit\"></span></a>"
+                    + "</div></td>"
+                    + "<td><div><a href=\"AdminControllerMap?service=deletecompany&companyid=" + company.getCompanyID() + "\" onclick=\"return confirm('Are you sure you want to Remove?');\"><span class=\"fas fa-trash-alt\"></span></a></div></td>" + "</tr>"
+            );
+        }
+        if (request.getParameter("row") == null) {
+            sendDispatcher(request, response, "admin/companymanagement.jsp");
+        }
+    }
+
+    public void serviceShowPageCompany(HttpServletRequest request, HttpServletResponse response) throws IOException {
+        PrintWriter pr = response.getWriter();
+        int index = 1, numOfRow = 5;
+        String search = request.getParameter("search");
+        if (request.getParameter("index") != null) {
+            index = Integer.parseInt(request.getParameter("index"));
+        }
+        if (request.getParameter("row") != null) {
+            numOfRow = Integer.parseInt(request.getParameter("row"));
+        }
+        int totalResult = daocompany.getPageNumber(search);
+        int totalPage = totalResult / numOfRow;
+        if (totalResult != totalPage * numOfRow) {
+            totalPage += 1;
+        }
+        int prev = index == 1 ? 1 : index - 1;
+        int next = index == totalPage ? totalPage : index + 1;
+        if (totalResult > numOfRow) {
+            pr.print("<li data-repair=\"1\" class=\"page-item\">");
+            pr.print("<a class=\"page-link\" aria-label=\"First\">");
+            pr.print("<span aria-hidden=\"true\"><i class=\"fas fa-backward\"></i>");
+            pr.print("<span class=\"sr-only\">(current)</span> ");
+            pr.print("</span>");
+            pr.print("</a>");
+            pr.print("</li>");
+            pr.print("<li data-repair=\"" + prev + "\" class=\"page-item\">");
+            pr.print("<a class=\"page-link\" aria-label=\"Previous\">");
+            pr.print("<span aria-hidden=\"true\"><i class=\"fas fa-arrow-left\"></i>");
+            pr.print("<span class=\"sr-only\">(current)</span> ");
+            pr.print("</span>");
+            pr.print("</a>");
+            pr.print("</li>");
+           for (int i = 1; i <= totalPage; i++) {
+                if(i < index - 2) continue;
+                if(index<3){
+                    if(i >5) break;
+                }else{
+                    if(i>index+2) break;
+                }
+                if (index == i) {
+                    pr.print("<li  class=\"page-item active\" data-repair=\"" + i + "\">");
+                } else {
+                    pr.print("<li  class=\"page-item\" data-repair=\"" + i + "\">");
+                }
+                pr.print("<a class=\"page-link\">");
+                pr.print("<div class=\"index\">" + i + "</div>");
+                pr.print("<span class=\"sr-only\">(current)</span>");
+                pr.print("</a>");
+                pr.print("</li>");
+            }
+            pr.print("<li data-repair=\"" + next + "\" class=\"page-item\">");
+            pr.print("<a class=\"page-link\" aria-label=\"Next\">");
+            pr.print("<span aria-hidden=\"true\"><i class=\"fas fa-arrow-right\"></i>");
+            pr.print("<span class=\"sr-only\">(current)</span> ");
+            pr.print("</span>");
+            pr.print("</a>");
+            pr.print("</li>");
+            pr.print("<li data-repair=\"" + totalPage + "\" class=\"page-item\">");
+            pr.print("<a class=\"page-link\" aria-label=\"Last\">");
+            pr.print("<span aria-hidden=\"true\"><i class=\"fas fa-forward\"></i>");
+            pr.print("<span class=\"sr-only\">(current)</span> ");
+            pr.print("</span>");
+            pr.print("</a>");
+            pr.print("</li>");
+        }
+        if (request.getParameter("row") == null) {
+            sendDispatcher(request, response, "admin/companymanagement.jsp");
+        }
     }
 
     public void serviceCompanyDetail(String service, HttpServletRequest request, HttpServletResponse response) {
@@ -487,31 +752,25 @@ public class AdminController extends HttpServlet {
         sendDispatcher(request, response, "admin/companydetail.jsp");
     }
 
-    public void serviceSearchCompany(HttpServletRequest request, HttpServletResponse response) throws IOException {
-        PrintWriter pr = response.getWriter();
-        String search = request.getParameter("search");
-        List<ShipCompany> listCompany = daocompany.searchShipCompany(search);
-        for (ShipCompany company : listCompany) {
-            pr.print("<tr>"
-                    + "<td><div>" + company.getCompanyName() + " </div></td>"
-                    + "<td><div>" + company.getCommitDate() + "</div></td>"
-                    + "<td><div>" + company.getUnitCost() + "</div></td>"
-                    + "<td><div><a href=\"AdminControllerMap?service=updatecompanydetail&companyid=" + company.getCompanyID() + "\"><span class=\"fas fa-edit\"></span></a>"
-                    + "</div></td>"
-                    + "<td><div><a href=\"AdminControllerMap?service=deletecompany&companyid=" + company.getCompanyID() + "\" onclick=\"return confirm('Are you sure you want to Remove?');\"><span class=\"fas fa-trash-alt\"></span></a></div></td>" + "</tr>"
-            );
-        }
-    }
-
-    public void serviceDeleteCompany(HttpServletRequest request, HttpServletResponse response) {
+    public void serviceDeleteCompany(String service, HttpServletRequest request, HttpServletResponse response) {
         String id = request.getParameter("companyid");
         daocompany.deleteShipCompany(id);
+        sendDispatcher(request, response, "admin/companymanagement.jsp");
+        List<ShipCompany> listPaging = daocompany.getAllPagingShipCompany(1, 5, "");
         List<ShipCompany> listCompany = daocompany.getAllShipCompany();
-        request.setAttribute("listCompany", listCompany);
+        int totalPage = listCompany.size() / 5;
+        if (listCompany.size() > 5) {
+            totalPage += 1;
+        }
+        request.setAttribute("index", 1);
+        request.setAttribute("totalPage", totalPage);
+        request.setAttribute("listCompany", listPaging);
+        request.setAttribute("service", service);
         sendDispatcher(request, response, "admin/companymanagement.jsp");
     }
 
-    public void serviceAddCompany(HttpServletRequest request, HttpServletResponse response) {
+    public void serviceAddCompany(String service, HttpServletRequest request, HttpServletResponse response) {
+        request.setAttribute("service", service);
         String companyname = request.getParameter("companyname");
         String unitcost = request.getParameter("unitcost");
         String commitdate = request.getParameter("commitdate");
@@ -537,17 +796,19 @@ public class AdminController extends HttpServlet {
             company.setUnitCost(Double.parseDouble(unitcost));
             company.setStatus(1);
             daocompany.addShipCompany(company);
+            List<ShipCompany> listCompany = daocompany.getAllPagingShipCompany(1, 5, "");
             String state = "success";
             request.setAttribute("state", state);
-            List<ShipCompany> listCompany = daocompany.getAllShipCompany();
+            request.setAttribute("listCompany", listCompany);
             String mess = "Add successfully";
             request.setAttribute("mess", mess);
-            request.setAttribute("listCompany", listCompany);
-            sendDispatcher(request, response, "admin/companymanagement.jsp");
+            request.setAttribute("service", "addcompanydetail");
+            sendDispatcher(request, response, "admin/companydetail.jsp");     
         }
     }
 
-    public void serviceUpdateCompany(HttpServletRequest request, HttpServletResponse response) {
+    public void serviceUpdateCompany(String service, HttpServletRequest request, HttpServletResponse response) {
+        request.setAttribute("service", service);
         String id = request.getParameter("id");
         ShipCompany company = daocompany.getShipCompanyById(Integer.parseInt(id));
         String companyname = request.getParameter("companyname");
@@ -573,7 +834,7 @@ public class AdminController extends HttpServlet {
             daocompany.editShipCompany(company);
             String state = "success";
             request.setAttribute("state", state);
-            List<ShipCompany> listCompany = daocompany.getAllShipCompany();
+            List<ShipCompany> listCompany = daocompany.getAllPagingShipCompany(1, 5, "");
             request.setAttribute("listCompany", listCompany);
             request.setAttribute("company", company);
             String mess = "Update successfully";
@@ -582,10 +843,10 @@ public class AdminController extends HttpServlet {
             sendDispatcher(request, response, "admin/companydetail.jsp");
         }
     }//</editor-fold>
-    
-    // <editor-fold defaultstate="collapsed" desc="Gallery methods. Click on the + sign on the left to edit the code.">
 
-    public void serviceGalleryManagement(HttpServletRequest request, HttpServletResponse response) {
+    // <editor-fold defaultstate="collapsed" desc="Gallery methods. Click on the + sign on the left to edit the code.">
+    public void serviceGalleryManagement(String service, HttpServletRequest request, HttpServletResponse response) {
+        request.setAttribute("service", service);
         List<Gallery> listGallery = daogallery.getAllGallery();
         request.setAttribute("listGallery", listGallery);
         sendDispatcher(request, response, "admin/gallerymanagement.jsp");
@@ -607,30 +868,12 @@ public class AdminController extends HttpServlet {
         sendDispatcher(request, response, "admin/gallerydetail.jsp");
     }
 
-    public void serviceSearchGallery(HttpServletRequest request, HttpServletResponse response) throws IOException {
-        PrintWriter pr = response.getWriter();
-        String search = request.getParameter("search");
-        ArrayList<User> listUser = daouser.searchUser(search);
-        for (User user : listUser) {
-            pr.print("<tr>"
-                    + "<td>" + user.getUsername() + " </td>"
-                    + "<td>" + user.getPassword() + "</td>"
-                    + "<td>" + user.getEmail() + "</td>"
-                    + "<td>" + user.getFullname() + "</td>"
-                    + "<td>" + user.getPhoneNumber() + "</td>"
-                    + "<td>" + user.getAddress() + "</td>"
-                    + "<td><div><a href=\"AdminControllerMap?service=updateuserdetail&userid=" + user.getUserId() + "\"><span class=\"fas fa-edit\"></span></a>"
-                    + "</div></td>"
-                    + "<td><div><a href=\"AdminControllerMap?service=deleteuser&userid=" + user.getUserId() + "\" onclick=\"return confirm('Are you sure you want to Remove?');\"><span class=\"fas fa-trash-alt\"></span></a></div></td>" + "</tr>"
-            );
-        }
-    }
-
-    public void serviceAddGallery(HttpServletRequest request, HttpServletResponse response) {
+    public void serviceAddGallery(String service, HttpServletRequest request, HttpServletResponse response) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
-    public void serviceDeleteGallery(HttpServletRequest request, HttpServletResponse response) {
+    public void serviceDeleteGallery(String service, HttpServletRequest request, HttpServletResponse response) {
+        request.setAttribute("service", service);
         String id = request.getParameter("galleryid");
         daogallery.deleteGallery(Integer.parseInt(id));
         List<Gallery> listGallery = daogallery.getAllGallery();
@@ -638,23 +881,25 @@ public class AdminController extends HttpServlet {
         sendDispatcher(request, response, "admin/gallerymanagement.jsp");
     }
 
-    public void serviceUpdateGallery(HttpServletRequest request, HttpServletResponse response) {
+    public void serviceUpdateGallery(String service, HttpServletRequest request, HttpServletResponse response) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }//</editor-fold>
 
     // <editor-fold defaultstate="collapsed" desc="Role methods. Click on the + sign on the left to edit the code.">
-    public void serviceUserAuthorization(HttpServletRequest request, HttpServletResponse response) {
+    public void serviceUserAuthorization(String service, HttpServletRequest request, HttpServletResponse response) {
+        request.setAttribute("service", service);
         ArrayList<User> listUser = daouser.getAllUser();
         request.setAttribute("listUser", listUser);
         sendDispatcher(request, response, "admin/authorization/userAuthorization.jsp");
     }
 
     public void serviceRoleDisplay(String service, HttpServletRequest request, HttpServletResponse response) {
+        request.setAttribute("service", service);
         List<Role> role = daorole.getAllRole();
         request.setAttribute("role", role);
         sendDispatcher(request, response, "admin/authorization/roleAuthorization.jsp");
     }
-    
+
     public void serviceRoleDetail(String service, HttpServletRequest request, HttpServletResponse response) {
         request.setAttribute("service", service);
         if (service.equalsIgnoreCase("addRoleDetail")) {
@@ -666,7 +911,8 @@ public class AdminController extends HttpServlet {
         sendDispatcher(request, response, "admin/authorization/editRole.jsp");
     }
 
-    public void serviceAddRole(HttpServletRequest request, HttpServletResponse response) {
+    public void serviceAddRole(String service, HttpServletRequest request, HttpServletResponse response) {
+        request.setAttribute("service", service);
         int roleID = Integer.parseInt(request.getParameter("roleID"));
         String roleName = request.getParameter("roleName");
         int adminPermission = Integer.parseInt(request.getParameter("adminPermission"));
@@ -684,16 +930,17 @@ public class AdminController extends HttpServlet {
         sendDispatcher(request, response, "admin/authorization/roleAuthorization.jsp");
     }
 
-    public void serviceUpdateRole(HttpServletRequest request, HttpServletResponse response) {
+    public void serviceUpdateRole(String service, HttpServletRequest request, HttpServletResponse response) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
-    public void serviceDeleteRole(HttpServletRequest request, HttpServletResponse response) {
+    public void serviceDeleteRole(String service, HttpServletRequest request, HttpServletResponse response) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
-    public void serviceSearchRole(HttpServletRequest request, HttpServletResponse response) throws IOException {
+    public void serviceSearchRole(String service, HttpServletRequest request, HttpServletResponse response) throws IOException {
         PrintWriter pr = response.getWriter();
+        request.setAttribute("service", service);
         String search = request.getParameter("search");
         List<Role> listRole = daorole.searchRole(search);
         for (Role role : listRole) {
@@ -710,7 +957,7 @@ public class AdminController extends HttpServlet {
             );
         }
     }//</editor-fold>
-    
+
     public void sendDispatcher(HttpServletRequest request, HttpServletResponse response, String path) {
         try {
             RequestDispatcher rd = request.getRequestDispatcher(path);
@@ -723,16 +970,16 @@ public class AdminController extends HttpServlet {
     }
 
 // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
-/**
- * Handles the HTTP <code>GET</code> method.
- *
- * @param request servlet request
- * @param response servlet response
- * @throws ServletException if a servlet-specific error occurs
- * @throws IOException if an I/O error occurs
- */
-@Override
-        protected void doGet(HttpServletRequest request, HttpServletResponse response)
+    /**
+     * Handles the HTTP <code>GET</code> method.
+     *
+     * @param request servlet request
+     * @param response servlet response
+     * @throws ServletException if a servlet-specific error occurs
+     * @throws IOException if an I/O error occurs
+     */
+    @Override
+    protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         processRequest(request, response);
     }
@@ -746,7 +993,7 @@ public class AdminController extends HttpServlet {
      * @throws IOException if an I/O error occurs
      */
     @Override
-        protected void doPost(HttpServletRequest request, HttpServletResponse response)
+    protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         processRequest(request, response);
     }
@@ -757,9 +1004,8 @@ public class AdminController extends HttpServlet {
      * @return a String containing servlet description
      */
     @Override
-        public String getServletInfo() {
+    public String getServletInfo() {
         return "Short description";
     }// </editor-fold>
-
 
 }

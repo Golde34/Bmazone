@@ -145,23 +145,29 @@ public class ProductTypeDAO extends BaseDAO {
         }
         return list;
     }
-     public ProductType getProductByPCZ(int pid,String size,String color) {
-         ProductType pt=null;
-        xSql = "select * from ProductType where productID = ? and size='"+size+"' and color ='"+color+"'";
+
+    
+    public static void main(String[] args) {
+        ProductTypeDAO dao = new ProductTypeDAO();
+        ProductType pt = dao.getProductTypeByColorAndSize("green", "64GB", "13");
+        System.out.println(pt.getPrice());
+    }
+    public ProductType getProductTypeByColorAndSize(String color,String size,String productID){
+        ProductType pt= new ProductType();
+        xSql="select pt.* from Product p join ProductType pt on p.productID = pt.productID where p.productID = "+productID+" and pt.size = '"+size+"' and pt.color = '"+color+"'";
         try {
-            pre = conn.prepareStatement(xSql);
-            pre.setInt(1, pid);
-            rs = pre.executeQuery();
-            while (rs.next()) {
-                pt=new ProductType(
-                        rs.getString(1),
-                        rs.getInt(2),
-                        rs.getString(3),
-                        rs.getString(4),
-                        rs.getString(5),
-                        rs.getInt(6),
-                        rs.getInt(7),
-                        rs.getInt(8));
+            pre=conn.prepareStatement(xSql);
+            rs=pre.executeQuery();
+            if(rs.next()){
+                pt.setProductID(rs.getInt("productID"));
+                pt.setProductTypeId(rs.getString("productTypeId"));
+                pt.setColor(rs.getString("color"));
+                pt.setPrice(rs.getString("price"));
+                pt.setSize(rs.getString("size"));
+                pt.setWareHouseID(rs.getInt("wareHouseID"));
+                pt.setQuantity(rs.getInt("quantity"));
+                pt.setStatus(rs.getInt("status"));
+
             }
         } catch (Exception e) {
         }
@@ -285,11 +291,7 @@ public class ProductTypeDAO extends BaseDAO {
         }
         return list;
     }
-    public static void main(String[] args) {
-        ProductTypeDAO dao = new ProductTypeDAO();
-       ProductType pt= dao.getProductByPCZ(2, "363 x 247.5 x 19.9 (mm)", "Shale Black");
-        System.out.println(pt);
-    }
+
 }
 
 

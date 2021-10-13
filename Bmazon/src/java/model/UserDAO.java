@@ -148,31 +148,6 @@ public class UserDAO extends BaseDAO {
         return n;
     }
 
-    public ArrayList<User> searchUser(String text) {
-        ArrayList<User> list = new ArrayList<>();
-        xSql = "SELECT * FROM [Bmazon].[dbo].[User] where userID like '%" + text + "%' or username like '%" + text + "%' or email like '%" + text + "%' or fullname like '%" + text + "%' or address like '%" + text + "%'";
-        ResultSet rs = dbConn.getData(xSql);
-        try {
-            while (rs.next()) {
-                User user = new User(rs.getString("userID"), rs.getString("username"),
-                        rs.getString("password"), rs.getString("email"),
-                        rs.getString("phoneNumber"), rs.getInt("sell"),
-                        rs.getDouble("wallet"), rs.getString("fullname"),
-                        rs.getString("publicName"), rs.getString("address"), rs.getString("profileImage"),
-                        rs.getString("backgroundImage"), rs.getString("occupation"),
-                        rs.getInt("gender"), rs.getDate("DOB"), rs.getString("bio"),
-                        rs.getString("Facebook"), rs.getString("Instagram"),
-                        rs.getString("Twitter"), rs.getString("Youtube"),
-                        rs.getInt("activityPoint"), rs.getInt("systemRole"),
-                        rs.getInt("status"));
-                list.add(user);
-            }
-        } catch (SQLException ex) {
-            Logger.getLogger(UserDAO.class.getName()).log(Level.SEVERE, null, ex);
-        }
-        return list;
-    }
-
     public int changePassword(String username, String newPass) {
         try {
             String sqlUpdate = "update [User] set password = ? where username = ?";
@@ -271,7 +246,7 @@ public class UserDAO extends BaseDAO {
         return num;
     }
 
-    public ArrayList<User> pagingUser(int index, int numOfRow, String search) {
+    public ArrayList<User> getAllPagingUser(int index, int numOfRow, String search) {
         ArrayList<User> list = new ArrayList<>();
         xSql = "declare @PageNo INT =" + index + "\n"
                 + "declare @PageSize INT=" + numOfRow + "\n"

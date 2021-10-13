@@ -60,19 +60,19 @@ public class CartController extends HttpServlet {
     public void serviceAddToCart(HttpServletRequest request, HttpServletResponse response) throws IOException {
 
         ArrayList<CartItem> ShoppingCart = (ArrayList<CartItem>) request.getSession().getAttribute("ShoppingCart");
-        int pid = Integer.parseInt(request.getParameter("pid"));
+        String pid = request.getParameter("pid");
         String size = request.getParameter("size");
         String color = request.getParameter("color");
         String quantitys = request.getParameter("quantity");
         int quantity = Integer.parseInt(quantitys);
         PrintWriter out = response.getWriter();
-        ProductType pt = ptd.getProductByPCZ(pid, size, color);
+        ProductType pt = ptd.getProductTypeByColorAndSize(color,size,pid);
         String image = galdao.getImageByProductTypeID(pt.getProductTypeId());
         double total = quantity * Double.parseDouble(pt.getPrice());
-
+       int pid1=Integer.parseInt(pid);
         boolean check = true;
         for (int i = 0; i < ShoppingCart.size(); i++) {
-            if (ShoppingCart.get(i).getProductID() == pid
+            if (ShoppingCart.get(i).getProductID() == pid1
                     && ShoppingCart.get(i).getColor().equals(color)
                     && ShoppingCart.get(i).getSize().equals(size)) {
                 ShoppingCart.get(i).setQuantity(ShoppingCart.get(i).getQuantity() + quantity);

@@ -10,6 +10,15 @@ GO
 USE Bmazon
 GO
 
+CREATE TABLE [Role] (
+	roleID int PRIMARY KEY NOT NULL,
+	roleName nvarchar(255),
+	adminPermission bit,
+	sellerPermission bit,
+	customerPermission bit,
+	[status] bit,
+)
+
 CREATE TABLE [User] (
 --private profile
 	userID int NOT NULL identity(1,1) PRIMARY KEY,
@@ -35,8 +44,9 @@ CREATE TABLE [User] (
 	Youtube nvarchar(255),
 	--system profile
 	activityPoint int CHECK(activityPoint>=0),
-	systemRole nvarchar(30),
-	[status] bit
+	systemRole int,
+	[status] bit,
+	FOREIGN KEY (systemRole) REFERENCES [Role](roleID)
 )
 
 CREATE TABLE [Category] (
@@ -66,11 +76,11 @@ CREATE TABLE [Product] (
 	productID int NOT NULL identity(1,1) PRIMARY KEY,
 	productName nvarchar(255) NOT NULL,
 	[description] nvarchar(max),
-	rating int,
+	rating real,
 	releaseDate date NOT NULL CHECK(releaseDate <= getDate()),
-	seller int NOT NULL,
+	sellerID int NOT NULL,
 	[status] bit,
-	FOREIGN KEY (seller) REFERENCES [User](userID),
+	FOREIGN KEY (sellerID) REFERENCES [Seller](SellerID),
 )
 
 
@@ -157,19 +167,37 @@ CREATE TABLE [Comment](
 	productID int not null,
 	[userId] int not null,
 	content nvarchar(max),
-	rating int not null CHECK(rating >= 0 AND rating <= 5),
+	rating real not null CHECK(rating >= 0 AND rating <= 5),
 	status bit,
 	FOREIGN KEY ([userId]) REFERENCES dbo.[User]([userId]),
 	FOREIGN KEY ([productID]) REFERENCES [Product]([productID]),
 )
 
-CREATE TABLE [Role] (
-	roleID int PRIMARY KEY NOT NULL,
-	roleName nvarchar(255),
-	adminPermission bit,
-	sellerPermission bit,
-	customerPermission bit,
+/*CREATE TABLE Cart(
+	userID,
+	productID,
+	quantity,
+	price
+)*/
+
+/*CREATE TABLE Sales(
+	ProductTypeID,
+	Sale,
+	status
+) */
+
+CREATE TABLE Seller (
+	sellerID int not null identity(1, 1) PRIMARY KEY,
+	userID int not null,
+	sellerShopName nvarchar(255),
+	sellerPhone nvarchar(255) not null,
+	evidence nvarchar(255) not null,
+	sellerMainProduct int,
+	[description] nvarchar(255),
+	sellerVerification int,
 	[status] bit,
+	FOREIGN KEY ([userID]) REFERENCES [User]([userID]),
+	FOREIGN KEY (sellerMainProduct) REFERENCES Category([categoryID])
 )
 
 --CREATE TABLE Sale

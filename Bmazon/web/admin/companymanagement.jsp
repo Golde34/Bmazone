@@ -4,6 +4,10 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <c:set var="contextPath" value="${pageContext.request.contextPath}" />
 <%
+    int index = (Integer) request.getAttribute("index");
+    int totalPage = (Integer) request.getAttribute("totalPage");
+    int prev = index == 1 ? 1 : index - 1;
+    int next = index == totalPage ? totalPage : index + 1;
     User curUser = (User) request.getSession().getAttribute("currUser");
     List<ShipCompany> listCompany = (List<ShipCompany>) request.getAttribute("listCompany");
 %>
@@ -29,110 +33,56 @@
 
     <body class="g-sidenav-show  bg-gray-100">
         <aside class="sidenav navbar navbar-vertical navbar-expand-xs border-0 border-radius-xl my-3 fixed-start ms-3 " id="sidenav-main">
-            <div class="sidenav-header">
-                <i class="fas fa-times p-3 cursor-pointer text-secondary opacity-5 position-absolute end-0 top-0 d-none d-xl-none" aria-hidden="true" id="iconSidenav"></i>
-                <a class="sidebar-brand d-flex align-items-center justify-content-center" href="${contextPath}/HomePageControllerMap">
-                    <div class="sidebar-brand-icon">
-                        <img  width="124" height="75" src="${contextPath}/images/fpt.png" class="header-logo-dark" />
-                    </div>
-<!--                    <div class="sidebar-brand-text mx-3 my-3">Bmazon</div>-->
-                </a>
-            </div>
-            <hr class="horizontal dark mt-0">
-            <!--            collapse navbar-collapse w-auto max-height-vh-100 h-100-->
-            <div class="" id="sidenav-collapse-main">
-                <ul class="navbar-nav">
-                    <li class="nav-item">
-                        <a class="nav-link" href="AdminControllerMap">
-                            <div class="icon icon-shape icon-sm shadow border-radius-md bg-white text-center me-2 d-flex align-items-center justify-content-center">
-                                <i class="fas fa-fw fa-tachometer-alt" style="color: black"></i>
-                            </div>
-                            <span class="nav-link-text ms-1">Dashboard</span>
-                        </a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="AdminControllerMap?service=usermanagement">
-                            <div class="icon icon-shape icon-sm shadow border-radius-md bg-white text-center me-2 d-flex align-items-center justify-content-center">
-                                <i class="fas fa-users"  style="color: black"></i>
-                            </div>
-                            <span class="nav-link-text ms-1">User Management</span>
-                        </a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link  " href="AdminControllerMap?service=productmanagement">
-                            <div class="icon icon-shape icon-sm shadow border-radius-md bg-white text-center me-2 d-flex align-items-center justify-content-center">
-                                <i class="fas fa-layer-group" style="color: black"></i>
-                            </div>
-                            <span class="nav-link-text ms-1 ">Product Management</span>
-                        </a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link active " href="AdminControllerMap?service=companymanagement">
-                            <div class="icon icon-shape icon-sm shadow border-radius-md bg-white text-center me-2 d-flex align-items-center justify-content-center">
-                                <i class="far fa-building"></i>
-                            </div>
-                            <span class="nav-link-text ms-1">Company Management</span>
-                        </a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link  " href="AdminControllerMap?service=gallerymanagement">
-                            <div class="icon icon-shape icon-sm shadow border-radius-md bg-white text-center me-2 d-flex align-items-center justify-content-center">
-                                <i class="far fa-images" style="color: black"></i>
-                            </div>
-                            <span class="nav-link-text ms-1">Gallery Management</span>
-                        </a>
-                    </li>
-                </ul>
-            </div>
-        </aside>
-        <main class="main-content position-relative max-height-vh-100 h-100 mt-1 border-radius-lg ">
-            <!-- Navbar -->
+            <jsp:include page="adminsidebar.jsp"></jsp:include>
+            </aside>
+            <main class="main-content position-relative max-height-vh-100 h-100 mt-1 border-radius-lg ">
+                <!-- Navbar -->
             <jsp:include page="adminheader.jsp"></jsp:include>
-            <!-- End Navbar -->
-            <div class="container-fluid py-4">
-                <div class="row mt-4">
+                <!-- End Navbar -->
+                <div class="container-fluid py-4">
+                    <div class="row mt-4">
 
-                </div>
-                <div class="row my-4">
-                    <div class="col-lg-12 col-md-12 mb-md-0 mb-4">
-                        <div class="card">
-                            <div class="card-body px-0 pb-2">
-                                <div class="card-header py-3" 
-                                     style="display: flex;
-                                     justify-content: space-between;">
-                                    <h3 class="m-0 font-weight-bold text-primary">Ship Company Management</h3>
-                                    <a href="AdminControllerMap?service=addcompanydetail">
-                                        <button class="btn-primary btn">Add new company</button></a>
-                                </div>
-                                <div class="card-body">
-                                    <div class="table_head py-3" style="display: flex;
+                    </div>
+                    <div class="row my-4">
+                        <div class="col-lg-12 col-md-12 mb-md-0 mb-4">
+                            <div class="card">
+                                <div class="card-body px-0 pb-2">
+                                    <div class="card-header py-3" 
+                                         style="display: flex;
                                          justify-content: space-between;">
-                                        <div class="rowNum">
-                                            <h6 style="display: inline">Select number of Rows</h6>
-                                            <div class="form-group" style="display: inline;">
-                                                <select name="state" id="maxRows" class="form-control" style="width:80px;display:inline;">
-                                                    <option value="5">5</option>
-                                                    <option value="10">10</option>
-                                                    <option value="20">20</option>
-                                                    <option value="5000">Show All</option>
-                                                </select>
+                                        <h3 class="m-0 font-weight-bold text-primary">Ship Company Management</h3>
+                                        <a href="AdminControllerMap?service=addcompanydetail">
+                                            <button class="btn-primary btn">Add new company</button></a>
+                                    </div>
+                                    <div class="card-body">
+                                        <div class="table_head py-3" style="display: flex;
+                                             justify-content: space-between;">
+                                            <div class="rowNum">
+                                                <h6 style="display: inline">Select number of Rows</h6>
+                                                <div class="form-group" style="display: inline;">
+                                                    <select onchange="pagination()" name="state" id="maxRows" class="form-control" style="width:80px;display:inline;">
+                                                        <option value="5">5</option>
+                                                        <option value="10">10</option>
+                                                        <option value="20">20</option>
+                                                        <option value="5000">Show All</option>
+                                                    </select>
+                                                </div>
+                                            </div>
+                                            <div class="tb_search">
+                                                <input id="search" style="width: 100%;" type="text" oninput="pagination()" placeholder="Search.." class="form-control">
                                             </div>
                                         </div>
-                                        <div class="tb_search">
-                                            <input style="width: 100%;" type="text" oninput="searchByName(this)" placeholder="Search.." class="form-control">
-                                        </div>
-                                    </div>
-                                    <table class="table table-bordered table-striped" id="dataTable" style="text-align: center;">
-                                        <thead>
-                                            <tr>
-                                                <th>Company Name</th>
-                                                <th>Commit Date</th>
-                                                <th>Unit Cost</th>
-                                                <th></th>
-                                                <th></th>
-                                            </tr>
-                                        </thead>
-                                        <tbody id="company">
+                                        <table class="table table-bordered table-striped" id="dataTable" style="text-align: center;">
+                                            <thead>
+                                                <tr>
+                                                    <th>Company Name</th>
+                                                    <th>Commit Date</th>
+                                                    <th>Unit Cost</th>
+                                                    <th></th>
+                                                    <th></th>
+                                                </tr>
+                                            </thead>
+                                            <tbody id="company">
                                             <%for (ShipCompany company : listCompany) {%>
                                             <tr>
                                                 <% int unit = (int) company.getUnitCost();%>
@@ -150,29 +100,49 @@
                                     <div class="pagination-container mt-4" style="display: flex;
                                          justify-content: space-around;cursor: pointer;">
                                         <nav>
-                                            <ul class="pagination">
-<!--                                                <li data-page="first" class="page-item">
-                                                    <a class="page-link" aria-label="Previous">
+                                            <%if (totalPage > 1) {%>
+                                            <ul class="pagination" id="showpage">
+                                                <li data-repair="1" class="page-item">
+                                                    <a class="page-link" aria-label="First">
                                                         <span aria-hidden="true"><i class="fas fa-backward"></i>
                                                             <span class="sr-only">(current)</span> 
                                                         </span>
                                                     </a>
-                                                </li>-->
-                                                <li data-page="prev" class="page-item">
+                                                </li>
+                                                <li data-repair="<%=prev%>" class="page-item">
                                                     <a class="page-link" aria-label="Previous">
                                                         <span aria-hidden="true"><i class="fas fa-arrow-left"></i>
                                                             <span class="sr-only">(current)</span> 
                                                         </span>
                                                     </a>
                                                 </li>
-                                                <li data-page="next" class="page-item" id="next">
+                                                <%int limit = totalPage>5 ? 5 : totalPage;%>
+                                                <%for (int i = index; i <= limit; i++) {%>
+                                                <%if (index == i) {%>
+                                                <li  class="page-item active" data-repair="<%=i%>">
+                                                <%} else {%><li  class="page-item" data-repair="<%=i%>"> <%}%>
+                                                    <a class="page-link">
+                                                        <div class="index"><%=i%></div>
+                                                        <span class="sr-only">(current)</span>
+                                                    </a>
+                                                </li>
+                                                <%}%>
+                                                <li data-repair="<%=next%>" class="page-item">
                                                     <a class="page-link" aria-label="Next">
                                                         <span aria-hidden="true"><i class="fas fa-arrow-right"></i>
                                                             <span class="sr-only">(current)</span> 
                                                         </span>
                                                     </a>
                                                 </li>
+                                                <li data-repair="<%=totalPage%>" class="page-item">
+                                                    <a class="page-link" aria-label="Last">
+                                                        <span aria-hidden="true"><i class="fas fa-forward"></i>
+                                                            <span class="sr-only">(current)</span> 
+                                                        </span>
+                                                    </a>
+                                                </li>
                                             </ul>
+                                            <%}%>
                                         </nav>
                                     </div>
                                 </div>
@@ -186,25 +156,62 @@
         <!--   Core JS Files   -->
         <script src="${contextPath}/js/core/popper.min.js"></script>
         <script src="${contextPath}/js/core/bootstrap.min.js"></script>
-        <script src="${contextPath}/js/plugins/perfect-scrollbar.min.js"></script>
-        <script src="${contextPath}/js/plugins/smooth-scrollbar.min.js"></script>
-        <script src="${contextPath}/js/plugins/chartjs.min.js"></script>
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
-        <script src="${contextPath}/js/tablepagination.js"></script>
         <script>
-            function searchByName(param) {
-                var txtSearch = param.value;
+            var pageNum;
+            $(document).on('click', '.pagination li', function () {
+                pageNum = $(this).data('repair');
+                pagination();
+            });
+            function pagination() {
+                var row = document.getElementById("maxRows").value;
+                var search = document.getElementById("search").value;
+                $(document).on('change','#maxRows',function(){
+                    pageNum=1;
+                });
+                $(document).on('input','#search',function(){
+                    pageNum=1;
+                });
                 $.ajax({
                     url: "/Bmazon/AdminControllerMap",
                     type: "get",
                     data: {
-                        search: txtSearch,
-                        service: "searchcompany"
+                        search: search,
+                        row: row,
+                        index: pageNum,
+                        service: "pagingcompany"
                     },
                     success: function (respone) {
                         var text = document.getElementById("company");
                         text.innerHTML = respone;
-                        getPagination('#dataTable');
+                        showpage();
+                    },
+                    error: function (xhr) {
+                        //Do Something to handle error
+                    }
+                });
+            }
+            function showpage() {
+                var row = document.getElementById("maxRows").value;
+                var search = document.getElementById("search").value;
+                $(document).on('change','#maxRows',function(){
+                    pageNum=1;
+                });
+                $(document).on('input','#search',function(){
+                    pageNum=1;
+                });
+                $.ajax({
+                    url: "/Bmazon/AdminControllerMap",
+                    type: "get",
+                    data: {
+                        search: search,
+                        row: row,
+                        index: pageNum,
+                        service: "showpagecompany"
+                    },
+                    success: function (respone) {
+                        var text = document.getElementById("showpage");
+                        text.innerHTML = respone;
                     },
                     error: function (xhr) {
                         //Do Something to handle error
@@ -213,7 +220,7 @@
             }
         </script>
         <!-- Github buttons -->
-        <script async defer src="https://buttons.github.io/buttons.js"></script>
+        <!--        <script async defer src="https://buttons.github.io/buttons.js"></script>-->
         <!-- Control Center for Soft Dashboard: parallax effects, scripts for the example pages etc -->
 <!--        <script src="${contextPath}/js/soft-ui-dashboard.min.js?v=1.0.3"></script>-->
     </body>
