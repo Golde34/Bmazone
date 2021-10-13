@@ -59,6 +59,7 @@
                             <section class="section sec_tab_banner" id="section_992612852">
 
                                 <div class="section-content relative">
+                                    <div class="row">
 
                                     <div class="row row-collapse"  id="row-1954119617">
 
@@ -92,6 +93,7 @@
                                             </div>
                                         </div>    
                                     </div>
+                                        <div>
                                 </div>
                                 <!-- .section-content -->
                                 <style scope="scope">

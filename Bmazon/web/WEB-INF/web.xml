@@ -69,6 +69,10 @@
         <servlet-class>controller.ProductDetailController</servlet-class>
     </servlet>
     <servlet>
+        <servlet-name>CartController</servlet-name>
+        <servlet-class>controller.CartController</servlet-class>
+    </servlet>
+    <servlet>
         <servlet-name>SellerController</servlet-name>
         <servlet-class>controller.SellerController</servlet-class>
     </servlet>
@@ -99,6 +103,10 @@
     <servlet-mapping>
         <servlet-name>LoginController</servlet-name>
         <url-pattern>/LoginControllerMap</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>CartController</servlet-name>
+        <url-pattern>/CartControllerMap</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>

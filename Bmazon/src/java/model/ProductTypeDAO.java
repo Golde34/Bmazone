@@ -125,7 +125,7 @@ public class ProductTypeDAO extends BaseDAO {
 
     public List<ProductType> getProductByProductID(int pid) {
         List<ProductType> list = new ArrayList<>();
-        xSql = "select * from ProductType where productID = ? order by productID asc";
+        xSql = "select * from ProductType where productID = ?  order by productID asc";
         try {
             pre = conn.prepareStatement(xSql);
             pre.setInt(1, pid);
@@ -144,6 +144,28 @@ public class ProductTypeDAO extends BaseDAO {
         } catch (Exception e) {
         }
         return list;
+    }
+     public ProductType getProductByPCZ(int pid,String size,String color) {
+         ProductType pt=null;
+        xSql = "select * from ProductType where productID = ? and size='"+size+"' and color ='"+color+"'";
+        try {
+            pre = conn.prepareStatement(xSql);
+            pre.setInt(1, pid);
+            rs = pre.executeQuery();
+            while (rs.next()) {
+                pt=new ProductType(
+                        rs.getString(1),
+                        rs.getInt(2),
+                        rs.getString(3),
+                        rs.getString(4),
+                        rs.getString(5),
+                        rs.getInt(6),
+                        rs.getInt(7),
+                        rs.getInt(8));
+            }
+        } catch (Exception e) {
+        }
+        return pt;
     }
 
     public ArrayList<ProductType> getProductByColor(String color) {
@@ -265,8 +287,8 @@ public class ProductTypeDAO extends BaseDAO {
     }
     public static void main(String[] args) {
         ProductTypeDAO dao = new ProductTypeDAO();
-        List<ProductType> list = dao.getProductByProductID(2);
-            System.out.println(list + "@");
+       ProductType pt= dao.getProductByPCZ(2, "363 x 247.5 x 19.9 (mm)", "Shale Black");
+        System.out.println(pt);
     }
 }
 

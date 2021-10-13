@@ -173,9 +173,12 @@
                        <div class="container">
                                 <nav class="woocommerce-pagination">
                                     <ul class="page-numbers nav-pagination links text-center">
-                                        <c:forEach  begin="1" end="${index}" var="i">
-                                        <li><a class='' href="HomePageControllerMap?service=search&page=${i}">${i}</a></li>
+                                        ${previous}
+                                        <c:forEach  begin="${begin}" end="${end}" var="i">
+                                            
+                                        <li><a class="active" href="HomePageControllerMap?service=search&search=${search}&page=${i}">${i}</a></li>
                                         </c:forEach>
+                                        ${next}
                                         </ul>
                                 </nav>
                             </div>

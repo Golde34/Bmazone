@@ -107,12 +107,12 @@
                                             <% if (x.getSystemRole() == 1) {%>
                                             <li  ><a href="${contextPath}/AdminControllerMap" class="menu-image-title-after"><span >Admin Dashboard</span></a></li>
                                                 <%}%>
-                                            <% if (x.getSell() == 1) { %>
+                                                <% if (x.getSell() == 1) { %>
                                             <li  ><a href="${contextPath}/SellerControllerMap" class="menu-image-title-after"><span >Seller Dashboard</span></a></li>
-                                            <%}%>
+                                                <%}%>
                                             <li  ><a href="${contextPath}/UserControllerMap?service=account" class="menu-image-title-after"><span >Account</span></a></li>
                                             <li  ><a href="${contextPath}/UserControllerMap?service=info" class="menu-image-title-after"><span >User profile</span></a></li>
-                                            
+
                                             <li  ><a href="${contextPath}/UserControllerMap?service=changepass" class="menu-image-title-after"><span >Change Password</span></a></li>
                                             <li  ><a href="${contextPath}/UserControllerMap?service=logout" class="menu-image-title-after"><span >Logout</span></a></li>
 
@@ -139,6 +139,17 @@
                             </div>
 
                             <!-- Mobile Left Elements -->
+                            <div class="flex-col show-for-medium flex-left">
+                                <ul class="mobile-nav nav nav-left ">
+                                    <li class="nav-icon has-icon">
+                                        <a href="#" data-open="#main-menu" data-pos="left" data-bg="main-menu-overlay" data-color="" class="is-small" aria-controls="main-menu" aria-expanded="false">
+
+                                            <i class='fa fa-bars' style='font-size:36px; margin-left: 15px;' ></i>
+                                        </a>
+                                    </li>           
+                                </ul>
+                                
+                            </div>
 
 
                             <!-- Left Elements -->
@@ -163,31 +174,25 @@
                                                     <div class="live-search-results text-left z-top"></div>
                                                 </form>
                                             </div>	</div>
-                                    </li><li>
-                                        <i>   <img src="images/car.png" style="height: 10px; width: 10px"></i>
+                                    </li>
+                                    <li class="cart-item has-icon
+                                        has-dropdown" style="margin-left: 10px">
 
-                                        <a href="" title="Cart" class="header-cart-link is-small">
+                                        <a href="cart.jsp" title="Giỏ hàng" class="header-cart-link is-small">
 
 
 
                                             <i class="fa fa-shopping-cart"
                                                data-icon-label="0">
+                                                <%-- so luong item in cart--%>
                                             </i>
                                         </a>
 
-                                        <ul class="nav-dropdown nav-dropdown-simple">
-                                            <li class="html widget_shopping_cart">
-                                                <div class="widget_shopping_cart_content">
-
-
-                                                    <p class="woocommerce-mini-cart__empty-message">The cart is empty</p>
-
-
-                                                </div>
-                                            </li>
-                                        </ul><!-- .nav-dropdown -->
+                                      
 
                                     </li>
+                                </ul>
+                                </di
                                 </ul>
                             </div>
 
@@ -199,6 +204,51 @@
                             </div>
 
                             <!-- Mobile Right Elements -->
+                             <!-- Mobile Right Elements -->
+                             <div class="flex-col show-for-medium flex-right" style="margin-right:20px ">
+                                <ul class="mobile-nav nav nav-right ">
+                                    <li class="cart-item has-icon">
+
+
+                                        <a href="http://mauweb.monamedia.net/lazada/gio-hang/" class="header-cart-link off-canvas-toggle nav-top-link is-small" data-open="#cart-popup" data-class="off-canvas-cart" title="Giỏ hàng" data-pos="right">
+
+                                            <i class="fa fa-shopping-cart"
+                                               data-icon-label="1">
+                                            </i>
+                                        </a>
+
+
+                                        <!-- Cart Sidebar Popup -->
+                                        <div id="cart-popup" class="mfp-hide widget_shopping_cart">
+                                            <div class="cart-popup-inner inner-padding">
+                                                <div class="cart-popup-title text-center">
+                                                    <h4 class="uppercase">Giỏ hàng</h4>
+                                                    <div class="is-divider"></div>
+                                                </div>
+                                                <div class="widget_shopping_cart_content">
+
+
+                                                    <ul class="woocommerce-mini-cart cart_list product_list_widget ">
+                                                        <li class="woocommerce-mini-cart-item mini_cart_item">
+                                                            <a href="http://mauweb.monamedia.net/lazada/gio-hang/?remove_item=e46de7e1bcaaced9a54f1e9d0d2f800d&#038;_wpnonce=ebda79b9a7" class="remove remove_from_cart_button" aria-label="Xóa sản phẩm này" data-product_id="397" data-cart_item_key="e46de7e1bcaaced9a54f1e9d0d2f800d" data-product_sku="">&times;</a>													<a href="http://mauweb.monamedia.net/lazada/san-pham/balo-nho-thoi-trang-chu-thap-xinhstore/">
+                                                                <img width="180" height="180" src="//mauweb.monamedia.net/lazada/wp-content/uploads/2017/10/Balo-01-180x180.jpg" class="attachment-shop_thumbnail size-shop_thumbnail wp-post-image" alt="" srcset="//mauweb.monamedia.net/lazada/wp-content/uploads/2017/10/Balo-01-180x180.jpg 180w, //mauweb.monamedia.net/lazada/wp-content/uploads/2017/10/Balo-01-150x150.jpg 150w, //mauweb.monamedia.net/lazada/wp-content/uploads/2017/10/Balo-01-300x300.jpg 300w, //mauweb.monamedia.net/lazada/wp-content/uploads/2017/10/Balo-01-600x600.jpg 600w, //mauweb.monamedia.net/lazada/wp-content/uploads/2017/10/Balo-01-24x24.jpg 24w, //mauweb.monamedia.net/lazada/wp-content/uploads/2017/10/Balo-01-36x36.jpg 36w, //mauweb.monamedia.net/lazada/wp-content/uploads/2017/10/Balo-01-48x48.jpg 48w, //mauweb.monamedia.net/lazada/wp-content/uploads/2017/10/Balo-01.jpg 741w" sizes="(max-width: 180px) 100vw, 180px" />Balo Nhỏ Thời Trang Chử Thập XinhStore&nbsp;							</a>
+
+                                                            <span class="quantity">1 &times; <span class="woocommerce-Price-amount amount">69,000&nbsp;<span class="woocommerce-Price-currencySymbol">&#8363;</span></span></span>					</li>
+                                                    </ul>
+
+                                                    <p class="woocommerce-mini-cart__total total"><strong>Tổng cộng:</strong> <span class="woocommerce-Price-amount amount">69,000&nbsp;<span class="woocommerce-Price-currencySymbol">&#8363;</span></span></p>
+
+
+                                                    <p class="woocommerce-mini-cart__buttons buttons"><a href="http://mauweb.monamedia.net/lazada/gio-hang/" class="button wc-forward">Xem giỏ hàng</a><a href="http://mauweb.monamedia.net/lazada/thanh-toan/" class="button checkout wc-forward">Thanh toán</a></p>
+
+
+                                                </div>
+                                                <div class="cart-sidebar-content relative"></div>  </div>
+                                        </div>
+
+                                    </li>
+                                </ul>
+                            </div>
 
 
                         </div><!-- .header-inner -->
@@ -240,10 +290,70 @@
 
                     <div class="header-bg-container fill"><div class="header-bg-image fill"></div><div class="header-bg-color fill"></div></div><!-- .header-bg-container -->   </div><!-- header-wrapper-->
             </header>
-            
+
         </div>
+        <div id="main-menu" class="mobile-sidebar no-scrollbar mfp-hide">
+            <div class="sidebar-menu no-scrollbar ">
+                <ul class="nav nav-sidebar  nav-vertical nav-uppercase">
+                    <li class="header-search-form search-form html relative has-icon">
+                        <div class="header-search-form-wrapper">
+                            <div class="searchform-wrapper ux-search-box relative form- is-normal"><form method="POST" class="searchform" action="HomePageController?service=search" role="search">
+                                    <div class="flex-row relative">
+                                        <div class="flex-col flex-grow">
+                                            <input type="search" class="search-field mb-0" name="${search}" value="" placeholder="Search" />
+                                            <input type="hidden" name="post_type" value="product" />
+                                        </div><!-- .flex-col -->
+                                        <div class="flex-col">
+                                            <button type="submit" class="ux-search-submit submit-button secondary button icon mb-0">
+                                                <i class="fa fa-search" ></i>				</button>
+                                        </div><!-- .flex-col -->
+                                    </div><!-- .flex-row -->
+                                    <div class="live-search-results text-left z-top"></div>
+                                </form>
+                            </div>	</div>
+                    </li>
+                    
 
+                    <%if (x == null) {%>
+                    <li class="menu-item menu-item-type-taxonomy menu-item-object-product_cat menu-item-has-children menu-item-1236 ">
+                        <a href="${contextPath}/loginAndSecurity/login.jsp"class="nav-top-link nav-top-not-logged-in ">
+                            <span> Login </span>
+                        </a><!-- .account-login-link -->
+                    </li>
+                    <p style="color: white; font-size: 12px; ">/</p>
+                    <li class="menu-item menu-item-type-taxonomy menu-item-object-product_cat menu-item-has-children menu-item-1236">
+                        <a href="${contextPath}/loginAndSecurity/register.jsp"class="nav-top-link nav-top-not-logged-in ">
+                            <span> Register </span>
+                        </a><!-- .account-login-link -->
+                    </li>
+                    <%} else {%>
+                    <li class=" menu-item  " style="cursor: pointer;">
+                        <a href="${contextPath}/UserControllerMap?service=account"><span> Hello <%=x.getFullname()%></span></a>
+                        <ul class='children'>
+                            <% if (x.getSystemRole() == 1) {%>
+                            <li  ><a href="${contextPath}/AdminControllerMap" class="menu-image-title-after"><span >Admin Dashboard</span></a></li>
+                                <%}%>
+                                <% if (x.getSell() == 1) { %>
+                            <li  ><a href="${contextPath}/SellerControllerMap" class="menu-image-title-after"><span >Seller Dashboard</span></a></li>
+                                <%}%>
+                            
+                                <li  ><a href="${contextPath}/UserControllerMap?service=account" class="menu-image-title-after"><span >Account</span></a></li>
+                                <li  ><a href="${contextPath}/UserControllerMap?service=info" class="menu-image-title-after"><span >User profile</span></a></li>
 
+                                <li  ><a href="${contextPath}/UserControllerMap?service=changepass" class="menu-image-title-after"><span >Change Password</span></a></li>
+                                <li  ><a href="${contextPath}/UserControllerMap?service=logout" class="menu-image-title-after"><span >Logout</span></a></li>
+                            
+                        </ul>
+                    </li>
+                    <%}%>      
+                </ul>
+
+            </div><!-- inner -->
+        </div><!-- #mobile-menu -->
+
+        <ul class="nav top-bar-nav nav-right nav-small  nav-">
+
+        </ul>
 
     </body>
 </html>

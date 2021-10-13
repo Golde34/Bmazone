@@ -23,6 +23,7 @@ import javax.servlet.http.HttpSession;
 import model.DBConnection;
 import model.RandomString;
 import model.UserDAO;
+import entity.CartItem;
 
 /**
  *
@@ -125,7 +126,7 @@ public class LoginController extends HttpServlet {
         if (log != null) {
             request.getSession().setAttribute("currUser", log);
             request.getSession().setAttribute("role", log.getSystemRole());
-            ArrayList<Product> ShoppingCart = new ArrayList<>();
+            ArrayList<CartItem> ShoppingCart = new ArrayList<>();
             request.getSession().setAttribute("ShoppingCart", ShoppingCart);
             sendDispatcher(request, response, "index.jsp");
         } else {
@@ -271,7 +272,7 @@ public class LoginController extends HttpServlet {
         log = new User(userName, userPass, userName, 0, "gg.guest", "gg.guest", 0, 1);
         request.getSession().setAttribute("currUser", log);
         request.getSession().setAttribute("role", log.getSystemRole());
-        ArrayList<Product> ShoppingCart = new ArrayList<>();
+        ArrayList<CartItem> ShoppingCart = new ArrayList<>();
         request.getSession().setAttribute("ShoppingCart", ShoppingCart);
         sendDispatcher(request, response, "index.jsp");
     }
@@ -284,7 +285,7 @@ public class LoginController extends HttpServlet {
         log = new User(userName, userPass, "", 0, "fb.guest", "fb.guest", 0, 1);
         request.getSession().setAttribute("currUser", log);
         request.getSession().setAttribute("role", log.getSystemRole());
-        ArrayList<Product> ShoppingCart = new ArrayList<>();
+        ArrayList<CartItem> ShoppingCart = new ArrayList<>();
         request.getSession().setAttribute("ShoppingCart", ShoppingCart);
         sendDispatcher(request, response, "index.jsp");
     }

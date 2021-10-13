@@ -137,7 +137,19 @@ BaseDAO dbConn= new BaseDAO();
         }
         return s;
     }
-    
+    public String getImageByProductTypeID(String ps) {
+        String s=null;
+        xSql = "select top 1 link from [Gallery] WHERE productTypeID = '"+ps+"'";
+        try {
+            pre = conn.prepareStatement(xSql);
+            rs = pre.executeQuery();
+            while (rs.next()) {
+             s=rs.getString("link");
+            }
+        } catch (Exception e) {
+        }
+        return s;
+    }
 
 //    public List<Gallery> getGalleryBySizeAndColor(ProductType p) {
 //        List<Gallery> list = new ArrayList<>();

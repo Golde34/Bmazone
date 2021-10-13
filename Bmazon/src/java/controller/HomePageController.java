@@ -5,6 +5,7 @@
  */
 package controller;
 
+import entity.CartItem;
 import entity.Category;
 import entity.Product;
 import java.io.IOException;
@@ -73,6 +74,7 @@ public class HomePageController extends HttpServlet {
     }
 
     public void serviceHomepage(HttpServletRequest request, HttpServletResponse response) {
+       
 
         List<Product> ListSale = proDAO.getProductSale();
         List<Product> ListNew = proDAO.getProductNew();
@@ -126,23 +128,46 @@ public class HomePageController extends HttpServlet {
         int count=proDAO.totalSearchProduct(str);
         String address;
         int size=20;
-        int index=count/size;
-        int page;
+        int total=count/size;
+        int page,end;
+         
         String page1 = request.getParameter("page");
         if (page1==null) {
             page=1;
+         
         }else{
-            page=Integer.parseInt(page1);
+            page=Integer.parseInt(page1);          
         } 
+        int begin=page;
+         String previous="  <li><a class='' href=" +"HomePageControllerMap?service=search&search="+str +"&page="+(page-1)+">P</a></li>";
+         String next="  <li><a class='' href=" +"HomePageControllerMap?service=search&search="+str +"&page="+(page+1)+">N</a></li>";
+        
        
         if (count%size!=0) {
-            index+=1;
+            total+=1;
+        }
+        if (page<=total-2){
+            end=page+2;
+        }else{
+            end=total;
+            begin=total-2;
+        }
+        if (page==1){
+            request.setAttribute("next", next);
+        }else if(page==total){
+             request.setAttribute("previous", previous);
+        }
+        else{
+            request.setAttribute("next", next);
+            request.setAttribute("previous", previous);
+            
         }
         List<Product> ListP= proDAO.getProductByName(page, str);
 
         address = "<a>" + " Results for " + str + "  </a> <span class=" + "divider" + ">&#47;</span>";
         request.setAttribute("address", address);
-        request.setAttribute("index", index);
+        request.setAttribute("end", end);
+        request.setAttribute("begin", begin);     
         request.setAttribute("listP", ListP);
         request.setAttribute("search", str);
         request.setAttribute("count", count);
