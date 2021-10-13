@@ -367,7 +367,17 @@
                                     <span>3 Reviews</span>
                                 </div>
                                 <%double price1 = Double.parseDouble(daoProductType.getProductPrice(product.getProductID()));%>
-                                <div class="product-price-discount"><span><%=nf.format(price1)%>&nbsp; <span class="woocommerce-Price-currencySymbol">&#8363;</span></span><span class="line-through"><%=nf.format(price1 * 1.05)%>&nbsp; <span class="woocommerce-Price-currencySymbol">&#8363;</span></span></div>
+                                <div class="product-price-discount">
+                                    <span>
+                                        <span id="price"><%=nf.format(price1)%></span>&nbsp;
+                                        <span class="woocommerce-Price-currencySymbol">&#8363;
+                                        </span>
+                                    </span>
+                                    <span class="line-through"><%=nf.format(price1 * 1.05)%>&nbsp; 
+                                        <span class="woocommerce-Price-currencySymbol">&#8363;
+                                        </span>
+                                    </span>
+                                </div>
                                 <div class="product-releasedate"><span>Release Date: <%=product.getReleaseDate()%></span></div>
                                 <div class="product-seller"><span>Seller: <%=daoUser.getUserByProductId(product.getProductID()).getUsername()%></span></div>
                             </div>
@@ -375,7 +385,7 @@
                             <div class="row">
                                 <div class="col-md-6">
                                     <label for="size">Size</label>
-                                    <select id="size" name="size" class="form-control">
+                                    <select id="size" onchange="getPrice()" name="size" class="form-control">
                                         <%for (String productType : listSize) {%>
                                         <option><%=productType%></option>
                                         <%}%>
@@ -383,8 +393,7 @@
                                 </div>
                                 <div class="col-md-6">
                                     <label for="color">Color</label>
-                                    <select id="color" name="color" class="form-control">
-                                        <%=product.getProductID()%>
+                                    <select id="color" onchange="getPrice()" name="color" class="form-control">
                                         <%for (String productType : listColor) {%>
                                         <option><%=productType%></option>
                                         <%}%>
@@ -450,13 +459,13 @@
                 </div>
             </div>
         </div>
-        
+
         <section class="section sec_dien_thoai" id="section_1788051855">
 
             <div class="section-content relative">
 
                 <div class="gap-element" style="display:block; height:auto; padding-top:30px" class="clearfix"></div>
-                
+
                 <br><br>
 
                 <div class="row row-collapse align-equal"  id="row-1706731289">
@@ -521,11 +530,11 @@
                     #section_1788051855 {
                         padding-top: 0px;
                         padding-bottom: 0px;
-                        
+
                     }
                 </style>
         </section>
-                    <br><br><br>
+        <br><br><br>
 
 
 
@@ -534,4 +543,31 @@
 
         <jsp:include page="../footer.jsp"/>
     </body>
+<!--    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>-->
+    <script>
+        function getPrice() {
+            var color = document.getElementById("color").value;
+            var size = document.getElementById("size").value;
+            console.log(size);
+            console.log(color);
+            console.log("<%=product.getProductID()%>");
+            $.ajax({
+                url: "/Bmazon/ProductDetailControllerMap",
+                type: "get",
+                data: {
+                    color: color,
+                    size: size,
+                    pid: "<%=product.getProductID()%>",
+                    service:"getPrice"
+                },
+                success: function (respone) {
+                    var text = document.getElementById("price");
+                    text.innerHTML = respone;
+                },
+                error: function (xhr) {
+                    //Do Something to handle error
+                }
+            });
+        }
+    </script>
 </html>

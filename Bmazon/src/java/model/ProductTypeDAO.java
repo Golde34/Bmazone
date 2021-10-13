@@ -145,6 +145,31 @@ public class ProductTypeDAO extends BaseDAO {
         }
         return list;
     }
+    public static void main(String[] args) {
+        ProductTypeDAO dao = new ProductTypeDAO();
+        ProductType pt = dao.getProductTypeByColorAndSize("green", "64GB", "13");
+        System.out.println(pt.getPrice());
+    }
+    public ProductType getProductTypeByColorAndSize(String color,String size,String productID){
+        ProductType pt= new ProductType();
+        xSql="select pt.* from Product p join ProductType pt on p.productID = pt.productID where p.productID = "+productID+" and pt.size = '"+size+"' and pt.color = '"+color+"'";
+        try {
+            pre=conn.prepareStatement(xSql);
+            rs=pre.executeQuery();
+            if(rs.next()){
+                pt.setProductID(rs.getInt("productID"));
+                pt.setProductTypeId(rs.getString("productTypeId"));
+                pt.setColor(rs.getString("color"));
+                pt.setPrice(rs.getString("price"));
+                pt.setSize(rs.getString("size"));
+                pt.setWareHouseID(rs.getInt("wareHouseID"));
+                pt.setQuantity(rs.getInt("quantity"));
+                pt.setStatus(rs.getInt("status"));
+            }
+        } catch (Exception e) {
+        }
+        return pt;
+    }
 
     public ArrayList<ProductType> getProductByColor(String color) {
         ArrayList<ProductType> list = new ArrayList<>();
@@ -263,11 +288,7 @@ public class ProductTypeDAO extends BaseDAO {
         }
         return list;
     }
-    public static void main(String[] args) {
-        ProductTypeDAO dao = new ProductTypeDAO();
-        List<ProductType> list = dao.getProductByProductID(2);
-            System.out.println(list + "@");
-    }
+
 }
 
 

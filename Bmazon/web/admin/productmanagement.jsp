@@ -68,7 +68,7 @@
                                         <div class="rowNum">
                                             <h6 style="display: inline">Select number of Rows</h6>
                                             <div class="form-group" style="display: inline;">
-                                                <select onchange="pagination()" name="state" id="maxRows" class="form-control" style="width:80px;display:inline;">
+                                                <select onchange="changeRowAndSearch()" name="state" id="maxRows" class="form-control" style="width:80px;display:inline;">
                                                     <option value="5">5</option>
                                                     <option value="10">10</option>
                                                     <option value="20">20</option>
@@ -77,7 +77,7 @@
                                             </div>
                                         </div>
                                         <div class="tb_search">
-                                            <input id="search" style="width: 100%;" type="text" oninput="pagination()" placeholder="Search.." class="form-control">
+                                            <input id="search" style="width: 100%;" type="text" oninput="changeRowAndSearch()" placeholder="Search.." class="form-control">
                                         </div>
                                     </div>
                                     <div class="table-responsive-md">
@@ -176,9 +176,34 @@
         var pageNum;
         $(document).on('click', '.pagination li', function () {
             pageNum = $(this).data('repair');
-            pagination();
+            changeIndex();
         });
-        function pagination() {
+        function changeRowAndSearch() {
+            var row = document.getElementById("maxRows").value;
+            var search = document.getElementById("search").value;
+            console.log(row);
+            console.log(search);
+            console.log(pageNum);
+            $.ajax({
+                url: "/Bmazon/AdminControllerMap",
+                type: "get",
+                data: {
+                    search: search,
+                    row: row,
+                    index: 1,
+                    service: "pagingproduct"
+                },
+                success: function (respone) {
+                    var text = document.getElementById("product");
+                    text.innerHTML = respone;
+                    showpage();
+                },
+                error: function (xhr) {
+                    //Do Something to handle error
+                }
+            });
+        }
+        function changeIndex() {
             var row = document.getElementById("maxRows").value;
             var search = document.getElementById("search").value;
             console.log(row);

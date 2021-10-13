@@ -166,9 +166,12 @@
             function pagination() {
                 var row = document.getElementById("maxRows").value;
                 var search = document.getElementById("search").value;
-                console.log(row);
-                console.log(search);
-                console.log(pageNum);
+                $(document).on('change','#maxRows',function(){
+                    pageNum=1;
+                });
+                $(document).on('input','#search',function(){
+                    pageNum=1;
+                });
                 $.ajax({
                     url: "/Bmazon/AdminControllerMap",
                     type: "get",
@@ -191,6 +194,12 @@
             function showpage() {
                 var row = document.getElementById("maxRows").value;
                 var search = document.getElementById("search").value;
+                $(document).on('change','#maxRows',function(){
+                    pageNum=1;
+                });
+                $(document).on('input','#search',function(){
+                    pageNum=1;
+                });
                 $.ajax({
                     url: "/Bmazon/AdminControllerMap",
                     type: "get",
