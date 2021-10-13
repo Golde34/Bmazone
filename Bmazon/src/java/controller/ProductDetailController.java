@@ -11,6 +11,7 @@ import entity.Product;
 import entity.ProductType;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
@@ -74,6 +75,13 @@ public class ProductDetailController extends HttpServlet {
             if (service.equalsIgnoreCase("getRelatedProduct")) {
                 serviceRelatedProduct(request, response);
             }
+
+            if (service.equalsIgnoreCase("getRelatedProduct")) {
+                serviceRelatedProduct(request, response);
+            }
+            if (service.equalsIgnoreCase("getPrice")) {
+                serviceGetPrice(request, response);
+            }
         }
     }
 
@@ -112,6 +120,18 @@ public class ProductDetailController extends HttpServlet {
         ArrayList<Product> listRelated = daoProduct.getRelatedProductByProductID(id);
         request.setAttribute("listRelated", listRelated);
         sendDispatcher(request, response, "product/relatedProduct.jsp");
+    }
+
+    private void serviceGetPrice(HttpServletRequest request, HttpServletResponse response) throws IOException {
+        PrintWriter pr = response.getWriter();
+        String size = request.getParameter("size");
+        String color = request.getParameter("color");
+        String productId = request.getParameter("pid");
+        ProductType pt = daoProductType.getProductTypeByColorAndSize(color, size, productId);
+        DecimalFormat nf = new DecimalFormat("###,###,###");
+        Double price = Double.parseDouble(pt.getPrice());
+        String price1 = nf.format(price);
+        pr.print(price1);
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
