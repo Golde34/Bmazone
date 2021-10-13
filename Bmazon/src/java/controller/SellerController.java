@@ -25,7 +25,6 @@ import model.*;
  */
 public class SellerController extends HttpServlet {
 
-    
     ProductDAO daoproduct = new ProductDAO();
     CategoryDAO daocategory = new CategoryDAO();
     GenreDAO daogenre = new GenreDAO();
@@ -50,7 +49,7 @@ public class SellerController extends HttpServlet {
             if (service.equalsIgnoreCase("productmanagement")) {
                 serviceProductManagement(request, response);
             }
-            
+
             //Order Management
             if (service.equalsIgnoreCase("ordermanagement")) {
                 serviceOrderManagement(request, response);
@@ -80,22 +79,23 @@ public class SellerController extends HttpServlet {
 
     public void serviceSellerDashboard(HttpServletRequest request, HttpServletResponse response) {
         User account = (User) request.getSession().getAttribute("currUser");
-        String seller =  account.getUserId();
+        String seller = account.getUserId();
         List<Product> listProduct = daoproduct.getProductBySeller(seller);
         request.setAttribute("listP", listProduct);
         sendDispatcher(request, response, "seller/dashboard.jsp");
     }
-    
+
     public void serviceProductManagement(HttpServletRequest request, HttpServletResponse response) {
         User account = (User) request.getSession().getAttribute("currUser");
-        String seller =  account.getUserId();
+        String seller = account.getUserId();
         List<Product> listProduct = daoproduct.getProductBySeller(seller);
         request.setAttribute("listP", listProduct);
         sendDispatcher(request, response, "seller/productSeller.jsp");
     }
+    
     public void serviceOrderManagement(HttpServletRequest request, HttpServletResponse response) {
         User account = (User) request.getSession().getAttribute("currUser");
-        String seller =  account.getUserId();
+        String seller = account.getUserId();
         List<Product> listProduct = daoproduct.getProductBySeller(seller);
         request.setAttribute("listP", listProduct);
         sendDispatcher(request, response, "seller/orderSeller.jsp");

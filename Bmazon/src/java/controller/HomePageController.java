@@ -69,6 +69,9 @@ public class HomePageController extends HttpServlet {
             if (service.equalsIgnoreCase("search")) {
                 serviceSearch(request, response);
             }
+            if (service.equalsIgnoreCase("shopPage")) {
+                serviceShopPage(request, response);
+            }
         }
     }
 
@@ -123,22 +126,22 @@ public class HomePageController extends HttpServlet {
 
     public void serviceSearch(HttpServletRequest request, HttpServletResponse response) {
         String str = request.getParameter("search").trim();
-        int count=proDAO.totalSearchProduct(str);
+        int count = proDAO.totalSearchProduct(str);
         String address;
-        int size=20;
-        int index=count/size;
+        int size = 20;
+        int index = count / size;
         int page;
         String page1 = request.getParameter("page");
-        if (page1==null) {
-            page=1;
-        }else{
-            page=Integer.parseInt(page1);
-        } 
-       
-        if (count%size!=0) {
-            index+=1;
+        if (page1 == null) {
+            page = 1;
+        } else {
+            page = Integer.parseInt(page1);
         }
-        List<Product> ListP= proDAO.getProductByName(page, str);
+
+        if (count % size != 0) {
+            index += 1;
+        }
+        List<Product> ListP = proDAO.getProductByName(page, str);
 
         address = "<a>" + " Results for " + str + "  </a> <span class=" + "divider" + ">&#47;</span>";
         request.setAttribute("address", address);
@@ -149,6 +152,16 @@ public class HomePageController extends HttpServlet {
 
         sendDispatcher(request, response, "productList/list.jsp");
 
+    }
+
+    public void serviceShopPage(HttpServletRequest request, HttpServletResponse response) {
+
+        String seller = request.getParameter("sid");
+
+        List<Product> listProduct = proDAO.getProductBySeller(seller);
+        request.setAttribute("listProduct", listProduct);
+
+        sendDispatcher(request, response, "seller/shopPage.jsp");
     }
 
     public void sendDispatcher(HttpServletRequest request, HttpServletResponse response, String path) {

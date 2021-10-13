@@ -5,6 +5,7 @@
  */
 package controller;
 
+import entity.Comment;
 import entity.Gallery;
 import entity.Product;
 import entity.ProductType;
@@ -19,6 +20,7 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import model.CommentDAO;
 import model.DBConnection;
 import model.GalleryDAO;
 import model.ProductDAO;
@@ -47,34 +49,35 @@ public class ProductDetailController extends HttpServlet {
             Logger.getLogger(HomePageController.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
-    
+
     DBConnection dbCon = new DBConnection();
     ProductDAO daoProduct = new ProductDAO();
     GalleryDAO daoGallery = new GalleryDAO();
     ProductTypeDAO daoProductType = new ProductTypeDAO();
+    CommentDAO daoComment = new CommentDAO();
 
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
         try (PrintWriter out = response.getWriter()) {
-            
+
             String service = request.getParameter("service");
 
             if (service == null) {
                 service = "";
             }
-            
-            if(service.equalsIgnoreCase("getProductDetail")){
-                serviceProductDetail(request, response);               
+
+            if (service.equalsIgnoreCase("getProductDetail")) {
+                serviceProductDetail(request, response);
             }
-            
-            if(service.equalsIgnoreCase("getRelatedProduct")){
-                serviceRelatedProduct(request, response);               
+
+            if (service.equalsIgnoreCase("getRelatedProduct")) {
+                serviceRelatedProduct(request, response);
             }
         }
     }
-    
-    public void serviceProductDetail(HttpServletRequest request, HttpServletResponse response){
+
+    public void serviceProductDetail(HttpServletRequest request, HttpServletResponse response) {
         int id = Integer.parseInt(request.getParameter("pid"));
         Product product = daoProduct.getProductByID(id);
         request.setAttribute("product", product);
@@ -88,10 +91,17 @@ public class ProductDetailController extends HttpServlet {
         request.setAttribute("listSize", listSize);
         ArrayList<String> listColor = daoProductType.getAllColorOfProduct(id);
         request.setAttribute("listColor", listColor);
+        ArrayList<Comment> comments = daoComment.getCommentsByProductId(id);
+        request.setAttribute("comments", comments);
+        int count = 0;
+        for (Comment comment : comments) {
+            count++;
+        }
+        request.setAttribute("count", count);
         sendDispatcher(request, response, "product/productDetail.jsp");
     }
 
-    public void serviceRelatedProduct(HttpServletRequest request, HttpServletResponse response){
+    public void serviceRelatedProduct(HttpServletRequest request, HttpServletResponse response) {
         int id = Integer.parseInt(request.getParameter("pid"));
         Product product = daoProduct.getProductByID(id);
         request.setAttribute("product", product);
@@ -103,6 +113,7 @@ public class ProductDetailController extends HttpServlet {
         request.setAttribute("listRelated", listRelated);
         sendDispatcher(request, response, "product/relatedProduct.jsp");
     }
+
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
     /**
      * Handles the HTTP <code>GET</code> method.
