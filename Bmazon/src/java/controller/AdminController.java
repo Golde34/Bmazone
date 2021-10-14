@@ -9,6 +9,7 @@ import entity.*;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.sql.Date;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
@@ -47,7 +48,7 @@ public class AdminController extends HttpServlet {
     RoleDAO daorole = new RoleDAO();
 
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {
+            throws ServletException, IOException, ParseException {
         response.setContentType("text/html;charset=UTF-8");
         try (PrintWriter out = response.getWriter()) {
             String service = request.getParameter("service");
@@ -257,7 +258,6 @@ public class AdminController extends HttpServlet {
     }
 
     public void servicePagingUser(String service, HttpServletRequest request, HttpServletResponse response) throws IOException {
-        int lastPage = 1;
         PrintWriter pr = response.getWriter();
         request.setAttribute("service", service);
         int index = 1, numOfRow = 5;
@@ -322,11 +322,17 @@ public class AdminController extends HttpServlet {
             pr.print("</a>");
             pr.print("</li>");
             for (int i = 1; i <= totalPage; i++) {
-                if(i < index - 2) continue;
-                if(index<3){
-                    if(i >5) break;
-                }else{
-                    if(i>index+2) break;
+                if (i < index - 2) {
+                    continue;
+                }
+                if (index < 3) {
+                    if (i > 5) {
+                        break;
+                    }
+                } else {
+                    if (i > index + 2) {
+                        break;
+                    }
                 }
                 if (index == i) {
                     pr.print("<li  class=\"page-item active\" data-repair=\"" + i + "\">");
@@ -547,11 +553,17 @@ public class AdminController extends HttpServlet {
             pr.print("</a>");
             pr.print("</li>");
             for (int i = 1; i <= totalPage; i++) {
-                if(i < index - 2) continue;
-                if(index<3){
-                    if(i >5) break;
-                }else{
-                    if(i>index+2) break;
+                if (i < index - 2) {
+                    continue;
+                }
+                if (index < 3) {
+                    if (i > 5) {
+                        break;
+                    }
+                } else {
+                    if (i > index + 2) {
+                        break;
+                    }
                 }
                 if (index == i) {
                     pr.print("<li  class=\"page-item active\" data-repair=\"" + i + "\">");
@@ -628,9 +640,50 @@ public class AdminController extends HttpServlet {
         sendDispatcher(request, response, "admin/productmanagement.jsp");
     }
 
-    public void serviceUpdateProduct(String service, HttpServletRequest request, HttpServletResponse response) {
+    public void serviceUpdateProduct(String service, HttpServletRequest request, HttpServletResponse response) throws ParseException {
         request.setAttribute("service", service);
+        //Get information about product
+        String pid = request.getParameter("pid");
+        String productname = request.getParameter("productname");
+        String description = request.getParameter("description");
+        String rating = request.getParameter("rating");
+        String seller = request.getParameter("seller");
+        String date = request.getParameter("date");
+        java.util.Date utilDate = new SimpleDateFormat("dd-MM-yyyy").parse(date);
+        java.sql.Date sqlDate = new java.sql.Date(utilDate.getTime());
+        //Update product
+        Product product = daoproduct.getProductByID(Integer.parseInt(pid));
+        product.setProductName(productname);
+        product.setDescription(description);
+        product.setRating(Integer.parseInt(rating));
+        product.setReleaseDate(sqlDate);
+        product.setSeller(Integer.parseInt(seller));
+        daoproduct.updateProduct(product);
+        //Get information about product type
         
+        String[] typeids = request.getParameterValues("ptid");
+        String[] colors = request.getParameterValues("color");
+        String[] sizes = request.getParameterValues("size");
+        String[] prices = request.getParameterValues("price");
+        String[] quantities = request.getParameterValues("quantity");
+        
+        //Update product type
+        for (int i = 0; i < typeids.length; i++) {
+            ProductType pt = daoproducttype.getProductTypeByPTypeID(typeids[i]);
+            pt.setColor(colors[i]);
+            pt.setSize(sizes[i]);
+            pt.setPrice(prices[i]);
+            pt.setQuantity(Integer.parseInt(quantities[i]));
+            daoproducttype.editProduct(pt);
+        }
+        //Success
+        String state = "success";
+        request.setAttribute("state", state);
+        request.setAttribute("product", product);
+        String mess = "Update successfully";
+        request.setAttribute("mess", mess);
+        request.setAttribute("service", "updateproductdetail");
+        sendDispatcher(request, response, "admin/productdetail.jsp");
     }//</editor-fold>
 
     // <editor-fold defaultstate="collapsed" desc="Company methods. Click on the + sign on the left to edit the code.">
@@ -709,12 +762,18 @@ public class AdminController extends HttpServlet {
             pr.print("</span>");
             pr.print("</a>");
             pr.print("</li>");
-           for (int i = 1; i <= totalPage; i++) {
-                if(i < index - 2) continue;
-                if(index<3){
-                    if(i >5) break;
-                }else{
-                    if(i>index+2) break;
+            for (int i = 1; i <= totalPage; i++) {
+                if (i < index - 2) {
+                    continue;
+                }
+                if (index < 3) {
+                    if (i > 5) {
+                        break;
+                    }
+                } else {
+                    if (i > index + 2) {
+                        break;
+                    }
                 }
                 if (index == i) {
                     pr.print("<li  class=\"page-item active\" data-repair=\"" + i + "\">");
@@ -810,7 +869,7 @@ public class AdminController extends HttpServlet {
             String mess = "Add successfully";
             request.setAttribute("mess", mess);
             request.setAttribute("service", "addcompanydetail");
-            sendDispatcher(request, response, "admin/companydetail.jsp");     
+            sendDispatcher(request, response, "admin/companydetail.jsp");
         }
     }
 
@@ -1049,7 +1108,11 @@ public class AdminController extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        processRequest(request, response);
+        try {
+            processRequest(request, response);
+        } catch (ParseException ex) {
+            Logger.getLogger(AdminController.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
 
     /**
@@ -1063,7 +1126,11 @@ public class AdminController extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        processRequest(request, response);
+        try {
+            processRequest(request, response);
+        } catch (ParseException ex) {
+            Logger.getLogger(AdminController.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
 
     /**
