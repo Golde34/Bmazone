@@ -6,15 +6,10 @@
 package model;
 
 import entity.*;
-import java.sql.Connection;
-import java.sql.Date;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -33,7 +28,7 @@ public class ProductDAO extends BaseDAO {
     
     public int getPageNumber(String search) {
         int num = 0;
-        xSql = "SELECT COUNT(*) FROM Product inner join [User] on Product.seller=[User].userID where Product.status=1 and(productName like '%"+search+"%' or [description] like '%"+search+"%' or rating like '%"+search+"%' or [User].fullname like '%"+search+"%' or releaseDate like '%"+search+"%')";
+        xSql = "SELECT COUNT(*) FROM Product inner join [User] on Product.sellerID=[User].userID where Product.status=1 and(productName like '%"+search+"%' or [description] like '%"+search+"%' or rating like '%"+search+"%' or [User].fullname like '%"+search+"%' or releaseDate like '%"+search+"%')";
         ResultSet rs =dbConn.getData(xSql);
         try {
             if(rs.next()){
@@ -50,9 +45,9 @@ public class ProductDAO extends BaseDAO {
         String sql = "declare @PageNo INT ="+index+"\n"
                 + "declare @PageSize INT="+numOfRow+"\n"
                 + "SELECT * from(\n"
-                + "SELECT productID,productName,[description],rating,seller,[User].fullname,releaseDate,Product.[status],\n"
+                + "SELECT productID,productName,[description],rating,sellerID,[User].fullname,releaseDate,Product.[status],\n"
                 + "ROW_NUMBER() over (order by Product.productID) as RowNum\n"
-                + "  FROM Product inner join [User] on Product.seller=[User].userID where Product.status=1 and(productName like '%"+search+"%' or [description] like '%"+search+"%' or rating like '%"+search+"%' or [User].fullname like '%"+search+"%' or releaseDate like '%"+search+"%'))T\n"
+                + "  FROM Product inner join [User] on Product.sellerID=[User].userID where Product.status=1 and(productName like '%"+search+"%' or [description] like '%"+search+"%' or rating like '%"+search+"%' or [User].fullname like '%"+search+"%' or releaseDate like '%"+search+"%'))T\n"
                 + "where T.RowNum between ((@PageNo-1)*@PageSize)+1 and (@PageNo*@PageSize)";
         try {
             pre = conn.prepareStatement(sql);
@@ -64,7 +59,7 @@ public class ProductDAO extends BaseDAO {
                 pro.setDescription(rs.getString("description"));
                 pro.setRating(rs.getInt("rating"));
                 pro.setReleaseDate(rs.getDate("releaseDate"));
-                pro.setSeller(rs.getInt("seller"));
+                pro.setSeller(rs.getInt("sellerID"));
                 pro.setStatus(rs.getInt("status"));
                 list.add(pro);
             }
@@ -89,7 +84,7 @@ public class ProductDAO extends BaseDAO {
                 pro.setDescription(rs.getString("description"));
                 pro.setRating(rs.getInt("rating"));
                 pro.setReleaseDate(rs.getDate("releaseDate"));
-                pro.setSeller(rs.getInt("seller"));
+                pro.setSeller(rs.getInt("sellerID"));
                 pro.setStatus(rs.getInt("status"));
                 list.add(pro);
             }
@@ -115,7 +110,7 @@ public class ProductDAO extends BaseDAO {
                 pro.setDescription(rs.getString("description"));
                 pro.setRating(rs.getInt("rating"));
                 pro.setReleaseDate(rs.getDate("releaseDate"));
-                pro.setSeller(rs.getInt("seller"));
+                pro.setSeller(rs.getInt("sellerID"));
                 pro.setStatus(rs.getInt("status"));
                 list.add(pro);
             }
@@ -141,7 +136,7 @@ public class ProductDAO extends BaseDAO {
                 pro.setDescription(rs.getString("description"));
                 pro.setRating(rs.getInt("rating"));
                 pro.setReleaseDate(rs.getDate("releaseDate"));
-                pro.setSeller(rs.getInt("seller"));
+                pro.setSeller(rs.getInt("sellerID"));
                 pro.setStatus(rs.getInt("status"));
                 list.add(pro);
             }
@@ -166,7 +161,7 @@ public class ProductDAO extends BaseDAO {
                 pro.setDescription(rs.getString("description"));
                 pro.setRating(rs.getInt("rating"));
                 pro.setReleaseDate(rs.getDate("releaseDate"));
-                pro.setSeller(rs.getInt("seller"));
+                pro.setSeller(rs.getInt("sellerID"));
                 pro.setStatus(rs.getInt("status"));
                 list.add(pro);
             }
@@ -191,7 +186,7 @@ public class ProductDAO extends BaseDAO {
                 pro.setDescription(rs.getString("description"));
                 pro.setRating(rs.getInt("rating"));
                 pro.setReleaseDate(rs.getDate("releaseDate"));
-                pro.setSeller(rs.getInt("seller"));
+                pro.setSeller(rs.getInt("sellerID"));
                 pro.setStatus(rs.getInt("status"));
                 list.add(pro);
             }
@@ -216,7 +211,7 @@ public class ProductDAO extends BaseDAO {
                 pro.setDescription(rs.getString("description"));
                 pro.setRating(rs.getInt("rating"));
                 pro.setReleaseDate(rs.getDate("releaseDate"));
-                pro.setSeller(rs.getInt("seller"));
+                pro.setSeller(rs.getInt("sellerID"));
                 pro.setStatus(rs.getInt("status"));
                 list.add(pro);
             }
@@ -241,7 +236,7 @@ public class ProductDAO extends BaseDAO {
                 pro.setDescription(rs.getString("description"));
                 pro.setRating(rs.getInt("rating"));
                 pro.setReleaseDate(rs.getDate("releaseDate"));
-                pro.setSeller(rs.getInt("seller"));
+                pro.setSeller(rs.getInt("sellerID"));
                 pro.setStatus(rs.getInt("status"));
                 list.add(pro);
             }
@@ -255,7 +250,7 @@ public class ProductDAO extends BaseDAO {
 
     public ArrayList<Product> getProductBySeller(String seller) {
         ArrayList<Product> list = new ArrayList<>();
-        String sql = "SELECT * FROM Product where seller = '" + seller + "'";
+        String sql = "SELECT * FROM Product where sellerID = '" + seller + "'";
         try {
             pre = conn.prepareStatement(sql);
             rs = pre.executeQuery();
@@ -266,7 +261,7 @@ public class ProductDAO extends BaseDAO {
                 pro.setDescription(rs.getString("description"));
                 pro.setRating(rs.getInt("rating"));
                 pro.setReleaseDate(rs.getDate("releaseDate"));
-                pro.setSeller(rs.getInt("seller"));
+                pro.setSeller(rs.getInt("sellerID"));
                 pro.setStatus(rs.getInt("status"));
                 list.add(pro);
             }
@@ -297,7 +292,7 @@ public class ProductDAO extends BaseDAO {
                 pro.setDescription(rs.getString("description"));
                 pro.setRating(rs.getInt("rating"));
                 pro.setReleaseDate(rs.getDate("releaseDate"));
-                pro.setSeller(rs.getInt("seller"));
+                pro.setSeller(rs.getInt("sellerID"));
                 pro.setStatus(rs.getInt("status"));
                 list.add(pro);
             }
@@ -351,7 +346,7 @@ public class ProductDAO extends BaseDAO {
                 pro.setDescription(rs.getString("description"));
                 pro.setRating(rs.getInt("rating"));
                 pro.setReleaseDate(rs.getDate("releaseDate"));
-                pro.setSeller(rs.getInt("seller"));
+                pro.setSeller(rs.getInt("sellerID"));
                 pro.setStatus(rs.getInt("status"));
                 list.add(pro);
             }
@@ -376,7 +371,7 @@ public class ProductDAO extends BaseDAO {
                 pro.setDescription(rs.getString("description"));
                 pro.setRating(rs.getInt("rating"));
                 pro.setReleaseDate(rs.getDate("releaseDate"));
-                pro.setSeller(rs.getInt("seller"));
+                pro.setSeller(rs.getInt("sellerID"));
                 pro.setStatus(rs.getInt("status"));
             }
             rs.close();
@@ -401,7 +396,7 @@ public class ProductDAO extends BaseDAO {
                 pro.setDescription(rs.getString("description"));
                 pro.setRating(rs.getInt("rating"));
                 pro.setReleaseDate(rs.getDate("releaseDate"));
-                pro.setSeller(rs.getInt("seller"));
+                pro.setSeller(rs.getInt("sellerID"));
                 pro.setStatus(rs.getInt("status"));
                 list.add(pro);
             }
@@ -427,7 +422,7 @@ public class ProductDAO extends BaseDAO {
                 pro.setDescription(rs.getString("description"));
                 pro.setRating(rs.getInt("rating"));
                 pro.setReleaseDate(rs.getDate("releaseDate"));
-                pro.setSeller(rs.getInt("seller"));
+                pro.setSeller(rs.getInt("sellerID"));
                 pro.setStatus(rs.getInt("status"));
                 list.add(pro);
             }
@@ -452,7 +447,7 @@ public class ProductDAO extends BaseDAO {
                 pro.setDescription(rs.getString("description"));
                 pro.setRating(rs.getInt("rating"));
                 pro.setReleaseDate(rs.getDate("releaseDate"));
-                pro.setSeller(rs.getInt("seller"));
+                pro.setSeller(rs.getInt("sellerID"));
                 pro.setStatus(rs.getInt("status"));
                 list.add(pro);
             }
@@ -466,7 +461,7 @@ public class ProductDAO extends BaseDAO {
 
     public int addProduct(Product obj) {
         int n = 0;
-        String sql = "INSERT INTO [Bmazon].[dbo].[Product]([productName],[description],[rating],[releaseDate],[seller],[status])"
+        String sql = "INSERT INTO [Bmazon].[dbo].[Product]([productName],[description],[rating],[releaseDate],[sellerID],[status])"
                 + "VALUES(?,?,?,?,?,1)";
         try {
             pre = conn.prepareStatement(sql);
@@ -490,7 +485,7 @@ public class ProductDAO extends BaseDAO {
                 + "      ,[description] = ?"
                 + "      ,[rating] = ?"
                 + "      ,[releaseDate] = ?"
-                + "      ,[seller] = ?"
+                + "      ,[sellerID] = ?"
                 + "      ,[status] = ?"
                 + " WHERE productID=?";
         try {
