@@ -134,7 +134,7 @@ public class HomePageController extends HttpServlet {
         int size=20;
         int total=count/size;
         int page,end;
-         
+        
         String page1 = request.getParameter("page");
         if (page1==null) {
             page=1;

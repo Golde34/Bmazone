@@ -28,7 +28,7 @@ public class ProductDAO extends BaseDAO {
     
     public static void main(String[] args) {
         ProductDAO dao = new ProductDAO();
-        System.out.println(dao.getPageNumber(""));
+        System.out.println(dao.getAllPagingProductBySeller(1, 5, "", "4"));
     }
     
     public int getPageNumber(String search) {
@@ -53,6 +53,37 @@ public class ProductDAO extends BaseDAO {
                 + "SELECT productID,productName,[description],rating,seller,[User].fullname,releaseDate,Product.[status],\n"
                 + "ROW_NUMBER() over (order by Product.productID) as RowNum\n"
                 + "  FROM Product inner join [User] on Product.seller=[User].userID where Product.status=1 and(productName like '%"+search+"%' or [description] like '%"+search+"%' or rating like '%"+search+"%' or [User].fullname like '%"+search+"%' or releaseDate like '%"+search+"%'))T\n"
+                + "where T.RowNum between ((@PageNo-1)*@PageSize)+1 and (@PageNo*@PageSize)";
+        try {
+            pre = conn.prepareStatement(sql);
+            rs = pre.executeQuery();
+            while (rs.next()) {
+                Product pro = new Product();
+                pro.setProductID(rs.getInt("productID"));
+                pro.setProductName(rs.getString("productName"));
+                pro.setDescription(rs.getString("description"));
+                pro.setRating(rs.getInt("rating"));
+                pro.setReleaseDate(rs.getDate("releaseDate"));
+                pro.setSeller(rs.getInt("seller"));
+                pro.setStatus(rs.getInt("status"));
+                list.add(pro);
+            }
+            rs.close();
+            pre.close();
+        } catch (SQLException e) {
+            Logger.getLogger(ProductDAO.class.getName()).log(Level.SEVERE, null, e);
+        }
+        return list;
+    }
+    
+public ArrayList<Product> getAllPagingProductBySeller(int index,int numOfRow,String search, String seller) {
+        ArrayList<Product> list = new ArrayList<>();
+        String sql = "declare @PageNo INT ="+index+"\n"
+                + "declare @PageSize INT="+numOfRow+"\n"
+                + "SELECT * from(\n"
+                + "SELECT productID,productName,[description],rating,seller,[User].fullname,releaseDate,Product.[status],\n"
+                + "ROW_NUMBER() over (order by Product.productID) as RowNum\n"
+                + "  FROM Product inner join [User] on Product.seller=[User].userID where Product.seller = "+ seller +" and Product.status=1 and(productName like '%"+search+"%' ))T\n"
                 + "where T.RowNum between ((@PageNo-1)*@PageSize)+1 and (@PageNo*@PageSize)";
         try {
             pre = conn.prepareStatement(sql);

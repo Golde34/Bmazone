@@ -136,7 +136,6 @@ public class UserController extends HttpServlet {
         User account = (User) session.getAttribute("currUser");
 
         String user = account.getUsername();
-        String xUser = request.getParameter("username");
         String oldpass = request.getParameter("oldpass");
         String newpass = request.getParameter("newpass");
         String repass = request.getParameter("renewpass");
@@ -146,6 +145,9 @@ public class UserController extends HttpServlet {
 //        } else 
         if (!account.getPassword().equals(oldpass) && oldpass != null) {
             messChangepass = "Old Password is not correct";
+            request.setAttribute("oldpassChange", oldpass);
+            request.setAttribute("newpassChange", newpass);
+            request.setAttribute("renewpassChange", repass);
         } else if (account.getPassword().equals(oldpass) && oldpass != null && newpass.equals(repass)) {
             daoUser.changePassword(user, newpass);
             messChangepass = "Change password successfully !!";

@@ -4,6 +4,9 @@
     Author     : DELL
 --%>
 
+<%@page import="model.CategoryDAO"%>
+<%@page import="model.ProductCategoryDAO"%>
+<%@page import="java.text.DecimalFormat"%>
 <%@page import="java.util.List"%>
 <%@page import="entity.ProductType"%>
 <%@page import="entity.Product"%>
@@ -47,14 +50,19 @@
     <!--% } else { %-->
 
     <%
-        ProductTypeDAO producttypedao = new ProductTypeDAO();
+        DecimalFormat nf = new DecimalFormat("###,###,###");
+        ProductTypeDAO ptDAO = new ProductTypeDAO();
+        ProductCategoryDAO pcDAO = new ProductCategoryDAO();
+        CategoryDAO cateDAO = new CategoryDAO();
+
+        int index = (Integer) request.getAttribute("index");
+        int totalPage = (Integer) request.getAttribute("totalPage");
+        int prev = index == 1 ? 1 : index - 1;
+        int next = index == totalPage ? totalPage : index + 1;
         User curUser = (User) request.getSession().getAttribute("currUser");
-        ArrayList<Product> listP = (ArrayList<Product>) request.getAttribute("listP");
-        if(curUser.getSell() != 1) {
+        ArrayList<Product> listP = (ArrayList<Product>) request.getAttribute("listProduct");
     %>
 
-    <h2>You must be seller to access this</h2>
-    <% } else { %>
     <body class="skin-black">
         <!-- header logo: style can be found in header.less -->
         <jsp:include page="headerSeller.jsp"/>
@@ -120,7 +128,7 @@
 
                         <div class="col-md-4">
                             <div class="sm-st clearfix">
-                                <span class="sm-st-icon st-red"><i class="fa fa-check-square-o"></i></span>
+                                <span class="sm-st-icon"><img style="margin-bottom: 10%" src="https://cdn.iconscout.com/icon/premium/png-256-thumb/new-product-1800178-1528419.png" class="img-circle"></span>
                                 <div class="sm-st-info">
                                     <span> <%= listP.size()%> </span>
                                     Total Product
@@ -129,7 +137,7 @@
                         </div>
                         <div class="col-md-4">
                             <div class="sm-st clearfix">
-                                <span class="sm-st-icon st-violet"><i class="fa fa-envelope-o"></i></span>
+                                <span class="sm-st-icon" style><img style="margin-bottom: 10%" src="https://www.pinclipart.com/picdir/middle/19-190811_customer-order-orders-icon-clipart.png" class="img-circle"></span>
                                 <div class="sm-st-info">
                                     <span>2200</span>
                                     Total Order
@@ -138,7 +146,7 @@
                         </div>
                         <div class="col-md-4">
                             <div class="sm-st clearfix">
-                                <span class="sm-st-icon st-blue"><i class="fa fa-dollar"></i></span>
+                                <span class="sm-st-icon"><img style="margin-bottom: 10%" src="https://www.pinclipart.com/picdir/middle/524-5249716_dollar-clipart-blue-dollar-blue-transparent-free-for.png" class="img-circle"></span>
                                 <div class="sm-st-info">
                                     <span>100,320</span>
                                     Total Profit
@@ -149,50 +157,110 @@
 
                     <!-- Main row -->
                     <!-- Product management -->
-                    <div class="col-md-8" style="height: 400px;overflow-y: scroll;">
+                    <div style="height: 400px; ">
                         <section class="panel">
-                            <header class="panel-heading">
-                                Product in shop
-                            </header>
+                            <!--                            <header class="panel-heading">
+                                                            Product in shop
+                                                        </header>-->
+                            <div class="table_head py-3" style="display: flex;
+                                 justify-content: space-between;">
+                                <div class="rowNum">
+                                    <h6 style="display: inline">Select number of Rows</h6>
+                                    <div class="form-group" style="display: inline;">
+                                        <select onchange="pagination()" name="state" id="maxRows" class="form-control" style="width:80px;display:inline;">
+                                            <option value="5">5</option>
+                                            <option value="10">10</option>
+                                            <option value="20">20</option>
+                                            <option value="5000">Show All</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="tb_search">
+                                    <input id="search" style="width: 100%;" type="text" oninput="pagination()" placeholder="Search.." class="form-control">
+                                </div>
+                            </div>
                             <div class="panel-body table-responsive">
-                                <table class="table table-hover">
+                                <table class="table table-hover" id="dataTable">
                                     <thead>
                                         <tr>
                                             <th>Product Name</th>
-                                            <th>Color</th>
-                                            <th>Size</th>
-                                            <th>Price</th>
-                                            <th>ProductTypeID</th>
+                                            <th>Release Date</th>
+                                            <th>Type</th>
                                             <th></th>
                                             <th></th>
                                         </tr>
                                     </thead>
-                                    <tbody>
+                                    <tbody id="product">
                                         <% for (Product product : listP) {
-                                                List<ProductType> listProductType = producttypedao.getProductByProductID(product.getProductID());
-                                                for (ProductType producttype : listProductType) {
+                                                int proID = product.getProductID();
                                         %>
                                         <tr>
-                                            <td><div><%=product.getProductName()%></div></td>
-                                            <td><div><%=producttype.getColor()%></div></td>
-                                            <td><div><%=producttype.getSize()%></div></td>
-                                            <td><div><%=producttype.getPrice()%></div></td>
-                                            <td><div><%=producttype.getProductTypeId()%></div></td>
+                                            <td><div><%= product.getProductName() %></div></td>
+                                            <td><div><%= product.getReleaseDate() %></div></td>
+                                            <td><div><%= cateDAO.getCategoryById(pcDAO.getProductCateByProductID(proID).getCategoryID())%></div></td>
                                             <td><div>
-                                                    <a href="AdminControllerMap?service=updatedetail&userid=<%=producttype.getProductTypeId()%>"><span class="fas fa-edit"></span></a>
+                                                    <a href="SellerControllerMap?service=updatedetail&ptypeid=<%= proID %>"><span class="fas fa-edit"></span></a>
                                                 </div></td>
-                                            <td><div><a href="AdminControllerMap?service=deleteuser&userid=<%=producttype.getProductTypeId()%>" onclick="return confirm('Are you sure you want to Remove?');"><span class="fas fa-trash-alt"></span></a></div></td>
+                                            <td><div><a href="SellerControllerMap?service=deleteproduct&ptypeid=<%= proID %>" onclick="return confirm('Are you sure you want to Remove?');"><span class="fas fa-trash-alt"></span></a></div></td>
                                         </tr>
-                                        <%}%>
                                         <%}%>
                                     </tbody>
                                 </table>
+                            </div>
+
+                            <div class="pagination-container mt-4" style="display: flex;
+                                 justify-content: space-around;cursor: pointer;">
+                                <nav>
+                                    <%if (totalPage > 1) {%>
+                                    <ul class="pagination" id="showpage">
+                                        <li data-repair="1" class="page-item">
+                                            <a class="page-link" aria-label="First">
+                                                <span aria-hidden="true"><i class="fas fa-backward"></i>
+                                                    <span class="sr-only">(current)</span> 
+                                                </span>
+                                            </a>
+                                        </li>
+                                        <li data-repair="<%=prev%>" class="page-item">
+                                            <a class="page-link" aria-label="Previous">
+                                                <span aria-hidden="true"><i class="fas fa-arrow-left"></i>
+                                                    <span class="sr-only">(current)</span> 
+                                                </span>
+                                            </a>
+                                        </li>
+                                        <%int limit = totalPage > 5 ? 5 : totalPage;%>
+                                        <%for (int i = 1; i <= limit; i++) {%>
+                                        <%if (index == i) {%>
+                                        <li  class="page-item active" data-repair="<%=i%>">
+                                        <%} else {%><li  class="page-item" data-repair="<%=i%>"> <%}%>
+                                            <a class="page-link">
+                                                <div class="index"><%=i%></div>
+                                                <span class="sr-only">(current)</span>
+                                            </a>
+                                        </li>
+                                        <%}%>
+                                        <li data-repair="<%=next%>" class="page-item">
+                                            <a class="page-link" aria-label="Next">
+                                                <span aria-hidden="true"><i class="fas fa-arrow-right"></i>
+                                                    <span class="sr-only">(current)</span> 
+                                                </span>
+                                            </a>
+                                        </li>
+                                        <li data-repair="<%=totalPage%>" class="page-item">
+                                            <a class="page-link" aria-label="Last">
+                                                <span aria-hidden="true"><i class="fas fa-forward"></i>
+                                                    <span class="sr-only">(current)</span> 
+                                                </span>
+                                            </a>
+                                        </li>
+                                    </ul>
+                                    <%}%>
+                                </nav>
                             </div>
                         </section>
 
 
                     </div><!--end col-6 -->
-                    <div class="col-md-4">
+<!--                    <div class="col-md-3">
                         <section class="panel">
                             <header class="panel-heading">
                                 Hot products
@@ -200,9 +268,7 @@
                             <div class="panel-body">
                             </div>
                         </section>
-                    </div>
-
-                    </div>
+                    </div>-->
 
                     <!-- row end -->
                 </section><!-- /.content -->
@@ -214,6 +280,63 @@
         </div><!-- ./wrapper -->
 
     </body>
-    <% }%>
-
+    <script src="${contextPath}/js/core/popper.min.js"></script>
+    <script src="${contextPath}/js/core/bootstrap.min.js"></script>
+    <script src="${contextPath}/js/plugins/perfect-scrollbar.min.js"></script>
+    <script src="${contextPath}/js/plugins/smooth-scrollbar.min.js"></script>
+    <script src="${contextPath}/js/plugins/chartjs.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <script>
+                                                var pageNum;
+                                                $(document).on('click', '.pagination li', function () {
+                                                    pageNum = $(this).data('repair');
+                                                    pagination();
+                                                });
+                                                function pagination() {
+                                                    var row = document.getElementById("maxRows").value;
+                                                    var search = document.getElementById("search").value;
+                                                    console.log(row);
+                                                    console.log(search);
+                                                    console.log(pageNum);
+                                                    $.ajax({
+                                                        url: "/Bmazon/SellerControllerMap",
+                                                        type: "get",
+                                                        data: {
+                                                            search: search,
+                                                            row: row,
+                                                            index: pageNum,
+                                                            service: "pagingproduct"
+                                                        },
+                                                        success: function (respone) {
+                                                            var text = document.getElementById("product");
+                                                            text.innerHTML = respone;
+                                                            showpage();
+                                                        },
+                                                        error: function (xhr) {
+                                                            //Do Something to handle error
+                                                        }
+                                                    });
+                                                }
+                                                function showpage() {
+                                                    var row = document.getElementById("maxRows").value;
+                                                    var search = document.getElementById("search").value;
+                                                    $.ajax({
+                                                        url: "/Bmazon/SellerControllerMap",
+                                                        type: "get",
+                                                        data: {
+                                                            search: search,
+                                                            row: row,
+                                                            index: pageNum,
+                                                            service: "showpageproduct"
+                                                        },
+                                                        success: function (respone) {
+                                                            var text = document.getElementById("showpage");
+                                                            text.innerHTML = respone;
+                                                        },
+                                                        error: function (xhr) {
+                                                            //Do Something to handle error
+                                                        }
+                                                    });
+                                                }
+    </script>
 </html>
