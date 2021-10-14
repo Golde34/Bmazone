@@ -383,7 +383,7 @@
                                     </span>
                                 </div>
                                 <div class="product-releasedate"><span>Release Date: <%=product.getReleaseDate()%></span></div>
-                                <div class="product-seller"><span>Seller: <%=daoUser.getUserByProductId(product.getProductID()).getUsername()%></span></div>
+                                <div class="product-seller"><a href="HomePageControllerMap?service=shopPage&sid=<%=daoUser.getUserByProductId(product.getProductID()).getUserId()%>"><span>Seller: <%=daoUser.getUserByProductId(product.getProductID()).getUsername()%></span></a></div>
                             </div>
                             <form method="POST" action="CartControllerMap" >
                                 <div class="row">

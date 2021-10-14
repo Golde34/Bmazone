@@ -92,9 +92,9 @@ CREATE TABLE [Product] (
 	[description] nvarchar(max),
 	rating real,
 	releaseDate date NOT NULL CHECK(releaseDate <= getDate()),
-	seller int NOT NULL,
+	sellerID int NOT NULL,
 	[status] bit,
-	FOREIGN KEY (seller) REFERENCES [User](userID),
+	FOREIGN KEY (sellerID) REFERENCES [Seller](sellerID),
 )
 
 

@@ -255,7 +255,7 @@ public class ProductDAO extends BaseDAO {
                 + " SELECT * from( \n"
                 + " SELECT *,\n  "
                 + " ROW_NUMBER() over (order by productID) as RowNum\n  "
-                + "   FROM [Bmazon].[dbo].[Product] p  where seller = '" + seller + "') as T \n "
+                + "   FROM [Bmazon].[dbo].[Product] p  where sellerID = '" + seller + "') as T \n "
                 + " where T.RowNum between ((@PageNo-1)*@PageSize)+1 and (@PageNo*@PageSize)  ";
         //String sql = "SELECT * FROM Product where seller = '" + seller + "'";
         try {
@@ -268,7 +268,7 @@ public class ProductDAO extends BaseDAO {
                 pro.setDescription(rs.getString("description"));
                 pro.setRating(rs.getInt("rating"));
                 pro.setReleaseDate(rs.getDate("releaseDate"));
-                pro.setSeller(rs.getInt("seller"));
+                pro.setSeller(rs.getInt("sellerID"));
                 pro.setStatus(rs.getInt("status"));
                 list.add(pro);
             }
@@ -344,7 +344,7 @@ public class ProductDAO extends BaseDAO {
     public int totalProductSeller(String sid) {
         int count = 0;
 
-        xSql = "SELECT count(*) FROM [Bmazon].[dbo].[Product] where seller = " + sid;
+        xSql = "SELECT count(*) FROM [Bmazon].[dbo].[Product] where sellerID = " + sid;
         try {
             pre = conn.prepareStatement(xSql);
             rs = pre.executeQuery();
