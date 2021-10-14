@@ -1,12 +1,13 @@
 <%@page import="java.text.SimpleDateFormat"%>
-<%@page import="model.UserDAO"%>
-<%@page import="model.ProductTypeDAO"%>
+<%@page import="model.*"%>
 <%@page import="java.util.*"%>
 <%@page import="entity.*"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <c:set var="contextPath" value="${pageContext.request.contextPath}" />
 <%
+    CategoryDAO catdao = new CategoryDAO();
+    SellerDAO sellerdao = new SellerDAO();
     UserDAO userdao = new UserDAO();
     int index = (Integer) request.getAttribute("index");
     int totalPage = (Integer) request.getAttribute("totalPage");
@@ -66,7 +67,7 @@
                                             <div class="rowNum">
                                                 <h6 style="display: inline">Select number of Rows</h6>
                                                 <div class="form-group" style="display: inline;">
-                                                    <select onchange="changeRowAndSearch()" name="state" id="maxRows" class="form-control" style="width:80px;display:inline;">
+                                                    <select onchange="pagination()" name="state" id="maxRows" class="form-control" style="width:80px;display:inline;">
                                                         <option value="5">5</option>
                                                         <option value="10">10</option>
                                                         <option value="20">20</option>
@@ -75,43 +76,40 @@
                                                 </div>
                                             </div>
                                             <div class="tb_search">
-                                                <input id="search" style="width: 100%;" type="text" oninput="changeRowAndSearch()" placeholder="Search.." class="form-control">
+                                                <input id="search" style="width: 100%;" type="text" oninput="pagination()" placeholder="Search.." class="form-control">
                                             </div>
                                         </div>
                                         <div class="table-responsive-md">
-                                            <table class="table-bordered" style="table-layout: fixed;width: 100%;text-align: center;" id="dataTable">
+                                            <table class="table-bordered text-center">
                                                 <thead>
                                                     <tr>
                                                         <th style="width: 30%;">Product Name</th>
                                                         <th style="width: 30%;">Description</th>
-                                                        <th style="width: 8%;">Rating</th>
+                                                        <th style="width: 20%;">Rating</th>
                                                         <th style="width: 10%;">Seller</th>
-                                                        <th style="width: 12%;">Release Date</th>
                                                         <th style="width: 5%;"></th>
                                                         <th style="width: 5%;"></th>
                                                     </tr>
                                                 </thead>
                                                 <tbody id="product">
                                                 <%for (Product product : listProduct) {
-                                                        User user = userdao.getUserByProductId(product.getProductID());
+                                                        Seller seller = sellerdao.getSellerID(String.valueOf(product.getSeller()));
                                                 %>
                                                 <tr>
                                                     <td><%=product.getProductName()%></td>
                                                     <td><%=product.getDescription()%></td>
                                                     <td><%=product.getRating()%></td>
-                                                    <td><%=user.getFullname()%></td>
-                                                    <td><%=dateformat.format(product.getReleaseDate())%></td>
+                                                    <td><%=seller.getSellerShopName()%></td>
                                                     <td><div><a href="AdminControllerMap?service=updateproductdetail&productid=<%=product.getProductID()%>"><span class="fas fa-edit"></span></a>
                                                         </div></td>
-                                                    <td><div><a href="AdminControllerMap?service=deleteproduct&productid=<%=product.getProductID()%>" onclick="return confirm('Are you sure you want to Remove?');"><span class="fas fa-trash-alt"></span></a></div></td>
+                                                    <td><a href="AdminControllerMap?service=deleteproduct&productid=<%=product.getProductID()%>" onclick="return confirm('Are you sure you want to Remove?');"><span class="fas fa-trash-alt"></span></a></td>
                                                 </tr>
 
                                                 <%}%>
                                             </tbody>
                                         </table>
                                     </div>
-                                    <div class="pagination-container mt-4" style="display: flex;
-                                         justify-content: space-around;cursor: pointer;">
+                                    <div class="pagination-container mt-4 d-flex justify-content-around" style="cursor: pointer;">
                                         <nav>
                                             <%if (totalPage > 1) {%>
                                             <ul class="pagination" id="showpage">
@@ -171,82 +169,57 @@
         <script src="${contextPath}/js/core/bootstrap.min.js"></script>
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
         <script>
-                                                        var pageNum;
-                                                        $(document).on('click', '.pagination li', function () {
-                                                            pageNum = $(this).data('repair');
-                                                            changeIndex();
-                                                        });
-                                                        function changeRowAndSearch() {
-                                                            var row = document.getElementById("maxRows").value;
-                                                            var search = document.getElementById("search").value;
-                                                            console.log(row);
-                                                            console.log(search);
-                                                            console.log(pageNum);
-                                                            $.ajax({
-                                                                url: "/Bmazon/AdminControllerMap",
-                                                                type: "get",
-                                                                data: {
-                                                                    search: search,
-                                                                    row: row,
-                                                                    index: 1,
-                                                                    service: "pagingproduct"
-                                                                },
-                                                                success: function (respone) {
-                                                                    var text = document.getElementById("product");
-                                                                    text.innerHTML = respone;
-                                                                    showpage();
-                                                                },
-                                                                error: function (xhr) {
-                                                                    //Do Something to handle error
-                                                                }
-                                                            });
-                                                        }
-                                                        function changeIndex() {
-                                                            var row = document.getElementById("maxRows").value;
-                                                            var search = document.getElementById("search").value;
-                                                            console.log(row);
-                                                            console.log(search);
-                                                            console.log(pageNum);
-                                                            $.ajax({
-                                                                url: "/Bmazon/AdminControllerMap",
-                                                                type: "get",
-                                                                data: {
-                                                                    search: search,
-                                                                    row: row,
-                                                                    index: pageNum,
-                                                                    service: "pagingproduct"
-                                                                },
-                                                                success: function (respone) {
-                                                                    var text = document.getElementById("product");
-                                                                    text.innerHTML = respone;
-                                                                    showpage();
-                                                                },
-                                                                error: function (xhr) {
-                                                                    //Do Something to handle error
-                                                                }
-                                                            });
-                                                        }
-                                                        function showpage() {
-                                                            var row = document.getElementById("maxRows").value;
-                                                            var search = document.getElementById("search").value;
-                                                            $.ajax({
-                                                                url: "/Bmazon/AdminControllerMap",
-                                                                type: "get",
-                                                                data: {
-                                                                    search: search,
-                                                                    row: row,
-                                                                    index: pageNum,
-                                                                    service: "showpageproduct"
-                                                                },
-                                                                success: function (respone) {
-                                                                    var text = document.getElementById("showpage");
-                                                                    text.innerHTML = respone;
-                                                                },
-                                                                error: function (xhr) {
-                                                                    //Do Something to handle error
-                                                                }
-                                                            });
-                                                        }
+        var pageNum;
+        $(document).on('click', '.pagination li', function () {
+            pageNum = $(this).data('repair');
+            pagination();
+        });
+        function pagination() {
+            var row = document.getElementById("maxRows").value;
+            var search = document.getElementById("search").value;
+            console.log(row);
+            console.log(search);
+            console.log(pageNum);
+            $.ajax({
+                url: "/Bmazon/AdminControllerMap",
+                type: "get",
+                data: {
+                    search: search,
+                    row: row,
+                    index: pageNum,
+                    service: "pagingproduct"
+                },
+                success: function (respone) {
+                    var text = document.getElementById("product");
+                    text.innerHTML = respone;
+                    showpage();
+                },
+                error: function (xhr) {
+                    //Do Something to handle error
+                }
+            });
+        }
+        function showpage() {
+            var row = document.getElementById("maxRows").value;
+            var search = document.getElementById("search").value;
+            $.ajax({
+                url: "/Bmazon/AdminControllerMap",
+                type: "get",
+                data: {
+                    search: search,
+                    row: row,
+                    index: pageNum,
+                    service: "showpageproduct"
+                },
+                success: function (respone) {
+                    var text = document.getElementById("showpage");
+                    text.innerHTML = respone;
+                },
+                error: function (xhr) {
+                    //Do Something to handle error
+                }
+            });
+        }
         </script>
     </body>
 

@@ -24,8 +24,8 @@ public class SellerDAO extends BaseDAO {
 
     public static void main(String[] args) {
         SellerDAO sel = new SellerDAO();
-        Seller sele = sel.getSellerByUserID(5);
-        System.out.println(sele.getSellerShopName() + " " + sele.getEvidence());
+        Seller sele = sel.getSellerID("1");
+        System.out.println(sele.getDescription());
     }
 
     public int addSeler(Seller s) {
@@ -133,27 +133,23 @@ public class SellerDAO extends BaseDAO {
         }
         return false;
     }
-
+    
     public Seller getSellerID(String id) {
-        Seller seller = new Seller();
         xSql = "select * from Seller where sellerID = " + id;
         try {
             pre = conn.prepareStatement(xSql);
             rs = pre.executeQuery();
             if (rs.next()) {;
-                seller.setSellerID(rs.getInt("sellerID"));
-                seller.setUserID(rs.getInt("userID"));
-                seller.setSellerShopName(rs.getString("selerShopName"));
-                seller.setSellerPhone(rs.getString("sellerPhone"));
-                seller.setEvidence(rs.getString("evidence"));
-                seller.setSellerMainProduct(rs.getInt("sellerMainProduct"));
-                seller.setDescription(rs.getString("description"));
-                seller.setSellerVerification(rs.getInt("sellerVerification"));
-                seller.setStatus(rs.getInt("status"));
+                Seller seller = new Seller(rs.getInt("sellerID"), rs.getInt("userID"),
+                        rs.getString("sellerShopName"), rs.getString("sellerPhone"),
+                        rs.getString("evidence"), rs.getInt("sellerMainProduct"),
+                        rs.getString("description"), rs.getInt("sellerVerification"),
+                        rs.getInt("status"));
+                return seller;
             }
         } catch (Exception e) {
         }
-        return seller;
+        return null;
     }
 
     public List<Seller> getAllSeller() {

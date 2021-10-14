@@ -49,9 +49,7 @@
                     <div class="col-lg-12 col-md-12 mb-md-0 mb-4">
                         <div class="card">
                             <div class="card-body px-0 pb-2">
-                                <div class="card-header py-3" 
-                                     style="display: flex;
-                                     justify-content: space-between;">
+                                <div class="card-header py-3 d-flex justify-content-between">
                                     <h6 class="m-0 font-weight-bold text-primary">Gallery Detail</h6>
                                 </div>
                                 <div class="card-body">
