@@ -46,6 +46,7 @@ public class AdminController extends HttpServlet {
     UserDAO daouser = new UserDAO();
     WareHouseDAO daowarehouse = new WareHouseDAO();
     RoleDAO daorole = new RoleDAO();
+    SellerDAO daoseller = new SellerDAO();
 
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException, ParseException {
@@ -65,6 +66,20 @@ public class AdminController extends HttpServlet {
             //Admin Dashboard
             if (service.equalsIgnoreCase("AdminDashBoard")) {
                 serviceAdminDashboard(service, request, response);
+            }
+            
+            
+            //SellerResposne
+            if (service.equalsIgnoreCase("sellerResponse")) {
+                serviceSellerResponse(service, request, response);
+            }
+            //Accept Seller Request
+            if (service.equalsIgnoreCase("acceptSeller")) {
+                serviceAcceptSellerRequest(request, response);
+            }
+            //Deny Seller Request
+            if (service.equalsIgnoreCase("denySeller")) {
+                serviceDenySellerRequest(request, response);
             }
 
             // <editor-fold defaultstate="collapsed" desc="User service. Click on the + sign on the left to edit the code.">
@@ -227,6 +242,35 @@ public class AdminController extends HttpServlet {
         ArrayList<User> listUser = daouser.getAllUser();
         request.setAttribute(("listUser"), listUser);
         sendDispatcher(request, response, "admin/admin.jsp");
+    }
+    
+    public void serviceSellerResponse(String service, HttpServletRequest request, HttpServletResponse response) {
+        request.setAttribute("service", service);    
+        List<Seller> listSellerRequest = daoseller.getSellerBySellerRequest();
+        request.setAttribute("listSellerRequest", listSellerRequest);
+        List<Seller> listAllSeller = daoseller.getAllSeller();
+        request.setAttribute("listAllSeller", listAllSeller);
+        sendDispatcher(request, response, "admin/authorization/sellerResponse.jsp");
+    }
+    
+    private void serviceAcceptSellerRequest(HttpServletRequest request, HttpServletResponse response) {
+        int sellerID = Integer.parseInt(request.getParameter("sellerID"));
+        daoseller.acceptSellerRequest(sellerID);
+        List<Seller> listAllSeller = daoseller.getAllSeller();
+        request.setAttribute("listAllSeller", listAllSeller);
+        List<Seller> listSellerRequest = daoseller.getSellerBySellerRequest();
+        request.setAttribute("listSellerRequest", listSellerRequest);
+        sendDispatcher(request, response, "admin/authorization/sellerResponse.jsp");
+    }
+    
+    private void serviceDenySellerRequest(HttpServletRequest request, HttpServletResponse response) {
+        int sellerID = Integer.parseInt(request.getParameter("sellerID"));
+        daoseller.acceptSellerRequest(sellerID);
+        List<Seller> listAllSeller = daoseller.getAllSeller();
+        request.setAttribute("listAllSeller", listAllSeller);
+        List<Seller> listSellerRequest = daoseller.getSellerBySellerRequest();
+        request.setAttribute("listSellerRequest", listSellerRequest);
+        sendDispatcher(request, response, "admin/authorization/sellerResponse.jsp");
     }
 
     // <editor-fold defaultstate="collapsed" desc="User methods. Click on the + sign on the left to edit the code.">

@@ -24,8 +24,10 @@ public class SellerDAO extends BaseDAO {
 
     public static void main(String[] args) {
         SellerDAO sel = new SellerDAO();
-        Seller sele = sel.getSellerID("1");
-        System.out.println(sele.getDescription());
+        List<Seller> list = sel.getAllSeller();
+        for (Seller sele : list) {
+            System.out.println(sele.getSellerShopName() + " " + sele.getEvidence());
+        }     
     }
 
     public int addSeler(Seller s) {
@@ -175,6 +177,29 @@ public class SellerDAO extends BaseDAO {
         return list;
     }
 
+    public List<Seller> getSellerBySellerRequest() {
+        List<Seller> list = new ArrayList<>();
+        xSql = "select * from Seller where [status] = 1 and [sellerVerification] = 0";
+        try {
+            pre = conn.prepareStatement(xSql);
+            rs = pre.executeQuery();
+            while (rs.next()) {
+                list.add(new Seller(
+                        rs.getInt(1),
+                        rs.getInt(2),
+                        rs.getString(3),
+                        rs.getString(4),
+                        rs.getString(5),
+                        rs.getInt(6),
+                        rs.getString(7),
+                        rs.getInt(8),
+                        rs.getInt(9)));
+            }
+        } catch (Exception e) {
+        }
+        return list;
+    }
+    
     public Seller getSellerByUserID(int userID) {
         xSql = "select * from [Bmazon].[dbo].[Seller] where userID = " + userID;
         ResultSet rs = dbConn.getData(xSql);
@@ -193,6 +218,26 @@ public class SellerDAO extends BaseDAO {
         return null;
     }
 
+    public void acceptSellerRequest(int sellerID) {
+        int n = 0;
+        xSql = "update [Bmazon].[dbo].[Seller] set [sellerVerification] = 1 where [sellerID] = " + sellerID;
+        try {
+            pre = conn.prepareStatement(xSql);
+            n = pre.executeUpdate();
+        } catch (Exception e) {
+        }
+    }
+    
+    public void denySellerRequest(int sellerID) {
+        int n = 0;
+        xSql = "update [Bmazon].[dbo].[Seller] set [sellerVerification] = 2 where [sellerID] = " + sellerID;
+        try {
+            pre = conn.prepareStatement(xSql);
+            n = pre.executeUpdate();
+        } catch (Exception e) {
+        }
+    }
+    
     public List<Seller> searchSeller(String text) {
         List<Seller> list = new ArrayList<>();
         xSql = "SELECT * FROM [Bmazon].[dbo].[Role] where roleName like '%" + text + "%'";

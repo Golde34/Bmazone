@@ -123,7 +123,11 @@
             </form>
             <%} else if (sel != null && sel.getSellerVerification() == 0) {%>
             <div style="height: 25rem;">
-                <p style="color: red; font-size: 18px;">Waiting for adminstrator to verify your registration certificate...</p>
+                <p style="color: red; font-size: 18px;">Waiting for administrator to verify your registration certificate...</p>
+            </div>
+            <%} else if (sel != null && sel.getSellerVerification() == 2) {%>
+            <div style="height: 25rem;">
+                <p style="color: red; font-size: 18px;">You have been refused to become a seller on our Website. </p>
             </div>
             <%} else if (sel != null && sel.getSellerVerification() == 1) {%>
             <br>
