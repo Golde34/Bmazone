@@ -62,7 +62,7 @@
         <div class="container">
             <br>
             <div class="title" style="text-align: center;">
-                <h1>Top Up</h1>
+                <h1>Wallet</h1>
             </div>
             <br>
             <div class="col-md-3"></div>
@@ -71,7 +71,7 @@
                 <div class="card">
                     <div class="box">
                         <form action="UserControllerMap" method="POST" >
-                            <input type="hidden" name ="service" value="topUp">
+                            <input type="hidden" name ="service" value="editWallet">
 
                             <label class="label control-label">Display Name</label>
                             <div class="input-group" >
@@ -102,14 +102,14 @@
                             <div class="input-group">
                                 <span class="input-group-addon">
                                     <span class="glyphicon glyphicon-usd"></span></span>
-                                <input id="mobile" type="text" class="form-control" name="phone" 
+                                <input id="mobile" type="text" class="form-control" name="wallet" 
                                        placeholder="Your Phone" value="<%=x.getWallet()%>" readonly="">
                                 <span id='message1'></span>
                             </div>
 
                             <label class="label control-label">Amount</label>
                             <div class="input-group">
-                                <input id="amount" type="tẽt" class="form-control" name="amount" 
+                                <input id="amount" type="text" class="form-control" name="amount" 
                                        placeholder="Enter the amount to deposit or withdrawal" required>
                             </div>
                             <br>

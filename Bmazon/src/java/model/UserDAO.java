@@ -507,12 +507,25 @@ public class UserDAO extends BaseDAO {
         return n;
     }
 
-    public void updateWalletUser(User obj, double amount) {
+    public void depositWalletUser(User obj, double amount) {
 
         String sql = "UPDATE [User] SET wallet=? where userID=?";
         try {
             pre = conn.prepareStatement(sql);
             pre.setDouble(1, obj.getWallet() + amount);
+            pre.setString(2, obj.getUserId());
+            pre.executeUpdate();
+        } catch (SQLException ex) {
+            Logger.getLogger(UserDAO.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+    
+    public void withdrawalWalletUser(User obj, double amount) {
+
+        String sql = "UPDATE [User] SET wallet=? where userID=?";
+        try {
+            pre = conn.prepareStatement(sql);
+            pre.setDouble(1, obj.getWallet() - amount);
             pre.setString(2, obj.getUserId());
             pre.executeUpdate();
         } catch (SQLException ex) {
