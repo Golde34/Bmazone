@@ -1,3 +1,4 @@
+<%@page import="java.text.DecimalFormat"%>
 <%@page import="model.*"%>
 <%@page import="java.util.*"%>
 <%@page import="entity.*"%>
@@ -5,11 +6,12 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <c:set var="contextPath" value="${pageContext.request.contextPath}" />
 <%
+    DecimalFormat nf = new DecimalFormat("###,###,###");
+    ProductTypeDAO ptdao = new ProductTypeDAO();
     UserDAO userdao = new UserDAO();
-    ShipCompany company = (ShipCompany) request.getAttribute("company");
-    ProductType producttype = (ProductType) request.getAttribute("producttype");
     Product product = (Product) request.getAttribute("product");
     String mess = (String) request.getAttribute("mess");
+    List<ProductType> listType = ptdao.getProductByProductID(product.getProductID());
     if (mess == null) {
         mess = "";
     }
@@ -66,7 +68,7 @@
                                 <%}%>
                                 <div class="card-body">
                                     <%if (service.equalsIgnoreCase("updateproductdetail")) {%>
-                                    <table class="table table-striped">
+                                    <table class="table table-borderless">
                                         <tr>
                                             <td style="width: 30%;">Product Name</td>
                                             <td style="width: 70%;"><textarea class="form-control" name="productname"><%=product.getProductName()%></textarea></td>
@@ -81,7 +83,7 @@
                                         </tr>
                                         <tr>
                                             <td>Seller</td>
-                                            <%User user = userdao.getUserById(product.getProductID());%>
+                                            <%User user = userdao.getUserById(product.getSeller());%>
                                             <td><input class="form-control" readonly value="<%=user.getFullname()%>" type="text" name="seller" class="input"></td>
                                         </tr>
                                         <tr>
@@ -100,36 +102,37 @@
                                 </div>
                                 <div class="card-body">
                                     <%if (service.equalsIgnoreCase("updateproductdetail")) {%>
-                                    <table class="table table-striped">
-                                        <tr>
-                                            <td style="width: 30%;">Product Name</td>
-                                            <td style="width: 70%;"><textarea class="form-control" name="productname"><%=product.getProductName()%></textarea></td>
-                                        </tr>
-                                        <tr>
-                                            <td>Description</td>
-                                            <td><textarea class="form-control" name="description" rows="7"><%=product.getDescription()%></textarea></td>
-                                        </tr>    
-                                        <tr>
-                                            <td>Rating</td>
-                                            <td><input class="form-control" value="<%=product.getRating()%>" type="text" name="rating" class="input"></td>
-                                        </tr>
-                                        <tr>
-                                            <td>Seller</td>
-                                            <%User user = userdao.getUserById(product.getProductID());%>
-                                            <td><input class="form-control" readonly value="<%=user.getFullname()%>" type="text" name="seller" class="input"></td>
-                                        </tr>
-                                        <tr>
-                                            <td>Release Date</td>
-                                            <td><input class="form-control" value="<%=product.getReleaseDate()%>" type="date" name="date" class="input"></td>
-                                        </tr>
-                                        <tr>
-                                            <td></td>
-                                            <td>
-                                                <input type="submit" value="Update Product" class="btn btn-primary mt-3">
-                                                <input type="hidden" value="updateproduct" name="service">
-                                                <input type="hidden" value="<%=product.getProductID()%>" name="id">
-                                            </td>
-                                        </tr>
+                                    <table class="table table-borderless">
+                                        <thead>
+                                            <tr>
+                                                <th style="width: 40%;">Color</th>
+                                                <th style="width: 40%;">Size</th>
+                                                <th style="width: 15%;">Price</th>
+                                                <th style="width: 5%;">Quantity</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <% for (ProductType pt : listType) {%>
+                                            <tr class="ml-5">
+                                                <th><input style="width: 100%;" type="text" name="size" class="form-control" value="<%=pt.getColor()%>"></th>
+                                                <th><input style="width: 100%;" type="text" name="color" class="form-control" value="<%=pt.getSize()%>"></th>
+                                                <%Double price = Double.parseDouble(pt.getPrice());%>
+                                                <th><input style="width: 100%;" type="text" name="price" class="form-control" value="<%=nf.format(price)%>"></th>
+                                                <th><input style="width: 100%;"  type="text" name="quantity" class="form-control" value="<%=pt.getQuantity()%>"></th>
+                                            </tr>
+                                            <%}%>
+                                        </tbody>
+                                        <tfoot align="left">
+                                            <tr>
+                                                <td></td>
+                                                <td>
+                                                    <button class="btn btn-primary mt-3">Add Product Type</button>
+                                                    <input type="submit" value="Update Product" class="btn btn-primary mt-3">
+                                                    <input type="hidden" value="updateproduct" name="service">
+                                                    <input type="hidden" value="<%=product.getProductID()%>" name="id">
+                                                </td>
+                                            </tr>
+                                        </tfoot>
                                     </table>
                                     <%}%>
                                 </div>

@@ -59,8 +59,6 @@
                                      style="display: flex;
                                      justify-content: space-between;">
                                     <h3 class="m-0 font-weight-bold text-primary">Product Management</h3>
-                                    <a href="AdminControllerMap?service=addproductdetail">
-                                        <button class="btn btn-primary">Add new product</button></a>
                                 </div>
                                 <div class="card-body">
                                     <div class="table_head py-3" style="display: flex;
