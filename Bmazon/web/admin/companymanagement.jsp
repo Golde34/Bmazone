@@ -1,9 +1,11 @@
+<%@page import="java.text.DecimalFormat"%>
 <%@page import="java.util.*"%>
 <%@page import="entity.*"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <c:set var="contextPath" value="${pageContext.request.contextPath}" />
 <%
+    DecimalFormat nf = new DecimalFormat("###,###,###");
     int index = (Integer) request.getAttribute("index");
     int totalPage = (Integer) request.getAttribute("totalPage");
     int prev = index == 1 ? 1 : index - 1;
@@ -47,16 +49,13 @@
                         <div class="col-lg-12 col-md-12 mb-md-0 mb-4">
                             <div class="card">
                                 <div class="card-body px-0 pb-2">
-                                    <div class="card-header py-3" 
-                                         style="display: flex;
-                                         justify-content: space-between;">
+                                    <div class="card-header py-3 d-flex justify-content-between">
                                         <h3 class="m-0 font-weight-bold text-primary">Ship Company Management</h3>
                                         <a href="AdminControllerMap?service=addcompanydetail">
                                             <button class="btn-primary btn">Add new company</button></a>
                                     </div>
                                     <div class="card-body">
-                                        <div class="table_head py-3" style="display: flex;
-                                             justify-content: space-between;">
+                                        <div class="table_head py-3 d-flex justify-content-between">
                                             <div class="rowNum">
                                                 <h6 style="display: inline">Select number of Rows</h6>
                                                 <div class="form-group" style="display: inline;">
@@ -72,7 +71,7 @@
                                                 <input id="search" style="width: 100%;" type="text" oninput="pagination()" placeholder="Search.." class="form-control">
                                             </div>
                                         </div>
-                                        <table class="table table-bordered table-striped" id="dataTable" style="text-align: center;">
+                                        <table class="table table-bordered table-striped text-center">
                                             <thead>
                                                 <tr>
                                                     <th>Company Name</th>
@@ -85,10 +84,9 @@
                                             <tbody id="company">
                                             <%for (ShipCompany company : listCompany) {%>
                                             <tr>
-                                                <% int unit = (int) company.getUnitCost();%>
                                                 <td><%=company.getCompanyName()%></td>
                                                 <td><%=company.getCommitDate()%></td>
-                                                <td><%=unit%></td>
+                                                <td><%=nf.format(company.getUnitCost())%></td>
                                                 <td>
                                                     <a href="AdminControllerMap?service=updatecompanydetail&companyid=<%=company.getCompanyID()%>"><span class="fas fa-edit"></span></a>
                                                 </td>
@@ -97,8 +95,7 @@
                                             <%}%>
                                         </tbody>
                                     </table>
-                                    <div class="pagination-container mt-4" style="display: flex;
-                                         justify-content: space-around;cursor: pointer;">
+                                    <div class="pagination-container mt-4 d-flex justify-content-around" style="cursor: pointer;">
                                         <nav>
                                             <%if (totalPage > 1) {%>
                                             <ul class="pagination" id="showpage">

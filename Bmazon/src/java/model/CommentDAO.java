@@ -25,7 +25,7 @@ public class CommentDAO extends BaseDAO {
         try {
             pre = conn.prepareStatement(sql);
             pre.setInt(1, obj.getProductID());
-            pre.setInt(2, obj.getUserID());
+            pre.setString(2, obj.getUserID());
             pre.setString(3, obj.getContent());
             pre.setDouble(4, obj.getRating());
             n = pre.executeUpdate();
@@ -46,7 +46,7 @@ public class CommentDAO extends BaseDAO {
                 Comment x = new Comment();
                 x.setCommentID(rs.getInt("commentID"));
                 x.setProductID(rs.getInt("productID"));
-                x.setUserID(rs.getInt("userId"));
+                x.setUserID(rs.getString("userId"));
                 x.setContent(rs.getString("content"));
                 x.setRating(rs.getInt("rating"));
                 x.setStatus(rs.getInt("status"));

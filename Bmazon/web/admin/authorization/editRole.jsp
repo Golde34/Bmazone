@@ -5,8 +5,12 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <c:set var="contextPath" value="${pageContext.request.contextPath}" />
 <%
-    List<Role> listRole = (List<Role>) request.getAttribute("role");
+    Role role = (Role) request.getAttribute("roleDetail");
     String mess = (String) request.getAttribute("mess");
+    String state = (String) request.getAttribute("state");
+    if (state == null) {
+        state = "";
+    }
     if (mess == null) {
         mess = "";
     }
@@ -36,50 +40,87 @@
     <body class="g-sidenav-show  bg-gray-100">
         <aside class="sidenav navbar navbar-vertical navbar-expand-xs border-0 border-radius-xl my-3 fixed-start ms-3 " id="sidenav-main">
             <jsp:include page="../adminsidebar.jsp"></jsp:include>
-        </aside>
-        <main class="main-content position-relative max-height-vh-100 h-100 mt-1 border-radius-lg ">
-            <!-- Navbar -->
+            </aside>
+            <main class="main-content position-relative max-height-vh-100 h-100 mt-1 border-radius-lg ">
+                <!-- Navbar -->
             <jsp:include page="../adminheader.jsp"></jsp:include>
-            <!-- End Navbar -->
-            <div class="container-fluid py-4">
-                <div class="row my-4">
-                    <div class="col-lg-12 col-md-12 mb-md-0 mb-4">
-                        <div class="card">
-                            <div class="card-body px-0 pb-2">
-                                <div class="card-header py-3" 
-                                     style="display: flex;
-                                     justify-content: space-between;">
-                                    <h6 class="m-0 font-weight-bold text-primary">Product Detail</h6>
-                                </div>
+                <!-- End Navbar -->
+                <div class="container-fluid py-4">
+                    <div class="row my-4">
+                        <div class="col-lg-12 col-md-12 mb-md-0 mb-4">
+                            <div class="card">
+                                <div class="card-body px-0 pb-2">
+                                    <div class="card-header py-3" style="display: flex;
+                                         justify-content: space-between;">
+                                        <h6 class="m-0 font-weight-bold text-primary">Role Detail</h6>
+                                        <a href="AdminControllerMap?service=roleDisplay"><btn class="btn btn-primary">Role Management</btn></a>
+                                    </div>
+                                <% if (state.equals("success")) {%>
+                                <h6 class="text-success mt-3 px-4">${mess}</h6>
+                                <%}%>
+                                <% if (state.equals("fail")) {%>
+                                <h6 class="text-danger mt-3 px-4">${mess}</h6>
+                                <%}%>
                                 <div class="card-body">
                                     <form class="form" action="/Bmazon/AdminControllerMap" method="POST">
                                         <%if (service.equalsIgnoreCase("addRoleDetail")) {%>
-                                        <table class="table">
+                                        <table class="table table-striped">
                                             <tr>
                                                 <td>Role ID</td>
-                                                <td><input type="text" name="roleID" class="input"><br></td>
+                                                <td><input type="text" name="roleID" class="form-control"></td>
                                             </tr>
                                             <tr>
                                                 <td>Role name</td>
-                                                <td><input type="text" name="roleName" class="input"><br></td>
+                                                <td><input type="text" name="roleName" class="form-control"></td>
                                             </tr>    
                                             <tr>
                                                 <td>Administrator Permission<p></td>
-                                                <td><input type="text" name="adminPermission" class="input"><br></td>
+                                                <td><input type="text" name="adminPermission" class="form-control"></td>
                                             </tr>
                                             <tr>
                                                 <td>Seller Permission<p></td>
-                                                <td><input type="text" name="sellerPermission" class="input"><br></td>
+                                                <td><input type="text" name="sellerPermission" class="form-control"></td>
                                             </tr>
                                             <tr>
                                                 <td>Customer Permission<p></td>
-                                                <td><input type="text" name="customerPermission" class="input"><br></td>
+                                                <td><input type="text" name="customerPermission" class="form-control"></td>
                                             </tr>
                                             <tr>
                                                 <td></td>
                                                 <td>
-                                                    <input type="submit" value="Add Product" class="btn btn-primary">
+                                                    <input type="submit" value="Add Role" class="btn btn-primary">
                                                     <input type="hidden" value="addRole" name="service">
+                                                </td>
+                                            </tr>
+                                        </table>
+                                        <%}%>
+                                        <%if (service.equalsIgnoreCase("updateRoleDetail")) {%>
+                                        <table class="table table-striped">
+                                            <tr>
+                                                <td>Role ID</td>
+                                                <td><input type="text" name="roleID" value="<%=role.getRoleID()%>" class="form-control"></td>
+                                            </tr>
+                                            <tr>
+                                                <td>Role name</td>
+                                                <td><input type="text" name="roleName" value="<%=role.getRoleName()%>" class="form-control"></td>
+                                            </tr>    
+                                            <tr>
+                                                <td>Administrator Permission<p></td>
+                                                <td><input type="text" name="adminPermission" value="<%=role.getAdminPermission()%>" class="form-control"></td>
+                                            </tr>
+                                            <tr>
+                                                <td>Seller Permission<p></td>
+                                                <td><input type="text" name="sellerPermission" value="<%=role.getSellerPermission()%>" class="form-control"></td>
+                                            </tr>
+                                            <tr>
+                                                <td>Customer Permission<p></td>
+                                                <td><input type="text" name="customerPermission" value="<%=role.getCustomerPermission()%>" class="form-control"></td>
+                                            </tr>
+                                            <tr>
+                                                <td></td>
+                                                <td>
+                                                    <input type="submit" value="Update Role" class="btn btn-primary">
+                                                    <input type="hidden" value="updateRole" name="service">
                                                 </td>
                                             </tr>
                                         </table>

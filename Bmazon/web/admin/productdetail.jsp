@@ -1,3 +1,4 @@
+<%@page import="java.text.DecimalFormat"%>
 <%@page import="model.*"%>
 <%@page import="java.util.*"%>
 <%@page import="entity.*"%>
@@ -5,10 +6,11 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <c:set var="contextPath" value="${pageContext.request.contextPath}" />
 <%
+    ProductTypeDAO daopt = new ProductTypeDAO();
+    DecimalFormat nf = new DecimalFormat("###,###,###");
     UserDAO userdao = new UserDAO();
-    ShipCompany company = (ShipCompany) request.getAttribute("company");
-    ProductType producttype = (ProductType) request.getAttribute("producttype");
     Product product = (Product) request.getAttribute("product");
+    List<ProductType> listType = daopt.getProductByProductID(product.getProductID());
     String mess = (String) request.getAttribute("mess");
     if (mess == null) {
         mess = "";
@@ -19,7 +21,6 @@
     }
     String service = (String) request.getAttribute("service");
     User curUser = (User) request.getSession().getAttribute("currUser");
-    List<Product> listProduct = (ArrayList<Product>) request.getAttribute("listProduct");
 %>
 
 <!DOCTYPE html>
@@ -50,11 +51,9 @@
                 <div class="container-fluid py-4">
                     <div class="row my-4">
                         <div class="col-lg-12 col-md-12 mb-md-0 mb-4">
-                            <form class="needs-validation" novalidate="" action="/Bmazon/AdminControllerMap" method="POST">
+                            <form id="form" class="needs-validation" novalidate="" action="/Bmazon/AdminControllerMap" method="POST">
                                 <div class="card">
-                                    <div class="card-header pt-5" 
-                                         style="display: flex;
-                                         justify-content: space-between;">
+                                    <div class="card-header pt-5 d-flex justify-content-between">
                                         <h3 class="m-0 font-weight-bold text-primary">General Information</h3>
                                         <a href="AdminControllerMap?service=productmanagement"><btn class="btn btn-primary">Product Management</btn></a>
                                     </div>
@@ -81,56 +80,61 @@
                                         </tr>
                                         <tr>
                                             <td>Seller</td>
-                                            <%User user = userdao.getUserById(product.getProductID());%>
-                                            <td><input class="form-control" readonly value="<%=user.getFullname()%>" type="text" name="seller" class="input"></td>
+                                            <%User user = userdao.getUserById(product.getSeller());%>
+                                            <td>
+                                                <input class="form-control" readonly value="<%=user.getFullname()%>" type="text" class="input">
+                                                <input type="hidden" name="seller" value="<%=product.getSeller()%>"
+                                            </td>
                                         </tr>
                                         <tr>
                                             <td>Release Date</td>
                                             <td><input class="form-control" value="<%=product.getReleaseDate()%>" type="date" name="date" class="input"></td>
                                         </tr>
+                                        <input type="hidden" value="updateproduct" name="service">
+                                        <input type="hidden" value="<%=product.getProductID()%>" name="pid">
                                     </table>
                                     <%}%>
                                 </div>
                             </div>
                             <div class="card mt-3">
-                                <div class="card-header pt-5" 
-                                     style="display: flex;
-                                     justify-content: space-between;">
+                                <div class="card-header pt-5 d-flex justify-content-between">
                                     <h3 class="m-0 font-weight-bold text-primary">Detail Information</h3>
                                 </div>
                                 <div class="card-body">
                                     <%if (service.equalsIgnoreCase("updateproductdetail")) {%>
-                                    <table class="table table-striped">
-                                        <tr>
-                                            <td style="width: 30%;">Product Name</td>
-                                            <td style="width: 70%;"><textarea class="form-control" name="productname"><%=product.getProductName()%></textarea></td>
-                                        </tr>
-                                        <tr>
-                                            <td>Description</td>
-                                            <td><textarea class="form-control" name="description" rows="7"><%=product.getDescription()%></textarea></td>
-                                        </tr>    
-                                        <tr>
-                                            <td>Rating</td>
-                                            <td><input class="form-control" value="<%=product.getRating()%>" type="text" name="rating" class="input"></td>
-                                        </tr>
-                                        <tr>
-                                            <td>Seller</td>
-                                            <%User user = userdao.getUserById(product.getProductID());%>
-                                            <td><input class="form-control" readonly value="<%=user.getFullname()%>" type="text" name="seller" class="input"></td>
-                                        </tr>
-                                        <tr>
-                                            <td>Release Date</td>
-                                            <td><input class="form-control" value="<%=product.getReleaseDate()%>" type="date" name="date" class="input"></td>
-                                        </tr>
-                                        <tr>
-                                            <td></td>
-                                            <td>
-                                                <input type="submit" value="Update Product" class="btn btn-primary mt-3">
-                                                <input type="hidden" value="updateproduct" name="service">
-                                                <input type="hidden" value="<%=product.getProductID()%>" name="id">
-                                            </td>
-                                        </tr>
+                                    <table id="productType" class="table table-borderless">
+                                        <thead>
+                                            <tr>
+                                                <th style="width: 35%;">Color</th>
+                                                <th style="width: 40%;">Size</th>
+                                                <th style="width: 15%;">Price</th>
+                                                <th style="width: 5%;">Quantity</th>
+                                                <th style="width: 5%;"></th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <% for (ProductType pt : listType) {%>
+                                            <tr>
+                                                <td>
+                                                    <input style="width: 100%;" type="text" name="color" class="form-control" value="<%=pt.getColor()%>">
+                                                    <input type="hidden" name="ptid" value="<%=pt.getProductTypeId()%>">
+                                                </td>
+                                                <td><input style="width: 100%;" type="text" name="size" class="form-control" value="<%=pt.getSize()%>"></td>
+                                                    <%Double price = Double.parseDouble(pt.getPrice());%>
+                                                <td><input style="width: 100%;" type="text" name="price" class="form-control price" value="<%=nf.format(price)%>"></td>
+                                                <td><input style="width: 100%;"  type="text" name="quantity" class="form-control" value="<%=pt.getQuantity()%>"></td>
+                                                <td>
+                                                    <a href="AdminControllerMap?service=deleteproducttype&producttypeid=<%=pt.getProductTypeId()%>" onclick="return confirm('Are you sure you want to Remove?');">
+                                                        <span class="fas fa-trash-alt mt-3 ml-3 delete"></span>
+                                                    </a>
+                                                </td>
+                                            </tr>
+                                            <%}%>
+                                        </tbody>
                                     </table>
+                                    <div class="d-flex justify-content-center">
+                                        <input type="submit" value="Update Product" class="btn btn-primary mt-3">
+                                    </div>
                                     <%}%>
                                 </div>
                             </div>
@@ -138,18 +142,50 @@
                     </div>
                 </div>
             </div>
-        </div>
-    </main>
+        </main>
 
-    <!--   Core JS Files   -->
-    <script src="${contextPath}/js/core/popper.min.js"></script>
-    <script src="${contextPath}/js/core/bootstrap.min.js"></script>
-    <script src="${contextPath}/js/plugins/perfect-scrollbar.min.js"></script>
-    <script src="${contextPath}/js/plugins/smooth-scrollbar.min.js"></script>
-    <script src="${contextPath}/js/plugins/chartjs.min.js"></script>
-    <!-- Github buttons -->
-    <script async defer src="https://buttons.github.io/buttons.js"></script>
-    <script>
+        <!--   Core JS Files   -->
+        <script src="${contextPath}/js/core/popper.min.js"></script>
+        <script src="${contextPath}/js/core/bootstrap.min.js"></script>
+        <script src="${contextPath}/js/plugins/perfect-scrollbar.min.js"></script>
+        <script src="${contextPath}/js/plugins/smooth-scrollbar.min.js"></script>
+        <script src="${contextPath}/js/plugins/chartjs.min.js"></script>
+        <!-- Github buttons -->
+        <script async defer src="https://buttons.github.io/buttons.js"></script>
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+        <script>
+        function add_fields() {
+            document.getElementById("productType").insertRow(-1).innerHTML =
+                    '<tr>' +
+                    '<td>' +
+                    '<input style="width: 100%;" type="text" name="color" class="form-control">' +
+                    '<input input type="hidden" name="ptid">' +
+                    '</td>' +
+                    '<td>' +
+                    '<input style="width: 100%;" type="text" name="size" class="form-control">' +
+                    '</td>' +
+                    '<td>' +
+                    '<input style="width: 100%;" type="text" name="price" class="form-control price">' +
+                    '</td>' +
+                    '<td>' +
+                    '<input style="width: 100%;"  type="text" name="quantity" class="form-control">' +
+                    '</td>' +
+                    '<td>' +
+                    '<a><span class="fas fa-trash-alt mt-3 ml-3 delete"></span></a>' +
+                    '</td>' +
+                    '</tr>';
+        }
+//        $(".delete").click(function () {
+//            var result = confirm("Want to delete?");
+//            if (result) {
+//                $(this).closest("tr").remove();
+//            }
+//
+//        });
+        $(".price").on('keyup', function () {
+            var n = parseInt($(this).val().replace(/\D/g, ''), 10);
+            $(this).val(n.toLocaleString());
+        });
         (function () {
             'use strict'
             var forms = document.querySelectorAll('.needs-validation')
@@ -164,10 +200,10 @@
                         }, false)
                     })
         })()
-    </script>
-    <!-- Control Center for Soft Dashboard: parallax effects, scripts for the example pages etc -->
-<!--        <script src="${contextPath}/js/soft-ui-dashboard.min.js?v=1.0.3"></script>-->
+        </script>
+        <!-- Control Center for Soft Dashboard: parallax effects, scripts for the example pages etc -->
+    <!--        <script src="${contextPath}/js/soft-ui-dashboard.min.js?v=1.0.3"></script>-->
 
-</body>
+    </body>
 
 </html>

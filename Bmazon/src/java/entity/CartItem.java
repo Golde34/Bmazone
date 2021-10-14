@@ -5,6 +5,7 @@ package entity;
  * @author Lonely
  */
 public class CartItem {
+    int cartID;
 
     private int productID;
     private String name;
@@ -25,6 +26,27 @@ public class CartItem {
         this.quantity = quantity;
         this.TotalCost = TotalCost;
     }
+
+    public CartItem(int cartID, int productID, String name, String size, String color, String image, double price, int quantity, double TotalCost) {
+        this.cartID = cartID;
+        this.productID = productID;
+        this.name = name;
+        this.size = size;
+        this.color = color;
+        this.image = image;
+        this.price = price;
+        this.quantity = quantity;
+        this.TotalCost = TotalCost;
+    }
+
+    public int getCartID() {
+        return cartID;
+    }
+
+    public void setCartID(int cartID) {
+        this.cartID = cartID;
+    }
+    
 
     public String getSize() {
         return size;

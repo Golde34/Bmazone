@@ -51,7 +51,6 @@
     </head>
     <body>
         <jsp:include page="../header.jsp"/>
-
         <div class="row py-5 px-4">
             <div class="col-md-10 mx-auto">
                 <!-- Profile widget -->
@@ -134,6 +133,18 @@
                                     <div class="left-component p-4 rounded shadow-sm">
                                         <h4 class="mb-0"><strong>Your list and your wishlist</strong></h4>
 
+                                    </div>
+                                    <br>
+                                    <div class="left-component p-4 rounded shadow-sm">
+                                        <%if (x.getSystemRole() == 0) {%>
+                                        <a href="${contextPath}/UserControllerMap?service=turnOnSalesFeature">
+                                            <h4 class="mb-0"><strong>Wanna create an online shop? Click here</strong></h4>
+                                        </a>
+                                        <% } else {%> 
+                                        <a href="${contextPath}/UserControllerMap?service=editProfile">
+                                            <h4 class="mb-0"><strong>Edit Seller Information</strong></h4>
+                                        </a>
+                                        <%}%>
                                     </div>
                                 </div>
 

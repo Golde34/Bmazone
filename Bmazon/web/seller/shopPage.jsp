@@ -20,6 +20,7 @@
 <%@page import="entity.ProductType"%>
 
 <%@ page contentType="text/html;charset=UTF-8" language="java" pageEncoding="UTF-8"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <% DecimalFormat nf = new DecimalFormat("###,###,###");%>
 <%
     ProductTypeDAO daoProductType = new ProductTypeDAO();
@@ -27,6 +28,11 @@
     GalleryDAO daoGallery = new GalleryDAO();
     Product product = (Product) request.getAttribute("product");
     List<Product> listProduct = (List<Product>) request.getAttribute("listProduct");
+    User user = (User) request.getAttribute("user");
+    CategoryDAO daoCate = new CategoryDAO();
+    GenreDAO genDAO = new GenreDAO();
+    ArrayList<Category> cateList = daoCate.getTrueCategories();
+    ArrayList<Genre> gerneList = genDAO.getTrueGenres();
 %>
 <!DOCTYPE html>
 <!--[if IE 9 ]> <html lang="vi" class="ie9 loading-site no-js"> <![endif]-->
@@ -51,14 +57,17 @@
         <style>
             .bg{opacity: 0; transition: opacity 1s; -webkit-transition: opacity 1s;} 
             .bg-loaded{opacity: 1;}
-            .col-md-3 img{
-                margin: auto;
-                height: 100px;
-                width: 100px;
+            .col-md-4 img{
+                margin-top: 5px;
+                margin-bottom: 5px;
+                height: 125px;
+                width: 70px;
                 border-radius: 100%;
             }
-            .col-md-5{
-                padding: 10px;
+
+            .col-md-12{
+                margin-top: 10px;
+                margin-bottom: 10px;
             }
         </style><!--[if IE]><link rel="stylesheet" type="text/css" href="http://mauweb.monamedia.net/lazada/wp-content/themes/flatsome/assets/css/ie-fallback.css"><script src="//cdnjs.cloudflare.com/ajax/libs/html5shiv/3.6.1/html5shiv.js"></script><script>var head = document.getElementsByTagName('head')[0],style = document.createElement('style');style.type = 'text/css';style.styleSheet.cssText = ':before,:after{content:none !important';head.appendChild(style);setTimeout(function(){head.removeChild(style);}, 0);</script><script src="http://mauweb.monamedia.net/lazada/wp-content/themes/flatsome/assets/libs/ie-flexibility.js"></script><![endif]--> 
         <script src="js/1.js"></script>
@@ -74,21 +83,72 @@
         <jsp:include page="../header.jsp"/>
 
 
-        <div class="row">
-            <div class="col-md-3" style="background-color: silver">
+        <div class="row" style="background-color: #CCCCFF; margin-top: 10px;">
+            <div class="col-md-4" style="border: 2px solid white">
                 <div class="row">
-                    <img class="col-md-5" src="images/Apple1.jpg">
+                    <%String img = "images/" + user.getBackgroundImage();%>
+                    <img class="col-md-5" src="<%=img%>">
                     <div class="col-md-7">
-                        <h1 style="text-align: center; margin-top: 35px;">Apple Shop</h1>
+                        <h1 style="text-align: center; margin-top: 35px; font-size: 40px;"><%=user.getUsername()%></h1>
                     </div>
                 </div>
             </div>
-            <div class="col-md-9" style="background-color: green;">
-                 
-
+            <div class="col-md-4" style="border: 2px solid white">
+                <div class="col-md-12">
+                    <span>Address: <%=user.getAddress()%></span>
+                </div>
+                <div class="col-md-12">
+                    <span>Phone: <%=user.getPhoneNumber()%></span>
+                </div>
+                <div class="col-md-12">
+                    <span>Bio: <%=user.getBio()%></span>
+                </div>
+                <div class="col-md-12">
+                    <span>Twitter: <%=user.getTwitter()%></span>
+                </div>
+            </div>
+            <div class="col-md-4" style="border: 2px solid white">
+                <div class="col-md-12">
+                    <span>Email: <%=user.getEmail()%></span>
+                </div>
+                <div class="col-md-12">
+                    <span>FB: <%=user.getFacebook()%></span>
+                </div>
+                <div class="col-md-12">
+                    <span>Instagram: <%=user.getInstagram()%></span>
+                </div>
+                <div class="col-md-12">
+                    <span>Youtube: <%=user.getYoutube()%></span>
+                </div>
             </div>
         </div>
 
+        <div class="row" style="margin-top: 20px;">
+            <div class="col-md-12" style="background-color: #CCCCFF">
+                <div class="flex-row container">
+                    <div class="flex-col hide-for-medium flex-center">
+                        <ul class="nav header-nav header-bottom-nav nav-center  nav-line-bottom nav-spacing-xsmall nav-uppercase">
+                            <% for (Category c : cateList) {%>
+                            <li  class="menu-item menu-item-type-taxonomy menu-item-object-product_cat menu-item-has-children has-dropdown" style=" margin-left: 70px;">
+                                <a href="${contextPath}/HomePageControllerMap?service=ByCate&cid=<%=c.getCategoryID()%>" class="menu-image-title-after nav-top-link">
+                                    <span class="menu-image-title" style="color: black"><%=c.getCategoryName()%></span></a>
+                                <ul class='nav-dropdown nav-dropdown-simple'>
+                                    <% for (Genre g : gerneList) {
+                                            if (g.getCategoryID() == c.getCategoryID()) {
+                                    %>
+                                    <li class="menu-item menu-item-type-taxonomy menu-item-object-product_cat  ">
+                                        <a href="${contextPath}/HomePageControllerMap?service=ByGenre&gid=<%=g.getGenreID()%>" class="menu-image-title-after">
+                                            <span class="menu-image-title"><%=g.getGenreName()%></span></a></li>
+                                            <% } %>
+                                            <% } %>
+                                </ul>
+                            </li>
+                            <% }%>
+                        </ul>
+                    </div><!-- flex-col -->
+                </div><!-- .flex-row -->
+            </div>
+        </div>
 
 
         <div id="wrapper">
@@ -97,13 +157,13 @@
                 <div class="col large-12">              
                     <div class="shop-container">
 
-                        <div class="products row row-small large-columns-5 medium-columns-3 small-columns-2 has-shadow row-box-shadow-1" id="1">
+                        <div class="products row row-small large-columns-5 medium-columns-3 small-columns-2 has-shadow row-box-shadow-1" id="1" style="background-color: #CCCCFF">
                             <% for (Product pro : listProduct) {
                                     String str = "images/" + daoGallery.getSampleOfProduct(pro.getProductID());
                                     double price = Double.parseDouble(daoProductType.getProductPrice(pro.getProductID()));
 
                             %>
-                            <div class="product-small col has-hover post-1178 product type-product status-publish has-post-thumbnail product_cat-bach-hoa-online product_cat-do-hop-dong-goi first instock shipping-taxable purchasable product-type-simple">
+                            <div class="product-small col has-hover post-1178 product type-product status-publish has-post-thumbnail product_cat-bach-hoa-online product_cat-do-hop-dong-goi first instock shipping-taxable purchasable product-type-simple" style="margin-top: 20px;">
                                 <div class="col-inner">
 
                                     <div class="product-small box has-hover box-normal box-text-bottom">
@@ -136,10 +196,17 @@
                             %>
                         </div>
                     </div>
-                    <div class="container">
+
+
+                    <div class="container" style="margin-top: 35px;">
                         <nav class="woocommerce-pagination">
                             <ul class="page-numbers nav-pagination links text-center">
+                                ${previous}
+                                <c:forEach  begin="${begin}" end="${end}" var="i">
 
+                                    <li><a class="active" href="HomePageControllerMap?service=shopPage&sid=${sid}&page=${i}">${i}</a></li>
+                                    </c:forEach>
+                                    ${next}
                             </ul>
                         </nav>
                     </div>

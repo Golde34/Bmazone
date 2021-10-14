@@ -46,13 +46,27 @@ CREATE TABLE [User] (
 	activityPoint int CHECK(activityPoint>=0),
 	systemRole int,
 	[status] bit,
-	FOREIGN KEY (systemRole) REFERENCES [Role](roleID)
+
 )
 
 CREATE TABLE [Category] (
 	categoryID int NOT NULL identity(1,1) PRIMARY KEY,
 	categoryName nvarchar(255) NOT NULL,
 	[status] bit
+)
+
+CREATE TABLE Seller (
+	sellerID int not null identity(1, 1) PRIMARY KEY,
+	userID int not null,
+	sellerShopName nvarchar(255),
+	sellerPhone nvarchar(255) not null,
+	evidence nvarchar(255) not null,
+	sellerMainProduct int,
+	[description] nvarchar(255),
+	sellerVerification int,
+	[status] bit,
+	FOREIGN KEY ([userID]) REFERENCES [User]([userID]),
+	FOREIGN KEY (sellerMainProduct) REFERENCES Category([categoryID])
 )
 
 --Toi di code dao <- Code Book <- Book
@@ -80,7 +94,7 @@ CREATE TABLE [Product] (
 	releaseDate date NOT NULL CHECK(releaseDate <= getDate()),
 	sellerID int NOT NULL,
 	[status] bit,
-	FOREIGN KEY (sellerID) REFERENCES [Seller](SellerID),
+	FOREIGN KEY (sellerID) REFERENCES [Seller](sellerID),
 )
 
 
@@ -163,7 +177,6 @@ CREATE TABLE OrderDetail(
 )
 
 CREATE TABLE [Comment](
-
 	commentID int not null identity(1,1) PRIMARY KEY,
 	productID int not null,
 	[userId] int not null,
@@ -171,16 +184,7 @@ CREATE TABLE [Comment](
 	rating real not null CHECK(rating >= 0 AND rating <= 5),
 	status bit,
 	FOREIGN KEY ([userId]) REFERENCES dbo.[User]([userId]),
-	FOREIGN KEY ([productID]) REFERENCES [Product]([productID]),
-
-    commentID int not null identity(1,1) PRIMARY KEY,
-    productID int not null,
-    [userId] int not null,
-    content nvarchar(max),
-    rating real not null CHECK(rating >= 0 AND rating <= 5),
-    status bit,
-    FOREIGN KEY ([userId]) REFERENCES dbo.[User]([userId]),
-    FOREIGN KEY ([productID]) REFERENCES [Product]([productID]),
+	FOREIGN KEY ([productID]) REFERENCES [Product]([productID])
 
 )
 
@@ -196,20 +200,6 @@ CREATE TABLE [Comment](
 	Sale,
 	status
 ) */
-
-CREATE TABLE Seller (
-	sellerID int not null identity(1, 1) PRIMARY KEY,
-	userID int not null,
-	sellerShopName nvarchar(255),
-	sellerPhone nvarchar(255) not null,
-	evidence nvarchar(255) not null,
-	sellerMainProduct int,
-	[description] nvarchar(255),
-	sellerVerification int,
-	[status] bit,
-	FOREIGN KEY ([userID]) REFERENCES [User]([userID]),
-	FOREIGN KEY (sellerMainProduct) REFERENCES Category([categoryID])
-)
 
 --CREATE TABLE Sale
 --CREATE TABLE Seller

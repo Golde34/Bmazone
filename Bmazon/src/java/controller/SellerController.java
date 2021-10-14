@@ -35,6 +35,7 @@ public class SellerController extends HttpServlet {
     ProductTypeDAO ptDAO = new ProductTypeDAO();
     ProductCategoryDAO pcDAO = new ProductCategoryDAO();
     CategoryDAO cateDAO = new CategoryDAO();
+    SellerDAO daoSeller = new SellerDAO();
 
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
@@ -88,6 +89,11 @@ public class SellerController extends HttpServlet {
 //            if (service.equalsIgnoreCase("deleteproduct")) {
 //                serviceDeleteProduct(request, response);
 //            }
+
+            //Edit Seller Information
+            if (service.equalsIgnoreCase("editSellerInformation")) {
+                serviceEditSellerInformation(request, response);
+            }
         }
     }
 
@@ -243,6 +249,28 @@ public class SellerController extends HttpServlet {
 //
 //    public void serviceDeleteProduct(HttpServletRequest request, HttpServletResponse response) {
 //    }
+    
+    private void serviceEditSellerInformation(HttpServletRequest request, HttpServletResponse response) {
+        String mess = "";
+
+        User x = (User) request.getSession().getAttribute("currUser");
+        request.setAttribute("currUser", x);
+        int userID = Integer.parseInt(x.getUserId());
+        Seller seller = daoSeller.getSellerByUserID(userID);
+        
+        String shopName = request.getParameter("shopName");
+        String sellerPhone = request.getParameter("sellerPhone");
+        int sellerMainProduct = Integer.parseInt(request.getParameter("sellerMainProduct"));
+        seller.setSellerShopName(shopName);
+        seller.setSellerPhone(sellerPhone);
+        seller.setSellerMainProduct(sellerMainProduct);
+        
+        daoSeller.editSeller(seller);
+        mess = "Update successfully!";
+        request.setAttribute("mess", mess);
+        sendDispatcher(request, response, "UserControllerMap?service=turnOnSalesFeature");     
+    }
+
     public void sendDispatcher(HttpServletRequest request, HttpServletResponse response, String path) {
         try {
             RequestDispatcher rd = request.getRequestDispatcher(path);

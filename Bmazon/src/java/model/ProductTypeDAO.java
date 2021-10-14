@@ -48,7 +48,7 @@ public class ProductTypeDAO extends BaseDAO {
 
     public int editProduct(ProductType p) {
         int n = 0;
-        xSql = "update product set productID = ? size = ? color = ? price =? wareHouseID = ? quantity = ? status = ? where productTypeId = ?";
+        xSql = "UPDATE [Bmazon].[dbo].[ProductType]SET [productID] = ?,[size] = ? ,[color] = ? ,[price] = ?,[wareHouseID] = ?,[quantity] = ?,[status] = ? WHERE [productTypeId] = ?";
         try {
             pre = conn.prepareStatement(xSql);
             pre.setInt(1, p.getProductID());

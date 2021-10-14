@@ -326,7 +326,7 @@ public class UserDAO extends BaseDAO {
         return null;
     }
 
-    public User getUserById(int id) {
+    public User getUserById(String id) {
         String sql = "SELECT * FROM [User] WHERE userID = '" + id + "'";
         ResultSet rs = dbConn.getData(sql);
         try {
@@ -351,7 +351,7 @@ public class UserDAO extends BaseDAO {
     }
 
     public User getUserByProductId(int id) {
-        String sql = "select * from [User] u join Product p on u.userID = p.seller where p.productID=" + id + "";
+        String sql = "select * from [User] u join Product p on u.userID = p.sellerID where p.productID=" + id + "";
         ResultSet rs = dbConn.getData(sql);
         try {
             if (rs.next()) {

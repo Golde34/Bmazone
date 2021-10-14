@@ -148,7 +148,7 @@
                                         </a>
                                     </li>           
                                 </ul>
-                                
+
                             </div>
 
 
@@ -188,7 +188,7 @@
                                             </i>
                                         </a>
 
-                                      
+
 
                                     </li>
                                 </ul>
@@ -204,8 +204,8 @@
                             </div>
 
                             <!-- Mobile Right Elements -->
-                             <!-- Mobile Right Elements -->
-                             <div class="flex-col show-for-medium flex-right" style="margin-right:20px ">
+                            <!-- Mobile Right Elements -->
+                            <div class="flex-col show-for-medium flex-right" style="margin-right:20px ">
                                 <ul class="mobile-nav nav nav-right ">
                                     <li class="cart-item has-icon">
 
@@ -312,7 +312,7 @@
                                 </form>
                             </div>	</div>
                     </li>
-                    
+
 
                     <%if (x == null) {%>
                     <li class="menu-item menu-item-type-taxonomy menu-item-object-product_cat menu-item-has-children menu-item-1236 ">
@@ -336,13 +336,13 @@
                                 <% if (x.getSell() == 1) { %>
                             <li  ><a href="${contextPath}/SellerControllerMap" class="menu-image-title-after"><span >Seller Dashboard</span></a></li>
                                 <%}%>
-                            
-                                <li  ><a href="${contextPath}/UserControllerMap?service=account" class="menu-image-title-after"><span >Account</span></a></li>
-                                <li  ><a href="${contextPath}/UserControllerMap?service=info" class="menu-image-title-after"><span >User profile</span></a></li>
 
-                                <li  ><a href="${contextPath}/UserControllerMap?service=changepass" class="menu-image-title-after"><span >Change Password</span></a></li>
-                                <li  ><a href="${contextPath}/UserControllerMap?service=logout" class="menu-image-title-after"><span >Logout</span></a></li>
-                            
+                            <li  ><a href="${contextPath}/UserControllerMap?service=account" class="menu-image-title-after"><span >Account</span></a></li>
+                            <li  ><a href="${contextPath}/UserControllerMap?service=info" class="menu-image-title-after"><span >User profile</span></a></li>
+
+                            <li  ><a href="${contextPath}/UserControllerMap?service=changepass" class="menu-image-title-after"><span >Change Password</span></a></li>
+                            <li  ><a href="${contextPath}/UserControllerMap?service=logout" class="menu-image-title-after"><span >Logout</span></a></li>
+
                         </ul>
                     </li>
                     <%}%>      

@@ -6,15 +6,10 @@
 package model;
 
 import entity.*;
-import java.sql.Connection;
-import java.sql.Date;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -25,34 +20,39 @@ import java.util.logging.Logger;
 public class ProductDAO extends BaseDAO {
 
     BaseDAO dbConn = new BaseDAO();
-    
+
     public static void main(String[] args) {
         ProductDAO dao = new ProductDAO();
         System.out.println(dao.getAllPagingProductBySeller(1, 5, "", "4"));
+        ArrayList<Product> list = dao.getAllPagingProduct(1, 5, "");
+        for (Product product : list) {
+            System.out.println(product.getProductName());
+        }
     }
-    
+
     public int getPageNumber(String search) {
         int num = 0;
-        xSql = "SELECT COUNT(*) FROM Product inner join [User] on Product.seller=[User].userID where Product.status=1 and(productName like '%"+search+"%' or [description] like '%"+search+"%' or rating like '%"+search+"%' or [User].fullname like '%"+search+"%' or releaseDate like '%"+search+"%')";
-        ResultSet rs =dbConn.getData(xSql);
+        xSql = "SELECT COUNT(*) FROM Product inner join [User] on Product.sellerID=[User].userID where Product.status=1 and(productName like '%" + search + "%' or [description] like '%" + search + "%' or rating like '%" + search + "%' or [User].fullname like '%" + search + "%' or releaseDate like '%" + search + "%')";
+        ResultSet rs = dbConn.getData(xSql);
         try {
-            if(rs.next()){
-                num=rs.getInt(1);
+            if (rs.next()) {
+                num = rs.getInt(1);
             }
         } catch (SQLException ex) {
             Logger.getLogger(UserDAO.class.getName()).log(Level.SEVERE, null, ex);
         }
         return num;
     }
-    
-    public ArrayList<Product> getAllPagingProduct(int index,int numOfRow,String search) {
+
+    public ArrayList<Product> getAllPagingProduct(int index, int numOfRow, String search) {
         ArrayList<Product> list = new ArrayList<>();
         String sql = "declare @PageNo INT ="+index+"\n"
                 + "declare @PageSize INT="+numOfRow+"\n"
                 + "SELECT * from(\n"
-                + "SELECT productID,productName,[description],rating,seller,[User].fullname,releaseDate,Product.[status],\n"
-                + "ROW_NUMBER() over (order by Product.productID) as RowNum\n"
-                + "  FROM Product inner join [User] on Product.seller=[User].userID where Product.status=1 and(productName like '%"+search+"%' or [description] like '%"+search+"%' or rating like '%"+search+"%' or [User].fullname like '%"+search+"%' or releaseDate like '%"+search+"%'))T\n"
+                + "SELECT p.*,s.sellerShopName,g.genreName,c.categoryName,\n"
+                + "ROW_NUMBER() over (order by p.productID) as RowNum\n"
+                + "  from Product p join Seller s on p.seller=s.sellerID join ProductCategory pc on p.productID=pc.productID join Category c on pc.categoryId=c.categoryID join ProductGenre pg on pg.productID=p.productID join Genre g on g.genreID=pg.genreID\n"
+                + "   where p.[status]=1 and(p.productName like '%"+search+"%' or c.categoryName like '%"+search+"%' or g.genreName like '%"+search+"%' or s.sellerShopName like '%"+search+"%'))T\n"
                 + "where T.RowNum between ((@PageNo-1)*@PageSize)+1 and (@PageNo*@PageSize)";
         try {
             pre = conn.prepareStatement(sql);
@@ -120,7 +120,7 @@ public ArrayList<Product> getAllPagingProductBySeller(int index,int numOfRow,Str
                 pro.setDescription(rs.getString("description"));
                 pro.setRating(rs.getInt("rating"));
                 pro.setReleaseDate(rs.getDate("releaseDate"));
-                pro.setSeller(rs.getInt("seller"));
+                pro.setSeller(rs.getInt("sellerID"));
                 pro.setStatus(rs.getInt("status"));
                 list.add(pro);
             }
@@ -131,7 +131,6 @@ public ArrayList<Product> getAllPagingProductBySeller(int index,int numOfRow,Str
         }
         return list;
     }
-
 
     public ArrayList<Product> getTrueProduct() {
         ArrayList<Product> list = new ArrayList<>();
@@ -146,7 +145,7 @@ public ArrayList<Product> getAllPagingProductBySeller(int index,int numOfRow,Str
                 pro.setDescription(rs.getString("description"));
                 pro.setRating(rs.getInt("rating"));
                 pro.setReleaseDate(rs.getDate("releaseDate"));
-                pro.setSeller(rs.getInt("seller"));
+                pro.setSeller(rs.getInt("sellerID"));
                 pro.setStatus(rs.getInt("status"));
                 list.add(pro);
             }
@@ -172,7 +171,7 @@ public ArrayList<Product> getAllPagingProductBySeller(int index,int numOfRow,Str
                 pro.setDescription(rs.getString("description"));
                 pro.setRating(rs.getInt("rating"));
                 pro.setReleaseDate(rs.getDate("releaseDate"));
-                pro.setSeller(rs.getInt("seller"));
+                pro.setSeller(rs.getInt("sellerID"));
                 pro.setStatus(rs.getInt("status"));
                 list.add(pro);
             }
@@ -197,7 +196,7 @@ public ArrayList<Product> getAllPagingProductBySeller(int index,int numOfRow,Str
                 pro.setDescription(rs.getString("description"));
                 pro.setRating(rs.getInt("rating"));
                 pro.setReleaseDate(rs.getDate("releaseDate"));
-                pro.setSeller(rs.getInt("seller"));
+                pro.setSeller(rs.getInt("sellerID"));
                 pro.setStatus(rs.getInt("status"));
                 list.add(pro);
             }
@@ -222,7 +221,7 @@ public ArrayList<Product> getAllPagingProductBySeller(int index,int numOfRow,Str
                 pro.setDescription(rs.getString("description"));
                 pro.setRating(rs.getInt("rating"));
                 pro.setReleaseDate(rs.getDate("releaseDate"));
-                pro.setSeller(rs.getInt("seller"));
+                pro.setSeller(rs.getInt("sellerID"));
                 pro.setStatus(rs.getInt("status"));
                 list.add(pro);
             }
@@ -247,7 +246,7 @@ public ArrayList<Product> getAllPagingProductBySeller(int index,int numOfRow,Str
                 pro.setDescription(rs.getString("description"));
                 pro.setRating(rs.getInt("rating"));
                 pro.setReleaseDate(rs.getDate("releaseDate"));
-                pro.setSeller(rs.getInt("seller"));
+                pro.setSeller(rs.getInt("sellerID"));
                 pro.setStatus(rs.getInt("status"));
                 list.add(pro);
             }
@@ -272,7 +271,39 @@ public ArrayList<Product> getAllPagingProductBySeller(int index,int numOfRow,Str
                 pro.setDescription(rs.getString("description"));
                 pro.setRating(rs.getInt("rating"));
                 pro.setReleaseDate(rs.getDate("releaseDate"));
-                pro.setSeller(rs.getInt("seller"));
+                pro.setSeller(rs.getInt("sellerID"));
+                pro.setStatus(rs.getInt("status"));
+                list.add(pro);
+            }
+            rs.close();
+            pre.close();
+        } catch (SQLException e) {
+            Logger.getLogger(ProductDAO.class.getName()).log(Level.SEVERE, null, e);
+        }
+        return list;
+    }
+
+    public ArrayList<Product> getProductBySellerPaging(int index, String seller) {
+        ArrayList<Product> list = new ArrayList<>();
+        String sql = " declare @PageNo INT = " + index + " \n"
+                + " declare @PageSize INT=10 \n"
+                + " SELECT * from( \n"
+                + " SELECT *,\n  "
+                + " ROW_NUMBER() over (order by productID) as RowNum\n  "
+                + "   FROM [Bmazon].[dbo].[Product] p  where sellerID = '" + seller + "') as T \n "
+                + " where T.RowNum between ((@PageNo-1)*@PageSize)+1 and (@PageNo*@PageSize)  ";
+        //String sql = "SELECT * FROM Product where seller = '" + seller + "'";
+        try {
+            pre = conn.prepareStatement(sql);
+            rs = pre.executeQuery();
+            while (rs.next()) {
+                Product pro = new Product();
+                pro.setProductID(rs.getInt("productID"));
+                pro.setProductName(rs.getString("productName"));
+                pro.setDescription(rs.getString("description"));
+                pro.setRating(rs.getInt("rating"));
+                pro.setReleaseDate(rs.getDate("releaseDate"));
+                pro.setSeller(rs.getInt("sellerID"));
                 pro.setStatus(rs.getInt("status"));
                 list.add(pro);
             }
@@ -286,7 +317,7 @@ public ArrayList<Product> getAllPagingProductBySeller(int index,int numOfRow,Str
 
     public ArrayList<Product> getProductBySeller(String seller) {
         ArrayList<Product> list = new ArrayList<>();
-        String sql = "SELECT * FROM Product where seller = '" + seller + "'";
+        String sql = "SELECT * FROM Product where sellerID = '" + seller + "'";
         try {
             pre = conn.prepareStatement(sql);
             rs = pre.executeQuery();
@@ -297,7 +328,7 @@ public ArrayList<Product> getAllPagingProductBySeller(int index,int numOfRow,Str
                 pro.setDescription(rs.getString("description"));
                 pro.setRating(rs.getInt("rating"));
                 pro.setReleaseDate(rs.getDate("releaseDate"));
-                pro.setSeller(rs.getInt("seller"));
+                pro.setSeller(rs.getInt("sellerID"));
                 pro.setStatus(rs.getInt("status"));
                 list.add(pro);
             }
@@ -328,7 +359,7 @@ public ArrayList<Product> getAllPagingProductBySeller(int index,int numOfRow,Str
                 pro.setDescription(rs.getString("description"));
                 pro.setRating(rs.getInt("rating"));
                 pro.setReleaseDate(rs.getDate("releaseDate"));
-                pro.setSeller(rs.getInt("seller"));
+                pro.setSeller(rs.getInt("sellerID"));
                 pro.setStatus(rs.getInt("status"));
                 list.add(pro);
             }
@@ -344,6 +375,24 @@ public ArrayList<Product> getAllPagingProductBySeller(int index,int numOfRow,Str
 //        List<Product> listProduct = pDAO.getProductBySeller("1");
 //        System.out.println(listProduct);
 //    }
+
+    public int totalProductSeller(String sid) {
+        int count = 0;
+
+        xSql = "SELECT count(*) FROM [Bmazon].[dbo].[Product] where sellerID = " + sid;
+        try {
+            pre = conn.prepareStatement(xSql);
+            rs = pre.executeQuery();
+            while (rs.next()) {
+                count = rs.getInt(1);
+            }
+            rs.close();
+            pre.close();
+        } catch (SQLException e) {
+            Logger.getLogger(ProductDAO.class.getName()).log(Level.SEVERE, null, e);
+        }
+        return count;
+    }
 
     public int totalSearchProduct(String text) {
         int count = 0;
@@ -382,7 +431,7 @@ public ArrayList<Product> getAllPagingProductBySeller(int index,int numOfRow,Str
                 pro.setDescription(rs.getString("description"));
                 pro.setRating(rs.getInt("rating"));
                 pro.setReleaseDate(rs.getDate("releaseDate"));
-                pro.setSeller(rs.getInt("seller"));
+                pro.setSeller(rs.getInt("sellerID"));
                 pro.setStatus(rs.getInt("status"));
                 list.add(pro);
             }
@@ -407,7 +456,7 @@ public ArrayList<Product> getAllPagingProductBySeller(int index,int numOfRow,Str
                 pro.setDescription(rs.getString("description"));
                 pro.setRating(rs.getInt("rating"));
                 pro.setReleaseDate(rs.getDate("releaseDate"));
-                pro.setSeller(rs.getInt("seller"));
+                pro.setSeller(rs.getInt("sellerID"));
                 pro.setStatus(rs.getInt("status"));
             }
             rs.close();
@@ -432,7 +481,7 @@ public ArrayList<Product> getAllPagingProductBySeller(int index,int numOfRow,Str
                 pro.setDescription(rs.getString("description"));
                 pro.setRating(rs.getInt("rating"));
                 pro.setReleaseDate(rs.getDate("releaseDate"));
-                pro.setSeller(rs.getInt("seller"));
+                pro.setSeller(rs.getInt("sellerID"));
                 pro.setStatus(rs.getInt("status"));
                 list.add(pro);
             }
@@ -458,7 +507,7 @@ public ArrayList<Product> getAllPagingProductBySeller(int index,int numOfRow,Str
                 pro.setDescription(rs.getString("description"));
                 pro.setRating(rs.getInt("rating"));
                 pro.setReleaseDate(rs.getDate("releaseDate"));
-                pro.setSeller(rs.getInt("seller"));
+                pro.setSeller(rs.getInt("sellerID"));
                 pro.setStatus(rs.getInt("status"));
                 list.add(pro);
             }
@@ -483,7 +532,7 @@ public ArrayList<Product> getAllPagingProductBySeller(int index,int numOfRow,Str
                 pro.setDescription(rs.getString("description"));
                 pro.setRating(rs.getInt("rating"));
                 pro.setReleaseDate(rs.getDate("releaseDate"));
-                pro.setSeller(rs.getInt("seller"));
+                pro.setSeller(rs.getInt("sellerID"));
                 pro.setStatus(rs.getInt("status"));
                 list.add(pro);
             }
@@ -497,7 +546,7 @@ public ArrayList<Product> getAllPagingProductBySeller(int index,int numOfRow,Str
 
     public int addProduct(Product obj) {
         int n = 0;
-        String sql = "INSERT INTO [Bmazon].[dbo].[Product]([productName],[description],[rating],[releaseDate],[seller],[status])"
+        String sql = "INSERT INTO [Bmazon].[dbo].[Product]([productName],[description],[rating],[releaseDate],[sellerID],[status])"
                 + "VALUES(?,?,?,?,?,1)";
         try {
             pre = conn.prepareStatement(sql);
@@ -521,7 +570,7 @@ public ArrayList<Product> getAllPagingProductBySeller(int index,int numOfRow,Str
                 + "      ,[description] = ?"
                 + "      ,[rating] = ?"
                 + "      ,[releaseDate] = ?"
-                + "      ,[seller] = ?"
+                + "      ,[sellerID] = ?"
                 + "      ,[status] = ?"
                 + " WHERE productID=?";
         try {

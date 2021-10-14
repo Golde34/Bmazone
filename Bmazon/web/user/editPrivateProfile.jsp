@@ -62,61 +62,62 @@
                 <h1>Private Profile page settings</h1>
             </div>
             <br>
-            <div class="col-md-3"></div>
-            <div class="col-md-7">
-                <%--change--%>
-                <div class="card">
-                    <div class="box">
-                        <form action="UserControllerMap" method="POST" >
-                            <input type="hidden" name ="service" value="changePrivateInfo">
+            <div class="row">
+                <div class="col-md-3"></div>
+                <div class="col-md-6">
+                    <%--change--%>
+                    <div class="card">
+                        <div class="box">
+                            <form action="UserControllerMap" method="POST" >
 
-                            <label class="label control-label">Display Name</label>
-                            <div class="input-group" >
-                                <span class="input-group-addon">
-                                    <span class="glyphicon glyphicon-user"></span></span>
-                                <input type="text" class="form-control" name="name" 
-                                       placeholder="Your Name" value="<%=x.getFullname()%>" required>
-                            </div>
+                                <input type="hidden" name ="service" value="changePrivateInfo">
+                                <p>Directly change your private information in the input.</p>
 
-                            <label class="label control-label">E-mail</label>
-                            <div class="input-group">
-                                <span class="input-group-addon">
-                                    <span class="glyphicon glyphicon-envelope"></span></span>
-                                <input type="email" class="form-control" name="mail" 
-                                       placeholder="Your E-mail" value="<%=x.getEmail()%>" required>
-                            </div>
+                                <label class="label control-label">Display Name</label>
+                                <div class="input-group" >
+                                    <span class="input-group-addon">
+                                        <span class="glyphicon glyphicon-user"></span></span>
+                                    <input type="text" class="form-control" name="name" 
+                                           placeholder="Your Name" value="<%=x.getFullname()%>" required>
+                                </div>
 
-                            <label class="label control-label">Phone</label>
-                            <div class="input-group">
-                                <span class="input-group-addon">
-                                    <span class="glyphicon glyphicon-phone"></span></span>
-                                <input id="mobile" type="text" class="form-control" name="phone" 
-                                       placeholder="Your Phone" value="<%=x.getPhoneNumber()%>" required>
-                                <span id='message1'></span>
-                            </div>
+                                <label class="label control-label">E-mail</label>
+                                <div class="input-group">
+                                    <span class="input-group-addon">
+                                        <span class="glyphicon glyphicon-envelope"></span></span>
+                                    <input type="email" class="form-control" name="mail" 
+                                           placeholder="Your E-mail" value="<%=x.getEmail()%>" required>
+                                </div>
 
-                            <label class="label control-label">Password</label>
-                            <div class="input-group">
-                                <input id="password" type="password" class="form-control" name="pass" 
-                                       placeholder="Enter your password to update" required>
-                            </div>
-                            <br>
-                            <h6 style="color: black" style="font-size: small" >${mess}</h6>
+                                <label class="label control-label">Phone</label>
+                                <div class="input-group">
+                                    <span class="input-group-addon">
+                                        <span class="glyphicon glyphicon-phone"></span></span>
+                                    <input id="mobile" type="text" class="form-control" name="phone" 
+                                           placeholder="Your Phone" value="<%=x.getPhoneNumber()%>" required>
+                                    <span id='message1'></span>
+                                </div>
 
-                            <div class="row">
-                                <br><br>
-                                <div class="col-md-4"></div>
-                                <div class="col-md-4">     
+                                <label class="label control-label">Password</label>
+                                <div class="input-group">
+                                    <input id="text" type="password" class="form-control" name="pass" 
+                                           placeholder="Enter your password to update" required>
+                                </div>
+                                <br>
+                                <div class="row">
+                                    <a class="col-md-4" href="UserControllerMap?service=changepass" style="color: red;" ><strong> Change password </strong></a>
+                                    <h6 class="col-md-8 text-right" style="color: black; font-size: small" >${mess}</h6>
+                                </div> 
+
+                                <div style="text-align: center" >
+                                    <br><br>  
                                     <button style="text-align:center; color:white;border-radius: 15px;height: 2em; width: 8em;" class="btn-danger" > Reset
                                     </button> 
                                     <button type="submit" style="text-align:center; color:white;border-radius: 15px;height: 2em; width: 8em;" class="btn-success" > Change
-                                    </button> 
-                                </div>
-                            </div> 
-                            <br><br>
-
-
-                        </form>
+                                    </button>
+                                </div> 
+                            </form>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -126,8 +127,5 @@
 <br><br><br>
 <jsp:include page="../footer.jsp"/>
 <%--JS--%>
-<script type="text/javascript" src="//code.jquery.com/jquery-1.11.0.min.js"></script>
-<script type="text/javascript" src="//code.jquery.com/jquery-migrate-1.2.1.min.js"></script>
-<script src="https://kit.fontawesome.com/9650a62e47.js" crossorigin="anonymous"></script>
 </body>
 </html>

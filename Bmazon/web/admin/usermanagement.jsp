@@ -39,16 +39,13 @@
                         <div class="col-lg-12 col-md-12 mb-md-0 mb-4">
                             <div class="card">
                                 <div class="card-body px-0 pb-2">
-                                    <div class="card-header py-3" 
-                                         style="display: flex;
-                                         justify-content: space-between;">
+                                    <div class="card-header py-3 d-flex justify-content-between">
                                         <h3 class="m-0 font-weight-bold text-primary">User Management</h3>
                                         <a href="AdminControllerMap?service=adduserdetail">
                                             <button class="btn-primary btn">Add new user</button></a>
                                     </div>
                                     <div class="card-body">
-                                        <div class="table_head py-3" style="display: flex;
-                                             justify-content: space-between;">
+                                        <div class="table_head py-3 d-flex justify-content-between">
                                             <div class="rowNum">
                                                 <h6 style="display: inline">Select number of Rows</h6>
                                                 <div class="form-group" style="display: inline;">
@@ -65,12 +62,10 @@
                                             </div>
                                         </div>
                                         <div class="table-responsive">
-                                            <table class="table table-bordered table-striped" id="dataTable" style="text-align: center;">
+                                            <table class="table table-bordered table-striped text-center">
                                                 <thead>
                                                     <tr>
-                                                        <th>
-                                                            Username
-                                                        </th>
+                                                        <th>Username</th>
                                                         <th>Password</th>
                                                         <th>Email</th>
                                                         <th>Full Name</th>
@@ -98,8 +93,7 @@
                                             </tbody>
                                         </table>
                                     </div>
-                                    <div class="pagination-container mt-4" style="display: flex;
-                                         justify-content: space-around;cursor: pointer;">
+                                    <div class="pagination-container mt-4 d-flex justify-content-around" style="cursor: pointer;">
                                         <nav>
                                             <%if (totalPage > 1) {%>
                                             <ul class="pagination" id="showpage">

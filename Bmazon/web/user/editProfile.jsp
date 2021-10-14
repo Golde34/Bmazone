@@ -46,6 +46,7 @@
     </head>
     <body>
         <%
+            String service = request.getParameter("service");
             User x = (User) request.getAttribute("currUser");
         %>
 
@@ -57,10 +58,12 @@
             <br>
             <ul class="nav nav-tabs">
                 <li class="active" style="font-size: 18px;"><a data-toggle="tab" href="#public-name">Edit public profile</a></li>
-                <li style="font-size: 18px;"><a data-toggle="tab" href="#sales-feature">Turn on the sales feature</a></li>
+                <li style="font-size: 18px;"><a data-toggle="tab" href="#sales-feature">Edit privacy profile</a></li>
             </ul>
             <br><br>
             <div class="tab-content">
+
+                <!--Edit public profile-->
                 <div class="tab-pane fade in active" id="public-name">
                     <form action="UserControllerMap" method="POST">
                         <input type="hidden" name ="service" value="changeinfo">
@@ -147,75 +150,13 @@
                     </form>
                 </div>
 
-
-
+                <!--Turn on Seller Feature-->
                 <div id="sales-feature" class="tab-pane fade">
-                    <h3>Menu 1</h3>
-                    <p>Some content in menu 1.</p>
-                    <div class="col-md-7">
-                        <%--change--%>
-                        <div class="card1">
-                            <div class="box1">
-                                <div class="content1">
-                                    <form action="UserControllerMap" method="POST" >
-                                        <input type="hidden" name ="service" value="changeInfo">
-                                        <h1 class="text-center">Edit Profile</h1>
-
-                                        <label class="label control-label">Display Name</label>
-                                        <div class="input-group" >
-                                            <span class="input-group-addon">
-                                                <span class="glyphicon glyphicon-user"></span></span>
-                                            <input type="text" class="form-control" name="name" 
-                                                   placeholder="Your Name" required>
-                                        </div>
-
-                                        <label class="label control-label">E-mail</label>
-                                        <div class="input-group">
-                                            <span class="input-group-addon">
-                                                <span class="glyphicon glyphicon-envelope"></span></span>
-                                            <input type="email" class="form-control" name="mail" 
-                                                   placeholder="Your E-mail" required>
-                                        </div>
-
-                                        <label class="label control-label">Phone</label>
-                                        <div class="input-group">
-                                            <span class="input-group-addon">
-                                                <span class="glyphicon glyphicon-phone"></span></span>
-                                            <input id="mobile" type="text" class="form-control" name="phone" 
-                                                   placeholder="Your Phone" required>
-                                            <span id='message1'></span>
-                                        </div>
-
-                                        <label class="label control-label">Address</label>
-                                        <div class="input-group">
-                                            <span class="input-group-addon">
-                                                <span class="glyphicon glyphicon-user"></span></span>
-                                            <input type="text" class="form-control" name="address" 
-                                                   placeholder="Your address" required>
-                                        </div>
-
-                                        <label class="label control-label">Password</label>
-                                        <div class="input-group">
-                                            <input id="password" type="password" class="form-control" name="pass" 
-                                                   placeholder="Password" required>
-                                        </div>
-                                        <button type="reset" class="btn btn-info">Reset</button>
-                                        <button type="submit" class="btn btn-success">Change</button>
-                                        <br><br>
-
-                                    </form>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
+                    The system has not completed this feature yet
                 </div>
             </div>
         </div>
         <br><br><br>
         <jsp:include page="../footer.jsp"/>
-        <%--JS--%>
-        <script type="text/javascript" src="//code.jquery.com/jquery-1.11.0.min.js"></script>
-        <script type="text/javascript" src="//code.jquery.com/jquery-migrate-1.2.1.min.js"></script>
-        <script src="https://kit.fontawesome.com/9650a62e47.js" crossorigin="anonymous"></script>
     </body>
 </html>
