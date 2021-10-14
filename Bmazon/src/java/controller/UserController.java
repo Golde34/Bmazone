@@ -118,9 +118,9 @@ public class UserController extends HttpServlet {
                 serviceUpdateBackgroundImage(request, response);
             }
 
-            //Top Up
-            if (service.equalsIgnoreCase("topUp")) {
-                serviceTopUp(request, response);
+            //edit wallet
+            if (service.equalsIgnoreCase("editWallet")) {
+                serviceEditWallet(request, response);
             }
             //Turn on seller feature
             if (service.equalsIgnoreCase("turnOnSalesFeature")) {
@@ -145,7 +145,6 @@ public class UserController extends HttpServlet {
         User account = (User) session.getAttribute("currUser");
 
         String user = account.getUsername();
-        String xUser = request.getParameter("username");
         String oldpass = request.getParameter("oldpass");
         String newpass = request.getParameter("newpass");
         String repass = request.getParameter("renewpass");
@@ -155,6 +154,9 @@ public class UserController extends HttpServlet {
 //        } else 
         if (!account.getPassword().equals(oldpass) && oldpass != null) {
             messChangepass = "Old Password is not correct";
+            request.setAttribute("oldpassChange", oldpass);
+            request.setAttribute("newpassChange", newpass);
+            request.setAttribute("renewpassChange", repass);
         } else if (account.getPassword().equals(oldpass) && oldpass != null && newpass.equals(repass)) {
             daoUser.changePassword(user, newpass);
             messChangepass = "Change password successfully !!";
@@ -345,15 +347,13 @@ public class UserController extends HttpServlet {
         sendDispatcher(request, response, "UserControllerMap?service=info");
     }
 
-    private void serviceTopUp(HttpServletRequest request, HttpServletResponse response) {
+    private void serviceEditWallet(HttpServletRequest request, HttpServletResponse response) {
+        String amount = request.getParameter("amount");
         String mess = "";
-
         User x = (User) request.getSession().getAttribute("currUser");
-        int id = Integer.parseInt(request.getParameter("pid"));
-        request.setAttribute("pid", id);
         request.setAttribute("currUser", x);
 
-        sendDispatcher(request, response, "user/topUp.jsp");
+        sendDispatcher(request, response, "user/editWallet.jsp");
     }
 
     private void serviceTurnOnSalesFeature(HttpServletRequest request, HttpServletResponse response) {

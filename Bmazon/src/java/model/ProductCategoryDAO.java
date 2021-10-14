@@ -42,6 +42,25 @@ public class ProductCategoryDAO extends BaseDAO{
         return list;
     }
     
+    public ProductCategory getProductCateByProductID(int pid){
+        ProductCategory proCate = new ProductCategory();
+        String sql = "SELECT * FROM [Bmazon].[dbo].[ProductCategory] where productID = " + pid;
+        try {
+            pre = conn.prepareStatement(sql);
+            rs = pre.executeQuery();
+            if (rs.next()) {
+                proCate.setCategoryID(rs.getInt("categoryId"));
+                proCate.setProductID(rs.getInt("productID"));
+                proCate.setStatus(rs.getInt("status"));
+            }
+            rs.close();
+            pre.close();
+        } catch (SQLException e) {
+            Logger.getLogger(ProductCategoryDAO.class.getName()).log(Level.SEVERE, null, e);
+        }
+        return proCate;
+    }
+    
     public int addProductCategory(ProductCategory obj) {
         int n = 0;
         String sql = "INSERT INTO [Bmazon].[dbo].[ProductCategory]\n"

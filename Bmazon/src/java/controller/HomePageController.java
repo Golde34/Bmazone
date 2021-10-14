@@ -136,9 +136,10 @@ public class HomePageController extends HttpServlet {
         int count = proDAO.totalSearchProduct(str);
         String address;
 
-        int size = 20;
-        int total = count / size;
-        int page, end;
+        int size=20;
+        int total=count/size;
+        int page,end;
+        
 
         String page1 = request.getParameter("page");
         if (page1 == null) {
