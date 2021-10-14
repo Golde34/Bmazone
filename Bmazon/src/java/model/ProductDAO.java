@@ -32,7 +32,8 @@ public class ProductDAO extends BaseDAO {
 
     public int getPageNumber(String search) {
         int num = 0;
-        xSql = "SELECT COUNT(*) FROM Product inner join [User] on Product.sellerID=[User].userID where Product.status=1 and(productName like '%" + search + "%' or [description] like '%" + search + "%' or rating like '%" + search + "%' or [User].fullname like '%" + search + "%' or releaseDate like '%" + search + "%')";
+        xSql = "SELECT COUNT(*)from Product p join Seller s on p.sellerID=s.sellerID join ProductCategory pc on p.productID=pc.productID join Category c on pc.categoryId=c.categoryID join ProductGenre pg on pg.productID=p.productID join Genre g on g.genreID=pg.genreID\n"
+                + "   where p.[status]=1 and(p.productName like '%"+search+"%' or c.categoryName like '%"+search+"%' or g.genreName like '%"+search+"%' or s.sellerShopName like '%"+search+"%')";
         ResultSet rs = dbConn.getData(xSql);
         try {
             if (rs.next()) {
@@ -46,8 +47,8 @@ public class ProductDAO extends BaseDAO {
 
     public ArrayList<Product> getAllPagingProduct(int index, int numOfRow, String search) {
         ArrayList<Product> list = new ArrayList<>();
-        String sql = "declare @PageNo INT ="+index+"\n"
-                + "declare @PageSize INT="+numOfRow+"\n"
+        String sql = "declare @PageNo INT =" + index + "\n"
+                + "declare @PageSize INT=" + numOfRow + "\n"
                 + "SELECT * from(\n"
                 + "SELECT p.*,s.sellerShopName,g.genreName,c.categoryName,\n"
                 + "ROW_NUMBER() over (order by p.productID) as RowNum\n"

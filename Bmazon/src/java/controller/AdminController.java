@@ -37,6 +37,7 @@ public class AdminController extends HttpServlet {
      * @throws ServletException if a servlet-specific error occurs
      * @throws IOException if an I/O error occurs
      */
+    SellerDAO daoseller = new SellerDAO();
     GalleryDAO daogallery = new GalleryDAO();
     ShipCompanyDAO daocompany = new ShipCompanyDAO();
     ProductDAO daoproduct = new ProductDAO();
@@ -546,13 +547,12 @@ public class AdminController extends HttpServlet {
         request.setAttribute("index", index);
         request.setAttribute("listProduct", listPaging);
         for (Product product : listPaging) {
-            User user = daouser.getUserByProductId(product.getProductID());
+            Seller seller = daoseller.getSellerID(String.valueOf(product.getSeller()));
             pr.print("<tr>"
                     + "<td><div>" + product.getProductName() + " </div></td>"
                     + "<td><div>" + product.getDescription() + "</div></td>"
                     + "<td><div>" + product.getRating() + "</div></td>"
-                    + "<td><div>" + user.getFullname() + "</div></td>"
-                    + "<td><div>" + dateformat.format(product.getReleaseDate()) + "</div></td>"
+                    + "<td><div>" + seller.getSellerShopName() + "</div></td>"
                     + "<td><div><a href=\"AdminControllerMap?service=updateproductdetail&productid=" + product.getProductID() + "\"><span class=\"fas fa-edit\"></span></a>"
                     + "</div></td>"
                     + "<td><div><a href=\"AdminControllerMap?service=deleteproduct&productid=" + product.getProductID() + "\" onclick=\"return confirm('Are you sure you want to Remove?');\"><span class=\"fas fa-trash-alt\"></span></a></div></td>" + "</tr>"

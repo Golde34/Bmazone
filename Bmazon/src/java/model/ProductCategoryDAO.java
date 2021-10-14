@@ -18,8 +18,26 @@ import java.util.logging.Logger;
  * @author Admin
  */
 public class ProductCategoryDAO extends BaseDAO{
-
-  
+    
+    public static void main(String[] args) {
+        ProductCategoryDAO dao = new ProductCategoryDAO();
+    }
+    
+    public String getCategoryIdByProductId(int productId){
+        xSql = "select * from ProductCategory where productID=" + productId;
+        try {
+            pre = conn.prepareStatement(xSql);
+            rs = pre.executeQuery();
+            if(rs.next()){
+                String cid=rs.getString("categoryId");
+                return cid;
+            }
+            pre.close();
+        } catch (SQLException e) {
+            Logger.getLogger(ProductCategoryDAO.class.getName()).log(Level.SEVERE, null, e);
+        }
+        return null;
+    }
 
     public ArrayList<ProductCategory> getAllProductCategory() {
         ArrayList<ProductCategory> list = new ArrayList<>();

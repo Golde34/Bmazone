@@ -6,6 +6,9 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <c:set var="contextPath" value="${pageContext.request.contextPath}" />
 <%
+    ProductCategoryDAO pcdao = new ProductCategoryDAO();
+    ProductGenreDAO pgdao = new ProductGenreDAO();
+    GenreDAO genredao = new GenreDAO();
     CategoryDAO catdao = new CategoryDAO();
     SellerDAO sellerdao = new SellerDAO();
     UserDAO userdao = new UserDAO();
@@ -23,8 +26,6 @@
     <head>
         <meta charset="utf-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-        <link rel="apple-touch-icon" sizes="76x76" href="../assets/img/apple-icon.png">
-        <link rel="icon" type="image/png" href="../assets/img/favicon.png">
         <title>
             Admin Dashboard
         </title>
@@ -94,6 +95,7 @@
                                                 <tbody id="product">
                                                 <%for (Product product : listProduct) {
                                                         Seller seller = sellerdao.getSellerID(String.valueOf(product.getSeller()));
+                                                        String category = catdao.getCategoryById(pcdao.getCategoryIdByProductId(product.getProductID()));
                                                 %>
                                                 <tr>
                                                     <td><%=product.getProductName()%></td>
