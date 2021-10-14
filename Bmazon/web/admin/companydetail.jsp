@@ -40,9 +40,9 @@
     <body class="g-sidenav-show  bg-gray-100">
         <aside class="sidenav navbar navbar-vertical navbar-expand-xs border-0 border-radius-xl my-3 fixed-start ms-3 " id="sidenav-main">
             <jsp:include page="adminsidebar.jsp"></jsp:include>
-        </aside>
-        <main class="main-content position-relative max-height-vh-100 h-100 mt-1 border-radius-lg ">
-            <!-- Navbar -->
+            </aside>
+            <main class="main-content position-relative max-height-vh-100 h-100 mt-1 border-radius-lg ">
+                <!-- Navbar -->
             <jsp:include page="adminheader.jsp"></jsp:include>
                 <!-- End Navbar -->
                 <div class="container-fluid py-4">
@@ -51,7 +51,7 @@
                             <div class="card">
                                 <div class="card-body px-0 pb-2" >    
                                     <div class="card-header py-3" style="display: flex;
-                                     justify-content: space-between;">
+                                         justify-content: space-between;">
                                         <h3 class="m-0 font-weight-bold text-primary">Company Detail</h3>
                                         <a href="AdminControllerMap?service=companymanagement"><btn class="btn btn-primary">Company Management</btn></a>
                                     </div>
@@ -115,7 +115,7 @@
                                             <tr>
                                                 <td>Unit Cost</td>
                                                 <td>
-                                                    <% int unit= (int) company.getUnitCost();%>
+                                                    <% int unit = (int) company.getUnitCost();%>
                                                     <input pattern="^[0-9]*$" class="form-control" value="<%=unit%>" type="text" name="unitcost" required>
                                                     <div class="invalid-feedback">
                                                         Only Number

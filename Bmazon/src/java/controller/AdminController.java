@@ -186,7 +186,7 @@ public class AdminController extends HttpServlet {
             // <editor-fold defaultstate="collapsed" desc="Role serive. Click on the + sign on the left to edit the code.">
             //Role Display
             if (service.equalsIgnoreCase("roleDisplay")) {
-                serviceRoleDisplay(service, request, response);
+                serviceRoleManagement(service, request, response);
             }
             //Role Detail
             if (service.equalsIgnoreCase("updateRoleDetail") || service.equalsIgnoreCase("addRoleDetail")) {
@@ -210,6 +210,13 @@ public class AdminController extends HttpServlet {
             }
             //</editor-fold>
         }
+    }
+
+    public void serviceUserAuthorization(String service, HttpServletRequest request, HttpServletResponse response) {
+        request.setAttribute("service", service);
+        ArrayList<User> listUser = daouser.getAllUser();
+        request.setAttribute("listUser", listUser);
+        sendDispatcher(request, response, "admin/authorization/userAuthorization.jsp");
     }
 
     public void serviceAdminDashboard(String service, HttpServletRequest request, HttpServletResponse response) {
@@ -886,14 +893,7 @@ public class AdminController extends HttpServlet {
     }//</editor-fold>
 
     // <editor-fold defaultstate="collapsed" desc="Role methods. Click on the + sign on the left to edit the code.">
-    public void serviceUserAuthorization(String service, HttpServletRequest request, HttpServletResponse response) {
-        request.setAttribute("service", service);
-        ArrayList<User> listUser = daouser.getAllUser();
-        request.setAttribute("listUser", listUser);
-        sendDispatcher(request, response, "admin/authorization/userAuthorization.jsp");
-    }
-
-    public void serviceRoleDisplay(String service, HttpServletRequest request, HttpServletResponse response) {
+    public void serviceRoleManagement(String service, HttpServletRequest request, HttpServletResponse response) {
         request.setAttribute("service", service);
         List<Role> role = daorole.getAllRole();
         request.setAttribute("role", role);
@@ -906,8 +906,9 @@ public class AdminController extends HttpServlet {
             sendDispatcher(request, response, "admin/authorization/editRole.jsp");
             return;
         }
-        List<Role> role = daorole.getAllRole();
-        request.setAttribute("role", role);
+        int id = Integer.parseInt(request.getParameter("roleID"));
+        Role roleDetail = daorole.getRoleById(id);
+        request.setAttribute("roleDetail", roleDetail);
         sendDispatcher(request, response, "admin/authorization/editRole.jsp");
     }
 
@@ -918,24 +919,92 @@ public class AdminController extends HttpServlet {
         int adminPermission = Integer.parseInt(request.getParameter("adminPermission"));
         int sellerPermission = Integer.parseInt(request.getParameter("sellerPermission"));
         int customerPermission = Integer.parseInt(request.getParameter("customerPermission"));
-        Role newRole = new Role();
-        newRole.setRoleID(roleID);
-        newRole.setRoleName(roleName);
-        newRole.setAdminPermission(adminPermission);
-        newRole.setSellerPermission(sellerPermission);
-        newRole.setCustomerPermission(customerPermission);
-        daorole.addRole(newRole);
-        List<Role> listRole = daorole.getAllRole();
-        request.setAttribute("listRole", listRole);
-        sendDispatcher(request, response, "admin/authorization/roleAuthorization.jsp");
+        boolean isExist = false;
+
+        if (daorole.checkExistRoleName(roleName) || daorole.checkExistRoleId(roleID)) {
+            isExist = true;
+        }
+
+        if (isExist == true) {
+            request.setAttribute("adminPermission", adminPermission);
+            request.setAttribute("sellerPermission", sellerPermission);
+            request.setAttribute("customerPermission", customerPermission);
+            String state = "fail";
+            request.setAttribute("state", state);
+            String mess = "Add fail because duplicate information";
+            request.setAttribute("mess", mess);
+            request.setAttribute("service", "addRoleDetail");
+            sendDispatcher(request, response, "admin/authorization/editRole.jsp");
+        }
+
+        if (isExist == false) {
+            Role newRole = new Role();
+            newRole.setRoleID(roleID);
+            newRole.setRoleName(roleName);
+            newRole.setAdminPermission(adminPermission);
+            newRole.setSellerPermission(sellerPermission);
+            newRole.setCustomerPermission(customerPermission);
+            daorole.addRole(newRole);
+            String state = "success";
+            request.setAttribute("state", state);
+            List<Role> listRole = daorole.getAllRole();
+            String mess = "Add successfully";
+            request.setAttribute("mess", mess);
+            request.setAttribute("role", listRole);
+            sendDispatcher(request, response, "admin/authorization/roleAuthorization.jsp");
+        }
     }
 
     public void serviceUpdateRole(String service, HttpServletRequest request, HttpServletResponse response) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        request.setAttribute("service", service);
+        int roleID = Integer.parseInt(request.getParameter("roleID"));
+        Role role = daorole.getRoleId(roleID);
+        String roleName = request.getParameter("roleName");
+        int adminPermission = Integer.parseInt(request.getParameter("adminPermission"));
+        int sellerPermission = Integer.parseInt(request.getParameter("sellerPermission"));
+        int customerPermission = Integer.parseInt(request.getParameter("customerPermission"));
+        boolean isExist = false;
+        if (daorole.checkExistRoleName(roleName) && !roleName.equals(role.getRoleName())) {
+            isExist = true;
+        }
+        if (daorole.checkExistRoleId(roleID) && roleID != role.getRoleID()) {
+            isExist = true;
+        }
+        if (isExist == true) {
+            request.setAttribute("service", "updateRoleDetail");
+            request.setAttribute("roleDetail", role);
+            String mess = "Update fail because duplicate information";
+            String state = "fail";
+            request.setAttribute("state", state);
+            request.setAttribute("mess", mess);
+            sendDispatcher(request, response, "admin/authorization/editRole.jsp");
+        }
+        if (isExist == false) {
+            role.setRoleID(roleID);
+            role.setRoleName(roleName);
+            role.setAdminPermission(adminPermission);
+            role.setSellerPermission(sellerPermission);
+            role.setCustomerPermission(customerPermission);
+            daorole.editRole(role);
+            String state = "success";
+            request.setAttribute("state", state);
+            List<Role> listRole = daorole.getAllRole();
+            request.setAttribute("role", listRole);
+            request.setAttribute("roleDetail", role);
+            String mess = "Update successfully";
+            request.setAttribute("mess", mess);
+            request.setAttribute("service", "updateRoleDetail");
+            sendDispatcher(request, response, "admin/authorization/editRole.jsp");
+        }
     }
 
     public void serviceDeleteRole(String service, HttpServletRequest request, HttpServletResponse response) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        request.setAttribute("service", service);
+        int id = Integer.parseInt(request.getParameter("roleID"));
+        daorole.deleteRole(id);
+        List<Role> listRole = daorole.getAllRole();
+        request.setAttribute("role", listRole);
+        sendDispatcher(request, response, "admin/authorization/roleAuthorization.jsp");
     }
 
     public void serviceSearchRole(String service, HttpServletRequest request, HttpServletResponse response) throws IOException {
@@ -951,9 +1020,9 @@ public class AdminController extends HttpServlet {
                     + "<td><div>" + role.getSellerPermission() + "</div></td>"
                     + "<td><div>" + role.getCustomerPermission() + "</div></td>"
                     + "<td><div>" + role.getStatus() + "</div></td>"
-                    + "<td><div><a href=\"AdminControllerMap?service=updateproductdetail&producttypeid=" + role.getRoleID() + "\"><span class=\"fas fa-edit\"></span></a>"
+                    + "<td><div><a href=\"AdminControllerMap?service=updateRole&roleID=" + role.getRoleID() + "\"><span class=\"fas fa-edit\"></span></a>"
                     + "</div></td>"
-                    + "<td><div><a href=\"AdminControllerMap?service=deleteproduct&producttypeid=" + role.getRoleID() + "\" onclick=\"return confirm('Are you sure you want to Remove?');\"><span class=\"fas fa-trash-alt\"></span></a></div></td>" + "</tr>"
+                    + "<td><div><a href=\"AdminControllerMap?service=deleteRole&roleID=" + role.getRoleID() + "\" onclick=\"return confirm('Are you sure you want to Remove?');\"><span class=\"fas fa-trash-alt\"></span></a></div></td>" + "</tr>"
             );
         }
     }//</editor-fold>
@@ -964,8 +1033,7 @@ public class AdminController extends HttpServlet {
             rd.forward(request, response);
 
         } catch (ServletException | IOException ex) {
-            Logger.getLogger(AdminController.class
-                    .getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(AdminController.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
 

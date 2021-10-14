@@ -18,8 +18,9 @@ import java.util.logging.Logger;
  */
 public class RoleDAO extends BaseDAO {
 
-    public void addRole(Role sp) {
-        xSql = "INSERT INTO Role ([roleID], [roleName], [adminPermission], [sellerPermission], [customerPermission], [status])\n"
+    public int addRole(Role sp) {
+        int n = 0;
+        xSql = "INSERT INTO [Bmazon].[dbo].[Role] ([roleID], [roleName], [adminPermission], [sellerPermission], [customerPermission], [status])"
                 + "     VALUES (?,?,?,?,?,1)";
         try {
             pre = conn.prepareStatement(xSql);
@@ -28,10 +29,12 @@ public class RoleDAO extends BaseDAO {
             pre.setInt(3, sp.getAdminPermission());
             pre.setInt(4, sp.getSellerPermission());
             pre.setInt(5, sp.getCustomerPermission());
-            pre.setInt(6, sp.getStatus());
-            pre.executeUpdate();
+            n = pre.executeUpdate();
+            pre.close();
         } catch (Exception e) {
+            Logger.getLogger(RoleDAO.class.getName()).log(Level.SEVERE, null, e);
         }
+        return n;
     }
 
     public int editRole(Role sp) {
@@ -39,23 +42,23 @@ public class RoleDAO extends BaseDAO {
         xSql = "update Role set [roleName] = ? ,[adminPermission] = ?, [sellerPermission] = ?,[customerPermission] = ?, [status] = ? where [roleID] = ?";
         try {
             pre = conn.prepareStatement(xSql);
-            pre.setInt(1, sp.getRoleID());
-            pre.setString(2, sp.getRoleName());
-            pre.setInt(3, sp.getAdminPermission());
-            pre.setInt(4, sp.getSellerPermission());
-            pre.setInt(5, sp.getCustomerPermission());
-            pre.setInt(6, sp.getStatus());
+            pre.setInt(6, sp.getRoleID());
+            pre.setString(1, sp.getRoleName());
+            pre.setInt(2, sp.getAdminPermission());
+            pre.setInt(3, sp.getSellerPermission());
+            pre.setInt(4, sp.getCustomerPermission());
+            pre.setInt(5, sp.getStatus());
             pre.executeUpdate();
         } catch (Exception e) {
         }
         return n;
     }
 
-    public void deleteRole(String companyID) {
+    public void deleteRole(int roleID) {
         String sql = "delete from Role where [roleID] = ?";
         try {
             pre = conn.prepareStatement(sql);
-            pre.setString(1, companyID);
+            pre.setInt(1, roleID);
             pre.executeUpdate();
         } catch (Exception e) {
         }
@@ -146,5 +149,24 @@ public class RoleDAO extends BaseDAO {
         } catch (Exception e) {
         }
         return list;
+    }
+
+    public Role getRoleById(int id) {
+        Role role = new Role();
+        xSql = "select * from Role where roleID = " + id;
+        try {
+            pre = conn.prepareStatement(xSql);
+            rs = pre.executeQuery();
+            if (rs.next()) {
+                role.setRoleID(rs.getInt("roleID"));
+                role.setRoleName(rs.getString("roleName"));
+                role.setAdminPermission(rs.getInt("adminPermission"));
+                role.setSellerPermission(rs.getInt("sellerPermission"));
+                role.setCustomerPermission(rs.getInt("customerPermission"));
+                role.setStatus(rs.getInt("status"));
+            }
+        } catch (Exception e) {
+        }
+        return role;
     }
 }

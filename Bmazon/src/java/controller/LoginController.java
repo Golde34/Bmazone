@@ -6,7 +6,7 @@
 package controller;
 
 import entity.Product;
-import entity.SendEmail;
+import APIs.SendEmail;
 import entity.User;
 import java.io.IOException;
 import java.io.PrintWriter;
