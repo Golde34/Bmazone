@@ -134,7 +134,7 @@ public class SellerDAO extends BaseDAO {
         return false;
     }
 
-    public Seller getSellerID(int id) {
+    public Seller getSellerID(String id) {
         Seller seller = new Seller();
         xSql = "select * from Seller where sellerID = " + id;
         try {

@@ -12,7 +12,7 @@ package entity;
 public class Comment {
     private int commentID;
     private int productID;
-    private int userID;
+    private String userID;
     private String content;
     private double rating;
     private int status;
@@ -20,7 +20,7 @@ public class Comment {
     public Comment() {
     }
 
-    public Comment(int commentID, int productID, int userID, String content, double rating, int status) {
+    public Comment(int commentID, int productID, String userID, String content, double rating, int status) {
         this.commentID = commentID;
         this.productID = productID;
         this.userID = userID;
@@ -45,11 +45,11 @@ public class Comment {
         this.productID = productID;
     }
 
-    public int getUserID() {
+    public String getUserID() {
         return userID;
     }
 
-    public void setUserID(int userID) {
+    public void setUserID(String userID) {
         this.userID = userID;
     }
 

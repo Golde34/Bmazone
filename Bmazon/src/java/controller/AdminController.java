@@ -249,7 +249,7 @@ public class AdminController extends HttpServlet {
             sendDispatcher(request, response, "admin/userdetail.jsp");
             return;
         }
-        int id = Integer.parseInt(request.getParameter("userid"));
+        String id = request.getParameter("userid");
         User user = daouser.getUserById(id);
         request.setAttribute("user", user);
         request.setAttribute("service", service);
@@ -405,7 +405,7 @@ public class AdminController extends HttpServlet {
     public void serviceUpdateUser(String service, HttpServletRequest request, HttpServletResponse response) {
         request.setAttribute("service", service);
         String id = request.getParameter("id");
-        User user = daouser.getUserById(Integer.parseInt(id));
+        User user = daouser.getUserById(id);
         String username = request.getParameter("username");
         String password = request.getParameter("password");
         String fullname = request.getParameter("fullname");

@@ -9,6 +9,7 @@ import entity.Comment;
 import entity.Gallery;
 import entity.Product;
 import entity.ProductType;
+import entity.User;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.text.DecimalFormat;
@@ -79,6 +80,10 @@ public class ProductDetailController extends HttpServlet {
             if (service.equalsIgnoreCase("getPrice")) {
                 serviceGetPrice(request, response);
             }
+
+            if (service.equalsIgnoreCase("comment")) {
+                serviceComment(request, response);
+            }
         }
     }
 
@@ -129,6 +134,27 @@ public class ProductDetailController extends HttpServlet {
         Double price = Double.parseDouble(pt.getPrice());
         String price1 = nf.format(price);
         pr.print(price1);
+    }
+
+    private void serviceComment(HttpServletRequest request, HttpServletResponse response) {
+        User user = (User) request.getSession().getAttribute("currUser");
+        int id = Integer.parseInt(request.getParameter("pid"));
+        int rating = Integer.parseInt(request.getParameter("rating"));
+        String content = (String) request.getParameter("content");
+        ArrayList<Comment> comments = daoComment.getCommentsByProductId(id);
+        int numOfComment = comments.size() + 2;
+        Product update = daoProduct.getProductByID(id);
+        double newRating = rating / numOfComment + update.getRating() * (numOfComment - 1) / numOfComment;
+        int x = (int) Math.round(newRating);
+        update.setRating(x);
+        daoProduct.updateProduct(update);
+        Comment newCom = new Comment();
+        newCom.setProductID(id);
+        newCom.setUserID(user.getUserId());
+        newCom.setRating(rating);
+        newCom.setContent(content);
+        daoComment.insertComment(newCom);
+        sendDispatcher(request, response, "ProductDetailControllerMap?service=getProductDetail&pid=" + id);
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">

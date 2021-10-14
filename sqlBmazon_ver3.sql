@@ -46,7 +46,7 @@ CREATE TABLE [User] (
 	activityPoint int CHECK(activityPoint>=0),
 	systemRole int,
 	[status] bit,
-	FOREIGN KEY (systemRole) REFERENCES [Role](roleID)
+
 )
 
 CREATE TABLE [Category] (
@@ -78,9 +78,9 @@ CREATE TABLE [Product] (
 	[description] nvarchar(max),
 	rating real,
 	releaseDate date NOT NULL CHECK(releaseDate <= getDate()),
-	sellerID int NOT NULL,
+	seller int NOT NULL,
 	[status] bit,
-	FOREIGN KEY (sellerID) REFERENCES [Seller](SellerID),
+	FOREIGN KEY (seller) REFERENCES [User](userID),
 )
 
 
@@ -171,16 +171,7 @@ CREATE TABLE [Comment](
 	rating real not null CHECK(rating >= 0 AND rating <= 5),
 	status bit,
 	FOREIGN KEY ([userId]) REFERENCES dbo.[User]([userId]),
-	FOREIGN KEY ([productID]) REFERENCES [Product]([productID]),
-
-    commentID int not null identity(1,1) PRIMARY KEY,
-    productID int not null,
-    [userId] int not null,
-    content nvarchar(max),
-    rating real not null CHECK(rating >= 0 AND rating <= 5),
-    status bit,
-    FOREIGN KEY ([userId]) REFERENCES dbo.[User]([userId]),
-    FOREIGN KEY ([productID]) REFERENCES [Product]([productID]),
+	FOREIGN KEY ([productID]) REFERENCES [Product]([productID])
 
 )
 

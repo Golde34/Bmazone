@@ -326,7 +326,7 @@ public class UserDAO extends BaseDAO {
         return null;
     }
 
-    public User getUserById(int id) {
+    public User getUserById(String id) {
         String sql = "SELECT * FROM [User] WHERE userID = '" + id + "'";
         ResultSet rs = dbConn.getData(sql);
         try {

@@ -28,7 +28,7 @@ public class ProductDAO extends BaseDAO {
     
     public static void main(String[] args) {
         ProductDAO dao = new ProductDAO();
-        System.out.println(dao.getPageNumber(""));
+        System.out.println(dao.totalProductSeller("4"));
     }
     
     public int getPageNumber(String search) {
@@ -253,6 +253,38 @@ public class ProductDAO extends BaseDAO {
         return list;
     }
 
+    public ArrayList<Product> getProductBySellerPaging(int index, String seller) {
+        ArrayList<Product> list = new ArrayList<>();
+        String sql = " declare @PageNo INT = " + index + " \n"
+                + " declare @PageSize INT=10 \n"
+                + " SELECT * from( \n"
+                + " SELECT *,\n  "
+                + " ROW_NUMBER() over (order by productID) as RowNum\n  "
+                + "   FROM [Bmazon].[dbo].[Product] p  where seller = '" + seller + "') as T \n "
+                + " where T.RowNum between ((@PageNo-1)*@PageSize)+1 and (@PageNo*@PageSize)  ";
+        //String sql = "SELECT * FROM Product where seller = '" + seller + "'";
+        try {
+            pre = conn.prepareStatement(sql);
+            rs = pre.executeQuery();
+            while (rs.next()) {
+                Product pro = new Product();
+                pro.setProductID(rs.getInt("productID"));
+                pro.setProductName(rs.getString("productName"));
+                pro.setDescription(rs.getString("description"));
+                pro.setRating(rs.getInt("rating"));
+                pro.setReleaseDate(rs.getDate("releaseDate"));
+                pro.setSeller(rs.getInt("seller"));
+                pro.setStatus(rs.getInt("status"));
+                list.add(pro);
+            }
+            rs.close();
+            pre.close();
+        } catch (SQLException e) {
+            Logger.getLogger(ProductDAO.class.getName()).log(Level.SEVERE, null, e);
+        }
+        return list;
+    }
+    
     public ArrayList<Product> getProductBySeller(String seller) {
         ArrayList<Product> list = new ArrayList<>();
         String sql = "SELECT * FROM Product where seller = '" + seller + "'";
@@ -313,6 +345,24 @@ public class ProductDAO extends BaseDAO {
 //        List<Product> listProduct = pDAO.getProductBySeller("1");
 //        System.out.println(listProduct);
 //    }
+    
+    public int totalProductSeller(String sid) {
+        int count = 0;
+
+        xSql = "SELECT count(*) FROM [Bmazon].[dbo].[Product] where seller = " + sid;
+        try {
+            pre = conn.prepareStatement(xSql);
+            rs = pre.executeQuery();
+            while (rs.next()) {
+                count = rs.getInt(1);
+            }
+            rs.close();
+            pre.close();
+        } catch (SQLException e) {
+            Logger.getLogger(ProductDAO.class.getName()).log(Level.SEVERE, null, e);
+        }
+        return count;
+    }
 
     public int totalSearchProduct(String text) {
         int count = 0;

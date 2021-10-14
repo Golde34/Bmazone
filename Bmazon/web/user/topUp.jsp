@@ -107,10 +107,10 @@
                                 <span id='message1'></span>
                             </div>
 
-                            <label class="label control-label">Password</label>
+                            <label class="label control-label">Amount</label>
                             <div class="input-group">
-                                <input id="password" type="password" class="form-control" name="pass" 
-                                       placeholder="Enter your password to update" required>
+                                <input id="amount" type="tẽt" class="form-control" name="amount" 
+                                       placeholder="Enter the amount to deposit or withdrawal" required>
                             </div>
                             <br>
                             <h6 style="color: black" style="font-size: small" >${mess}</h6>

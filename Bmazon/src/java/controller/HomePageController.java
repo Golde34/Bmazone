@@ -22,8 +22,12 @@ import model.ProductDAO;
 import model.CategoryDAO;
 import model.GenreDAO;
 import entity.Genre;
+import entity.Seller;
+import entity.User;
 import java.util.List;
 import model.DBConnection;
+import model.SellerDAO;
+import model.UserDAO;
 
 /**
  *
@@ -44,6 +48,8 @@ public class HomePageController extends HttpServlet {
     CategoryDAO cateDAO = new CategoryDAO();
     GenreDAO genDAO = new GenreDAO();
     ProductDAO proDAO = new ProductDAO();
+    SellerDAO sellerDAO = new SellerDAO();
+    UserDAO userDAO = new UserDAO();
 
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
@@ -77,7 +83,6 @@ public class HomePageController extends HttpServlet {
     }
 
     public void serviceHomepage(HttpServletRequest request, HttpServletResponse response) {
-       
 
         List<Product> ListSale = proDAO.getProductSale();
         List<Product> ListNew = proDAO.getProductNew();
@@ -131,40 +136,37 @@ public class HomePageController extends HttpServlet {
         int count = proDAO.totalSearchProduct(str);
         String address;
 
-        int size=20;
-        int total=count/size;
-        int page,end;
-         
+        int size = 20;
+        int total = count / size;
+        int page, end;
+
         String page1 = request.getParameter("page");
-        if (page1==null) {
-            page=1;
-         
-        }else{
-            page=Integer.parseInt(page1);          
-        } 
-        int begin=page;
-         String previous="  <li><a class='' href=" +"HomePageControllerMap?service=search&search="+str +"&page="+(page-1)+">P</a></li>";
-         String next="  <li><a class='' href=" +"HomePageControllerMap?service=search&search="+str +"&page="+(page+1)+">N</a></li>";
-        
-       
-        if (count%size!=0) {
-            total+=1;
+        if (page1 == null) {
+            page = 1;
+
+        } else {
+            page = Integer.parseInt(page1);
         }
-        if (page<=total-2){
-            end=page+2;
-        }else{
-            end=total;
-            begin=total-2;
+        int begin = page;
+        String previous = "  <li><a class='' href=" + "HomePageControllerMap?service=search&search=" + str + "&page=" + (page - 1) + ">P</a></li>";
+        String next = "  <li><a class='' href=" + "HomePageControllerMap?service=search&search=" + str + "&page=" + (page + 1) + ">N</a></li>";
+
+        if (count % size != 0) {
+            total += 1;
         }
-        if (page==1){
+        if (page <= total - 2) {
+            end = page + 2;
+        } else {
+            end = total;
+            begin = total - 2;
+        }
+        if (page == 1) {
             request.setAttribute("next", next);
-        }else if(page==total){
-             request.setAttribute("previous", previous);
-        }
-        else{
+        } else if (page == total) {
+            request.setAttribute("previous", previous);
+        } else {
             request.setAttribute("next", next);
             request.setAttribute("previous", previous);
-            
 
         }
         List<Product> ListP = proDAO.getProductByName(page, str);
@@ -172,7 +174,7 @@ public class HomePageController extends HttpServlet {
         address = "<a>" + " Results for " + str + "  </a> <span class=" + "divider" + ">&#47;</span>";
         request.setAttribute("address", address);
         request.setAttribute("end", end);
-        request.setAttribute("begin", begin);     
+        request.setAttribute("begin", begin);
         request.setAttribute("listP", ListP);
         request.setAttribute("search", str);
         request.setAttribute("count", count);
@@ -183,10 +185,53 @@ public class HomePageController extends HttpServlet {
 
     public void serviceShopPage(HttpServletRequest request, HttpServletResponse response) {
 
-        String seller = request.getParameter("sid");
+        String id = request.getParameter("sid");
+        int count = proDAO.totalProductSeller(id);
+        
+        User user = userDAO.getUserById(id);
+        request.setAttribute("user", user);
 
-        List<Product> listProduct = proDAO.getProductBySeller(seller);
+        int size = 10;
+        int total = count / size;
+        int page, end;
+
+        String page1 = request.getParameter("page");
+        if (page1 == null) {
+            page = 1;
+
+        } else {
+            page = Integer.parseInt(page1);
+        }
+        int begin = page;
+        String previous = "  <li><a class='' href=" + "HomePageControllerMap?service=shopPage&sid=" + id + "&page=" + (page - 1) + ">P</a></li>";
+        String next = "  <li><a class='' href=" + "HomePageControllerMap?service=shopPage&sid=" + id + "&page=" + (page + 1) + ">N</a></li>";
+
+        if (count % size != 0) {
+            total += 1;
+        }
+        if (page <= total - 2) {
+            end = page + 2;
+        } else {
+            end = total;
+            begin = total - 1 /* ban dau la total - 2*/;
+        }
+        if (page == 1) {
+            request.setAttribute("next", next);
+        } else if (page == total) {
+            request.setAttribute("previous", previous);
+        } else {
+            request.setAttribute("next", next);
+            request.setAttribute("previous", previous);
+
+        }
+
+        List<Product> listProduct = proDAO.getProductBySellerPaging(page, id);
+
+        request.setAttribute("end", end);
+        request.setAttribute("begin", begin);
         request.setAttribute("listProduct", listProduct);
+        request.setAttribute("sid", id);
+        request.setAttribute("count", count);
 
         sendDispatcher(request, response, "seller/shopPage.jsp");
     }
