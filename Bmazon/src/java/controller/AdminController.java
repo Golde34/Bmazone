@@ -9,6 +9,7 @@ import entity.*;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.sql.Date;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
@@ -47,7 +48,7 @@ public class AdminController extends HttpServlet {
     RoleDAO daorole = new RoleDAO();
 
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {
+            throws ServletException, IOException, ParseException {
         response.setContentType("text/html;charset=UTF-8");
         try (PrintWriter out = response.getWriter()) {
             String service = request.getParameter("service");
@@ -186,7 +187,7 @@ public class AdminController extends HttpServlet {
             // <editor-fold defaultstate="collapsed" desc="Role serive. Click on the + sign on the left to edit the code.">
             //Role Display
             if (service.equalsIgnoreCase("roleDisplay")) {
-                serviceRoleDisplay(service, request, response);
+                serviceRoleManagement(service, request, response);
             }
             //Role Detail
             if (service.equalsIgnoreCase("updateRoleDetail") || service.equalsIgnoreCase("addRoleDetail")) {
@@ -210,6 +211,13 @@ public class AdminController extends HttpServlet {
             }
             //</editor-fold>
         }
+    }
+
+    public void serviceUserAuthorization(String service, HttpServletRequest request, HttpServletResponse response) {
+        request.setAttribute("service", service);
+        ArrayList<User> listUser = daouser.getAllUser();
+        request.setAttribute("listUser", listUser);
+        sendDispatcher(request, response, "admin/authorization/userAuthorization.jsp");
     }
 
     public void serviceAdminDashboard(String service, HttpServletRequest request, HttpServletResponse response) {
@@ -250,7 +258,6 @@ public class AdminController extends HttpServlet {
     }
 
     public void servicePagingUser(String service, HttpServletRequest request, HttpServletResponse response) throws IOException {
-        int lastPage = 1;
         PrintWriter pr = response.getWriter();
         request.setAttribute("service", service);
         int index = 1, numOfRow = 5;
@@ -315,11 +322,17 @@ public class AdminController extends HttpServlet {
             pr.print("</a>");
             pr.print("</li>");
             for (int i = 1; i <= totalPage; i++) {
-                if(i < index - 2) continue;
-                if(index<3){
-                    if(i >5) break;
-                }else{
-                    if(i>index+2) break;
+                if (i < index - 2) {
+                    continue;
+                }
+                if (index < 3) {
+                    if (i > 5) {
+                        break;
+                    }
+                } else {
+                    if (i > index + 2) {
+                        break;
+                    }
                 }
                 if (index == i) {
                     pr.print("<li  class=\"page-item active\" data-repair=\"" + i + "\">");
@@ -540,11 +553,17 @@ public class AdminController extends HttpServlet {
             pr.print("</a>");
             pr.print("</li>");
             for (int i = 1; i <= totalPage; i++) {
-                if(i < index - 2) continue;
-                if(index<3){
-                    if(i >5) break;
-                }else{
-                    if(i>index+2) break;
+                if (i < index - 2) {
+                    continue;
+                }
+                if (index < 3) {
+                    if (i > 5) {
+                        break;
+                    }
+                } else {
+                    if (i > index + 2) {
+                        break;
+                    }
                 }
                 if (index == i) {
                     pr.print("<li  class=\"page-item active\" data-repair=\"" + i + "\">");
@@ -621,9 +640,50 @@ public class AdminController extends HttpServlet {
         sendDispatcher(request, response, "admin/productmanagement.jsp");
     }
 
-    public void serviceUpdateProduct(String service, HttpServletRequest request, HttpServletResponse response) {
+    public void serviceUpdateProduct(String service, HttpServletRequest request, HttpServletResponse response) throws ParseException {
         request.setAttribute("service", service);
+        //Get information about product
+        String pid = request.getParameter("pid");
+        String productname = request.getParameter("productname");
+        String description = request.getParameter("description");
+        String rating = request.getParameter("rating");
+        String seller = request.getParameter("seller");
+        String date = request.getParameter("date");
+        java.util.Date utilDate = new SimpleDateFormat("dd-MM-yyyy").parse(date);
+        java.sql.Date sqlDate = new java.sql.Date(utilDate.getTime());
+        //Update product
+        Product product = daoproduct.getProductByID(Integer.parseInt(pid));
+        product.setProductName(productname);
+        product.setDescription(description);
+        product.setRating(Integer.parseInt(rating));
+        product.setReleaseDate(sqlDate);
+        product.setSeller(Integer.parseInt(seller));
+        daoproduct.updateProduct(product);
+        //Get information about product type
         
+        String[] typeids = request.getParameterValues("ptid");
+        String[] colors = request.getParameterValues("color");
+        String[] sizes = request.getParameterValues("size");
+        String[] prices = request.getParameterValues("price");
+        String[] quantities = request.getParameterValues("quantity");
+        
+        //Update product type
+        for (int i = 0; i < typeids.length; i++) {
+            ProductType pt = daoproducttype.getProductTypeByPTypeID(typeids[i]);
+            pt.setColor(colors[i]);
+            pt.setSize(sizes[i]);
+            pt.setPrice(prices[i]);
+            pt.setQuantity(Integer.parseInt(quantities[i]));
+            daoproducttype.editProduct(pt);
+        }
+        //Success
+        String state = "success";
+        request.setAttribute("state", state);
+        request.setAttribute("product", product);
+        String mess = "Update successfully";
+        request.setAttribute("mess", mess);
+        request.setAttribute("service", "updateproductdetail");
+        sendDispatcher(request, response, "admin/productdetail.jsp");
     }//</editor-fold>
 
     // <editor-fold defaultstate="collapsed" desc="Company methods. Click on the + sign on the left to edit the code.">
@@ -702,12 +762,18 @@ public class AdminController extends HttpServlet {
             pr.print("</span>");
             pr.print("</a>");
             pr.print("</li>");
-           for (int i = 1; i <= totalPage; i++) {
-                if(i < index - 2) continue;
-                if(index<3){
-                    if(i >5) break;
-                }else{
-                    if(i>index+2) break;
+            for (int i = 1; i <= totalPage; i++) {
+                if (i < index - 2) {
+                    continue;
+                }
+                if (index < 3) {
+                    if (i > 5) {
+                        break;
+                    }
+                } else {
+                    if (i > index + 2) {
+                        break;
+                    }
                 }
                 if (index == i) {
                     pr.print("<li  class=\"page-item active\" data-repair=\"" + i + "\">");
@@ -803,7 +869,7 @@ public class AdminController extends HttpServlet {
             String mess = "Add successfully";
             request.setAttribute("mess", mess);
             request.setAttribute("service", "addcompanydetail");
-            sendDispatcher(request, response, "admin/companydetail.jsp");     
+            sendDispatcher(request, response, "admin/companydetail.jsp");
         }
     }
 
@@ -886,14 +952,7 @@ public class AdminController extends HttpServlet {
     }//</editor-fold>
 
     // <editor-fold defaultstate="collapsed" desc="Role methods. Click on the + sign on the left to edit the code.">
-    public void serviceUserAuthorization(String service, HttpServletRequest request, HttpServletResponse response) {
-        request.setAttribute("service", service);
-        ArrayList<User> listUser = daouser.getAllUser();
-        request.setAttribute("listUser", listUser);
-        sendDispatcher(request, response, "admin/authorization/userAuthorization.jsp");
-    }
-
-    public void serviceRoleDisplay(String service, HttpServletRequest request, HttpServletResponse response) {
+    public void serviceRoleManagement(String service, HttpServletRequest request, HttpServletResponse response) {
         request.setAttribute("service", service);
         List<Role> role = daorole.getAllRole();
         request.setAttribute("role", role);
@@ -906,8 +965,9 @@ public class AdminController extends HttpServlet {
             sendDispatcher(request, response, "admin/authorization/editRole.jsp");
             return;
         }
-        List<Role> role = daorole.getAllRole();
-        request.setAttribute("role", role);
+        int id = Integer.parseInt(request.getParameter("roleID"));
+        Role roleDetail = daorole.getRoleById(id);
+        request.setAttribute("roleDetail", roleDetail);
         sendDispatcher(request, response, "admin/authorization/editRole.jsp");
     }
 
@@ -918,24 +978,92 @@ public class AdminController extends HttpServlet {
         int adminPermission = Integer.parseInt(request.getParameter("adminPermission"));
         int sellerPermission = Integer.parseInt(request.getParameter("sellerPermission"));
         int customerPermission = Integer.parseInt(request.getParameter("customerPermission"));
-        Role newRole = new Role();
-        newRole.setRoleID(roleID);
-        newRole.setRoleName(roleName);
-        newRole.setAdminPermission(adminPermission);
-        newRole.setSellerPermission(sellerPermission);
-        newRole.setCustomerPermission(customerPermission);
-        daorole.addRole(newRole);
-        List<Role> listRole = daorole.getAllRole();
-        request.setAttribute("listRole", listRole);
-        sendDispatcher(request, response, "admin/authorization/roleAuthorization.jsp");
+        boolean isExist = false;
+
+        if (daorole.checkExistRoleName(roleName) || daorole.checkExistRoleId(roleID)) {
+            isExist = true;
+        }
+
+        if (isExist == true) {
+            request.setAttribute("adminPermission", adminPermission);
+            request.setAttribute("sellerPermission", sellerPermission);
+            request.setAttribute("customerPermission", customerPermission);
+            String state = "fail";
+            request.setAttribute("state", state);
+            String mess = "Add fail because duplicate information";
+            request.setAttribute("mess", mess);
+            request.setAttribute("service", "addRoleDetail");
+            sendDispatcher(request, response, "admin/authorization/editRole.jsp");
+        }
+
+        if (isExist == false) {
+            Role newRole = new Role();
+            newRole.setRoleID(roleID);
+            newRole.setRoleName(roleName);
+            newRole.setAdminPermission(adminPermission);
+            newRole.setSellerPermission(sellerPermission);
+            newRole.setCustomerPermission(customerPermission);
+            daorole.addRole(newRole);
+            String state = "success";
+            request.setAttribute("state", state);
+            List<Role> listRole = daorole.getAllRole();
+            String mess = "Add successfully";
+            request.setAttribute("mess", mess);
+            request.setAttribute("role", listRole);
+            sendDispatcher(request, response, "admin/authorization/roleAuthorization.jsp");
+        }
     }
 
     public void serviceUpdateRole(String service, HttpServletRequest request, HttpServletResponse response) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        request.setAttribute("service", service);
+        int roleID = Integer.parseInt(request.getParameter("roleID"));
+        Role role = daorole.getRoleId(roleID);
+        String roleName = request.getParameter("roleName");
+        int adminPermission = Integer.parseInt(request.getParameter("adminPermission"));
+        int sellerPermission = Integer.parseInt(request.getParameter("sellerPermission"));
+        int customerPermission = Integer.parseInt(request.getParameter("customerPermission"));
+        boolean isExist = false;
+        if (daorole.checkExistRoleName(roleName) && !roleName.equals(role.getRoleName())) {
+            isExist = true;
+        }
+        if (daorole.checkExistRoleId(roleID) && roleID != role.getRoleID()) {
+            isExist = true;
+        }
+        if (isExist == true) {
+            request.setAttribute("service", "updateRoleDetail");
+            request.setAttribute("roleDetail", role);
+            String mess = "Update fail because duplicate information";
+            String state = "fail";
+            request.setAttribute("state", state);
+            request.setAttribute("mess", mess);
+            sendDispatcher(request, response, "admin/authorization/editRole.jsp");
+        }
+        if (isExist == false) {
+            role.setRoleID(roleID);
+            role.setRoleName(roleName);
+            role.setAdminPermission(adminPermission);
+            role.setSellerPermission(sellerPermission);
+            role.setCustomerPermission(customerPermission);
+            daorole.editRole(role);
+            String state = "success";
+            request.setAttribute("state", state);
+            List<Role> listRole = daorole.getAllRole();
+            request.setAttribute("role", listRole);
+            request.setAttribute("roleDetail", role);
+            String mess = "Update successfully";
+            request.setAttribute("mess", mess);
+            request.setAttribute("service", "updateRoleDetail");
+            sendDispatcher(request, response, "admin/authorization/editRole.jsp");
+        }
     }
 
     public void serviceDeleteRole(String service, HttpServletRequest request, HttpServletResponse response) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        request.setAttribute("service", service);
+        int id = Integer.parseInt(request.getParameter("roleID"));
+        daorole.deleteRole(id);
+        List<Role> listRole = daorole.getAllRole();
+        request.setAttribute("role", listRole);
+        sendDispatcher(request, response, "admin/authorization/roleAuthorization.jsp");
     }
 
     public void serviceSearchRole(String service, HttpServletRequest request, HttpServletResponse response) throws IOException {
@@ -951,9 +1079,9 @@ public class AdminController extends HttpServlet {
                     + "<td><div>" + role.getSellerPermission() + "</div></td>"
                     + "<td><div>" + role.getCustomerPermission() + "</div></td>"
                     + "<td><div>" + role.getStatus() + "</div></td>"
-                    + "<td><div><a href=\"AdminControllerMap?service=updateproductdetail&producttypeid=" + role.getRoleID() + "\"><span class=\"fas fa-edit\"></span></a>"
+                    + "<td><div><a href=\"AdminControllerMap?service=updateRole&roleID=" + role.getRoleID() + "\"><span class=\"fas fa-edit\"></span></a>"
                     + "</div></td>"
-                    + "<td><div><a href=\"AdminControllerMap?service=deleteproduct&producttypeid=" + role.getRoleID() + "\" onclick=\"return confirm('Are you sure you want to Remove?');\"><span class=\"fas fa-trash-alt\"></span></a></div></td>" + "</tr>"
+                    + "<td><div><a href=\"AdminControllerMap?service=deleteRole&roleID=" + role.getRoleID() + "\" onclick=\"return confirm('Are you sure you want to Remove?');\"><span class=\"fas fa-trash-alt\"></span></a></div></td>" + "</tr>"
             );
         }
     }//</editor-fold>
@@ -964,8 +1092,7 @@ public class AdminController extends HttpServlet {
             rd.forward(request, response);
 
         } catch (ServletException | IOException ex) {
-            Logger.getLogger(AdminController.class
-                    .getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(AdminController.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
 
@@ -981,7 +1108,11 @@ public class AdminController extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        processRequest(request, response);
+        try {
+            processRequest(request, response);
+        } catch (ParseException ex) {
+            Logger.getLogger(AdminController.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
 
     /**
@@ -995,7 +1126,11 @@ public class AdminController extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        processRequest(request, response);
+        try {
+            processRequest(request, response);
+        } catch (ParseException ex) {
+            Logger.getLogger(AdminController.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
 
     /**

@@ -1,9 +1,11 @@
+<%@page import="java.text.DecimalFormat"%>
 <%@page import="java.util.*"%>
 <%@page import="entity.*"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <c:set var="contextPath" value="${pageContext.request.contextPath}" />
 <%
+    DecimalFormat nf = new DecimalFormat("###,###,###");
     int index = (Integer) request.getAttribute("index");
     int totalPage = (Integer) request.getAttribute("totalPage");
     int prev = index == 1 ? 1 : index - 1;
@@ -85,10 +87,9 @@
                                             <tbody id="company">
                                             <%for (ShipCompany company : listCompany) {%>
                                             <tr>
-                                                <% int unit = (int) company.getUnitCost();%>
                                                 <td><%=company.getCompanyName()%></td>
                                                 <td><%=company.getCommitDate()%></td>
-                                                <td><%=unit%></td>
+                                                <td><%=nf.format(company.getUnitCost())%></td>
                                                 <td>
                                                     <a href="AdminControllerMap?service=updatecompanydetail&companyid=<%=company.getCompanyID()%>"><span class="fas fa-edit"></span></a>
                                                 </td>

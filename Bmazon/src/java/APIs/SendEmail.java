@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package entity;
+package APIs;
 
 /**
  *
@@ -19,7 +19,7 @@ import javax.mail.Session;
 import javax.mail.Transport;
 import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeMessage;
-import static model.Editor.addTable;
+import static APIs.Editor.addTable;
 
 public class SendEmail {
 

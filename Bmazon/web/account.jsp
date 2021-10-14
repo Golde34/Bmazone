@@ -27,7 +27,7 @@
         <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js" integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy" crossorigin="anonymous"></script>
     </head>
     <body>
-        <jsp:include page="../header.jsp"/>
+        <jsp:include page="header.jsp"/>
         <%
             User x = (User) request.getSession().getAttribute("currUser");
 
@@ -58,7 +58,7 @@
                 <!--Order-->
                 <div class="col-lg-4 col-md-5">
                     <a href="#">
-                        <div class=" card shadow p-3 mb-5 bg-white rounded" style="width: 20rem;"> 
+                        <div class=" card shadow p-3 mb-5 bg-white rounded" style="width: 20rem; height: 9rem;"> 
                             <div class="card-body">
                                 <div class="row">
                                     <div class="col-md-4">
@@ -77,7 +77,7 @@
                 <!--Security-->
                 <div class="col-lg-4 col-md-5">
                     <a href="UserControllerMap?service=editPrivateProfile">
-                        <div class=" card shadow p-3 mb-5 bg-white rounded" style="width: 20rem;"> 
+                        <div class=" card shadow p-3 mb-5 bg-white rounded" style="width: 20rem; height: 9rem;"> 
                             <div class="card-body">
                                 <div class="row">
                                     <div class="col-md-4">
@@ -96,7 +96,7 @@
                 <!--Profile-->
                 <div class="col-lg-4 col-md-5">
                     <a href="UserControllerMap?service=info">
-                        <div class=" card shadow p-3 mb-5 bg-white rounded" style="width: 20rem;"> 
+                        <div class=" card shadow p-3 mb-5 bg-white rounded" style="width: 20rem; height: 9rem;"> 
                             <div class="card-body">
                                 <div class="row">
                                     <div class="col-md-4">
@@ -130,11 +130,49 @@
                         </div>
                     </a>
                 </div>
+                
+                <!--Sales Feature-->
+                <% if (x.getSystemRole() != 2) { %>
+                <div class="col-lg-4 col-md-5">
+                    <a href="UserControllerMap?service=turnOnSalesFeature">
+                        <div class=" card shadow p-3 mb-5 bg-white rounded" style="width: 20rem; height: 9rem;"> 
+                            <div class="card-body">
+                                <div class="row">
+                                    <div class="col-md-4">
+                                        <img alt="Sales Feature" src="https://images-na.ssl-images-amazon.com/images/G/01/x-locale/cs/contact-us/GiftCard_icon_01._CB660349069_.png">                                    </div>
+                                    <div class="col-md-8">
+                                        <h5 class="card-title">Turn on Sales Feature </h5>
+                                        <h6 class="card-subtitle mb-2 text-muted">Register to seller</h6>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </a>
+                </div>
+                <%} else { %>
+                <div class="col-lg-4 col-md-5">
+                    <a href="SellerControllerMap?service=editSellerInformation">
+                        <div class=" card shadow p-3 mb-5 bg-white rounded" style="width: 20rem;"> 
+                            <div class="card-body">
+                                <div class="row">
+                                    <div class="col-md-4">
+                                        <img alt="Sales Feature" src="https://images-na.ssl-images-amazon.com/images/G/01/x-locale/cs/contact-us/GiftCard_icon_01._CB660349069_.png">                                    </div>
+                                    <div class="col-md-8">
+                                        <h5 class="card-title">Seller information</h5>
+                                        <h6 class="card-subtitle mb-2 text-muted">Edit seller information </h6>
+
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </a>
+                </div>
+                <%}%>
             </div>
         </div>
         <br><br><br><br><br><br><br>
         <br><br><br><br><br><br><br>
 
-        <jsp:include page="../footer.jsp"/>
+        <jsp:include page="footer.jsp"/>
     </body>
 </html>

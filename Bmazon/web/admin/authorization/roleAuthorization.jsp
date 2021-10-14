@@ -10,8 +10,6 @@
     if (mess == null) {
         mess = "";
     }
-    String service = (String) request.getAttribute("service");
-    User curUser = (User) request.getSession().getAttribute("currUser");
 %>
 
 <!DOCTYPE html>
@@ -35,9 +33,9 @@
     <body class="g-sidenav-show  bg-gray-100">
         <aside class="sidenav navbar navbar-vertical navbar-expand-xs border-0 border-radius-xl my-3 fixed-start ms-3 " id="sidenav-main">
             <jsp:include page="../adminsidebar.jsp"></jsp:include>
-        </aside>
-        <main class="main-content position-relative max-height-vh-100 h-100 mt-1 border-radius-lg ">
-            <!-- Navbar -->
+            </aside>
+            <main class="main-content position-relative max-height-vh-100 h-100 mt-1 border-radius-lg ">
+                <!-- Navbar -->
             <jsp:include page="../adminheader.jsp"></jsp:include>
                 <!-- End Navbar -->
                 <div class="container-fluid py-4">
@@ -72,18 +70,21 @@
                                                         <th></th>
                                                     </tr>
                                                 </thead>
-                                                <tbody id="user">
+                                                <tbody id="role">
                                                 <%for (Role role : listRole) {%>
                                                 <tr>
                                                     <td><%=role.getRoleID()%></td>
                                                     <td><%=role.getRoleName()%></td>
-                                                    <td><%=role.getAdminPermission()%></td>
-                                                    <td><%=role.getSellerPermission()%></td>
-                                                    <td><%=role.getCustomerPermission()%></td>
+                                                    <% if (role.getAdminPermission() == 1) {%> <td>O</td>
+                                                    <%} else {%> <td>X</td> <%}%>
+                                                    <% if (role.getSellerPermission() == 1) {%>  <td>O</td>
+                                                    <%} else {%> <td>X</td> <%}%>
+                                                    <% if (role.getCustomerPermission() == 1) {%> <td>O</td>
+                                                    <%} else {%> <td>X</td> <%}%>
                                                     <td>
-                                                        <a href="AdminControllerMap?service=updateuserdetail&userid=<%=role.getRoleID()%>"><span class="fas fa-edit"></span></a>
+                                                        <a href="AdminControllerMap?service=updateRoleDetail&roleID=<%=role.getRoleID()%>"><span class="fas fa-edit"></span></a>
                                                     </td>
-                                                    <td><a href="AdminControllerMap?service=deleteuser&userid=<%=role.getRoleName()%>" onclick="return confirm('Are you sure you want to Remove?');"><span class="fas fa-trash-alt"></span></a></td>
+                                                    <td><a href="AdminControllerMap?service=deleteRole&roleID=<%=role.getRoleID()%>" onclick="return confirm('Are you sure you want to Remove?');"><span class="fas fa-trash-alt"></span></a></td>
                                                 </tr>
                                                 <%}%>
                                             </tbody>
@@ -113,10 +114,10 @@
                                                                 type: "get",
                                                                 data: {
                                                                     search: txtSearch,
-                                                                    service: "searchcompany"
+                                                                    service: "searchRole"
                                                                 },
                                                                 success: function (respone) {
-                                                                    var text = document.getElementById("company");
+                                                                    var text = document.getElementById("role");
                                                                     text.innerHTML = respone;
                                                                     getPagination('#dataTable');
                                                                 },

@@ -5,7 +5,7 @@
  */
 package controller;
 
-import entity.Product;
+import entity.Seller;
 import entity.User;
 import java.io.File;
 import java.io.IOException;
@@ -13,7 +13,6 @@ import java.io.PrintWriter;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.sql.Date;
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
@@ -28,6 +27,7 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import model.UserDAO;
 import model.DBConnection;
+import model.SellerDAO;
 import org.apache.commons.fileupload.FileItem;
 import org.apache.commons.fileupload.disk.DiskFileItemFactory;
 import org.apache.commons.fileupload.servlet.ServletFileUpload;
@@ -49,6 +49,7 @@ public class UserController extends HttpServlet {
      */
     DBConnection dbCon = new DBConnection();
     UserDAO daoUser = new UserDAO();
+    SellerDAO daoSeller = new SellerDAO();
 
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
@@ -64,7 +65,7 @@ public class UserController extends HttpServlet {
             if (service.equalsIgnoreCase("logout")) {
                 serviceLogout(request, response);
             }
-            
+
             //change pass
             if (service.equalsIgnoreCase("changepass")) {
                 serviceChangePassword(request, response);
@@ -120,6 +121,14 @@ public class UserController extends HttpServlet {
             //Top Up
             if(service.equalsIgnoreCase("topUp")){
                 serviceTopUp(request, response);
+            }
+            //Turn on seller feature
+            if (service.equalsIgnoreCase("turnOnSalesFeature")) {
+                serviceTurnOnSalesFeature(request, response);
+            }
+            //Submit erquest seller
+            if (service.equalsIgnoreCase("requestSeller")) {
+                serviceSellerRequest(request, response);
             }
         }
     }
@@ -192,7 +201,7 @@ public class UserController extends HttpServlet {
     private void serviceAccount(HttpServletRequest request, HttpServletResponse response) {
         User x = (User) request.getSession().getAttribute("currUser");
         request.setAttribute("currUser", x);
-        sendDispatcher(request, response, "user/account.jsp");
+        sendDispatcher(request, response, "account.jsp");
     }
 
     private void serviceEditPrivateProfile(HttpServletRequest request, HttpServletResponse response) {
@@ -227,9 +236,12 @@ public class UserController extends HttpServlet {
             u.setEmail(mail);
             u.setPhoneNumber(phone);
             daoUser.updatePrivateInfo(u);
+            System.out.println(u.getPassword() + u.getFullname());
             int currentUserID = Integer.parseInt(x.getUserId());
             request.getSession().setAttribute("currUser", daoUser.getUserById(currentUserID));
-            sendDispatcher(request, response, "UserControllerMap?service=account");
+            mess = "Change private information successfully!";
+            request.setAttribute("mess", mess);
+            sendDispatcher(request, response, "user/editPrivateProfile.jsp");
         } else {
             mess = "You must enter the correct password";
             request.setAttribute("mess", mess);
@@ -353,6 +365,54 @@ public class UserController extends HttpServlet {
 //            sendDispatcher(request, response, "user/editPrivateProfile.jsp");
 //        }
          sendDispatcher(request, response, "user/topUp.jsp");
+    }
+
+    private void serviceTurnOnSalesFeature(HttpServletRequest request, HttpServletResponse response) {
+        User x = (User) request.getSession().getAttribute("currUser");
+        request.setAttribute("currUser", x);
+        sendDispatcher(request, response, "user/sellerRequest.jsp");
+    }
+
+    private void serviceSellerRequest(HttpServletRequest request, HttpServletResponse response) {
+        String mess = "";
+
+        User x = (User) request.getSession().getAttribute("currUser");
+        request.setAttribute("currUser", x);
+        int userID = Integer.parseInt(x.getUserId());
+        String shopName = request.getParameter("shopName");
+        String sellerPhone = request.getParameter("sellerPhone");
+        String evidence = request.getParameter("evidence");
+        int sellerMainProduct = Integer.parseInt(request.getParameter("sellerMainProduct"));
+
+        boolean isExist = false;
+
+        if (daoSeller.checkExistPhone(sellerPhone)) {
+            isExist = true;
+            mess = "This phone number is already in use by another account";
+            request.setAttribute("mess", mess);
+            sendDispatcher(request, response, "UserControllerMap?service=turnOnSalesFeature");
+        }
+
+        if (daoSeller.checkExistUserID(userID)) {
+            isExist = true;
+            mess = "You are already request sales feature.";
+            request.setAttribute("mess", mess);
+            sendDispatcher(request, response, "UserControllerMap?service=turnOnSalesFeature");
+        }
+
+        if (isExist == false) {
+            Seller sel = new Seller(userID, shopName, sellerPhone, evidence, sellerMainProduct, "", 0);
+            //Response seller (Admin work)
+            User u = x;
+            u.setSell(1);
+            u.setSystemRole(2);
+            daoUser.updateInfoUserByAdmin(u);
+            //End
+            daoSeller.addSeler(sel);
+            mess = "Waiting for adminstrator to verify your registration certificate...";
+            request.setAttribute("mess", mess);
+            sendDispatcher(request, response, "UserControllerMap?service=turnOnSalesFeature");
+        }
     }
 
     public void sendDispatcher(HttpServletRequest request, HttpServletResponse response, String path) {
