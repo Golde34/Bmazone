@@ -16,6 +16,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import entity.CartItem;
 import entity.ProductType;
+import java.text.Normalizer;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javafx.scene.control.Alert;
@@ -47,12 +48,18 @@ public class CartController extends HttpServlet {
         try (PrintWriter out = response.getWriter()) {
 
             String service = request.getParameter("service");
-
-            if (service.equalsIgnoreCase("AddToCart")) {
-                serviceAddToCart(request, response);
-            }
             
 
+            if (service.equalsIgnoreCase("AddToCart")){           
+                serviceAddToCart(request, response);
+            }
+            if (service.equalsIgnoreCase("Delete")){           
+                serviceDelete(request, response);
+            }
+            if (service.equalsIgnoreCase("Update")){           
+                serviceUpdate(request, response);
+            }
+            
         }
         
     }
@@ -63,33 +70,68 @@ public class CartController extends HttpServlet {
         String pid = request.getParameter("pid");
         String size = request.getParameter("size");
         String color = request.getParameter("color");
+        String name = request.getParameter("name");
         String quantitys = request.getParameter("quantity");
         int quantity = Integer.parseInt(quantitys);
         PrintWriter out = response.getWriter();
         ProductType pt = ptd.getProductTypeByColorAndSize(color,size,pid);
         String image = galdao.getImageByProductTypeID(pt.getProductTypeId());
         double total = quantity * Double.parseDouble(pt.getPrice());
-       int pid1=Integer.parseInt(pid);
+        int pid1=Integer.parseInt(pid);
         boolean check = true;
         for (int i = 0; i < ShoppingCart.size(); i++) {
             if (ShoppingCart.get(i).getProductID() == pid1
                     && ShoppingCart.get(i).getColor().equals(color)
                     && ShoppingCart.get(i).getSize().equals(size)) {
                 ShoppingCart.get(i).setQuantity(ShoppingCart.get(i).getQuantity() + quantity);
+                ShoppingCart.get(i).setTotalCost(ShoppingCart.get(i).getQuantity()*Double.parseDouble(pt.getPrice()));
                 check = false;
-
             }
         }
-
         if (check == true) {
-            CartItem cartitem = new CartItem(pt.getProductID(), "", pt.getSize(), pt.getColor(), image, Double.parseDouble(pt.getPrice()), quantity, total);
+            CartItem cartitem = new CartItem(ShoppingCart.size()+1,pt.getProductID(), name, pt.getSize(), pt.getColor(), image, Double.parseDouble(pt.getPrice()), quantity, total);          
             ShoppingCart.add(cartitem);
-        }     
+        }         
         request.getSession().setAttribute("ShoppingCart", ShoppingCart);
         sendDispatcher(request, response, "cart.jsp");
-
-        
+           
     }
+     public void serviceUpdate(HttpServletRequest request, HttpServletResponse response) {
+        ArrayList<CartItem> ShoppingCart = (ArrayList<CartItem>) request.getSession().getAttribute("ShoppingCart");
+        String[] idString = request.getParameterValues("cartID");
+        String[] quantityString = request.getParameterValues("quantity");
+        
+        
+        for (int i = 0; i < ShoppingCart.size(); i++) {
+            if (ShoppingCart.get(i).getCartID()==Integer.parseInt(idString[i])) {
+                ShoppingCart.get(i).setQuantity(Integer.parseInt(quantityString[i]));
+                ShoppingCart.get(i).setTotalCost(Integer.parseInt(quantityString[i])*(ShoppingCart.get(i).getPrice()));
+                ;
+            }
+        }
+          request.getSession().setAttribute("ShoppingCart", ShoppingCart);
+        sendDispatcher(request, response, "cart.jsp");
+    }
+
+    public void serviceDelete(HttpServletRequest request, HttpServletResponse response) {
+        ArrayList<CartItem> ShoppingCart = (ArrayList<CartItem>) request.getSession().getAttribute("ShoppingCart");
+        String ID = request.getParameter("cartID");
+        int cartID= Integer.parseInt(ID);
+          for (int i = 0; i < ShoppingCart.size(); i++) {
+            if (ShoppingCart.get(i).getCartID()==cartID) {
+                ShoppingCart.remove(i);
+                             
+            }
+        }
+          for (int i = 0; i < ShoppingCart.size(); i++) {
+             ShoppingCart.get(i).setCartID(i+1);
+                             
+            }
+        
+          request.getSession().setAttribute("ShoppingCart", ShoppingCart);
+        sendDispatcher(request, response, "cart.jsp");
+    }
+
 
     public void sendDispatcher(HttpServletRequest request, HttpServletResponse response, String path) {
         try {
@@ -139,4 +181,5 @@ public class CartController extends HttpServlet {
         return "Short description";
     }// </editor-fold>
 
+   
 }

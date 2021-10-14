@@ -55,6 +55,20 @@ CREATE TABLE [Category] (
 	[status] bit
 )
 
+CREATE TABLE Seller (
+	sellerID int not null identity(1, 1) PRIMARY KEY,
+	userID int not null,
+	sellerShopName nvarchar(255),
+	sellerPhone nvarchar(255) not null,
+	evidence nvarchar(255) not null,
+	sellerMainProduct int,
+	[description] nvarchar(255),
+	sellerVerification int,
+	[status] bit,
+	FOREIGN KEY ([userID]) REFERENCES [User]([userID]),
+	FOREIGN KEY (sellerMainProduct) REFERENCES Category([categoryID])
+)
+
 --Toi di code dao <- Code Book <- Book
 CREATE TABLE [Genre] (
 	genreID int NOT NULL identity(1,1) PRIMARY KEY,
@@ -163,7 +177,6 @@ CREATE TABLE OrderDetail(
 )
 
 CREATE TABLE [Comment](
-
 	commentID int not null identity(1,1) PRIMARY KEY,
 	productID int not null,
 	[userId] int not null,
@@ -187,20 +200,6 @@ CREATE TABLE [Comment](
 	Sale,
 	status
 ) */
-
-CREATE TABLE Seller (
-	sellerID int not null identity(1, 1) PRIMARY KEY,
-	userID int not null,
-	sellerShopName nvarchar(255),
-	sellerPhone nvarchar(255) not null,
-	evidence nvarchar(255) not null,
-	sellerMainProduct int,
-	[description] nvarchar(255),
-	sellerVerification int,
-	[status] bit,
-	FOREIGN KEY ([userID]) REFERENCES [User]([userID]),
-	FOREIGN KEY (sellerMainProduct) REFERENCES Category([categoryID])
-)
 
 --CREATE TABLE Sale
 --CREATE TABLE Seller
