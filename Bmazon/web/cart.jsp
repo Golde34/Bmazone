@@ -24,7 +24,7 @@
         <div class="wrap">
             <jsp:include page="header.jsp"/>
             <%  ArrayList<CartItem> ShoppingCart = (ArrayList<CartItem>) session.getAttribute("ShoppingCart");
-               
+
             %>
 
 
@@ -40,13 +40,14 @@
                                         <div class="col large-7 pb-0 ">
 
 
-                                            <form action="http://mauweb.monamedia.net/lazada/gio-hang/" method="post" class="woocommerce-cart-form">
+                                            <form action="CartControllerMap" method="POST" class="woocommerce-cart-form">
                                                 <div class="cart-wrapper sm-touch-scroll">
 
 
                                                     <table class="shop_table shop_table_responsive cart woocommerce-cart-form__contents" cellspacing="0">
                                                         <thead>
                                                             <tr>
+                                                                <th class="choose" > Check</th>
                                                                 <th class="product-name" colspan="3">Sản phẩm</th>
                                                                 <th class="product-price">Giá</th>
                                                                 <th class="product-quantity">Số lượng</th>
@@ -54,50 +55,59 @@
                                                             </tr>
                                                         </thead>
                                                         <tbody>
-                                                            <%      for (CartItem item : ShoppingCart) { 
-                                                                     String image="images/"+item.getImage();
+                                                            <
+
+                                                            <%      for (CartItem item : ShoppingCart) {
+                                                                    String image = "images/" + item.getImage();
                                                             %>
 
                                                             <tr class="woocommerce-cart-form__cart-item cart_item">
+                                                        <input type="hidden" value="<%=item.getCartID()%>" name="cartID">
+                                                        <td class="product-remove">
+                                                            <input type="checkbox" > </td>
 
-                                                                <td class="checkbox">
-                                                                    <a class="checkbox" aria-label="Choose" >&times;</a>          </td>
+                                                        <td class="product-remove">
+                                                            <a href="CartControllerMap?service=Delete&cartID=<%=item.getCartID()%>" class="remove" aria-label="Xóa sản phẩm này" data-product_id="139" data-product_sku="">&times;</a>          </td>
 
-                                                                <td class="product-thumbnail">
-                                                                    <a href="">
-                                                                        <img width="180" height="180" src="<%=image%>"/></a>          </td>
 
-                                                                <td class="product-name" data-title="Sản phẩm">
-                                                                    <a href=""> </a> <>  <%=item.getName()+"("+item.getSize()+")"+"("+item.getColor()+")" %>       </td>
+                                                        <td class="product-thumbnail">
+                                                            <a href="">
+                                                                <img width="180" height="180" src="<%=image%>"/></a>          </td>
 
-                                                                <td class="product-price" data-title="Giá">
-                                                                    <span class="woocommerce-Price-amount amount"><%=nf.format(item.getPrice()) %>&nbsp;<span class="woocommerce-Price-currencySymbol">&#8363;</span></span>          </td>
+                                                        <td class="product-name" data-title="Sản phẩm">
+                                                            <a href=""> </a><%=item.getName() + "(" + item.getSize() + ")" + "(" + item.getColor() + ")"%>       </td>
 
-                                                                <td class="product-quantity" data-title="Số lượng">
-                                                                    <div class="quantity buttons_added">
-                                                                        <input type="button" value="-" class="minus button is-form">		<label class="screen-reader-text" for="quantity_6163ed53193f0">Số lượng</label>
-                                                                        <input type="number" name="quantity" value="<%=item.getQuantity() %>" title="SL" size="4" pattern="[0-9]*" inputmode="numeric" />
-                                                                        <input type="button" value="+" class="plus button is-form">	</div>
-                                                                </td>
+                                                        <td class="product-price" data-title="Giá">
+                                                            <span class="woocommerce-Price-amount amount"><%=nf.format(item.getPrice())%>&nbsp;<span class="woocommerce-Price-currencySymbol">&#8363;</span></span>          </td>
 
-                                                                <td class="product-subtotal" data-title="Tổng cộng">
-                                                                    <span class="woocommerce-Price-amount amount"><%=nf.format(item.getTotalCost()) %><span class="woocommerce-Price-currencySymbol">&#8363;</span></span>            </td>
-                                                            </tr>
-                                                            <% }%>
+                                                        <td class="product-quantity" data-title="Số lượng">
+                                                            <div class="quantity buttons_added">
 
-                                                            <tr>
-                                                                <td colspan="6" class="actions clear">
+                                                                <input type="button" value="-" class="minus button is-form">		<label class="screen-reader-text" for="quantity_6167ef4cc82d1">Số lượng</label>
+                                                                <input type="number" class="input-text qty text" step="1" min="0" max="9999" name="quantity" value="<%=item.getQuantity()%>" title="SL" size="4" pattern="[0-9]*" inputmode="numeric" />
+                                                                <input type="button" value="+" class="plus button is-form">	</div>
+                                                        </td>
 
-                                                                    <div class="continue-shopping pull-left text-left">
-                                                                        <a class="button-continue-shopping button primary is-outline"  href="">
-                                                                            &#8592; Tiếp tục xem sản phẩm    </a>
-                                                                    </div>
+                                                        <td class="product-subtotal" data-title="Tổng cộng">
+                                                            <span class="woocommerce-Price-amount amount"><%=nf.format(item.getTotalCost())%><span class="woocommerce-Price-currencySymbol">&#8363;</span></span>            </td>
 
-                                                                    <input type="submit" class="button primary mt-0 pull-left small" name="update_cart" value="Cập nhật giỏ hàng" />
 
-                                                                    <input type="hidden" id="_wpnonce" name="_wpnonce" value="7e4c871c7c" />
-                                                                    <input type="hidden" name="_wp_http_referer" value="/Bmazon/cart" />			</td>
-                                                            </tr>
+                                                        </tr>
+                                                        <% }%>
+
+                                                        <tr>
+                                                            <td colspan="6" class="actions clear">
+
+                                                                <div class="continue-shopping pull-left text-left">
+                                                                    <a class="button-continue-shopping button primary is-outline"  href="HomePageControllerMap?service=Homepage">
+                                                                        Continue Shopping    </a>
+                                                                </div>
+
+                                                                <input type="submit" class="button primary mt-0 pull-left small" name="service" value="Update" />
+
+
+                                                            </td>
+                                                        </tr>
 
                                                         </tbody>
                                                     </table>
