@@ -57,7 +57,7 @@
                                         <li>
                                             <a href="#">
                                                 <div class="pull-left">
-                                                    <img src="${contextPath}/images/seller/26115.jpg" class="img-circle" alt="User Image"/>
+                                                    <img src="upload/<%= curUser.getProfileImage()%>" class="img-circle" alt="User Image"/>
                                                 </div>
                                                 <h4>
                                                     Customer 1
@@ -87,8 +87,8 @@
                                         Admin Dashboard
                                     </a>
                                     <ul class='nav-dropdown nav-dropdown-simple'>
-                                        <li  ><a href="#" class="menu-image-title-after"><span >User Management</span></a></li>
-                                        <li  ><a href="#" class="menu-image-title-after"><span >Product Management</span></a></li>
+                                        <li  ><a href="${contextPath}/AdminControllerMap?service=usermanagement" class="menu-image-title-after"><span >User Management</span></a></li>
+                                        <li  ><a href="${contextPath}/AdminControllerMap?service=productmanagement" class="menu-image-title-after"><span >Product Management</span></a></li>
                                     </ul>
                                 </li>
                                 <%}%>
@@ -102,7 +102,7 @@
                                         Seller Dashboard
                                     </a>
                                     <ul class='nav-dropdown nav-dropdown-simple'>
-                                        <li  ><a href="#" class="menu-image-title-after"><span >Product Management</span></a></li>
+                                        <li  ><a href="${contextPath}/SellerControllerMap?service=productmanagement" class="menu-image-title-after"><span >Product Management</span></a></li>
                                         <li  ><a href="#" class="menu-image-title-after"><span >Order Management</span></a></li>
                                     </ul>
                                 </li>

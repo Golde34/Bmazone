@@ -86,11 +86,11 @@ public class SendEmail {
             msg.setRecipient(Message.RecipientType.TO, new InternetAddress(toEmail));
             if (option.equals("register")) {
                 //set email subject
-                msg.setSubject("User Email Verification for Bmazon user");
+                msg.setSubject("User Email Verification from Bmazon");
                 //set message text
                 msg.setText("Hello, " + username + ". Please verify your account using this code: " + code);
             } else {
-                msg.setSubject("User Email Verification for Bmazon user");
+                msg.setSubject("User Forgot Password on Bmazon ");
                 msg.setContent(addTable(code), "text/html; charset=UTF-8");
             }
 

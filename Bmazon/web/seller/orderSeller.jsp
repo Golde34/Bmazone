@@ -46,18 +46,18 @@
     %-->
     <!--    <h2>You must be seller to access this</h2>-->
     <!--% } else { %-->
-    
-<%
-    User curUser = (User) request.getSession().getAttribute("currUser");
-    ArrayList<Product> listP = (ArrayList<Product>) request.getAttribute("listP");
-        if(curUser.getSell() != 1) {
+
+    <%
+        User curUser = (User) request.getSession().getAttribute("currUser");
+        ArrayList<Product> listP = (ArrayList<Product>) request.getAttribute("listP");
+        if (curUser.getSell() != 1) {
     %>
 
     <h2>You must be seller to access this</h2>
-    <% } else { %>
+    <% } else {%>
 
     <body class="skin-black">
-            <jsp:include page="headerSeller.jsp"/>
+        <jsp:include page="headerSeller.jsp"/>
         <!-- header logo: style can be found in header.less -->
         <div class="wrapper row-offcanvas row-offcanvas-left">
             <!-- Left side column. contains the logo and sidebar -->
@@ -67,10 +67,10 @@
                     <!-- Sidebar user panel -->
                     <div class="user-panel">
                         <div class="pull-left image">
-                            <img src="${contextPath}/images/seller/26115.jpg" class="img-circle" alt="User Image" />
+                            <img src="upload/<%= curUser.getProfileImage()%>" class="img-circle" alt="User Image" />
                         </div>
                         <div class="pull-left info">
-                            <p>Hello, <%= curUser.getUsername() %></p>
+                            <p>Hello, <%= curUser.getUsername()%></p>
 
                             <a href="#"><i class="fa fa-circle text-success"></i> Online</a>
                         </div>
@@ -89,7 +89,7 @@
                     <ul class="sidebar-menu">
                         <li><!-- class="tablinks" -->
                             <!--<a href="" onclick="openObject(event, 'Dashboard')">-->
-                                
+
                             <a href="SellerControllerMap">
                                 <i class="fa fa-dashboard"></i> <span>Dashboard</span>
                             </a>
@@ -117,37 +117,8 @@
                 <!-- Main content -->
                 <section class="content">
 
-                    <div class="row" style="margin-bottom:5px;">
 
-
-                        <div class="col-md-4">
-                            <div class="sm-st clearfix">
-                                <span class="sm-st-icon st-red"><i class="fa fa-check-square-o"></i></span>
-                                <div class="sm-st-info">
-                                    <span> <%= listP.size() %> </span>
-                                    Total Product
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-md-4">
-                            <div class="sm-st clearfix">
-                                <span class="sm-st-icon st-violet"><i class="fa fa-envelope-o"></i></span>
-                                <div class="sm-st-info">
-                                    <span>2200</span>
-                                    Total Order
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-md-4">
-                            <div class="sm-st clearfix">
-                                <span class="sm-st-icon st-blue"><i class="fa fa-dollar"></i></span>
-                                <div class="sm-st-info">
-                                    <span>100,320</span>
-                                    Total Profit
-                                </div>
-                            </div>
-                        </div>
-                    </div>
+                    <jsp:include page="generalBoard.jsp"/>
 
                     <!-- Main row -->
                     <!-- Dashboard -->

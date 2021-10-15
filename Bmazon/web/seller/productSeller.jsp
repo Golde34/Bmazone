@@ -74,7 +74,7 @@
                     <!-- Sidebar user panel -->
                     <div class="user-panel">
                         <div class="pull-left image">
-                            <img src="${contextPath}/images/seller/26115.jpg" class="img-circle" alt="User Image" />
+                            <img src="upload/<%= curUser.getProfileImage()%>" class="img-circle" alt="User Image" />
                         </div>
                         <div class="pull-left info">
                             <p>Hello, <%= curUser.getUsername()%></p>
@@ -122,39 +122,7 @@
 
                 <!-- Main content -->
                 <section class="content">
-
-                    <div class="row" style="margin-bottom:5px;">
-
-
-                        <div class="col-md-4">
-                            <div class="sm-st clearfix">
-                                <span class="sm-st-icon"><img style="margin-bottom: 10%" src="https://cdn.iconscout.com/icon/premium/png-256-thumb/new-product-1800178-1528419.png" class="img-circle"></span>
-                                <div class="sm-st-info">
-                                    <span> <%= listP.size()%> </span>
-                                    Total Product
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-md-4">
-                            <div class="sm-st clearfix">
-                                <span class="sm-st-icon" style><img style="margin-bottom: 10%" src="https://www.pinclipart.com/picdir/middle/19-190811_customer-order-orders-icon-clipart.png" class="img-circle"></span>
-                                <div class="sm-st-info">
-                                    <span>2200</span>
-                                    Total Order
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-md-4">
-                            <div class="sm-st clearfix">
-                                <span class="sm-st-icon"><img style="margin-bottom: 10%" src="https://www.pinclipart.com/picdir/middle/524-5249716_dollar-clipart-blue-dollar-blue-transparent-free-for.png" class="img-circle"></span>
-                                <div class="sm-st-info">
-                                    <span>100,320</span>
-                                    Total Profit
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
+                    <jsp:include page="generalBoard.jsp"/>
                     <!-- Main row -->
                     <!-- Product management -->
                     <div style="height: 400px; ">
@@ -195,13 +163,13 @@
                                                 int proID = product.getProductID();
                                         %>
                                         <tr>
-                                            <td><div><%= product.getProductName() %></div></td>
-                                            <td><div><%= product.getReleaseDate() %></div></td>
+                                            <td><div><%= product.getProductName()%></div></td>
+                                            <td><div><%= product.getReleaseDate()%></div></td>
                                             <td><div><%= cateDAO.getCategoryById(pcDAO.getProductCateByProductID(proID).getCategoryID())%></div></td>
                                             <td><div>
-                                                    <a href="SellerControllerMap?service=updatedetail&ptypeid=<%= proID %>"><span class="fas fa-edit"></span></a>
+                                                    <a href="SellerControllerMap?service=updatedetail&ptypeid=<%= proID%>"><span class="fas fa-edit"></span></a>
                                                 </div></td>
-                                            <td><div><a href="SellerControllerMap?service=deleteproduct&ptypeid=<%= proID %>" onclick="return confirm('Are you sure you want to Remove?');"><span class="fas fa-trash-alt"></span></a></div></td>
+                                            <td><div><a href="SellerControllerMap?service=deleteproduct&ptypeid=<%= proID%>" onclick="return confirm('Are you sure you want to Remove?');"><span class="fas fa-trash-alt"></span></a></div></td>
                                         </tr>
                                         <%}%>
                                     </tbody>
@@ -260,15 +228,15 @@
 
 
                     </div><!--end col-6 -->
-<!--                    <div class="col-md-3">
-                        <section class="panel">
-                            <header class="panel-heading">
-                                Hot products
-                            </header>
-                            <div class="panel-body">
-                            </div>
-                        </section>
-                    </div>-->
+                    <!--                    <div class="col-md-3">
+                                            <section class="panel">
+                                                <header class="panel-heading">
+                                                    Hot products
+                                                </header>
+                                                <div class="panel-body">
+                                                </div>
+                                            </section>
+                                        </div>-->
 
                     <!-- row end -->
                 </section><!-- /.content -->

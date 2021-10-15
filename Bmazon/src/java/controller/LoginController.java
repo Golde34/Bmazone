@@ -5,6 +5,8 @@
  */
 package controller;
 
+import APIs.SecurePBKDF2;
+import static APIs.SecurePBKDF2.validatePassword;
 import entity.Product;
 import APIs.SendEmail;
 import entity.User;
@@ -23,6 +25,8 @@ import javax.servlet.http.HttpSession;
 import model.DBConnection;
 import model.UserDAO;
 import entity.CartItem;
+import java.security.NoSuchAlgorithmException;
+import java.security.spec.InvalidKeySpecException;
 
 /**
  *
@@ -43,7 +47,7 @@ public class LoginController extends HttpServlet {
     UserDAO daoUser = new UserDAO();
 
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {
+            throws ServletException, IOException, NoSuchAlgorithmException, InvalidKeySpecException {
         response.setContentType("text/html;charset=UTF-8");
 
         try (PrintWriter out = response.getWriter()) {
@@ -113,21 +117,29 @@ public class LoginController extends HttpServlet {
 //            Logger.getLogger(SystemEmail.class.getName()).log(Level.SEVERE, null, ex);
 //        }
 //    }\
-    public void serviceLogin(HttpServletRequest request, HttpServletResponse response) {
+    public void serviceLogin(HttpServletRequest request, HttpServletResponse response) throws NoSuchAlgorithmException, InvalidKeySpecException {
 //        String checkLogin = "checked";
 //        request.setAttribute("checkLogin", checkLogin);
         String userName = request.getParameter("username");
         String messLogin = "";
         String userPass = request.getParameter("password");
-        User log = new User();
+        User log = daoUser.getUserByUsername(userName);
 
-        log = daoUser.getUserLogin(userName, userPass);
         if (log != null) {
-            request.getSession().setAttribute("currUser", log);
-            request.getSession().setAttribute("role", log.getSystemRole());
-            ArrayList<CartItem> ShoppingCart = new ArrayList<>();
-            request.getSession().setAttribute("ShoppingCart", ShoppingCart);
-            sendDispatcher(request, response, "index.jsp");
+            boolean matched = validatePassword(userPass, log.getPassword());
+            if (matched == true) {
+                request.getSession().setAttribute("currUser", log);
+                request.getSession().setAttribute("role", log.getSystemRole());
+                ArrayList<CartItem> ShoppingCart = new ArrayList<>();
+                request.getSession().setAttribute("ShoppingCart", ShoppingCart);
+                sendDispatcher(request, response, "index.jsp");
+            } else {
+                messLogin = "Login failed, check your username or your password.";
+                request.setAttribute("usernameLogin", userName);
+                request.setAttribute("userpassLogin", userPass);
+                request.setAttribute("mess", messLogin);
+                sendDispatcher(request, response, "loginAndSecurity/login.jsp");
+            }
         } else {
             messLogin = "Login failed, check your username or your password.";
             request.setAttribute("usernameLogin", userName);
@@ -208,7 +220,7 @@ public class LoginController extends HttpServlet {
         }
     }
 
-    public void serviceVerifyAccount(HttpServletRequest request, HttpServletResponse response) {
+    public void serviceVerifyAccount(HttpServletRequest request, HttpServletResponse response) throws NoSuchAlgorithmException, InvalidKeySpecException {
         // get code user submit
         HttpSession session = request.getSession();
         String verifyCode = request.getParameter("veriCode");
@@ -222,10 +234,12 @@ public class LoginController extends HttpServlet {
         String Email = (String) session.getAttribute("emailRegis");
         String Phone = (String) session.getAttribute("phoneRegis");
 
+        String securePassword = SecurePBKDF2.generateStrongPasswordHash(Password);
+
         //get code generated
         String authCode = (String) session.getAttribute("authcode");
         if (verifyCode.equals(authCode)) {
-            daoUser.addUserRegister(new User(Username, Password, Email, Phone, 0, 0, fullname, Username, "", "", "", "", 0, "", "", "", "", "", 0, 0, 1));
+            daoUser.addUserRegister(new User(Username, securePassword, Email, Phone, 0, 0, fullname, Username, "", "", "", "", 0, "", "", "", "", "", 0, 0, 1));
             messVeri = "Signup Successfully!";
             request.setAttribute("mess", messVeri);
             sendDispatcher(request, response, "loginAndSecurity/register.jsp");
@@ -238,16 +252,17 @@ public class LoginController extends HttpServlet {
 
     }
 
-    public void serviceForgotPassword(HttpServletRequest request, HttpServletResponse response) {
+    public void serviceForgotPassword(HttpServletRequest request, HttpServletResponse response) throws NoSuchAlgorithmException, InvalidKeySpecException {
         SendEmail s = new SendEmail();
         String mess = "";
         String username = request.getParameter("username");
         String email = request.getParameter("mail");
-        boolean exist = daoUser.checkExistUserNameAndMail(username, email);       
+        boolean exist = daoUser.checkExistUserNameAndMail(username, email);
         if (exist == true) {
             String option = "forgot";
             String password = s.randomString(6);
-            daoUser.updatePassword(username, email, password);
+            String securePassword = SecurePBKDF2.generateStrongPasswordHash(password);
+            daoUser.updatePassword(username, email, securePassword);
             boolean test = s.sendEmail(username, email, password, option);
             if (test == true) {
                 sendDispatcher(request, response, "loginAndSecurity/notification.jsp");
@@ -299,8 +314,8 @@ public class LoginController extends HttpServlet {
                     .getName()).log(Level.SEVERE, null, ex);
         }
     }
-    
-    public String getSiteURL(HttpServletRequest request){
+
+    public String getSiteURL(HttpServletRequest request) {
         String siteURL = request.getRequestURL().toString();
         return siteURL.replace(request.getServletPath(), "");
     }
@@ -317,7 +332,11 @@ public class LoginController extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        processRequest(request, response);
+        try {
+            processRequest(request, response);
+        } catch (NoSuchAlgorithmException | InvalidKeySpecException ex) {
+            Logger.getLogger(LoginController.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
 
     /**
@@ -331,7 +350,11 @@ public class LoginController extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        processRequest(request, response);
+        try {
+            processRequest(request, response);
+        } catch (NoSuchAlgorithmException | InvalidKeySpecException ex) {
+            Logger.getLogger(LoginController.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
 
     /**
