@@ -6,11 +6,6 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <c:set var="contextPath" value="${pageContext.request.contextPath}" />
 <%
-    ProductTypeDAO daopt = new ProductTypeDAO();
-    DecimalFormat nf = new DecimalFormat("###,###,###");
-    UserDAO userdao = new UserDAO();
-    Product product = (Product) request.getAttribute("product");
-    List<ProductType> listType = daopt.getProductByProductID(product.getProductID());
     String mess = (String) request.getAttribute("mess");
     if (mess == null) {
         mess = "";
@@ -19,8 +14,19 @@
     if (state == null) {
         state = "";
     }
+    Category category = (Category) request.getAttribute("category");
+    String genre = (String) request.getAttribute("genre");
     String service = (String) request.getAttribute("service");
     User curUser = (User) request.getSession().getAttribute("currUser");
+    ProductTypeDAO daopt = new ProductTypeDAO();
+    SellerDAO sellerdao = new SellerDAO();
+    CategoryDAO daocat = new CategoryDAO();
+    GenreDAO genredao = new GenreDAO();
+    ArrayList<Category> listCategory = daocat.getAllCategories();
+    ArrayList<Genre> listGenre = (ArrayList<Genre>) request.getAttribute("listGenre");
+    Product product = (Product) request.getAttribute("product");
+    List<ProductType> listType = daopt.getProductByProductID(product.getProductID());
+    DecimalFormat nf = new DecimalFormat("###,###,###");
 %>
 
 <!DOCTYPE html>
@@ -29,9 +35,7 @@
     <head>
         <meta charset="utf-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-        <title>
-            Admin Dashboard
-        </title>
+        <title> Admin Dashboard</title>
         <!--     Fonts and icons     -->
         <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,400,600,700" rel="stylesheet" />
         <!-- Font Awesome Icons -->
@@ -71,18 +75,36 @@
                                             <td style="width: 70%;"><textarea class="form-control" name="productname"><%=product.getProductName()%></textarea></td>
                                         </tr>
                                         <tr>
-                                            <td>Description</td>
-                                            <td><textarea class="form-control" name="description" rows="7"><%=product.getDescription()%></textarea></td>
+                                            <td>Category</td>
+                                            <td>
+                                                <select style="width: 50%;" class="form-select" id="category">
+                                                    <%for (Category cate : listCategory) {
+                                                    %>
+                                                    <option
+                                                        <%if(cate.getCategoryName().equals(category.getCategoryName())){%> selected <%}%> name="category" value="<%=cate.getCategoryID()%>"> <%=cate.getCategoryName()%>
+                                                    </option>
+                                                    <%}%>
+                                                </select>
+                                            </td>
                                         </tr>    
                                         <tr>
-                                            <td>Rating</td>
-                                            <td><input class="form-control" value="<%=product.getRating()%>" type="text" name="rating" class="input"></td>
+                                            <td>Genre</td>
+                                            <td>
+                                                <select style="width: 50%;" class="form-select" id="genre">
+                                                    <%for (Genre gen : listGenre) {
+                                                    %>
+                                                    <option
+                                                        <%if(gen.getGenreName().equals(genre)){%> selected <%}%> value="<%=gen.getGenreID()%>" name="genre" > <%=gen.getGenreName()%>
+                                                    </option>
+                                                    <%}%>
+                                                </select>
+                                            </td>
                                         </tr>
                                         <tr>
                                             <td>Seller</td>
-                                            <%User user = userdao.getUserById(product.getSeller());%>
+                                            <%Seller seller = sellerdao.getSellerID(String.valueOf(product.getSeller()));%>
                                             <td>
-                                                <input class="form-control" readonly value="<%=user.getFullname()%>" type="text" class="input">
+                                                <input class="form-control" readonly value="<%=seller.getSellerShopName()%>" type="text" class="input">
                                                 <input type="hidden" name="seller" value="<%=product.getSeller()%>"
                                             </td>
                                         </tr>
@@ -154,34 +176,22 @@
         <script async defer src="https://buttons.github.io/buttons.js"></script>
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
         <script>
-        function add_fields() {
-            document.getElementById("productType").insertRow(-1).innerHTML =
-                    '<tr>' +
-                    '<td>' +
-                    '<input style="width: 100%;" type="text" name="color" class="form-control">' +
-                    '<input input type="hidden" name="ptid">' +
-                    '</td>' +
-                    '<td>' +
-                    '<input style="width: 100%;" type="text" name="size" class="form-control">' +
-                    '</td>' +
-                    '<td>' +
-                    '<input style="width: 100%;" type="text" name="price" class="form-control price">' +
-                    '</td>' +
-                    '<td>' +
-                    '<input style="width: 100%;"  type="text" name="quantity" class="form-control">' +
-                    '</td>' +
-                    '<td>' +
-                    '<a><span class="fas fa-trash-alt mt-3 ml-3 delete"></span></a>' +
-                    '</td>' +
-                    '</tr>';
-        }
-//        $(".delete").click(function () {
-//            var result = confirm("Want to delete?");
-//            if (result) {
-//                $(this).closest("tr").remove();
-//            }
-//
-//        });
+        $(document).ready(function () {
+            $("#category").change(function () {
+                var val = $(this).val();
+        <% for (Category cate : listCategory) {%>
+                if(val=="<%=cate.getCategoryID()%>"){
+                console.log("<%=cate.getCategoryName()%>");
+                 $("#genre").html(
+                <% ArrayList<Genre> list = genredao.getGenresByCategoryId(cate.getCategoryID());
+                    for(int i=0;i<list.size();i++){
+        if(list.size()==1||i==list.size()-1){ %>"<option value='<%=list.get(i).getGenreID()%>'><%=list.get(i).getGenreName()%></option>"
+                        <%}else{%>"<option value='<%=list.get(i).getGenreID()%>'><%=list.get(i).getGenreName()%></option>"+
+                    <%}}%>);
+                }
+        <%}%>
+            });
+        });
         $(".price").on('keyup', function () {
             var n = parseInt($(this).val().replace(/\D/g, ''), 10);
             $(this).val(n.toLocaleString());

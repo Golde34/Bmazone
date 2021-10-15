@@ -10,7 +10,10 @@ import java.util.logging.Logger;
 public class CategoryDAO extends BaseDAO{
    BaseDAO dbConn= new BaseDAO();
    
-
+    public static void main(String[] args) {
+        CategoryDAO dao = new CategoryDAO();
+        System.out.println(dao.getCategoryByCateId("2").getCategoryName());
+    }
     public ArrayList<Category> getAllCategories() {
         String sql = "select * from Category WHERE status=1";
         ArrayList<Category> list = new ArrayList<>();
@@ -80,6 +83,22 @@ public class CategoryDAO extends BaseDAO{
         } catch (SQLException ex) {
             Logger.getLogger(CategoryDAO.class.getName()).log(Level.SEVERE, null, ex);
         }
+    }
+    
+    public Category getCategoryByCateId(String id){
+        String xSql = "select * from Category where categoryID=" + id;
+        Category cat = new Category();
+        try {
+            pre=conn.prepareStatement(xSql);
+            rs = pre.executeQuery();
+            if(rs.next()){
+                cat.setCategoryID(rs.getInt("categoryID"));
+                cat.setCategoryName(rs.getString("categoryName"));
+                cat.setStatus(rs.getInt("status"));
+            }
+        } catch (Exception e) {
+        }
+        return cat;
     }
 
     public String getCategoryById(int fcaId) {

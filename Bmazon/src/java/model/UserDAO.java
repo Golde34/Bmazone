@@ -5,6 +5,7 @@
  */
 package model;
 
+import entity.Seller;
 import entity.User;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -351,9 +352,9 @@ public class UserDAO extends BaseDAO {
         }
         return null;
     }
-
-    public User getUserByProductId(int id) {
-        String sql = "select * from [User] u join Product p on u.userID = p.sellerID where p.productID=" + id + "";
+    
+    public User getUserBySellerId(Seller s) {
+        String sql = "select * from [User] WHERE userID = " + s.getUserID();
         ResultSet rs = dbConn.getData(sql);
         try {
             if (rs.next()) {

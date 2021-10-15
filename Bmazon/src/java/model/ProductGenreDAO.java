@@ -15,10 +15,46 @@ import java.util.logging.Logger;
  *
  * @author Admin
  */
-public class ProductGenreDAO extends BaseDAO{
+public class ProductGenreDAO extends BaseDAO {
 
-   
-
+    public String getGenreIdByProductId(int productId) {
+        xSql = "select * from ProductGenre where productID=" + productId;
+        try {
+            pre = conn.prepareStatement(xSql);
+            rs = pre.executeQuery();
+            if (rs.next()) {
+                String gid = rs.getString("GenreID");
+                return gid;
+            }
+            pre.close();
+        } catch (SQLException e) {
+            Logger.getLogger(ProductCategoryDAO.class.getName()).log(Level.SEVERE, null, e);
+        }
+        return null;
+    }
+    
+    public ProductGenre getProductGenreByProduct(String pid){
+        ProductGenre pg = new ProductGenre();
+        xSql="SELECT * FROM [Bmazon].[dbo].[ProductGenre] where productID="+pid;
+        try {
+            pre = conn.prepareStatement(xSql);
+            rs = pre.executeQuery();
+            while (rs.next()) {
+                pg.setProductID(rs.getInt("productID"));
+                pg.setGenreID(rs.getInt("GenreID"));
+                pg.setStatus(rs.getInt("status"));
+            }
+            rs.close();
+            pre.close();
+        } catch (SQLException e) {
+            Logger.getLogger(ProductGenreDAO.class.getName()).log(Level.SEVERE, null, e);
+        }
+        return pg;
+    }
+    public static void main(String[] args) {
+        ProductGenreDAO dao = new ProductGenreDAO();
+        System.out.println(dao.getProductGenreByProduct("1").getProductID());
+    }
     public ArrayList<ProductGenre> getAllProductGenre() {
         ArrayList<ProductGenre> list = new ArrayList<>();
         String sql = "SELECT * FROM [Bmazon].[dbo].[ProductGenre] where status=1";

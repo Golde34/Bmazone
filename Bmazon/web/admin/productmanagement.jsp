@@ -6,6 +6,9 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <c:set var="contextPath" value="${pageContext.request.contextPath}" />
 <%
+    ProductCategoryDAO pcdao = new ProductCategoryDAO();
+    ProductGenreDAO pgdao = new ProductGenreDAO();
+    GenreDAO genredao = new GenreDAO();
     CategoryDAO catdao = new CategoryDAO();
     SellerDAO sellerdao = new SellerDAO();
     UserDAO userdao = new UserDAO();
@@ -23,8 +26,6 @@
     <head>
         <meta charset="utf-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-        <link rel="apple-touch-icon" sizes="76x76" href="../assets/img/apple-icon.png">
-        <link rel="icon" type="image/png" href="../assets/img/favicon.png">
         <title>
             Admin Dashboard
         </title>
@@ -80,13 +81,13 @@
                                             </div>
                                         </div>
                                         <div class="table-responsive-md">
-                                            <table class="table-bordered text-center">
+                                            <table style="width: 100%" class="table-bordered text-center">
                                                 <thead>
                                                     <tr>
                                                         <th style="width: 30%;">Product Name</th>
-                                                        <th style="width: 30%;">Description</th>
-                                                        <th style="width: 20%;">Rating</th>
-                                                        <th style="width: 10%;">Seller</th>
+                                                        <th style="width: 20%;">Category</th>
+                                                        <th style="width: 20%;">Genre</th>
+                                                        <th style="width: 20%;">Seller</th>
                                                         <th style="width: 5%;"></th>
                                                         <th style="width: 5%;"></th>
                                                     </tr>
@@ -94,11 +95,15 @@
                                                 <tbody id="product">
                                                 <%for (Product product : listProduct) {
                                                         Seller seller = sellerdao.getSellerID(String.valueOf(product.getSeller()));
+                                                        String genreid = pgdao.getGenreIdByProductId(product.getProductID());
+                                                        Genre genre = genredao.getGenreById(Integer.parseInt(genreid));
+                                                        String categoryId = pcdao.getCategoryIdByProductId(product.getProductID());
+                                                        String categoryName = catdao.getCategoryById(Integer.parseInt(categoryId));
                                                 %>
                                                 <tr>
                                                     <td><%=product.getProductName()%></td>
-                                                    <td><%=product.getDescription()%></td>
-                                                    <td><%=product.getRating()%></td>
+                                                    <td><%=categoryName%></td>
+                                                    <td><%=genre.getGenreName()%></td>
                                                     <td><%=seller.getSellerShopName()%></td>
                                                     <td><div><a href="AdminControllerMap?service=updateproductdetail&productid=<%=product.getProductID()%>"><span class="fas fa-edit"></span></a>
                                                         </div></td>
@@ -169,57 +174,57 @@
         <script src="${contextPath}/js/core/bootstrap.min.js"></script>
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
         <script>
-        var pageNum;
-        $(document).on('click', '.pagination li', function () {
-            pageNum = $(this).data('repair');
-            pagination();
-        });
-        function pagination() {
-            var row = document.getElementById("maxRows").value;
-            var search = document.getElementById("search").value;
-            console.log(row);
-            console.log(search);
-            console.log(pageNum);
-            $.ajax({
-                url: "/Bmazon/AdminControllerMap",
-                type: "get",
-                data: {
-                    search: search,
-                    row: row,
-                    index: pageNum,
-                    service: "pagingproduct"
-                },
-                success: function (respone) {
-                    var text = document.getElementById("product");
-                    text.innerHTML = respone;
-                    showpage();
-                },
-                error: function (xhr) {
-                    //Do Something to handle error
-                }
-            });
-        }
-        function showpage() {
-            var row = document.getElementById("maxRows").value;
-            var search = document.getElementById("search").value;
-            $.ajax({
-                url: "/Bmazon/AdminControllerMap",
-                type: "get",
-                data: {
-                    search: search,
-                    row: row,
-                    index: pageNum,
-                    service: "showpageproduct"
-                },
-                success: function (respone) {
-                    var text = document.getElementById("showpage");
-                    text.innerHTML = respone;
-                },
-                error: function (xhr) {
-                    //Do Something to handle error
-                }
-            });
-        }
+                                                        var pageNum;
+                                                        $(document).on('click', '.pagination li', function () {
+                                                            pageNum = $(this).data('repair');
+                                                            pagination();
+                                                        });
+                                                        function pagination() {
+                                                            var row = document.getElementById("maxRows").value;
+                                                            var search = document.getElementById("search").value;
+                                                            console.log(row);
+                                                            console.log(search);
+                                                            console.log(pageNum);
+                                                            $.ajax({
+                                                                url: "/Bmazon/AdminControllerMap",
+                                                                type: "get",
+                                                                data: {
+                                                                    search: search,
+                                                                    row: row,
+                                                                    index: pageNum,
+                                                                    service: "pagingproduct"
+                                                                },
+                                                                success: function (respone) {
+                                                                    var text = document.getElementById("product");
+                                                                    text.innerHTML = respone;
+                                                                    showpage();
+                                                                },
+                                                                error: function (xhr) {
+                                                                    //Do Something to handle error
+                                                                }
+                                                            });
+                                                        }
+                                                        function showpage() {
+                                                            var row = document.getElementById("maxRows").value;
+                                                            var search = document.getElementById("search").value;
+                                                            $.ajax({
+                                                                url: "/Bmazon/AdminControllerMap",
+                                                                type: "get",
+                                                                data: {
+                                                                    search: search,
+                                                                    row: row,
+                                                                    index: pageNum,
+                                                                    service: "showpageproduct"
+                                                                },
+                                                                success: function (respone) {
+                                                                    var text = document.getElementById("showpage");
+                                                                    text.innerHTML = respone;
+                                                                },
+                                                                error: function (xhr) {
+                                                                    //Do Something to handle error
+                                                                }
+                                                            });
+                                                        }
         </script>
     </body>
 

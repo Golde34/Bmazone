@@ -37,6 +37,9 @@ public class AdminController extends HttpServlet {
      * @throws ServletException if a servlet-specific error occurs
      * @throws IOException if an I/O error occurs
      */
+    ProductCategoryDAO daopc = new ProductCategoryDAO();
+    ProductGenreDAO daopg = new ProductGenreDAO();
+    SellerDAO daoseller = new SellerDAO();
     GalleryDAO daogallery = new GalleryDAO();
     ShipCompanyDAO daocompany = new ShipCompanyDAO();
     ProductDAO daoproduct = new ProductDAO();
@@ -66,6 +69,22 @@ public class AdminController extends HttpServlet {
             if (service.equalsIgnoreCase("AdminDashBoard")) {
                 serviceAdminDashboard(service, request, response);
             }
+            
+            
+            // <editor-fold defaultstate="collapsed" desc="Seller Response. Click on the + sign on the left to edit the code.">
+            //SellerResposne
+            if (service.equalsIgnoreCase("sellerResponse")) {
+                serviceSellerResponse(service, request, response);
+            }
+            //Accept Seller Request
+            if (service.equalsIgnoreCase("acceptSeller")) {
+                serviceAcceptSellerRequest(service, request, response);
+            }
+            //Deny Seller Request
+            if (service.equalsIgnoreCase("denySeller")) {
+                serviceDenySellerRequest(service, request, response);
+            }
+            //</editor-fold>
 
             // <editor-fold defaultstate="collapsed" desc="User service. Click on the + sign on the left to edit the code.">
             //User Management
@@ -228,6 +247,47 @@ public class AdminController extends HttpServlet {
         request.setAttribute(("listUser"), listUser);
         sendDispatcher(request, response, "admin/admin.jsp");
     }
+    
+    // <editor-fold defaultstate="collapsed" desc="Seller Response Method. Click on the + sign on the left to edit the code.">
+    public void serviceSellerResponse(String service, HttpServletRequest request, HttpServletResponse response) {
+        request.setAttribute("service", service);    
+        List<Seller> listSellerRequest = daoseller.getSellerBySellerRequest();
+        request.setAttribute("listSellerRequest", listSellerRequest);
+        List<Seller> listAllSeller = daoseller.getAllSeller();
+        request.setAttribute("listAllSeller", listAllSeller);
+        sendDispatcher(request, response, "admin/authorization/sellerResponse.jsp");
+    }
+    
+    private void serviceAcceptSellerRequest(String service, HttpServletRequest request, HttpServletResponse response) {
+        request.setAttribute("service", service); 
+        //change seller status
+        int sellerID = Integer.parseInt(request.getParameter("sellerID"));
+        daoseller.acceptSellerRequest(sellerID);
+        String strSellerID = request.getParameter("sellerID");
+        //change user status
+        Seller s = daoseller.getSellerID(strSellerID);
+        User u = daouser.getUserBySellerId(s);
+        u.setSell(1);
+        u.setSystemRole(2);
+        //add parameter to jsp
+        List<Seller> listAllSeller = daoseller.getAllSeller();
+        request.setAttribute("listAllSeller", listAllSeller);
+        List<Seller> listSellerRequest = daoseller.getSellerBySellerRequest();
+        request.setAttribute("listSellerRequest", listSellerRequest);
+        sendDispatcher(request, response, "admin/authorization/sellerResponse.jsp");
+    }
+    
+    private void serviceDenySellerRequest(String service, HttpServletRequest request, HttpServletResponse response) {
+        request.setAttribute("service", service); 
+        int sellerID = Integer.parseInt(request.getParameter("sellerID"));
+        daoseller.denySellerRequest(sellerID);
+        List<Seller> listAllSeller = daoseller.getAllSeller();
+        request.setAttribute("listAllSeller", listAllSeller);
+        List<Seller> listSellerRequest = daoseller.getSellerBySellerRequest();
+        request.setAttribute("listSellerRequest", listSellerRequest);
+        sendDispatcher(request, response, "admin/authorization/sellerResponse.jsp");
+    }
+    // </editor-fold>
 
     // <editor-fold defaultstate="collapsed" desc="User methods. Click on the + sign on the left to edit the code.">
     public void serviceUserManagement(String service, HttpServletRequest request, HttpServletResponse response) {
@@ -502,13 +562,14 @@ public class AdminController extends HttpServlet {
         request.setAttribute("index", index);
         request.setAttribute("listProduct", listPaging);
         for (Product product : listPaging) {
-            User user = daouser.getUserByProductId(product.getProductID());
+            Seller seller = daoseller.getSellerID(String.valueOf(product.getSeller()));
+            Genre genre = daogenre.getGenreById(Integer.parseInt(daopg.getGenreIdByProductId(product.getProductID())));
+            String category = daocategory.getCategoryById(Integer.parseInt(daopc.getCategoryIdByProductId(product.getProductID())));
             pr.print("<tr>"
                     + "<td><div>" + product.getProductName() + " </div></td>"
-                    + "<td><div>" + product.getDescription() + "</div></td>"
-                    + "<td><div>" + product.getRating() + "</div></td>"
-                    + "<td><div>" + user.getFullname() + "</div></td>"
-                    + "<td><div>" + dateformat.format(product.getReleaseDate()) + "</div></td>"
+                    + "<td><div>" + category + "</div></td>"
+                    + "<td><div>" + genre.getGenreName() + "</div></td>"
+                    + "<td><div>" + seller.getSellerShopName() + "</div></td>"
                     + "<td><div><a href=\"AdminControllerMap?service=updateproductdetail&productid=" + product.getProductID() + "\"><span class=\"fas fa-edit\"></span></a>"
                     + "</div></td>"
                     + "<td><div><a href=\"AdminControllerMap?service=deleteproduct&productid=" + product.getProductID() + "\" onclick=\"return confirm('Are you sure you want to Remove?');\"><span class=\"fas fa-trash-alt\"></span></a></div></td>" + "</tr>"
@@ -604,6 +665,15 @@ public class AdminController extends HttpServlet {
         }
         String id = request.getParameter("productid");
         Product product = daoproduct.getProductByID(Integer.parseInt(id));
+        Seller seller = daoseller.getSellerID(String.valueOf(product.getSeller()));
+        String genreid = daopg.getGenreIdByProductId(product.getProductID());
+        Genre genre = daogenre.getGenreById(Integer.parseInt(genreid));
+        String categoryId = daopc.getCategoryIdByProductId(product.getProductID());
+        Category category = daocategory.getCategoryByCateId(categoryId);
+        ArrayList<Genre> listGenre = daogenre.getGenresByCategoryId(Integer.parseInt(categoryId));
+        request.setAttribute("listGenre", listGenre);
+        request.setAttribute("category", category);
+        request.setAttribute("genre", genre.getGenreName());
         request.setAttribute("product", product);
         sendDispatcher(request, response, "admin/productdetail.jsp");
     }
@@ -645,28 +715,30 @@ public class AdminController extends HttpServlet {
         //Get information about product
         String pid = request.getParameter("pid");
         String productname = request.getParameter("productname");
-        String description = request.getParameter("description");
-        String rating = request.getParameter("rating");
-        String seller = request.getParameter("seller");
+        String cat = request.getParameter("category");
+        String gen = request.getParameter("genre");
+        String sellerId = request.getParameter("seller");
         String date = request.getParameter("date");
         java.util.Date utilDate = new SimpleDateFormat("dd-MM-yyyy").parse(date);
         java.sql.Date sqlDate = new java.sql.Date(utilDate.getTime());
         //Update product
+        ProductCategory pc = daopc.getProductCateByProductID(Integer.parseInt(pid));
+        ProductGenre pg = daopg.getProductGenreByProduct(pid);
         Product product = daoproduct.getProductByID(Integer.parseInt(pid));
         product.setProductName(productname);
-        product.setDescription(description);
-        product.setRating(Integer.parseInt(rating));
         product.setReleaseDate(sqlDate);
-        product.setSeller(Integer.parseInt(seller));
+        product.setSeller(Integer.parseInt(sellerId));
         daoproduct.updateProduct(product);
+//        pc.setCategoryID(Integer.parseInt(cat));
+//        pg.setGenreID(Integer.parseInt(gen));
         //Get information about product type
-        
+
         String[] typeids = request.getParameterValues("ptid");
         String[] colors = request.getParameterValues("color");
         String[] sizes = request.getParameterValues("size");
         String[] prices = request.getParameterValues("price");
         String[] quantities = request.getParameterValues("quantity");
-        
+
         //Update product type
         for (int i = 0; i < typeids.length; i++) {
             ProductType pt = daoproducttype.getProductTypeByPTypeID(typeids[i]);
@@ -677,6 +749,15 @@ public class AdminController extends HttpServlet {
             daoproducttype.editProduct(pt);
         }
         //Success
+        Seller seller = daoseller.getSellerID(String.valueOf(product.getSeller()));
+        String genreid = daopg.getGenreIdByProductId(product.getProductID());
+        Genre genre = daogenre.getGenreById(Integer.parseInt(genreid));
+        String categoryId = daopc.getCategoryIdByProductId(product.getProductID());
+        Category category = daocategory.getCategoryByCateId(categoryId);
+        ArrayList<Genre> listGenre = daogenre.getGenresByCategoryId(Integer.parseInt(categoryId));
+        request.setAttribute("listGenre", listGenre);
+        request.setAttribute("category", category);
+        request.setAttribute("genre", genre.getGenreName());
         String state = "success";
         request.setAttribute("state", state);
         request.setAttribute("product", product);
