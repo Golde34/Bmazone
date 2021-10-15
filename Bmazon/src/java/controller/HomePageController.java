@@ -79,6 +79,9 @@ public class HomePageController extends HttpServlet {
             if (service.equalsIgnoreCase("shopPage")) {
                 serviceShopPage(request, response);
             }
+            if (service.equalsIgnoreCase("check")) {
+                serviceFilter(request, response);
+            }
         }
     }
 
@@ -140,13 +143,12 @@ public class HomePageController extends HttpServlet {
         int total=count/size;
         int page,end;
         
-
-        String page1 = request.getParameter("page");
-        if (page1 == null) {
+        String pageString = request.getParameter("page");
+        if (pageString == null) {
             page = 1;
 
         } else {
-            page = Integer.parseInt(page1);
+            page = Integer.parseInt(pageString);
         }
         int begin = page;
         String previous = "  <li><a class='' href=" + "HomePageControllerMap?service=search&search=" + str + "&page=" + (page - 1) + ">P</a></li>";
@@ -168,7 +170,6 @@ public class HomePageController extends HttpServlet {
         } else {
             request.setAttribute("next", next);
             request.setAttribute("previous", previous);
-
         }
         List<Product> ListP = proDAO.getProductByName(page, str);
 
@@ -236,6 +237,16 @@ public class HomePageController extends HttpServlet {
 
         sendDispatcher(request, response, "seller/shopPage.jsp");
     }
+     public void serviceFilter(HttpServletRequest request, HttpServletResponse response) throws IOException {
+     
+       PrintWriter out = response.getWriter();
+       out.print("thinh dep trai");
+        
+     
+
+        sendDispatcher(request, response, "productList/list.jsp");
+
+    }
 
     public void sendDispatcher(HttpServletRequest request, HttpServletResponse response, String path) {
         try {
@@ -284,5 +295,7 @@ public class HomePageController extends HttpServlet {
     public String getServletInfo() {
         return "Short description";
     }// </editor-fold>
+
+   
 
 }

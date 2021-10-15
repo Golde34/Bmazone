@@ -24,7 +24,7 @@
 <%
     List<Product> ListProduct = (List<Product>) request.getAttribute("listP");
     CategoryDAO daoCate = new CategoryDAO();
-    List<Category> ListCate= daoCate.getTrueCategories();
+    List<Category> ListCate = daoCate.getTrueCategories();
     GenreDAO genDAO = new GenreDAO();
     ProductDAO proDAO = new ProductDAO();
     GalleryDAO gallDAO = new GalleryDAO();
@@ -115,7 +115,7 @@
 
                     <div class="col large-2 hide-for-medium ">
                         <div id="shop-sidebar" class="sidebar-inner col-inner">
-                             <aside id="woof_widget-2" class="widget WOOF_Widget">        <div class="widget widget-woof">
+                            <aside id="woof_widget-2" class="widget WOOF_Widget">        <div class="widget widget-woof">
                                     <span class="widget-title shop-sidebar">Lọc sản phẩm</span><div class="is-divider small"></div>
 
 
@@ -126,194 +126,164 @@
                                     <div class="woof woof_sid woof_sid_widget" data-sid="widget" data-shortcode="woof sid='widget' start_filtering_btn='0' price_filter='3' redirect='' ajax_redraw='0' " data-redirect="" data-autosubmit="1" data-ajax-redraw="0">
 
                                         <a href="#" class="woof_edit_view" data-sid="widget">show blocks helper</a>
-                                        <div></div>
+
 
                                         <!--- here is possible drop html code which is never redraws by AJAX ---->
-
-                                        <div class="woof_redraw_zone" data-woof-ver="2.1.7">
-
-
-                                          
-                                            <div data-css-class="woof_container_product_cat" class="woof_container woof_container_checkbox woof_container_product_cat woof_container_1 woof_container_danhmcsnphm">
-                                                <div class="woof_container_overlay_item"></div>
-                                                <div class="woof_container_inner woof_container_inner_danhmcsnphm">
-                                                    <h4>Danh mục sản phẩm	    <a href="javascript: void(0);" title="toggle" class="woof_front_toggle woof_front_toggle_opened" data-condition="opened">+</a>
-                                                    </h4>
-                                                    <div class="woof_block_html_items" >
-                                                        <ul class="woof_list woof_list_checkbox">
+                                        
+                                            <div class="woof_redraw_zone" data-woof-ver="2.1.7">
 
 
 
-                                                            
+                                                <div data-css-class="woof_container_product_cat" class="woof_container woof_container_checkbox woof_container_product_cat woof_container_1 woof_container_danhmcsnphm">
+                                                    <div class="woof_container_overlay_item"></div>
+                                                    <div class="woof_container_inner woof_container_inner_danhmcsnphm">
+                                                        <h4>Danh mục sản phẩm	    <a href="javascript: void(0);" title="toggle" class="woof_front_toggle woof_front_toggle_opened" data-condition="opened">+</a>
+                                                        </h4>
+                                                        <form action="HomePageControllerMap" method="POST">
+                                                        <div class="woof_block_html_items" >
+                                                            <ul class="woof_list woof_list_checkbox">
+                                                                <input type="hidden" value="${search}" name="search">
+
+                                                                <% for (Category cate : ListCate) {
 
 
+                                                                %>
+                                                                <li class="woof_term_182" ><input type="checkbox" class="woof_checkbox_term woof_checkbox_term_182" data-tax="product_cat" name="cid" data-term-id="" value="<%=cate.getCategoryID()%>"/>
+                                                                    <label class="woof_checkbox_label " for="cid"><%=cate.getCategoryName()%>
+                                                                        <span class="woof_checkbox_count">(1)</span>
+                                                                    </label>
+                                                                    <%
+                                                                        }
 
-                                                            <% for (Category cate : ListCate) {
-                                                                     
-                                                               
-                                                            %>
-                                                            <li class="woof_term_182" ><input type="checkbox"  id="" class="woof_checkbox_term woof_checkbox_term_182" data-tax="product_cat" name="" data-term-id="" value=""  />
-                                                                <label class="woof_checkbox_label " for="woof_182_6167e86ddbb25"><%=cate.getCategoryName() %>
-                                                                    <span class="woof_checkbox_count">(1)</span>
-                                                                </label>
-                                                             <%
-                                                                  }
+                                                                    %>  
+                
+                                                                </li>
+                                                            </ul>
+                                                                    <button type="submit" style="float: right;" class="button woof_reset_search_form" name="service" value="check">Add Filter</button>
+                                                        </div>
+                                                        </form>
 
-                                                             %>   
-                                                                
-                                                                <%--   <ul class="woof_childs_list woof_childs_list_182" style="display: none;">
-                                                                    <li ><input type="checkbox" disabled="" id="woof_184_6167e86ddbb78" class="woof_checkbox_term woof_checkbox_term_184" data-tax="product_cat" name="du-lich-khach-san" data-term-id="184" value="184"  /><label class="woof_checkbox_label " for="woof_184_6167e86ddbb78">Du lịch - Khách sạn<span class="woof_checkbox_count">(0)</span></label>
-                                                                        <input type="hidden" value="Du lịch - Khách sạn" data-anchor="woof_n_product_cat_du-lich-khach-san" />
+                                                        <input type="hidden" name="woof_t_product_cat" value="Danh mục sản phẩm" /><!-- for red button search nav panel -->
 
-                                                                    </li>
-                                                                    <li ><input type="checkbox" disabled="" id="woof_187_6167e86ddbb83" class="woof_checkbox_term woof_checkbox_term_187" data-tax="product_cat" name="khoa-hoc" data-term-id="187" value="187"  /><label class="woof_checkbox_label " for="woof_187_6167e86ddbb83">Khóa học<span class="woof_checkbox_count">(0)</span></label>
-                                                                        <input type="hidden" value="Khóa học" data-anchor="woof_n_product_cat_khoa-hoc" />
-
-                                                                    </li>
-                                                                    <li ><input type="checkbox" disabled="" id="woof_188_6167e86ddbb8b" class="woof_checkbox_term woof_checkbox_term_188" data-tax="product_cat" name="nap-tien-tai-khoan" data-term-id="188" value="188"  /><label class="woof_checkbox_label " for="woof_188_6167e86ddbb8b">Nạp tiền tài khoản<span class="woof_checkbox_count">(0)</span></label>
-                                                                        <input type="hidden" value="Nạp tiền tài khoản" data-anchor="woof_n_product_cat_nap-tien-tai-khoan" />
-
-                                                                    </li>
-                                                                    <li ><input type="checkbox" disabled="" id="woof_183_6167e86ddbb92" class="woof_checkbox_term woof_checkbox_term_183" data-tax="product_cat" name="nha-hang-an-uong" data-term-id="183" value="183"  /><label class="woof_checkbox_label " for="woof_183_6167e86ddbb92">Nhà hàng - Ăn uống<span class="woof_checkbox_count">(0)</span></label>
-                                                                        <input type="hidden" value="Nhà hàng - Ăn uống" data-anchor="woof_n_product_cat_nha-hang-an-uong" />
-
-                                                                    </li>
-                                                                    <li ><input type="checkbox" disabled="" id="woof_186_6167e86ddbb99" class="woof_checkbox_term woof_checkbox_term_186" data-tax="product_cat" name="su-kien-giai-tri" data-term-id="186" value="186"  /><label class="woof_checkbox_label " for="woof_186_6167e86ddbb99">Sự kiện - Giải trí<span class="woof_checkbox_count">(0)</span></label>
-                                                                        <input type="hidden" value="Sự kiện - Giải trí" data-anchor="woof_n_product_cat_su-kien-giai-tri" />
-
-                                                                    </li>
-                                                                    <li ><input type="checkbox"  id="woof_185_6167e86ddbba0" class="woof_checkbox_term woof_checkbox_term_185" data-tax="product_cat" name="suc-khoe-lam-dep" data-term-id="185" value="185"  /><label class="woof_checkbox_label " for="woof_185_6167e86ddbba0">Sức khỏe - Làm đẹp<span class="woof_checkbox_count">(1)</span></label>
-                                                                        <input type="hidden" value="Sức khỏe - Làm đẹp" data-anchor="woof_n_product_cat_suc-khoe-lam-dep" />
-
-                                                                    </li>
-                                                                </ul>
-                                                                --%>
-                                                                <input type="hidden" value="Voucher &amp; Dịch vụ" data-anchor="woof_n_product_cat_voucher-dich-vu" />
-
-                                                            </li>
-
-
-
-                                                        </ul>
                                                     </div>
-
-                                                    <input type="hidden" name="woof_t_product_cat" value="Danh mục sản phẩm" /><!-- for red button search nav panel -->
-
                                                 </div>
-                                            </div>
+
+                                                
 
 
+                                                <div data-css-class="woof_price3_search_container" class="woof_price3_search_container woof_container">
+                                                    <div class="woof_container_overlay_item"></div>
+                                                    <div class="woof_container_inner">
+                                                        <h4>Lọc theo giá</h4>
 
 
-                                            <div data-css-class="woof_price3_search_container" class="woof_price3_search_container woof_container">
-                                                <div class="woof_container_overlay_item"></div>
-                                                <div class="woof_container_inner">
-                                                    <h4>Lọc theo giá</h4>
+                                                        <input class="woof_range_slider" id="6167e86ddbe4c" data-min="30000" data-max="40300000" data-min-now="30000" data-max-now="40300000" data-step="1" data-slider-prefix="" data-slider-postfix=" &#8363;" value="" />
 
-
-                                                    <input class="woof_range_slider" id="6167e86ddbe4c" data-min="30000" data-max="40300000" data-min-now="30000" data-max-now="40300000" data-step="1" data-slider-prefix="" data-slider-postfix=" &#8363;" value="" />
-
+                                                    </div>
                                                 </div>
+
+
+
+
+
+
+
+                                                <div class="woof_submit_search_form_container">
+
+
+
+                                                    <button style="float: right;" class="button woof_reset_search_form" data-link="">Reset</button>
+                                                   
+
+
+                                                
+
+
+
+
+
                                             </div>
-
-
-
-
-
-
-
-                                            <div class="woof_submit_search_form_container">
-
-
-
-                                                <button style="float: right;" class="button woof_reset_search_form" data-link="">Reset</button>
-
-
-                                            </div>
-
-
-
-
-
-                                        </div>
+                                        </form>
 
                                     </div>
 
-
-
                                 </div>
-                            </aside>
-
-                        </div><!-- .sidebar-inner -->
-                    </div><!-- #shop-sidebar -->
 
 
-                    <div class="col large-10">      
 
-                        <div class="shop-container">
-                            <%if (total == 0) {%>
-                            <h1>THERE ARE NO RESULTS</h1 >
+                        </div>
+                        </aside>
 
-                            <% }
+                    </div><!-- .sidebar-inner -->
+                </div><!-- #shop-sidebar -->
+
+
+                <div class="col large-10">      
+
+                    <div class="shop-container">
+                        <%if (total == 0) {%>
+                        <h1>THERE ARE NO RESULTS</h1 >
+
+                        <% }
+                        %>
+
+                        <div class="products row row-small large-columns-5 medium-columns-3 small-columns-2 has-shadow row-box-shadow-1" id="1">
+                            <% for (Product pa : ListProduct) {
+                                    String str = "images/" + gallDAO.getSampleOfProduct(pa.getProductID());
+                                    double price = Double.parseDouble(ptDAO.getProductPrice(pa.getProductID()));
+
                             %>
+                            <div class="product-small col product type-product status-publish has-post-thumbnail product_cat-bach-hoa-online product_cat-do-hop-dong-goi first instock shipping-taxable purchasable product-type-simple">
+                                <div class="col-inner">
 
-                            <div class="products row row-small large-columns-5 medium-columns-3 small-columns-2 has-shadow row-box-shadow-1" id="1">
-                                <% for (Product pa : ListProduct) {
-                                        String str = "images/" + gallDAO.getSampleOfProduct(pa.getProductID());
-                                        double price = Double.parseDouble(ptDAO.getProductPrice(pa.getProductID()));
+                                    <div class="badge-container absolute left top z-1">
+                                        <div class="callout badge badge-square"><div class="badge-inner secondary on-sale"><span class="onsale">-50%</span></div></div>
+                                    </div>
+                                    <div class="product-small box has-hover box-normal box-text-bottom">
+                                        <div class="box-image" style="width:150px; height:150px ">
+                                            <a href="ProductDetailControllerMap?service=getProductDetail&pid=<%=pa.getProductID()%>">
+                                                <img src="<%=str%>"></a>
 
-                                %>
-                                <div class="product-small col product type-product status-publish has-post-thumbnail product_cat-bach-hoa-online product_cat-do-hop-dong-goi first instock shipping-taxable purchasable product-type-simple">
-                                    <div class="col-inner">
+                                        </div><!-- box-image -->
 
-                                        <div class="badge-container absolute left top z-1">
-                                            <div class="callout badge badge-square"><div class="badge-inner secondary on-sale"><span class="onsale">-50%</span></div></div>
-                                        </div>
-                                        <div class="product-small box has-hover box-normal box-text-bottom">
-                                            <div class="box-image" style="width:150px; height:150px ">
-                                                <a href="ProductDetailControllerMap?service=getProductDetail&pid=<%=pa.getProductID()%>">
-                                                    <img src="<%=str%>"></a>
-
-                                            </div><!-- box-image -->
-
-                                            <div class="box-text text-center" style="background-color:rgb(255, 255, 255);">
-                                                <div class="title-wrapper" >		
-                                                    <p class="category uppercase is-smaller no-text-overflow product-cat op-7">   </p> <%--category--%>
-                                                    <p class="name product-title"><a href="ProductDetailControllerMap?service=getProductDetail&pid=<%=pa.getProductID()%>"> <%=pa.getProductName()%> </a></p>
-                                                </div> 
-                                                <div class="price-wrapper" 
-                                                     <span class="price">
-                                                        <ins><span class="woocommerce-Price-amount amount"><%=nf.format(price)%>&nbsp; <span class="woocommerce-Price-currencySymbol">&#8363;</span></span></ins></span>
-                                                </div>		
-                                            </div><!-- box-text -->
-                                        </div><!-- box -->
-                                    </div><!-- .col-inner -->
-                                </div><!-- col -->
-                                <%    }
-                                %>
-                            </div>
+                                        <div class="box-text text-center" style="background-color:rgb(255, 255, 255);">
+                                            <div class="title-wrapper" >		
+                                                <p class="category uppercase is-smaller no-text-overflow product-cat op-7">   </p> <%--category--%>
+                                                <p class="name product-title"><a href="ProductDetailControllerMap?service=getProductDetail&pid=<%=pa.getProductID()%>"> <%=pa.getProductName()%> </a></p>
+                                            </div> 
+                                            <div class="price-wrapper" 
+                                                 <span class="price">
+                                                    <ins><span class="woocommerce-Price-amount amount"><%=nf.format(price)%>&nbsp; <span class="woocommerce-Price-currencySymbol">&#8363;</span></span></ins></span>
+                                            </div>		
+                                        </div><!-- box-text -->
+                                    </div><!-- box -->
+                                </div><!-- .col-inner -->
+                            </div><!-- col -->
+                            <%    }
+                            %>
                         </div>
-                        <div class="container">
-                            <nav class="woocommerce-pagination">
-                                <ul class="page-numbers nav-pagination links text-center">
-                                    ${previous}
-                                    <c:forEach  begin="${begin}" end="${end}" var="i">
+                    </div>
+                    <div class="container">
+                        <nav class="woocommerce-pagination">
+                            <ul class="page-numbers nav-pagination links text-center">
+                                ${previous}
+                                <c:forEach  begin="${begin}" end="${end}" var="i">
 
-                                        <li><a class="active" href="HomePageControllerMap?service=search&search=${search}&page=${i}">${i}</a></li>
-                                        </c:forEach>
-                                        ${next}
-                                </ul>
-                            </nav>
-                        </div>
-
+                                    <li><a class="active" href="HomePageControllerMap?service=search&search=${search}&page=${i}">${i}</a></li>
+                                    </c:forEach>
+                                    ${next}
+                            </ul>
+                        </nav>
                     </div>
 
-
                 </div>
-            </main><!-- #main -->
+
+
         </div>
+    </main><!-- #main -->
+</div>
 
 
 
-    </body>
+</body>
 </html>

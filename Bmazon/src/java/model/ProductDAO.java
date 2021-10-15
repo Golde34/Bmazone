@@ -440,6 +440,38 @@ public ArrayList<Product> getAllPagingProductBySeller(int index,int numOfRow,Str
         }
         return list;
     }
+    
+     public ArrayList<Product> getProductByFilter(int index, String name,int cateID) {
+        ArrayList<Product> list = new ArrayList<>();
+        String sql = " declare @PageNo INT = " + index + " \n"
+                + " declare @PageSize INT=20 \n"
+                + " SELECT * from( \n"
+                + " SELECT p.productID,p.productName,p.description,p.rating,p.releaseDate,p.sellerID,p.[status],\n  "
+                + " ROW_NUMBER() over (order by p.productID) as RowNum \n  "
+                + "  FROM Product p join ProductCategory pc on p.productID=pc.productID where productName like '%"+name+"%' OR description like '%"+name+"%' and categoryId= " +cateID+"  ) as T  \n "
+                + " where T.RowNum between ((@PageNo-1)*@PageSize)+1 and (@PageNo*@PageSize)  ";
+        try {
+            pre = conn.prepareStatement(sql);
+            rs = pre.executeQuery();
+            while (rs.next()) {
+                Product pro = new Product();
+                pro.setProductID(rs.getInt("productID"));
+                pro.setProductName(rs.getString("productName"));
+                pro.setDescription(rs.getString("description"));
+                pro.setRating(rs.getInt("rating"));
+                pro.setReleaseDate(rs.getDate("releaseDate"));
+                pro.setSeller(rs.getInt("sellerID"));
+                pro.setStatus(rs.getInt("status"));
+                list.add(pro);
+            }
+            rs.close();
+            pre.close();
+        } catch (SQLException e) {
+            Logger.getLogger(ProductDAO.class.getName()).log(Level.SEVERE, null, e);
+        }
+        return list;
+    }
+
 
     public Product getProductByID(int id) {
         Product pro = new Product();

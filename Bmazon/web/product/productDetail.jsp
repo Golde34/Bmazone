@@ -422,7 +422,7 @@
                                     <input type="text" name="quantity" value="1" class="qty">
                                     <div class="qtyplus">+</div>
 
-                                    <a href="#" class="round-black-btn">Buy Now</a>
+                                   
 
                                     <button type="submit"class="round-black-btn" name="service" value="AddToCart">Add to Cart</button>
                                 </div>
