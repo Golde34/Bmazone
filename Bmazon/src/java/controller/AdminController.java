@@ -47,7 +47,6 @@ public class AdminController extends HttpServlet {
     UserDAO daouser = new UserDAO();
     WareHouseDAO daowarehouse = new WareHouseDAO();
     RoleDAO daorole = new RoleDAO();
-    SellerDAO daoseller = new SellerDAO();
 
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException, ParseException {
@@ -70,18 +69,20 @@ public class AdminController extends HttpServlet {
             }
             
             
+            // <editor-fold defaultstate="collapsed" desc="Seller Response. Click on the + sign on the left to edit the code.">
             //SellerResposne
             if (service.equalsIgnoreCase("sellerResponse")) {
                 serviceSellerResponse(service, request, response);
             }
             //Accept Seller Request
             if (service.equalsIgnoreCase("acceptSeller")) {
-                serviceAcceptSellerRequest(request, response);
+                serviceAcceptSellerRequest(service, request, response);
             }
             //Deny Seller Request
             if (service.equalsIgnoreCase("denySeller")) {
-                serviceDenySellerRequest(request, response);
+                serviceDenySellerRequest(service, request, response);
             }
+            //</editor-fold>
 
             // <editor-fold defaultstate="collapsed" desc="User service. Click on the + sign on the left to edit the code.">
             //User Management
@@ -245,6 +246,7 @@ public class AdminController extends HttpServlet {
         sendDispatcher(request, response, "admin/admin.jsp");
     }
     
+    // <editor-fold defaultstate="collapsed" desc="Seller Response Method. Click on the + sign on the left to edit the code.">
     public void serviceSellerResponse(String service, HttpServletRequest request, HttpServletResponse response) {
         request.setAttribute("service", service);    
         List<Seller> listSellerRequest = daoseller.getSellerBySellerRequest();
@@ -254,9 +256,18 @@ public class AdminController extends HttpServlet {
         sendDispatcher(request, response, "admin/authorization/sellerResponse.jsp");
     }
     
-    private void serviceAcceptSellerRequest(HttpServletRequest request, HttpServletResponse response) {
+    private void serviceAcceptSellerRequest(String service, HttpServletRequest request, HttpServletResponse response) {
+        request.setAttribute("service", service); 
+        //change seller status
         int sellerID = Integer.parseInt(request.getParameter("sellerID"));
         daoseller.acceptSellerRequest(sellerID);
+        String strSellerID = request.getParameter("sellerID");
+        //change user status
+        Seller s = daoseller.getSellerID(strSellerID);
+        User u = daouser.getUserBySellerId(s);
+        u.setSell(1);
+        u.setSystemRole(2);
+        //add parameter to jsp
         List<Seller> listAllSeller = daoseller.getAllSeller();
         request.setAttribute("listAllSeller", listAllSeller);
         List<Seller> listSellerRequest = daoseller.getSellerBySellerRequest();
@@ -264,15 +275,17 @@ public class AdminController extends HttpServlet {
         sendDispatcher(request, response, "admin/authorization/sellerResponse.jsp");
     }
     
-    private void serviceDenySellerRequest(HttpServletRequest request, HttpServletResponse response) {
+    private void serviceDenySellerRequest(String service, HttpServletRequest request, HttpServletResponse response) {
+        request.setAttribute("service", service); 
         int sellerID = Integer.parseInt(request.getParameter("sellerID"));
-        daoseller.acceptSellerRequest(sellerID);
+        daoseller.denySellerRequest(sellerID);
         List<Seller> listAllSeller = daoseller.getAllSeller();
         request.setAttribute("listAllSeller", listAllSeller);
         List<Seller> listSellerRequest = daoseller.getSellerBySellerRequest();
         request.setAttribute("listSellerRequest", listSellerRequest);
         sendDispatcher(request, response, "admin/authorization/sellerResponse.jsp");
     }
+    // </editor-fold>
 
     // <editor-fold defaultstate="collapsed" desc="User methods. Click on the + sign on the left to edit the code.">
     public void serviceUserManagement(String service, HttpServletRequest request, HttpServletResponse response) {

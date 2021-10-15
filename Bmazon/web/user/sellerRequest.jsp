@@ -104,20 +104,15 @@
                             </div>
                         </div>
                     </div>
-                    <div class="row">
-                        <br><br>
-                        <div class="col-md-4"></div>
-                        <div class="col-md-4">
-                            <p style="color: red; font-size: 18px;">${mess}</p>
-                            <a style="right: 50%;" href="UserControllerMap?service=account" >        
-                                <button style="text-align:center; color:white;border-radius: 15px;height: 2em; width: 15em;" class="btn-danger" > Back to account
-                                </button> 
-                            </a> 
-                            <a style="right: 50%;">        
-                                <button type="submit" style="text-align:center; color:white;border-radius: 15px;height: 2em; width: 8em;" class="btn-warning"  > Save
-                                </button> 
-                            </a> 
-                        </div>
+                    <div style="text-align: center;">
+                        <p style="color: red; font-size: 18px;">${mess}</p>
+                        <a style="right: 50%;">        
+                            <button type="submit" style="text-align:center; color:white;border-radius: 15px;height: 2em; width: 8em;" class="btn-warning"  > Save
+                            </button> 
+                        </a> 
+                    </div> 
+                    <div style="text-align: center; ">
+                        <a style="right: 50%; color: red; font-size: 18px" href="UserControllerMap?service=account" >Back to account</a> 
                     </div> 
                 </div>
             </form>
@@ -126,9 +121,60 @@
                 <p style="color: red; font-size: 18px;">Waiting for administrator to verify your registration certificate...</p>
             </div>
             <%} else if (sel != null && sel.getSellerVerification() == 2) {%>
-            <div style="height: 25rem;">
-                <p style="color: red; font-size: 18px;">You have been refused to become a seller on our Website. </p>
-            </div>
+            <br>
+            <h1>Turn on Sales Feature</h1>
+            <br>
+            <p style="color: red; font-size: 18px;">You have been refused to become a seller on our Website. </p>
+            <form action="SellerControllerMap" method="POST">
+                <input type="hidden" name ="service" value="editDeniedSellerInformation">
+                <div class="card">
+                    <div class="box">
+                        <h2><strong>Your Shop name</strong></h2>
+                        <div class="col-md-12 ">
+                            <input name="shopName" type="text" value="" style="width: 25rem;">
+                            <p>Your public shop name will be visible on your public shop page on Bmazon.</p>
+                            <br>
+                        </div>
+
+                        <h2><strong>Register As A Seller</strong></h2>
+                        <div class="col-md-12 ">
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <p>Seller Phone</p>
+                                    <input id="phone" type="text" pattern="(0[3|5|7|8|9])+([0-9]{8})\b" name="sellerPhone" class="form-control" placeholder="Your phone" required autofocus="" >
+                                    <p>Seller Email</p>
+                                    <input id="email" type="text" pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,4}$" value="<%=x.getEmail()%>" class="form-control" placeholder="Your email" readonly required >
+                                    <p>The email you use is registered as the user's email. If you want to change the email for your sales page, you will also change the email on your user page. Please change here.
+                                        <span><a style="color: red;" href="${contextPath}/UserControllerMap?service=editPrivateProfile">   Edit</a></span>
+                                    </p>
+                                </div>
+                                <div class="col-md-6">
+                                    <p>Evidence</p>
+                                    <textarea name="evidence" placeholder="The evidence, reason, or your linked photo to prove you're selling outside." required></textarea>
+                                    <p>Main Product</p>
+                                    <select name="sellerMainProduct">
+                                        <%for (Category cate : list) {%>
+                                        <option value="<%=cate.getCategoryID()%>"><%=cate.getCategoryName()%></option>
+                                        <%}%>
+                                    </select>
+                                </div>
+                                <br>
+                            </div>
+                        </div>
+                    </div>
+                    <div style="text-align: center;">
+                        <p style="color: red; font-size: 18px;">${mess}</p>
+                        <a style="right: 50%;">        
+                            <button type="submit" style="text-align:center; color:white;border-radius: 15px;height: 2em; width: 8em;" class="btn-warning"  > Save
+                            </button> 
+                        </a> 
+                    </div> 
+                    <div style="text-align: center; ">
+                        <a style="right: 50%; color: red; font-size: 18px" href="UserControllerMap?service=account" >Back to account</a> 
+                    </div>
+                </div>
+            </form>
+
             <%} else if (sel != null && sel.getSellerVerification() == 1) {%>
             <br>
             <h1>Turn on Sales Feature</h1>
@@ -175,21 +221,16 @@
                             </div>
                         </div>
                     </div>
-                    <div class="row">
-                        <br><br>
-                        <div class="col-md-4"></div>
-                        <div class="col-md-4">
-                            <p style="color: red; font-size: 18px;">${mess}</p>
-                            <a style="right: 50%;" href="UserControllerMap?service=account" >        
-                                <button style="text-align:center; color:white;border-radius: 15px;height: 2em; width: 15em;" class="btn-danger" > Back to account
-                                </button> 
-                            </a> 
-                            <a style="right: 50%;">        
-                                <button type="submit" style="text-align:center; color:white;border-radius: 15px;height: 2em; width: 8em;" class="btn-warning"  > Save
-                                </button> 
-                            </a> 
-                        </div>
+                    <div style="text-align: center;">
+                        <p style="color: red; font-size: 18px;">${mess}</p>
+                        <a style="right: 50%;">        
+                            <button type="submit" style="text-align:center; color:white;border-radius: 15px;height: 2em; width: 8em;" class="btn-warning"  > Save
+                            </button> 
+                        </a> 
                     </div> 
+                    <div style="text-align: center; ">
+                        <a style="right: 50%; color: red; font-size: 18px" href="UserControllerMap?service=account" >Back to account</a> 
+                    </div>
                 </div>
             </form>
             <%}%>

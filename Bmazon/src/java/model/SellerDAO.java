@@ -27,7 +27,7 @@ public class SellerDAO extends BaseDAO {
         List<Seller> list = sel.getAllSeller();
         for (Seller sele : list) {
             System.out.println(sele.getSellerShopName() + " " + sele.getEvidence());
-        }     
+        }
     }
 
     public int addSeler(Seller s) {
@@ -135,7 +135,7 @@ public class SellerDAO extends BaseDAO {
         }
         return false;
     }
-    
+
     public Seller getSellerID(String id) {
         xSql = "select * from Seller where sellerID = " + id;
         try {
@@ -199,9 +199,29 @@ public class SellerDAO extends BaseDAO {
         }
         return list;
     }
-    
+
     public Seller getSellerByUserID(int userID) {
         xSql = "select * from [Bmazon].[dbo].[Seller] where userID = " + userID;
+        ResultSet rs = dbConn.getData(xSql);
+        try {
+            if (rs.next()) {
+                Seller seller = new Seller(rs.getInt("sellerID"), rs.getInt("userID"),
+                        rs.getString("sellerShopName"), rs.getString("sellerPhone"),
+                        rs.getString("evidence"), rs.getInt("sellerMainProduct"),
+                        rs.getString("description"), rs.getInt("sellerVerification"),
+                        rs.getInt("status"));
+                return seller;
+            }
+        } catch (Exception e) {
+            Logger.getLogger(SellerDAO.class.getName()).log(Level.SEVERE, null, e);
+        }
+        return null;
+    }
+
+    public Seller getSellerByProductId(int productID) {
+        xSql = "select * from [Bmazon].[dbo].[Seller] s INNER JOIN Product p \n"
+                + "ON s.sellerID = p.sellerID\n"
+                + "where p.productID=" + productID;
         ResultSet rs = dbConn.getData(xSql);
         try {
             if (rs.next()) {
@@ -227,7 +247,7 @@ public class SellerDAO extends BaseDAO {
         } catch (Exception e) {
         }
     }
-    
+
     public void denySellerRequest(int sellerID) {
         int n = 0;
         xSql = "update [Bmazon].[dbo].[Seller] set [sellerVerification] = 2 where [sellerID] = " + sellerID;
@@ -237,7 +257,7 @@ public class SellerDAO extends BaseDAO {
         } catch (Exception e) {
         }
     }
-    
+
     public List<Seller> searchSeller(String text) {
         List<Seller> list = new ArrayList<>();
         xSql = "SELECT * FROM [Bmazon].[dbo].[Role] where roleName like '%" + text + "%'";

@@ -122,6 +122,7 @@ public class UserController extends HttpServlet {
             if (service.equalsIgnoreCase("editWallet")) {
                 serviceEditWallet(request, response);
             }
+            
             //Turn on seller feature
             if (service.equalsIgnoreCase("turnOnSalesFeature")) {
                 serviceTurnOnSalesFeature(request, response);
@@ -390,13 +391,8 @@ public class UserController extends HttpServlet {
         }
 
         if (isExist == false) {
-            Seller sel = new Seller(userID, shopName, sellerPhone, evidence, sellerMainProduct, "", 0);
-            //Response seller (Admin work)
-            User u = x;
-            u.setSell(1);
-            u.setSystemRole(2);
-            daoUser.updateInfoUserByAdmin(u);
-            //End
+            int verification = 0;
+            Seller sel = new Seller(userID, shopName, sellerPhone, evidence, sellerMainProduct, "", verification);
             daoSeller.addSeler(sel);
             mess = "Waiting for adminstrator to verify your registration certificate...";
             request.setAttribute("mess", mess);

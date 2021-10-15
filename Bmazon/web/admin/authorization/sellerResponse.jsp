@@ -82,9 +82,13 @@
                                                     <td><%=seller.getEvidence()%></td>
                                                     <td><%=seller.getSellerMainProduct()%></td>
                                                     <td>
-                                                        <a href="AdminControllerMap?service=acceptSeller&sellerID=<%=seller.getSellerID()%>"><span class="fas fa-edit"></span></a>
+                                                        <a href="AdminControllerMap?service=acceptSeller&sellerID=<%=seller.getSellerID()%>">
+                                                            <button style="text-align:center;border-radius: 15px;"><i class="fas fa-check-square"></i>   Accept</button>
+                                                        </a>
                                                     </td>
-                                                    <td><a href="AdminControllerMap?service=denySeller&sellerID=<%=seller.getSellerID()%>" onclick="return confirm('Are you sure you want to Deny this seller?');"><span class="fas fa-trash-alt"></span></a></td>
+                                                    <td><a href="AdminControllerMap?service=denySeller&sellerID=<%=seller.getSellerID()%>" onclick="return confirm('Are you sure you want to Deny this seller?');">
+                                                            <button style="text-align:center;border-radius: 15px;"><i class="fas fa-times"></i>   Deny</button>
+                                                        </a></td>
                                                 </tr>
                                                 <%}%>
                                             </tbody>
