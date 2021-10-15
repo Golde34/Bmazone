@@ -1,4 +1,7 @@
 
+<%@page import="entity.User"%>
+<%@page import="entity.Seller"%>
+<%@page import="model.SellerDAO"%>
 <%-- 
     Document   : product_detail
     Created on : Sep 21, 2021, 9:50:48 AM
@@ -21,6 +24,7 @@
 <%
     ProductTypeDAO daoProductType = new ProductTypeDAO();
     UserDAO daoUser = new UserDAO();
+    SellerDAO daoSeller = new SellerDAO();
     GalleryDAO daoGallery = new GalleryDAO();
     ProductDAO daoProduct = new ProductDAO();
     Product product = (Product) request.getAttribute("product");
@@ -383,7 +387,12 @@
                                     </span>
                                 </div>
                                 <div class="product-releasedate"><span>Release Date: <%=product.getReleaseDate()%></span></div>
-                                <div class="product-seller"><a href="HomePageControllerMap?service=shopPage&sid=<%=daoUser.getUserByProductId(product.getProductID()).getUserId()%>"><span>Seller: <%=daoUser.getUserByProductId(product.getProductID()).getUsername()%></span></a></div>
+                                <div class="product-seller"><a href="HomePageControllerMap?service=shopPage&sid=<%=daoSeller.getSellerByProductId(product.getProductID()).getSellerID()%>">
+                                        <%
+                                            Seller sel = daoSeller.getSellerByProductId(product.getProductID());
+                                            User seller = daoUser.getUserBySellerId(sel);%>
+                                        <span>Seller: <%=seller.getPublicName()%></span></a>
+                                </div>
                             </div>
                             <form method="POST" action="CartControllerMap" >
                                 <div class="row">

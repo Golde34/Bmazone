@@ -29,86 +29,90 @@
     <body class="g-sidenav-show  bg-gray-100">
         <aside class="sidenav navbar navbar-vertical navbar-expand-xs border-0 border-radius-xl my-3 fixed-start ms-3 " id="sidenav-main">
             <jsp:include page="../adminsidebar.jsp"></jsp:include>
-        </aside>
-        <main class="main-content position-relative max-height-vh-100 h-100 mt-1 border-radius-lg ">
-            <!-- Navbar -->
+            </aside>
+            <main class="main-content position-relative max-height-vh-100 h-100 mt-1 border-radius-lg ">
+                <!-- Navbar -->
             <jsp:include page="../adminheader.jsp"></jsp:include>
-            <!-- End Navbar -->
-            <div class="container-fluid py-4">
-                <div class="row my-4">
-                    <div class="col-lg-12 col-md-12 mb-md-0 mb-4">
-                        <div class="card">
-                            <div class="card-body px-0 pb-2">
-                                <div class="card-header py-3" 
-                                     style="display: flex;
-                                     justify-content: space-between;">
-                                    <h3 class="m-0 font-weight-bold text-primary">User Authorization</h3>
-                                    <a href="AdminControllerMap?service=roleDisplay">
-                                        <button class="btn-primary btn">Role</button></a>
-                                </div>
-                                <div class="card-body">
-                                    <div class="table_head py-3" style="display: flex;
+                <!-- End Navbar -->
+                <div class="container-fluid py-4">
+                    <div class="row my-4">
+                        <div class="col-lg-12 col-md-12 mb-md-0 mb-4">
+                            <div class="card">
+                                <div class="card-body px-0 pb-2">
+                                    <div class="card-header py-3" 
+                                         style="display: flex;
                                          justify-content: space-between;">
-                                        <div class="rowNum">
-                                            <h6 style="display: inline">Select number of Rows</h6>
-                                            <div class="form-group" style="display: inline;">
-                                                <select name="state" id="maxRows" class="form-control" style="width:80px;display:inline;">
-                                                    <option value="5">5</option>
-                                                    <option value="10">10</option>
-                                                    <option value="20">20</option>
-                                                    <option value="50000">Show All</option>
-                                                </select>
-                                            </div>
-                                        </div>
-                                        <div class="tb_search">
-                                            <input style="width: 100%;" type="text" oninput="searchByName(this)" placeholder="Search.." class="form-control">
+                                        <h3 class="m-0 font-weight-bold text-primary">User Authorization</h3>
+                                        <div>
+                                            <a href="AdminControllerMap?service=roleDisplay">
+                                                <button class="btn-primary btn">Role</button></a>
+                                            <a href="AdminControllerMap?service=sellerResponse">
+                                                <button class="btn-primary btn">Seller Response</button></a>
                                         </div>
                                     </div>
-                                    <div class="table-responsive">
-                                    <table class="table table-bordered table-striped" id="dataTable" style="text-align: center;">
-                                        <thead>
-                                            <tr>
-                                                <th>
-                                                    Username
-                                                </th>
-                                                <th>Admin</th>
-                                                <th>Seller</th>
-                                                <th>Full Name</th>
-                                                <th>Phone</th>
-                                                <th>Address</th>
-                                                <th></th>
-                                                <th></th>
-                                            </tr>
-                                        </thead>
-                                        <tbody id="user">
-                                            <%for (User user : listUser) {%>
-                                            <tr>
-                                                <td><%=user.getUsername()%></td>
-                                                <td><%=user.getPassword()%></td>
-                                                <td><%=user.getEmail()%></td>
-                                                <td><%=user.getFullname()%></td>
-                                                <td><%=user.getPhoneNumber()%></td>
-                                                <td><%=user.getAddress()%></td>
-                                                <td>
-                                                    <a href="AdminControllerMap?service=updateuserdetail&userid=<%=user.getUserId()%>"><span class="fas fa-edit"></span></a>
-                                                </td>
-                                                <td><a href="AdminControllerMap?service=deleteuser&userid=<%=user.getUserId()%>" onclick="return confirm('Are you sure you want to Remove?');"><span class="fas fa-trash-alt"></span></a></td>
-                                            </tr>
-                                            <%}%>
-                                        </tbody>
-                                    </table>
+                                    <div class="card-body">
+                                        <div class="table_head py-3" style="display: flex;
+                                             justify-content: space-between;">
+                                            <div class="rowNum">
+                                                <h6 style="display: inline">Select number of Rows</h6>
+                                                <div class="form-group" style="display: inline;">
+                                                    <select name="state" id="maxRows" class="form-control" style="width:80px;display:inline;">
+                                                        <option value="5">5</option>
+                                                        <option value="10">10</option>
+                                                        <option value="20">20</option>
+                                                        <option value="50000">Show All</option>
+                                                    </select>
+                                                </div>
+                                            </div>
+                                            <div class="tb_search">
+                                                <input style="width: 100%;" type="text" oninput="searchByName(this)" placeholder="Search.." class="form-control">
+                                            </div>
                                         </div>
+                                        <div class="table-responsive">
+                                            <table class="table table-bordered table-striped" id="dataTable" style="text-align: center;">
+                                                <thead>
+                                                    <tr>
+                                                        <th>
+                                                            Username
+                                                        </th>
+                                                        <th>Admin</th>
+                                                        <th>Seller</th>
+                                                        <th>Full Name</th>
+                                                        <th>Phone</th>
+                                                        <th>Address</th>
+                                                        <th></th>
+                                                        <th></th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody id="user">
+                                                <%for (User user : listUser) {%>
+                                                <tr>
+                                                    <td><%=user.getUsername()%></td>
+                                                    <td><%=user.getPassword()%></td>
+                                                    <td><%=user.getEmail()%></td>
+                                                    <td><%=user.getFullname()%></td>
+                                                    <td><%=user.getPhoneNumber()%></td>
+                                                    <td><%=user.getAddress()%></td>
+                                                    <td>
+                                                        <a href="AdminControllerMap?service=updateuserdetail&userid=<%=user.getUserId()%>"><span class="fas fa-edit"></span></a>
+                                                    </td>
+                                                    <td><a href="AdminControllerMap?service=deleteuser&userid=<%=user.getUserId()%>" onclick="return confirm('Are you sure you want to Remove?');"><span class="fas fa-trash-alt"></span></a></td>
+                                                </tr>
+                                                <%}%>
+                                            </tbody>
+                                        </table>
+                                    </div>
                                     <div class="pagination-container mt-4" style="display: flex;
                                          justify-content: space-around;cursor: pointer;">
                                         <nav>
                                             <ul class="pagination">
-<!--                                                <li data-page="first" class="page-item">
-                                                    <a class="page-link" aria-label="Previous">
-                                                        <span aria-hidden="true"><i class="fas fa-backward"></i>
-                                                            <span class="sr-only">(current)</span> 
-                                                        </span>
-                                                    </a>
-                                                </li>-->
+                                                <!--                                                <li data-page="first" class="page-item">
+                                                                                                    <a class="page-link" aria-label="Previous">
+                                                                                                        <span aria-hidden="true"><i class="fas fa-backward"></i>
+                                                                                                            <span class="sr-only">(current)</span> 
+                                                                                                        </span>
+                                                                                                    </a>
+                                                                                                </li>-->
                                                 <li data-page="prev" class="page-item" id="prev">
                                                     <a class="page-link" aria-label="Previous">
                                                         <span aria-hidden="true"><i class="fas fa-arrow-left"></i>
@@ -143,25 +147,25 @@
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
         <script src="${contextPath}/js/tablepagination.js"></script>
         <script>
-            function searchByName(param) {
-                var txtSearch = param.value;
-                $.ajax({
-                    url: "/Bmazon/AdminControllerMap",
-                    type: "get",
-                    data: {
-                        search: txtSearch,
-                        service: "searchcompany"
-                    },
-                    success: function (respone) {
-                        var text = document.getElementById("company");
-                        text.innerHTML = respone;
-                        getPagination('#dataTable');
-                    },
-                    error: function (xhr) {
-                        //Do Something to handle error
-                    }
-                });
-            }
+                                                        function searchByName(param) {
+                                                            var txtSearch = param.value;
+                                                            $.ajax({
+                                                                url: "/Bmazon/AdminControllerMap",
+                                                                type: "get",
+                                                                data: {
+                                                                    search: txtSearch,
+                                                                    service: "searchcompany"
+                                                                },
+                                                                success: function (respone) {
+                                                                    var text = document.getElementById("company");
+                                                                    text.innerHTML = respone;
+                                                                    getPagination('#dataTable');
+                                                                },
+                                                                error: function (xhr) {
+                                                                    //Do Something to handle error
+                                                                }
+                                                            });
+                                                        }
         </script>
         <!-- Github buttons -->
         <script async defer src="https://buttons.github.io/buttons.js"></script>

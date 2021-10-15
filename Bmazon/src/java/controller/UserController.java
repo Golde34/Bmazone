@@ -122,13 +122,18 @@ public class UserController extends HttpServlet {
             if (service.equalsIgnoreCase("editWallet")) {
                 serviceEditWallet(request, response);
             }
+            
             //Turn on seller feature
             if (service.equalsIgnoreCase("turnOnSalesFeature")) {
                 serviceTurnOnSalesFeature(request, response);
             }
-            //Submit erquest seller
+            //Submit request seller
             if (service.equalsIgnoreCase("requestSeller")) {
                 serviceSellerRequest(request, response);
+            }
+            //Denied request
+            if (service.equalsIgnoreCase("editDeniedSellerInformation")) {
+                serviceEditDenied(request, response);
             }
         }
     }
@@ -390,15 +395,44 @@ public class UserController extends HttpServlet {
         }
 
         if (isExist == false) {
-            Seller sel = new Seller(userID, shopName, sellerPhone, evidence, sellerMainProduct, "", 0);
-            //Response seller (Admin work)
-            User u = x;
-            u.setSell(1);
-            u.setSystemRole(2);
-            daoUser.updateInfoUserByAdmin(u);
-            //End
+            int verification = 0;
+            Seller sel = new Seller(userID, shopName, sellerPhone, evidence, sellerMainProduct, "", verification);
             daoSeller.addSeler(sel);
             mess = "Waiting for adminstrator to verify your registration certificate...";
+            request.setAttribute("mess", mess);
+            sendDispatcher(request, response, "UserControllerMap?service=turnOnSalesFeature");
+        }
+    }
+    
+    private void serviceEditDenied(HttpServletRequest request, HttpServletResponse response) {
+        String mess = "";
+
+        User x = (User) request.getSession().getAttribute("currUser");
+        request.setAttribute("currUser", x);
+        Seller seller = daoSeller.getSellerByUserID(Integer.parseInt(x.getUserId()));
+
+        String shopName = request.getParameter("shopName");
+        String sellerPhone = request.getParameter("sellerPhone");
+        String evidence = request.getParameter("evidence");
+        int sellerMainProduct = Integer.parseInt(request.getParameter("sellerMainProduct"));
+
+        boolean isExist = false;
+
+        if (daoSeller.checkExistPhone(sellerPhone) && !sellerPhone.equalsIgnoreCase(seller.getSellerPhone())) {
+            isExist = true;
+            mess = "This phone number is already in use by another account";
+            request.setAttribute("mess", mess);
+            sendDispatcher(request, response, "UserControllerMap?service=turnOnSalesFeature");
+        }
+
+        if (isExist == false) {
+            seller.setSellerShopName(shopName);
+            seller.setSellerPhone(sellerPhone);
+            seller.setEvidence(evidence);
+            seller.setSellerMainProduct(sellerMainProduct);
+            seller.setSellerVerification(0);
+            daoSeller.editSeller(seller);
+            mess = "Update successfully!";
             request.setAttribute("mess", mess);
             sendDispatcher(request, response, "UserControllerMap?service=turnOnSalesFeature");
         }

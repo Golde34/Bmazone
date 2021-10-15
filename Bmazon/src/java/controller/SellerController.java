@@ -139,15 +139,15 @@ public class SellerController extends HttpServlet {
         request.setAttribute("listProduct", listPaging);
         for (Product product : listPaging) {
             int proID = product.getProductID();
-                pr.print("<tr>"
-                        + "<td><div>" + product.getProductName() + "</div></td>"
-                        + "<td>" + product.getReleaseDate() + "</td>"
-                        + "<td>" + cateDAO.getCategoryById(pcDAO.getProductCateByProductID(proID).getCategoryID()) + "</td>"
-                        + "<td><div><a href=\"SellerControllerMap?service=updatedetail&ptypeid=" + proID + "\"><span class=\"fas fa-edit\"></span></a>"
-                        + "</div></td>"
-                        + "<td><div><a href=\"SellerControllerMap?service=deleteproduct&ptypeid=" + proID + "\" onclick=\"return confirm('Are you sure you want to Remove?');\"><span class=\"fas fa-trash-alt\"></span></a></div></td>" + "</tr>"
-                );
-            
+            pr.print("<tr>"
+                    + "<td><div>" + product.getProductName() + "</div></td>"
+                    + "<td>" + product.getReleaseDate() + "</td>"
+                    + "<td>" + cateDAO.getCategoryById(pcDAO.getProductCateByProductID(proID).getCategoryID()) + "</td>"
+                    + "<td><div><a href=\"SellerControllerMap?service=updatedetail&ptypeid=" + proID + "\"><span class=\"fas fa-edit\"></span></a>"
+                    + "</div></td>"
+                    + "<td><div><a href=\"SellerControllerMap?service=deleteproduct&ptypeid=" + proID + "\" onclick=\"return confirm('Are you sure you want to Remove?');\"><span class=\"fas fa-trash-alt\"></span></a></div></td>" + "</tr>"
+            );
+
         }
         if (request.getParameter("row") == null) {
             sendDispatcher(request, response, "seller/productmanagement.jsp");
@@ -249,7 +249,6 @@ public class SellerController extends HttpServlet {
 //
 //    public void serviceDeleteProduct(HttpServletRequest request, HttpServletResponse response) {
 //    }
-    
     private void serviceEditSellerInformation(HttpServletRequest request, HttpServletResponse response) {
         String mess = "";
 
@@ -257,18 +256,18 @@ public class SellerController extends HttpServlet {
         request.setAttribute("currUser", x);
         int userID = Integer.parseInt(x.getUserId());
         Seller seller = daoSeller.getSellerByUserID(userID);
-        
+
         String shopName = request.getParameter("shopName");
         String sellerPhone = request.getParameter("sellerPhone");
         int sellerMainProduct = Integer.parseInt(request.getParameter("sellerMainProduct"));
         seller.setSellerShopName(shopName);
         seller.setSellerPhone(sellerPhone);
         seller.setSellerMainProduct(sellerMainProduct);
-        
+
         daoSeller.editSeller(seller);
         mess = "Update successfully!";
         request.setAttribute("mess", mess);
-        sendDispatcher(request, response, "UserControllerMap?service=turnOnSalesFeature");     
+        sendDispatcher(request, response, "UserControllerMap?service=turnOnSalesFeature");
     }
 
     public void sendDispatcher(HttpServletRequest request, HttpServletResponse response, String path) {
