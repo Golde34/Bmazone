@@ -94,6 +94,7 @@ public class CartController extends HttpServlet {
         }         
         request.getSession().setAttribute("ShoppingCart", ShoppingCart);
         sendDispatcher(request, response, "cart.jsp");
+        
            
     }
      public void serviceUpdate(HttpServletRequest request, HttpServletResponse response) {
