@@ -23,11 +23,8 @@ public class ProductDAO extends BaseDAO {
 
     public static void main(String[] args) {
         ProductDAO dao = new ProductDAO();
-        System.out.println(dao.getAllPagingProductBySeller(1, 5, "", "4"));
-        ArrayList<Product> list = dao.getAllPagingProduct(1, 5, "");
-        for (Product product : list) {
-            System.out.println(product.getProductName());
-        }
+        Product p = dao.getProductByID(1);
+        System.out.println(p.getProductName());
     }
 
     public int getPageNumber(String search) {
@@ -447,7 +444,6 @@ public ArrayList<Product> getAllPagingProductBySeller(int index,int numOfRow,Str
     public Product getProductByID(int id) {
         Product pro = new Product();
         String sql = "SELECT * FROM [Bmazon].[dbo].[Product] where productID=" + id;
-
         try {
             pre = conn.prepareStatement(sql);
             rs = pre.executeQuery();

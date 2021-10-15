@@ -10,9 +10,37 @@ import java.util.logging.Logger;
 public class GenreDAO extends BaseDAO{
 BaseDAO dbConn= new BaseDAO();
    
-
+    public static void main(String[] args) {
+        GenreDAO dao = new GenreDAO();
+        System.out.println(dao.getGenresByCategoryId(2));
+    }
     public ArrayList<Genre> getAllGenres() {
         String sql = "select * from Genre WHERE status=1";
+        ArrayList<Genre> list = new ArrayList<>();
+        Genre x = null;
+        int genreID;
+        String genreName;
+        int categoryID;
+        int status;
+        try {
+            pre = conn.prepareStatement(sql);
+            rs = pre.executeQuery();
+            while (rs.next()) {
+                genreID = rs.getInt("genreID");
+                genreName = rs.getString("genreName");
+                categoryID = rs.getInt("categoryID");
+                status = rs.getInt("status");
+                x = new Genre(genreID, genreName, categoryID, status);
+                list.add(x);
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(CategoryDAO.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return list;
+    }
+    
+    public ArrayList<Genre> getGenresByCategoryId(int categoryId){
+        String sql = "select * from Genre WHERE categoryID="+categoryId;
         ArrayList<Genre> list = new ArrayList<>();
         Genre x = null;
         int genreID;

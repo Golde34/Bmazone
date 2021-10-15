@@ -37,6 +37,8 @@ public class AdminController extends HttpServlet {
      * @throws ServletException if a servlet-specific error occurs
      * @throws IOException if an I/O error occurs
      */
+    ProductCategoryDAO daopc = new ProductCategoryDAO();
+    ProductGenreDAO daopg = new ProductGenreDAO();
     SellerDAO daoseller = new SellerDAO();
     GalleryDAO daogallery = new GalleryDAO();
     ShipCompanyDAO daocompany = new ShipCompanyDAO();
@@ -504,10 +506,12 @@ public class AdminController extends HttpServlet {
         request.setAttribute("listProduct", listPaging);
         for (Product product : listPaging) {
             Seller seller = daoseller.getSellerID(String.valueOf(product.getSeller()));
+            Genre genre = daogenre.getGenreById(Integer.parseInt(daopg.getGenreIdByProductId(product.getProductID())));
+            String category = daocategory.getCategoryById(Integer.parseInt(daopc.getCategoryIdByProductId(product.getProductID())));
             pr.print("<tr>"
                     + "<td><div>" + product.getProductName() + " </div></td>"
-                    + "<td><div>" + product.getDescription() + "</div></td>"
-                    + "<td><div>" + product.getRating() + "</div></td>"
+                    + "<td><div>" + category + "</div></td>"
+                    + "<td><div>" + genre.getGenreName() + "</div></td>"
                     + "<td><div>" + seller.getSellerShopName() + "</div></td>"
                     + "<td><div><a href=\"AdminControllerMap?service=updateproductdetail&productid=" + product.getProductID() + "\"><span class=\"fas fa-edit\"></span></a>"
                     + "</div></td>"
@@ -604,6 +608,15 @@ public class AdminController extends HttpServlet {
         }
         String id = request.getParameter("productid");
         Product product = daoproduct.getProductByID(Integer.parseInt(id));
+        Seller seller = daoseller.getSellerID(String.valueOf(product.getSeller()));
+        String genreid = daopg.getGenreIdByProductId(product.getProductID());
+        Genre genre = daogenre.getGenreById(Integer.parseInt(genreid));
+        String categoryId = daopc.getCategoryIdByProductId(product.getProductID());
+        Category category = daocategory.getCategoryByCateId(categoryId);
+        ArrayList<Genre> listGenre = daogenre.getGenresByCategoryId(Integer.parseInt(categoryId));
+        request.setAttribute("listGenre", listGenre);
+        request.setAttribute("category", category);
+        request.setAttribute("genre", genre.getGenreName());
         request.setAttribute("product", product);
         sendDispatcher(request, response, "admin/productdetail.jsp");
     }
@@ -645,28 +658,30 @@ public class AdminController extends HttpServlet {
         //Get information about product
         String pid = request.getParameter("pid");
         String productname = request.getParameter("productname");
-        String description = request.getParameter("description");
-        String rating = request.getParameter("rating");
-        String seller = request.getParameter("seller");
+        String cat = request.getParameter("category");
+        String gen = request.getParameter("genre");
+        String sellerId = request.getParameter("seller");
         String date = request.getParameter("date");
         java.util.Date utilDate = new SimpleDateFormat("dd-MM-yyyy").parse(date);
         java.sql.Date sqlDate = new java.sql.Date(utilDate.getTime());
         //Update product
+        ProductCategory pc = daopc.getProductCateByProductID(Integer.parseInt(pid));
+        ProductGenre pg = daopg.getProductGenreByProduct(pid);
         Product product = daoproduct.getProductByID(Integer.parseInt(pid));
         product.setProductName(productname);
-        product.setDescription(description);
-        product.setRating(Integer.parseInt(rating));
         product.setReleaseDate(sqlDate);
-        product.setSeller(Integer.parseInt(seller));
+        product.setSeller(Integer.parseInt(sellerId));
         daoproduct.updateProduct(product);
+//        pc.setCategoryID(Integer.parseInt(cat));
+//        pg.setGenreID(Integer.parseInt(gen));
         //Get information about product type
-        
+
         String[] typeids = request.getParameterValues("ptid");
         String[] colors = request.getParameterValues("color");
         String[] sizes = request.getParameterValues("size");
         String[] prices = request.getParameterValues("price");
         String[] quantities = request.getParameterValues("quantity");
-        
+
         //Update product type
         for (int i = 0; i < typeids.length; i++) {
             ProductType pt = daoproducttype.getProductTypeByPTypeID(typeids[i]);
@@ -677,6 +692,15 @@ public class AdminController extends HttpServlet {
             daoproducttype.editProduct(pt);
         }
         //Success
+        Seller seller = daoseller.getSellerID(String.valueOf(product.getSeller()));
+        String genreid = daopg.getGenreIdByProductId(product.getProductID());
+        Genre genre = daogenre.getGenreById(Integer.parseInt(genreid));
+        String categoryId = daopc.getCategoryIdByProductId(product.getProductID());
+        Category category = daocategory.getCategoryByCateId(categoryId);
+        ArrayList<Genre> listGenre = daogenre.getGenresByCategoryId(Integer.parseInt(categoryId));
+        request.setAttribute("listGenre", listGenre);
+        request.setAttribute("category", category);
+        request.setAttribute("genre", genre.getGenreName());
         String state = "success";
         request.setAttribute("state", state);
         request.setAttribute("product", product);

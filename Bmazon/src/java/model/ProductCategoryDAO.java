@@ -21,6 +21,7 @@ public class ProductCategoryDAO extends BaseDAO{
     
     public static void main(String[] args) {
         ProductCategoryDAO dao = new ProductCategoryDAO();
+        System.out.println(dao.getCategoryIdByProductId(1));
     }
     
     public String getCategoryIdByProductId(int productId){
