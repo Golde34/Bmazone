@@ -522,7 +522,7 @@ public class UserDAO extends BaseDAO {
             Logger.getLogger(UserDAO.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
-    
+        
     public void withdrawalWalletUser(User obj, double amount) {
 
         String sql = "UPDATE [User] SET wallet=? where userID=?";

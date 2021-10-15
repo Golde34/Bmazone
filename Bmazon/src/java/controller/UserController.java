@@ -131,7 +131,17 @@ public class UserController extends HttpServlet {
             if (service.equalsIgnoreCase("editWallet")) {
                 serviceEditWallet(request, response);
             }
-            
+
+            //deposit wallet
+            if (service.equalsIgnoreCase("deposit")) {
+                serviceDeposit(request, response);
+            }
+
+            //withdrawal wallet
+            if (service.equalsIgnoreCase("withdrawal")) {
+                serviceWithdrawal(request, response);
+            }
+
             //Turn on seller feature
             if (service.equalsIgnoreCase("turnOnSalesFeature")) {
                 serviceTurnOnSalesFeature(request, response);
@@ -375,12 +385,49 @@ public class UserController extends HttpServlet {
     }
 
     private void serviceEditWallet(HttpServletRequest request, HttpServletResponse response) {
-        String amount = request.getParameter("amount");
-        String mess = "";
         User x = (User) request.getSession().getAttribute("currUser");
         request.setAttribute("currUser", x);
-
         sendDispatcher(request, response, "user/editWallet.jsp");
+    }
+
+    private void serviceDeposit(HttpServletRequest request, HttpServletResponse response) {
+        String mess = "";
+        double amount = Double.parseDouble(request.getParameter("amount"));
+        User x = (User) request.getSession().getAttribute("currUser");
+        request.setAttribute("currUser", x);
+        if (amount == 0) {
+            mess = "Please input amount more than 0.";
+            request.setAttribute("mess", mess);
+            sendDispatcher(request, response, "user/editWallet.jsp");
+        } else {
+            mess = "Deposit succesfully!";
+            request.setAttribute("mess", mess);
+            daoUser.depositWalletUser(x, amount);
+            request.getSession().setAttribute("currUser", daoUser.getUserById(x.getUserId()));
+            sendDispatcher(request, response, "user/editWallet.jsp");
+        }
+    }
+
+    private void serviceWithdrawal(HttpServletRequest request, HttpServletResponse response) {
+        String mess = "";
+        double amount = Double.parseDouble(request.getParameter("amount"));
+        User x = (User) request.getSession().getAttribute("currUser");
+        request.setAttribute("currUser", x);
+        if (amount == 0) {
+            mess = "Please input amount more than 0.";
+            request.setAttribute("mess", mess);
+            sendDispatcher(request, response, "user/editWallet.jsp");
+        } else if (amount > x.getWallet()) {
+            mess = "Your wallet does not have enough money.";
+            request.setAttribute("mess", mess);
+            sendDispatcher(request, response, "user/editWallet.jsp");
+        } else {
+            mess = "Withdrawal succesfully!";
+            request.setAttribute("mess", mess);
+            daoUser.withdrawalWalletUser(x, amount);
+            request.getSession().setAttribute("currUser", daoUser.getUserById(x.getUserId()));
+            sendDispatcher(request, response, "user/editWallet.jsp");
+        }
     }
 
     private void serviceTurnOnSalesFeature(HttpServletRequest request, HttpServletResponse response) {

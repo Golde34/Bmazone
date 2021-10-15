@@ -71,7 +71,6 @@
                 <div class="card">
                     <div class="box">
                         <form action="UserControllerMap" method="POST" >
-                            <input type="hidden" name ="service" value="editWallet">
 
                             <label class="label control-label">Display Name</label>
                             <div class="input-group" >
@@ -109,19 +108,19 @@
 
                             <label class="label control-label">Amount</label>
                             <div class="input-group">
-                                <input id="amount" type="text" class="form-control" name="amount" 
+                                <input id="amount" type="text" pattern="[0-9]{1,15}" class="form-control" name="amount" 
                                        placeholder="Enter the amount to deposit or withdrawal" required>
                             </div>
                             <br>
-                            <h6 style="color: black" style="font-size: small" >${mess}</h6>
+                            <h6 style="color: blue" style="font-size: small" >${mess}</h6>
 
                             <div class="row">
                                 <br><br>
                                 <div class="col-md-4"></div>
-                                <div class="col-md-4">     
-                                    <button type="submit" style="text-align:center; color:white;border-radius: 15px;height: 2em; width: 8em;" class="btn-danger" > Deposit
-                                    </button> 
-                                    <button type="submit" style="text-align:center; color:white;border-radius: 15px;height: 2em; width: 8em;" class="btn-success" > Withdrawal
+                                <div class="col-md-4">
+                                    <button type="submit" name="service" value="deposit" style="text-align:center; color:white;border-radius: 15px;height: 2em; width: 8em;" class="btn-danger" > Deposit
+                                    </button>
+                                    <button type="submit" name="service" value="withdrawal" style="text-align:center; color:white;border-radius: 15px;height: 2em; width: 8em;" class="btn-success" > Withdrawal
                                     </button> 
                                 </div>
                             </div> 
