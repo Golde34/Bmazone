@@ -69,6 +69,7 @@
                                                         <th>Seller Phone</th>
                                                         <th>Seller Certification</th>
                                                         <th>Main Product</th>
+                                                        <th>Seller Verification</th>
                                                         <th></th>
                                                         <th></th>
                                                     </tr>
@@ -81,6 +82,7 @@
                                                     <td><%=seller.getSellerPhone()%></td>
                                                     <td><%=seller.getEvidence()%></td>
                                                     <td><%=seller.getSellerMainProduct()%></td>
+                                                    <td><%=seller.getSellerVerification()%></td>
                                                     <td>
                                                         <a href="AdminControllerMap?service=acceptSeller&sellerID=<%=seller.getSellerID()%>">
                                                             <button style="text-align:center;border-radius: 15px;"><i class="fas fa-check-square"></i>   Accept</button>
@@ -121,6 +123,7 @@
                                                         <th>Seller Phone</th>
                                                         <th>Seller Certification</th>
                                                         <th>Main Product</th>
+                                                        <th>Seller Verification</th>
                                                         <th></th>
                                                         <th></th>
                                                     </tr>
@@ -133,6 +136,7 @@
                                                         <td><%=seller.getSellerPhone()%></td>
                                                         <td><%=seller.getEvidence()%></td>
                                                         <td><%=seller.getSellerMainProduct()%></td>
+                                                        <td><%=seller.getSellerVerification()%></td>
                                                         <td>
                                                             <a href="AdminControllerMap?service=acceptSeller&sellerID=<%=seller.getSellerID()%>"><span class="fas fa-edit"></span></a>
                                                         </td>

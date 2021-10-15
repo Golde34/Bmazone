@@ -124,8 +124,9 @@
             <br>
             <h1>Turn on Sales Feature</h1>
             <br>
-            <p style="color: red; font-size: 18px;">You have been refused to become a seller on our Website. </p>
-            <form action="SellerControllerMap" method="POST">
+            <p style="color: red; font-size: 18px;">You have been refused to become a seller on our Website.</p>
+            <p style="color: red; font-size: 18px;">We hope you will register as a seller with more authentic commitments to be able to operate on our site.</p>
+            <form action="UserControllerMap" method="POST">
                 <input type="hidden" name ="service" value="editDeniedSellerInformation">
                 <div class="card">
                     <div class="box">

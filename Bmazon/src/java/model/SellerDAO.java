@@ -156,7 +156,7 @@ public class SellerDAO extends BaseDAO {
 
     public List<Seller> getAllSeller() {
         List<Seller> list = new ArrayList<>();
-        xSql = "select * from Seller where [status] = 1";
+        xSql = "select * from Seller where [status] = 1 and [sellerVerification] = 1";
         try {
             pre = conn.prepareStatement(xSql);
             rs = pre.executeQuery();
