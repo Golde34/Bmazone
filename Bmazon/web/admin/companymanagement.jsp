@@ -88,9 +88,15 @@
                                                 <td><%=company.getCommitDate()%></td>
                                                 <td><%=nf.format(company.getUnitCost())%></td>
                                                 <td>
-                                                    <a href="AdminControllerMap?service=updatecompanydetail&companyid=<%=company.getCompanyID()%>"><span class="fas fa-edit"></span></a>
+                                                    <a href="AdminControllerMap?service=updatecompanydetail&companyid=<%=company.getCompanyID()%>"><button class="btn btn-primary">Edit</button></a>
                                                 </td>
-                                                <td><a href="AdminControllerMap?service=deletecompany&companyid=<%=company.getCompanyID()%>" onclick="return confirm('Are you sure you want to Remove?');"><span class="fas fa-trash-alt"></span></a></td>
+                                                <td>
+                                                    <% if(company.getStatus()==1){%>
+                                                    <a href="AdminControllerMap?service=deletecompany&companyid=<%=company.getCompanyID()%>" onclick="return confirm('Are you sure?');"><button class="btn btn-primary">Deactive</button></a>
+                                                    <%}else{%>
+                                                    <a href="AdminControllerMap?service=activecompany&companyid=<%=company.getCompanyID()%>" onclick="return confirm('Are you sure?');"><button class="btn btn-primary">Active</button></a>
+                                                    <%}%>
+                                                </td>
                                             </tr>
                                             <%}%>
                                         </tbody>

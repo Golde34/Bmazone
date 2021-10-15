@@ -6,6 +6,10 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <c:set var="contextPath" value="${pageContext.request.contextPath}" />
 <%
+    ProductTypeDAO daopt = new ProductTypeDAO();
+    SellerDAO sellerdao = new SellerDAO();
+    CategoryDAO daocat = new CategoryDAO();
+    GenreDAO genredao = new GenreDAO();
     String mess = (String) request.getAttribute("mess");
     if (mess == null) {
         mess = "";
@@ -15,13 +19,10 @@
         state = "";
     }
     Category category = (Category) request.getAttribute("category");
-    String genre = (String) request.getAttribute("genre");
+    Genre genre = (Genre) request.getAttribute("genre");
+    String date = (String) request.getAttribute("date");
     String service = (String) request.getAttribute("service");
     User curUser = (User) request.getSession().getAttribute("currUser");
-    ProductTypeDAO daopt = new ProductTypeDAO();
-    SellerDAO sellerdao = new SellerDAO();
-    CategoryDAO daocat = new CategoryDAO();
-    GenreDAO genredao = new GenreDAO();
     ArrayList<Category> listCategory = daocat.getAllCategories();
     ArrayList<Genre> listGenre = (ArrayList<Genre>) request.getAttribute("listGenre");
     Product product = (Product) request.getAttribute("product");
@@ -77,11 +78,11 @@
                                         <tr>
                                             <td>Category</td>
                                             <td>
-                                                <select style="width: 50%;" class="form-select" id="category">
+                                                <select name="category" style="width: 50%;" class="form-select" id="category">
                                                     <%for (Category cate : listCategory) {
                                                     %>
                                                     <option
-                                                        <%if(cate.getCategoryName().equals(category.getCategoryName())){%> selected <%}%> name="category" value="<%=cate.getCategoryID()%>"> <%=cate.getCategoryName()%>
+                                                        <%if (cate.getCategoryName().equals(category.getCategoryName())) {%> selected <%}%> value="<%=cate.getCategoryID()%>"> <%=cate.getCategoryName()%>
                                                     </option>
                                                     <%}%>
                                                 </select>
@@ -90,11 +91,11 @@
                                         <tr>
                                             <td>Genre</td>
                                             <td>
-                                                <select style="width: 50%;" class="form-select" id="genre">
+                                                <select name="genre" style="width: 50%;" class="form-select" id="genre">
                                                     <%for (Genre gen : listGenre) {
                                                     %>
                                                     <option
-                                                        <%if(gen.getGenreName().equals(genre)){%> selected <%}%> value="<%=gen.getGenreID()%>" name="genre" > <%=gen.getGenreName()%>
+                                                        <%if (gen.getGenreName().equals(genre.getGenreName())) {%> selected <%}%> value="<%=gen.getGenreID()%>"> <%=gen.getGenreName()%>
                                                     </option>
                                                     <%}%>
                                                 </select>
@@ -123,7 +124,6 @@
                                     <h3 class="m-0 font-weight-bold text-primary">Detail Information</h3>
                                 </div>
                                 <div class="card-body">
-                                    <%if (service.equalsIgnoreCase("updateproductdetail")) {%>
                                     <table id="productType" class="table table-borderless">
                                         <thead>
                                             <tr>
@@ -146,9 +146,11 @@
                                                 <td><input style="width: 100%;" type="text" name="price" class="form-control price" value="<%=nf.format(price)%>"></td>
                                                 <td><input style="width: 100%;"  type="text" name="quantity" class="form-control" value="<%=pt.getQuantity()%>"></td>
                                                 <td>
-                                                    <a href="AdminControllerMap?service=deleteproducttype&producttypeid=<%=pt.getProductTypeId()%>" onclick="return confirm('Are you sure you want to Remove?');">
-                                                        <span class="fas fa-trash-alt mt-3 ml-3 delete"></span>
-                                                    </a>
+                                                    <% if(pt.getStatus()==1){%>
+                                                    <a href="AdminControllerMap?service=deleteproducttype&ptId=<%=pt.getProductTypeId()%>" onclick="return confirm('Are you sure?');"><button class="btn btn-primary">Deactive</button></a>
+                                                    <%}else{%>
+                                                    <a href="AdminControllerMap?service=activeproducttype&ptId=<%=pt.getProductTypeId()%>" onclick="return confirm('Are you sure?');"><button class="btn btn-primary">Active</button></a>
+                                                    <%}%>
                                                 </td>
                                             </tr>
                                             <%}%>
@@ -157,7 +159,6 @@
                                     <div class="d-flex justify-content-center">
                                         <input type="submit" value="Update Product" class="btn btn-primary mt-3">
                                     </div>
-                                    <%}%>
                                 </div>
                             </div>
                         </form>
@@ -177,39 +178,40 @@
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
         <script>
         $(document).ready(function () {
-            $("#category").change(function () {
-                var val = $(this).val();
-        <% for (Category cate : listCategory) {%>
-                if(val=="<%=cate.getCategoryID()%>"){
-                console.log("<%=cate.getCategoryName()%>");
-                 $("#genre").html(
-                <% ArrayList<Genre> list = genredao.getGenresByCategoryId(cate.getCategoryID());
-                    for(int i=0;i<list.size();i++){
-        if(list.size()==1||i==list.size()-1){ %>"<option value='<%=list.get(i).getGenreID()%>'><%=list.get(i).getGenreName()%></option>"
-                        <%}else{%>"<option value='<%=list.get(i).getGenreID()%>'><%=list.get(i).getGenreName()%></option>"+
-                    <%}}%>);
-                }
-        <%}%>
-            });
+        $("#category").change(function () {
+        var val = $(this).val();
+<% for (Category cate : listCategory) {%>
+        if (val == "<%=cate.getCategoryID()%>"){
+        console.log("<%=cate.getCategoryName()%>");
+                $("#genre").html(
+<% ArrayList<Genre> list = genredao.getGenresByCategoryId(cate.getCategoryID());
+for (int i = 0; i < list.size(); i++) {
+if (list.size() == 1 || i == list.size() - 1) {%>"<option value='<%=list.get(i).getGenreID()%>'><%=list.get(i).getGenreName()%></option>"
+<%} else {%>"<option value='<%=list.get(i).getGenreID()%>'><%=list.get(i).getGenreName()%></option>" +
+<%}
+}%>);
+        }
+<%}%>
         });
-        $(".price").on('keyup', function () {
-            var n = parseInt($(this).val().replace(/\D/g, ''), 10);
-            $(this).val(n.toLocaleString());
         });
-        (function () {
-            'use strict'
-            var forms = document.querySelectorAll('.needs-validation')
-            Array.prototype.slice.call(forms)
-                    .forEach(function (form) {
+                $(".price").on('keyup', function () {
+        var n = parseInt($(this).val().replace(/\D/g, ''), 10);
+                $(this).val(n.toLocaleString());
+        });
+                (function () {
+                'use strict'
+                        var forms = document.querySelectorAll('.needs-validation')
+                        Array.prototype.slice.call(forms)
+                        .forEach(function (form) {
                         form.addEventListener('submit', function (event) {
-                            if (!form.checkValidity()) {
-                                event.preventDefault()
+                        if (!form.checkValidity()) {
+                        event.preventDefault()
                                 event.stopPropagation()
-                            }
-                            form.classList.add('was-validated')
+                        }
+                        form.classList.add('was-validated')
                         }, false)
-                    })
-        })()
+                        })
+                })()
         </script>
         <!-- Control Center for Soft Dashboard: parallax effects, scripts for the example pages etc -->
     <!--        <script src="${contextPath}/js/soft-ui-dashboard.min.js?v=1.0.3"></script>-->

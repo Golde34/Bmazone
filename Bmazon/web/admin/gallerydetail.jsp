@@ -4,8 +4,8 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <c:set var="contextPath" value="${pageContext.request.contextPath}" />
 <%
-    ShipCompany company = (ShipCompany) request.getAttribute("company");
     Gallery gallery = (Gallery) request.getAttribute("gallery");
+    Seller seller = (Seller) request.getAttribute("seller");
     Product product = (Product) request.getAttribute(("product"));
     ProductType producttype = (ProductType) request.getAttribute("producttype");
     String mess = (String) request.getAttribute("mess");
@@ -39,79 +39,53 @@
     <body class="g-sidenav-show  bg-gray-100">
         <aside class="sidenav navbar navbar-vertical navbar-expand-xs border-0 border-radius-xl my-3 fixed-start ms-3 " id="sidenav-main">
             <jsp:include page="adminsidebar.jsp"></jsp:include>
-        </aside>
-        <main class="main-content position-relative max-height-vh-100 h-100 mt-1 border-radius-lg ">
-            <!-- Navbar -->
+            </aside>
+            <main class="main-content position-relative max-height-vh-100 h-100 mt-1 border-radius-lg ">
+                <!-- Navbar -->
             <jsp:include page="adminheader.jsp"></jsp:include>
-            <!-- End Navbar -->
-            <div class="container-fluid py-4">
-                <div class="row my-4">
-                    <div class="col-lg-12 col-md-12 mb-md-0 mb-4">
-                        <div class="card">
-                            <div class="card-body px-0 pb-2">
-                                <div class="card-header py-3 d-flex justify-content-between">
-                                    <h6 class="m-0 font-weight-bold text-primary">Gallery Detail</h6>
-                                </div>
-                                <div class="card-body">
-                                    <form class="form" action="/Bmazon/AdminControllerMap" method="POST">
-                                        <%if (service.equalsIgnoreCase("addgallerydetail")) {%>
-                                        <table class="table table-striped">
-                                            <tr>
-                                                <td>Product Name</td>
-                                                <td>
-                                                    <textarea name="productname" rows="3"></textarea><br>
-                                                </td>
-                                            </tr>
-                                            <tr>
-                                                <td>Color</td>
-                                                <td><input type="text" name="color" class="input"><br></td>
-                                            </tr>    
-                                            <tr>
-                                                <td>Size<p></td>
-                                                <td><input type="text" name="size" class="input"><br></td>
-                                            </tr>
-                                            <tr>
-                                                <td>Link<p></td>
-                                                <td>
-                                                    <input type="file" name="link" class="input"><br>
-                                                </td>
-                                            </tr>
-                                            <tr>
-                                                <td></td>
-                                                <td>
-                                                    <input type="submit" value="Update Gallery" class="btn btn-primary">
-                                                    <input type="hidden" value="updategallery" name="service">
-                                                </td>
-                                            </tr>
-                                        </table>
-                                        <%}%>
+                <!-- End Navbar -->
+                <div class="container-fluid py-4">
+                    <div class="row my-4">
+                        <div class="col-lg-12 col-md-12 mb-md-0 mb-4">
+                            <div class="card">
+                                <div class="card-body px-0 pb-2">
+                                    <div class="card-header py-3 d-flex justify-content-between">
+                                        <h6 class="m-0 font-weight-bold text-primary">Gallery Detail</h6>
+                                    </div>
+                                    <div class="card-body">
+                                        <form enctype="multipart/form-data" class="form" action="/Bmazon/AdminControllerMap" method="POST">
                                         <%if (service.equalsIgnoreCase("updategallerydetail")) {%>
                                         <table class="table table-striped">
                                             <tr>
-                                                <td>Product Name</td>
-                                                <td>
-                                                    <textarea class="form-control" name="productname" rows="3"><%=product.getProductName()%> </textarea><br>
+                                                <td style="width: 30%;">Product Name</td>
+                                                <td style="width: 70%;">
+                                                    <textarea readonly class="form-control" name="productname" rows="3"><%=product.getProductName()%> </textarea>
                                                 </td>
                                             </tr>
                                             <tr>
                                                 <td>Color</td>
-                                                <td><input value="<%=producttype.getColor()%>" type="text" name="unitcost" class="input"><br></td>
+                                                <td><input readonly class="form-control" value="<%=producttype.getColor()%>" type="text" name="color"></td>
                                             </tr>    
                                             <tr>
                                                 <td>Size<p></td>
-                                                <td><input value="<%=producttype.getSize()%>" type="text" name="commitdate" class="input"><br></td>
+                                                <td><input readonly class="form-control" value="<%=producttype.getSize()%>" type="text" name="size"></td>
+                                            </tr>
+                                            <tr>
+                                                <td>Seller<p></td>
+                                                <td><input readonly class="form-control" value="<%=seller.getSellerShopName()%>" type="text" name="seller"></td>
                                             </tr>
                                             <tr>
                                                 <td>Link<p></td>
                                                 <td>
                                                     <%String str = "images/" + gallery.getLink();%>
-                                                    <img src="<%=str%>" width="150px" height="150px"><br>
-                                                    <input type="file" name="commitdate" class="input"><br>
+                                                    <img id="img" src="<%=str%>" width="150px" height="150px"><br>
+                                                    <input onchange="loadFile(event)" id="file" accept="image/*" type="file" name="img">
                                                 </td>
                                             </tr>
                                             <tr>
                                                 <td></td>
                                                 <td>
+                                                    <input type="hidden" value="<%=gallery.getGalleryID()%>" name="id">
                                                     <input type="submit" value="Update Gallery" class="btn btn-primary">
                                                     <input type="hidden" value="updategallery" name="service">
                                                 </td>
@@ -139,5 +113,13 @@
 <!--        <script src="${contextPath}/js/soft-ui-dashboard.min.js?v=1.0.3"></script>-->
 
     </body>
-
+    <script>
+        var loadFile = function (event) {
+            var output = document.getElementById('img');
+            img.src = URL.createObjectURL(event.target.files[0]);
+            img.onload = function () {
+                URL.revokeObjectURL(img.src) // free memory
+            }
+        };
+    </script>
 </html>

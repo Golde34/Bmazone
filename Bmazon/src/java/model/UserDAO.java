@@ -235,7 +235,7 @@ public class UserDAO extends BaseDAO {
 
     public int getPageNumber(String search) {
         int num = 0;
-        xSql = "SELECT COUNT(*) FROM [Bmazon].[dbo].[User] where status=1 and (fullname like '%" + search + "%' or email like '%" + search + "%' or phoneNumber like '%" + search + "%' or address like '%" + search + "%')";
+        xSql = "SELECT COUNT(*) FROM [Bmazon].[dbo].[User] where fullname like '%" + search + "%' or email like '%" + search + "%' or phoneNumber like '%" + search + "%' or address like '%" + search + "%'";
         ResultSet rs =dbConn.getData(xSql);
         try {
             if(rs.next()){
@@ -254,8 +254,8 @@ public class UserDAO extends BaseDAO {
                 + "SELECT * from(\n"
                 + "SELECT *,\n"
                 + "ROW_NUMBER() over (order by userID) as RowNum\n"
-                + "  FROM [Bmazon].[dbo].[User] where status=1 and (fullname like '%" + search + "%' or email like '%" + search + "%' or phoneNumber like '%" + search + "%'\n"
-                + "  or address like '%" + search + "%'))T\n"
+                + "  FROM [Bmazon].[dbo].[User] where fullname like '%" + search + "%' or email like '%" + search + "%' or phoneNumber like '%" + search + "%'\n"
+                + "  or address like '%" + search + "%')T\n"
                 + "where T.RowNum between ((@PageNo-1)*@PageSize)+1 and (@PageNo*@PageSize)";
         ResultSet rs = dbConn.getData(xSql);
         try {

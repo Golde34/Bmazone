@@ -78,16 +78,22 @@
                                                 <tbody id="user">
                                                 <%for (User user : listUser) {%>
                                                 <tr>
-                                                    <td><%=user.getUsername()%></td>
+                                                    <td class="mt-3"><%=user.getUsername()%></td>
                                                     <td><%=user.getPassword()%></td>
                                                     <td><%=user.getEmail()%></td>
                                                     <td><%=user.getFullname()%></td>
                                                     <td><%=user.getPhoneNumber()%></td>
                                                     <td><%=user.getAddress()%></td>
                                                     <td>
-                                                        <a href="AdminControllerMap?service=updateuserdetail&userid=<%=user.getUserId()%>"><span class="fas fa-edit"></span></a>
+                                                        <a href="AdminControllerMap?service=updateuserdetail&userid=<%=user.getUserId()%>"><button class="btn btn-primary">Edit</button></a>
                                                     </td>
-                                                    <td><a href="AdminControllerMap?service=deleteuser&userid=<%=user.getUserId()%>" onclick="return confirm('Are you sure you want to Remove?');"><span class="fas fa-trash-alt"></span></a></td>
+                                                    <td>
+                                                        <% if(user.getStatus()==1){%>
+                                                    <a href="AdminControllerMap?service=deleteuser&userid=<%=user.getUserId()%>" onclick="return confirm('Are you sure?');"><button class="btn btn-primary">Deactive</button></a>
+                                                    <%}else{%>
+                                                    <a href="AdminControllerMap?service=activeuser&userid=<%=user.getUserId()%>" onclick="return confirm('Are you sure?');"><button class="btn btn-primary">Active</button></a>
+                                                    <%}%>
+                                                    </td>
                                                 </tr>
                                                 <%}%>
                                             </tbody>

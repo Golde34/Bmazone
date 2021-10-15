@@ -21,9 +21,10 @@ import java.util.logging.Logger;
  *
  * @author DELL
  */
-public class GalleryDAO extends BaseDAO{
-BaseDAO dbConn= new BaseDAO();
-   
+public class GalleryDAO extends BaseDAO {
+
+    BaseDAO dbConn = new BaseDAO();
+
     public void deleteGallery(int id) {
         String sql = "delete from Gallery where galleryID = ?";
         try {
@@ -64,10 +65,25 @@ BaseDAO dbConn= new BaseDAO();
         }
         return n;
     }
-    
+
+    public int getPageNumber(String search) {
+        int num = 0;
+        xSql = "SELECT COUNT(*) from Gallery g join ProductType pt on g.productTypeID=pt.productTypeId join Product p on pt.productID=p.productID join [User] u on p.sellerID=u.userID\n"
+                + "   where g.[status]=1 and(p.productName like '%"+search+"%' or pt.size like '%"+search+"%' or pt.color like '%"+search+"%' or u.fullname like '%"+search+"%')";
+        ResultSet rs = dbConn.getData(xSql);
+        try {
+            if (rs.next()) {
+                num = rs.getInt(1);
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(UserDAO.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return num;
+    }
+
     public Gallery getGalleryById(int id) {
         Gallery gallery = new Gallery();
-        String sql = "SELECT * FROM [Bmazon].[dbo].[Gallery] where galleryID="+id;
+        String sql = "SELECT * FROM [Bmazon].[dbo].[Gallery] where galleryID=" + id;
         try {
             pre = conn.prepareStatement(sql);
             rs = pre.executeQuery();
@@ -105,9 +121,39 @@ BaseDAO dbConn= new BaseDAO();
         return list;
     }
 
+    public List<Gallery> getAllPagingGallery(int index, int numOfRow, String search) {
+        List<Gallery> list = new ArrayList<>();
+        xSql = "declare @PageNo INT =" + index + "\n"
+                + "declare @PageSize INT=" + numOfRow + "\n"
+                + "SELECT * from(\n"
+                + "SELECT g.*,\n"
+                + "ROW_NUMBER() over (order by g.galleryID) as RowNum\n"
+                + "  FROM Gallery g join ProductType pt on g.productTypeID=pt.productTypeId join Product p on pt.productID=p.productID join [User] u on p.sellerID=u.userID\n"
+                + "   where g.[status]=1 and(p.productName like '%" + search + "%' or pt.size like '%" + search + "%' or pt.color like '%" + search + "%' or u.fullname like '%" + search + "%'))T\n"
+                + "where T.RowNum between ((@PageNo-1)*@PageSize)+1 and (@PageNo*@PageSize)";
+        try {
+            pre = conn.prepareStatement(xSql);
+            rs = pre.executeQuery();
+            while (rs.next()) {
+                Gallery gallery = new Gallery();
+                gallery.setGalleryID(rs.getInt("galleryID"));
+                gallery.setLink(rs.getString("link"));
+                gallery.setProductID(rs.getInt("productID"));
+                gallery.setProductTypeID(rs.getString("productTypeId"));
+                gallery.setStatus(rs.getInt("status"));
+                list.add(gallery);
+            }
+            rs.close();
+            pre.close();
+        } catch (SQLException e) {
+            Logger.getLogger(ProductDAO.class.getName()).log(Level.SEVERE, null, e);
+        }
+        return list;
+    }
+
     public List<Gallery> getAllGalleryOfProduct(int pid) {
         List<Gallery> list = new ArrayList<>();
-        xSql = "select * from [Gallery] where productID ="+pid+"";
+        xSql = "select * from [Gallery] where productID =" + pid + "";
         try {
             pre = conn.prepareStatement(xSql);
             rs = pre.executeQuery();
@@ -123,28 +169,29 @@ BaseDAO dbConn= new BaseDAO();
         }
         return list;
     }
-    
+
     public String getSampleOfProduct(int pid) {
-        String s=null;
+        String s = null;
         xSql = "select top 1 link from [Gallery] WHERE productID = '" + pid + "'";
         try {
             pre = conn.prepareStatement(xSql);
             rs = pre.executeQuery();
             while (rs.next()) {
-             s=rs.getString("link");
+                s = rs.getString("link");
             }
         } catch (Exception e) {
         }
         return s;
     }
+
     public String getImageByProductTypeID(String ps) {
-        String s=null;
-        xSql = "select top 1 link from [Gallery] WHERE productTypeID = '"+ps+"'";
+        String s = null;
+        xSql = "select top 1 link from [Gallery] WHERE productTypeID = '" + ps + "'";
         try {
             pre = conn.prepareStatement(xSql);
             rs = pre.executeQuery();
             while (rs.next()) {
-             s=rs.getString("link");
+                s = rs.getString("link");
             }
         } catch (Exception e) {
         }
@@ -171,8 +218,7 @@ BaseDAO dbConn= new BaseDAO();
 //        return list;
 //    }
     public static void main(String[] args) {
-        GalleryDAO g= new GalleryDAO();
-        Gallery ga = g.getGalleryById(1);
-        System.out.println(ga.getLink());
+        GalleryDAO g = new GalleryDAO();
+        System.out.println(g.getPageNumber(""));
     }
 }

@@ -17,6 +17,8 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
+import javax.servlet.annotation.MultipartConfig;
+import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -26,6 +28,10 @@ import model.*;
  *
  * @author Admin
  */
+
+@MultipartConfig()
+@WebServlet({"/upload"})
+
 public class AdminController extends HttpServlet {
 
     /**
@@ -69,8 +75,7 @@ public class AdminController extends HttpServlet {
             if (service.equalsIgnoreCase("AdminDashBoard")) {
                 serviceAdminDashboard(service, request, response);
             }
-            
-            
+
             // <editor-fold defaultstate="collapsed" desc="Seller Response. Click on the + sign on the left to edit the code.">
             //SellerResposne
             if (service.equalsIgnoreCase("sellerResponse")) {
@@ -115,6 +120,10 @@ public class AdminController extends HttpServlet {
             if (service.equalsIgnoreCase("deleteuser")) {
                 serviceDeleteUser(service, request, response);
             }
+            //Active user
+            if (service.equalsIgnoreCase("activeuser")) {
+                serviceActiveUser(service, request, response);
+            }
             //</editor-fold>
 
             // <editor-fold defaultstate="collapsed" desc="Product service. Click on the + sign on the left to edit the code.">
@@ -145,6 +154,18 @@ public class AdminController extends HttpServlet {
             //Delete Product
             if (service.equalsIgnoreCase("deleteproduct")) {
                 serviceDeleteProduct(service, request, response);
+            }
+            //Active Product
+            if (service.equalsIgnoreCase("activeproduct")) {
+                serviceActiveProduct(service, request, response);
+            }
+            //Delete Product Type
+            if (service.equalsIgnoreCase("deleteproducttype")) {
+                serviceDeleteProductType(service, request, response);
+            }
+            //Active Product Type
+            if (service.equalsIgnoreCase("activeproducttype")) {
+                serviceActiveProductType(service, request, response);
             }
             //</editor-fold>
 
@@ -178,12 +199,24 @@ public class AdminController extends HttpServlet {
             if (service.equalsIgnoreCase("deletecompany")) {
                 serviceDeleteCompany(service, request, response);
             }
+            //Delete Ship Company
+            if (service.equalsIgnoreCase("activecompany")) {
+                serviceActiveCompany(service, request, response);
+            }
             //</editor-fold>
 
             // <editor-fold defaultstate="collapsed" desc="Gallery service. Click on the + sign on the left to edit the code.">
             //Gallery Manage
             if (service.equalsIgnoreCase("gallerymanagement")) {
                 serviceGalleryManagement(service, request, response);
+            }
+            //Paging Gallery
+            if (service.equalsIgnoreCase("pagingGallery")) {
+                servicePaingGallery(service, request, response);
+            }
+            //Show Page Gallery
+            if (service.equalsIgnoreCase("showpageGallery")) {
+                serviceShowPageGallery(request, response);
             }
             //Gallery detail to add and update
             if (service.equalsIgnoreCase("updategallerydetail") || service.equalsIgnoreCase("addgallerydetail")) {
@@ -247,19 +280,19 @@ public class AdminController extends HttpServlet {
         request.setAttribute(("listUser"), listUser);
         sendDispatcher(request, response, "admin/admin.jsp");
     }
-    
+
     // <editor-fold defaultstate="collapsed" desc="Seller Response Method. Click on the + sign on the left to edit the code.">
     public void serviceSellerResponse(String service, HttpServletRequest request, HttpServletResponse response) {
-        request.setAttribute("service", service);    
+        request.setAttribute("service", service);
         List<Seller> listSellerRequest = daoseller.getSellerBySellerRequest();
         request.setAttribute("listSellerRequest", listSellerRequest);
         List<Seller> listAllSeller = daoseller.getAllSeller();
         request.setAttribute("listAllSeller", listAllSeller);
         sendDispatcher(request, response, "admin/authorization/sellerResponse.jsp");
     }
-    
+
     private void serviceAcceptSellerRequest(String service, HttpServletRequest request, HttpServletResponse response) {
-        request.setAttribute("service", service); 
+        request.setAttribute("service", service);
         //change seller status
         int sellerID = Integer.parseInt(request.getParameter("sellerID"));
         daoseller.acceptSellerRequest(sellerID);
@@ -276,9 +309,9 @@ public class AdminController extends HttpServlet {
         request.setAttribute("listSellerRequest", listSellerRequest);
         sendDispatcher(request, response, "admin/authorization/sellerResponse.jsp");
     }
-    
+
     private void serviceDenySellerRequest(String service, HttpServletRequest request, HttpServletResponse response) {
-        request.setAttribute("service", service); 
+        request.setAttribute("service", service);
         int sellerID = Integer.parseInt(request.getParameter("sellerID"));
         daoseller.denySellerRequest(sellerID);
         List<Seller> listAllSeller = daoseller.getAllSeller();
@@ -339,9 +372,16 @@ public class AdminController extends HttpServlet {
                     + "<td>" + user.getFullname() + "</td>"
                     + "<td>" + user.getPhoneNumber() + "</td>"
                     + "<td>" + user.getAddress() + "</td>"
-                    + "<td><div><a href=\"AdminControllerMap?service=updateuserdetail&userid=" + user.getUserId() + "\"><span class=\"fas fa-edit\"></span></a>"
-                    + "</div></td>"
-                    + "<td><div><a href=\"AdminControllerMap?service=deleteuser&userid=" + user.getUserId() + "\" onclick=\"return confirm('Are you sure you want to Remove?');\"><span class=\"fas fa-trash-alt\"></span></a></div></td>" + "</tr>"
+                    + "<td><a href=\"AdminControllerMap?service=updateuserdetail&userid=" + user.getUserId() + "\"><button class=\"btn btn-primary\">Edit</button></a>"
+                    + "</td>"
+                    + "<td>");
+            if (user.getStatus() == 1) {
+                pr.print("<a href=\"AdminControllerMap?service=deleteuser&userid=" + user.getUserId() + "\" onclick=\"return confirm('Are you sure?');\"><button class=\"btn btn-primary\">Deactive</button></a>");
+            } else {
+                pr.print("<a href=\"AdminControllerMap?service=activeuser&userid=" + user.getUserId() + "\" onclick=\"return confirm('Are you sure?');\"><button class=\"btn btn-primary\">Active</button></a>");
+            }
+            pr.print("</td>"
+                    + "</tr>"
             );
         }
         if (request.getParameter("row") == null) {
@@ -529,7 +569,24 @@ public class AdminController extends HttpServlet {
         request.setAttribute("listUser", listPaging);
         request.setAttribute("service", service);
         sendDispatcher(request, response, "admin/usermanagement.jsp");
-    }// </editor-fold>
+    }
+
+    public void serviceActiveUser(String service, HttpServletRequest request, HttpServletResponse response) {
+        int id = Integer.parseInt(request.getParameter("userid"));
+        daouser.changeStatus(id, 1);
+        ArrayList<User> listPaging = daouser.getAllPagingUser(1, 5, "");
+        ArrayList<User> listUser = daouser.getAllUser();
+        int totalPage = listUser.size() / 5;
+        if (listUser.size() != totalPage * 5) {
+            totalPage += 1;
+        }
+        request.setAttribute("index", 1);
+        request.setAttribute("totalPage", totalPage);
+        request.setAttribute("listUser", listPaging);
+        request.setAttribute("service", service);
+        sendDispatcher(request, response, "admin/usermanagement.jsp");
+    }
+// </editor-fold>
 
     // <editor-fold defaultstate="collapsed" desc="Product methods. Click on the + sign on the left to edit the code.">
     public void serviceProductManagement(String service, HttpServletRequest request, HttpServletResponse response) {
@@ -570,9 +627,16 @@ public class AdminController extends HttpServlet {
                     + "<td><div>" + category + "</div></td>"
                     + "<td><div>" + genre.getGenreName() + "</div></td>"
                     + "<td><div>" + seller.getSellerShopName() + "</div></td>"
-                    + "<td><div><a href=\"AdminControllerMap?service=updateproductdetail&productid=" + product.getProductID() + "\"><span class=\"fas fa-edit\"></span></a>"
+                    + "<td><div><a href=\"AdminControllerMap?service=updateproductdetail&productid=" + product.getProductID() + "\"><button class=\"btn btn-primary\">Edit</button></a>"
                     + "</div></td>"
-                    + "<td><div><a href=\"AdminControllerMap?service=deleteproduct&productid=" + product.getProductID() + "\" onclick=\"return confirm('Are you sure you want to Remove?');\"><span class=\"fas fa-trash-alt\"></span></a></div></td>" + "</tr>"
+                    + "<td>");
+            if (product.getStatus() == 1) {
+                pr.print("<a href=\"AdminControllerMap?service=deleteproduct&productid=" + product.getProductID() + "\" onclick=\"return confirm('Are you sure?');\"><button class=\"btn btn-primary\">Deactive</button></a>");
+            } else {
+                pr.print("<a href=\"AdminControllerMap?service=activeproduct&productid=" + product.getProductID() + "\" onclick=\"return confirm('Are you sure?');\"><button class=\"btn btn-primary\">Active</button></a>");
+            }
+            pr.print("</td>"
+                    + "</tr>"
             );
         }
         if (request.getParameter("row") == null) {
@@ -665,7 +729,6 @@ public class AdminController extends HttpServlet {
         }
         String id = request.getParameter("productid");
         Product product = daoproduct.getProductByID(Integer.parseInt(id));
-        Seller seller = daoseller.getSellerID(String.valueOf(product.getSeller()));
         String genreid = daopg.getGenreIdByProductId(product.getProductID());
         Genre genre = daogenre.getGenreById(Integer.parseInt(genreid));
         String categoryId = daopc.getCategoryIdByProductId(product.getProductID());
@@ -673,7 +736,7 @@ public class AdminController extends HttpServlet {
         ArrayList<Genre> listGenre = daogenre.getGenresByCategoryId(Integer.parseInt(categoryId));
         request.setAttribute("listGenre", listGenre);
         request.setAttribute("category", category);
-        request.setAttribute("genre", genre.getGenreName());
+        request.setAttribute("genre", genre);
         request.setAttribute("product", product);
         sendDispatcher(request, response, "admin/productdetail.jsp");
     }
@@ -703,11 +766,75 @@ public class AdminController extends HttpServlet {
 
     public void serviceDeleteProduct(String service, HttpServletRequest request, HttpServletResponse response) {
         request.setAttribute("service", service);
-        String id = request.getParameter("producttypeid");
-        daoproducttype.deleteProductType(id);
-        List<Product> listProduct = daoproduct.getAllProduct();
-        request.setAttribute("listProduct", listProduct);
+        String id = request.getParameter("productid");
+        daoproduct.changeStatus(Integer.parseInt(id), 0);
+        ArrayList<Product> listPaging = daoproduct.getAllPagingProduct(1, 5, "");
+        ArrayList<Product> listProduct = daoproduct.getAllProduct();
+        int totalPage = listProduct.size() / 5;
+        if (listProduct.size() != 5 * totalPage) {
+            totalPage += 1;
+        }
+        request.setAttribute("index", 1);
+        request.setAttribute("totalPage", totalPage);
+        request.setAttribute("listProduct", listPaging);
+        request.setAttribute("service", service);
         sendDispatcher(request, response, "admin/productmanagement.jsp");
+    }
+
+    public void serviceActiveProduct(String service, HttpServletRequest request, HttpServletResponse response) {
+        request.setAttribute("service", service);
+        String id = request.getParameter("productid");
+        daoproduct.changeStatus(Integer.parseInt(id), 1);
+        ArrayList<Product> listPaging = daoproduct.getAllPagingProduct(1, 5, "");
+        ArrayList<Product> listProduct = daoproduct.getAllProduct();
+        int totalPage = listProduct.size() / 5;
+        if (listProduct.size() != 5 * totalPage) {
+            totalPage += 1;
+        }
+        request.setAttribute("index", 1);
+        request.setAttribute("totalPage", totalPage);
+        request.setAttribute("listProduct", listPaging);
+        request.setAttribute("service", service);
+        sendDispatcher(request, response, "admin/productmanagement.jsp");
+    }
+
+    public void serviceDeleteProductType(String service, HttpServletRequest request, HttpServletResponse response) throws IOException {
+        PrintWriter pr = response.getWriter();
+        
+        String id = request.getParameter("ptId");
+        daoproducttype.changeStatus(id, 0);
+        int pid = daoproducttype.getProductIdByProductTypeId(id);
+        Product product = daoproduct.getProductByID(pid);
+        String genreid = daopg.getGenreIdByProductId(pid);
+        Genre genre = daogenre.getGenreById(Integer.parseInt(genreid));
+        String categoryId = daopc.getCategoryIdByProductId(pid);
+        Category category = daocategory.getCategoryByCateId(categoryId);
+        ArrayList<Genre> listGenre = daogenre.getGenresByCategoryId(Integer.parseInt(categoryId));
+        request.setAttribute("listGenre", listGenre);
+        request.setAttribute("category", category);
+        request.setAttribute("genre", genre);
+        request.setAttribute("product", product);
+        request.setAttribute("service", service);
+        sendDispatcher(request, response, "admin/productdetail.jsp");
+    }
+
+    public void serviceActiveProductType(String service, HttpServletRequest request, HttpServletResponse response) {
+        
+        String id = request.getParameter("producttypeid");
+        daoproducttype.changeStatus(id, 1);
+        int pid = daoproducttype.getProductIdByProductTypeId(id);
+        Product product = daoproduct.getProductByID(pid);
+        String genreid = daopg.getGenreIdByProductId(pid);
+        Genre genre = daogenre.getGenreById(Integer.parseInt(genreid));
+        String categoryId = daopc.getCategoryIdByProductId(pid);
+        Category category = daocategory.getCategoryByCateId(categoryId);
+        ArrayList<Genre> listGenre = daogenre.getGenresByCategoryId(Integer.parseInt(categoryId));
+        request.setAttribute("listGenre", listGenre);
+        request.setAttribute("category", category);
+        request.setAttribute("genre", genre);
+        request.setAttribute("product", product);
+        request.setAttribute("service", service);
+        sendDispatcher(request, response, "admin/productdetail.jsp");
     }
 
     public void serviceUpdateProduct(String service, HttpServletRequest request, HttpServletResponse response) throws ParseException {
@@ -719,8 +846,7 @@ public class AdminController extends HttpServlet {
         String gen = request.getParameter("genre");
         String sellerId = request.getParameter("seller");
         String date = request.getParameter("date");
-        java.util.Date utilDate = new SimpleDateFormat("dd-MM-yyyy").parse(date);
-        java.sql.Date sqlDate = new java.sql.Date(utilDate.getTime());
+        Date sqlDate = Date.valueOf(date);
         //Update product
         ProductCategory pc = daopc.getProductCateByProductID(Integer.parseInt(pid));
         ProductGenre pg = daopg.getProductGenreByProduct(pid);
@@ -729,8 +855,10 @@ public class AdminController extends HttpServlet {
         product.setReleaseDate(sqlDate);
         product.setSeller(Integer.parseInt(sellerId));
         daoproduct.updateProduct(product);
-//        pc.setCategoryID(Integer.parseInt(cat));
-//        pg.setGenreID(Integer.parseInt(gen));
+        pc.setCategoryID(Integer.parseInt(cat));
+        daopc.updateProductCategory(pc);
+        pg.setGenreID(Integer.parseInt(gen));
+        daopg.updateProductGenre(pg);
         //Get information about product type
 
         String[] typeids = request.getParameterValues("ptid");
@@ -749,19 +877,20 @@ public class AdminController extends HttpServlet {
             daoproducttype.editProduct(pt);
         }
         //Success
-        Seller seller = daoseller.getSellerID(String.valueOf(product.getSeller()));
+        String state = "success";
+        String mess = "Update successfully";
         String genreid = daopg.getGenreIdByProductId(product.getProductID());
         Genre genre = daogenre.getGenreById(Integer.parseInt(genreid));
         String categoryId = daopc.getCategoryIdByProductId(product.getProductID());
         Category category = daocategory.getCategoryByCateId(categoryId);
         ArrayList<Genre> listGenre = daogenre.getGenresByCategoryId(Integer.parseInt(categoryId));
+
+        //Set request
         request.setAttribute("listGenre", listGenre);
         request.setAttribute("category", category);
-        request.setAttribute("genre", genre.getGenreName());
-        String state = "success";
+        request.setAttribute("genre", genre);
         request.setAttribute("state", state);
         request.setAttribute("product", product);
-        String mess = "Update successfully";
         request.setAttribute("mess", mess);
         request.setAttribute("service", "updateproductdetail");
         sendDispatcher(request, response, "admin/productdetail.jsp");
@@ -901,7 +1030,24 @@ public class AdminController extends HttpServlet {
 
     public void serviceDeleteCompany(String service, HttpServletRequest request, HttpServletResponse response) {
         String id = request.getParameter("companyid");
-        daocompany.deleteShipCompany(id);
+        daocompany.changeStatus(Integer.parseInt(id), 0);
+        sendDispatcher(request, response, "admin/companymanagement.jsp");
+        List<ShipCompany> listPaging = daocompany.getAllPagingShipCompany(1, 5, "");
+        List<ShipCompany> listCompany = daocompany.getAllShipCompany();
+        int totalPage = listCompany.size() / 5;
+        if (listCompany.size() > 5) {
+            totalPage += 1;
+        }
+        request.setAttribute("index", 1);
+        request.setAttribute("totalPage", totalPage);
+        request.setAttribute("listCompany", listPaging);
+        request.setAttribute("service", service);
+        sendDispatcher(request, response, "admin/companymanagement.jsp");
+    }
+
+    public void serviceActiveCompany(String service, HttpServletRequest request, HttpServletResponse response) {
+        String id = request.getParameter("companyid");
+        daocompany.changeStatus(Integer.parseInt(id), 1);
         sendDispatcher(request, response, "admin/companymanagement.jsp");
         List<ShipCompany> listPaging = daocompany.getAllPagingShipCompany(1, 5, "");
         List<ShipCompany> listCompany = daocompany.getAllShipCompany();
@@ -993,10 +1139,128 @@ public class AdminController extends HttpServlet {
 
     // <editor-fold defaultstate="collapsed" desc="Gallery methods. Click on the + sign on the left to edit the code.">
     public void serviceGalleryManagement(String service, HttpServletRequest request, HttpServletResponse response) {
-        request.setAttribute("service", service);
+        List<Gallery> listPaging = daogallery.getAllPagingGallery(1, 5, "");
         List<Gallery> listGallery = daogallery.getAllGallery();
-        request.setAttribute("listGallery", listGallery);
+        int totalPage = listGallery.size() / 5;
+        if (listGallery.size() > 5) {
+            totalPage += 1;
+        }
+        request.setAttribute("index", 1);
+        request.setAttribute("totalPage", totalPage);
+        request.setAttribute("listGallery", listPaging);
+        request.setAttribute("service", service);
         sendDispatcher(request, response, "admin/gallerymanagement.jsp");
+    }
+
+    public void servicePaingGallery(String service, HttpServletRequest request, HttpServletResponse response) throws IOException {
+        PrintWriter pr = response.getWriter();
+        request.setAttribute("service", service);
+        int index = 1, numOfRow = 5;
+        String search = request.getParameter("search");
+        if (request.getParameter("index") != null) {
+            index = Integer.parseInt(request.getParameter("index"));
+        }
+        if (request.getParameter("row") != null) {
+            numOfRow = Integer.parseInt(request.getParameter("row"));
+        }
+        List<Gallery> listPaging = daogallery.getAllPagingGallery(index, numOfRow, search);
+        request.setAttribute("index", index);
+        request.setAttribute("listCompany", listPaging);
+        for (Gallery gallery : listPaging) {
+            Product product = daoproduct.getProductByID(gallery.getProductID());
+            ProductType pt = daoproducttype.getProductTypeByPTypeID(gallery.getProductTypeID());
+            Seller seller = daoseller.getSellerByProductId(product.getProductID());
+            String img = "images/" + gallery.getLink();
+            pr.print("<tr>"
+                    + "<td>" + product.getProductName() + " </td>"
+                    + "<td>" + pt.getColor() + "</td>"
+                    + "<td>" + pt.getSize() + "</td>"
+                    + "<td><img src=\"" + img + "\" width=\"100px\" height=\"100px\"></td>"
+                    + "<td>" + seller.getSellerShopName() + "</td>"
+                    + "<td><div><a href=\"AdminControllerMap?service=updategallerydetail&galleryid=" + gallery.getGalleryID() + "\"><span class=\"fas fa-edit\"></span></a>"
+                    + "</div></td>"
+                    + "<td><div><a href=\"AdminControllerMap?service=deletegallery&galleryid=" + gallery.getGalleryID() + "\" onclick=\"return confirm('Are you sure you want to Remove?');\"><span class=\"fas fa-trash-alt\"></span></a></div></td>" + "</tr>"
+            );
+        }
+        if (request.getParameter("row") == null) {
+            sendDispatcher(request, response, "admin/gallerymanagement.jsp");
+        }
+    }
+
+    public void serviceShowPageGallery(HttpServletRequest request, HttpServletResponse response) throws IOException {
+        PrintWriter pr = response.getWriter();
+        int index = 1, numOfRow = 5;
+        String search = request.getParameter("search");
+        if (request.getParameter("index") != null) {
+            index = Integer.parseInt(request.getParameter("index"));
+        }
+        if (request.getParameter("row") != null) {
+            numOfRow = Integer.parseInt(request.getParameter("row"));
+        }
+        int totalResult = daogallery.getPageNumber(search);
+        int totalPage = totalResult / numOfRow;
+        if (totalResult != totalPage * numOfRow) {
+            totalPage += 1;
+        }
+        int prev = index == 1 ? 1 : index - 1;
+        int next = index == totalPage ? totalPage : index + 1;
+        if (totalResult > numOfRow) {
+            pr.print("<li data-repair=\"1\" class=\"page-item\">");
+            pr.print("<a class=\"page-link\" aria-label=\"First\">");
+            pr.print("<span aria-hidden=\"true\"><i class=\"fas fa-backward\"></i>");
+            pr.print("<span class=\"sr-only\">(current)</span> ");
+            pr.print("</span>");
+            pr.print("</a>");
+            pr.print("</li>");
+            pr.print("<li data-repair=\"" + prev + "\" class=\"page-item\">");
+            pr.print("<a class=\"page-link\" aria-label=\"Previous\">");
+            pr.print("<span aria-hidden=\"true\"><i class=\"fas fa-arrow-left\"></i>");
+            pr.print("<span class=\"sr-only\">(current)</span> ");
+            pr.print("</span>");
+            pr.print("</a>");
+            pr.print("</li>");
+            for (int i = 1; i <= totalPage; i++) {
+                if (i < index - 2) {
+                    continue;
+                }
+                if (index < 3) {
+                    if (i > 5) {
+                        break;
+                    }
+                } else {
+                    if (i > index + 2) {
+                        break;
+                    }
+                }
+                if (index == i) {
+                    pr.print("<li  class=\"page-item active\" data-repair=\"" + i + "\">");
+                } else {
+                    pr.print("<li  class=\"page-item\" data-repair=\"" + i + "\">");
+                }
+                pr.print("<a class=\"page-link\">");
+                pr.print("<div class=\"index\">" + i + "</div>");
+                pr.print("<span class=\"sr-only\">(current)</span>");
+                pr.print("</a>");
+                pr.print("</li>");
+            }
+            pr.print("<li data-repair=\"" + next + "\" class=\"page-item\">");
+            pr.print("<a class=\"page-link\" aria-label=\"Next\">");
+            pr.print("<span aria-hidden=\"true\"><i class=\"fas fa-arrow-right\"></i>");
+            pr.print("<span class=\"sr-only\">(current)</span> ");
+            pr.print("</span>");
+            pr.print("</a>");
+            pr.print("</li>");
+            pr.print("<li data-repair=\"" + totalPage + "\" class=\"page-item\">");
+            pr.print("<a class=\"page-link\" aria-label=\"Last\">");
+            pr.print("<span aria-hidden=\"true\"><i class=\"fas fa-forward\"></i>");
+            pr.print("<span class=\"sr-only\">(current)</span> ");
+            pr.print("</span>");
+            pr.print("</a>");
+            pr.print("</li>");
+        }
+        if (request.getParameter("row") == null) {
+            sendDispatcher(request, response, "admin/gallerymanagement.jsp");
+        }
     }
 
     public void serviceGalleryDetail(String service, HttpServletRequest request, HttpServletResponse response) {
@@ -1009,6 +1273,8 @@ public class AdminController extends HttpServlet {
         Gallery gallery = daogallery.getGalleryById(1);
         Product product = daoproduct.getProductByID(gallery.getProductID());
         ProductType producttype = daoproducttype.getProductTypeByPTypeID(gallery.getProductTypeID());
+        Seller seller = daoseller.getSellerByProductId(product.getProductID());
+        request.setAttribute("seller", seller);
         request.setAttribute("product", product);
         request.setAttribute("producttype", producttype);
         request.setAttribute("gallery", gallery);

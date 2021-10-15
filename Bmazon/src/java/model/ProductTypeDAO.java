@@ -9,8 +9,11 @@ import entity.ProductType;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  *
@@ -122,10 +125,29 @@ public class ProductTypeDAO extends BaseDAO {
         }
         return ptype;
     }
+    public static void main(String[] args) {
+        ProductTypeDAO dao = new ProductTypeDAO();
+        dao.changeStatus("Pr10Ty1", 1);
+    }
+    public int getProductIdByProductTypeId(String id) {
+        int pid = -1;
+        xSql = "SELECT [productID] FROM [Bmazon].[dbo].[ProductType] where productTypeId =?";
+        try {
+            pre = conn.prepareStatement(xSql);
+            pre.setString(1, id);
+            rs = pre.executeQuery();
+            if (rs.next()) {
+                pid = rs.getInt("productID");
+            }
+        } catch (Exception e) {
+
+        }
+        return pid;
+    }
 
     public List<ProductType> getProductByProductID(int pid) {
         List<ProductType> list = new ArrayList<>();
-        xSql = "select * from ProductType where productID = ?  order by productID asc";
+        xSql = "select * from ProductType where productID = ?";
         try {
             pre = conn.prepareStatement(xSql);
             pre.setInt(1, pid);
@@ -145,16 +167,14 @@ public class ProductTypeDAO extends BaseDAO {
         }
         return list;
     }
-   
-    
-   
-    public ProductType getProductTypeByColorAndSize(String color,String size,String productID){
-        ProductType pt= new ProductType();
-        xSql="select pt.* from Product p join ProductType pt on p.productID = pt.productID where p.productID = "+productID+" and pt.size = '"+size+"' and pt.color = '"+color+"'";
+
+    public ProductType getProductTypeByColorAndSize(String color, String size, String productID) {
+        ProductType pt = new ProductType();
+        xSql = "select pt.* from Product p join ProductType pt on p.productID = pt.productID where p.productID = " + productID + " and pt.size = '" + size + "' and pt.color = '" + color + "'";
         try {
-            pre=conn.prepareStatement(xSql);
-            rs=pre.executeQuery();
-            if(rs.next()){
+            pre = conn.prepareStatement(xSql);
+            rs = pre.executeQuery();
+            if (rs.next()) {
                 pt.setProductID(rs.getInt("productID"));
                 pt.setProductTypeId(rs.getString("productTypeId"));
                 pt.setColor(rs.getString("color"));
@@ -192,8 +212,8 @@ public class ProductTypeDAO extends BaseDAO {
         }
         return list;
     }
-    
-    public ArrayList<String> getAllSizeOfProduct(int id){
+
+    public ArrayList<String> getAllSizeOfProduct(int id) {
         ArrayList<String> list = new ArrayList<>();
         xSql = "select distinct size from ProductType where productID = " + id + "";
         try {
@@ -206,8 +226,8 @@ public class ProductTypeDAO extends BaseDAO {
         }
         return list;
     }
-    
-    public ArrayList<String> getAllColorOfProduct(int id){
+
+    public ArrayList<String> getAllColorOfProduct(int id) {
         ArrayList<String> list = new ArrayList<>();
         xSql = "select distinct color from ProductType where productID = " + id + "";
         try {
@@ -265,6 +285,18 @@ public class ProductTypeDAO extends BaseDAO {
         return price;
     }
 
+    public int changeStatus(String id, int status) {
+        int n = 0;
+        String sql = "update [ProductType] set status = " + (status == 1 ? 1 : 0) + " where productTypeId = '" + id + "'";
+        try {
+            pre = conn.prepareStatement(sql);
+            n = pre.executeUpdate();
+        } catch (SQLException ex) {
+            Logger.getLogger(ProductDAO.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return n;
+    }
+
     public List<ProductType> searchProduct(String text) {
         List<ProductType> list = new ArrayList<>();
         xSql = "SELECT distinct *FROM [Bmazon].[dbo].[ProductType] where productTypeId like '%" + text + "%' or productID like '%" + text + "%' or size like '%" + text + "%' or color like '%" + text + "%' or price like '%" + text + "%' or wareHouseID like '%" + text + "%' or quantity like '%" + text + "%'";
@@ -289,5 +321,3 @@ public class ProductTypeDAO extends BaseDAO {
     }
 
 }
-
-

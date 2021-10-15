@@ -75,6 +75,21 @@ public class ProductGenreDAO extends BaseDAO {
         }
         return list;
     }
+    
+    public int updateProductGenre(ProductGenre obj) {
+        int n = 0;
+        String sql = "UPDATE [Bmazon].[dbo].[ProductGenre] SET [genreID] = ? WHERE [productID] =?";
+        try {
+            pre = conn.prepareStatement(sql);
+            pre.setInt(1, obj.getGenreID());
+            pre.setInt(2, obj.getProductID());
+            n = pre.executeUpdate();
+            pre.close();
+        } catch (SQLException e) {
+            Logger.getLogger(ProductGenreDAO.class.getName()).log(Level.SEVERE, null, e);
+        }
+        return n;
+    }
 
     public int addProductGenre(ProductGenre obj) {
         int n = 0;

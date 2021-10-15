@@ -13,6 +13,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import java.util.*;
 
 /**
  *
@@ -22,18 +23,10 @@ public class ProductDAO extends BaseDAO {
 
     BaseDAO dbConn = new BaseDAO();
 
-    public static void main(String[] args) {
-        ProductDAO dao = new ProductDAO();
-        List<Product> p = dao.getTrueProduct(1);
-        for (Product product : p) {
-            System.out.println(p);
-        }
-    }
-
     public int getPageNumber(String search) {
         int num = 0;
         xSql = "SELECT COUNT(*)from Product p join Seller s on p.sellerID=s.sellerID join ProductCategory pc on p.productID=pc.productID join Category c on pc.categoryId=c.categoryID join ProductGenre pg on pg.productID=p.productID join Genre g on g.genreID=pg.genreID\n"
-                + "   where p.[status]=1 and(p.productName like '%"+search+"%' or c.categoryName like '%"+search+"%' or g.genreName like '%"+search+"%' or s.sellerShopName like '%"+search+"%')";
+                + "   where p.productName like '%"+search+"%' or c.categoryName like '%"+search+"%' or g.genreName like '%"+search+"%' or s.sellerShopName like '%"+search+"%'";
         ResultSet rs = dbConn.getData(xSql);
         try {
             if (rs.next()) {
@@ -53,7 +46,7 @@ public class ProductDAO extends BaseDAO {
                 + "SELECT p.*,s.sellerShopName,g.genreName,c.categoryName,\n"
                 + "ROW_NUMBER() over (order by p.productID) as RowNum\n"
                 + "  from Product p join Seller s on p.sellerID=s.sellerID join ProductCategory pc on p.productID=pc.productID join Category c on pc.categoryId=c.categoryID join ProductGenre pg on pg.productID=p.productID join Genre g on g.genreID=pg.genreID\n"
-                + "   where p.[status]=1 and(p.productName like '%"+search+"%' or c.categoryName like '%"+search+"%' or g.genreName like '%"+search+"%' or s.sellerShopName like '%"+search+"%'))T\n"
+                + "   where p.productName like '%"+search+"%' or c.categoryName like '%"+search+"%' or g.genreName like '%"+search+"%' or s.sellerShopName like '%"+search+"%')T\n"
                 + "where T.RowNum between ((@PageNo-1)*@PageSize)+1 and (@PageNo*@PageSize)";
         try {
             pre = conn.prepareStatement(sql);
@@ -647,7 +640,7 @@ public ArrayList<Product> getAllPagingProductBySeller(int index,int numOfRow,Str
 
     public int changeStatus(int id, int status) {
         int n = 0;
-        String sql = "update Product set status = " + (status == 1 ? 1 : 0) + " where gId = '" + id + "'";
+        String sql = "update Product set status = " + (status == 1 ? 1 : 0) + " where productID = '" + id + "'";
         try {
             pre = conn.prepareStatement(sql);
             n = pre.executeUpdate();

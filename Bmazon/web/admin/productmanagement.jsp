@@ -105,9 +105,15 @@
                                                     <td><%=categoryName%></td>
                                                     <td><%=genre.getGenreName()%></td>
                                                     <td><%=seller.getSellerShopName()%></td>
-                                                    <td><div><a href="AdminControllerMap?service=updateproductdetail&productid=<%=product.getProductID()%>"><span class="fas fa-edit"></span></a>
+                                                    <td><div><a href="AdminControllerMap?service=updateproductdetail&productid=<%=product.getProductID()%>"><button class="btn btn-primary">Edit</button></a>
                                                         </div></td>
-                                                    <td><a href="AdminControllerMap?service=deleteproduct&productid=<%=product.getProductID()%>" onclick="return confirm('Are you sure you want to Remove?');"><span class="fas fa-trash-alt"></span></a></td>
+                                                    <td>
+                                                        <% if(product.getStatus()==1){%>
+                                                    <a href="AdminControllerMap?service=deleteproduct&productid=<%=product.getProductID()%>" onclick="return confirm('Are you sure?');"><button class="btn btn-primary">Deactive</button></a>
+                                                    <%}else{%>
+                                                    <a href="AdminControllerMap?service=activeproduct&productid=<%=product.getProductID()%>" onclick="return confirm('Are you sure?');"><button class="btn btn-primary">Active</button></a>
+                                                    <%}%>
+                                                    </td>
                                                 </tr>
 
                                                 <%}%>

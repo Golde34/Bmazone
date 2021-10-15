@@ -19,11 +19,6 @@ import java.util.logging.Logger;
  */
 public class ProductCategoryDAO extends BaseDAO{
     
-    public static void main(String[] args) {
-        ProductCategoryDAO dao = new ProductCategoryDAO();
-        System.out.println(dao.getCategoryIdByProductId(1));
-    }
-    
     public String getCategoryIdByProductId(int productId){
         xSql = "select * from ProductCategory where productID=" + productId;
         try {
@@ -39,7 +34,22 @@ public class ProductCategoryDAO extends BaseDAO{
         }
         return null;
     }
-
+    
+    public int updateProductCategory(ProductCategory obj) {
+        int n = 0;
+        String sql = "UPDATE [Bmazon].[dbo].[ProductCategory] SET [categoryId] = ? WHERE [productID] = ?";
+        try {
+            pre = conn.prepareStatement(sql);
+            pre.setInt(1, obj.getCategoryID());
+            pre.setInt(2, obj.getProductID());
+            n = pre.executeUpdate();
+            pre.close();
+        } catch (SQLException e) {
+            Logger.getLogger(ProductCategoryDAO.class.getName()).log(Level.SEVERE, null, e);
+        }
+        return n;
+    }
+    
     public ArrayList<ProductCategory> getAllProductCategory() {
         ArrayList<ProductCategory> list = new ArrayList<>();
         String sql = "SELECT * FROM [Bmazon].[dbo].[ProductCategory] where status=1";
@@ -60,7 +70,11 @@ public class ProductCategoryDAO extends BaseDAO{
         }
         return list;
     }
-    
+    public static void main(String[] args) {
+        ProductCategoryDAO dao = new ProductCategoryDAO();
+        ProductCategory p = dao.getProductCateByProductID(2);
+        System.out.println(p.getProductID());
+    }
     public ProductCategory getProductCateByProductID(int pid){
         ProductCategory proCate = new ProductCategory();
         String sql = "SELECT * FROM [Bmazon].[dbo].[ProductCategory] where productID = " + pid;
