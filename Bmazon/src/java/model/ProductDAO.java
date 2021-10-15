@@ -10,6 +10,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -23,8 +24,10 @@ public class ProductDAO extends BaseDAO {
 
     public static void main(String[] args) {
         ProductDAO dao = new ProductDAO();
-        Product p = dao.getProductByID(1);
-        System.out.println(p.getProductName());
+        List<Product> p = dao.getTrueProduct(1);
+        for (Product product : p) {
+            System.out.println(p);
+        }
     }
 
     public int getPageNumber(String search) {
@@ -130,9 +133,15 @@ public ArrayList<Product> getAllPagingProductBySeller(int index,int numOfRow,Str
         return list;
     }
 
-    public ArrayList<Product> getTrueProduct() {
+    public ArrayList<Product> getTrueProduct(int index) {
         ArrayList<Product> list = new ArrayList<>();
-        String sql = "SELECT * FROM Product  where status=1 order by releaseDate";
+        String sql = " declare @PageNo INT = " + index + " \n"
+                + " declare @PageSize INT=20 \n"
+                + " SELECT * from( \n"
+                + " SELECT *,\n  "
+                + " ROW_NUMBER() over (order by releaseDate) as RowNum\n  "
+                + "   FROM [Bmazon].[dbo].[Product] p ) as T \n "
+                + " where T.RowNum between ((@PageNo-1)*@PageSize)+1 and (@PageNo*@PageSize)  ";
         try {
             pre = conn.prepareStatement(sql);
             rs = pre.executeQuery();
@@ -378,6 +387,23 @@ public ArrayList<Product> getAllPagingProductBySeller(int index,int numOfRow,Str
         int count = 0;
 
         xSql = "SELECT count(*) FROM [Bmazon].[dbo].[Product] where sellerID = " + sid;
+        try {
+            pre = conn.prepareStatement(xSql);
+            rs = pre.executeQuery();
+            while (rs.next()) {
+                count = rs.getInt(1);
+            }
+            rs.close();
+            pre.close();
+        } catch (SQLException e) {
+            Logger.getLogger(ProductDAO.class.getName()).log(Level.SEVERE, null, e);
+        }
+        return count;
+    }
+    public int totalProduct() {
+        int count = 0;
+
+        xSql = "SELECT count(*) FROM [Bmazon].[dbo].[Product] ";
         try {
             pre = conn.prepareStatement(xSql);
             rs = pre.executeQuery();

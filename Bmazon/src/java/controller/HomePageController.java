@@ -100,11 +100,43 @@ public class HomePageController extends HttpServlet {
     }
 
     public void serviceList(HttpServletRequest request, HttpServletResponse response) {
-        List<Product> ListP = proDAO.getTrueProduct();
-        int total = ListP.size();
-        request.setAttribute("total", total);
-
+        int count = proDAO.totalProduct();
+        String[] pageshow=null;
+        int size=20;
+        int total=count/size;
+        int page,end;
+        String pageString = request.getParameter("page");
+        if (pageString == null) {
+            page = 1;
+        } else {
+            page = Integer.parseInt(pageString);
+        }
+        int begin = page;
+        String previous = "  <li><a class='' href=" + "HomePageControllerMap?service=list&page=" + (page - 1) + ">P</a></li>";
+        String next = "  <li><a class='' href=" + "HomePageControllerMap?service=list&page=" + (page + 1) + ">N</a></li>";
+        if (count % size != 0) {
+            total += 1;
+        }
+        if (page <= total - 2) {
+            end = page + 2;
+        } else {
+            end = total;
+            begin = total - 2;
+        }
+        if (page == 1) {
+            request.setAttribute("next", next);
+        } else if (page == total) {
+            request.setAttribute("previous", previous);
+        } else {
+            request.setAttribute("next", next);
+            request.setAttribute("previous", previous);
+        }
+        List<Product> ListP = proDAO.getTrueProduct(page);
+        request.setAttribute("end", end);
+        request.setAttribute("href", "list");
+        request.setAttribute("begin", begin);
         request.setAttribute("listP", ListP);
+        request.setAttribute("count", count);
         sendDispatcher(request, response, "productList/list.jsp");
 
     }
@@ -115,7 +147,6 @@ public class HomePageController extends HttpServlet {
         String address;
         address = "<a href=" + "HomePageControllerMap?service=ByCate&cid=" + id + ">" + cateDAO.getCategoryById(id) + "  </a> <span class=" + "divider" + ">&#47;</span>";
         request.setAttribute("address", address);
-
         request.setAttribute("listP", ListP);
         sendDispatcher(request, response, "productList/list.jsp");
 
@@ -138,22 +169,18 @@ public class HomePageController extends HttpServlet {
         String str = request.getParameter("search").trim();
         int count = proDAO.totalSearchProduct(str);
         String address;
-
         int size=20;
         int total=count/size;
-        int page,end;
-        
+        int page,end;       
         String pageString = request.getParameter("page");
         if (pageString == null) {
             page = 1;
-
         } else {
             page = Integer.parseInt(pageString);
         }
         int begin = page;
         String previous = "  <li><a class='' href=" + "HomePageControllerMap?service=search&search=" + str + "&page=" + (page - 1) + ">P</a></li>";
         String next = "  <li><a class='' href=" + "HomePageControllerMap?service=search&search=" + str + "&page=" + (page + 1) + ">N</a></li>";
-
         if (count % size != 0) {
             total += 1;
         }
@@ -172,7 +199,6 @@ public class HomePageController extends HttpServlet {
             request.setAttribute("previous", previous);
         }
         List<Product> ListP = proDAO.getProductByName(page, str);
-
         address = "<a>" + " Results for " + str + "  </a> <span class=" + "divider" + ">&#47;</span>";
         request.setAttribute("address", address);
         request.setAttribute("end", end);
@@ -180,7 +206,7 @@ public class HomePageController extends HttpServlet {
         request.setAttribute("listP", ListP);
         request.setAttribute("search", str);
         request.setAttribute("count", count);
-
+        request.setAttribute("href",("search&search="+str));
         sendDispatcher(request, response, "productList/list.jsp");
 
     }
@@ -234,6 +260,7 @@ public class HomePageController extends HttpServlet {
         request.setAttribute("listProduct", listProduct);
         request.setAttribute("sid", id);
         request.setAttribute("count", count);
+        
 
         sendDispatcher(request, response, "seller/shopPage.jsp");
     }

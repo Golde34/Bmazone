@@ -112,6 +112,7 @@
 
             <main id="main" class="">
                 <div class="row category-page-row">
+                    
 
                     <div class="col large-2 hide-for-medium ">
                         <div id="shop-sidebar" class="sidebar-inner col-inner">
@@ -267,10 +268,10 @@
                         <nav class="woocommerce-pagination">
                             <ul class="page-numbers nav-pagination links text-center">
                                 ${previous}
-                                <c:forEach  begin="${begin}" end="${end}" var="i">
-
-                                    <li><a class="active" href="HomePageControllerMap?service=search&search=${search}&page=${i}">${i}</a></li>
-                                    </c:forEach>
+                                <c:forEach begin="${begin}" end="${end}" var="i">
+                                     <li><a class='' href="HomePageControllerMap?service=${href}&page=${i}">${i}</a></li>
+                                    
+                                </c:forEach>
                                     ${next}
                             </ul>
                         </nav>
