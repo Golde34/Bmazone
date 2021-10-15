@@ -5,6 +5,8 @@
  */
 package controller;
 
+import APIs.SecurePBKDF2;
+import static APIs.SecurePBKDF2.validatePassword;
 import entity.Seller;
 import entity.User;
 import java.io.File;
@@ -12,6 +14,8 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.security.NoSuchAlgorithmException;
+import java.security.spec.InvalidKeySpecException;
 import java.sql.Date;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -52,7 +56,7 @@ public class UserController extends HttpServlet {
     SellerDAO daoSeller = new SellerDAO();
 
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {
+            throws ServletException, IOException, NoSuchAlgorithmException, InvalidKeySpecException {
         response.setContentType("text/html;charset=UTF-8");
         try (PrintWriter out = response.getWriter()) {
             String service = request.getParameter("service");
@@ -71,6 +75,11 @@ public class UserController extends HttpServlet {
                 serviceChangePassword(request, response);
             }
 
+            //
+            if (service.equalsIgnoreCase("changepassPage")) {
+                serviceChangePasswordPage(request, response);
+            }
+            
             //account page to see profile, security, orders, payments, profile, list
             if (service.equalsIgnoreCase("account")) {
                 serviceAccount(request, response);
@@ -122,7 +131,17 @@ public class UserController extends HttpServlet {
             if (service.equalsIgnoreCase("editWallet")) {
                 serviceEditWallet(request, response);
             }
-            
+
+            //deposit wallet
+            if (service.equalsIgnoreCase("deposit")) {
+                serviceDeposit(request, response);
+            }
+
+            //withdrawal wallet
+            if (service.equalsIgnoreCase("withdrawal")) {
+                serviceWithdrawal(request, response);
+            }
+
             //Turn on seller feature
             if (service.equalsIgnoreCase("turnOnSalesFeature")) {
                 serviceTurnOnSalesFeature(request, response);
@@ -143,7 +162,7 @@ public class UserController extends HttpServlet {
         sendDispatcher(request, response, "index.jsp");
     }
 
-    public void serviceChangePassword(HttpServletRequest request, HttpServletResponse response) {
+    public void serviceChangePassword(HttpServletRequest request, HttpServletResponse response) throws NoSuchAlgorithmException, InvalidKeySpecException {
         String messChangepass = "";
 
         HttpSession session = request.getSession();
@@ -154,18 +173,31 @@ public class UserController extends HttpServlet {
         String newpass = request.getParameter("newpass");
         String repass = request.getParameter("renewpass");
 
-//        if (!newpass.equals(repass)) {
-//            messChangepass = "You are only have permission to change pass of your own account";
-//        } else 
-        if (!account.getPassword().equals(oldpass) && oldpass != null) {
+
+        boolean matched = validatePassword(oldpass, account.getPassword());
+        if (matched == false && oldpass != null) {
             messChangepass = "Old Password is not correct";
             request.setAttribute("oldpassChange", oldpass);
             request.setAttribute("newpassChange", newpass);
             request.setAttribute("renewpassChange", repass);
-        } else if (account.getPassword().equals(oldpass) && oldpass != null && newpass.equals(repass)) {
-            daoUser.changePassword(user, newpass);
+        } else if (matched == true && oldpass != null && newpass.equals(repass)) {
+            String securePassword = SecurePBKDF2.generateStrongPasswordHash(newpass);
+            daoUser.changePassword(user, securePassword);
             messChangepass = "Change password successfully !!";
         }
+        request.setAttribute("messChangepass", messChangepass);
+        sendDispatcher(request, response, "loginAndSecurity/changepass.jsp");
+//        request.setAttribute("mess", mess);
+//        sendDispatcher(request, response, "loginAndSecurity/changepass.jsp");
+    }
+    
+    public void serviceChangePasswordPage(HttpServletRequest request, HttpServletResponse response) throws NoSuchAlgorithmException, InvalidKeySpecException {
+        String messChangepass = "";
+
+        HttpSession session = request.getSession();
+        User account = (User) session.getAttribute("currUser");
+
+        String user = account.getUsername();
         request.setAttribute("messChangepass", messChangepass);
         sendDispatcher(request, response, "loginAndSecurity/changepass.jsp");
 //        request.setAttribute("mess", mess);
@@ -353,12 +385,49 @@ public class UserController extends HttpServlet {
     }
 
     private void serviceEditWallet(HttpServletRequest request, HttpServletResponse response) {
-        String amount = request.getParameter("amount");
-        String mess = "";
         User x = (User) request.getSession().getAttribute("currUser");
         request.setAttribute("currUser", x);
-
         sendDispatcher(request, response, "user/editWallet.jsp");
+    }
+
+    private void serviceDeposit(HttpServletRequest request, HttpServletResponse response) {
+        String mess = "";
+        double amount = Double.parseDouble(request.getParameter("amount"));
+        User x = (User) request.getSession().getAttribute("currUser");
+        request.setAttribute("currUser", x);
+        if (amount == 0) {
+            mess = "Please input amount more than 0.";
+            request.setAttribute("mess", mess);
+            sendDispatcher(request, response, "user/editWallet.jsp");
+        } else {
+            mess = "Deposit succesfully!";
+            request.setAttribute("mess", mess);
+            daoUser.depositWalletUser(x, amount);
+            request.getSession().setAttribute("currUser", daoUser.getUserById(x.getUserId()));
+            sendDispatcher(request, response, "user/editWallet.jsp");
+        }
+    }
+
+    private void serviceWithdrawal(HttpServletRequest request, HttpServletResponse response) {
+        String mess = "";
+        double amount = Double.parseDouble(request.getParameter("amount"));
+        User x = (User) request.getSession().getAttribute("currUser");
+        request.setAttribute("currUser", x);
+        if (amount == 0) {
+            mess = "Please input amount more than 0.";
+            request.setAttribute("mess", mess);
+            sendDispatcher(request, response, "user/editWallet.jsp");
+        } else if (amount > x.getWallet()) {
+            mess = "Your wallet does not have enough money.";
+            request.setAttribute("mess", mess);
+            sendDispatcher(request, response, "user/editWallet.jsp");
+        } else {
+            mess = "Withdrawal succesfully!";
+            request.setAttribute("mess", mess);
+            daoUser.withdrawalWalletUser(x, amount);
+            request.getSession().setAttribute("currUser", daoUser.getUserById(x.getUserId()));
+            sendDispatcher(request, response, "user/editWallet.jsp");
+        }
     }
 
     private void serviceTurnOnSalesFeature(HttpServletRequest request, HttpServletResponse response) {
@@ -472,7 +541,11 @@ public class UserController extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        processRequest(request, response);
+        try {
+            processRequest(request, response);
+        } catch (NoSuchAlgorithmException | InvalidKeySpecException ex) {
+            Logger.getLogger(UserController.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
 
     /**
@@ -486,7 +559,11 @@ public class UserController extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        processRequest(request, response);
+        try {
+            processRequest(request, response);
+        } catch (NoSuchAlgorithmException | InvalidKeySpecException ex) {
+            Logger.getLogger(UserController.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
 
     /**
