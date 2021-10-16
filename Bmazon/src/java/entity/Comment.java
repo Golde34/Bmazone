@@ -12,6 +12,7 @@ import java.io.Serializable;
  * @author Admin
  */
 public class Comment implements Serializable {
+    private static final long serialVersionUID = 1;
     private int commentID;
     private int productID;
     private String userID;

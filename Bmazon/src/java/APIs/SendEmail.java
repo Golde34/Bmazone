@@ -91,6 +91,9 @@ public class SendEmail {
                 msg.setSubject("User Email Verification from Bmazon");
                 //set message text
                 msg.setText("Hello, " + username + ". Please verify your account using this code: " + code);
+            } else if (option.equals("editwallet")) {
+                msg.setSubject("Wallet Request Verification from Bmazon");
+                msg.setText("Please verify your account using this code: " + code);
             } else {
                 msg.setSubject("User Forgot Password on Bmazon ");
                 msg.setContent(addTable(code), "text/html; charset=UTF-8");
@@ -101,9 +104,10 @@ public class SendEmail {
 
             test = true;
 
-        } catch (UnsupportedEncodingException | MessagingException e) {
+        } catch (RuntimeException e) {
+            throw e;
+        } catch (Exception e) {
         }
-
         return test;
     }
 }

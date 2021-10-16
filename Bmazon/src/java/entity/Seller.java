@@ -12,6 +12,7 @@ import java.io.Serializable;
  * @author Admin
  */
 public class Seller implements Serializable {
+    private static final long serialVersionUID = 1;
     private int sellerID;
     private int userID;
     private String sellerShopName;
