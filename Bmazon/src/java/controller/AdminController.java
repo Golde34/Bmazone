@@ -14,12 +14,15 @@ import java.io.PrintWriter;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.sql.Date;
+import java.text.DecimalFormat;
+import java.text.NumberFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Locale;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.servlet.RequestDispatcher;
@@ -39,7 +42,6 @@ import org.apache.commons.fileupload.servlet.ServletFileUpload;
  *
  * @author Admin
  */
-
 public class AdminController extends HttpServlet {
 
     /**
@@ -221,7 +223,7 @@ public class AdminController extends HttpServlet {
             }
             //Paging Gallery
             if (service.equalsIgnoreCase("pagingGallery")) {
-                servicePaingGallery(service, request, response);
+                servicePagingGallery(service, request, response);
             }
             //Show Page Gallery
             if (service.equalsIgnoreCase("showpageGallery")) {
@@ -885,7 +887,14 @@ public class AdminController extends HttpServlet {
             pt.setColor(colors[i]);
             pt.setSize(sizes[i]);
             pt.setPrice(prices[i]);
-            pt.setQuantity(Integer.parseInt(quantities[i]));
+            NumberFormat format = NumberFormat.getInstance(Locale.US);
+            Number nQuantity = 0;
+            try {
+                nQuantity = format.parse(quantities[i]);
+            } catch (ParseException ex) {
+                Logger.getLogger(AdminController.class.getName()).log(Level.SEVERE, null, ex);
+            }
+            pt.setQuantity(nQuantity.intValue());
             daoproducttype.editProduct(pt);
         }
         //Success
@@ -897,7 +906,7 @@ public class AdminController extends HttpServlet {
         Category category = daocategory.getCategoryByCateId(categoryId);
         ArrayList<Genre> listGenre = daogenre.getGenresByCategoryId(Integer.parseInt(categoryId));
 
-        //Set request
+        //Set attribute
         request.setAttribute("listGenre", listGenre);
         request.setAttribute("category", category);
         request.setAttribute("genre", genre);
@@ -938,10 +947,11 @@ public class AdminController extends HttpServlet {
         request.setAttribute("index", index);
         request.setAttribute("listCompany", listPaging);
         for (ShipCompany company : listPaging) {
+            DecimalFormat nf = new DecimalFormat("###,###,###");
             pr.print("<tr>"
                     + "<td><div>" + company.getCompanyName() + " </div></td>"
                     + "<td><div>" + company.getCommitDate() + "</div></td>"
-                    + "<td><div>" + (int) company.getUnitCost() + "</div></td>"
+                    + "<td><div>" + nf.format(company.getUnitCost()) + "</div></td>"
                     + "<td><div><a href=\"AdminControllerMap?service=updatecompanydetail&companyid=" + company.getCompanyID() + "\"><button class=\"btn btn-primary\">Edit</button></a>"
                     + "</div></td>"
                     + "<td>");
@@ -1103,9 +1113,18 @@ public class AdminController extends HttpServlet {
         }
         if (isExist == false) {
             ShipCompany company = new ShipCompany();
-            company.setCommitDate(Integer.parseInt(commitdate));
+            NumberFormat format = NumberFormat.getInstance(Locale.US);
+            Number cost = 0, date = 0;
+            try {
+                cost = format.parse(unitcost);
+                date = format.parse(commitdate);
+            } catch (ParseException e) {
+                e.printStackTrace();
+            }
+            String unitCostTemp = String.valueOf(cost);
+            company.setCommitDate(date.intValue());
             company.setCompanyName(companyname);
-            company.setUnitCost(Double.parseDouble(unitcost));
+            company.setUnitCost(Double.parseDouble(unitCostTemp));
             company.setStatus(1);
             daocompany.addShipCompany(company);
             List<ShipCompany> listCompany = daocompany.getAllPagingShipCompany(1, 5, "");
@@ -1140,9 +1159,18 @@ public class AdminController extends HttpServlet {
             sendDispatcher(request, response, "admin/companydetail.jsp");
         }
         if (isExist == false) {
-            company.setCommitDate(Integer.parseInt(commitdate));
+            NumberFormat format = NumberFormat.getInstance(Locale.US);
+            Number cost = 0, date = 0;
+            try {
+                cost = format.parse(unitcost);
+                date = format.parse(commitdate);
+            } catch (ParseException e) {
+                e.printStackTrace();
+            }
+            String unitCostTemp = String.valueOf(cost);
+            company.setCommitDate(date.intValue());
             company.setCompanyName(companyname);
-            company.setUnitCost(Double.parseDouble(unitcost));
+            company.setUnitCost(Double.parseDouble(unitCostTemp));
             daocompany.editShipCompany(company);
             String state = "success";
             request.setAttribute("state", state);
@@ -1171,7 +1199,7 @@ public class AdminController extends HttpServlet {
         sendDispatcher(request, response, "admin/gallerymanagement.jsp");
     }
 
-    public void servicePaingGallery(String service, HttpServletRequest request, HttpServletResponse response) throws IOException {
+    public void servicePagingGallery(String service, HttpServletRequest request, HttpServletResponse response) throws IOException {
         PrintWriter pr = response.getWriter();
         request.setAttribute("service", service);
         int index = 1, numOfRow = 5;
@@ -1300,6 +1328,7 @@ public class AdminController extends HttpServlet {
         Product product = daoproduct.getProductByID(gallery.getProductID());
         ProductType producttype = daoproducttype.getProductTypeByPTypeID(gallery.getProductTypeID());
         Seller seller = daoseller.getSellerByProductId(product.getProductID());
+        request.setAttribute(service, service);
         request.setAttribute("seller", seller);
         request.setAttribute("product", product);
         request.setAttribute("producttype", producttype);
@@ -1540,9 +1569,8 @@ public class AdminController extends HttpServlet {
         } catch (ServletException | IOException ex) {
             Logger.getLogger(AdminController.class.getName()).log(Level.SEVERE, null, ex);
         }
-    } 
-    
-    
+    }
+
     private void writeObject(ObjectOutputStream stream)
             throws IOException {
         stream.defaultWriteObject();

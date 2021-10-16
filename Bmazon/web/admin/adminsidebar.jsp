@@ -106,13 +106,13 @@
                         </a>
                 </li>
                 <li class="nav-item">
-                    <%if (service.equalsIgnoreCase("gallerymanagement") || service.equalsIgnoreCase("updategallerydetail") || service.equalsIgnoreCase("addgallerydetail")) {%>
+                    <%if (service.equalsIgnoreCase("gallerymanagement") || service.equalsIgnoreCase("updategallerydetail") || service.equalsIgnoreCase("gallerydetail")) {%>
                     <a class="nav-link active" href="AdminControllerMap?service=gallerymanagement">
                         <%} else {%>
                         <a class="nav-link" href="AdminControllerMap?service=gallerymanagement">
                             <%}%>
                             <div class="icon icon-shape icon-sm shadow border-radius-md bg-white text-center me-2 d-flex align-items-center justify-content-center">
-                                <%if (service.equalsIgnoreCase("gallerymanagement") || service.equalsIgnoreCase("updategallerydetail") || service.equalsIgnoreCase("addgallerydetail")) {%> 
+                                <%if (service.equalsIgnoreCase("gallerymanagement") || service.equalsIgnoreCase("updategallerydetail") || service.equalsIgnoreCase("gallerydetail")) {%> 
                                 <i class="far fa-images"></i>
                                 <%} else {%>
                                 <i class="far fa-images" style="color: black"></i>
