@@ -5,11 +5,13 @@
  */
 package entity;
 
+import java.io.Serializable;
+
 /**
  *
  * @author Admin
  */
-public class Gallery {
+public class Gallery implements Serializable {
     private int galleryID;
     private int productID;
     private String productTypeID;

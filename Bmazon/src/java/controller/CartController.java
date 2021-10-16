@@ -16,6 +16,8 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import entity.CartItem;
 import entity.ProductType;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 import java.text.Normalizer;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -41,6 +43,7 @@ public class CartController extends HttpServlet {
      */
     ProductTypeDAO ptd = new ProductTypeDAO();
     GalleryDAO galdao = new GalleryDAO();
+    private static final long serialVersionUID = 1;
 
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
@@ -73,7 +76,7 @@ public class CartController extends HttpServlet {
         String name = request.getParameter("name");
         String quantitys = request.getParameter("quantity");
         int quantity = Integer.parseInt(quantitys);
-        PrintWriter out = response.getWriter();
+//        PrintWriter out = response.getWriter(); // ( fix Findbugs)
         ProductType pt = ptd.getProductTypeByColorAndSize(color,size,pid);
         String image = galdao.getImageByProductTypeID(pt.getProductTypeId());
         double total = quantity * Double.parseDouble(pt.getPrice());
@@ -141,6 +144,17 @@ public class CartController extends HttpServlet {
         } catch (ServletException | IOException ex) {
             Logger.getLogger(HomePageController.class.getName()).log(Level.SEVERE, null, ex);
         }
+    }
+    
+
+    private void writeObject(ObjectOutputStream stream)
+            throws IOException {
+        stream.defaultWriteObject();
+    }
+
+    private void readObject(ObjectInputStream stream)
+            throws IOException, ClassNotFoundException {
+        stream.defaultReadObject();
     }
 
 // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">

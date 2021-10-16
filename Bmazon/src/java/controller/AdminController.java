@@ -8,6 +8,8 @@ package controller;
 import entity.*;
 import java.io.File;
 import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 import java.io.PrintWriter;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -61,6 +63,7 @@ public class AdminController extends HttpServlet {
     UserDAO daouser = new UserDAO();
     WareHouseDAO daowarehouse = new WareHouseDAO();
     RoleDAO daorole = new RoleDAO();
+    private static final long serialVersionUID = 1;
 
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException, ParseException, FileUploadException {
@@ -614,7 +617,7 @@ public class AdminController extends HttpServlet {
 
     public void servicePagingProduct(String service, HttpServletRequest request, HttpServletResponse response) throws IOException {
         PrintWriter pr = response.getWriter();
-        SimpleDateFormat dateformat = new SimpleDateFormat("dd/MM/yyyy");
+//        SimpleDateFormat dateformat = new SimpleDateFormat("dd/MM/yyyy"); //never used (fix FindBugs)
         request.setAttribute("service", service);
         int index = 1, numOfRow = 5;
         String search = request.getParameter("search");
@@ -663,7 +666,7 @@ public class AdminController extends HttpServlet {
         if (request.getParameter("row") != null) {
             numOfRow = Integer.parseInt(request.getParameter("row"));
         }
-        ArrayList<Product> listPaging = daoproduct.getAllPagingProduct(index, numOfRow, search);
+//        ArrayList<Product> listPaging = daoproduct.getAllPagingProduct(index, numOfRow, search); //never used (fix FindBugs)
         int totalResult = daoproduct.getPageNumber(search);
         int totalPage = totalResult / numOfRow;
         if (totalResult != numOfRow * totalPage) {
@@ -764,6 +767,7 @@ public class AdminController extends HttpServlet {
         daoproduct.addProduct(product);
         List<ProductType> listProductType = daoproducttype.getProductByProductID(product.getProductID());
         String producttypeid = "Pr" + product.getProductID() + "Ty" + (listProductType.size() + 1);
+        producttype.setProductTypeId(producttypeid);
         producttype.setColor(color);
         producttype.setPrice(price);
         producttype.setSize(size);
@@ -1536,6 +1540,17 @@ public class AdminController extends HttpServlet {
         } catch (ServletException | IOException ex) {
             Logger.getLogger(AdminController.class.getName()).log(Level.SEVERE, null, ex);
         }
+    } 
+    
+    
+    private void writeObject(ObjectOutputStream stream)
+            throws IOException {
+        stream.defaultWriteObject();
+    }
+
+    private void readObject(ObjectInputStream stream)
+            throws IOException, ClassNotFoundException {
+        stream.defaultReadObject();
     }
 
 // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">

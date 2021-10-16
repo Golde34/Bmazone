@@ -11,6 +11,8 @@ import entity.Product;
 import entity.ProductType;
 import entity.User;
 import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 import java.io.PrintWriter;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
@@ -57,6 +59,7 @@ public class ProductDetailController extends HttpServlet {
     GalleryDAO daoGallery = new GalleryDAO();
     ProductTypeDAO daoProductType = new ProductTypeDAO();
     CommentDAO daoComment = new CommentDAO();
+    private static final long serialVersionUID = 1;
 
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
@@ -104,9 +107,9 @@ public class ProductDetailController extends HttpServlet {
         ArrayList<Comment> comments = daoComment.getCommentsByProductId(id);
         request.setAttribute("comments", comments);
         int count = 0;
-        for (Comment comment : comments) {
-            count++;
-        }
+//        for (Comment comment : comments) {
+//            count++;
+//        }
         request.setAttribute("count", count);
         sendDispatcher(request, response, "product/productDetail.jsp");
     }
@@ -157,6 +160,16 @@ public class ProductDetailController extends HttpServlet {
         sendDispatcher(request, response, "ProductDetailControllerMap?service=getProductDetail&pid=" + id);
     }
 
+
+    private void writeObject(ObjectOutputStream stream)
+            throws IOException {
+        stream.defaultWriteObject();
+    }
+
+    private void readObject(ObjectInputStream stream)
+            throws IOException, ClassNotFoundException {
+        stream.defaultReadObject();
+    }
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
     /**
      * Handles the HTTP <code>GET</code> method.

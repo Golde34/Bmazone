@@ -24,6 +24,8 @@ import model.GenreDAO;
 import entity.Genre;
 import entity.Seller;
 import entity.User;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 import java.util.List;
 import model.DBConnection;
 import model.SellerDAO;
@@ -50,6 +52,7 @@ public class HomePageController extends HttpServlet {
     ProductDAO proDAO = new ProductDAO();
     SellerDAO sellerDAO = new SellerDAO();
     UserDAO userDAO = new UserDAO();
+    private static final long serialVersionUID = 1;
 
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
@@ -282,6 +285,16 @@ public class HomePageController extends HttpServlet {
         } catch (ServletException | IOException ex) {
             Logger.getLogger(HomePageController.class.getName()).log(Level.SEVERE, null, ex);
         }
+    }
+
+    private void writeObject(ObjectOutputStream stream)
+            throws IOException {
+        stream.defaultWriteObject();
+    }
+
+    private void readObject(ObjectInputStream stream)
+            throws IOException, ClassNotFoundException {
+        stream.defaultReadObject();
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">

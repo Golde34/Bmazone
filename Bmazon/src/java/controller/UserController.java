@@ -11,6 +11,8 @@ import entity.Seller;
 import entity.User;
 import java.io.File;
 import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 import java.io.PrintWriter;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -54,6 +56,7 @@ public class UserController extends HttpServlet {
     DBConnection dbCon = new DBConnection();
     UserDAO daoUser = new UserDAO();
     SellerDAO daoSeller = new SellerDAO();
+    private static final long serialVersionUID = 1;
 
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException, NoSuchAlgorithmException, InvalidKeySpecException {
@@ -79,7 +82,7 @@ public class UserController extends HttpServlet {
             if (service.equalsIgnoreCase("changepassPage")) {
                 serviceChangePasswordPage(request, response);
             }
-            
+
             //account page to see profile, security, orders, payments, profile, list
             if (service.equalsIgnoreCase("account")) {
                 serviceAccount(request, response);
@@ -172,9 +175,10 @@ public class UserController extends HttpServlet {
         String oldpass = request.getParameter("oldpass");
         String newpass = request.getParameter("newpass");
         String repass = request.getParameter("renewpass");
-
-
-        boolean matched = validatePassword(oldpass, account.getPassword());
+        boolean matched = false;
+        if (oldpass != null) {
+            matched = validatePassword(oldpass, account.getPassword());
+        }
         if (matched == false && oldpass != null) {
             messChangepass = "Old Password is not correct";
             request.setAttribute("oldpassChange", oldpass);
@@ -190,14 +194,14 @@ public class UserController extends HttpServlet {
 //        request.setAttribute("mess", mess);
 //        sendDispatcher(request, response, "loginAndSecurity/changepass.jsp");
     }
-    
+
     public void serviceChangePasswordPage(HttpServletRequest request, HttpServletResponse response) throws NoSuchAlgorithmException, InvalidKeySpecException {
         String messChangepass = "";
 
-        HttpSession session = request.getSession();
-        User account = (User) session.getAttribute("currUser");
+//        HttpSession session = request.getSession();
+//        User account = (User) session.getAttribute("currUser");
 
-        String user = account.getUsername();
+//        String user = account.getUsername();
         request.setAttribute("messChangepass", messChangepass);
         sendDispatcher(request, response, "loginAndSecurity/changepass.jsp");
 //        request.setAttribute("mess", mess);
@@ -472,7 +476,7 @@ public class UserController extends HttpServlet {
             sendDispatcher(request, response, "UserControllerMap?service=turnOnSalesFeature");
         }
     }
-    
+
     private void serviceEditDenied(HttpServletRequest request, HttpServletResponse response) {
         String mess = "";
 
@@ -527,6 +531,16 @@ public class UserController extends HttpServlet {
             Logger.getLogger(UserController.class
                     .getName()).log(Level.SEVERE, null, ex);
         }
+    }
+
+    private void writeObject(ObjectOutputStream stream)
+            throws IOException {
+        stream.defaultWriteObject();
+    }
+
+    private void readObject(ObjectInputStream stream)
+            throws IOException, ClassNotFoundException {
+        stream.defaultReadObject();
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">

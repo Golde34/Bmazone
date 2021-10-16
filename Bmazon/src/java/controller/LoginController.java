@@ -25,6 +25,8 @@ import javax.servlet.http.HttpSession;
 import model.DBConnection;
 import model.UserDAO;
 import entity.CartItem;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 import java.security.NoSuchAlgorithmException;
 import java.security.spec.InvalidKeySpecException;
 
@@ -45,6 +47,7 @@ public class LoginController extends HttpServlet {
      */
     DBConnection dbCon = new DBConnection();
     UserDAO daoUser = new UserDAO();
+    private static final long serialVersionUID = 1;
 
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException, NoSuchAlgorithmException, InvalidKeySpecException {
@@ -58,15 +61,15 @@ public class LoginController extends HttpServlet {
                 serviceLogin(request, response);
             }
 
-            //Login google
-            if (service.equalsIgnoreCase("googleLogin")) {
-                serviceGoogleLogin(request, response);
-            }
-
-            //Login facebook
-            if (service.equalsIgnoreCase("facebookLogin")) {
-                serviceFacebookLogin(request, response);
-            }
+//            //Login google
+//            if (service.equalsIgnoreCase("googleLogin")) {
+//                serviceGoogleLogin(request, response);
+//            }
+//
+//            //Login facebook
+//            if (service.equalsIgnoreCase("facebookLogin")) {
+//                serviceFacebookLogin(request, response);
+//            }
 
             //register
             if (service.equalsIgnoreCase("register")) {
@@ -117,9 +120,10 @@ public class LoginController extends HttpServlet {
 //            Logger.getLogger(SystemEmail.class.getName()).log(Level.SEVERE, null, ex);
 //        }
 //    }\
-    public void serviceLogin(HttpServletRequest request, HttpServletResponse response) throws NoSuchAlgorithmException, InvalidKeySpecException {
+    public void serviceLogin(HttpServletRequest request, HttpServletResponse response) throws NoSuchAlgorithmException, InvalidKeySpecException  {
 //        String checkLogin = "checked";
 //        request.setAttribute("checkLogin", checkLogin);
+        HttpSession session = request.getSession();
         String userName = request.getParameter("username");
         String messLogin = "";
         String userPass = request.getParameter("password");
@@ -128,10 +132,10 @@ public class LoginController extends HttpServlet {
         if (log != null) {
             boolean matched = validatePassword(userPass, log.getPassword());
             if (matched == true) {
-                request.getSession().setAttribute("currUser", log);
-                request.getSession().setAttribute("role", log.getSystemRole());
+                session.setAttribute("currUser", log);
+                session.setAttribute("role", log.getSystemRole());
                 ArrayList<CartItem> ShoppingCart = new ArrayList<>();
-                request.getSession().setAttribute("ShoppingCart", ShoppingCart);
+                session.setAttribute("ShoppingCart", ShoppingCart);
                 sendDispatcher(request, response, "index.jsp");
             } else {
                 messLogin = "Login failed, check your username or your password.";
@@ -229,7 +233,7 @@ public class LoginController extends HttpServlet {
         //get data from serviceRegister
         String Username = (String) session.getAttribute("usernameRegis");
         String Password = (String) session.getAttribute("passwordRegis");
-        String Repassword = (String) session.getAttribute("repasswordRegis");
+//        String Repassword = (String) session.getAttribute("repasswordRegis"); //(fix FindBugs )
         String fullname = (String) session.getAttribute("fullnameRegis");
         String Email = (String) session.getAttribute("emailRegis");
         String Phone = (String) session.getAttribute("phoneRegis");
@@ -278,31 +282,31 @@ public class LoginController extends HttpServlet {
         }
     }
 
-    public void serviceGoogleLogin(HttpServletRequest request, HttpServletResponse response) {
-        String userName = "gg." + request.getParameter("username");
-        String messLogin = "";
-        String userPass = "guest";
-        User log = null;
-        log = new User(userName, userPass, userName, 0, "gg.guest", "gg.guest", 0, 1);
-        request.getSession().setAttribute("currUser", log);
-        request.getSession().setAttribute("role", log.getSystemRole());
-        ArrayList<CartItem> ShoppingCart = new ArrayList<>();
-        request.getSession().setAttribute("ShoppingCart", ShoppingCart);
-        sendDispatcher(request, response, "index.jsp");
-    }
-
-    public void serviceFacebookLogin(HttpServletRequest request, HttpServletResponse response) {
-        String userName = "fb." + request.getParameter("username");
-        String messLogin = "";
-        String userPass = "guest";
-        User log = null;
-        log = new User(userName, userPass, "", 0, "fb.guest", "fb.guest", 0, 1);
-        request.getSession().setAttribute("currUser", log);
-        request.getSession().setAttribute("role", log.getSystemRole());
-        ArrayList<CartItem> ShoppingCart = new ArrayList<>();
-        request.getSession().setAttribute("ShoppingCart", ShoppingCart);
-        sendDispatcher(request, response, "index.jsp");
-    }
+//    public void serviceGoogleLogin(HttpServletRequest request, HttpServletResponse response) {
+//        String userName = "gg." + request.getParameter("username");
+//        String messLogin = "";
+//        String userPass = "guest";
+//        User log = null;
+//        log = new User(userName, userPass, userName, 0, "gg.guest", "gg.guest", 0, 1);
+//        request.getSession().setAttribute("currUser", log);
+//        request.getSession().setAttribute("role", log.getSystemRole());
+//        ArrayList<CartItem> ShoppingCart = new ArrayList<>();
+//        request.getSession().setAttribute("ShoppingCart", ShoppingCart);
+//        sendDispatcher(request, response, "index.jsp");
+//    }
+//
+//    public void serviceFacebookLogin(HttpServletRequest request, HttpServletResponse response) {
+//        String userName = "fb." + request.getParameter("username");
+//        String messLogin = "";
+//        String userPass = "guest";
+//        User log = null;
+//        log = new User(userName, userPass, "", 0, "fb.guest", "fb.guest", 0, 1);
+//        request.getSession().setAttribute("currUser", log);
+//        request.getSession().setAttribute("role", log.getSystemRole());
+//        ArrayList<CartItem> ShoppingCart = new ArrayList<>();
+//        request.getSession().setAttribute("ShoppingCart", ShoppingCart);
+//        sendDispatcher(request, response, "index.jsp");
+//    }
 
     public void sendDispatcher(HttpServletRequest request, HttpServletResponse response, String path) {
         try {
@@ -313,6 +317,16 @@ public class LoginController extends HttpServlet {
             Logger.getLogger(UserController.class
                     .getName()).log(Level.SEVERE, null, ex);
         }
+    }
+
+    private void writeObject(ObjectOutputStream stream)
+            throws IOException {
+        stream.defaultWriteObject();
+    }
+
+    private void readObject(ObjectInputStream stream)
+            throws IOException, ClassNotFoundException {
+        stream.defaultReadObject();
     }
 
     public String getSiteURL(HttpServletRequest request) {
