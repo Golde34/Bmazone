@@ -180,32 +180,42 @@
                                     </li>
                                     <li class="cart-item has-icon
                                         has-dropdown" style="margin-left: 10px">
-
-                                        <a href="CartControllerMap?service=Cart" title="Giỏ hàng" class="header-cart-link is-small">
-
-
-                                            <%  ArrayList<CartItem> ShoppingCart = (ArrayList<CartItem>) session.getAttribute("ShoppingCart");
-
-                                            %>
+                                        <% if (x == null) {%>
+                                       
                                             <i class="fa fa-shopping-cart"
-                                               data-icon-label="<%=ShoppingCart.size()%>">
+                                               data-icon-label="0">
                                                 <%-- so luong item in cart--%>
                                             </i>
+                                        
+                                        <%}%>
+
+                                        <% if (x != null) {%>
+                                        <%  ArrayList<CartItem> ShoppingCart = (ArrayList<CartItem>) session.getAttribute("ShoppingCart");
+
+                                        %>
+                                         <a href="CartControllerMap?service=Cart" title="Giỏ hàng" class="header-cart-link is-small">
+                                        <i class="fa fa-shopping-cart"
+                                           data-icon-label="<%=ShoppingCart.size()%>">
+                                            <%-- so luong item in cart--%>
+                                        </i>
                                         </a>
-                                              <ul class="nav-dropdown nav-dropdown-simple">
+                                        <ul class="nav-dropdown nav-dropdown-simple">
                                             <li class="html widget_shopping_cart">
                                                 <div class="widget_shopping_cart_content">
 
-                                                   <%      for (CartItem item : ShoppingCart) {
-                                                                    String image = "images/" + item.getImage();
-                                                            %>
+
+
+
+                                                    <%      for (CartItem item : ShoppingCart) {
+                                                            String image = "images/" + item.getImage();
+                                                    %>
                                                     <ul class="woocommerce-mini-cart cart_list product_list_widget ">
                                                         <li class="woocommerce-mini-cart-item mini_cart_item">
                                                             <a href="CartControllerMap?service=Delete&cartID=<%=item.getCartID()%>" class="remove remove_from_cart_button" aria-label="Xóa sản phẩm này" data-product_id="139" data-cart_item_key="e00da03b685a0dd18fb6a08af0923de0" data-product_sku="">&times;</a>													
                                                             <a href="http://mauweb.monamedia.net/lazada/san-pham/ao-so-mi-caro-kem-belt/">
                                                                 <img width="180" height="180" src="<%=image%>" class="attachment-shop_thumbnail size-shop_thumbnail wp-post-image" ><%=item.getName() + "(" + item.getSize() + ")" + "(" + item.getColor() + ")"%> &nbsp;	</a>
 
-                                                                <span class="quantity"><%=item.getQuantity()%>&times; <span class="woocommerce-Price-amount amount"><%= nf.format(item.getPrice())%>&nbsp;<span class="woocommerce-Price-currencySymbol">&#8363;</span></span></span>					</li>
+                                                            <span class="quantity"><%=item.getQuantity()%>&times; <span class="woocommerce-Price-amount amount"><%= nf.format(item.getPrice())%>&nbsp;<span class="woocommerce-Price-currencySymbol">&#8363;</span></span></span>					</li>
                                                     </ul>
                                                     <% } %>
 
@@ -217,12 +227,13 @@
                                                 </div>
                                             </li>
                                         </ul><!-- .nav-dropdown -->
+                                        <%}%>
 
 
 
                                     </li>
-                                
-                                </di
+
+                                    </di
                                 </ul>
                             </div>
 
