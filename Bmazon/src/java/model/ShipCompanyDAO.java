@@ -136,8 +136,8 @@ public class ShipCompanyDAO extends BaseDAO {
                 + "where T.RowNum between ((@PageNo-1)*@PageSize)+1 and (@PageNo*@PageSize)";
         try {
             pre = conn.prepareStatement(xSql);
-//            pre.setInt(1, index);
-//            pre.setInt(2, numOfRow);
+            pre.setInt(1, index);
+            pre.setInt(2, numOfRow);
 //            pre.setString(3, search);
 //            pre.setString(4, search);
 //            pre.setString(5, search);

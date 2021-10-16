@@ -118,7 +118,7 @@ public class sessionFilter implements Filter {
 //             chain.doFilter(request, response);
 //             return;
 //        }
-        if (x != null && url.contains(".jsp")) {
+        if (url.contains(".jsp")) {
             httpresponse.sendError(404,"Oops! Page is not found");
         }
         
@@ -213,7 +213,7 @@ public class sessionFilter implements Filter {
                 pw.close();
                 ps.close();
                 response.getOutputStream().close();
-            } catch (Exception ex) {
+            } catch (IOException ex) {
             }
         } else {
             try {
@@ -221,7 +221,7 @@ public class sessionFilter implements Filter {
                 t.printStackTrace(ps);
                 ps.close();
                 response.getOutputStream().close();
-            } catch (Exception ex) {
+            } catch (IOException ex) {
             }
         }
     }
@@ -235,7 +235,7 @@ public class sessionFilter implements Filter {
             pw.close();
             sw.close();
             stackTrace = sw.getBuffer().toString();
-        } catch (Exception ex) {
+        } catch (IOException ex) {
         }
         return stackTrace;
     }

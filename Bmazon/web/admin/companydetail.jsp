@@ -78,7 +78,7 @@
                                             <tr>
                                                 <td>Unit Cost</td>
                                                 <td>
-                                                    <input pattern="^[0-9]*$" class="form-control price" type="text" value="${unitcost}" name="unitcost" required>
+                                                    <input class="form-control number" type="text" value="${unitcost}" name="unitcost" required>
                                                     <div class="invalid-feedback">
                                                         Only number
                                                     </div>
@@ -87,7 +87,7 @@
                                             <tr>
                                                 <td>Commit Date</td>
                                                 <td>
-                                                    <input pattern="^[0-9]*$" class="form-control" type="text" value="${commitdate}" name="commitdate" required>
+                                                    <input class="form-control number" type="text" value="${commitdate}" name="commitdate" required>
                                                     <div class="invalid-feedback">
                                                         Only number
                                                     </div>
@@ -116,7 +116,7 @@
                                             <tr>
                                                 <td>Unit Cost</td>
                                                 <td>
-                                                    <input pattern="^[0-9]*$" class="form-control price" value="<%=nf.format(company.getUnitCost())%>" type="text" name="unitcost" required>
+                                                    <input class="form-control number" value="<%=nf.format(company.getUnitCost())%>" type="text" name="unitcost" required>
                                                     <div class="invalid-feedback">
                                                         Only Number
                                                     </div>
@@ -125,7 +125,7 @@
                                             <tr>
                                                 <td>Commit Date</td>
                                                 <td>
-                                                    <input pattern="^[0-9]*$" class="form-control" value="<%=company.getCommitDate()%>" type="text" name="commitdate" required>
+                                                    <input class="form-control number" value="<%=company.getCommitDate()%>" type="text" name="commitdate" required>
                                                     <div class="invalid-feedback">
                                                         Only Number
                                                     </div>
@@ -158,7 +158,7 @@
         <script src="${contextPath}/js/plugins/chartjs.min.js"></script>
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
         <script>
-            $(".price").on('keyup', function () {
+            $(".number").on('keyup', function () {
                 var n = parseInt($(this).val().replace(/\D/g, ''), 10);
                 $(this).val(n.toLocaleString());
             });

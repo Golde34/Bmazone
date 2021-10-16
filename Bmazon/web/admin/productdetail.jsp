@@ -72,12 +72,12 @@
                                     <table class="table table-striped">
                                         <tr>
                                             <td style="width: 30%;">Product Name</td>
-                                            <td style="width: 70%;"><textarea class="form-control" name="productname"><%=product.getProductName()%></textarea></td>
+                                            <td style="width: 70%;"><textarea required class="form-control" name="productname"><%=product.getProductName()%></textarea></td>
                                         </tr>
                                         <tr>
                                             <td>Category</td>
                                             <td>
-                                                <select name="category" style="width: 50%;" class="form-select" id="category">
+                                                <select required name="category" style="width: 50%;" class="form-select" id="category">
                                                     <%for (Category cate : listCategory) {
                                                     %>
                                                     <option
@@ -90,7 +90,7 @@
                                         <tr>
                                             <td>Genre</td>
                                             <td>
-                                                <select name="genre" style="width: 50%;" class="form-select" id="genre">
+                                                <select required name="genre" style="width: 50%;" class="form-select" id="genre">
                                                     <%for (Genre gen : listGenre) {
                                                     %>
                                                     <option
@@ -104,13 +104,13 @@
                                             <td>Seller</td>
                                             <%Seller seller = sellerdao.getSellerID(String.valueOf(product.getSeller()));%>
                                             <td>
-                                                <input class="form-control" readonly value="<%=seller.getSellerShopName()%>" type="text" class="input">
+                                                <input required class="form-control" readonly value="<%=seller.getSellerShopName()%>" type="text" class="input">
                                                 <input type="hidden" name="seller" value="<%=product.getSeller()%>"
                                             </td>
                                         </tr>
                                         <tr>
                                             <td>Release Date</td>
-                                            <td><input class="form-control" value="<%=product.getReleaseDate()%>" type="date" name="date" class="input"></td>
+                                            <td><input required class="form-control" value="<%=product.getReleaseDate()%>" type="date" name="date" class="input"></td>
                                         </tr>
                                         <input type="hidden" value="updateproduct" name="service">
                                         <input type="hidden" value="<%=product.getProductID()%>" name="pid">
@@ -136,21 +136,21 @@
                                             <% for (ProductType pt : listType) {%>
                                             <tr>
                                                 <td>
-                                                    <input style="width: 100%;" type="text" name="color" class="form-control" value="<%=pt.getColor()%>">
+                                                    <input required style="width: 100%;" type="text" name="color" class="form-control" value="<%=pt.getColor()%>">
                                                     <input type="hidden" name="ptid" value="<%=pt.getProductTypeId()%>">
                                                 </td>
-                                                <td><input style="width: 100%;" type="text" name="size" class="form-control" value="<%=pt.getSize()%>"></td>
+                                                <td><input required style="width: 100%;" type="text" name="size" class="form-control" value="<%=pt.getSize()%>"></td>
                                                     <%Double price = Double.parseDouble(pt.getPrice());%>
-                                                <td><input style="width: 100%;" type="text" name="price" class="form-control price" value="<%=nf.format(price)%>"></td>
-                                                <td><input style="width: 100%;"  type="text" name="quantity" class="form-control" value="<%=pt.getQuantity()%>"></td>
+                                                <td><input required style="width: 100%;" type="text" name="price" class="form-control price" value="<%=nf.format(price)%>"></td>
+                                                <td><input required style="width: 100%;"  type="text" name="quantity" class="form-control" value="<%=pt.getQuantity()%>"></td>
                                                 <td>
                                                     <%if (pt.getStatus() == 1) {%>
-                                                    <a href="AdminControllerMap?service=deleteproducttype&producttypeid=<%=pt.getProductTypeId()%>" onclick="return confirm('Are you sure you want to Remove?');">
-                                                        <span class="fas fa-trash-alt mt-3 ml-3 delete"></span>
+                                                    <a class="btn btn-primary" href="AdminControllerMap?service=deleteproducttype&producttypeid=<%=pt.getProductTypeId()%>" onclick="return confirm('Are you sure you want to Remove?');">Deactive
+                                                         <!--<span class="fas fa-trash-alt mt-3 ml-3 delete"></span>-->
                                                     </a>
                                                     <%} else {%>
-                                                    <a href="AdminControllerMap?service=activeproducttype&producttypeid=<%=pt.getProductTypeId()%>" onclick="return confirm('Are you sure you want to Remove?');">
-                                                        <span class="fas fa-link mt-3 ml-3 delete"></span>
+                                                    <a class="btn btn-primary" href="AdminControllerMap?service=activeproducttype&producttypeid=<%=pt.getProductTypeId()%>" onclick="return confirm('Are you sure you want to Remove?');">Active
+                                                        <!--<span class="fas fa-link mt-3 ml-3 delete"></span>-->
                                                     </a><%}%>
                                                 </td>
                                             </tr>

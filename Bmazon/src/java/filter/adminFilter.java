@@ -109,7 +109,7 @@ public class adminFilter implements Filter {
         HttpServletRequest httprequest = (HttpServletRequest) request;
         HttpServletResponse httpresponse = (HttpServletResponse) response;
         User x = (User) httprequest.getSession().getAttribute("currUser");
-        String url = httprequest.getRequestURL().toString();   
+//        String url = httprequest.getRequestURL().toString();   
         if(x==null){
             chain.doFilter(request, response);
         }
@@ -207,7 +207,7 @@ public class adminFilter implements Filter {
                 pw.close();
                 ps.close();
                 response.getOutputStream().close();
-            } catch (Exception ex) {
+            } catch (IOException ex) {
             }
         } else {
             try {
@@ -215,7 +215,7 @@ public class adminFilter implements Filter {
                 t.printStackTrace(ps);
                 ps.close();
                 response.getOutputStream().close();
-            } catch (Exception ex) {
+            } catch (IOException ex) {
             }
         }
     }
@@ -229,7 +229,7 @@ public class adminFilter implements Filter {
             pw.close();
             sw.close();
             stackTrace = sw.getBuffer().toString();
-        } catch (Exception ex) {
+        } catch (IOException ex) {
         }
         return stackTrace;
     }
