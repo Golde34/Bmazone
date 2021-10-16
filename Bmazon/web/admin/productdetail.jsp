@@ -69,7 +69,6 @@
                                 <h6 class="text-danger mt-3 px-4">${mess}</h6>
                                 <%}%>
                                 <div class="card-body">
-                                    <%if (service.equalsIgnoreCase("updateproductdetail")) {%>
                                     <table class="table table-striped">
                                         <tr>
                                             <td style="width: 30%;">Product Name</td>
@@ -116,7 +115,6 @@
                                         <input type="hidden" value="updateproduct" name="service">
                                         <input type="hidden" value="<%=product.getProductID()%>" name="pid">
                                     </table>
-                                    <%}%>
                                 </div>
                             </div>
                             <div class="card mt-3">
@@ -146,11 +144,14 @@
                                                 <td><input style="width: 100%;" type="text" name="price" class="form-control price" value="<%=nf.format(price)%>"></td>
                                                 <td><input style="width: 100%;"  type="text" name="quantity" class="form-control" value="<%=pt.getQuantity()%>"></td>
                                                 <td>
-                                                    <% if(pt.getStatus()==1){%>
-                                                    <a href="AdminControllerMap?service=deleteproducttype&ptId=<%=pt.getProductTypeId()%>" onclick="return confirm('Are you sure?');"><button class="btn btn-primary">Deactive</button></a>
-                                                    <%}else{%>
-                                                    <a href="AdminControllerMap?service=activeproducttype&ptId=<%=pt.getProductTypeId()%>" onclick="return confirm('Are you sure?');"><button class="btn btn-primary">Active</button></a>
-                                                    <%}%>
+                                                    <%if (pt.getStatus() == 1) {%>
+                                                    <a href="AdminControllerMap?service=deleteproducttype&producttypeid=<%=pt.getProductTypeId()%>" onclick="return confirm('Are you sure you want to Remove?');">
+                                                        <span class="fas fa-trash-alt mt-3 ml-3 delete"></span>
+                                                    </a>
+                                                    <%} else {%>
+                                                    <a href="AdminControllerMap?service=activeproducttype&producttypeid=<%=pt.getProductTypeId()%>" onclick="return confirm('Are you sure you want to Remove?');">
+                                                        <span class="fas fa-link mt-3 ml-3 delete"></span>
+                                                    </a><%}%>
                                                 </td>
                                             </tr>
                                             <%}%>
@@ -177,41 +178,41 @@
         <script async defer src="https://buttons.github.io/buttons.js"></script>
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
         <script>
-        $(document).ready(function () {
-        $("#category").change(function () {
-        var val = $(this).val();
+            $(document).ready(function () {
+            $("#category").change(function () {
+            var val = $(this).val();
 <% for (Category cate : listCategory) {%>
-        if (val == "<%=cate.getCategoryID()%>"){
-        console.log("<%=cate.getCategoryName()%>");
-                $("#genre").html(
+            if (val == "<%=cate.getCategoryID()%>"){
+            console.log("<%=cate.getCategoryName()%>");
+                    $("#genre").html(
 <% ArrayList<Genre> list = genredao.getGenresByCategoryId(cate.getCategoryID());
 for (int i = 0; i < list.size(); i++) {
 if (list.size() == 1 || i == list.size() - 1) {%>"<option value='<%=list.get(i).getGenreID()%>'><%=list.get(i).getGenreName()%></option>"
 <%} else {%>"<option value='<%=list.get(i).getGenreID()%>'><%=list.get(i).getGenreName()%></option>" +
 <%}
 }%>);
-        }
+            }
 <%}%>
-        });
-        });
-                $(".price").on('keyup', function () {
-        var n = parseInt($(this).val().replace(/\D/g, ''), 10);
-                $(this).val(n.toLocaleString());
-        });
-                (function () {
-                'use strict'
-                        var forms = document.querySelectorAll('.needs-validation')
-                        Array.prototype.slice.call(forms)
-                        .forEach(function (form) {
-                        form.addEventListener('submit', function (event) {
-                        if (!form.checkValidity()) {
-                        event.preventDefault()
-                                event.stopPropagation()
-                        }
-                        form.classList.add('was-validated')
-                        }, false)
-                        })
-                })()
+            });
+            });
+                    $(".price").on('keyup', function () {
+            var n = parseInt($(this).val().replace(/\D/g, ''), 10);
+                    $(this).val(n.toLocaleString());
+            });
+                    (function () {
+                    'use strict'
+                            var forms = document.querySelectorAll('.needs-validation')
+                            Array.prototype.slice.call(forms)
+                            .forEach(function (form) {
+                            form.addEventListener('submit', function (event) {
+                            if (!form.checkValidity()) {
+                            event.preventDefault()
+                                    event.stopPropagation()
+                            }
+                            form.classList.add('was-validated')
+                            }, false)
+                            })
+                    })()
         </script>
         <!-- Control Center for Soft Dashboard: parallax effects, scripts for the example pages etc -->
     <!--        <script src="${contextPath}/js/soft-ui-dashboard.min.js?v=1.0.3"></script>-->

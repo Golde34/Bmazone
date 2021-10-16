@@ -5,13 +5,14 @@
  */
 package entity;
 
+import java.io.Serializable;
 import java.sql.Date;
 
 /**
  *
  * @author bacon
  */
-public class Order {
+public class Order implements Serializable {
     private int orderID;
     private String userID;
     private Date orderDate;

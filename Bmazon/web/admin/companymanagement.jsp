@@ -32,7 +32,14 @@
         <!-- CSS Files -->
         <link id="pagestyle" href="${contextPath}/css/soft-ui-dashboard.css?v=1.0.3" rel="stylesheet" />
     </head>
-
+    <style>
+        th,td{
+            padding: 12px 15px;
+        }
+        tbody tr:nth-child(odd){
+            background-color: #f2f2f2;
+        }
+    </style>
     <body class="g-sidenav-show  bg-gray-100">
         <aside class="sidenav navbar navbar-vertical navbar-expand-xs border-0 border-radius-xl my-3 fixed-start ms-3 " id="sidenav-main">
             <jsp:include page="adminsidebar.jsp"></jsp:include>
@@ -71,7 +78,7 @@
                                                 <input id="search" style="width: 100%;" type="text" oninput="pagination()" placeholder="Search.." class="form-control">
                                             </div>
                                         </div>
-                                        <table class="table table-bordered table-striped text-center">
+                                        <table style="width: 100%;" class="table-bordered text-center">
                                             <thead>
                                                 <tr>
                                                     <th>Company Name</th>

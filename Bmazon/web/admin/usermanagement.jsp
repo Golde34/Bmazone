@@ -6,8 +6,8 @@
 <%
     int index = (Integer) request.getAttribute("index");
     int totalPage = (Integer) request.getAttribute("totalPage");
-    int prev = index == 1 ? 1 : index-1;
-    int next = index == totalPage ? totalPage : index+1;
+    int prev = index == 1 ? 1 : index - 1;
+    int next = index == totalPage ? totalPage : index + 1;
     User curUser = (User) request.getSession().getAttribute("currUser");
     ArrayList<User> listUser = (ArrayList<User>) request.getAttribute("listUser");
 %>
@@ -25,7 +25,14 @@
         <!-- CSS Files -->
         <link id="pagestyle" href="${contextPath}/css/soft-ui-dashboard.css?v=1.0.3" rel="stylesheet" />
     </head>
-
+    <style>
+        th,td{
+            padding: 12px 15px;
+        }
+        tbody tr:nth-child(odd){
+            background-color: #f2f2f2;
+        }
+    </style>
     <body class="g-sidenav-show  bg-gray-100">
         <aside class="sidenav navbar navbar-vertical navbar-expand-xs border-0 border-radius-xl my-3 fixed-start ms-3 " id="sidenav-main">
             <jsp:include page="adminsidebar.jsp"></jsp:include>
@@ -62,11 +69,10 @@
                                             </div>
                                         </div>
                                         <div class="table-responsive">
-                                            <table class="table table-bordered table-striped text-center">
+                                            <table style="width: 100%;" class="table-bordered text-center">
                                                 <thead>
                                                     <tr>
                                                         <th>Username</th>
-                                                        <th>Password</th>
                                                         <th>Email</th>
                                                         <th>Full Name</th>
                                                         <th>Phone</th>
@@ -78,8 +84,7 @@
                                                 <tbody id="user">
                                                 <%for (User user : listUser) {%>
                                                 <tr>
-                                                    <td class="mt-3"><%=user.getUsername()%></td>
-                                                    <td><%=user.getPassword()%></td>
+                                                    <td><%=user.getUsername()%></td>
                                                     <td><%=user.getEmail()%></td>
                                                     <td><%=user.getFullname()%></td>
                                                     <td><%=user.getPhoneNumber()%></td>
@@ -88,11 +93,11 @@
                                                         <a href="AdminControllerMap?service=updateuserdetail&userid=<%=user.getUserId()%>"><button class="btn btn-primary">Edit</button></a>
                                                     </td>
                                                     <td>
-                                                        <% if(user.getStatus()==1){%>
-                                                    <a href="AdminControllerMap?service=deleteuser&userid=<%=user.getUserId()%>" onclick="return confirm('Are you sure?');"><button class="btn btn-primary">Deactive</button></a>
-                                                    <%}else{%>
-                                                    <a href="AdminControllerMap?service=activeuser&userid=<%=user.getUserId()%>" onclick="return confirm('Are you sure?');"><button class="btn btn-primary">Active</button></a>
-                                                    <%}%>
+                                                        <% if (user.getStatus() == 1) {%>
+                                                        <a href="AdminControllerMap?service=deleteuser&userid=<%=user.getUserId()%>" onclick="return confirm('Are you sure?');"><button class="btn btn-primary">Deactive</button></a>
+                                                        <%} else {%>
+                                                        <a href="AdminControllerMap?service=activeuser&userid=<%=user.getUserId()%>" onclick="return confirm('Are you sure?');"><button class="btn btn-primary">Active</button></a>
+                                                        <%}%>
                                                     </td>
                                                 </tr>
                                                 <%}%>
@@ -117,7 +122,7 @@
                                                         </span>
                                                     </a>
                                                 </li>
-                                                <%int limit = totalPage>5 ? 5 : totalPage;%>
+                                                <%int limit = totalPage > 5 ? 5 : totalPage;%>
                                                 <%for (int i = 1; i <= limit; i++) {%>
                                                 <%if (index == i) {%>
                                                 <li  class="page-item active" data-repair="<%=i%>">
@@ -162,57 +167,57 @@
         <script src="${contextPath}/js/plugins/chartjs.min.js"></script>
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
         <script>
-        var pageNum;
-        $(document).on('click', '.pagination li', function () {
-            pageNum = $(this).data('repair');
-            pagination();
-        });
-        function pagination() {
-            var row = document.getElementById("maxRows").value;
-            var search = document.getElementById("search").value;
-            console.log(row);
-            console.log(search);
-            console.log(pageNum);
-            $.ajax({
-                url: "/Bmazon/AdminControllerMap",
-                type: "get",
-                data: {
-                    search: search,
-                    row: row,
-                    index: pageNum,
-                    service: "paginguser"
-                },
-                success: function (respone) {
-                    var text = document.getElementById("user");
-                    text.innerHTML = respone;
-                    showpage();
-                },
-                error: function (xhr) {
-                    //Do Something to handle error
-                }
-            });
-        }
-        function showpage() {
-            var row = document.getElementById("maxRows").value;
-            var search = document.getElementById("search").value;
-            $.ajax({
-                url: "/Bmazon/AdminControllerMap",
-                type: "get",
-                data: {
-                    search: search,
-                    row: row,
-                    index: pageNum,
-                    service: "showpageuser"
-                },
-                success: function (respone) {
-                    var text = document.getElementById("showpage");
-                    text.innerHTML = respone;
-                },
-                error: function (xhr) {
-                    //Do Something to handle error
-                }
-            });
-        }
+                                                        var pageNum;
+                                                        $(document).on('click', '.pagination li', function () {
+                                                            pageNum = $(this).data('repair');
+                                                            pagination();
+                                                        });
+                                                        function pagination() {
+                                                            var row = document.getElementById("maxRows").value;
+                                                            var search = document.getElementById("search").value;
+                                                            console.log(row);
+                                                            console.log(search);
+                                                            console.log(pageNum);
+                                                            $.ajax({
+                                                                url: "/Bmazon/AdminControllerMap",
+                                                                type: "get",
+                                                                data: {
+                                                                    search: search,
+                                                                    row: row,
+                                                                    index: pageNum,
+                                                                    service: "paginguser"
+                                                                },
+                                                                success: function (respone) {
+                                                                    var text = document.getElementById("user");
+                                                                    text.innerHTML = respone;
+                                                                    showpage();
+                                                                },
+                                                                error: function (xhr) {
+                                                                    //Do Something to handle error
+                                                                }
+                                                            });
+                                                        }
+                                                        function showpage() {
+                                                            var row = document.getElementById("maxRows").value;
+                                                            var search = document.getElementById("search").value;
+                                                            $.ajax({
+                                                                url: "/Bmazon/AdminControllerMap",
+                                                                type: "get",
+                                                                data: {
+                                                                    search: search,
+                                                                    row: row,
+                                                                    index: pageNum,
+                                                                    service: "showpageuser"
+                                                                },
+                                                                success: function (respone) {
+                                                                    var text = document.getElementById("showpage");
+                                                                    text.innerHTML = respone;
+                                                                },
+                                                                error: function (xhr) {
+                                                                    //Do Something to handle error
+                                                                }
+                                                            });
+                                                        }
         </script>
     </body>
 

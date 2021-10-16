@@ -1,10 +1,12 @@
 package entity;
 
+import java.io.Serializable;
+
 /**
  *
  * @author Lonely
  */
-public class CartItem {
+public class CartItem implements Serializable {
     int cartID;
 
     private int productID;

@@ -5,11 +5,13 @@
  */
 package entity;
 
+import java.io.Serializable;
+
 /**
  *
  * @author Admin
  */
-public class ProductCategory {
+public class ProductCategory implements Serializable {
     private int productID;
     private int categoryID;
     private int status;

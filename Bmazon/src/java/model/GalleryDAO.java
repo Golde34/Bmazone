@@ -51,7 +51,7 @@ public class GalleryDAO extends BaseDAO {
              Logger.getLogger(UserDAO.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
-
+    
     public int editGallery(Gallery g) {
         int n = 0;
         String xSql= "update Gallery set productID = ?, productTypeID = ?, link =?, status = ? where galleryID = ?";
@@ -71,8 +71,8 @@ public class GalleryDAO extends BaseDAO {
 
     public int getPageNumber(String search) {
         int num = 0;
-        String xSql= "SELECT COUNT(*) from Gallery g join ProductType pt on g.productTypeID=pt.productTypeId join Product p on pt.productID=p.productID join [User] u on p.sellerID=u.userID\n"
-                + "   where g.[status]=1 and(p.productName like '%"+search+"%' or pt.size like '%"+search+"%' or pt.color like '%"+search+"%' or u.fullname like '%"+search+"%')";
+        String xSql = "SELECT COUNT(*) from Gallery g join ProductType pt on g.productTypeID=pt.productTypeId join Product p on pt.productID=p.productID join [User] u on p.sellerID=u.userID\n"
+                + "   where p.productName like '%"+search+"%' or pt.size like '%"+search+"%' or pt.color like '%"+search+"%' or u.fullname like '%"+search+"%'";
         ResultSet rs = dbConn.getData(xSql);
         try {
             if (rs.next()) {
@@ -104,6 +104,19 @@ public class GalleryDAO extends BaseDAO {
         }
         return gallery;
     }
+    
+    public int changeStatus(int id, int status) {
+        int n = 0;
+        String sql = "UPDATE [Gallery] SET status = " + (status == 1 ? 1 : 0)
+                + " WHERE galleryID = '" + id + "'";
+        try {
+            pre = conn.prepareStatement(sql);
+            n = pre.executeUpdate();
+        } catch (SQLException ex) {
+            Logger.getLogger(UserDAO.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return n;
+    }
 
     public List<Gallery> getAllGallery() {
         List<Gallery> list = new ArrayList<>();
@@ -133,7 +146,7 @@ public class GalleryDAO extends BaseDAO {
                 + "SELECT g.*,\n"
                 + "ROW_NUMBER() over (order by g.galleryID) as RowNum\n"
                 + "  FROM Gallery g join ProductType pt on g.productTypeID=pt.productTypeId join Product p on pt.productID=p.productID join [User] u on p.sellerID=u.userID\n"
-                + "   where g.[status]=1 and(p.productName like '%" + search + "%' or pt.size like '%" + search + "%' or pt.color like '%" + search + "%' or u.fullname like '%" + search + "%'))T\n"
+                + "   where p.productName like '%" + search + "%' or pt.size like '%" + search + "%' or pt.color like '%" + search + "%' or u.fullname like '%" + search + "%')T\n"
                 + "where T.RowNum between ((@PageNo-1)*@PageSize)+1 and (@PageNo*@PageSize)";
         try {
             pre = conn.prepareStatement(xSql);
@@ -227,6 +240,8 @@ public class GalleryDAO extends BaseDAO {
 //    }
     public static void main(String[] args) {
         GalleryDAO g = new GalleryDAO();
-        System.out.println(g.getPageNumber(""));
+        Gallery ga = g.getGalleryById(1);
+        ga.setLink("Pr1Ty1Ga1.jpg");
+        g.editGallery(ga);
     }
 }

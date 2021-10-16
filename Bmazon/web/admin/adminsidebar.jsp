@@ -74,13 +74,13 @@
                         </a>
                 </li>
                 <li class="nav-item">
-                    <%if (service.equalsIgnoreCase("productmanagement") || service.equalsIgnoreCase("updateproductdetail") || service.equalsIgnoreCase("addproductdetail")) {%>
+                    <%if (service.equalsIgnoreCase("productmanagement") || service.equalsIgnoreCase("updateproductdetail") || service.equalsIgnoreCase("productdetail")) {%>
                     <a class="nav-link active" href="AdminControllerMap?service=productmanagement">
                         <%} else {%>
                         <a class="nav-link" href="AdminControllerMap?service=productmanagement">
                             <%}%>
                             <div class="icon icon-shape icon-sm shadow border-radius-md bg-white text-center me-2 d-flex align-items-center justify-content-center">
-                                <%if (service.equalsIgnoreCase("productmanagement") || service.equalsIgnoreCase("updateproductdetail") || service.equalsIgnoreCase("addproductdetail")) {%>
+                                <%if (service.equalsIgnoreCase("productmanagement") || service.equalsIgnoreCase("updateproductdetail") || service.equalsIgnoreCase("productdetail")) {%>
                                 <i class="fas fa-layer-group"></i>
                                 <%} else {%>
                                 <i class="fas fa-layer-group" style="color: black"></i>

@@ -5,13 +5,14 @@
  */
 package entity;
 
+import java.io.Serializable;
 import java.sql.Date;
 
 /**
  *
  * @author Admin
  */
-public class User {
+public class User implements Serializable{
 
     //private profile
     private String userId;

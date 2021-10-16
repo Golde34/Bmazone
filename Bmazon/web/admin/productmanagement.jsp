@@ -105,7 +105,7 @@
                                                     <td><%=categoryName%></td>
                                                     <td><%=genre.getGenreName()%></td>
                                                     <td><%=seller.getSellerShopName()%></td>
-                                                    <td><div><a href="AdminControllerMap?service=updateproductdetail&productid=<%=product.getProductID()%>"><button class="btn btn-primary">Edit</button></a>
+                                                    <td><div><a href="AdminControllerMap?service=productdetail&productid=<%=product.getProductID()%>"><button class="btn btn-primary">Edit</button></a>
                                                         </div></td>
                                                     <td>
                                                         <% if(product.getStatus()==1){%>

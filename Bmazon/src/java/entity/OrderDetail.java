@@ -5,11 +5,13 @@
  */
 package entity;
 
+import java.io.Serializable;
+
 /**
  *
  * @author bacon
  */
-public class OrderDetail {
+public class OrderDetail implements Serializable {
     private int orderID;
     private String productTypeId;
     private String productName;

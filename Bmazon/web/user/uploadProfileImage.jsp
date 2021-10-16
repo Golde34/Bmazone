@@ -53,6 +53,8 @@
                             File name here
                         </div>
                     </div>
+                    <input readonly name="name" value="1">
+                    <input type="hidden" name="id" value="1">
                     <input id="default-btn" type="file" hidden class="form-control" name="photo" placeholder="Enter photo">
                     <button type="submit" class="btn btn-primary">Save</button>
                     <button type="reset" class="btn btn-primary">Reset</button>

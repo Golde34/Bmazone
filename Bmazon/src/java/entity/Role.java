@@ -5,11 +5,13 @@
  */
 package entity;
 
+import java.io.Serializable;
+
 /**
  *
  * @author Admin
  */
-public class Role {
+public class Role implements Serializable {
     private int roleID;
     private String roleName;
     private int adminPermission;

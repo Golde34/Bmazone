@@ -5,11 +5,13 @@
  */
 package entity;
 
+import java.io.Serializable;
+
 /**
  *
  * @author Admin
  */
-public class ShipCompany {
+public class ShipCompany implements Serializable {
     private int companyID;
     private String companyName;
     private double unitCost;
