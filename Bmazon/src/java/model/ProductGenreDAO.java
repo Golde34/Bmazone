@@ -18,7 +18,7 @@ import java.util.logging.Logger;
 public class ProductGenreDAO extends BaseDAO {
 
     public String getGenreIdByProductId(int productId) {
-        xSql = "select * from ProductGenre where productID=" + productId;
+        String xSql= "select * from ProductGenre where productID=" + productId;
         try {
             pre = conn.prepareStatement(xSql);
             rs = pre.executeQuery();
@@ -35,9 +35,10 @@ public class ProductGenreDAO extends BaseDAO {
     
     public ProductGenre getProductGenreByProduct(String pid){
         ProductGenre pg = new ProductGenre();
-        xSql="SELECT * FROM [Bmazon].[dbo].[ProductGenre] where productID="+pid;
+        String xSql ="SELECT * FROM [Bmazon].[dbo].[ProductGenre] where productID=?";
         try {
             pre = conn.prepareStatement(xSql);
+            pre.setString(1, pid);
             rs = pre.executeQuery();
             while (rs.next()) {
                 pg.setProductID(rs.getInt("productID"));

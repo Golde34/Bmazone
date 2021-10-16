@@ -8,6 +8,7 @@ package model;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.sql.Statement;
 
 
 public class BaseDAO extends DBConnection {
@@ -15,13 +16,12 @@ public class BaseDAO extends DBConnection {
     Connection conn;
     PreparedStatement pre = null;
     ResultSet rs = null;
-    String xSql = null;
-
+    
     public BaseDAO() {
         conn=connection;
     }
 
-    public void finalize() {
+    protected void finalize() {
         try {
             if (conn != null) {
                 conn.close();

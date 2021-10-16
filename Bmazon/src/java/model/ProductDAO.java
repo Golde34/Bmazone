@@ -25,7 +25,7 @@ public class ProductDAO extends BaseDAO {
 
     public int getPageNumber(String search) {
         int num = 0;
-        xSql = "SELECT COUNT(*)from Product p join Seller s on p.sellerID=s.sellerID join ProductCategory pc on p.productID=pc.productID join Category c on pc.categoryId=c.categoryID join ProductGenre pg on pg.productID=p.productID join Genre g on g.genreID=pg.genreID\n"
+        String xSql= "SELECT COUNT(*)from Product p join Seller s on p.sellerID=s.sellerID join ProductCategory pc on p.productID=pc.productID join Category c on pc.categoryId=c.categoryID join ProductGenre pg on pg.productID=p.productID join Genre g on g.genreID=pg.genreID\n"
                 + "   where p.productName like '%"+search+"%' or c.categoryName like '%"+search+"%' or g.genreName like '%"+search+"%' or s.sellerShopName like '%"+search+"%'";
         ResultSet rs = dbConn.getData(xSql);
         try {
@@ -379,7 +379,7 @@ public ArrayList<Product> getAllPagingProductBySeller(int index,int numOfRow,Str
     public int totalProductSeller(String sid) {
         int count = 0;
 
-        xSql = "SELECT count(*) FROM [Bmazon].[dbo].[Product] where sellerID = " + sid;
+        String xSql= "SELECT count(*) FROM [Bmazon].[dbo].[Product] where sellerID = " + sid;
         try {
             pre = conn.prepareStatement(xSql);
             rs = pre.executeQuery();
@@ -396,7 +396,7 @@ public ArrayList<Product> getAllPagingProductBySeller(int index,int numOfRow,Str
     public int totalProduct() {
         int count = 0;
 
-        xSql = "SELECT count(*) FROM [Bmazon].[dbo].[Product] ";
+        String xSql= "SELECT count(*) FROM [Bmazon].[dbo].[Product] ";
         try {
             pre = conn.prepareStatement(xSql);
             rs = pre.executeQuery();
@@ -414,7 +414,7 @@ public ArrayList<Product> getAllPagingProductBySeller(int index,int numOfRow,Str
     public int totalSearchProduct(String text) {
         int count = 0;
 
-        xSql = "SELECT count(*) FROM [Bmazon].[dbo].[Product] where productName like '%" + text + "%' or productName like '%" + text + "%' or description like '%" + text + "%' or rating like '%" + text + "%'";
+        String xSql= "SELECT count(*) FROM [Bmazon].[dbo].[Product] where productName like '%" + text + "%' or productName like '%" + text + "%' or description like '%" + text + "%' or rating like '%" + text + "%'";
         try {
             pre = conn.prepareStatement(xSql);
             rs = pre.executeQuery();

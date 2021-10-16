@@ -32,7 +32,7 @@ public class SellerDAO extends BaseDAO {
 
     public int addSeler(Seller s) {
         int n = 0;
-        xSql = "INSERT INTO [Bmazon].[dbo].[Seller] ([userID], [sellerShopName], [sellerPhone], [evidence], [sellerMainProduct], [description], [sellerVerification], [status])"
+        String xSql= "INSERT INTO [Bmazon].[dbo].[Seller] ([userID], [sellerShopName], [sellerPhone], [evidence], [sellerMainProduct], [description], [sellerVerification], [status])"
                 + "     VALUES (?,?,?,?,?,?,?,1)";
         try {
             pre = conn.prepareStatement(xSql);
@@ -53,7 +53,7 @@ public class SellerDAO extends BaseDAO {
 
     public int editSeller(Seller s) {
         int n = 0;
-        xSql = "update [Bmazon].[dbo].[Seller] set [userID] = ? ,[sellerShopName] = ?, [sellerPhone] = ?, [evidence] = ?,"
+        String xSql = "update [Bmazon].[dbo].[Seller] set [userID] = ? ,[sellerShopName] = ?, [sellerPhone] = ?, [evidence] = ?,"
                 + "[sellerMainProduct] = ?, [description] = ?, [sellerVerification] = ?, [status] = ? where [sellerID] = ?";
         try {
             pre = conn.prepareStatement(xSql);
@@ -67,7 +67,7 @@ public class SellerDAO extends BaseDAO {
             pre.setInt(8, s.getStatus());
             pre.setInt(9, s.getSellerID());
             n = pre.executeUpdate();
-        } catch (Exception e) {
+        } catch (SQLException e) {
         }
         return n;
     }
@@ -78,13 +78,13 @@ public class SellerDAO extends BaseDAO {
             pre = conn.prepareStatement(sql);
             pre.setInt(1, sellerID);
             pre.executeUpdate();
-        } catch (Exception e) {
+        } catch (SQLException e) {
         }
     }
 
     public boolean checkExistPhone(String phone) {
         String sql = "SELECT * FROM [Seller] WHERE sellerPhone = '" + phone + "' and status = 1";
-        ResultSet rs = dbConn.getData(sql);
+        rs = dbConn.getData(sql);
         try {
             if (rs.next()) {
                 return true;
@@ -97,7 +97,7 @@ public class SellerDAO extends BaseDAO {
 
     public boolean checkExistUserID(int id) {
         String sql = "SELECT * FROM [Seller] WHERE userID = " + id + " and status = 1";
-        ResultSet rs = dbConn.getData(sql);
+        rs = dbConn.getData(sql);
         try {
             if (rs.next()) {
                 return true;
@@ -109,10 +109,9 @@ public class SellerDAO extends BaseDAO {
     }
 
     public boolean checkExistSellerShopName(String sellerShopName) {
-        xSql = "SELECT * FROM [Bmazon].[dbo].[Seller] where sellerShopName like '" + sellerShopName + "'";
+        String xSql= "SELECT * FROM [Bmazon].[dbo].[Seller] where sellerShopName like '" + sellerShopName + "'";
         try {
-            pre = conn.prepareStatement(xSql);
-            rs = pre.executeQuery();
+            rs = dbConn.getData(xSql);
             if (rs.next()) {
                 return true;
             }
@@ -123,7 +122,7 @@ public class SellerDAO extends BaseDAO {
     }
 
     public boolean checkExistSellerId(int id) {
-        xSql = "SELECT * FROM [Bmazon].[dbo].[Seller] where sellerID = " + id;
+        String xSql= "SELECT * FROM [Bmazon].[dbo].[Seller] where sellerID = " + id;
         try {
             pre = conn.prepareStatement(xSql);
             rs = pre.executeQuery();
@@ -137,11 +136,10 @@ public class SellerDAO extends BaseDAO {
     }
 
     public Seller getSellerID(String id) {
-        xSql = "select * from Seller where sellerID = " + id;
+        String xSql= "select * from Seller where sellerID = " + id;
         try {
-            pre = conn.prepareStatement(xSql);
-            rs = pre.executeQuery();
-            if (rs.next()) {;
+            rs = dbConn.getData(xSql);
+            if (rs.next()) {
                 Seller seller = new Seller(rs.getInt("sellerID"), rs.getInt("userID"),
                         rs.getString("sellerShopName"), rs.getString("sellerPhone"),
                         rs.getString("evidence"), rs.getInt("sellerMainProduct"),
@@ -149,14 +147,14 @@ public class SellerDAO extends BaseDAO {
                         rs.getInt("status"));
                 return seller;
             }
-        } catch (Exception e) {
+        } catch (SQLException e) {
         }
         return null;
     }
 
     public List<Seller> getAllSeller() {
         List<Seller> list = new ArrayList<>();
-        xSql = "select * from Seller where [status] = 1 and [sellerVerification] = 1";
+        String xSql= "select * from Seller where [status] = 1 and [sellerVerification] = 1";
         try {
             pre = conn.prepareStatement(xSql);
             rs = pre.executeQuery();
@@ -172,14 +170,14 @@ public class SellerDAO extends BaseDAO {
                         rs.getInt(8),
                         rs.getInt(9)));
             }
-        } catch (Exception e) {
+        } catch (SQLException e) {
         }
         return list;
     }
 
     public List<Seller> getSellerBySellerRequest() {
         List<Seller> list = new ArrayList<>();
-        xSql = "select * from Seller where [status] = 1 and [sellerVerification] = 0";
+        String xSql= "select * from Seller where [status] = 1 and [sellerVerification] = 0";
         try {
             pre = conn.prepareStatement(xSql);
             rs = pre.executeQuery();
@@ -195,14 +193,14 @@ public class SellerDAO extends BaseDAO {
                         rs.getInt(8),
                         rs.getInt(9)));
             }
-        } catch (Exception e) {
+        } catch (SQLException e) {
         }
         return list;
     }
 
     public Seller getSellerByUserID(int userID) {
-        xSql = "select * from [Bmazon].[dbo].[Seller] where userID = " + userID;
-        ResultSet rs = dbConn.getData(xSql);
+        String xSql= "select * from [Bmazon].[dbo].[Seller] where userID = " + userID;
+        rs = dbConn.getData(xSql);
         try {
             if (rs.next()) {
                 Seller seller = new Seller(rs.getInt("sellerID"), rs.getInt("userID"),
@@ -212,17 +210,17 @@ public class SellerDAO extends BaseDAO {
                         rs.getInt("status"));
                 return seller;
             }
-        } catch (Exception e) {
+        } catch (SQLException e) {
             Logger.getLogger(SellerDAO.class.getName()).log(Level.SEVERE, null, e);
         }
         return null;
     }
 
     public Seller getSellerByProductId(int productID) {
-        xSql = "select * from [Bmazon].[dbo].[Seller] s INNER JOIN Product p \n"
+        String xSql= "select * from [Bmazon].[dbo].[Seller] s INNER JOIN Product p \n"
                 + "ON s.sellerID = p.sellerID\n"
                 + "where p.productID=" + productID;
-        ResultSet rs = dbConn.getData(xSql);
+        rs = dbConn.getData(xSql);
         try {
             if (rs.next()) {
                 Seller seller = new Seller(rs.getInt("sellerID"), rs.getInt("userID"),
@@ -240,27 +238,27 @@ public class SellerDAO extends BaseDAO {
 
     public void acceptSellerRequest(int sellerID) {
         int n = 0;
-        xSql = "update [Bmazon].[dbo].[Seller] set [sellerVerification] = 1 where [sellerID] = " + sellerID;
+        String xSql= "update [Bmazon].[dbo].[Seller] set [sellerVerification] = 1 where [sellerID] = " + sellerID;
         try {
             pre = conn.prepareStatement(xSql);
             n = pre.executeUpdate();
-        } catch (Exception e) {
+        } catch (SQLException e) {
         }
     }
 
     public void denySellerRequest(int sellerID) {
         int n = 0;
-        xSql = "update [Bmazon].[dbo].[Seller] set [sellerVerification] = 2 where [sellerID] = " + sellerID;
+        String xSql= "update [Bmazon].[dbo].[Seller] set [sellerVerification] = 2 where [sellerID] = " + sellerID;
         try {
             pre = conn.prepareStatement(xSql);
             n = pre.executeUpdate();
-        } catch (Exception e) {
+        } catch (SQLException e) {
         }
     }
 
     public List<Seller> searchSeller(String text) {
         List<Seller> list = new ArrayList<>();
-        xSql = "SELECT * FROM [Bmazon].[dbo].[Role] where roleName like '%" + text + "%'";
+        String xSql= "SELECT * FROM [Bmazon].[dbo].[Role] where roleName like '%" + text + "%'";
         try {
             pre = conn.prepareStatement(xSql);
             rs = pre.executeQuery();
