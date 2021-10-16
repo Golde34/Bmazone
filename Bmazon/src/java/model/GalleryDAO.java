@@ -107,10 +107,11 @@ public class GalleryDAO extends BaseDAO {
     
     public int changeStatus(int id, int status) {
         int n = 0;
-        String sql = "UPDATE [Gallery] SET status = " + (status == 1 ? 1 : 0)
-                + " WHERE galleryID = '" + id + "'";
+        String sql = "UPDATE [Gallery] SET status = ? WHERE galleryID = ? ";
         try {
             pre = conn.prepareStatement(sql);
+            pre.setInt(1, (status == 1 ? 1 : 0));
+            pre.setInt(2, id);
             n = pre.executeUpdate();
         } catch (SQLException ex) {
             Logger.getLogger(UserDAO.class.getName()).log(Level.SEVERE, null, ex);
@@ -206,9 +207,10 @@ public class GalleryDAO extends BaseDAO {
 
     public String getImageByProductTypeID(String ps) {
         String s = null;
-        String xSql= "select top 1 link from [Gallery] WHERE productTypeID = '" + ps + "'";
+        String xSql= "select top 1 link from [Gallery] WHERE productTypeID = ?";
         try {
             pre = conn.prepareStatement(xSql);
+            pre.setString(1, ps);
             rs = pre.executeQuery();
             while (rs.next()) {
                 s = rs.getString("link");

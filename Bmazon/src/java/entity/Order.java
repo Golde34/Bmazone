@@ -13,6 +13,7 @@ import java.sql.Date;
  * @author bacon
  */
 public class Order implements Serializable {
+
     private int orderID;
     private String userID;
     private Date orderDate;
@@ -28,16 +29,18 @@ public class Order implements Serializable {
     private int companyID;
     private String paymentMethod;
     private int status;
-    
+
+    private static final long serialVersionUID = 1;
+
     public Order() {
     }
 
     public Order(int orderID, String userID, Date orderDate, Date requiredDate, Date shippedDate, String shipName, String shipAddress, String shipCity, String shipPhone, double shipMoney, int companyID, String paymentMethod, double total, int status) {
         this.orderID = orderID;
         this.userID = userID;
-        this.orderDate = orderDate;
-        this.requiredDate = requiredDate;
-        this.shippedDate = shippedDate;
+        this.orderDate = new Date(orderDate.getTime());
+        this.requiredDate = new Date(requiredDate.getTime());
+        this.shippedDate = new Date(shippedDate.getTime());
         this.shipName = shipName;
         this.shipAddress = shipAddress;
         this.shipCity = shipCity;
@@ -46,13 +49,13 @@ public class Order implements Serializable {
         this.shipMoney = shipMoney;
         this.total = total;
     }
-    
+
     public Order(int orderID, String userID, Date orderDate, Date requiredDate, Date shippedDate, String shipName, String shipAddress, String shipCity, String shipPhone, double shipMoney, int companyID, String paymentMethod, double total) {
         this.orderID = orderID;
         this.userID = userID;
-        this.orderDate = orderDate;
-        this.requiredDate = requiredDate;
-        this.shippedDate = shippedDate;
+        this.orderDate = new Date(orderDate.getTime());
+        this.requiredDate = new Date(requiredDate.getTime());
+        this.shippedDate = new Date(shippedDate.getTime());
         this.shipName = shipName;
         this.shipAddress = shipAddress;
         this.shipCity = shipCity;
@@ -80,30 +83,28 @@ public class Order implements Serializable {
         this.userID = userID;
     }
 
-   
-
     public Date getOrderDate() {
-        return orderDate;
+        return new Date(orderDate.getTime());
     }
 
     public void setOrderDate(Date orderDate) {
-        this.orderDate = orderDate;
+        this.orderDate = new Date(orderDate.getTime());
     }
 
     public Date getRequiredDate() {
-        return requiredDate;
+        return new Date(requiredDate.getTime());
     }
 
     public void setRequiredDate(Date requiredDate) {
-        this.requiredDate = requiredDate;
+        this.requiredDate = new Date(requiredDate.getTime());
     }
 
     public Date getShippedDate() {
-        return shippedDate;
+        return new Date(shippedDate.getTime());
     }
 
     public void setShippedDate(Date shippedDate) {
-        this.shippedDate = shippedDate;
+        this.shippedDate = new Date(shippedDate.getTime());
     }
 
     public String getShipName() {
@@ -137,6 +138,7 @@ public class Order implements Serializable {
     public void setShipPhone(String shipPhone) {
         this.shipPhone = shipPhone;
     }
+
     public String getShipCompany() {
         return shipCompany;
     }

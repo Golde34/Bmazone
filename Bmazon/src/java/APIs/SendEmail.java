@@ -20,6 +20,8 @@ import javax.mail.Transport;
 import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeMessage;
 import static APIs.Editor.addTable;
+import java.io.UnsupportedEncodingException;
+import javax.mail.MessagingException;
 
 public class SendEmail {
 
@@ -41,7 +43,7 @@ public class SendEmail {
     }
 
     //send email to the user email
-    public boolean sendEmail(String username, String email, String code, String option) {
+    public static boolean sendEmail(String username, String email, String code, String option) {
         boolean test = false;
 
         String toEmail = email;
@@ -99,8 +101,7 @@ public class SendEmail {
 
             test = true;
 
-        } catch (Exception e) {
-            e.printStackTrace();
+        } catch (UnsupportedEncodingException | MessagingException e) {
         }
 
         return test;

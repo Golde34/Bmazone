@@ -285,16 +285,18 @@ public ArrayList<Product> getAllPagingProductBySeller(int index,int numOfRow,Str
 
     public ArrayList<Product> getProductBySellerPaging(int index, String seller) {
         ArrayList<Product> list = new ArrayList<>();
-        String sql = " declare @PageNo INT = " + index + " \n"
+        String sql = " declare @PageNo INT = ? \n"
                 + " declare @PageSize INT=10 \n"
                 + " SELECT * from( \n"
                 + " SELECT *,\n  "
                 + " ROW_NUMBER() over (order by productID) as RowNum\n  "
-                + "   FROM [Bmazon].[dbo].[Product] p  where sellerID = '" + seller + "') as T \n "
+                + "   FROM [Bmazon].[dbo].[Product] p  where sellerID = ?) as T \n "
                 + " where T.RowNum between ((@PageNo-1)*@PageSize)+1 and (@PageNo*@PageSize)  ";
         //String sql = "SELECT * FROM Product where seller = '" + seller + "'";
         try {
             pre = conn.prepareStatement(sql);
+            pre.setInt(1, index);
+            pre.setString(2, seller);
             rs = pre.executeQuery();
             while (rs.next()) {
                 Product pro = new Product();

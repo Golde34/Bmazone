@@ -15,6 +15,7 @@ import java.nio.charset.Charset;
 import java.security.NoSuchAlgorithmException;
 import java.security.SecureRandom;
 import java.security.spec.InvalidKeySpecException;
+import java.util.Arrays;
 import javax.crypto.SecretKeyFactory;
 import javax.crypto.spec.PBEKeySpec;
 
@@ -60,8 +61,8 @@ public class SecurePBKDF2
 	{
 		int iterations = 1000;
 		char[] chars = password.toCharArray();
-		byte[] salt = getSalt().getBytes();
-//                byte[] salt = getSalt().getBytes(Charset.forName("UTF-8"));
+//		byte[] salt = getSalt().getBytes();
+                byte[] salt = getSalt().getBytes(Charset.forName("UTF-8"));
 		
 		PBEKeySpec spec = new PBEKeySpec(chars, salt, iterations, 64 * 3);// cu la 64*8
 		SecretKeyFactory skf = SecretKeyFactory.getInstance("PBKDF2WithHmacSHA1");
@@ -75,7 +76,7 @@ public class SecurePBKDF2
 		SecureRandom sr = SecureRandom.getInstance("SHA1PRNG");
 		byte[] salt = new byte[16];
 		sr.nextBytes(salt);
-		return salt.toString();
+		return Arrays.toString(salt);
 	}
 	
 	public static String toHex(byte[] array) throws NoSuchAlgorithmException

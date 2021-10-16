@@ -83,8 +83,11 @@
                                                     <td><%=seller.getEvidence()%></td>
                                                     <td><%=seller.getSellerMainProduct()%></td>
                                                     <td><%=seller.getSellerVerification()%></td>
-                                                    <td><a style=" background-color: #F56565; border-radius:10px; padding:5px; color: white; " href="AdminControllerMap?service=acceptSeller&sellerID=<%=seller.getSellerID()%>">
+                                                    <td>
+                                                        <button class="btn btn-success">
+                                                            <a style=" background-color: #F56565; border-radius:10px; padding:5px; color: white; " href="AdminControllerMap?service=acceptSeller&sellerID=<%=seller.getSellerID()%>">
                                                             <i class="fas fa-check"></i>   Accept </a>
+                                                        </button>
                                                     </td>
                                                     <td><a style=" background-color: #CB0C9F ; border-radius:10px; padding:5px; color: white;" href="AdminControllerMap?service=denySeller&sellerID=<%=seller.getSellerID()%>" onclick="return confirm('Are you sure you want to Deny this seller?');">
                                                             <i class="fas fa-times"></i>   Deny </a>
@@ -135,11 +138,13 @@
                                                         <td><%=seller.getEvidence()%></td>
                                                         <td><%=seller.getSellerMainProduct()%></td>
                                                         <td><%=seller.getSellerVerification()%></td>
-                                                        <td><a style=" background-color: #F56565 ; border-radius:10px; padding:5px; color: white; " href="AdminControllerMap?service=acceptSeller&sellerID=<%=seller.getSellerID()%>">
-                                                                <i class="fas fa-check"></i>   Accept </a>
+                                                        <td>
+<!--                                                            <a style=" background-color: #9EE345 ; border-radius:10px; padding:5px; color: white; " href="AdminControllerMap?service=acceptSeller&sellerID=<%=seller.getSellerID()%>">
+                                                                <i class="fas fa-check"></i>   Accept </a>-->
                                                         </td>
-                                                        <td><a style=" background-color: #CB0C9F; border-radius:10px; padding:5px; color: white;" href="AdminControllerMap?service=denySeller&sellerID=<%=seller.getSellerID()%>" onclick="return confirm('Are you sure you want to Deny this seller?');">
-                                                                <i class="fas fa-times"></i>   Deny </a>
+                                                        <td>
+<!--                                                            <a style=" background-color: #e34f4f ; border-radius:10px; padding: 5px 12px; color: white;" href="AdminControllerMap?service=denySeller&sellerID=<%=seller.getSellerID()%>" onclick="return confirm('Are you sure you want to Deny this seller?');">
+                                                                <i class="fas fa-times"></i>   Deny </a>-->
                                                         </td>
                                                     </tr>
                                                     <%}%>
