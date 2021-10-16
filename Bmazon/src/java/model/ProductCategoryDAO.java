@@ -20,7 +20,7 @@ import java.util.logging.Logger;
 public class ProductCategoryDAO extends BaseDAO{
     
     public String getCategoryIdByProductId(int productId){
-        xSql = "select * from ProductCategory where productID=" + productId;
+        String xSql= "select * from ProductCategory where productID=" + productId;
         try {
             pre = conn.prepareStatement(xSql);
             rs = pre.executeQuery();

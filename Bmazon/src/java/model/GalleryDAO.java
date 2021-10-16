@@ -36,7 +36,7 @@ public class GalleryDAO extends BaseDAO {
     }
 
     public void addGallery(Gallery g) {
-        xSql = "INSERT INTO Gallery ([galleryID],[productID],[productTypeID],[link],[status])\n"
+        String xSql= "INSERT INTO Gallery ([galleryID],[productID],[productTypeID],[link],[status])\n"
                 + "     VALUES (?,?,?,?,?)";
         try {
             pre = conn.prepareStatement(xSql);
@@ -52,7 +52,7 @@ public class GalleryDAO extends BaseDAO {
 
     public int editGallery(Gallery g) {
         int n = 0;
-        xSql = "update Gallery set productID = ?, productTypeID = ?, link =?, status = ? where galleryID = ?";
+        String xSql= "update Gallery set productID = ?, productTypeID = ?, link =?, status = ? where galleryID = ?";
         try {
             pre = conn.prepareStatement(xSql);
             pre.setInt(1, g.getProductID());
@@ -68,7 +68,7 @@ public class GalleryDAO extends BaseDAO {
 
     public int getPageNumber(String search) {
         int num = 0;
-        xSql = "SELECT COUNT(*) from Gallery g join ProductType pt on g.productTypeID=pt.productTypeId join Product p on pt.productID=p.productID join [User] u on p.sellerID=u.userID\n"
+        String xSql= "SELECT COUNT(*) from Gallery g join ProductType pt on g.productTypeID=pt.productTypeId join Product p on pt.productID=p.productID join [User] u on p.sellerID=u.userID\n"
                 + "   where g.[status]=1 and(p.productName like '%"+search+"%' or pt.size like '%"+search+"%' or pt.color like '%"+search+"%' or u.fullname like '%"+search+"%')";
         ResultSet rs = dbConn.getData(xSql);
         try {
@@ -104,7 +104,7 @@ public class GalleryDAO extends BaseDAO {
 
     public List<Gallery> getAllGallery() {
         List<Gallery> list = new ArrayList<>();
-        xSql = "select * from [Gallery] order by productID asc";
+        String xSql= "select * from [Gallery] order by productID asc";
         try {
             pre = conn.prepareStatement(xSql);
             rs = pre.executeQuery();
@@ -123,7 +123,7 @@ public class GalleryDAO extends BaseDAO {
 
     public List<Gallery> getAllPagingGallery(int index, int numOfRow, String search) {
         List<Gallery> list = new ArrayList<>();
-        xSql = "declare @PageNo INT =" + index + "\n"
+        String xSql= "declare @PageNo INT =" + index + "\n"
                 + "declare @PageSize INT=" + numOfRow + "\n"
                 + "SELECT * from(\n"
                 + "SELECT g.*,\n"
@@ -153,7 +153,7 @@ public class GalleryDAO extends BaseDAO {
 
     public List<Gallery> getAllGalleryOfProduct(int pid) {
         List<Gallery> list = new ArrayList<>();
-        xSql = "select * from [Gallery] where productID =" + pid + "";
+        String xSql= "select * from [Gallery] where productID =" + pid + "";
         try {
             pre = conn.prepareStatement(xSql);
             rs = pre.executeQuery();
@@ -172,7 +172,7 @@ public class GalleryDAO extends BaseDAO {
 
     public String getSampleOfProduct(int pid) {
         String s = null;
-        xSql = "select top 1 link from [Gallery] WHERE productID = '" + pid + "'";
+        String xSql= "select top 1 link from [Gallery] WHERE productID = '" + pid + "'";
         try {
             pre = conn.prepareStatement(xSql);
             rs = pre.executeQuery();
@@ -186,7 +186,7 @@ public class GalleryDAO extends BaseDAO {
 
     public String getImageByProductTypeID(String ps) {
         String s = null;
-        xSql = "select top 1 link from [Gallery] WHERE productTypeID = '" + ps + "'";
+        String xSql= "select top 1 link from [Gallery] WHERE productTypeID = '" + ps + "'";
         try {
             pre = conn.prepareStatement(xSql);
             rs = pre.executeQuery();

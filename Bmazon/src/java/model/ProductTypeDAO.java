@@ -27,12 +27,12 @@ public class ProductTypeDAO extends BaseDAO {
             pre = conn.prepareStatement(sql);
             pre.setString(1, ProTypeId);
             pre.executeUpdate();
-        } catch (Exception e) {
+        } catch (SQLException e) {
         }
     }
 
     public void addProductType(ProductType p) {
-        xSql = "INSERT INTO ProductType ([productTypeId],[productID],[size],[color],[price],[wareHouseID],[quantity],[status])\n"
+        String xSql= "INSERT INTO ProductType ([productTypeId],[productID],[size],[color],[price],[wareHouseID],[quantity],[status])\n"
                 + "     VALUES (?,?,?,?,?,?,?,?)";
         try {
             pre = conn.prepareStatement(xSql);
@@ -45,13 +45,13 @@ public class ProductTypeDAO extends BaseDAO {
             pre.setInt(7, p.getQuantity());
             pre.setInt(8, p.getStatus());
             pre.executeUpdate();
-        } catch (Exception e) {
+        } catch (SQLException e) {
         }
     }
 
     public int editProduct(ProductType p) {
         int n = 0;
-        xSql = "UPDATE [Bmazon].[dbo].[ProductType]SET [productID] = ?,[size] = ? ,[color] = ? ,[price] = ?,[wareHouseID] = ?,[quantity] = ?,[status] = ? WHERE [productTypeId] = ?";
+        String xSql= "UPDATE [Bmazon].[dbo].[ProductType]SET [productID] = ?,[size] = ? ,[color] = ? ,[price] = ?,[wareHouseID] = ?,[quantity] = ?,[status] = ? WHERE [productTypeId] = ?";
         try {
             pre = conn.prepareStatement(xSql);
             pre.setInt(1, p.getProductID());
@@ -63,27 +63,27 @@ public class ProductTypeDAO extends BaseDAO {
             pre.setInt(7, p.getStatus());
             pre.setString(8, p.getProductTypeId());
             pre.executeUpdate();
-        } catch (Exception e) {
+        } catch (SQLException e) {
         }
         return n;
     }
 
     public int checkoutProductType(int ProTypeId, int quantity) {
         int n = 0;
-        xSql = "update product set quantity =? where productTypeId = ?";
+        String xSql= "update product set quantity =? where productTypeId = ?";
         try {
             pre = conn.prepareStatement(xSql);
             pre.setInt(1, quantity);
             pre.setInt(2, ProTypeId);
             n = pre.executeUpdate();
-        } catch (Exception e) {
+        } catch (SQLException e) {
         }
         return n;
     }
 
     public List<ProductType> getAllProductType() {
         List<ProductType> list = new ArrayList<>();
-        xSql = "select * from ProductType where status = 1";
+        String xSql= "select * from ProductType where status = 1";
         try {
             pre = conn.prepareStatement(xSql);
             rs = pre.executeQuery();
@@ -98,14 +98,14 @@ public class ProductTypeDAO extends BaseDAO {
                         rs.getInt(7),
                         rs.getInt(8)));
             }
-        } catch (Exception e) {
+        } catch (SQLException e) {
         }
         return list;
     }
 
     public ProductType getProductTypeByPTypeID(String ProTypeId) {
         ProductType ptype = new ProductType();
-        xSql = "select * from ProductType where productTypeId = ?";
+        String xSql= "select * from ProductType where productTypeId = ?";
         try {
             pre = conn.prepareStatement(xSql);
             pre.setString(1, ProTypeId);
@@ -121,7 +121,7 @@ public class ProductTypeDAO extends BaseDAO {
                         rs.getInt(7),
                         rs.getInt(8));
             }
-        } catch (Exception e) {
+        } catch (SQLException e) {
         }
         return ptype;
     }
@@ -131,7 +131,7 @@ public class ProductTypeDAO extends BaseDAO {
     }
     public int getProductIdByProductTypeId(String id) {
         int pid = -1;
-        xSql = "SELECT [productID] FROM [Bmazon].[dbo].[ProductType] where productTypeId =?";
+        String xSql= "SELECT [productID] FROM [Bmazon].[dbo].[ProductType] where productTypeId =?";
         try {
             pre = conn.prepareStatement(xSql);
             pre.setString(1, id);
@@ -139,7 +139,7 @@ public class ProductTypeDAO extends BaseDAO {
             if (rs.next()) {
                 pid = rs.getInt("productID");
             }
-        } catch (Exception e) {
+        } catch (SQLException e) {
 
         }
         return pid;
@@ -147,7 +147,7 @@ public class ProductTypeDAO extends BaseDAO {
 
     public List<ProductType> getProductByProductID(int pid) {
         List<ProductType> list = new ArrayList<>();
-        xSql = "select * from ProductType where productID = ?";
+        String xSql= "select * from ProductType where productID = ?";
         try {
             pre = conn.prepareStatement(xSql);
             pre.setInt(1, pid);
@@ -163,16 +163,19 @@ public class ProductTypeDAO extends BaseDAO {
                         rs.getInt(7),
                         rs.getInt(8)));
             }
-        } catch (Exception e) {
+        } catch (SQLException e) {
         }
         return list;
     }
 
     public ProductType getProductTypeByColorAndSize(String color, String size, String productID) {
         ProductType pt = new ProductType();
-        xSql = "select pt.* from Product p join ProductType pt on p.productID = pt.productID where p.productID = " + productID + " and pt.size = '" + size + "' and pt.color = '" + color + "'";
+        String xSql= "select pt.* from Product p join ProductType pt on p.productID = pt.productID where p.productID = ? and pt.size = ? and pt.color = ?";
         try {
             pre = conn.prepareStatement(xSql);
+            pre.setString(1, productID);
+            pre.setString(2, size);
+            pre.setString(3, color);
             rs = pre.executeQuery();
             if (rs.next()) {
                 pt.setProductID(rs.getInt("productID"));
@@ -185,14 +188,14 @@ public class ProductTypeDAO extends BaseDAO {
                 pt.setStatus(rs.getInt("status"));
 
             }
-        } catch (Exception e) {
+        } catch (SQLException e) {
         }
         return pt;
     }
 
     public ArrayList<ProductType> getProductByColor(String color) {
         ArrayList<ProductType> list = new ArrayList<>();
-        xSql = "SELECT * FROM ProductType WHERE color like ?";
+        String xSql= "SELECT * FROM ProductType WHERE color like ?";
         try {
             pre = conn.prepareStatement(xSql);
             pre.setString(1, "%" + color + "%");
@@ -208,41 +211,41 @@ public class ProductTypeDAO extends BaseDAO {
                         rs.getInt(7),
                         rs.getInt(8)));
             }
-        } catch (Exception e) {
+        } catch (SQLException e) {
         }
         return list;
     }
 
     public ArrayList<String> getAllSizeOfProduct(int id) {
         ArrayList<String> list = new ArrayList<>();
-        xSql = "select distinct size from ProductType where productID = " + id + "";
+        String xSql= "select distinct size from ProductType where productID = " + id + "";
         try {
             pre = conn.prepareStatement(xSql);
             rs = pre.executeQuery();
             while (rs.next()) {
                 list.add(rs.getString("size"));
             }
-        } catch (Exception e) {
+        } catch (SQLException e) {
         }
         return list;
     }
 
     public ArrayList<String> getAllColorOfProduct(int id) {
         ArrayList<String> list = new ArrayList<>();
-        xSql = "select distinct color from ProductType where productID = " + id + "";
+        String xSql= "select distinct color from ProductType where productID = " + id + "";
         try {
             pre = conn.prepareStatement(xSql);
             rs = pre.executeQuery();
             while (rs.next()) {
                 list.add(rs.getString("color"));
             }
-        } catch (Exception e) {
+        } catch (SQLException e) {
         }
         return list;
     }
 //
 //    public int getMaxQuantity(int pid) {
-//        xSql = "select quantity from product where id = ?";
+//        String xSql= "select quantity from product where id = ?";
 //        try {
 //            ps = conn.prepareStatement(xSql);
 //            ps.setInt(1, pid);
@@ -257,7 +260,7 @@ public class ProductTypeDAO extends BaseDAO {
 
 //
 //    public boolean checkDupProTypeId(int pid) {
-//        xSql = "SELECT * FROM product WHERE id = ?";
+//        String xSql= "SELECT * FROM product WHERE id = ?";
 //        try {
 //            ps = conn.prepareStatement(xSql);
 //            ps.setInt(1, pid);
@@ -271,7 +274,7 @@ public class ProductTypeDAO extends BaseDAO {
 //    }
     public String getProductPrice(int pid) {
         String price = null;
-        xSql = "SELECT price FROM ProductType WHERE productID = " + pid + " Order by price";
+        String xSql= "SELECT price FROM ProductType WHERE productID = " + pid + " Order by price";
         try {
             pre = conn.prepareStatement(xSql);
             rs = pre.executeQuery();
@@ -280,16 +283,18 @@ public class ProductTypeDAO extends BaseDAO {
                 price = rs.getString("price");
 
             }
-        } catch (Exception e) {
+        } catch (SQLException e) {
         }
         return price;
     }
 
     public int changeStatus(String id, int status) {
         int n = 0;
-        String sql = "update [ProductType] set status = " + (status == 1 ? 1 : 0) + " where productTypeId = '" + id + "'";
+        String sql = "update [ProductType] set status = ? where productTypeId = ?";
         try {
             pre = conn.prepareStatement(sql);
+            pre.setInt(1, (status == 1 ? 1 : 0));
+            pre.setString(2, id);
             n = pre.executeUpdate();
         } catch (SQLException ex) {
             Logger.getLogger(ProductDAO.class.getName()).log(Level.SEVERE, null, ex);
@@ -299,7 +304,7 @@ public class ProductTypeDAO extends BaseDAO {
 
     public List<ProductType> searchProduct(String text) {
         List<ProductType> list = new ArrayList<>();
-        xSql = "SELECT distinct *FROM [Bmazon].[dbo].[ProductType] where productTypeId like '%" + text + "%' or productID like '%" + text + "%' or size like '%" + text + "%' or color like '%" + text + "%' or price like '%" + text + "%' or wareHouseID like '%" + text + "%' or quantity like '%" + text + "%'";
+        String xSql= "SELECT distinct *FROM [Bmazon].[dbo].[ProductType] where productTypeId like '%" + text + "%' or productID like '%" + text + "%' or size like '%" + text + "%' or color like '%" + text + "%' or price like '%" + text + "%' or wareHouseID like '%" + text + "%' or quantity like '%" + text + "%'";
         try {
             pre = conn.prepareStatement(xSql);
             pre.setString(1, text);
@@ -315,7 +320,7 @@ public class ProductTypeDAO extends BaseDAO {
                         rs.getInt(7),
                         rs.getInt(8)));
             }
-        } catch (Exception e) {
+        } catch (SQLException e) {
         }
         return list;
     }

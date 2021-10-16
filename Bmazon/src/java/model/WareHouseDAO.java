@@ -6,6 +6,7 @@
 package model;
 
 import entity.WareHouse;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -23,12 +24,12 @@ public class WareHouseDAO extends BaseDAO{
             pre = conn.prepareStatement(sql);
             pre.setString(1, wareHouseID);
             pre.executeUpdate();
-        } catch (Exception e) {
+        } catch (SQLException e) {
         }
     }
 
     public void addWareHouse(WareHouse wh) {
-        xSql = "INSERT INTO WareHouse ([wareHouseAddress],[wareHouseCity],[status])\n"
+        String xSql= "INSERT INTO WareHouse ([wareHouseAddress],[wareHouseCity],[status])\n"
                 + "     VALUES (?,?,?)";
         try {
             pre = conn.prepareStatement(xSql);
@@ -36,13 +37,13 @@ public class WareHouseDAO extends BaseDAO{
             pre.setString(2, wh.getWareHouseCity());
             pre.setInt(3, wh.getStatus());
             pre.executeUpdate();
-        } catch (Exception e) {
+        } catch (SQLException e) {
         }
     }
 
     public int editWareHouse(WareHouse wh) {
         int n = 0;
-        xSql = "update WareHouse set [wareHouseAddress] = ? [wareHouseCity] = ? [status] =? where [wareHouseID] = ?";
+        String xSql= "update WareHouse set [wareHouseAddress] = ? [wareHouseCity] = ? [status] =? where [wareHouseID] = ?";
         try {
             pre = conn.prepareStatement(xSql);
             pre.setString(1, wh.getWareHouseAddress());
@@ -50,14 +51,14 @@ public class WareHouseDAO extends BaseDAO{
             pre.setInt(3, wh.getStatus());
             pre.setInt(4, wh.getWareHouseID());
             pre.executeUpdate();
-        } catch (Exception e) {
+        } catch (SQLException e) {
         }
         return n;
     }
 
     public List<WareHouse> getAllWareHouse() {
         List<WareHouse> list = new ArrayList<>();
-        xSql = "select * from WareHouse where [status] = 1";
+        String xSql= "select * from WareHouse where [status] = 1";
         try {
             pre = conn.prepareStatement(xSql);
             rs = pre.executeQuery();
@@ -68,7 +69,7 @@ public class WareHouseDAO extends BaseDAO{
                         rs.getString(3),
                         rs.getInt(4)));
             }
-        } catch (Exception e) {
+        } catch (SQLException e) {
         }
         return list;
     }
