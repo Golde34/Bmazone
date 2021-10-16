@@ -10,7 +10,9 @@ import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.io.PrintWriter;
+import java.sql.Date;
 import java.text.DecimalFormat;
+import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
@@ -28,20 +30,20 @@ import model.*;
  */
 public class SellerController extends HttpServlet {
 
-    ProductDAO daoproduct = new ProductDAO();
-    CategoryDAO daocategory = new CategoryDAO();
-    GenreDAO daogenre = new GenreDAO();
-    UserDAO daouser = new UserDAO();
-    WareHouseDAO daowarehouse = new WareHouseDAO();
+    ProductDAO pDAO = new ProductDAO();
+    CategoryDAO cateDAO = new CategoryDAO();
+    GenreDAO gDAO = new GenreDAO();
+    UserDAO uDAO = new UserDAO();
+    WareHouseDAO whDAO = new WareHouseDAO();
     DecimalFormat nf = new DecimalFormat("###,###,###");
     ProductTypeDAO ptDAO = new ProductTypeDAO();
     ProductCategoryDAO pcDAO = new ProductCategoryDAO();
-    CategoryDAO cateDAO = new CategoryDAO();
-    SellerDAO daoSeller = new SellerDAO();
+    ProductGenreDAO pgDAO = new ProductGenreDAO();
+    SellerDAO sellerDAO = new SellerDAO();
     private static final long serialVersionUID = 1;
 
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {
+            throws ServletException, IOException, ParseException {
         response.setContentType("text/html;charset=UTF-8");
         try (PrintWriter out = response.getWriter()) {
             String service = request.getParameter("service");
@@ -57,6 +59,35 @@ public class SellerController extends HttpServlet {
             //Product Management
             if (service.equalsIgnoreCase("productmanagement")) {
                 serviceProductManagement(request, response);
+            }
+            //Product detail to add and update
+            if (service.equalsIgnoreCase("productdetail")) {
+                serviceProductDetail(service, request, response);
+            }
+
+            //Add Product
+            if (service.equalsIgnoreCase("addproduct")) {
+                serviceAddProduct(service, request, response);
+            }
+            //Update Product 
+            if (service.equalsIgnoreCase("updateproduct")) {
+                serviceUpdateProduct(service, request, response);
+            }
+            //Delete Product
+            if (service.equalsIgnoreCase("deactiveproduct")) {
+                serviceDeleteProduct(service, request, response);
+            }
+            //Active Product
+            if (service.equalsIgnoreCase("activeproduct")) {
+                serviceActiveProduct(service, request, response);
+            }
+            //Delete Product Type
+            if (service.equalsIgnoreCase("deactiveproducttype")) {
+                serviceDeleteProductType(service, request, response);
+            }
+            //Active Product Type
+            if (service.equalsIgnoreCase("activateproducttype")) {
+                serviceActiveProductType(service, request, response);
             }
 
             //Paging User
@@ -100,19 +131,22 @@ public class SellerController extends HttpServlet {
         }
     }
 
+    // <editor-fold defaultstate="collapsed" desc="Dashboard methods. Click on the + sign on the left to edit the code.">
     public void serviceSellerDashboard(HttpServletRequest request, HttpServletResponse response) {
         User account = (User) request.getSession().getAttribute("currUser");
         String seller = account.getUserId();
-        List<Product> listProduct = daoproduct.getProductBySeller(seller);
+        List<Product> listProduct = pDAO.getProductBySeller(seller);
         request.setAttribute("listP", listProduct);
         sendDispatcher(request, response, "seller/dashboard.jsp");
     }
+    //</editor-fold>
 
+    // <editor-fold defaultstate="collapsed" desc="Product methods. Click on the + sign on the left to edit the code.">
     public void serviceProductManagement(HttpServletRequest request, HttpServletResponse response) {
         User account = (User) request.getSession().getAttribute("currUser");
         String seller = account.getUserId();
-        ArrayList<Product> listPaging = daoproduct.getAllPagingProductBySeller(1, 5, "", seller);
-        ArrayList<Product> listProduct = daoproduct.getProductBySeller(seller);
+        ArrayList<Product> listPaging = pDAO.getAllPagingProductBySeller(1, 5, "", seller);
+        ArrayList<Product> listProduct = pDAO.getProductBySeller(seller);
         int totalPage = listProduct.size() / 5;
         if (listProduct.size() != totalPage * 5) {
             totalPage += 1;
@@ -137,20 +171,29 @@ public class SellerController extends HttpServlet {
         if (request.getParameter("index") != null) {
             index = Integer.parseInt(request.getParameter("index"));
         }
-        ArrayList<Product> listPaging = daoproduct.getAllPagingProductBySeller(index, numOfRow, search, seller);
+        ArrayList<Product> listPaging = pDAO.getAllPagingProductBySeller(index, numOfRow, search, seller);
         request.setAttribute("index", index);
         request.setAttribute("listProduct", listPaging);
         for (Product product : listPaging) {
             int proID = product.getProductID();
+            String genreid = pgDAO.getGenreIdByProductId(product.getProductID());
+            Genre genre = gDAO.getGenreById(Integer.parseInt(genreid));
             pr.print("<tr>"
                     + "<td><div>" + product.getProductName() + "</div></td>"
                     + "<td>" + product.getReleaseDate() + "</td>"
                     + "<td>" + cateDAO.getCategoryById(pcDAO.getProductCateByProductID(proID).getCategoryID()) + "</td>"
+                    + "<td>" + genre.getGenreName() + "</td>"
                     + "<td><div><a href=\"SellerControllerMap?service=updatedetail&ptypeid=" + proID + "\"><span class=\"fas fa-edit\"></span></a>"
                     + "</div></td>"
-                    + "<td><div><a href=\"SellerControllerMap?service=deleteproduct&ptypeid=" + proID + "\" onclick=\"return confirm('Are you sure you want to Remove?');\"><span class=\"fas fa-trash-alt\"></span></a></div></td>" + "</tr>"
+                    + "<td>");
+            if (product.getStatus() == 1) {
+                pr.print("<a href=\"SellerControllerMap?service=deactiveproduct&productid=" + product.getProductID() + "\" onclick=\"return confirm('Are you sure?');\"><button class=\"btn btn-primary\">Deactive</button></a>");
+            } else {
+                pr.print("<a href=\"SellerControllerMap?service=activeproduct&productid=" + product.getProductID() + "\" onclick=\"return confirm('Are you sure?');\"><button class=\"btn btn-primary\">Active</button></a>");
+            }
+            pr.print("</td>"
+                    + "</tr>"
             );
-
         }
         if (request.getParameter("row") == null) {
             sendDispatcher(request, response, "seller/productmanagement.jsp");
@@ -167,7 +210,7 @@ public class SellerController extends HttpServlet {
         if (request.getParameter("row") != null) {
             numOfRow = Integer.parseInt(request.getParameter("row"));
         }
-        int totalResult = daoproduct.getPageNumber(search);
+        int totalResult = pDAO.getPageNumber(search);
         int totalPage = totalResult / numOfRow;
         if (totalResult != numOfRow * totalPage) {
             totalPage += 1;
@@ -233,32 +276,199 @@ public class SellerController extends HttpServlet {
         }
     }
 
+    public void serviceProductDetail(String service, HttpServletRequest request, HttpServletResponse response) {
+        request.setAttribute("service", service);
+        if (service.equalsIgnoreCase("addproductdetail")) {
+            sendDispatcher(request, response, "seller/productdetail.jsp");
+            return;
+        }
+        String id = request.getParameter("productid");
+        Product product = pDAO.getProductByID(Integer.parseInt(id));
+        String genreid = pgDAO.getGenreIdByProductId(product.getProductID());
+        Genre genre = gDAO.getGenreById(Integer.parseInt(genreid));
+        String categoryId = pcDAO.getCategoryIdByProductId(product.getProductID());
+        Category category = cateDAO.getCategoryByCateId(categoryId);
+        ArrayList<Genre> listGenre = gDAO.getGenresByCategoryId(Integer.parseInt(categoryId));
+        request.setAttribute("listGenre", listGenre);
+        request.setAttribute("category", category);
+        request.setAttribute("genre", genre);
+        request.setAttribute("product", product);
+        sendDispatcher(request, response, "seller/productdetail.jsp");
+    }
+
+    public void serviceAddProduct(String service, HttpServletRequest request, HttpServletResponse response) {
+        request.setAttribute("service", service);
+        String productname = request.getParameter("productname");
+        String color = request.getParameter("color");
+        String size = request.getParameter("size");
+        String price = request.getParameter("price");
+        String date = request.getParameter("date");
+        Product product = new Product();
+        product.setProductName(productname);
+        product.setReleaseDate(Date.valueOf(date));
+        ProductType producttype = new ProductType();
+        pDAO.addProduct(product);
+        List<ProductType> listProductType = ptDAO.getProductByProductID(product.getProductID());
+        String producttypeid = "Pr" + product.getProductID() + "Ty" + (listProductType.size() + 1);
+        producttype.setProductTypeId(producttypeid);
+        producttype.setColor(color);
+        producttype.setPrice(price);
+        producttype.setSize(size);
+        ptDAO.addProductType(producttype);
+        ArrayList<Product> listProduct = pDAO.getAllProduct();
+        request.setAttribute("listProduct", listProduct);
+        sendDispatcher(request, response, "seller/productmanagement.jsp");
+    }
+
+    public void serviceDeleteProduct(String service, HttpServletRequest request, HttpServletResponse response) {
+        request.setAttribute("service", service);
+        String id = request.getParameter("productid");
+        pDAO.changeStatus(Integer.parseInt(id), 0);
+        ArrayList<Product> listPaging = pDAO.getAllPagingProduct(1, 5, "");
+        ArrayList<Product> listProduct = pDAO.getAllProduct();
+        int totalPage = listProduct.size() / 5;
+        if (listProduct.size() != 5 * totalPage) {
+            totalPage += 1;
+        }
+        request.setAttribute("index", 1);
+        request.setAttribute("totalPage", totalPage);
+        request.setAttribute("listProduct", listPaging);
+        request.setAttribute("service", "updateproductdetail");
+        sendDispatcher(request, response, "seller/productmanagement.jsp");
+    }
+
+    public void serviceActiveProduct(String service, HttpServletRequest request, HttpServletResponse response) {
+        request.setAttribute("service", service);
+        String id = request.getParameter("productid");
+        pDAO.changeStatus(Integer.parseInt(id), 1);
+        ArrayList<Product> listPaging = pDAO.getAllPagingProduct(1, 5, "");
+        ArrayList<Product> listProduct = pDAO.getAllProduct();
+        int totalPage = listProduct.size() / 5;
+        if (listProduct.size() != 5 * totalPage) {
+            totalPage += 1;
+        }
+        request.setAttribute("index", 1);
+        request.setAttribute("totalPage", totalPage);
+        request.setAttribute("listProduct", listPaging);
+        request.setAttribute("service", "updateproductdetail");
+        sendDispatcher(request, response, "seller/productmanagement.jsp");
+    }
+
+    public void serviceDeleteProductType(String service, HttpServletRequest request, HttpServletResponse response) {
+
+        String id = request.getParameter("producttypeid");
+        ptDAO.changeStatus(id, 0);
+        int pid = ptDAO.getProductIdByProductTypeId(id);
+        Product product = pDAO.getProductByID(pid);
+        String genreid = pgDAO.getGenreIdByProductId(pid);
+        Genre genre = gDAO.getGenreById(Integer.parseInt(genreid));
+        String categoryId = pcDAO.getCategoryIdByProductId(pid);
+        Category category = cateDAO.getCategoryByCateId(categoryId);
+        ArrayList<Genre> listGenre = gDAO.getGenresByCategoryId(Integer.parseInt(categoryId));
+        request.setAttribute("listGenre", listGenre);
+        request.setAttribute("category", category);
+        request.setAttribute("genre", genre);
+        request.setAttribute("product", product);
+        request.setAttribute("service", "updateproductdetail");
+        sendDispatcher(request, response, "seller/productdetail.jsp");
+    }
+
+    public void serviceActiveProductType(String service, HttpServletRequest request, HttpServletResponse response) {
+
+        String id = request.getParameter("producttypeid");
+        ptDAO.changeStatus(id, 1);
+        int pid = ptDAO.getProductIdByProductTypeId(id);
+        Product product = pDAO.getProductByID(pid);
+        String genreid = pgDAO.getGenreIdByProductId(pid);
+        Genre genre = gDAO.getGenreById(Integer.parseInt(genreid));
+        String categoryId = pcDAO.getCategoryIdByProductId(pid);
+        Category category = cateDAO.getCategoryByCateId(categoryId);
+        ArrayList<Genre> listGenre = gDAO.getGenresByCategoryId(Integer.parseInt(categoryId));
+        request.setAttribute("listGenre", listGenre);
+        request.setAttribute("category", category);
+        request.setAttribute("genre", genre);
+        request.setAttribute("product", product);
+        request.setAttribute("service", "updateproductdetail");
+        sendDispatcher(request, response, "seller/productdetail.jsp");
+    }
+
+    public void serviceUpdateProduct(String service, HttpServletRequest request, HttpServletResponse response) throws ParseException {
+        request.setAttribute("service", service);
+        //Get information about product
+        String pid = request.getParameter("pid");
+        String productname = request.getParameter("productname");
+        String cat = request.getParameter("category");
+        String gen = request.getParameter("genre");
+        String sellerId = request.getParameter("seller");
+        String date = request.getParameter("date");
+        Date sqlDate = Date.valueOf(date);
+        //Update product
+        ProductCategory pc = pcDAO.getProductCateByProductID(Integer.parseInt(pid));
+        ProductGenre pg = pgDAO.getProductGenreByProduct(pid);
+        Product product = pDAO.getProductByID(Integer.parseInt(pid));
+        product.setProductName(productname);
+        product.setReleaseDate(sqlDate);
+        product.setSeller(Integer.parseInt(sellerId));
+        pDAO.updateProduct(product);
+        pc.setCategoryID(Integer.parseInt(cat));
+        pcDAO.updateProductCategory(pc);
+        pg.setGenreID(Integer.parseInt(gen));
+        pgDAO.updateProductGenre(pg);
+        //Get information about product type
+
+        String[] typeids = request.getParameterValues("ptid");
+        String[] colors = request.getParameterValues("color");
+        String[] sizes = request.getParameterValues("size");
+        String[] prices = request.getParameterValues("price");
+        String[] quantities = request.getParameterValues("quantity");
+
+        //Update product type
+        for (int i = 0; i < typeids.length; i++) {
+            ProductType pt = ptDAO.getProductTypeByPTypeID(typeids[i]);
+            pt.setColor(colors[i]);
+            pt.setSize(sizes[i]);
+            pt.setPrice(prices[i]);
+            pt.setQuantity(Integer.parseInt(quantities[i]));
+            ptDAO.editProduct(pt);
+        }
+        //Success
+        String state = "success";
+        String mess = "Update successfully";
+        String genreid = pgDAO.getGenreIdByProductId(product.getProductID());
+        Genre genre = gDAO.getGenreById(Integer.parseInt(genreid));
+        String categoryId = pcDAO.getCategoryIdByProductId(product.getProductID());
+        Category category = cateDAO.getCategoryByCateId(categoryId);
+        ArrayList<Genre> listGenre = gDAO.getGenresByCategoryId(Integer.parseInt(categoryId));
+
+        //Set request
+        request.setAttribute("listGenre", listGenre);
+        request.setAttribute("category", category);
+        request.setAttribute("genre", genre);
+        request.setAttribute("state", state);
+        request.setAttribute("product", product);
+        request.setAttribute("mess", mess);
+        request.setAttribute("service", "updateproductdetail");
+        sendDispatcher(request, response, "seller/productdetail.jsp");
+    }//</editor-fold>
+
+    // <editor-fold defaultstate="collapsed" desc="Order methods. Click on the + sign on the left to edit the code.">
     public void serviceOrderManagement(HttpServletRequest request, HttpServletResponse response) {
         User account = (User) request.getSession().getAttribute("currUser");
         String seller = account.getUserId();
-        List<Product> listProduct = daoproduct.getProductBySeller(seller);
+        List<Product> listProduct = pDAO.getProductBySeller(seller);
         request.setAttribute("listP", listProduct);
         sendDispatcher(request, response, "seller/orderSeller.jsp");
     }
+    //</editor-fold>
 
-//    public void serviceEditDetail(String service, HttpServletRequest request, HttpServletResponse response) {
-//    }
-//
-//    public void serviceAddProduct(HttpServletRequest request, HttpServletResponse response) {
-//    }
-//
-//    public void serviceUpdateProduct(HttpServletRequest request, HttpServletResponse response) {
-//    }
-//
-//    public void serviceDeleteProduct(HttpServletRequest request, HttpServletResponse response) {
-//    }
+    //
     private void serviceEditSellerInformation(HttpServletRequest request, HttpServletResponse response) {
         String mess = "";
 
         User x = (User) request.getSession().getAttribute("currUser");
         request.setAttribute("currUser", x);
         int userID = Integer.parseInt(x.getUserId());
-        Seller seller = daoSeller.getSellerByUserID(userID);
+        Seller seller = sellerDAO.getSellerByUserID(userID);
 
         String shopName = request.getParameter("shopName");
         String sellerPhone = request.getParameter("sellerPhone");
@@ -267,7 +477,7 @@ public class SellerController extends HttpServlet {
         seller.setSellerPhone(sellerPhone);
         seller.setSellerMainProduct(sellerMainProduct);
 
-        daoSeller.editSeller(seller);
+        sellerDAO.editSeller(seller);
         mess = "Update successfully!";
         request.setAttribute("mess", mess);
         sendDispatcher(request, response, "UserControllerMap?service=turnOnSalesFeature");
@@ -283,7 +493,6 @@ public class SellerController extends HttpServlet {
                     .getName()).log(Level.SEVERE, null, ex);
         }
     }
-    
 
     private void writeObject(ObjectOutputStream stream)
             throws IOException {
@@ -307,7 +516,11 @@ public class SellerController extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        processRequest(request, response);
+        try {
+            processRequest(request, response);
+        } catch (ParseException ex) {
+            Logger.getLogger(SellerController.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
 
     /**
@@ -321,7 +534,11 @@ public class SellerController extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        processRequest(request, response);
+        try {
+            processRequest(request, response);
+        } catch (ParseException ex) {
+            Logger.getLogger(SellerController.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
 
     /**
