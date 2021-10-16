@@ -102,7 +102,7 @@
                                                 <td><img src="<%=img%>" width="100px" height="100px"></td>
                                                 <td><%=seller.getSellerShopName()%></td>
                                                 <td>
-                                                    <a href="AdminControllerMap?service=updategallerydetail&galleryid=<%=gallery.getGalleryID()%>"><button class="btn btn-primary">Edit</button></a>
+                                                    <a href="AdminControllerMap?service=gallerydetail&galleryid=<%=gallery.getGalleryID()%>"><button class="btn btn-primary">Edit</button></a>
                                                 </td>
                                                 <td>
                                                     <% if(gallery.getStatus()==1){%>

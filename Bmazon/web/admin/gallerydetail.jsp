@@ -13,6 +13,7 @@
         mess = "";
     }
     String service = (String) request.getAttribute("service");
+    String f = (String) request.getAttribute("filen");
     User curUser = (User) request.getSession().getAttribute("currUser");
     List<ShipCompany> listCompany = (ArrayList<ShipCompany>) request.getAttribute("listCompany");
 %>
@@ -23,11 +24,7 @@
     <head>
         <meta charset="utf-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-        <link rel="apple-touch-icon" sizes="76x76" href="../assets/img/apple-icon.png">
-        <link rel="icon" type="image/png" href="../assets/img/favicon.png">
-        <title>
-            Admin Dashboard
-        </title>
+        <title>Admin Dashboard</title>
         <!--     Fonts and icons     -->
         <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,400,600,700" rel="stylesheet" />
         <!-- Font Awesome Icons -->
@@ -53,13 +50,12 @@
                                         <h6 class="m-0 font-weight-bold text-primary">Gallery Detail</h6>
                                     </div>
                                     <div class="card-body">
-                                        <form enctype="multipart/form-data" class="form" action="/Bmazon/AdminControllerMap" method="POST">
-                                        <%if (service.equalsIgnoreCase("updategallerydetail")) {%>
-                                        <table class="table table-striped">
-                                            <tr>
-                                                <td style="width: 30%;">Product Name</td>
-                                                <td style="width: 70%;">
-                                                    <textarea readonly class="form-control" name="productname" rows="3"><%=product.getProductName()%> </textarea>
+                                        <form enctype="multipart/form-data" class="form" action="/Bmazon/AdminControllerMap?service=updategallery&galleryid=<%=gallery.getGalleryID()%>" method="POST">
+                                            <table style="width: 100%;" class="table table-striped">
+                                                <tr>
+                                                    <td style="width: 30%;">Product Name</td>
+                                                    <td style="width: 70%;">
+                                                        <textarea readonly class="form-control" name="productname" rows="3"><%=product.getProductName()%> </textarea>
                                                 </td>
                                             </tr>
                                             <tr>
@@ -77,21 +73,18 @@
                                             <tr>
                                                 <td>Link<p></td>
                                                 <td>
-                                                    <%String str = "images/" + gallery.getLink();%>
-                                                    <img id="img" src="<%=str%>" width="150px" height="150px"><br>
-                                                    <input onchange="loadFile(event)" id="file" accept="image/*" type="file" name="img">
+                                                    <img id="img" src="images/<%=gallery.getLink()%>" width="150px" height="150px"><br>                    
+                                                    <input accept="image/*" onchange="loadFile(event)" id="file" type="file" name="photo">
                                                 </td>
                                             </tr>
                                             <tr>
                                                 <td></td>
                                                 <td>
-                                                    <input type="hidden" value="<%=gallery.getGalleryID()%>" name="id">
+<!--                                                    <input readonly value="<%=gallery.getGalleryID()%>" name="galleryid">-->
                                                     <input type="submit" value="Update Gallery" class="btn btn-primary">
-                                                    <input type="hidden" value="updategallery" name="service">
                                                 </td>
                                             </tr>
                                         </table>
-                                        <%}%>
                                     </form>
                                 </div>
                             </div>
@@ -118,7 +111,7 @@
             var output = document.getElementById('img');
             img.src = URL.createObjectURL(event.target.files[0]);
             img.onload = function () {
-                URL.revokeObjectURL(img.src) // free memory
+                URL.revokeObjectURL(img.src)
             }
         };
     </script>

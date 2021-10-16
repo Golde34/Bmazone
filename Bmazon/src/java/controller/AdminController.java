@@ -6,31 +6,37 @@
 package controller;
 
 import entity.*;
+import java.io.File;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.sql.Date;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.servlet.RequestDispatcher;
+import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
-import javax.servlet.annotation.MultipartConfig;
-import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.Part;
 import model.*;
+import org.apache.commons.fileupload.FileItem;
+import org.apache.commons.fileupload.FileUploadException;
+import org.apache.commons.fileupload.disk.DiskFileItemFactory;
+import org.apache.commons.fileupload.servlet.ServletFileUpload;
 
 /**
  *
  * @author Admin
  */
-
-@MultipartConfig()
-@WebServlet({"/upload"})
 
 public class AdminController extends HttpServlet {
 
@@ -57,7 +63,7 @@ public class AdminController extends HttpServlet {
     RoleDAO daorole = new RoleDAO();
 
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException, ParseException {
+            throws ServletException, IOException, ParseException, FileUploadException {
         response.setContentType("text/html;charset=UTF-8");
         try (PrintWriter out = response.getWriter()) {
             String service = request.getParameter("service");
@@ -132,7 +138,7 @@ public class AdminController extends HttpServlet {
                 serviceProductManagement(service, request, response);
             }
             //Product detail to add and update
-            if (service.equalsIgnoreCase("updateproductdetail") || service.equalsIgnoreCase("addproductdetail")) {
+            if (service.equalsIgnoreCase("productdetail")) {
                 serviceProductDetail(service, request, response);
             }
             //Paging Product
@@ -219,7 +225,7 @@ public class AdminController extends HttpServlet {
                 serviceShowPageGallery(request, response);
             }
             //Gallery detail to add and update
-            if (service.equalsIgnoreCase("updategallerydetail") || service.equalsIgnoreCase("addgallerydetail")) {
+            if (service.equalsIgnoreCase("gallerydetail")) {
                 serviceGalleryDetail(service, request, response);
             }
             //Add Gallery
@@ -233,6 +239,10 @@ public class AdminController extends HttpServlet {
             //Delete Gallery
             if (service.equalsIgnoreCase("deletegallery")) {
                 serviceDeleteGallery(service, request, response);
+            }
+            //Active Gallery
+            if (service.equalsIgnoreCase("activegallery")) {
+                serviceActiveGallery(service, request, response);
             }
             //</editor-fold>
 
@@ -367,7 +377,6 @@ public class AdminController extends HttpServlet {
         for (User user : listPaging) {
             pr.print("<tr>"
                     + "<td>" + user.getUsername() + " </td>"
-                    + "<td>" + user.getPassword() + "</td>"
                     + "<td>" + user.getEmail() + "</td>"
                     + "<td>" + user.getFullname() + "</td>"
                     + "<td>" + user.getPhoneNumber() + "</td>"
@@ -567,7 +576,7 @@ public class AdminController extends HttpServlet {
         request.setAttribute("index", 1);
         request.setAttribute("totalPage", totalPage);
         request.setAttribute("listUser", listPaging);
-        request.setAttribute("service", service);
+        request.setAttribute("service", "usermanagement");
         sendDispatcher(request, response, "admin/usermanagement.jsp");
     }
 
@@ -583,7 +592,7 @@ public class AdminController extends HttpServlet {
         request.setAttribute("index", 1);
         request.setAttribute("totalPage", totalPage);
         request.setAttribute("listUser", listPaging);
-        request.setAttribute("service", service);
+        request.setAttribute("service", "usermanagement");
         sendDispatcher(request, response, "admin/usermanagement.jsp");
     }
 // </editor-fold>
@@ -627,7 +636,7 @@ public class AdminController extends HttpServlet {
                     + "<td><div>" + category + "</div></td>"
                     + "<td><div>" + genre.getGenreName() + "</div></td>"
                     + "<td><div>" + seller.getSellerShopName() + "</div></td>"
-                    + "<td><div><a href=\"AdminControllerMap?service=updateproductdetail&productid=" + product.getProductID() + "\"><button class=\"btn btn-primary\">Edit</button></a>"
+                    + "<td><div><a href=\"AdminControllerMap?service=productdetail&productid=" + product.getProductID() + "\"><button class=\"btn btn-primary\">Edit</button></a>"
                     + "</div></td>"
                     + "<td>");
             if (product.getStatus() == 1) {
@@ -777,7 +786,7 @@ public class AdminController extends HttpServlet {
         request.setAttribute("index", 1);
         request.setAttribute("totalPage", totalPage);
         request.setAttribute("listProduct", listPaging);
-        request.setAttribute("service", service);
+        request.setAttribute("service", "updateproductdetail");
         sendDispatcher(request, response, "admin/productmanagement.jsp");
     }
 
@@ -794,14 +803,13 @@ public class AdminController extends HttpServlet {
         request.setAttribute("index", 1);
         request.setAttribute("totalPage", totalPage);
         request.setAttribute("listProduct", listPaging);
-        request.setAttribute("service", service);
+        request.setAttribute("service", "updateproductdetail");
         sendDispatcher(request, response, "admin/productmanagement.jsp");
     }
 
-    public void serviceDeleteProductType(String service, HttpServletRequest request, HttpServletResponse response) throws IOException {
-        PrintWriter pr = response.getWriter();
-        
-        String id = request.getParameter("ptId");
+    public void serviceDeleteProductType(String service, HttpServletRequest request, HttpServletResponse response) {
+
+        String id = request.getParameter("producttypeid");
         daoproducttype.changeStatus(id, 0);
         int pid = daoproducttype.getProductIdByProductTypeId(id);
         Product product = daoproduct.getProductByID(pid);
@@ -814,12 +822,12 @@ public class AdminController extends HttpServlet {
         request.setAttribute("category", category);
         request.setAttribute("genre", genre);
         request.setAttribute("product", product);
-        request.setAttribute("service", service);
+        request.setAttribute("service", "updateproductdetail");
         sendDispatcher(request, response, "admin/productdetail.jsp");
     }
 
     public void serviceActiveProductType(String service, HttpServletRequest request, HttpServletResponse response) {
-        
+
         String id = request.getParameter("producttypeid");
         daoproducttype.changeStatus(id, 1);
         int pid = daoproducttype.getProductIdByProductTypeId(id);
@@ -833,7 +841,7 @@ public class AdminController extends HttpServlet {
         request.setAttribute("category", category);
         request.setAttribute("genre", genre);
         request.setAttribute("product", product);
-        request.setAttribute("service", service);
+        request.setAttribute("service", "updateproductdetail");
         sendDispatcher(request, response, "admin/productdetail.jsp");
     }
 
@@ -930,9 +938,16 @@ public class AdminController extends HttpServlet {
                     + "<td><div>" + company.getCompanyName() + " </div></td>"
                     + "<td><div>" + company.getCommitDate() + "</div></td>"
                     + "<td><div>" + (int) company.getUnitCost() + "</div></td>"
-                    + "<td><div><a href=\"AdminControllerMap?service=updatecompanydetail&companyid=" + company.getCompanyID() + "\"><span class=\"fas fa-edit\"></span></a>"
+                    + "<td><div><a href=\"AdminControllerMap?service=updatecompanydetail&companyid=" + company.getCompanyID() + "\"><button class=\"btn btn-primary\">Edit</button></a>"
                     + "</div></td>"
-                    + "<td><div><a href=\"AdminControllerMap?service=deletecompany&companyid=" + company.getCompanyID() + "\" onclick=\"return confirm('Are you sure you want to Remove?');\"><span class=\"fas fa-trash-alt\"></span></a></div></td>" + "</tr>"
+                    + "<td>");
+            if (company.getStatus() == 1) {
+                pr.print("<a href=\"AdminControllerMap?service=deletecompany&companyid=" + company.getCompanyID() + "\" onclick=\"return confirm('Are you sure?');\"><button class=\"btn btn-primary\">Deactive</button></a>");
+            } else {
+                pr.print("<a href=\"AdminControllerMap?service=activecompany&companyid=" + company.getCompanyID() + "\" onclick=\"return confirm('Are you sure?');\"><button class=\"btn btn-primary\">Active</button></a>");
+            }
+            pr.print("</td>"
+                    + "</tr>"
             );
         }
         if (request.getParameter("row") == null) {
@@ -1041,7 +1056,7 @@ public class AdminController extends HttpServlet {
         request.setAttribute("index", 1);
         request.setAttribute("totalPage", totalPage);
         request.setAttribute("listCompany", listPaging);
-        request.setAttribute("service", service);
+        request.setAttribute("service", "companymanagement");
         sendDispatcher(request, response, "admin/companymanagement.jsp");
     }
 
@@ -1058,7 +1073,7 @@ public class AdminController extends HttpServlet {
         request.setAttribute("index", 1);
         request.setAttribute("totalPage", totalPage);
         request.setAttribute("listCompany", listPaging);
-        request.setAttribute("service", service);
+        request.setAttribute("service", "companymanagement");
         sendDispatcher(request, response, "admin/companymanagement.jsp");
     }
 
@@ -1177,9 +1192,16 @@ public class AdminController extends HttpServlet {
                     + "<td>" + pt.getSize() + "</td>"
                     + "<td><img src=\"" + img + "\" width=\"100px\" height=\"100px\"></td>"
                     + "<td>" + seller.getSellerShopName() + "</td>"
-                    + "<td><div><a href=\"AdminControllerMap?service=updategallerydetail&galleryid=" + gallery.getGalleryID() + "\"><span class=\"fas fa-edit\"></span></a>"
+                    + "<td><div><a href=\"AdminControllerMap?service=gallerydetail&galleryid=" + gallery.getGalleryID() + "\"><button class=\"btn btn-primary\">Edit</button></a>"
                     + "</div></td>"
-                    + "<td><div><a href=\"AdminControllerMap?service=deletegallery&galleryid=" + gallery.getGalleryID() + "\" onclick=\"return confirm('Are you sure you want to Remove?');\"><span class=\"fas fa-trash-alt\"></span></a></div></td>" + "</tr>"
+                    + "<td>");
+            if (gallery.getStatus() == 1) {
+                pr.print("<a href=\"AdminControllerMap?service=deletegallery&galleryid=" + gallery.getGalleryID() + "\" onclick=\"return confirm('Are you sure?');\"><button class=\"btn btn-primary\">Deactive</button></a>");
+            } else {
+                pr.print("<a href=\"AdminControllerMap?service=activegallery&galleryid=" + gallery.getGalleryID() + "\" onclick=\"return confirm('Are you sure?');\"><button class=\"btn btn-primary\">Active</button></a>");
+            }
+            pr.print("</td>"
+                    + "</tr>"
             );
         }
         if (request.getParameter("row") == null) {
@@ -1270,7 +1292,7 @@ public class AdminController extends HttpServlet {
             return;
         }
         int id = Integer.parseInt(request.getParameter("galleryid"));
-        Gallery gallery = daogallery.getGalleryById(1);
+        Gallery gallery = daogallery.getGalleryById(id);
         Product product = daoproduct.getProductByID(gallery.getProductID());
         ProductType producttype = daoproducttype.getProductTypeByPTypeID(gallery.getProductTypeID());
         Seller seller = daoseller.getSellerByProductId(product.getProductID());
@@ -1285,17 +1307,90 @@ public class AdminController extends HttpServlet {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
-    public void serviceDeleteGallery(String service, HttpServletRequest request, HttpServletResponse response) {
+    public void serviceActiveGallery(String service, HttpServletRequest request, HttpServletResponse response) {
         request.setAttribute("service", service);
         String id = request.getParameter("galleryid");
-        daogallery.deleteGallery(Integer.parseInt(id));
+        daogallery.changeStatus(Integer.parseInt(id), 1);
+        List<Gallery> listPaging = daogallery.getAllPagingGallery(1, 5, "");
         List<Gallery> listGallery = daogallery.getAllGallery();
-        request.setAttribute("listGallery", listGallery);
+        int totalPage = listGallery.size() / 5;
+        if (listGallery.size() > 5) {
+            totalPage += 1;
+        }
+        request.setAttribute("index", 1);
+        request.setAttribute("totalPage", totalPage);
+        request.setAttribute("listGallery", listPaging);
+        request.setAttribute("service", "gallerymanagement");
         sendDispatcher(request, response, "admin/gallerymanagement.jsp");
     }
 
-    public void serviceUpdateGallery(String service, HttpServletRequest request, HttpServletResponse response) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    public void serviceDeleteGallery(String service, HttpServletRequest request, HttpServletResponse response) {
+        request.setAttribute("service", service);
+        String id = request.getParameter("galleryid");
+        daogallery.changeStatus(Integer.parseInt(id), 0);
+        List<Gallery> listPaging = daogallery.getAllPagingGallery(1, 5, "");
+        List<Gallery> listGallery = daogallery.getAllGallery();
+        int totalPage = listGallery.size() / 5;
+        if (listGallery.size() > 5) {
+            totalPage += 1;
+        }
+        request.setAttribute("index", 1);
+        request.setAttribute("totalPage", totalPage);
+        request.setAttribute("listGallery", listPaging);
+        request.setAttribute("service", "gallerymanagement");
+        sendDispatcher(request, response, "admin/gallerymanagement.jsp");
+    }
+
+    public void serviceUpdateGallery(String service, HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException, FileUploadException {
+        String filename = null;
+        // Create a factory for disk-based file items
+        try {
+            DiskFileItemFactory factory = new DiskFileItemFactory();
+            ServletContext servletContext = this.getServletConfig().getServletContext();
+            File repository = (File) servletContext.getAttribute("javax.servlet.context.tempdir");
+            factory.setRepository(repository);
+            ServletFileUpload upload = new ServletFileUpload(factory);
+            List<FileItem> items = upload.parseRequest(request);
+            // Process the uploaded items
+            Iterator<FileItem> iter = items.iterator();
+            HashMap<String, String> fields = new HashMap<>();
+            while (iter.hasNext()) {
+                FileItem item = iter.next();
+                if (item.isFormField()) {
+                    fields.put(item.getFieldName(), item.getString());
+                    String name = item.getFieldName();
+                    String value = item.getString();
+                    System.out.println(name + " " + value);
+                } else {
+                    filename = item.getName();
+                    if (filename == null || filename.equals("")) {
+                        break;
+                    } else {
+                        Path path = Paths.get(filename);
+                        String storePath = servletContext.getRealPath("/images");
+                        File uploadFile = new File(storePath + "/" + path.getFileName());
+                        item.write(uploadFile);
+                    }
+                }
+            }
+        } catch (Exception ex) {
+            Logger.getLogger(UserController.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        String id = request.getParameter("galleryid");
+        Gallery gallery = daogallery.getGalleryById(Integer.parseInt(id));
+        gallery.setLink(filename);
+        daogallery.editGallery(gallery);
+        Product product = daoproduct.getProductByID(gallery.getProductID());
+        ProductType producttype = daoproducttype.getProductTypeByPTypeID(gallery.getProductTypeID());
+        Seller seller = daoseller.getSellerByProductId(product.getProductID());
+        request.setAttribute("filen", filename);
+        request.setAttribute("service", "gallerymanagement");
+        request.setAttribute("seller", seller);
+        request.setAttribute("product", product);
+        request.setAttribute("producttype", producttype);
+        request.setAttribute("gallery", gallery);
+        request.setAttribute("service", "gallerymanagement");
+        sendDispatcher(request, response, "admin/gallerydetail.jsp");
     }//</editor-fold>
 
     // <editor-fold defaultstate="collapsed" desc="Role methods. Click on the + sign on the left to edit the code.">
@@ -1459,6 +1554,8 @@ public class AdminController extends HttpServlet {
             processRequest(request, response);
         } catch (ParseException ex) {
             Logger.getLogger(AdminController.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (FileUploadException ex) {
+            Logger.getLogger(AdminController.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
 
@@ -1476,6 +1573,8 @@ public class AdminController extends HttpServlet {
         try {
             processRequest(request, response);
         } catch (ParseException ex) {
+            Logger.getLogger(AdminController.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (FileUploadException ex) {
             Logger.getLogger(AdminController.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
