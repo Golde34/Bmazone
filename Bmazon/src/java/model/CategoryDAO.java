@@ -86,17 +86,19 @@ public class CategoryDAO extends BaseDAO{
     }
     
     public Category getCategoryByCateId(String id){
-        String xSql = "select * from Category where categoryID=" + id;
+        String xSql = "select * from Category where categoryID= ?";
         Category cat = new Category();
+       
         try {
             pre=conn.prepareStatement(xSql);
+            pre.setString(1, id);
             rs = pre.executeQuery();
             if(rs.next()){
                 cat.setCategoryID(rs.getInt("categoryID"));
                 cat.setCategoryName(rs.getString("categoryName"));
                 cat.setStatus(rs.getInt("status"));
             }
-        } catch (Exception e) {
+        } catch (SQLException ex) {
         }
         return cat;
     }
@@ -123,9 +125,11 @@ public class CategoryDAO extends BaseDAO{
     
     public int changeStatus(int id, int status) {
         int n = 0;
-        String sql = "update Category set status = " + (status == 1 ? 1 : 0) + " where categoryID = '" + id + "'";
+        String sql = "update Category set status = ? where categoryID = ?";
         try {
             pre = conn.prepareStatement(sql);
+            pre.setInt(1, status == 1 ? 1 : 0);
+            pre.setInt(1,id);
             n = pre.executeUpdate();
         } catch (SQLException ex) {
             Logger.getLogger(CategoryDAO.class.getName()).log(Level.SEVERE, null, ex);
@@ -135,10 +139,12 @@ public class CategoryDAO extends BaseDAO{
     
     public int removeCategory(int id) {
         int n = 0;
-        String sql = "delete from Category where categoryID = '" + id + "'";
+        String sql = "delete from Category where categoryID = ?";
+         
         try {
-                Statement state = conn.createStatement();
-                n = state.executeUpdate(sql);          
+                pre=conn.prepareStatement(sql);
+                pre.setInt(1,id);
+                n = pre.executeUpdate();          
         } catch (SQLException ex) {
             Logger.getLogger(CategoryDAO.class.getName()).log(Level.SEVERE, null, ex);
         }

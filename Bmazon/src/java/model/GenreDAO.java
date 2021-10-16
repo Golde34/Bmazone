@@ -167,9 +167,11 @@ BaseDAO dbConn= new BaseDAO();
     
     public int changeStatus(int id, int status) {
         int n = 0;
-        String sql = "update Genre set status = " + (status == 1 ? 1 : 0) + " where genreID = '" + id + "'";
+        String sql = "update Genre set status = ? where genreID = ?";
         try {
             pre = conn.prepareStatement(sql);
+            pre.setInt(1,(status == 1 ? 1 : 0));
+            pre.setInt(2,id);
             n = pre.executeUpdate();
         } catch (SQLException ex) {
             Logger.getLogger(CategoryDAO.class.getName()).log(Level.SEVERE, null, ex);
@@ -179,10 +181,11 @@ BaseDAO dbConn= new BaseDAO();
     
     public int removeGenre(int id) {
         int n = 0;
-        String sql = "delete from Genre where genreID = '" + id + "'";
+        String sql = "delete from Genre where genreID =?";
         try {
-                Statement state = conn.createStatement();
-                n = state.executeUpdate(sql);          
+                pre = conn.prepareStatement(sql);
+                pre.setInt(1, id);
+                n =pre.executeUpdate();          
         } catch (SQLException ex) {
             Logger.getLogger(CategoryDAO.class.getName()).log(Level.SEVERE, null, ex);
         }

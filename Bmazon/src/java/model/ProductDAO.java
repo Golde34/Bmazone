@@ -317,9 +317,10 @@ public ArrayList<Product> getAllPagingProductBySeller(int index,int numOfRow,Str
 
     public ArrayList<Product> getProductBySeller(String seller) {
         ArrayList<Product> list = new ArrayList<>();
-        String sql = "SELECT * FROM Product where sellerID = '" + seller + "'";
+        String sql = "SELECT * FROM Product where sellerID = '?'";
         try {
             pre = conn.prepareStatement(sql);
+            pre.setString(1, seller);
             rs = pre.executeQuery();
             while (rs.next()) {
                 Product pro = new Product();
@@ -379,9 +380,10 @@ public ArrayList<Product> getAllPagingProductBySeller(int index,int numOfRow,Str
     public int totalProductSeller(String sid) {
         int count = 0;
 
-        String xSql= "SELECT count(*) FROM [Bmazon].[dbo].[Product] where sellerID = " + sid;
+        String xSql= "SELECT count(*) FROM [Bmazon].[dbo].[Product] where sellerID = ?";
         try {
             pre = conn.prepareStatement(xSql);
+            pre.setString(1, sid);
             rs = pre.executeQuery();
             while (rs.next()) {
                 count = rs.getInt(1);
@@ -640,9 +642,11 @@ public ArrayList<Product> getAllPagingProductBySeller(int index,int numOfRow,Str
 
     public int changeStatus(int id, int status) {
         int n = 0;
-        String sql = "update Product set status = " + (status == 1 ? 1 : 0) + " where productID = '" + id + "'";
+        String sql = "update Product set status = ? where productID = ?";
         try {
             pre = conn.prepareStatement(sql);
+            pre.setInt(1, (status == 1 ? 1 : 0));
+            pre.setInt(2, id);
             n = pre.executeUpdate();
         } catch (SQLException ex) {
             Logger.getLogger(ProductDAO.class.getName()).log(Level.SEVERE, null, ex);
@@ -650,25 +654,5 @@ public ArrayList<Product> getAllPagingProductBySeller(int index,int numOfRow,Str
         return n;
     }
 
-    public int deleteProduct(int id) {
-        int n = 0;
-        String sql = "SELECT * FROM [Bmazon].[dbo].[Product]\n"
-                + "AS a join ProductCategory as b on a.productID=b.productID"
-                + " join ProductGenre as c on a.productID=c.productID"
-                + " join Gallery as d on a.productID=d.productID ";
-        rs = dbConn.getData(sql);
-        try {
-            if (rs.next()) {
-                changeStatus(rs.getInt("productID"), 0);
-            } else {
-                String sqlDelete = "DELETE FROM [Bmazon].[dbo].[Product] WHERE productID='" + id + "'";
-                Statement state = conn.createStatement();
-                n = state.executeUpdate(sqlDelete);
-            }
-        } catch (SQLException ex) {
-            Logger.getLogger(ProductDAO.class.getName()).log(Level.SEVERE, null, ex);
-        }
-        return n;
-    }
-
+    
 }

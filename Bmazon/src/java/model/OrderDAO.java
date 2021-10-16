@@ -50,11 +50,12 @@ public class OrderDAO extends BaseDAO{
 
     public int changeStatus(String orderId) {
         int n = 0;
-        String sql = "UPDATE [Order] SET status = 1 WHERE orderID = '" + orderId + "'";
+        String sql = "UPDATE [Order] SET status = 1 WHERE orderID = '?'";
         Statement state;
         try {
-            state = conn.createStatement();
-            n = state.executeUpdate(sql);
+            pre = conn.prepareStatement(sql);
+            pre.setString(1, orderId);
+            n = pre.executeUpdate();
         } catch (SQLException ex) {
             Logger.getLogger(OrderDAO.class.getName()).log(Level.SEVERE, null, ex);
         }

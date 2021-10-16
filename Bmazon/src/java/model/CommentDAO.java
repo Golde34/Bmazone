@@ -41,7 +41,7 @@ public class CommentDAO extends BaseDAO {
         try {
             pre = conn.prepareStatement(sql);
             pre.setInt(1, pid);
-            ResultSet rs = pre.executeQuery();
+            rs= pre.executeQuery();
             while (rs.next()) {
                 Comment x = new Comment();
                 x.setCommentID(rs.getInt("commentID"));
@@ -72,14 +72,14 @@ public class CommentDAO extends BaseDAO {
 //    }
 
     public boolean checkExistComment(int pid, int uid) {
-        ArrayList<Comment> comments = new ArrayList<>();
+        
         boolean check = false;
         String sql = "select * from Comment where productID  = ? and userId = ? order by commentID desc";
         try {
             pre = conn.prepareStatement(sql);
             pre.setInt(1, pid);
             pre.setInt(2, uid);
-            ResultSet rs = pre.executeQuery();
+            rs = pre.executeQuery();
             while (rs.next()) {
                 check = true;
             }

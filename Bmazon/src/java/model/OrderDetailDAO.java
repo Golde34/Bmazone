@@ -39,11 +39,12 @@ public class OrderDetailDAO extends BaseDAO{
 
     public int removeOrderDetail(String orderId, String productTypeID) {
         int n = 0;
-        String sqlDelete = "delete from OrderDetail where orderID = '" + orderId + "' and productTypeID = '" + productTypeID + "'";
-        Statement stm;
+        String sql = "delete from OrderDetail where orderID = '?' and productTypeID = '?'";
         try {
-            stm = conn.createStatement();
-            n = stm.executeUpdate(sqlDelete);
+            pre = conn.prepareStatement(sql);           
+            pre.setString(1, orderId);
+            pre.setString(2, productTypeID);
+            n = pre.executeUpdate();
         } catch (SQLException ex) {
             Logger.getLogger(OrderDetailDAO.class.getName()).log(Level.SEVERE, null, ex);
         }

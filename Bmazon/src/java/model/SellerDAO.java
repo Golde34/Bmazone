@@ -237,22 +237,26 @@ public class SellerDAO extends BaseDAO {
     }
 
     public void acceptSellerRequest(int sellerID) {
-        int n = 0;
-        String xSql= "update [Bmazon].[dbo].[Seller] set [sellerVerification] = 1 where [sellerID] = " + sellerID;
+      
+        String xSql= "update [Bmazon].[dbo].[Seller] set [sellerVerification] = 1 where [sellerID] = ?";
         try {
             pre = conn.prepareStatement(xSql);
-            n = pre.executeUpdate();
+            pre.setInt(1, sellerID);
+            pre.executeUpdate();
         } catch (SQLException e) {
+             Logger.getLogger(SellerDAO.class.getName()).log(Level.SEVERE, null, e);
         }
     }
 
     public void denySellerRequest(int sellerID) {
-        int n = 0;
-        String xSql= "update [Bmazon].[dbo].[Seller] set [sellerVerification] = 2 where [sellerID] = " + sellerID;
+        
+        String xSql= "update [Bmazon].[dbo].[Seller] set [sellerVerification] = 2 where [sellerID] = ?";
         try {
             pre = conn.prepareStatement(xSql);
-            n = pre.executeUpdate();
+            pre.setInt(1, sellerID);
+            pre.executeUpdate();
         } catch (SQLException e) {
+             Logger.getLogger(SellerDAO.class.getName()).log(Level.SEVERE, null, e);
         }
     }
 
@@ -275,6 +279,7 @@ public class SellerDAO extends BaseDAO {
                         rs.getInt(9)));
             }
         } catch (Exception e) {
+             Logger.getLogger(SellerDAO.class.getName()).log(Level.SEVERE, null, e);
         }
         return list;
     }

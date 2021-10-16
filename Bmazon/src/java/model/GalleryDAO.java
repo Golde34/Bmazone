@@ -31,7 +31,8 @@ public class GalleryDAO extends BaseDAO {
             pre = conn.prepareStatement(sql);
             pre.setInt(1, id);
             pre.executeUpdate();
-        } catch (Exception e) {
+        } catch (Exception ex) {
+             Logger.getLogger(UserDAO.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
 
@@ -46,7 +47,8 @@ public class GalleryDAO extends BaseDAO {
             pre.setString(4, g.getLink());
             pre.setDouble(5, g.getStatus());
             pre.executeUpdate();
-        } catch (Exception e) {
+        } catch (Exception ex) {
+             Logger.getLogger(UserDAO.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
 
@@ -61,7 +63,8 @@ public class GalleryDAO extends BaseDAO {
             pre.setDouble(4, g.getStatus());
             pre.setInt(5, g.getGalleryID());
             pre.executeUpdate();
-        } catch (Exception e) {
+        } catch (Exception ex) {
+             Logger.getLogger(UserDAO.class.getName()).log(Level.SEVERE, null, ex);
         }
         return n;
     }
@@ -116,7 +119,8 @@ public class GalleryDAO extends BaseDAO {
                         rs.getString(4),
                         rs.getInt(5)));
             }
-        } catch (Exception e) {
+        } catch (Exception ex) {
+             Logger.getLogger(UserDAO.class.getName()).log(Level.SEVERE, null, ex);
         }
         return list;
     }
@@ -165,21 +169,24 @@ public class GalleryDAO extends BaseDAO {
                         rs.getString(4),
                         rs.getInt(5)));
             }
-        } catch (Exception e) {
+        } catch (Exception ex) {
+             Logger.getLogger(UserDAO.class.getName()).log(Level.SEVERE, null, ex);
         }
         return list;
     }
 
     public String getSampleOfProduct(int pid) {
         String s = null;
-        String xSql= "select top 1 link from [Gallery] WHERE productID = '" + pid + "'";
+        String xSql= "select top 1 link from [Gallery] WHERE productID =?";
         try {
             pre = conn.prepareStatement(xSql);
+            pre.setInt(1, pid);
             rs = pre.executeQuery();
             while (rs.next()) {
                 s = rs.getString("link");
             }
-        } catch (Exception e) {
+        } catch (Exception ex) {
+             Logger.getLogger(UserDAO.class.getName()).log(Level.SEVERE, null, ex);
         }
         return s;
     }
@@ -193,7 +200,8 @@ public class GalleryDAO extends BaseDAO {
             while (rs.next()) {
                 s = rs.getString("link");
             }
-        } catch (Exception e) {
+        } catch (Exception ex) {
+             Logger.getLogger(UserDAO.class.getName()).log(Level.SEVERE, null, ex);
         }
         return s;
     }
