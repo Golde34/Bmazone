@@ -12,6 +12,7 @@ import java.io.Serializable;
  * @author Admin
  */
 public class ProductGenre implements Serializable {
+    private static final long serialVersionUID = 1;
     private int productID;
     private int genreID;
     private int status;

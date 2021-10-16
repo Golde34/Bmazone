@@ -13,6 +13,7 @@ import java.sql.Date;
  * @author Admin
  */
 public class Product implements Serializable {
+    private static final long serialVersionUID = 1;
     private int productID;
     private String productName;
     private String description;
@@ -29,7 +30,7 @@ public class Product implements Serializable {
         this.productName = productName;
         this.description = description;
         this.rating = rating;
-        this.releaseDate = releaseDate;
+        this.releaseDate = new Date(releaseDate.getTime());
         this.seller = seller;
         this.status = status;
     }
@@ -39,7 +40,7 @@ public class Product implements Serializable {
         this.productName = productName;
         this.description = description;
         this.rating = rating;
-        this.releaseDate = releaseDate;
+        this.releaseDate = new Date(releaseDate.getTime());
         this.seller = seller;
     }
 
@@ -76,11 +77,11 @@ public class Product implements Serializable {
     }
 
     public Date getReleaseDate() {
-        return releaseDate;
+        return new Date(releaseDate.getTime());
     }
 
     public void setReleaseDate(Date releaseDate) {
-        this.releaseDate = releaseDate;
+        this.releaseDate = new Date(releaseDate.getTime());
     }
 
     public int getSeller() {

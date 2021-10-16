@@ -13,6 +13,7 @@ import java.sql.Date;
  * @author Admin
  */
 public class User implements Serializable{
+    private static final long serialVersionUID = 1;
 
     //private profile
     private String userId;
@@ -34,10 +35,10 @@ public class User implements Serializable{
     private Date DOB;
     private String bio;
     //social link
-    private String Facebook;
-    private String Instagram;
-    private String Twitter;
-    private String Youtube;
+    private String facebook;
+    private String instagram;
+    private String twitter;
+    private String youtube;
     //admin management information
     private int activityPoint;
     private int systemRole;
@@ -46,19 +47,19 @@ public class User implements Serializable{
     public User() {
     }
 
-    public User(String userId, String username, String password, String address, String bio, String Facebook, String Instagram, String Twitter, String Youtube) {
+    public User(String userId, String username, String password, String address, String bio, String facebook, String instagram, String twitter, String youtube) {
         this.userId = userId;
         this.username = username;
         this.password = password;
         this.address = address;
         this.bio = bio;
-        this.Facebook = Facebook;
-        this.Instagram = Instagram;
-        this.Twitter = Twitter;
-        this.Youtube = Youtube;
+        this.facebook = facebook;
+        this.instagram = instagram;
+        this.twitter = twitter;
+        this.youtube = youtube;
     }
 
-    public User(String userId, String username, String password, String email, String phoneNumber, int sell, double wallet, String fullname, String publicName, String address, String profileImage, String backgroundImage, String occupation, int gender, Date DOB, String bio, String Facebook, String Instagram, String Twitter, String Youtube, int activityPoint, int systemRole, int status) {
+    public User(String userId, String username, String password, String email, String phoneNumber, int sell, double wallet, String fullname, String publicName, String address, String profileImage, String backgroundImage, String occupation, int gender, Date DOB, String bio, String facebook, String instagram, String twitter, String youtube, int activityPoint, int systemRole, int status) {
         this.userId = userId;
         this.username = username;
         this.password = password;
@@ -73,18 +74,18 @@ public class User implements Serializable{
         this.backgroundImage = backgroundImage;
         this.occupation = occupation;
         this.gender = gender;
-        this.DOB = DOB;
+        this.DOB = new Date(DOB.getTime());
         this.bio = bio;
-        this.Facebook = Facebook;
-        this.Instagram = Instagram;
-        this.Twitter = Twitter;
-        this.Youtube = Youtube;
+        this.facebook = facebook;
+        this.instagram = instagram;
+        this.twitter = twitter;
+        this.youtube = youtube;
         this.activityPoint = activityPoint;
         this.systemRole = systemRole;
         this.status = status;
     }
 
-    public User(String username, String password, String email, String phoneNumber, int sell, double wallet, String fullname, String publicName, String address, String profileImage, String backgroundImage, String occupation, int gender, String bio, String Facebook, String Instagram, String Twitter, String Youtube, int activityPoint, int systemRole, int status) {
+    public User(String username, String password, String email, String phoneNumber, int sell, double wallet, String fullname, String publicName, String address, String profileImage, String backgroundImage, String occupation, int gender, String bio, String facebook, String instagram, String twitter, String youtube, int activityPoint, int systemRole, int status) {
         this.username = username;
         this.password = password;
         this.email = email;
@@ -99,10 +100,10 @@ public class User implements Serializable{
         this.occupation = occupation;
         this.gender = gender;
         this.bio = bio;
-        this.Facebook = Facebook;
-        this.Instagram = Instagram;
-        this.Twitter = Twitter;
-        this.Youtube = Youtube;
+        this.facebook = facebook;
+        this.instagram = instagram;
+        this.twitter = twitter;
+        this.youtube = youtube;
         this.activityPoint = activityPoint;
         this.systemRole = systemRole;
         this.status = status;
@@ -170,11 +171,11 @@ public class User implements Serializable{
     }
 
     public Date getDOB() {
-        return DOB;
+        return new Date(DOB.getTime());
     }
 
     public void setDOB(Date DOB) {
-        this.DOB = DOB;
+        this.DOB = new Date(DOB.getTime());
     }
 
     public int getSell() {
@@ -250,35 +251,35 @@ public class User implements Serializable{
     }
 
     public String getFacebook() {
-        return Facebook;
+        return facebook;
     }
 
-    public void setFacebook(String Facebook) {
-        this.Facebook = Facebook;
+    public void setFacebook(String facebook) {
+        this.facebook = facebook;
     }
 
     public String getInstagram() {
-        return Instagram;
+        return instagram;
     }
 
-    public void setInstagram(String Instagram) {
-        this.Instagram = Instagram;
+    public void setInstagram(String instagram) {
+        this.instagram = instagram;
     }
 
     public String getTwitter() {
-        return Twitter;
+        return twitter;
     }
 
-    public void setTwitter(String Twitter) {
-        this.Twitter = Twitter;
+    public void setTwitter(String twitter) {
+        this.twitter = twitter;
     }
 
     public String getYoutube() {
-        return Youtube;
+        return youtube;
     }
 
-    public void setYoutube(String Youtube) {
-        this.Youtube = Youtube;
+    public void setYoutube(String youtube) {
+        this.youtube = youtube;
     }
 
     public int getActivityPoint() {

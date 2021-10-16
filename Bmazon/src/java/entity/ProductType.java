@@ -12,6 +12,7 @@ import java.io.Serializable;
  * @author Admin
  */
 public class ProductType implements Serializable {
+    private static final long serialVersionUID = 1;
     private String productTypeId;
     private int productID;
     private String size;

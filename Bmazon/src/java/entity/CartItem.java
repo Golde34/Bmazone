@@ -6,9 +6,10 @@ import java.io.Serializable;
  *
  * @author Lonely
  */
-public class CartItem implements Serializable {
-    int cartID;
 
+public class CartItem implements Serializable {
+    private static final long serialVersionUID = 1;
+    int cartID;
     private int productID;
     private String name;
     private String size;
@@ -16,9 +17,9 @@ public class CartItem implements Serializable {
     private String image;
     private double price;
     private int quantity;
-    private double TotalCost;
+    private double totalCost;
 
-    public CartItem(int productID, String name, String size, String color, String image, double price, int quantity, double TotalCost) {
+    public CartItem(int productID, String name, String size, String color, String image, double price, int quantity, double totalCost) {
         this.productID = productID;
         this.name = name;
         this.size = size;
@@ -26,10 +27,10 @@ public class CartItem implements Serializable {
         this.image = image;
         this.price = price;
         this.quantity = quantity;
-        this.TotalCost = TotalCost;
+        this.totalCost = totalCost;
     }
 
-    public CartItem(int cartID, int productID, String name, String size, String color, String image, double price, int quantity, double TotalCost) {
+    public CartItem(int cartID, int productID, String name, String size, String color, String image, double price, int quantity, double totalCost) {
         this.cartID = cartID;
         this.productID = productID;
         this.name = name;
@@ -38,7 +39,7 @@ public class CartItem implements Serializable {
         this.image = image;
         this.price = price;
         this.quantity = quantity;
-        this.TotalCost = TotalCost;
+        this.totalCost = totalCost;
     }
 
     public int getCartID() {
@@ -92,11 +93,11 @@ public class CartItem implements Serializable {
     }
 
     public double getTotalCost() {
-        return TotalCost;
+        return totalCost;
     }
 
-    public void setTotalCost(double TotalCost) {
-        this.TotalCost = TotalCost;
+    public void setTotalCost(double totalCost) {
+        this.totalCost = totalCost;
     }
 
   
@@ -118,7 +119,7 @@ public class CartItem implements Serializable {
 
     @Override
     public String toString() {
-        return "CartItem{" + "productID=" + productID + ", name=" + name + ", size=" + size + ", color=" + color + ", image=" + image + ", price=" + price + ", quantity=" + quantity + ", TotalCost=" + TotalCost + '}';
+        return "CartItem{" + "productID=" + productID + ", name=" + name + ", size=" + size + ", color=" + color + ", image=" + image + ", price=" + price + ", quantity=" + quantity + ", totalCost=" + totalCost + '}';
     }
 
 }

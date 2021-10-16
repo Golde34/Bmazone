@@ -12,6 +12,7 @@ import java.io.Serializable;
  * @author Admin
  */
 public class ShipCompany implements Serializable {
+    private static final long serialVersionUID = 1;
     private int companyID;
     private String companyName;
     private double unitCost;

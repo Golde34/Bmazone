@@ -375,7 +375,7 @@ public ArrayList<Product> getAllPagingProductBySeller(int index,int numOfRow,Str
     }
 //    public static void main(String[] args) {
 //        ProductDAO pDAO = new ProductDAO();
-//        List<Product> listProduct = pDAO.getProductBySeller("1");
+//        List<Product> listProduct = pDAO.getAllPagingProductBySeller(1, 5, "", "4");
 //        System.out.println(listProduct);
 //    }
 

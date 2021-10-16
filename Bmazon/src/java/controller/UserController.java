@@ -7,6 +7,7 @@ package controller;
 
 import APIs.SecurePBKDF2;
 import static APIs.SecurePBKDF2.validatePassword;
+import APIs.SendEmail;
 import entity.Seller;
 import entity.User;
 import java.io.File;
@@ -135,6 +136,16 @@ public class UserController extends HttpServlet {
                 serviceEditWallet(request, response);
             }
 
+            //verify wallet deposit
+            if (service.equalsIgnoreCase("verifyWalletDeposit")) {
+                serviceVerifyWalletDeposit(request, response);
+            }
+            
+            //verify wallet withdrawal
+            if (service.equalsIgnoreCase("verifyWalletWithdrawal")) {
+                serviceVerifyWalletWithdrawal(request, response);
+            }
+
             //deposit wallet
             if (service.equalsIgnoreCase("deposit")) {
                 serviceDeposit(request, response);
@@ -200,7 +211,6 @@ public class UserController extends HttpServlet {
 
 //        HttpSession session = request.getSession();
 //        User account = (User) session.getAttribute("currUser");
-
 //        String user = account.getUsername();
         request.setAttribute("messChangepass", messChangepass);
         sendDispatcher(request, response, "loginAndSecurity/changepass.jsp");
@@ -394,7 +404,60 @@ public class UserController extends HttpServlet {
         sendDispatcher(request, response, "user/editWallet.jsp");
     }
 
+    private void serviceVerifyWalletDeposit(HttpServletRequest request, HttpServletResponse response) {
+        // get code user submit
+        HttpSession session = request.getSession();
+        String verifyCode = request.getParameter("verifyCode");
+        String mess = "";
+
+        User x = (User) request.getSession().getAttribute("currUser");
+
+        //get code generated
+        String authCode = (String) session.getAttribute("authcode");
+        double amount = (double) session.getAttribute("amount");
+        
+        if (verifyCode.equals(authCode)) {
+            daoUser.depositWalletUser(x, amount);
+            request.getSession().setAttribute("currUser", daoUser.getUserById(x.getUserId()));
+            mess = "Deposit Successfully!";
+            request.setAttribute("mess", mess);
+            sendDispatcher(request, response, "UserControllerMap?service=editWallet");
+        } else {
+            mess = "Verification code is not right!";
+            request.setAttribute("verifyCode", verifyCode);
+            request.setAttribute("mess", mess);
+            sendDispatcher(request, response, "user/verifyWalletDeposit.jsp");
+        }
+    }
+    
+    private void serviceVerifyWalletWithdrawal(HttpServletRequest request, HttpServletResponse response) {
+        // get code user submit
+        HttpSession session = request.getSession();
+        String verifyCode = request.getParameter("verifyCode");
+        String mess = "";
+
+        User x = (User) request.getSession().getAttribute("currUser");
+
+        //get code generated
+        String authCode = (String) session.getAttribute("authcode");
+        double amount = (double) session.getAttribute("amount");
+        
+        if (verifyCode.equals(authCode)) {
+            daoUser.withdrawalWalletUser(x, amount);
+            request.getSession().setAttribute("currUser", daoUser.getUserById(x.getUserId()));
+            mess = "Withdrawal Successfully!";
+            request.setAttribute("mess", mess);
+            sendDispatcher(request, response, "UserControllerMap?service=editWallet");
+        } else {
+            mess = "Verification code is not right!";
+            request.setAttribute("verifyCode", verifyCode);
+            request.setAttribute("mess", mess);
+            sendDispatcher(request, response, "user/verifyWalletWithdrawal.jsp");
+        }
+    }
+
     private void serviceDeposit(HttpServletRequest request, HttpServletResponse response) {
+        HttpSession session = request.getSession();
         String mess = "";
         double amount = Double.parseDouble(request.getParameter("amount"));
         User x = (User) request.getSession().getAttribute("currUser");
@@ -404,15 +467,18 @@ public class UserController extends HttpServlet {
             request.setAttribute("mess", mess);
             sendDispatcher(request, response, "user/editWallet.jsp");
         } else {
-            mess = "Deposit succesfully!";
-            request.setAttribute("mess", mess);
-            daoUser.depositWalletUser(x, amount);
-            request.getSession().setAttribute("currUser", daoUser.getUserById(x.getUserId()));
-            sendDispatcher(request, response, "user/editWallet.jsp");
+            String option = "editwallet";
+            SendEmail sm = new SendEmail();
+            String code = sm.getRandom();
+            sm.sendEmail(x.getUsername(), x.getEmail(), code, option);
+            session.setAttribute("authcode", code);
+            session.setAttribute("amount", amount);
+            sendDispatcher(request, response, "user/verifyWalletDeposit.jsp");
         }
     }
 
     private void serviceWithdrawal(HttpServletRequest request, HttpServletResponse response) {
+        HttpSession session = request.getSession();
         String mess = "";
         double amount = Double.parseDouble(request.getParameter("amount"));
         User x = (User) request.getSession().getAttribute("currUser");
@@ -426,11 +492,13 @@ public class UserController extends HttpServlet {
             request.setAttribute("mess", mess);
             sendDispatcher(request, response, "user/editWallet.jsp");
         } else {
-            mess = "Withdrawal succesfully!";
-            request.setAttribute("mess", mess);
-            daoUser.withdrawalWalletUser(x, amount);
-            request.getSession().setAttribute("currUser", daoUser.getUserById(x.getUserId()));
-            sendDispatcher(request, response, "user/editWallet.jsp");
+            String option = "editwallet";
+            SendEmail sm = new SendEmail();
+            String code = sm.getRandom();
+            sm.sendEmail(x.getUsername(), x.getEmail(), code, option);
+            session.setAttribute("authcode", code);
+            session.setAttribute("amount", amount);
+            sendDispatcher(request, response, "user/verifyWalletWithdrawal.jsp");
         }
     }
 

@@ -4,6 +4,9 @@
     Author     : DELL
 --%>
 
+<%@page import="model.GenreDAO"%>
+<%@page import="model.ProductGenreDAO"%>
+<%@page import="entity.Genre"%>
 <%@page import="model.CategoryDAO"%>
 <%@page import="model.ProductCategoryDAO"%>
 <%@page import="java.text.DecimalFormat"%>
@@ -54,6 +57,8 @@
         ProductTypeDAO ptDAO = new ProductTypeDAO();
         ProductCategoryDAO pcDAO = new ProductCategoryDAO();
         CategoryDAO cateDAO = new CategoryDAO();
+        ProductGenreDAO pgdao = new ProductGenreDAO();
+        GenreDAO genredao = new GenreDAO();
 
         int index = (Integer) request.getAttribute("index");
         int totalPage = (Integer) request.getAttribute("totalPage");
@@ -151,31 +156,38 @@
                                 <table class="table table-hover" id="dataTable">
                                     <thead>
                                         <tr>
-                                            <th>Product Name</th>
-                                            <th>Release Date</th>
-                                            <th>Type</th>
-                                            <th></th>
-                                            <th></th>
+                                            <th style="width: 30%;">Product Name</th>
+                                            <th style="width: 20%;">Release Date</th>
+                                            <th style="width: 20%;">Type</th>
+                                            <th style="width: 20%;">Genre</th>
+                                            <th style="width: 5%;"></th>
+                                            <th style="width: 5%;"></th>
                                         </tr>
                                     </thead>
                                     <tbody id="product">
                                         <% for (Product product : listP) {
                                                 int proID = product.getProductID();
+                                                String genreid = pgdao.getGenreIdByProductId(product.getProductID());
+                                                Genre genre = genredao.getGenreById(Integer.parseInt(genreid));
                                         %>
                                         <tr>
                                             <td><div><%= product.getProductName()%></div></td>
                                             <td><div><%= product.getReleaseDate()%></div></td>
                                             <td><div><%= cateDAO.getCategoryById(pcDAO.getProductCateByProductID(proID).getCategoryID())%></div></td>
-                                            <td><div>
-                                                    <a href="SellerControllerMap?service=updatedetail&ptypeid=<%= proID%>"><span class="fas fa-edit"></span></a>
+                                            <td><div><%= genre.getGenreName()%></div></td>
+                                            <td><div><a href="SellerControllerMap?service=productdetail&productid=<%=product.getProductID()%>"><button class="btn btn-primary">Edit</button></a>
                                                 </div></td>
-                                            <td><div><a href="SellerControllerMap?service=deleteproduct&ptypeid=<%= proID%>" onclick="return confirm('Are you sure you want to Remove?');"><span class="fas fa-trash-alt"></span></a></div></td>
-                                        </tr>
-                                        <%}%>
+                                            <td>
+                                                <% if (product.getStatus() == 1) {%>
+                                                <a href="SellerControllerMap?service=deactiveproduct&productid=<%=product.getProductID()%>" onclick="return confirm('Are you sure?');"><button class="btn btn-primary">Deactivate</button></a>
+                                                <%} else {%>
+                                                <a href="SellerControllerMap?service=activeproduct&productid=<%=product.getProductID()%>" onclick="return confirm('Are you sure?');"><button class="btn btn-danger">Activate</button></a>
+                                                <% } %>
+                                            </td></tr>
+                                            <% } %>
                                     </tbody>
                                 </table>
                             </div>
-
                             <div class="pagination-container mt-4" style="display: flex;
                                  justify-content: space-around;cursor: pointer;">
                                 <nav>
@@ -248,6 +260,7 @@
         </div><!-- ./wrapper -->
 
     </body>
+    <script src="https://kit.fontawesome.com/42d5adcbca.js" crossorigin="anonymous"></script>
     <script src="${contextPath}/js/core/popper.min.js"></script>
     <script src="${contextPath}/js/core/bootstrap.min.js"></script>
     <script src="${contextPath}/js/plugins/perfect-scrollbar.min.js"></script>
@@ -255,7 +268,7 @@
     <script src="${contextPath}/js/plugins/chartjs.min.js"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
     <script>
-                                                var pageNum;
+                                                    var pageNum;
                                                 $(document).on('click', '.pagination li', function () {
                                                     pageNum = $(this).data('repair');
                                                     pagination();
@@ -303,8 +316,7 @@
                                                         },
                                                         error: function (xhr) {
                                                             //Do Something to handle error
-                                                        }
-                                                    });
+                                                        } });
                                                 }
     </script>
 </html>

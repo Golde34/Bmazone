@@ -35,7 +35,7 @@ public class Order implements Serializable {
     public Order() {
     }
 
-    public Order(int orderID, String userID, Date orderDate, Date requiredDate, Date shippedDate, String shipName, String shipAddress, String shipCity, String shipPhone, double shipMoney, int companyID, String paymentMethod, double total, int status) {
+    public Order(int orderID, String userID, Date orderDate, Date requiredDate, Date shippedDate, String shipName, String shipAddress, String shipCity, String shipPhone, String shipCompany, double shipMoney, double total, int companyID, String paymentMethod) {
         this.orderID = orderID;
         this.userID = userID;
         this.orderDate = new Date(orderDate.getTime());
@@ -48,9 +48,11 @@ public class Order implements Serializable {
         this.shipCompany = shipCompany;
         this.shipMoney = shipMoney;
         this.total = total;
+        this.companyID = companyID;
+        this.paymentMethod = paymentMethod;
     }
 
-    public Order(int orderID, String userID, Date orderDate, Date requiredDate, Date shippedDate, String shipName, String shipAddress, String shipCity, String shipPhone, double shipMoney, int companyID, String paymentMethod, double total) {
+    public Order(int orderID, String userID, Date orderDate, Date requiredDate, Date shippedDate, String shipName, String shipAddress, String shipCity, String shipPhone, String shipCompany, double shipMoney, double total, int companyID, String paymentMethod, int status) {
         this.orderID = orderID;
         this.userID = userID;
         this.orderDate = new Date(orderDate.getTime());
@@ -60,10 +62,11 @@ public class Order implements Serializable {
         this.shipAddress = shipAddress;
         this.shipCity = shipCity;
         this.shipPhone = shipPhone;
+        this.shipCompany = shipCompany;
         this.shipMoney = shipMoney;
+        this.total = total;
         this.companyID = companyID;
         this.paymentMethod = paymentMethod;
-        this.total = total;
         this.status = status;
     }
 
