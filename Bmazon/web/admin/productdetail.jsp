@@ -63,10 +63,10 @@
                                         <a href="AdminControllerMap?service=productmanagement"><btn class="btn btn-primary">Product Management</btn></a>
                                     </div>
                                 <% if (state.equals("success")) {%>
-                                <h6 class="text-success mt-3 px-4">${mess}</h6>
+                                <h6 class="text-success px-4 noti">${mess}</h6>
                                 <%}%>
                                 <% if (state.equals("fail")) {%>
-                                <h6 class="text-danger mt-3 px-4">${mess}</h6>
+                                <h6 class="text-danger px-4 noti">${mess}</h6>
                                 <%}%>
                                 <div class="card-body">
                                     <table class="table table-striped">
@@ -141,17 +141,13 @@
                                                 </td>
                                                 <td><input required style="width: 100%;" type="text" name="size" class="form-control" value="<%=pt.getSize()%>"></td>
                                                     <%Double price = Double.parseDouble(pt.getPrice());%>
-                                                <td><input required style="width: 100%;" type="text" name="price" class="form-control price" value="<%=nf.format(price)%>"></td>
-                                                <td><input required style="width: 100%;"  type="text" name="quantity" class="form-control" value="<%=pt.getQuantity()%>"></td>
+                                                <td><input required style="width: 100%;" type="text" name="price" class="form-control number" value="<%=nf.format(price)%>"></td>
+                                                <td><input required style="width: 100%;"  type="text" name="quantity" class="form-control number" value="<%=nf.format(pt.getQuantity())%>"></td>
                                                 <td>
                                                     <%if (pt.getStatus() == 1) {%>
-                                                    <a class="btn btn-primary" href="AdminControllerMap?service=deleteproducttype&producttypeid=<%=pt.getProductTypeId()%>" onclick="return confirm('Are you sure you want to Remove?');">Deactive
-                                                         <!--<span class="fas fa-trash-alt mt-3 ml-3 delete"></span>-->
-                                                    </a>
+                                                    <a class="btn btn-primary" href="AdminControllerMap?service=deleteproducttype&producttypeid=<%=pt.getProductTypeId()%>" onclick="return confirm('Are you sure you want to Remove?');">Deactive</a>
                                                     <%} else {%>
-                                                    <a class="btn btn-primary" href="AdminControllerMap?service=activeproducttype&producttypeid=<%=pt.getProductTypeId()%>" onclick="return confirm('Are you sure you want to Remove?');">Active
-                                                        <!--<span class="fas fa-link mt-3 ml-3 delete"></span>-->
-                                                    </a><%}%>
+                                                    <a class="btn btn-primary" href="AdminControllerMap?service=activeproducttype&producttypeid=<%=pt.getProductTypeId()%>" onclick="return confirm('Are you sure you want to Remove?');">Active</a><%}%>
                                                 </td>
                                             </tr>
                                             <%}%>
@@ -171,48 +167,50 @@
         <!--   Core JS Files   -->
         <script src="${contextPath}/js/core/popper.min.js"></script>
         <script src="${contextPath}/js/core/bootstrap.min.js"></script>
-        <script src="${contextPath}/js/plugins/perfect-scrollbar.min.js"></script>
-        <script src="${contextPath}/js/plugins/smooth-scrollbar.min.js"></script>
-        <script src="${contextPath}/js/plugins/chartjs.min.js"></script>
         <!-- Github buttons -->
         <script async defer src="https://buttons.github.io/buttons.js"></script>
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
         <script>
+            $("textarea").on('keyup', function () {
+                $(".noti").hide();
+            });
             $(document).ready(function () {
             $("#category").change(function () {
             var val = $(this).val();
-<% for (Category cate : listCategory) {%>
+            $(".noti").hide();
+            <% for (Category cate : listCategory) {%>
             if (val == "<%=cate.getCategoryID()%>"){
             console.log("<%=cate.getCategoryName()%>");
                     $("#genre").html(
-<% ArrayList<Genre> list = genredao.getGenresByCategoryId(cate.getCategoryID());
-for (int i = 0; i < list.size(); i++) {
-if (list.size() == 1 || i == list.size() - 1) {%>"<option value='<%=list.get(i).getGenreID()%>'><%=list.get(i).getGenreName()%></option>"
-<%} else {%>"<option value='<%=list.get(i).getGenreID()%>'><%=list.get(i).getGenreName()%></option>" +
-<%}
-}%>);
+            <% ArrayList<Genre> list = genredao.getGenresByCategoryId(cate.getCategoryID());
+                for (int i = 0; i < list.size(); i++) {
+                if (list.size() == 1 || i == list.size() - 1) {%>"<option value='<%=list.get(i).getGenreID()%>'><%=list.get(i).getGenreName()%></option>"
+                <%} else {%>"<option value='<%=list.get(i).getGenreID()%>'><%=list.get(i).getGenreName()%></option>" +
+                <%}
+                }%>);
             }
-<%}%>
+            <%}%>
             });
             });
-                    $(".price").on('keyup', function () {
-            var n = parseInt($(this).val().replace(/\D/g, ''), 10);
-                    $(this).val(n.toLocaleString());
-            });
-                    (function () {
-                    'use strict'
-                            var forms = document.querySelectorAll('.needs-validation')
-                            Array.prototype.slice.call(forms)
-                            .forEach(function (form) {
-                            form.addEventListener('submit', function (event) {
-                            if (!form.checkValidity()) {
-                            event.preventDefault()
-                                    event.stopPropagation()
-                            }
-                            form.classList.add('was-validated')
-                            }, false)
-                            })
-                    })()
+        $(".number").on('keyup', function () {
+        var n = parseInt($(this).val().replace(/\D/g, ''), 10);
+            $(this).val(n.toLocaleString());
+            $(".noti").hide();
+        });
+        (function () {
+        'use strict'
+                var forms = document.querySelectorAll('.needs-validation')
+                Array.prototype.slice.call(forms)
+                .forEach(function (form) {
+                form.addEventListener('submit', function (event) {
+                if (!form.checkValidity()) {
+                event.preventDefault()
+                        event.stopPropagation()
+                }
+                form.classList.add('was-validated')
+                }, false)
+                })
+        })()
         </script>
         <!-- Control Center for Soft Dashboard: parallax effects, scripts for the example pages etc -->
     <!--        <script src="${contextPath}/js/soft-ui-dashboard.min.js?v=1.0.3"></script>-->

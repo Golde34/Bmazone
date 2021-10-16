@@ -20,10 +20,10 @@
   --bs-gray-dark: #343a40;
   --bs-primary: #cb0c9f;
   --bs-secondary: #8392AB;
-  --bs-success: #82d616;
+  --bs-success: #9EE345;
   --bs-info: #17c1e8;
   --bs-warning: #fbcf33;
-  --bs-danger: #ea0606;
+  --bs-danger: #e34f4f;
   --bs-light: #e9ecef;
   --bs-dark: #344767;
   --bs-white: #fff;
@@ -3651,7 +3651,7 @@ fieldset:disabled .btn {
 
 .btn-success {
   color: #000;
-  background-color: #82d616;
+  background-color: #9EE345;
   border-color: #82d616;
 }
 
@@ -3786,7 +3786,7 @@ fieldset:disabled .btn {
 
 .btn-danger {
   color: #fff;
-  background-color: #ea0606;
+  background-color: #e34f4f;
   border-color: #ea0606;
 }
 
