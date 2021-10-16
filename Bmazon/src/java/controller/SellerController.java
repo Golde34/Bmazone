@@ -62,37 +62,43 @@ public class SellerController extends HttpServlet {
             }
             //Product detail to add and update
             if (service.equalsIgnoreCase("productdetail")) {
-                serviceProductDetail(service, request, response);
+                serviceProductDetail(request, response);
             }
 
             //Add Product
             if (service.equalsIgnoreCase("addproduct")) {
-                serviceAddProduct(service, request, response);
+                serviceAddProduct(request, response);
             }
             //Update Product 
             if (service.equalsIgnoreCase("updateproduct")) {
-                serviceUpdateProduct(service, request, response);
+                serviceUpdateProduct(request, response);
             }
             //Delete Product
             if (service.equalsIgnoreCase("deactiveproduct")) {
-                serviceDeleteProduct(service, request, response);
+                serviceDeleteProduct(request, response);
             }
             //Active Product
             if (service.equalsIgnoreCase("activeproduct")) {
-                serviceActiveProduct(service, request, response);
+                serviceActiveProduct(request, response);
             }
+            
+            //Add Product Type
+            if (service.equalsIgnoreCase("addproducttype")) {
+                serviceAddProduct(request, response);
+            }
+            
             //Delete Product Type
             if (service.equalsIgnoreCase("deactiveproducttype")) {
-                serviceDeleteProductType(service, request, response);
+                serviceDeleteProductType(request, response);
             }
             //Active Product Type
             if (service.equalsIgnoreCase("activateproducttype")) {
-                serviceActiveProductType(service, request, response);
+                serviceActiveProductType(request, response);
             }
 
             //Paging User
             if (service.equalsIgnoreCase("pagingproduct")) {
-                servicePagingProduct(service, request, response);
+                servicePagingProduct(request, response);
             }
             //Show Page User
             if (service.equalsIgnoreCase("showpageproduct")) {
@@ -157,12 +163,12 @@ public class SellerController extends HttpServlet {
         sendDispatcher(request, response, "seller/productSeller.jsp");
     }
 
-    public void servicePagingProduct(String service, HttpServletRequest request, HttpServletResponse response) throws IOException {
+    public void servicePagingProduct(HttpServletRequest request, HttpServletResponse response) throws IOException {
         User account = (User) request.getSession().getAttribute("currUser");
         String seller = account.getUserId();
         int lastPage = 1;
         PrintWriter pr = response.getWriter();
-        request.setAttribute("service", service);
+        
         int index = 1, numOfRow = 5;
         String search = request.getParameter("search");
         if (request.getParameter("row") != null) {
@@ -276,12 +282,9 @@ public class SellerController extends HttpServlet {
         }
     }
 
-    public void serviceProductDetail(String service, HttpServletRequest request, HttpServletResponse response) {
-        request.setAttribute("service", service);
-        if (service.equalsIgnoreCase("addproductdetail")) {
-            sendDispatcher(request, response, "seller/productdetail.jsp");
-            return;
-        }
+    public void serviceProductDetail(HttpServletRequest request, HttpServletResponse response) {
+        
+        
         String id = request.getParameter("productid");
         Product product = pDAO.getProductByID(Integer.parseInt(id));
         String genreid = pgDAO.getGenreIdByProductId(product.getProductID());
@@ -296,8 +299,8 @@ public class SellerController extends HttpServlet {
         sendDispatcher(request, response, "seller/productdetail.jsp");
     }
 
-    public void serviceAddProduct(String service, HttpServletRequest request, HttpServletResponse response) {
-        request.setAttribute("service", service);
+    public void serviceAddProduct(HttpServletRequest request, HttpServletResponse response) {
+        
         String productname = request.getParameter("productname");
         String color = request.getParameter("color");
         String size = request.getParameter("size");
@@ -319,9 +322,31 @@ public class SellerController extends HttpServlet {
         request.setAttribute("listProduct", listProduct);
         sendDispatcher(request, response, "seller/productmanagement.jsp");
     }
+    
+    public void serviceAddProductType(HttpServletRequest request, HttpServletResponse response) {
+        
+//        String productname = request.getParameter("productname");
+        String color = request.getParameter("color");
+        String size = request.getParameter("size");
+        String price = request.getParameter("price");
+        int quantity = Integer.parseInt(request.getParameter("quantity"));
+        int pid = Integer.parseInt(request.getParameter("proID"));
+        Product product = pDAO.getProductByID(pid);
+        ProductType pt = new ProductType();
+        List<ProductType> listProductType = ptDAO.getProductByProductID(product.getProductID());
+        String producttypeid = "Pr" + product.getProductID() + "Ty" + (listProductType.size() + 1);
+        pt.setProductTypeId(producttypeid);
+        pt.setColor(color);
+        pt.setPrice(price);
+        pt.setSize(size);
+        pt.setQuantity(quantity);
+        ptDAO.addProductType(pt);
+        request.setAttribute("listProductType", listProductType);
+        sendDispatcher(request, response, "seller/productdetail.jsp");
+    }
 
-    public void serviceDeleteProduct(String service, HttpServletRequest request, HttpServletResponse response) {
-        request.setAttribute("service", service);
+    public void serviceDeleteProduct(HttpServletRequest request, HttpServletResponse response) {
+        
         String id = request.getParameter("productid");
         pDAO.changeStatus(Integer.parseInt(id), 0);
         ArrayList<Product> listPaging = pDAO.getAllPagingProduct(1, 5, "");
@@ -337,8 +362,8 @@ public class SellerController extends HttpServlet {
         sendDispatcher(request, response, "seller/productmanagement.jsp");
     }
 
-    public void serviceActiveProduct(String service, HttpServletRequest request, HttpServletResponse response) {
-        request.setAttribute("service", service);
+    public void serviceActiveProduct(HttpServletRequest request, HttpServletResponse response) {
+        
         String id = request.getParameter("productid");
         pDAO.changeStatus(Integer.parseInt(id), 1);
         ArrayList<Product> listPaging = pDAO.getAllPagingProduct(1, 5, "");
@@ -354,7 +379,7 @@ public class SellerController extends HttpServlet {
         sendDispatcher(request, response, "seller/productmanagement.jsp");
     }
 
-    public void serviceDeleteProductType(String service, HttpServletRequest request, HttpServletResponse response) {
+    public void serviceDeleteProductType(HttpServletRequest request, HttpServletResponse response) {
 
         String id = request.getParameter("producttypeid");
         ptDAO.changeStatus(id, 0);
@@ -373,7 +398,7 @@ public class SellerController extends HttpServlet {
         sendDispatcher(request, response, "seller/productdetail.jsp");
     }
 
-    public void serviceActiveProductType(String service, HttpServletRequest request, HttpServletResponse response) {
+    public void serviceActiveProductType(HttpServletRequest request, HttpServletResponse response) {
 
         String id = request.getParameter("producttypeid");
         ptDAO.changeStatus(id, 1);
@@ -392,8 +417,8 @@ public class SellerController extends HttpServlet {
         sendDispatcher(request, response, "seller/productdetail.jsp");
     }
 
-    public void serviceUpdateProduct(String service, HttpServletRequest request, HttpServletResponse response) throws ParseException {
-        request.setAttribute("service", service);
+    public void serviceUpdateProduct(HttpServletRequest request, HttpServletResponse response) throws ParseException {
+        
         //Get information about product
         String pid = request.getParameter("pid");
         String productname = request.getParameter("productname");

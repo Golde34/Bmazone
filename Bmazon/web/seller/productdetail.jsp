@@ -41,33 +41,69 @@
         <link href='http://fonts.googleapis.com/css?family=Lato' rel='stylesheet' type='text/css'>
         <link href="${contextPath}/css/seller/style.css" rel="stylesheet" type="text/css" />
         <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.0.7/css/all.css"> 
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto|Varela+Round">
+        <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
         <style type="text/css">
-
+.modal .modal-dialog {
+    max-width: 400px;
+}
+.modal .modal-header, .modal .modal-body, .modal .modal-footer {
+    padding: 20px 30px;
+}
+.modal .modal-content {
+    border-radius: 3px;
+}
+.modal .modal-footer {
+    background: #ecf0f1;
+    border-radius: 0 0 3px 3px;
+}
+.modal .modal-title {
+    display: inline-block;
+}
+.modal .form-control {
+    border-radius: 2px;
+    box-shadow: none;
+    border-color: #dddddd;
+}
+.modal textarea.form-control {
+    resize: vertical;
+}
+.modal .btn {
+    border-radius: 2px;
+    min-width: 100px;
+}	
+.modal form label {
+    font-weight: normal;
+}
         </style>
     </head>
 
     <%
         ProductTypeDAO daopt = new ProductTypeDAO();
-    CategoryDAO daocat = new CategoryDAO();
-    GenreDAO genredao = new GenreDAO();
-    String mess = (String) request.getAttribute("mess");
-    if (mess == null) {
-        mess = "";
-    }
-    String state = (String) request.getAttribute("state");
-    if (state == null) {
-        state = "";
-    }
-    Category category = (Category) request.getAttribute("category");
-    Genre genre = (Genre) request.getAttribute("genre");
-    String date = (String) request.getAttribute("date");
-    String service = (String) request.getAttribute("service");
-    User curUser = (User) request.getSession().getAttribute("currUser");
-    ArrayList<Category> listCategory = daocat.getAllCategories();
-    ArrayList<Genre> listGenre = (ArrayList<Genre>) request.getAttribute("listGenre");
-    Product product = (Product) request.getAttribute("product");
-    List<ProductType> listType = daopt.getProductByProductID(product.getProductID());
-    DecimalFormat nf = new DecimalFormat("###,###,###");
+        CategoryDAO daocat = new CategoryDAO();
+        GenreDAO genredao = new GenreDAO();
+        String mess = (String) request.getAttribute("mess");
+        if (mess == null) {
+            mess = "";
+        }
+        String state = (String) request.getAttribute("state");
+        if (state == null) {
+            state = "";
+        }
+        Category category = (Category) request.getAttribute("category");
+        Genre genre = (Genre) request.getAttribute("genre");
+        String date = (String) request.getAttribute("date");
+        String service = (String) request.getAttribute("service");
+        User curUser = (User) request.getSession().getAttribute("currUser");
+        ArrayList<Category> listCategory = daocat.getAllCategories();
+        ArrayList<Genre> listGenre = (ArrayList<Genre>) request.getAttribute("listGenre");
+        Product product = (Product) request.getAttribute("product");
+        List<ProductType> listType = daopt.getProductByProductID(product.getProductID());
+        DecimalFormat nf = new DecimalFormat("###,###,###");
     %>
 
     <body class="skin-black">
@@ -129,14 +165,13 @@
 
                 <!-- Main content -->
                 <section class="content">
-                    <jsp:include page="generalBoard.jsp"/>
                     <!-- Main row -->
                     <!-- Product management -->
                     <div class="container-fluid py-4">
                         <div class="row my-4">
                             <div class="col-lg-12 col-md-12 mb-md-0 mb-4">
-                                <form id="form" class="needs-validation" novalidate="" action="/Bmazon/SellerControllerMap" method="POST">
-                                    <div class="card">
+                                <div class="card">
+                                    <form id="form" class="needs-validation" novalidate="" action="/Bmazon/SellerControllerMap" method="POST">
                                         <div class="card-header pt-5 d-flex justify-content-between">
                                             <h3 class="m-0 font-weight-bold text-primary">General Information</h3>
                                         </div>
@@ -185,8 +220,11 @@
                                                 <input type="hidden" value="updateproduct" name="service">
                                                 <input type="hidden" value="<%=product.getProductID()%>" name="pid">
                                             </table>
+                                            <input type="submit" value="Save General Infomation" class="btn btn-primary mt-3" style="margin-left: 43%">
                                         </div>
-                                    </div>
+                                    </form>
+                                </div>                                            
+                                <form id="form" class="needs-validation" novalidate="" action="/Bmazon/SellerControllerMap" method="POST">
                                     <div class="card mt-3">
                                         <div class="card-header pt-5 d-flex justify-content-between">
                                             <h3 class="m-0 font-weight-bold text-primary">Detail Information</h3>
@@ -228,9 +266,10 @@
                                                 </tbody>
                                             </table>
                                             <div class="d-flex justify-content-center">
-                                                
-                                            <a href="SellerControllerMap?service=productmanagement"><btn class="btn btn-primary">Back</btn></a>
-                                                <input type="submit" value="Update Product" class="btn btn-primary mt-3">
+                                                <a href="#addEmployeeModal" data-toggle="modal"><btn class="btn btn-primary">Add</btn></a>
+                                                <input type="submit" value="Save Product Type" class="btn btn-primary mt-3" style="margin-left: 45%"> <br>
+                                                <a href="SellerControllerMap?service=productmanagement"><btn class="btn btn-default">Back</btn></a>
+
                                             </div>
                                         </div>
                                     </div>
@@ -243,6 +282,44 @@
         </div><!-- ./wrapper -->
 
     </body>
+    <div id="addEmployeeModal" class="modal fade">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <form action="/Bmazon/SellerControllerMap" method="post">
+                        <div class="modal-header">						
+                            <h4 class="modal-title">Add Product Type</h4>
+                            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                        </div>
+                        <div class="modal-body">					
+                            <div class="form-group">
+                                <label>Color</label>
+                                <input name="color" type="text" class="form-control" required>
+                            </div>
+                            <div class="form-group">
+                                <label>Size</label>
+                                <input name="size" type="text" class="form-control" required>
+                            </div>
+                            <div class="form-group">
+                                <label>Price</label>
+                                <input name="price" type="text" class="form-control" required>
+                            </div>
+                            <div class="form-group">
+                                <label>Quantity</label>
+                                <textarea name="quantity" class="form-control" required></textarea>
+                            </div>
+                            
+
+                        </div>
+                        <div class="modal-footer">
+                            <input type="button" class="btn btn-default" data-dismiss="modal" value="Cancel">
+                            <input type="hidden" value="addproducttype" name="service">
+                            <input type="hidden" value="<%= product.getProductID() %>" name="proID">
+                            <input type="submit" class="btn btn-success" value="Add">
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
     <script src="https://kit.fontawesome.com/42d5adcbca.js" crossorigin="anonymous"></script>
     <script src="${contextPath}/js/core/popper.min.js"></script>
     <script src="${contextPath}/js/core/bootstrap.min.js"></script>
