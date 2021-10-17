@@ -114,10 +114,10 @@ public class sessionFilter implements Filter {
             chain.doFilter(request, response);
             return;
         }
-//        if (x!=null&&url.contains("cart.jsp")) {
-//             chain.doFilter(request, response);
-//             return;
-//        }
+        if (x!=null&&url.contains("cart.jsp")) {
+             chain.doFilter(request, response);
+             return;
+        }
         if (url.contains(".jsp")) {
             httpresponse.sendError(404,"Oops! Page is not found");
         }

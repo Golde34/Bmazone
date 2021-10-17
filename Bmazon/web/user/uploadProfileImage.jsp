@@ -14,7 +14,7 @@
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         <title>Upload Image</title>
-<!--        <link rel="shortcut icon" type="image/png" href="../images/80jslogo.png">-->
+        <!--        <link rel="shortcut icon" type="image/png" href="../images/80jslogo.png">-->
         <%--JS,Css--%>
         <link href="${contextPath}/css/upload.css" rel="stylesheet">
         <link rel="stylesheet"
@@ -26,44 +26,50 @@
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css"/>
     </head>
     <body>
+        <style>
+            body {
+                background-image: url("../images/background_color.jpg");
+            }
+        </style>
         <%
             User x = (User) request.getAttribute("currUser");
         %>
-
-        <form method="post" action="/Bmazon/UserControllerMap?service=updateProfileImage" enctype="multipart/form-data">
-            <div class="container">
-                <div class="col-md-4"></div>
-                <div class="col-md-4">
-                    <div class="wrapper">
-                        <div class="image">
-                            <img src="" alt="">
-                        </div>
-                        <div class="content">
-                            <div class="icon">
-                                <i class="fas fa-cloud-upload-alt"></i>
+        <div class="container">
+            <div class="col-md-4"></div>
+            <div class="col-md-4">
+                <div class="row">
+                    <form method="post" action="/Bmazon/UserControllerMap?service=updateProfileImage" enctype="multipart/form-data">      
+                        <div class="wrapper">
+                            <div class="image">
+                                <img src="">
                             </div>
-                            <div class="text">
-                                No file chosen, yet!
+                            <div class="content">
+                                <div class="icon">
+                                    <i class="fas fa-cloud-upload-alt"></i>
+                                </div>
+                                <div class="text">
+                                    No file chosen, yet!
+                                </div>
+                            </div>
+                            <div id="cancel-btn">
+                                <i class="fas fa-times"></i>
+                            </div>
+                            <div class="file-name">
+                                File name here
                             </div>
                         </div>
-                        <div id="cancel-btn">
-                            <i class="fas fa-times"></i>
-                        </div>
-                        <div class="file-name">
-                            File name here
-                        </div>
-                    </div>
-                    <input readonly name="name" value="1">
-                    <input type="hidden" name="id" value="1">
-                    <input id="default-btn" type="file" hidden class="form-control" name="photo" placeholder="Enter photo">
-                    <button type="submit" class="btn btn-primary">Save</button>
-                    <button type="reset" class="btn btn-primary">Reset</button>
+                        <input id="default-btn" type="file" hidden class="form-control" name="photo" placeholder="Enter photo">
+                        <br>
+                        <button type="submit" class="btn btn-primary">Save</button>
+                        <button type="reset" class="btn btn-primary">Reset</button>           
+                    </form>
                 </div>
-                <div class="col-md-4"></div>
+                <br>
+                <a href="HomePageCOntrollerMap">Go to home</a><br>
+                <a href="UserControllerMap?service=info">Go to profile</a>
             </div>
-        </form>
-        <a href="HomePageCOntrollerMap">Go to home</a>
-        <a href="UserControllerMap?service=info">Go to profile</a>
+            <div class="col-md-4"></div>
+        </div>
         <script>
             const wrapper = document.querySelector(".wrapper");
             const fileName = document.querySelector(".file-name");

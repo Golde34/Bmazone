@@ -24,8 +24,8 @@
         <div class="wrap">
             <jsp:include page="header.jsp"/>
             <%  ArrayList<CartItem> ShoppingCart = (ArrayList<CartItem>) session.getAttribute("ShoppingCart");
-               
-               
+
+
             %>
 
 
@@ -34,17 +34,10 @@
                     <div class="row row-main">
                         <div class="large-12 col">
                             <div class="col-inner">
-
-
-
                                 <div class="woocommerce"><div class="woocommerce row row-large row-divided">
                                         <div class="col large-7 pb-0 ">
-
-
                                             <form action="CartControllerMap" method="POST" class="woocommerce-cart-form">
                                                 <div class="cart-wrapper sm-touch-scroll">
-
-
                                                     <table class="shop_table shop_table_responsive cart woocommerce-cart-form__contents" cellspacing="0">
                                                         <thead>
                                                             <tr>
@@ -54,20 +47,18 @@
                                                                 <th class="product-quantity">Số lượng</th>
                                                                 <th class="product-subtotal">Tổng cộng</th>
                                                                 <th class=""></th>
-                                                               
+
                                                             </tr>
                                                         </thead>
                                                         <tbody>
-                                                            
-
                                                             <%      for (CartItem item : ShoppingCart) {
                                                                     String image = "images/" + item.getImage();
                                                             %>
-
-                                                           <tr class="woocommerce-cart-form__cart-item cart_item1">
+                                                            <tr class="woocommerce-cart-form__cart-item cart_item1">
                                                         <input type="hidden" value="<%=item.getCartID()%>" name="cartID">
                                                         <td class="product-remove">
-                                                            <input type="checkbox" style="font-size:50px " name="checkitem" value="<%=item.getCartID()%>" onclick="Myfunction()"> </td>
+                                                            <input class="check" onclick="myFunction()" type="checkbox" style="font-size:50px " name="checkitem" value="<%=item.getCartID()%>"> 
+                                                        </td>
 
 
                                                         <td class="product-thumbnail">
@@ -76,16 +67,14 @@
 
                                                         <td class="product-name" data-title="Sản phẩm">
                                                             <a href=""> </a><%=item.getName() + "(" + item.getSize() + ")" + "(" + item.getColor() + ")"%>       </td>
-
+                                                        <!--Price-->
                                                         <td class="product-price" data-title="Giá">
-                                                           
-                                                            <span class="woocommerce-Price-amount amount"><a value="<%=nf.format(item.getPrice())%>" id="price"></a><%=nf.format(item.getPrice())%>&nbsp;
-                                                                <span class="woocommerce-Price-currencySymbol">&#8363;
-                                                                </span>
-                                                                    
+                                                            <span class="woocommerce-Price-amount amount">
+                                                                <p><%=nf.format(item.getPrice())%>
+                                                                </p>&nbsp;
+                                                                <span class="woocommerce-Price-currencySymbol">&#8363;</span>
                                                             </span>    
-                                                            
-                                                            </td>
+                                                        </td>
 
                                                         <td class="product-quantity" data-title="Số lượng">
                                                             <div class="quantity buttons_added">
@@ -96,107 +85,122 @@
                                                         </td>
 
                                                         <td class="product-subtotal" data-title="Tổng cộng">
-                                                            <span class="woocommerce-Price-amount amount"><%=nf.format(item.getTotalCost())%><span class="woocommerce-Price-currencySymbol">&#8363;</span></span>            </td>
-                                                        <td class="product-remove">
-                                                            <a href="CartControllerMap?service=Delete&cartID=<%=item.getCartID()%>" class="remove" aria-label="Xóa sản phẩm này" >&times;</a>      
+                                                            <div class="price">
+                                                                <span class="woocommerce-Price-amount amount">
+                                                                    <p><%=nf.format(item.getTotalCost())%></p>
+                                                                    <span class="woocommerce-Price-currencySymbol">&#8363;</span>
+                                                                        
+                                                                </span>   
+                                                            </div>
                                                         </td>
+                                                
+                                                <td class="product-remove">
+                                                    <a href="CartControllerMap?service=Delete&cartID=<%=item.getCartID()%>" class="remove" aria-label="Xóa sản phẩm này" >&times;</a>      
+                                                </td>
 
 
 
-                                                        </tr>
-                                                        <% }%>
+                                                </tr>
+                                                <% }%>
 
-                                                        <tr>
-                                                            <td colspan="6" class="actions clear">
+                                                <tr>
+                                                    <td colspan="6" class="actions clear">
 
-                                                                <div class="continue-shopping pull-left text-left">
-                                                                    <a class="button-continue-shopping button primary is-outline"  href="HomePageControllerMap?service=Homepage">
-                                                                        Continue Shopping    </a>
-                                                                </div>
+                                                        <div class="continue-shopping pull-left text-left">
+                                                            <a class="button-continue-shopping button primary is-outline"  href="HomePageControllerMap?service=Homepage">
+                                                                Continue Shopping    </a>
+                                                        </div>
 
-                                                                <input type="submit" class="button primary mt-0 pull-left small" name="service" value="Update" />
+                                                        <input type="submit" class="button primary mt-0 pull-left small" name="service" value="Update" />
 
 
-                                                            </td>
-                                                        </tr>
+                                                    </td>
+                                                </tr>
 
-                                                        </tbody>
-                                                    </table>
-                                                </div>
-                                            </form>
+                                                </tbody>
+                                                </table>
                                         </div>
-
-                                        <div class="cart-collaterals large-5 col pb-0">
-                                            <div class="cart-sidebar col-inner ">
-                                                <div class="cart_totals ">
-
-                                                    <table cellspacing="0">
-                                                        <thead>
-                                                            <tr>
-                                                                <th class="product-name" colspan="2" style="border-width:3px;">Tổng số lượng</th>
-                                                            </tr>
-                                                        </thead>
-                                                    </table>
-
-                                                    <h2>Tổng số lượng</h2>
-
-                                                    <table cellspacing="0" class="shop_table shop_table_responsive">
-
-
-                                                        <tr class="order-total">
-                                                            <th>Tổng cộng</th>
-                                                            <td data-title="Tổng cộng"><strong><span class="woocommerce-Price-amount amount">${sum}&nbsp;<span class="woocommerce-Price-currencySymbol">&#8363;</span></span></strong> </td>
-                                                        </tr>
-
-
-                                                    </table>
-
-                                                    <div class="wc-proceed-to-checkout">
-
-                                                        <a href="http://mauweb.monamedia.net/lazada/thanh-toan/" class="checkout-button button alt wc-forward">
-                                                            Tiến hành thanh toán</a>
-                                                    </div>
-
-
-                                                </div>
-
-
-                                                <div class="cart-sidebar-content relative"></div>	</div>
-                                        </div>
+                                        </form>
                                     </div>
-                                    <div class="cart-footer-content after-cart-content relative"></div></div>
+
+                                    <div class="cart-collaterals large-5 col pb-0">
+                                        <div class="cart-sidebar col-inner ">
+                                            <div class="cart_totals ">
+
+                                                <table cellspacing="0">
+                                                    <thead>
+                                                        <tr>
+                                                            <th class="product-name" colspan="2" style="border-width:3px;">Tổng số lượng</th>
+                                                        </tr>
+                                                    </thead>
+                                                </table>
+
+                                                <h2>Tổng số lượng</h2>
+
+                                                <table cellspacing="0" class="shop_table shop_table_responsive">
 
 
-                            </div><!-- .col-inner -->
-                        </div><!-- .large-12 -->
-                    </div><!-- .row -->
-                </div>
-                                                         <script>
-        function Myfunction(){
-           arentElement = document.getElementsByClassName("cart_item1");
-
-    if (parentElement && parentElement.innerHTML != "") {
-
-        console.log(parentElement.children[0]);
-        console.log(parentElement.children[1]);
-        console.log(parentElement.children[2]);
-        console.log(parentElement.children[3]);
-        console.log(parentElement.children[4]);
-        console.log(parentElement.children[5]);
-        
-        
-        
-            
-        }
-        </script>
+                                                    <tr class="order-total">
+                                                        <th>Tổng cộng</th>
+                                                        <td data-title="Tổng cộng"><strong><span class="woocommerce-Price-amount amount"><p id="sum">0&nbsp;</p><span class="woocommerce-Price-currencySymbol">&#8363;</span></span></strong> </td>
+                                                    </tr>
 
 
-            </main><!-- #main -->
+                                                </table>
 
-            <jsp:include page="footer.jsp"/>
+                                                <div class="wc-proceed-to-checkout">
+
+                                                    <a href="http://mauweb.monamedia.net/lazada/thanh-toan/" class="checkout-button button alt wc-forward">
+                                                        Tiến hành thanh toán</a>
+                                                </div>
+
+
+                                            </div>
+
+
+                                            <div class="cart-sidebar-content relative"></div>	</div>
+                                    </div>
+                                </div>
+                                <div class="cart-footer-content after-cart-content relative"></div></div>
+
+
+                        </div><!-- .col-inner -->
+                    </div><!-- .large-12 -->
+                </div><!-- .row -->
         </div>
 
+    </main><!-- #main -->
 
-    </body>
-   
+    <jsp:include page="footer.jsp"/>
+</div>
+</body>
+<script>
+    function myFunction() {
+        let priceText = document.getElementsByClassName("price");
+        let check = document.getElementsByClassName("check");
+        let sum = document.getElementById("sum");
+//            let price = priceText.split(',').join('')
+        var item = Object.entries(priceText);
+        var cartLength = priceText.length;
+        var arrayCheck = [];
+        var itemPriceValue = [];
+        for (var i = 0; check[i]; ++i) {
+            if (check[i].checked) {
+                arrayCheck[i] = check[i].value;
+            }
+        }
+        for (var i = 0, max = cartLength; i < max; i++) {
+            itemPriceValue[i] = item[i][1].childNodes[1].childNodes[1].innerHTML.split(',').join('');
+            console.log(arrayCheck[i]);
+        }
+        var answer = 0;
+        for (var i = 0,  max = cartLength; i < max; i++) {
+            if (arrayCheck[i] >0) {
+                answer += parseInt(itemPriceValue[i], 10);
+            }
+        }
+        console.log(answer);
+        sum.textContent = answer;
+    }
+</script>
 </html>

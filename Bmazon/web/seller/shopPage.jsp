@@ -21,6 +21,8 @@
 
 <%@ page contentType="text/html;charset=UTF-8" language="java" pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<c:set var="contextPath" value="${pageContext.request.contextPath}" />
+
 <% DecimalFormat nf = new DecimalFormat("###,###,###");%>
 <%
     ProductTypeDAO daoProductType = new ProductTypeDAO();
@@ -34,7 +36,9 @@
     ArrayList<Category> cateList = daoCate.getTrueCategories();
     ArrayList<Genre> gerneList = genDAO.getTrueGenres();
 %>
+
 <!DOCTYPE html>
+<html>
 <!--[if IE 9 ]> <html lang="vi" class="ie9 loading-site no-js"> <![endif]-->
 <!--[if IE 8 ]> <html lang="vi" class="ie8 loading-site no-js"> <![endif]-->
 <!--[if (gte IE 9)|!(IE)]><!--><html lang="vi" class="loading-site no-js"> <!--<![endif]-->
@@ -47,29 +51,25 @@
         <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
         <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.bundle.min.js">
         <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
-        <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.0.7/css/all.css">
-        <script>(function (html) {
-                html.className = html.className.replace(/\bno-js\b/, 'js')
-            })(document.documentElement);</script>
+        <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.0.7/css/all.css">    
         <title>BMAZON</title>
-
         <link rel='stylesheet' href="css/home.css"  type='text/css'>
         <style>
-            .bg{opacity: 0; transition: opacity 1s; -webkit-transition: opacity 1s;} 
-            .bg-loaded{opacity: 1;}
-            .col-md-4 img{
-                margin-top: 5px;
-                margin-bottom: 5px;
-                height: 125px;
-                width: 70px;
-                border-radius: 100%;
-            }
-
-            .col-md-12{
-                margin-top: 10px;
-                margin-bottom: 10px;
-            }
-        </style><!--[if IE]><link rel="stylesheet" type="text/css" href="http://mauweb.monamedia.net/lazada/wp-content/themes/flatsome/assets/css/ie-fallback.css"><script src="//cdnjs.cloudflare.com/ajax/libs/html5shiv/3.6.1/html5shiv.js"></script><script>var head = document.getElementsByTagName('head')[0],style = document.createElement('style');style.type = 'text/css';style.styleSheet.cssText = ':before,:after{content:none !important';head.appendChild(style);setTimeout(function(){head.removeChild(style);}, 0);</script><script src="http://mauweb.monamedia.net/lazada/wp-content/themes/flatsome/assets/libs/ie-flexibility.js"></script><![endif]--> 
+            .cover {
+                background-color: black;
+                background-image: url(${contextPath}/upload/<%= user.getBackgroundImage()%>);
+                background-size: cover;
+                background-repeat: no-repeat;
+                background-position:center; 
+                height: 230px;
+                position: relative;
+                width: 100%;
+                margin-left: auto;
+                margin-right: auto;
+            } 
+            
+        </style>
+        <!--[if IE]><link rel="stylesheet" type="text/css" href="http://mauweb.monamedia.net/lazada/wp-content/themes/flatsome/assets/css/ie-fallback.css"><script src="//cdnjs.cloudflare.com/ajax/libs/html5shiv/3.6.1/html5shiv.js"></script><script>var head = document.getElementsByTagName('head')[0],style = document.createElement('style');style.type = 'text/css';style.styleSheet.cssText = ':before,:after{content:none !important';head.appendChild(style);setTimeout(function(){head.removeChild(style);}, 0);</script><script src="http://mauweb.monamedia.net/lazada/wp-content/themes/flatsome/assets/libs/ie-flexibility.js"></script><![endif]--> 
         <script src="js/1.js"></script>
         <noscript><style>.woocommerce-product-gallery{ opacity: 1 !important; }</style></noscript>
         <link rel='stylesheet' href="css/2.css"  type='text/css'>
@@ -79,17 +79,25 @@
         <script src="js.home.js"></script>
 
     </head>
-    <body class="home page-template page-template-page-blank page-template-page-blank-php page page-id-16 page-parent lightbox nav-dropdown-has-arrow" >
+    <body >
         <jsp:include page="../header.jsp"/>
+        <!--Background image-->
+        <div class="row cover"></div>
 
-
-        <div class="row" style="background-color: #CCCCFF; margin-top: 10px;">
+        <div class="row" style="background-color: #CCCCFF;">
             <div class="col-md-4" style="border: 2px solid white">
                 <div class="row">
-                    <%String img = "images/" + user.getBackgroundImage();%>
-                    <img class="col-md-5" src="<%=img%>">
-                    <div class="col-md-7">
-                        <h1 style="text-align: center; margin-top: 35px; font-size: 40px;"><%=user.getUsername()%></h1>
+                    <a class="navbar-brand" href="#">
+                    <div class="logo-image">
+                        <div class="col-md-6">
+                        <img src="${contextPath}/upload/<%= user.getProfileImage()%>" width="120" height="120">
+                        </div>
+                        <div class="col-md-6">
+                            <h1 style="text-align: center; margin-top: 35px; font-size: 40px;"><%=user.getUsername()%></h1></div>
+                    </div>
+                    </a>
+                    <div>
+                        
                     </div>
                 </div>
             </div>
