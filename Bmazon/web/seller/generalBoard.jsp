@@ -4,6 +4,8 @@
     Author     : DELL
 --%>
 
+<%@page import="entity.Seller"%>
+<%@page import="model.SellerDAO"%>
 <%@page import="entity.Product"%>
 <%@page import="java.util.ArrayList"%>
 <%@page import="model.ProductDAO"%>
@@ -31,9 +33,11 @@
     <body>
         <%
             User curUser = (User) request.getSession().getAttribute("currUser");
-        String seller = curUser.getUserId();
         ProductDAO daoproduct = new ProductDAO();
-        ArrayList<Product> listProduct = daoproduct.getProductBySeller(seller);
+        SellerDAO sellerDAO = new SellerDAO();
+        Seller seller = sellerDAO.getSellerByUserID(Integer.parseInt(curUser.getUserId()));
+        String sellerID = Integer.toString(seller.getSellerID());
+        ArrayList<Product> listProduct = daoproduct.getProductBySeller(sellerID);
         %>
         <div class="row" style="margin-bottom:5px;">
 
@@ -42,7 +46,7 @@
                             <div class="sm-st clearfix">
                                 <span class="sm-st-icon"><img style="margin-bottom: 10%" src="https://cdn.iconscout.com/icon/premium/png-256-thumb/new-product-1800178-1528419.png" class="img-circle"></span>
                                 <div class="sm-st-info">
-                                    <span> <%= listProduct.size()%> </span>
+                                    <span> <%= listProduct.size() %> </span>
                                     Total Product
                                 </div>
                             </div>

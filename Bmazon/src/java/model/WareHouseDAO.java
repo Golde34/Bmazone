@@ -29,13 +29,11 @@ public class WareHouseDAO extends BaseDAO{
     }
 
     public void addWareHouse(WareHouse wh) {
-        String xSql= "INSERT INTO WareHouse ([wareHouseAddress],[wareHouseCity],[status])\n"
-                + "     VALUES (?,?,?)";
+        String xSql= "INSERT INTO WareHouse ([wareHouseAddress],[status])\n"
+                + "     VALUES (?,1)";
         try {
             pre = conn.prepareStatement(xSql);
             pre.setString(1, wh.getWareHouseAddress());
-            pre.setString(2, wh.getWareHouseCity());
-            pre.setInt(3, wh.getStatus());
             pre.executeUpdate();
         } catch (SQLException e) {
         }
@@ -43,13 +41,12 @@ public class WareHouseDAO extends BaseDAO{
 
     public int editWareHouse(WareHouse wh) {
         int n = 0;
-        String xSql= "update WareHouse set [wareHouseAddress] = ? [wareHouseCity] = ? [status] =? where [wareHouseID] = ?";
+        String xSql= "update WareHouse set [wareHouseAddress] = ? [status] =? where [wareHouseID] = ?";
         try {
             pre = conn.prepareStatement(xSql);
             pre.setString(1, wh.getWareHouseAddress());
-            pre.setString(2, wh.getWareHouseCity());
-            pre.setInt(3, wh.getStatus());
-            pre.setInt(4, wh.getWareHouseID());
+            pre.setInt(2, wh.getStatus());
+            pre.setInt(3, wh.getWareHouseID());
             pre.executeUpdate();
         } catch (SQLException e) {
         }
@@ -66,8 +63,7 @@ public class WareHouseDAO extends BaseDAO{
                 list.add(new WareHouse(
                         rs.getInt(1),
                         rs.getString(2),
-                        rs.getString(3),
-                        rs.getInt(4)));
+                        rs.getInt(3)));
             }
         } catch (SQLException e) {
         }
