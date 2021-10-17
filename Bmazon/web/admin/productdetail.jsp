@@ -104,13 +104,13 @@
                                             <td>Seller</td>
                                             <%Seller seller = sellerdao.getSellerID(String.valueOf(product.getSeller()));%>
                                             <td>
-                                                <input required class="form-control" readonly value="<%=seller.getSellerShopName()%>" type="text" class="input">
+                                                <input required class="form-control" readonly value="<%=seller.getSellerShopName()%>" type="text">
                                                 <input type="hidden" name="seller" value="<%=product.getSeller()%>"
                                             </td>
                                         </tr>
                                         <tr>
                                             <td>Release Date</td>
-                                            <td><input required class="form-control" value="<%=product.getReleaseDate()%>" type="date" name="date" class="input"></td>
+                                            <td><input max="2000-01-01" id="inputDate" required class="form-control" value="<%=product.getReleaseDate()%>" type="date" name="date"></td>
                                         </tr>
                                         <input type="hidden" value="updateproduct" name="service">
                                         <input type="hidden" value="<%=product.getProductID()%>" name="pid">
@@ -211,6 +211,19 @@
                 }, false)
                 })
         })()
+        var today = new Date();
+        var dd = today.getDate();
+        var mm = today.getMonth()+1; //January is 0!
+        var yyyy = today.getFullYear();
+        if(dd<10){
+        dd='0'+dd
+        } 
+        if(mm<10){
+        mm='0'+mm
+        } 
+        today = yyyy+'-'+mm+'-'+dd;
+        document.getElementById("inputDate").setAttribute("max", today);
+
         </script>
         <!-- Control Center for Soft Dashboard: parallax effects, scripts for the example pages etc -->
     <!--        <script src="${contextPath}/js/soft-ui-dashboard.min.js?v=1.0.3"></script>-->

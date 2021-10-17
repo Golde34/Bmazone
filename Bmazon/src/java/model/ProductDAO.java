@@ -38,12 +38,14 @@ public class ProductDAO extends BaseDAO {
         return num;
     }
 
-    public int getPageNumberBySeller(String search) {
+    public int getPageNumberBySeller(String search, int sellerID) {
         int num = 0;
         String xSql = "SELECT COUNT(*)from Product p join Seller s on p.sellerID=s.sellerID join ProductCategory pc on p.productID=pc.productID join Category c on pc.categoryId=c.categoryID join ProductGenre pg on pg.productID=p.productID join Genre g on g.genreID=pg.genreID\n"
-                + "   where p.productName like '%" + search + "%' or c.categoryName like '%" + search + "%' or g.genreName like '%" + search + "%' or s.sellerShopName like '%" + search + "%'";
-        ResultSet rs = dbConn.getData(xSql);
+                + "   where p.productName like '%" + search + "%' or c.categoryName like '%" + search + "%' or g.genreName like '%" + search + "%' and p.sellerID = ?";
         try {
+            pre = conn.prepareStatement(xSql);
+            pre.setInt(1, sellerID);
+            rs = pre.executeQuery();
             if (rs.next()) {
                 num = rs.getInt(1);
             }
@@ -416,30 +418,6 @@ public class ProductDAO extends BaseDAO {
 
     public static void main(String[] args) {
         ProductDAO pDAO = new ProductDAO();
-        ProductCategoryDAO pcDAO = new ProductCategoryDAO();
-        ProductGenreDAO pgDAO = new ProductGenreDAO();
-
-        Product product = new Product();
-        product.setProductName("Hai Nam 2");
-        product.setDescription("dep trai");
-        product.setReleaseDate(java.sql.Date.valueOf("2019-08-20"));
-        product.setSeller(4);
-        System.out.println(pDAO.addProduct(product));
-        Product productToken = pDAO.getProductLatest(4);
-
-        System.out.println(productToken.getProductID());
-        ProductCategory pc = new ProductCategory();
-        ProductGenre pg = new ProductGenre();
-        // Add product cate
-//        pc.setProductID(product.getProductID());
-        pcDAO.addProductCategory(productToken.getProductID(), 1);
-
-        //Add product genre
-//        pg.setProductID(product.getProductID());
-//        pg.setGenreID(Integer.parseInt(genre));
-        pgDAO.addProductGenre(productToken.getProductID(), 1);
-
-
     }
 
     public int totalProductSeller(String sid) {

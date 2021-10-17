@@ -181,7 +181,7 @@
                                     <li class="cart-item has-icon
                                         has-dropdown" style="margin-left: 10px">
                                         <% if (x == null) {%>
-                                        <a href="" title="Giỏ hàng" class="header-cart-link is-small">
+                                        <a href="${contextPath}/loginAndSecurity/login.jsp" title="Giỏ hàng" class="header-cart-link is-small">
                                         <i class="fa fa-shopping-cart"
                                            data-icon-label="0">
                                             <%-- so luong item in cart--%>

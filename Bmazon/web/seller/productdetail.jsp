@@ -220,7 +220,7 @@
                                                 </tr>
                                                 <tr>
                                                     <td>Release Date</td>
-                                                    <td><input required class="form-control" value="<%=product.getReleaseDate()%>" type="date" name="date" class="input"></td>
+                                                    <td><input max="2000-01-01" id="inputDate" required class="form-control" value="<%=product.getReleaseDate()%>" type="date" name="date"></td>
                                                 </tr>
                                             </table>
                                         </div>
@@ -379,5 +379,17 @@
                 }, false)
                 })
         })()
+        var today = new Date();
+        var dd = today.getDate();
+        var mm = today.getMonth()+1; //January is 0!
+        var yyyy = today.getFullYear();
+        if(dd<10){
+        dd='0'+dd
+        } 
+        if(mm<10){
+        mm='0'+mm
+        } 
+        today = yyyy+'-'+mm+'-'+dd;
+        document.getElementById("inputDate").setAttribute("max", today);
         </script>
 </html>
