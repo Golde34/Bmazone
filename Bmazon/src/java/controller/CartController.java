@@ -70,14 +70,17 @@ public class CartController extends HttpServlet {
      public void serviceCart(HttpServletRequest request, HttpServletResponse response) {
         ArrayList<CartItem> ShoppingCart = (ArrayList<CartItem>) request.getSession().getAttribute("ShoppingCart");
          if (ShoppingCart.isEmpty()) {
-             
+            
          }
          request.getSession().setAttribute("ShoppingCart", ShoppingCart);
         sendDispatcher(request, response, "cart.jsp");
     }
 
     public void serviceAddToCart(HttpServletRequest request, HttpServletResponse response) throws IOException {
-
+        User x = (User) request.getSession().getAttribute("currUser");
+        if(x==null){
+            sendDispatcher(request, response,"loginAndSecurity/login.jsp");
+        }
         ArrayList<CartItem> ShoppingCart = (ArrayList<CartItem>) request.getSession().getAttribute("ShoppingCart");
         String pid = request.getParameter("pid");
         String size = request.getParameter("size");
@@ -105,7 +108,7 @@ public class CartController extends HttpServlet {
             ShoppingCart.add(cartitem);
         }         
         request.getSession().setAttribute("ShoppingCart", ShoppingCart);
-        sendDispatcher(request, response, "cart.jsp");
+        sendDispatcher(request, response,"ProductDetailControllerMap?service=getProductDetail&pid="+pid);
         
            
     }
@@ -119,7 +122,7 @@ public class CartController extends HttpServlet {
             if (ShoppingCart.get(i).getCartID()==Integer.parseInt(idString[i])) {
                 ShoppingCart.get(i).setQuantity(Integer.parseInt(quantityString[i]));
                 ShoppingCart.get(i).setTotalCost(Integer.parseInt(quantityString[i])*(ShoppingCart.get(i).getPrice()));
-                ;
+                
             }
         }
           request.getSession().setAttribute("ShoppingCart", ShoppingCart);

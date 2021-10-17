@@ -79,11 +79,17 @@
 
     </head>
     <body class="home page-template page-template-page-blank page-template-page-blank-php page page-id-16 page-parent lightbox nav-dropdown-has-arrow" >
+        <% String list = (String) request.getAttribute("href");
 
+        %>
         <input   id="totalnumber" type="hidden" value="<%=total%>" >
         <div id="wrapper">
+            <%if (!list.equals("list")) {
 
+
+            %>
             <div class="shop-page-title category-page-title page-title ">
+
 
                 <div class="page-title-inner flex-row  medium-flex-wrap container">
                     <div class="flex-col flex-grow medium-text-center">
@@ -110,9 +116,10 @@
                 </div><!-- flex-row -->
             </div><!-- .page-title -->
 
+
             <main id="main" class="">
                 <div class="row category-page-row">
-                    
+
 
                     <div class="col large-2 hide-for-medium ">
                         <div id="shop-sidebar" class="sidebar-inner col-inner">
@@ -130,17 +137,17 @@
 
 
                                         <!--- here is possible drop html code which is never redraws by AJAX ---->
-                                        
-                                            <div class="woof_redraw_zone" data-woof-ver="2.1.7">
+
+                                        <div class="woof_redraw_zone" data-woof-ver="2.1.7">
 
 
 
-                                                <div data-css-class="woof_container_product_cat" class="woof_container woof_container_checkbox woof_container_product_cat woof_container_1 woof_container_danhmcsnphm">
-                                                    <div class="woof_container_overlay_item"></div>
-                                                    <div class="woof_container_inner woof_container_inner_danhmcsnphm">
-                                                        <h4>Danh mục sản phẩm	    <a href="javascript: void(0);" title="toggle" class="woof_front_toggle woof_front_toggle_opened" data-condition="opened">+</a>
-                                                        </h4>
-                                                        <form action="HomePageControllerMap" method="POST">
+                                            <div data-css-class="woof_container_product_cat" class="woof_container woof_container_checkbox woof_container_product_cat woof_container_1 woof_container_danhmcsnphm">
+                                                <div class="woof_container_overlay_item"></div>
+                                                <div class="woof_container_inner woof_container_inner_danhmcsnphm">
+                                                    <h4>Danh mục sản phẩm	    <a href="javascript: void(0);" title="toggle" class="woof_front_toggle woof_front_toggle_opened" data-condition="opened">+</a>
+                                                    </h4>
+                                                    <form action="HomePageControllerMap" method="POST">
                                                         <div class="woof_block_html_items" >
                                                             <ul class="woof_list woof_list_checkbox">
                                                                 <input type="hidden" value="${search}" name="search">
@@ -157,31 +164,31 @@
                                                                         }
 
                                                                     %>  
-                
+
                                                                 </li>
                                                             </ul>
-                                                                    <button type="submit" style="float: right;" class="button woof_reset_search_form" name="service" value="check">Add Filter</button>
+                                                            <button type="submit" style="float: right;" class="button woof_reset_search_form" name="service" value="check">Add Filter</button>
                                                         </div>
-                                                        </form>
+                                                    </form>
 
-                                                        <input type="hidden" name="woof_t_product_cat" value="Danh mục sản phẩm" /><!-- for red button search nav panel -->
+                                                    <input type="hidden" name="woof_t_product_cat" value="Danh mục sản phẩm" /><!-- for red button search nav panel -->
 
-                                                    </div>
                                                 </div>
-
-                                                
-
-
-                                                <div data-css-class="woof_price3_search_container" class="woof_price3_search_container woof_container">
-                                                    <div class="woof_container_overlay_item"></div>
-                                                    <div class="woof_container_inner">
-                                                        <h4>Lọc theo giá</h4>
+                                            </div>
 
 
-                                                        <input class="woof_range_slider" id="6167e86ddbe4c" data-min="30000" data-max="40300000" data-min-now="30000" data-max-now="40300000" data-step="1" data-slider-prefix="" data-slider-postfix=" &#8363;" value="" />
 
-                                                    </div>
+
+                                            <div data-css-class="woof_price3_search_container" class="woof_price3_search_container woof_container">
+                                                <div class="woof_container_overlay_item"></div>
+                                                <div class="woof_container_inner">
+                                                    <h4>Lọc theo giá</h4>
+
+
+                                                    <input class="woof_range_slider" id="6167e86ddbe4c" data-min="30000" data-max="40300000" data-min-now="30000" data-max-now="40300000" data-step="1" data-slider-prefix="" data-slider-postfix=" &#8363;" value="" />
+
                                                 </div>
+                                            </div>
 
 
 
@@ -189,102 +196,167 @@
 
 
 
-                                                <div class="woof_submit_search_form_container">
+                                            <div class="woof_submit_search_form_container">
 
 
 
-                                                    <button style="float: right;" class="button woof_reset_search_form" data-link="">Reset</button>
-                                                   
+                                                <button style="float: right;" class="button woof_reset_search_form" data-link="">Reset</button>
 
 
-                                                
+
+
 
 
 
 
 
                                             </div>
-                                        </form>
+                                            </form>
+
+                                        </div>
 
                                     </div>
+
+
 
                                 </div>
+                            </aside>
+
+                        </div><!-- .sidebar-inner -->
+                    </div><!-- #shop-sidebar -->
 
 
+                    <div class="col large-10">      
 
-                        </div>
-                        </aside>
+                        <div class="shop-container">
+                            <%if (total == 0) {%>
+                            <h1>THERE ARE NO RESULTS</h1 >
 
-                    </div><!-- .sidebar-inner -->
-                </div><!-- #shop-sidebar -->
-
-
-                <div class="col large-10">      
-
-                    <div class="shop-container">
-                        <%if (total == 0) {%>
-                        <h1>THERE ARE NO RESULTS</h1 >
-
-                        <% }
-                        %>
-
-                        <div class="products row row-small large-columns-5 medium-columns-3 small-columns-2 has-shadow row-box-shadow-1" id="1">
-                            <% for (Product pa : ListProduct) {
-                                    String str = "images/" + gallDAO.getSampleOfProduct(pa.getProductID());
-                                    double price = Double.parseDouble(ptDAO.getProductPrice(pa.getProductID()));
-
+                            <% }
                             %>
-                            <div class="product-small col product type-product status-publish has-post-thumbnail product_cat-bach-hoa-online product_cat-do-hop-dong-goi first instock shipping-taxable purchasable product-type-simple">
-                                <div class="col-inner">
 
-                                    <div class="badge-container absolute left top z-1">
-                                        <div class="callout badge badge-square"><div class="badge-inner secondary on-sale"><span class="onsale">-50%</span></div></div>
-                                    </div>
-                                    <div class="product-small box has-hover box-normal box-text-bottom">
-                                        <div class="box-image" style="width:150px; height:150px ">
-                                            <a href="ProductDetailControllerMap?service=getProductDetail&pid=<%=pa.getProductID()%>">
-                                                <img src="<%=str%>"></a>
+                            <div class="products row row-small large-columns-5 medium-columns-3 small-columns-2 has-shadow row-box-shadow-1" id="1">
+                                <% for (Product pa : ListProduct) {
+                                        String str = "images/" + gallDAO.getSampleOfProduct(pa.getProductID());
+                                        double price = Double.parseDouble(ptDAO.getProductPrice(pa.getProductID()));
 
-                                        </div><!-- box-image -->
+                                %>
+                                <div class="product-small col product type-product status-publish has-post-thumbnail product_cat-bach-hoa-online product_cat-do-hop-dong-goi first instock shipping-taxable purchasable product-type-simple">
+                                    <div class="col-inner">
 
-                                        <div class="box-text text-center" style="background-color:rgb(255, 255, 255);">
-                                            <div class="title-wrapper" >		
-                                                <p class="category uppercase is-smaller no-text-overflow product-cat op-7">   </p> <%--category--%>
-                                                <p class="name product-title"><a href="ProductDetailControllerMap?service=getProductDetail&pid=<%=pa.getProductID()%>"> <%=pa.getProductName()%> </a></p>
-                                            </div> 
-                                            <div class="price-wrapper" 
-                                                 <span class="price">
-                                                    <ins><span class="woocommerce-Price-amount amount"><%=nf.format(price)%>&nbsp; <span class="woocommerce-Price-currencySymbol">&#8363;</span></span></ins></span>
-                                            </div>		
-                                        </div><!-- box-text -->
-                                    </div><!-- box -->
-                                </div><!-- .col-inner -->
-                            </div><!-- col -->
-                            <%    }
-                            %>
+                                        <div class="badge-container absolute left top z-1">
+                                            <div class="callout badge badge-square"><div class="badge-inner secondary on-sale"><span class="onsale">-50%</span></div></div>
+                                        </div>
+                                        <div class="product-small box has-hover box-normal box-text-bottom">
+                                            <div class="box-image" style="width:150px; height:150px ">
+                                                <a href="ProductDetailControllerMap?service=getProductDetail&pid=<%=pa.getProductID()%>">
+                                                    <img src="<%=str%>"></a>
+
+                                            </div><!-- box-image -->
+
+                                            <div class="box-text text-center" style="background-color:rgb(255, 255, 255);">
+                                                <div class="title-wrapper" >		
+                                                    <p class="category uppercase is-smaller no-text-overflow product-cat op-7">   </p> <%--category--%>
+                                                    <p class="name product-title"><a href="ProductDetailControllerMap?service=getProductDetail&pid=<%=pa.getProductID()%>"> <%=pa.getProductName()%> </a></p>
+                                                </div> 
+                                                <div class="price-wrapper" 
+                                                     <span class="price">
+                                                        <ins><span class="woocommerce-Price-amount amount"><%=nf.format(price)%>&nbsp; <span class="woocommerce-Price-currencySymbol">&#8363;</span></span></ins></span>
+                                                </div>		
+                                            </div><!-- box-text -->
+                                        </div><!-- box -->
+                                    </div><!-- .col-inner -->
+                                </div><!-- col -->
+                                <%    }
+                                %>
+                            </div>
                         </div>
-                    </div>
-                    <div class="container">
-                        <nav class="woocommerce-pagination">
-                            <ul class="page-numbers nav-pagination links text-center">
-                                ${previous}
-                                <c:forEach begin="${begin}" end="${end}" var="i">
-                                     <li><a class='' href="HomePageControllerMap?service=${href}&page=${i}">${i}</a></li>
-                                    
-                                </c:forEach>
+                        <div class="container">
+                            <nav class="woocommerce-pagination">
+                                <ul class="page-numbers nav-pagination links text-center">
+                                    ${previous}
+                                    <c:forEach begin="${begin}" end="${end}" var="i">
+                                        <li><a class='' href="HomePageControllerMap?service=${href}&page=${i}">${i}</a></li>
+
+                                    </c:forEach>
                                     ${next}
-                            </ul>
-                        </nav>
+                                </ul>
+                            </nav>
+                        </div>
+
                     </div>
+
 
                 </div>
+            </main><!-- #main -->
+            <% } else { %>
+            <br>
+            <button class="button" style=" border-radius: 5px; margin-left:45%; font-size: 20px ">All Product</button> <br> <br>
+            <div class="col large-12">      
 
+                <div class="">
+                    <%if (total == 0) {%>
+                    <h1>THERE ARE NO RESULTS</h1 >
+
+                    <% }
+                    %>
+
+                    <div class="row large-columns-5 medium-columns-3 small-columns-2 has-shadow row-box-shadow-1" >
+                        <% for (Product pa : ListProduct) {
+                                String str = "images/" + gallDAO.getSampleOfProduct(pa.getProductID());
+                                double price = Double.parseDouble(ptDAO.getProductPrice(pa.getProductID()));
+
+                        %>
+                        <div class="col">
+                            <div class="col-inner">
+
+                                <div class="badge-container absolute left top z-1">
+                                    <div class="callout badge badge-square"><div class="badge-inner secondary on-sale"><span class="onsale">-50%</span></div></div>
+                                </div>
+                                <div class="product-small box has-hover box-normal box-text-bottom">
+                                    <div class="box-image" style="width:150px; height:150px ">
+                                        <a href="ProductDetailControllerMap?service=getProductDetail&pid=<%=pa.getProductID()%>">
+                                            <img src="<%=str%>"></a>
+
+                                    </div><!-- box-image -->
+
+                                    <div class="box-text text-center" style="background-color:rgb(255, 255, 255);">
+                                        <div class="title-wrapper" >		
+                                            <p class="category uppercase is-smaller no-text-overflow product-cat op-7">   </p> <%--category--%>
+                                            <p class="name product-title"><a href="ProductDetailControllerMap?service=getProductDetail&pid=<%=pa.getProductID()%>"> <%=pa.getProductName()%> </a></p>
+                                        </div> 
+                                        <div class="price-wrapper" 
+                                             <span class="price">
+                                                <ins><span class="woocommerce-Price-amount amount"><%=nf.format(price)%>&nbsp; <span class="woocommerce-Price-currencySymbol">&#8363;</span></span></ins></span>
+                                        </div>		
+                                    </div><!-- box-text -->
+                                </div><!-- box -->
+                            </div><!-- .col-inner -->
+                        </div><!-- col -->
+                        <%    }
+                        %>
+                    </div>
+                </div>
+                <div class="container">
+                    <nav class="woocommerce-pagination">
+                        <ul class="page-numbers nav-pagination links text-center">
+                            ${previous}
+                            <c:forEach begin="${begin}" end="${end}" var="i">
+                                <li><a class='' href="HomePageControllerMap?service=${href}&page=${i}">${i}</a></li>
+
+                            </c:forEach>
+                            ${next}
+                        </ul>
+                    </nav>
+                </div>
+
+            </div>
+
+            <% }%>
 
         </div>
-    </main><!-- #main -->
-</div>
 
 
 
-</body>
+    </body>
 </html>

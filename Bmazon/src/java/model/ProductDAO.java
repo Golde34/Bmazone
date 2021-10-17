@@ -361,7 +361,7 @@ public class ProductDAO extends BaseDAO {
         String sql = "SELECT * FROM Product where sellerID = ?";
         try {
             pre = conn.prepareStatement(sql);
-            pre.setString(1, seller);
+            pre.setInt(1,Integer.parseInt(seller));
             rs = pre.executeQuery();
             while (rs.next()) {
                 Product pro = new Product();
@@ -413,6 +413,7 @@ public class ProductDAO extends BaseDAO {
         return list;
     }
 
+
     public static void main(String[] args) {
         ProductDAO pDAO = new ProductDAO();
         ProductCategoryDAO pcDAO = new ProductCategoryDAO();
@@ -437,6 +438,7 @@ public class ProductDAO extends BaseDAO {
 //        pg.setProductID(product.getProductID());
 //        pg.setGenreID(Integer.parseInt(genre));
         pgDAO.addProductGenre(productToken.getProductID(), 1);
+
 
     }
 

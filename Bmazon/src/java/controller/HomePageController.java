@@ -103,9 +103,8 @@ public class HomePageController extends HttpServlet {
     }
 
     public void serviceList(HttpServletRequest request, HttpServletResponse response) {
-        int count = proDAO.totalProduct();
-        String[] pageshow=null;
-        int size=20;
+        int count = proDAO.totalProduct();       
+        int size=24;
         int total=count/size;
         int page,end;
         String pageString = request.getParameter("page");
