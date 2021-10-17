@@ -319,10 +319,10 @@ public ArrayList<Product> getAllPagingProductBySeller(int index,int numOfRow,Str
 
     public ArrayList<Product> getProductBySeller(String seller) {
         ArrayList<Product> list = new ArrayList<>();
-        String sql = "SELECT * FROM Product where sellerID = '?'";
+        String sql = "SELECT * FROM Product where sellerID = ?";
         try {
             pre = conn.prepareStatement(sql);
-            pre.setString(1, seller);
+            pre.setInt(1,Integer.parseInt(seller));
             rs = pre.executeQuery();
             while (rs.next()) {
                 Product pro = new Product();
@@ -373,11 +373,11 @@ public ArrayList<Product> getAllPagingProductBySeller(int index,int numOfRow,Str
         }
         return list;
     }
-//    public static void main(String[] args) {
-//        ProductDAO pDAO = new ProductDAO();
-//        List<Product> listProduct = pDAO.getAllPagingProductBySeller(1, 5, "", "4");
-//        System.out.println(listProduct);
-//    }
+    public static void main(String[] args) {
+        ProductDAO pDAO = new ProductDAO();
+        List<Product> listProduct = pDAO.getProductBySeller("1");
+        System.out.println(listProduct);
+    }
 
     public int totalProductSeller(String sid) {
         int count = 0;

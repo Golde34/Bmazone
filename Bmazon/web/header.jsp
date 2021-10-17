@@ -181,13 +181,14 @@
                                     <li class="cart-item has-icon
                                         has-dropdown" style="margin-left: 10px">
                                         <% if (x == null) {%>
-                                       
-                                            <i class="fa fa-shopping-cart"
-                                               data-icon-label="0">
-                                                <%-- so luong item in cart--%>
-                                            </i>
+                                        <a href="" title="Giỏ hàng" class="header-cart-link is-small">
+                                        <i class="fa fa-shopping-cart"
+                                           data-icon-label="0">
+                                            <%-- so luong item in cart--%>
+                                        </i>
+                                        </a>
                                         
-                                        <%}%>
+                                        <% } %>
 
                                         <% if (x != null) {%>
                                         <%  ArrayList<CartItem> ShoppingCart = (ArrayList<CartItem>) session.getAttribute("ShoppingCart");
@@ -227,7 +228,7 @@
                                                 </div>
                                             </li>
                                         </ul><!-- .nav-dropdown -->
-                                        <%}%>
+                                        <% } %>
 
 
 

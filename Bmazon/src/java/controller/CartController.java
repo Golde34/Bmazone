@@ -105,7 +105,7 @@ public class CartController extends HttpServlet {
             ShoppingCart.add(cartitem);
         }         
         request.getSession().setAttribute("ShoppingCart", ShoppingCart);
-        sendDispatcher(request, response, "cart.jsp");
+        sendDispatcher(request, response, "ProductDetailControllerMap?service=getProductDetail&pid="+pid);
         
            
     }
