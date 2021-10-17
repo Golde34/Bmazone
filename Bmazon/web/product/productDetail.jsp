@@ -475,13 +475,6 @@
                                         <button class="round-black-btn" type="submit">Submit Review</button>
                                     </div>
                                 </div>
-
-                                <div class="form-group">
-                                    <label>Your message</label>
-                                    <textarea class="form-control" rows="10"></textarea>
-                                </div>
-
-                                <button class="round-black-btn">Submit Review</button>
                             </form>
                         </div>
                     </div>

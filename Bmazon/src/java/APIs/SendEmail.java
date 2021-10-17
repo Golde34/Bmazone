@@ -93,7 +93,7 @@ public class SendEmail {
                 msg.setText("Hello, " + username + ". Please verify your account using this code: " + code);
             } else if (option.equals("editwallet")) {
                 msg.setSubject("Wallet Request Verification from Bmazon");
-                msg.setText("Please verify your account using this code: " + code);
+                msg.setText("Please verify your request using this code: " + code);
             } else {
                 msg.setSubject("User Forgot Password on Bmazon ");
                 msg.setContent(addTable(code), "text/html; charset=UTF-8");

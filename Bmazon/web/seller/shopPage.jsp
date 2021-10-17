@@ -1,3 +1,4 @@
+<%@page import="entity.Seller"%>
 <%@page import="model.UserDAO"%>
 <%@page import="java.text.DecimalFormat"%>
 <%@page import="java.text.NumberFormat"%>
@@ -31,6 +32,7 @@
     Product product = (Product) request.getAttribute("product");
     List<Product> listProduct = (List<Product>) request.getAttribute("listProduct");
     User user = (User) request.getAttribute("user");
+    Seller seller = (Seller) request.getAttribute("seller");
     CategoryDAO daoCate = new CategoryDAO();
     GenreDAO genDAO = new GenreDAO();
     ArrayList<Category> cateList = daoCate.getTrueCategories();
@@ -70,6 +72,27 @@
             
         </style>
         <!--[if IE]><link rel="stylesheet" type="text/css" href="http://mauweb.monamedia.net/lazada/wp-content/themes/flatsome/assets/css/ie-fallback.css"><script src="//cdnjs.cloudflare.com/ajax/libs/html5shiv/3.6.1/html5shiv.js"></script><script>var head = document.getElementsByTagName('head')[0],style = document.createElement('style');style.type = 'text/css';style.styleSheet.cssText = ':before,:after{content:none !important';head.appendChild(style);setTimeout(function(){head.removeChild(style);}, 0);</script><script src="http://mauweb.monamedia.net/lazada/wp-content/themes/flatsome/assets/libs/ie-flexibility.js"></script><![endif]--> 
+            .bg{opacity: 0; transition: opacity 1s; -webkit-transition: opacity 1s;} 
+            .bg-loaded{opacity: 1;}
+            .col-md-4 img{
+                margin-top: 5px;
+                margin-bottom: 5px;
+                height: 125px;
+                width: 70px;
+                border-radius: 100%;
+            }
+
+            .col-md-12{
+                margin-top: 10px;
+                margin-bottom: 10px;
+            }
+            .container a.active{
+                background-color: #4CAF50;
+            }
+            .woocommerce-pagination a:hover:not(.active){
+                background-color: chocolate;
+            }
+        </style><!--[if IE]><link rel="stylesheet" type="text/css" href="http://mauweb.monamedia.net/lazada/wp-content/themes/flatsome/assets/css/ie-fallback.css"><script src="//cdnjs.cloudflare.com/ajax/libs/html5shiv/3.6.1/html5shiv.js"></script><script>var head = document.getElementsByTagName('head')[0],style = document.createElement('style');style.type = 'text/css';style.styleSheet.cssText = ':before,:after{content:none !important';head.appendChild(style);setTimeout(function(){head.removeChild(style);}, 0);</script><script src="http://mauweb.monamedia.net/lazada/wp-content/themes/flatsome/assets/libs/ie-flexibility.js"></script><![endif]--> 
         <script src="js/1.js"></script>
         <noscript><style>.woocommerce-product-gallery{ opacity: 1 !important; }</style></noscript>
         <link rel='stylesheet' href="css/2.css"  type='text/css'>
@@ -98,6 +121,10 @@
                     </a>
                     <div>
                         
+                    <%String img = "images/" + user.getBackgroundImage();%>
+                    <img class="col-md-5" src="<%=img%>">
+                    <div class="col-md-7">
+                        <h1 style="text-align: center; margin-top: 35px; font-size: 30px;"><%=seller.getSellerShopName()%></h1>
                     </div>
                 </div>
             </div>
@@ -109,7 +136,7 @@
                     <span>Phone: <%=user.getPhoneNumber()%></span>
                 </div>
                 <div class="col-md-12">
-                    <span>Bio: <%=user.getBio()%></span>
+                    <span>Description: <%=seller.getDescription()%></span>
                 </div>
                 <div class="col-md-12">
                     <span>Twitter: <%=user.getTwitter()%></span>
@@ -212,7 +239,7 @@
                                 ${previous}
                                 <c:forEach  begin="${begin}" end="${end}" var="i">
 
-                                    <li><a class="active" href="HomePageControllerMap?service=shopPage&sid=${sid}&page=${i}">${i}</a></li>
+                                    <li><a class=" ${page==i?"active":""}" href="HomePageControllerMap?service=shopPage&sid=${sid}&page=${i}">${i}</a></li>
                                     </c:forEach>
                                     ${next}
                             </ul>

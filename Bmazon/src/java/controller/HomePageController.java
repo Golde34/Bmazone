@@ -171,9 +171,9 @@ public class HomePageController extends HttpServlet {
         String str = request.getParameter("search").trim();
         int count = proDAO.totalSearchProduct(str);
         String address;
-        int size=20;
-        int total=count/size;
-        int page,end;       
+        int size = 20;
+        int total = count / size;
+        int page, end;
         String pageString = request.getParameter("page");
         if (pageString == null) {
             page = 1;
@@ -208,7 +208,7 @@ public class HomePageController extends HttpServlet {
         request.setAttribute("listP", ListP);
         request.setAttribute("search", str);
         request.setAttribute("count", count);
-        request.setAttribute("href",("search&search="+str));
+        request.setAttribute("href", ("search&search=" + str));
         sendDispatcher(request, response, "productList/list.jsp");
 
     }
@@ -217,8 +217,10 @@ public class HomePageController extends HttpServlet {
 
         String id = request.getParameter("sid");
         int count = proDAO.totalProductSeller(id);
-        
+
         User user = userDAO.getUserById(id);
+        Seller seller = sellerDAO.getSellerByUserID(Integer.parseInt(id));
+        request.setAttribute("seller", seller);
         request.setAttribute("user", user);
 
         int size = 10;
@@ -252,7 +254,6 @@ public class HomePageController extends HttpServlet {
         } else {
             request.setAttribute("next", next);
             request.setAttribute("previous", previous);
-
         }
 
         List<Product> listProduct = proDAO.getProductBySellerPaging(page, id);
@@ -262,16 +263,14 @@ public class HomePageController extends HttpServlet {
         request.setAttribute("listProduct", listProduct);
         request.setAttribute("sid", id);
         request.setAttribute("count", count);
-        
 
         sendDispatcher(request, response, "seller/shopPage.jsp");
     }
-     public void serviceFilter(HttpServletRequest request, HttpServletResponse response) throws IOException {
-     
-       PrintWriter out = response.getWriter();
-       out.print("thinh dep trai");
-        
-     
+
+    public void serviceFilter(HttpServletRequest request, HttpServletResponse response) throws IOException {
+
+        PrintWriter out = response.getWriter();
+        out.print("thinh dep trai");
 
         sendDispatcher(request, response, "productList/list.jsp");
 
@@ -334,7 +333,5 @@ public class HomePageController extends HttpServlet {
     public String getServletInfo() {
         return "Short description";
     }// </editor-fold>
-
-   
 
 }

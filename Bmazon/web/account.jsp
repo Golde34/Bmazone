@@ -122,7 +122,7 @@
                                         <img alt="Top Up" src="https://images-na.ssl-images-amazon.com/images/G/01/x-locale/cs/help/images/gateway/self-service/payment._CB660668735_.png">
                                     </div>
                                     <div class="col-md-8">
-                                        <h5 class="card-title">Edit Wallet</h5>
+                                        <h5 class="card-title">Wallet</h5>
                                         <h6 class="card-subtitle mb-2 text-muted">Manage your balance </h6>
                                     </div>
                                 </div>
