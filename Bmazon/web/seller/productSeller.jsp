@@ -4,6 +4,10 @@
     Author     : DELL
 --%>
 
+<%@page import="entity.Category"%>
+<%@page import="model.GenreDAO"%>
+<%@page import="model.ProductGenreDAO"%>
+<%@page import="entity.Genre"%>
 <%@page import="model.CategoryDAO"%>
 <%@page import="model.ProductCategoryDAO"%>
 <%@page import="java.text.DecimalFormat"%>
@@ -54,7 +58,12 @@
         ProductTypeDAO ptDAO = new ProductTypeDAO();
         ProductCategoryDAO pcDAO = new ProductCategoryDAO();
         CategoryDAO cateDAO = new CategoryDAO();
+        ProductGenreDAO pgdao = new ProductGenreDAO();
+        GenreDAO genreDAO = new GenreDAO();
 
+        
+        ArrayList<Category> listCategory = cateDAO.getAllCategories();
+        ArrayList<Genre> listGenre = genreDAO.getAllGenres();
         int index = (Integer) request.getAttribute("index");
         int totalPage = (Integer) request.getAttribute("totalPage");
         int prev = index == 1 ? 1 : index - 1;
@@ -125,7 +134,7 @@
                     <jsp:include page="generalBoard.jsp"/>
                     <!-- Main row -->
                     <!-- Product management -->
-                    <div style="height: 400px; ">
+                    <div>
                         <section class="panel">
                             <!--                            <header class="panel-heading">
                                                             Product in shop
@@ -151,31 +160,39 @@
                                 <table class="table table-hover" id="dataTable">
                                     <thead>
                                         <tr>
-                                            <th>Product Name</th>
-                                            <th>Release Date</th>
-                                            <th>Type</th>
-                                            <th></th>
-                                            <th></th>
+                                            <th style="width: 30%;height: 50px;">Product Name</th>
+                                            <th style="width: 20%;height: 50px;">Release Date</th>
+                                            <th style="width: 20%;height: 50px;">Type</th>
+                                            <th style="width: 20%;height: 50px;">Genre</th>
+                                            <th style="width: 5%;height: 50px;"></th>
+                                            <th style="width: 5%;height: 50px;"></th>
                                         </tr>
                                     </thead>
                                     <tbody id="product">
                                         <% for (Product product : listP) {
                                                 int proID = product.getProductID();
+                                                String genreid = pgdao.getGenreIdByProductId(product.getProductID());
+                                                Genre genre = genreDAO.getGenreById(Integer.parseInt(genreid));
                                         %>
                                         <tr>
                                             <td><div><%= product.getProductName()%></div></td>
                                             <td><div><%= product.getReleaseDate()%></div></td>
                                             <td><div><%= cateDAO.getCategoryById(pcDAO.getProductCateByProductID(proID).getCategoryID())%></div></td>
-                                            <td><div>
-                                                    <a href="SellerControllerMap?service=updatedetail&ptypeid=<%= proID%>"><span class="fas fa-edit"></span></a>
+                                            <td><div><%= genre.getGenreName()%></div></td>
+                                            <td><div><a href="SellerControllerMap?service=productdetail&productid=<%= product.getProductID() %>"><button class="btn btn-primary">Edit</button></a>
                                                 </div></td>
-                                            <td><div><a href="SellerControllerMap?service=deleteproduct&ptypeid=<%= proID%>" onclick="return confirm('Are you sure you want to Remove?');"><span class="fas fa-trash-alt"></span></a></div></td>
-                                        </tr>
-                                        <%}%>
+                                            <td>
+                                                <% if (product.getStatus() == 1) {%>
+                                                <a href="SellerControllerMap?service=deactiveproduct&productid=<%= product.getProductID() %>" onclick="return confirm('Are you sure?');"><button class="btn btn-danger">Deactivate</button></a>
+                                                <%} else {%>
+                                                <a href="SellerControllerMap?service=activeproduct&productid=<%= product.getProductID() %>" onclick="return confirm('Are you sure?');"><button class="btn btn-success">Activate</button></a>
+                                                <% } %>
+                                            </td></tr>
+                                            <% } %>
                                     </tbody>
                                 </table>
+                               <a href="#addEmployeeModal" data-toggle="modal"><btn class="btn btn-success">Add</btn></a>
                             </div>
-
                             <div class="pagination-container mt-4" style="display: flex;
                                  justify-content: space-around;cursor: pointer;">
                                 <nav>
@@ -240,22 +257,115 @@
 
                     <!-- row end -->
                 </section><!-- /.content -->
-                <div class="footer-main">
-                    &copy Bmazon, 2021
-                </div>
             </aside><!-- /.right-side -->
 
         </div><!-- ./wrapper -->
 
     </body>
+    <div id="addEmployeeModal" class="modal fade">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <form action="/Bmazon/SellerControllerMap" method="post">
+                    <div class="modal-header">						
+                        <h4 class="modal-title">Add Product</h4>
+                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                    </div>
+                    <div class="modal-body">					
+                        <div class="form-group">
+                            <label>Product Name</label>
+                            <input name="pname" type="text" class="form-control" required>
+                        </div>
+                        <div class="form-group">
+                            <label>Description</label>
+                            <input name="description" type="text" class="form-control" required>
+                        </div>
+                        <div class="form-group">
+                            <label>Release Date</label>
+                            <input required class="form-control" type="date" name="date" class="input">
+                        </div>
+                        <div class="form-group">
+                            <label>Category</label> <br>
+                            <select required name="category" style="width: 50%;" class="form-select" id="category">
+                                <%for (Category cate : listCategory) {
+                                %>
+                                <option value="<%= cate.getCategoryID() %>"><%= cate.getCategoryName() %>
+                                </option>
+                                <% }%>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label>Genre</label> <br>
+                            <select required name="genre" style="width: 50%;" class="form-select" id="genre">
+                                <%for (Genre genre : listGenre) {
+                                %>
+                                <option value="<%= genre.getGenreID() %>"><%= genre.getGenreName() %>
+                                </option>
+                                <% }%>
+                            </select>
+                        </div>
+
+
+                    </div>
+                    <div class="modal-footer">
+                        <input type="button" class="btn btn-default" data-dismiss="modal" value="Cancel">
+                        <input type="hidden" value="addproduct" name="service">
+                        <input type="submit" class="btn btn-success" value="Add">
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+    <script src="https://kit.fontawesome.com/42d5adcbca.js" crossorigin="anonymous"></script>
     <script src="${contextPath}/js/core/popper.min.js"></script>
     <script src="${contextPath}/js/core/bootstrap.min.js"></script>
     <script src="${contextPath}/js/plugins/perfect-scrollbar.min.js"></script>
     <script src="${contextPath}/js/plugins/smooth-scrollbar.min.js"></script>
     <script src="${contextPath}/js/plugins/chartjs.min.js"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+        <script>
+            $("textarea").on('keyup', function () {
+                $(".noti").hide();
+            });
+            $(document).ready(function () {
+            $("#category").change(function () {
+            var val = $(this).val();
+            $(".noti").hide();
+            <% for (Category cate : listCategory) {%>
+            if (val == "<%=cate.getCategoryID()%>"){
+            console.log("<%=cate.getCategoryName()%>");
+                    $("#genre").html(
+            <% ArrayList<Genre> list = genreDAO.getGenresByCategoryId(cate.getCategoryID());
+                for (int i = 0; i < list.size(); i++) {
+                if (list.size() == 1 || i == list.size() - 1) {%>"<option value='<%=list.get(i).getGenreID()%>'><%=list.get(i).getGenreName()%></option>"
+                <%} else {%>"<option value='<%=list.get(i).getGenreID()%>'><%=list.get(i).getGenreName()%></option>" +
+                <%}
+                }%>);
+            }
+            <%}%>
+            });
+            });
+        $(".number").on('keyup', function () {
+        var n = parseInt($(this).val().replace(/\D/g, ''), 10);
+            $(this).val(n.toLocaleString());
+            $(".noti").hide();
+        });
+        (function () {
+        'use strict'
+                var forms = document.querySelectorAll('.needs-validation')
+                Array.prototype.slice.call(forms)
+                .forEach(function (form) {
+                form.addEventListener('submit', function (event) {
+                if (!form.checkValidity()) {
+                event.preventDefault()
+                        event.stopPropagation()
+                }
+                form.classList.add('was-validated')
+                }, false)
+                })
+        })()
+        </script>
     <script>
-                                                var pageNum;
+                                                    var pageNum;
                                                 $(document).on('click', '.pagination li', function () {
                                                     pageNum = $(this).data('repair');
                                                     pagination();
@@ -303,8 +413,7 @@
                                                         },
                                                         error: function (xhr) {
                                                             //Do Something to handle error
-                                                        }
-                                                    });
+                                                        } });
                                                 }
     </script>
 </html>

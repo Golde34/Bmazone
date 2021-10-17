@@ -15,23 +15,20 @@ public class WareHouse implements Serializable {
     private static final long serialVersionUID = 1;
     private int wareHouseID;
     private String wareHouseAddress;
-    private String wareHouseCity;
     private int status;
 
     public WareHouse() {
     }
 
-    public WareHouse(int wareHouseID, String wareHouseAddress, String wareHouseCity, int status) {
+    public WareHouse(int wareHouseID, String wareHouseAddress, int status) {
         this.wareHouseID = wareHouseID;
         this.wareHouseAddress = wareHouseAddress;
-        this.wareHouseCity = wareHouseCity;
         this.status = status;
     }
 
-    public WareHouse(int wareHouseID, String wareHouseAddress, String wareHouseCity) {
+    public WareHouse(int wareHouseID, String wareHouseAddress) {
         this.wareHouseID = wareHouseID;
         this.wareHouseAddress = wareHouseAddress;
-        this.wareHouseCity = wareHouseCity;
     }
 
     public int getWareHouseID() {
@@ -48,14 +45,6 @@ public class WareHouse implements Serializable {
 
     public void setWareHouseAddress(String wareHouseAddress) {
         this.wareHouseAddress = wareHouseAddress;
-    }
-
-    public String getWareHouseCity() {
-        return wareHouseCity;
-    }
-
-    public void setWareHouseCity(String wareHouseCity) {
-        this.wareHouseCity = wareHouseCity;
     }
 
     public int getStatus() {

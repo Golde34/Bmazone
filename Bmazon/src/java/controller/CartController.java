@@ -51,8 +51,9 @@ public class CartController extends HttpServlet {
         try (PrintWriter out = response.getWriter()) {
 
             String service = request.getParameter("service");
-            
-
+             if (service.equalsIgnoreCase("Cart")){           
+                serviceCart(request, response);
+            }
             if (service.equalsIgnoreCase("AddToCart")){           
                 serviceAddToCart(request, response);
             }
@@ -65,6 +66,14 @@ public class CartController extends HttpServlet {
             
         }
         
+    }
+     public void serviceCart(HttpServletRequest request, HttpServletResponse response) {
+        ArrayList<CartItem> ShoppingCart = (ArrayList<CartItem>) request.getSession().getAttribute("ShoppingCart");
+         if (ShoppingCart.isEmpty()) {
+             
+         }
+         request.getSession().setAttribute("ShoppingCart", ShoppingCart);
+        sendDispatcher(request, response, "cart.jsp");
     }
 
     public void serviceAddToCart(HttpServletRequest request, HttpServletResponse response) throws IOException {
@@ -195,6 +204,8 @@ public class CartController extends HttpServlet {
     public String getServletInfo() {
         return "Short description";
     }// </editor-fold>
+
+   
 
    
 }

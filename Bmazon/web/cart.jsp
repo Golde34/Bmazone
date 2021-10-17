@@ -48,26 +48,25 @@
                                                         <thead>
                                                             <tr>
                                                                 <th class="choose" > Check</th>
-                                                                <th class="product-name" colspan="3">Sản phẩm</th>
+                                                                <th class="product-name" colspan="2">Sản phẩm</th>
                                                                 <th class="product-price">Giá</th>
                                                                 <th class="product-quantity">Số lượng</th>
                                                                 <th class="product-subtotal">Tổng cộng</th>
+                                                                <th class=""></th>
+                                                               
                                                             </tr>
                                                         </thead>
                                                         <tbody>
-                                                            <
+                                                            
 
                                                             <%      for (CartItem item : ShoppingCart) {
                                                                     String image = "images/" + item.getImage();
                                                             %>
 
-                                                            <tr class="woocommerce-cart-form__cart-item cart_item">
+                                                           <tr class="woocommerce-cart-form__cart-item cart_item">
                                                         <input type="hidden" value="<%=item.getCartID()%>" name="cartID">
                                                         <td class="product-remove">
-                                                            <input type="checkbox" > </td>
-
-                                                        <td class="product-remove">
-                                                            <a href="CartControllerMap?service=Delete&cartID=<%=item.getCartID()%>" class="remove" aria-label="Xóa sản phẩm này" data-product_id="139" data-product_sku="">&times;</a>          </td>
+                                                            <input type="checkbox" style="font-size:50px " > </td>
 
 
                                                         <td class="product-thumbnail">
@@ -84,12 +83,16 @@
                                                             <div class="quantity buttons_added">
 
                                                                 <input type="button" value="-" class="minus button is-form">		<label class="screen-reader-text" for="quantity_6167ef4cc82d1">Số lượng</label>
-                                                                <input type="number" class="input-text qty text" step="1" min="0" max="9999" name="quantity" value="<%=item.getQuantity()%>" title="SL" size="4" pattern="[0-9]*" inputmode="numeric" />
+                                                                <input type="number" class="input-text qty text" step="1" min="1" max="9999" name="quantity" value="<%=item.getQuantity()%>" title="SL" size="4" pattern="[0-9]*" inputmode="numeric" />
                                                                 <input type="button" value="+" class="plus button is-form">	</div>
                                                         </td>
 
                                                         <td class="product-subtotal" data-title="Tổng cộng">
                                                             <span class="woocommerce-Price-amount amount"><%=nf.format(item.getTotalCost())%><span class="woocommerce-Price-currencySymbol">&#8363;</span></span>            </td>
+                                                        <td class="product-remove">
+                                                            <a href="CartControllerMap?service=Delete&cartID=<%=item.getCartID()%>" class="remove" aria-label="Xóa sản phẩm này" >&times;</a>      
+                                                        </td>
+
 
 
                                                         </tr>

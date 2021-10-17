@@ -30,7 +30,7 @@
             User curUser = (User) request.getSession().getAttribute("currUser");
         %>
         <header class="header">
-            <a href="HomePageControllerMap?service=HomePage" class="logo">
+            <a href="HomePageControllerMap?service=Homepage" class="logo">
                 Bmazon
             </a>
             <!-- Header Navbar: style can be found in header.less -->

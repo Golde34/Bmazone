@@ -94,7 +94,7 @@ public class ProductCategoryDAO extends BaseDAO{
         return proCate;
     }
     
-    public int addProductCategory(ProductCategory obj) {
+    public int addProductCategory(int productID, int categoryID) {
         int n = 0;
         String sql = "INSERT INTO [Bmazon].[dbo].[ProductCategory]\n"
                 + "           ([productID]\n"
@@ -102,8 +102,8 @@ public class ProductCategoryDAO extends BaseDAO{
                 + "           ,[status]) VALUES(?,?,1)";
         try {
             pre = conn.prepareStatement(sql);
-            pre.setInt(1, obj.getProductID());
-            pre.setInt(2, obj.getCategoryID());
+            pre.setInt(1, productID);
+            pre.setInt(2, categoryID);
             n = pre.executeUpdate();
             pre.close();
         } catch (SQLException e) {
