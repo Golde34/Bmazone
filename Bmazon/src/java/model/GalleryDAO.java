@@ -51,7 +51,7 @@ public class GalleryDAO extends BaseDAO {
             Logger.getLogger(UserDAO.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
-
+    
     public int editGallery(Gallery g) {
         int n = 0;
         String xSql = "update Gallery set productID = ?, productTypeID = ?, link =?, status = ? where galleryID = ?";

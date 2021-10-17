@@ -25,8 +25,23 @@ public class ProductDAO extends BaseDAO {
 
     public int getPageNumber(String search) {
         int num = 0;
-        String xSql= "SELECT COUNT(*)from Product p join Seller s on p.sellerID=s.sellerID join ProductCategory pc on p.productID=pc.productID join Category c on pc.categoryId=c.categoryID join ProductGenre pg on pg.productID=p.productID join Genre g on g.genreID=pg.genreID\n"
-                + "   where p.productName like '%"+search+"%' or c.categoryName like '%"+search+"%' or g.genreName like '%"+search+"%' or s.sellerShopName like '%"+search+"%'";
+        String xSql = "SELECT COUNT(*)from Product p join Seller s on p.sellerID=s.sellerID join ProductCategory pc on p.productID=pc.productID join Category c on pc.categoryId=c.categoryID join ProductGenre pg on pg.productID=p.productID join Genre g on g.genreID=pg.genreID\n"
+                + "   where p.productName like '%" + search + "%' or c.categoryName like '%" + search + "%' or g.genreName like '%" + search + "%' or s.sellerShopName like '%" + search + "%'";
+        ResultSet rs = dbConn.getData(xSql);
+        try {
+            if (rs.next()) {
+                num = rs.getInt(1);
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(UserDAO.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return num;
+    }
+
+    public int getPageNumberBySeller(String search) {
+        int num = 0;
+        String xSql = "SELECT COUNT(*)from Product p join Seller s on p.sellerID=s.sellerID join ProductCategory pc on p.productID=pc.productID join Category c on pc.categoryId=c.categoryID join ProductGenre pg on pg.productID=p.productID join Genre g on g.genreID=pg.genreID\n"
+                + "   where p.productName like '%" + search + "%' or c.categoryName like '%" + search + "%' or g.genreName like '%" + search + "%' or s.sellerShopName like '%" + search + "%'";
         ResultSet rs = dbConn.getData(xSql);
         try {
             if (rs.next()) {
@@ -46,7 +61,7 @@ public class ProductDAO extends BaseDAO {
                 + "SELECT p.*,s.sellerShopName,g.genreName,c.categoryName,\n"
                 + "ROW_NUMBER() over (order by p.productID) as RowNum\n"
                 + "  from Product p join Seller s on p.sellerID=s.sellerID join ProductCategory pc on p.productID=pc.productID join Category c on pc.categoryId=c.categoryID join ProductGenre pg on pg.productID=p.productID join Genre g on g.genreID=pg.genreID\n"
-                + "   where p.productName like '%"+search+"%' or c.categoryName like '%"+search+"%' or g.genreName like '%"+search+"%' or s.sellerShopName like '%"+search+"%')T\n"
+                + "   where p.productName like '%" + search + "%' or c.categoryName like '%" + search + "%' or g.genreName like '%" + search + "%' or s.sellerShopName like '%" + search + "%')T\n"
                 + "where T.RowNum between ((@PageNo-1)*@PageSize)+1 and (@PageNo*@PageSize)";
         try {
             pre = conn.prepareStatement(sql);
@@ -69,15 +84,15 @@ public class ProductDAO extends BaseDAO {
         }
         return list;
     }
-    
-public ArrayList<Product> getAllPagingProductBySeller(int index,int numOfRow,String search, String seller) {
+
+    public ArrayList<Product> getAllPagingProductBySeller(int index, int numOfRow, String search, String seller) {
         ArrayList<Product> list = new ArrayList<>();
-        String sql = "declare @PageNo INT ="+index+"\n"
-                + "declare @PageSize INT="+numOfRow+"\n"
+        String sql = "declare @PageNo INT =" + index + "\n"
+                + "declare @PageSize INT=" + numOfRow + "\n"
                 + "SELECT * from(\n"
                 + "SELECT productID,productName,[description],rating,sellerID,[User].fullname,releaseDate,Product.[status],\n"
                 + "ROW_NUMBER() over (order by Product.productID) as RowNum\n"
-                + "  FROM Product inner join [User] on Product.sellerID=[User].userID where Product.sellerID = "+ seller +" and Product.status=1 and(productName like '%"+search+"%' ))T\n"
+                + "  FROM Product inner join [User] on Product.sellerID=[User].userID where Product.sellerID = " + seller + " and(productName like '%" + search + "%' ))T\n"
                 + "where T.RowNum between ((@PageNo-1)*@PageSize)+1 and (@PageNo*@PageSize)";
         try {
             pre = conn.prepareStatement(sql);
@@ -233,6 +248,30 @@ public ArrayList<Product> getAllPagingProductBySeller(int index,int numOfRow,Str
         return list;
     }
 
+    public Product getProductLatest(int sellerID) {
+        Product pro = new Product();
+        String sql = "SELECT TOP 1 * FROM Product where sellerID = ? order by productID desc";
+        try {
+            pre = conn.prepareStatement(sql);
+            pre.setInt(1, sellerID);
+            rs = pre.executeQuery();
+            if (rs.next()) {
+                pro.setProductID(rs.getInt("productID"));
+                pro.setProductName(rs.getString("productName"));
+                pro.setDescription(rs.getString("description"));
+                pro.setRating(rs.getInt("rating"));
+                pro.setReleaseDate(rs.getDate("releaseDate"));
+                pro.setSeller(rs.getInt("sellerID"));
+                pro.setStatus(rs.getInt("status"));
+            }
+            rs.close();
+            pre.close();
+        } catch (SQLException e) {
+            Logger.getLogger(ProductDAO.class.getName()).log(Level.SEVERE, null, e);
+        }
+        return pro;
+    }
+
     public ArrayList<Product> getProductApple() {
         ArrayList<Product> list = new ArrayList<>();
         String sql = "SELECT TOP 8 * FROM Product where description like '%apple%'";
@@ -373,16 +412,40 @@ public ArrayList<Product> getAllPagingProductBySeller(int index,int numOfRow,Str
         }
         return list;
     }
+
+
     public static void main(String[] args) {
         ProductDAO pDAO = new ProductDAO();
-        List<Product> listProduct = pDAO.getProductBySeller("1");
-        System.out.println(listProduct);
+        ProductCategoryDAO pcDAO = new ProductCategoryDAO();
+        ProductGenreDAO pgDAO = new ProductGenreDAO();
+
+        Product product = new Product();
+        product.setProductName("Hai Nam 2");
+        product.setDescription("dep trai");
+        product.setReleaseDate(java.sql.Date.valueOf("2019-08-20"));
+        product.setSeller(4);
+        System.out.println(pDAO.addProduct(product));
+        Product productToken = pDAO.getProductLatest(4);
+
+        System.out.println(productToken.getProductID());
+        ProductCategory pc = new ProductCategory();
+        ProductGenre pg = new ProductGenre();
+        // Add product cate
+//        pc.setProductID(product.getProductID());
+        pcDAO.addProductCategory(productToken.getProductID(), 1);
+
+        //Add product genre
+//        pg.setProductID(product.getProductID());
+//        pg.setGenreID(Integer.parseInt(genre));
+        pgDAO.addProductGenre(productToken.getProductID(), 1);
+
+
     }
 
     public int totalProductSeller(String sid) {
         int count = 0;
 
-        String xSql= "SELECT count(*) FROM [Bmazon].[dbo].[Product] where sellerID = ?";
+        String xSql = "SELECT count(*) FROM [Bmazon].[dbo].[Product] where sellerID = ?";
         try {
             pre = conn.prepareStatement(xSql);
             pre.setString(1, sid);
@@ -397,10 +460,11 @@ public ArrayList<Product> getAllPagingProductBySeller(int index,int numOfRow,Str
         }
         return count;
     }
+
     public int totalProduct() {
         int count = 0;
 
-        String xSql= "SELECT count(*) FROM [Bmazon].[dbo].[Product] ";
+        String xSql = "SELECT count(*) FROM [Bmazon].[dbo].[Product] ";
         try {
             pre = conn.prepareStatement(xSql);
             rs = pre.executeQuery();
@@ -418,7 +482,7 @@ public ArrayList<Product> getAllPagingProductBySeller(int index,int numOfRow,Str
     public int totalSearchProduct(String text) {
         int count = 0;
 
-        String xSql= "SELECT count(*) FROM [Bmazon].[dbo].[Product] where productName like '%" + text + "%' or productName like '%" + text + "%' or description like '%" + text + "%' or rating like '%" + text + "%'";
+        String xSql = "SELECT count(*) FROM [Bmazon].[dbo].[Product] where productName like '%" + text + "%' or productName like '%" + text + "%' or description like '%" + text + "%' or rating like '%" + text + "%'";
         try {
             pre = conn.prepareStatement(xSql);
             rs = pre.executeQuery();
@@ -463,15 +527,15 @@ public ArrayList<Product> getAllPagingProductBySeller(int index,int numOfRow,Str
         }
         return list;
     }
-    
-     public ArrayList<Product> getProductByFilter(int index, String name,int cateID) {
+
+    public ArrayList<Product> getProductByFilter(int index, String name, int cateID) {
         ArrayList<Product> list = new ArrayList<>();
         String sql = " declare @PageNo INT = " + index + " \n"
                 + " declare @PageSize INT=20 \n"
                 + " SELECT * from( \n"
                 + " SELECT p.productID,p.productName,p.description,p.rating,p.releaseDate,p.sellerID,p.[status],\n  "
                 + " ROW_NUMBER() over (order by p.productID) as RowNum \n  "
-                + "  FROM Product p join ProductCategory pc on p.productID=pc.productID where productName like '%"+name+"%' OR description like '%"+name+"%' and categoryId= " +cateID+"  ) as T  \n "
+                + "  FROM Product p join ProductCategory pc on p.productID=pc.productID where productName like '%" + name + "%' OR description like '%" + name + "%' and categoryId= " + cateID + "  ) as T  \n "
                 + " where T.RowNum between ((@PageNo-1)*@PageSize)+1 and (@PageNo*@PageSize)  ";
         try {
             pre = conn.prepareStatement(sql);
@@ -494,7 +558,6 @@ public ArrayList<Product> getAllPagingProductBySeller(int index,int numOfRow,Str
         }
         return list;
     }
-
 
     public Product getProductByID(int id) {
         Product pro = new Product();
@@ -656,5 +719,4 @@ public ArrayList<Product> getAllPagingProductBySeller(int index,int numOfRow,Str
         return n;
     }
 
-    
 }

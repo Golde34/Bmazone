@@ -220,7 +220,7 @@ public class UserDAO extends BaseDAO {
     }
 
     public boolean checkExistPhone(String phone) {
-        String sql = "SELECT * FROM [User] WHERE phoneNumber = '" + phone + "' and status = 1";
+        String sql = "SELECT * FROM [User] WHERE phoneNumber = '" + phone + "'";
         ResultSet rs = dbConn.getData(sql);
         try {
             if (rs.next()) {
@@ -279,7 +279,7 @@ public class UserDAO extends BaseDAO {
     }
 
     public boolean checkExistMail(String mail) {
-        String sql = "SELECT * FROM [User] WHERE email = '" + mail + "' and status = 1";
+        String sql = "SELECT * FROM [User] WHERE email = '" + mail + "'";
         ResultSet rs = dbConn.getData(sql);
         try {
             if (rs.next()) {
