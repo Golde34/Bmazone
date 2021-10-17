@@ -69,9 +69,9 @@ public class CartController extends HttpServlet {
     }
      public void serviceCart(HttpServletRequest request, HttpServletResponse response) {
         ArrayList<CartItem> ShoppingCart = (ArrayList<CartItem>) request.getSession().getAttribute("ShoppingCart");
-         if (ShoppingCart.isEmpty()) {
-             
-         }
+//         if (ShoppingCart.isEmpty()) {
+//             
+//         }
          request.getSession().setAttribute("ShoppingCart", ShoppingCart);
         sendDispatcher(request, response, "cart.jsp");
     }

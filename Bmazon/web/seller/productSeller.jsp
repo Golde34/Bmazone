@@ -281,7 +281,7 @@
                         </div>
                         <div class="form-group">
                             <label>Release Date</label>
-                            <input required class="form-control" type="date" name="date" class="input">
+                            <input max="2000-01-01" id="inputDate" required class="form-control" type="date" name="date">
                         </div>
                         <div class="form-group">
                             <label>Category</label> <br>
@@ -363,6 +363,19 @@
                 }, false)
                 })
         })()
+        
+        var today = new Date();
+        var dd = today.getDate();
+        var mm = today.getMonth()+1; //January is 0!
+        var yyyy = today.getFullYear();
+        if(dd<10){
+        dd='0'+dd
+        } 
+        if(mm<10){
+        mm='0'+mm
+        } 
+        today = yyyy+'-'+mm+'-'+dd;
+        document.getElementById("inputDate").setAttribute("max", today);
         </script>
     <script>
                                                     var pageNum;
