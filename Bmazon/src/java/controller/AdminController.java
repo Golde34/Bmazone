@@ -853,6 +853,7 @@ public class AdminController extends HttpServlet {
 
     public void serviceUpdateProduct(String service, HttpServletRequest request, HttpServletResponse response) throws ParseException {
         request.setAttribute("service", service);
+        boolean isExist = false;
         //Get information about product
         String pid = request.getParameter("pid");
         String productname = request.getParameter("productname");
@@ -881,6 +882,34 @@ public class AdminController extends HttpServlet {
         String[] prices = request.getParameterValues("price");
         String[] quantities = request.getParameterValues("quantity");
 
+        //Check information
+        for (int i = 0; i < typeids.length; i++) {
+            ProductType pt = daoproducttype.getProductTypeByPTypeID(typeids[i]);
+            if (daoproducttype.checkExistSizeAndColor(sizes[i], colors[i], Integer.parseInt(pid)) && !colors[i].equalsIgnoreCase(pt.getColor()) && !sizes[i].equalsIgnoreCase(pt.getSize())) {
+                isExist = true;
+            }
+        }
+        //Case check fail
+        if (isExist == true) {
+            String state = "fail";
+            String mess = "Update fail because product type exists.";
+            String genreid = daopg.getGenreIdByProductId(product.getProductID());
+            Genre genre = daogenre.getGenreById(Integer.parseInt(genreid));
+            String categoryId = daopc.getCategoryIdByProductId(product.getProductID());
+            Category category = daocategory.getCategoryByCateId(categoryId);
+            ArrayList<Genre> listGenre = daogenre.getGenresByCategoryId(Integer.parseInt(categoryId));
+
+            //Set attribute
+            request.setAttribute("listGenre", listGenre);
+            request.setAttribute("category", category);
+            request.setAttribute("genre", genre);
+            request.setAttribute("state", state);
+            request.setAttribute("product", product);
+            request.setAttribute("mess", mess);
+            request.setAttribute("service", "updateproductdetail");
+            sendDispatcher(request, response, "admin/productdetail.jsp");
+        }
+        //Case check success
         //Update product type
         for (int i = 0; i < typeids.length; i++) {
             ProductType pt = daoproducttype.getProductTypeByPTypeID(typeids[i]);

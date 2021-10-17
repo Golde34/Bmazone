@@ -24,7 +24,8 @@
         <div class="wrap">
             <jsp:include page="header.jsp"/>
             <%  ArrayList<CartItem> ShoppingCart = (ArrayList<CartItem>) session.getAttribute("ShoppingCart");
-
+               
+               
             %>
 
 
@@ -63,21 +64,28 @@
                                                                     String image = "images/" + item.getImage();
                                                             %>
 
-                                                           <tr class="woocommerce-cart-form__cart-item cart_item">
+                                                           <tr class="woocommerce-cart-form__cart-item cart_item1">
                                                         <input type="hidden" value="<%=item.getCartID()%>" name="cartID">
                                                         <td class="product-remove">
-                                                            <input type="checkbox" style="font-size:50px " > </td>
+                                                            <input type="checkbox" style="font-size:50px " name="checkitem" value="<%=item.getCartID()%>" onclick="Myfunction()"> </td>
 
 
                                                         <td class="product-thumbnail">
-                                                            <a href="">
+                                                            <a href="ProductDetailControllerMap?service=getProductDetail&pid=<%=item.getProductID()%>">
                                                                 <img width="180" height="180" src="<%=image%>"/></a>          </td>
 
                                                         <td class="product-name" data-title="Sản phẩm">
                                                             <a href=""> </a><%=item.getName() + "(" + item.getSize() + ")" + "(" + item.getColor() + ")"%>       </td>
 
                                                         <td class="product-price" data-title="Giá">
-                                                            <span class="woocommerce-Price-amount amount"><%=nf.format(item.getPrice())%>&nbsp;<span class="woocommerce-Price-currencySymbol">&#8363;</span></span>          </td>
+                                                           
+                                                            <span class="woocommerce-Price-amount amount"><a value="<%=nf.format(item.getPrice())%>" id="price"></a><%=nf.format(item.getPrice())%>&nbsp;
+                                                                <span class="woocommerce-Price-currencySymbol">&#8363;
+                                                                </span>
+                                                                    
+                                                            </span>    
+                                                            
+                                                            </td>
 
                                                         <td class="product-quantity" data-title="Số lượng">
                                                             <div class="quantity buttons_added">
@@ -137,7 +145,7 @@
 
                                                         <tr class="order-total">
                                                             <th>Tổng cộng</th>
-                                                            <td data-title="Tổng cộng"><strong><span class="woocommerce-Price-amount amount">459,000&nbsp;<span class="woocommerce-Price-currencySymbol">&#8363;</span></span></strong> </td>
+                                                            <td data-title="Tổng cộng"><strong><span class="woocommerce-Price-amount amount">${sum}&nbsp;<span class="woocommerce-Price-currencySymbol">&#8363;</span></span></strong> </td>
                                                         </tr>
 
 
@@ -163,6 +171,24 @@
                         </div><!-- .large-12 -->
                     </div><!-- .row -->
                 </div>
+                                                         <script>
+        function Myfunction(){
+           arentElement = document.getElementsByClassName("cart_item1");
+
+    if (parentElement && parentElement.innerHTML != "") {
+
+        console.log(parentElement.children[0]);
+        console.log(parentElement.children[1]);
+        console.log(parentElement.children[2]);
+        console.log(parentElement.children[3]);
+        console.log(parentElement.children[4]);
+        console.log(parentElement.children[5]);
+        
+        
+        
+            
+        }
+        </script>
 
 
             </main><!-- #main -->
@@ -172,4 +198,5 @@
 
 
     </body>
+   
 </html>
