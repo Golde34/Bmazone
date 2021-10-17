@@ -147,7 +147,7 @@ public class GalleryDAO extends BaseDAO {
                 + "SELECT g.*,\n"
                 + "ROW_NUMBER() over (order by g.galleryID) as RowNum\n"
                 + "  FROM Gallery g join ProductType pt on g.productTypeID=pt.productTypeId join Product p on pt.productID=p.productID join Seller s on p.sellerID=s.sellerID\n"
-                + "   where g.[status]=1 and(p.productName like '%"+search+"%' or pt.size like '%"+search+"%' or pt.color like '%"+search+"%' or s.sellerShopName like '%"+search+"%'))T\n"
+                + "   where p.productName like '%"+search+"%' or pt.size like '%"+search+"%' or pt.color like '%"+search+"%' or s.sellerShopName like '%"+search+"%')T\n"
                 + "where T.RowNum between ((@PageNo-1)*@PageSize)+1 and (@PageNo*@PageSize)";
         try {
             pre = conn.prepareStatement(xSql);
