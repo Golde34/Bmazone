@@ -41,7 +41,7 @@ public class ProductDAO extends BaseDAO {
     public int getPageNumberBySeller(String search, int sellerID) {
         int num = 0;
         String xSql = "SELECT COUNT(*)from Product p join Seller s on p.sellerID=s.sellerID join ProductCategory pc on p.productID=pc.productID join Category c on pc.categoryId=c.categoryID join ProductGenre pg on pg.productID=p.productID join Genre g on g.genreID=pg.genreID\n"
-                + "   where p.productName like '%" + search + "%' or c.categoryName like '%" + search + "%' or g.genreName like '%" + search + "%' and p.sellerID = ?";
+                + "   where p.productName like '%" + search + "%' and p.sellerID = ?";
         try {
             pre = conn.prepareStatement(xSql);
             pre.setInt(1, sellerID);
@@ -417,7 +417,7 @@ public class ProductDAO extends BaseDAO {
 
 
     public static void main(String[] args) {
-        ProductDAO pDAO = new ProductDAO();
+//        ProductDAO pDAO = new ProductDAO();
     }
 
     public int totalProductSeller(String sid) {

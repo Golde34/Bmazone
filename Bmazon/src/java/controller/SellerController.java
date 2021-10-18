@@ -174,13 +174,13 @@ public class SellerController extends HttpServlet {
                     + "<td>" + product.getReleaseDate() + "</td>"
                     + "<td>" + cateDAO.getCategoryById(pcDAO.getProductCateByProductID(proID).getCategoryID()) + "</td>"
                     + "<td>" + genre.getGenreName() + "</td>"
-                    + "<td><div><a href=\"SellerControllerMap?service=productdetail&productid= " + product.getProductID() + " \"><button class=\"btn btn-primary\">Edit</button></a>"
+                    + "<td><div><a href=\"SellerControllerMap?service=productdetail&productid=" + product.getProductID() + "\"><button class=\"btn btn-primary\">Edit</button></a>"
                     + "</div></td>"
                     + "<td>");
             if (product.getStatus() == 1) {
-                pr.print("<a href=\"SellerControllerMap?service=deactiveproduct&productid= " + product.getProductID() + " \" onclick=\"return confirm('Are you sure?');\"><button class=\"btn btn-danger\">Deactive</button></a>");
+                pr.print("<a href=\"SellerControllerMap?service=deactiveproduct&productid=" + product.getProductID() + "\" onclick=\"return confirm('Are you sure?');\"><button class=\"btn btn-danger\">Deactive</button></a>");
             } else {
-                pr.print("<a href=\"SellerControllerMap?service=activeproduct&productid= " + product.getProductID() + " \" onclick=\"return confirm('Are you sure?');\"><button class=\"btn btn-success\">Active</button></a>");
+                pr.print("<a href=\"SellerControllerMap?service=activeproduct&productid=" + product.getProductID() + "\" onclick=\"return confirm('Are you sure?');\"><button class=\"btn btn-success\">Active</button></a>");
             }
             pr.print("</td>"
                     + "</tr>"
@@ -341,8 +341,7 @@ public class SellerController extends HttpServlet {
         pt.setQuantity(quantity);
         pt.setWareHouseID(warehouse);
         ptDAO.addProductType(pt);
-        request.setAttribute("productid", pid);
-        sendDispatcher(request, response, "SellerControllerMap?service=productdetail");
+        sendDispatcher(request, response, "SellerControllerMap?service=productdetail&productid=" + pid + "");
     }
 
     public void serviceDeactiveProduct(HttpServletRequest request, HttpServletResponse response) {
@@ -373,7 +372,7 @@ public class SellerController extends HttpServlet {
         String id = request.getParameter("producttypeid");
         ptDAO.changeStatus(id, 1);
         request.setAttribute("productid", pid);
-        sendDispatcher(request, response, "sSellerControllerMap?service=productdetail");
+        sendDispatcher(request, response, "SellerControllerMap?service=productdetail");
     }
 
     public void serviceUpdateProductDetail(HttpServletRequest request, HttpServletResponse response) throws ParseException {
