@@ -74,13 +74,13 @@
                                                 <td>Link<p></td>
                                                 <td>
                                                     <img id="img" src="images/<%=gallery.getLink()%>" width="150px" height="150px"><br>                    
-                                                    <input accept="image/*" onchange="loadFile(event)" id="file" type="file" name="photo">
+                                                    <input required accept="image/*" onchange="loadFile(event)" id="file" type="file" name="photo">
                                                 </td>
                                             </tr>
                                             <tr>
                                                 <td></td>
                                                 <td>
-<!--                                                    <input readonly value="<%=gallery.getGalleryID()%>" name="galleryid">-->
+                                                    <input type="hidden" value="<%=gallery.getGalleryID()%>" name="galleryid">
                                                     <input type="submit" value="Update Gallery" class="btn btn-primary">
                                                 </td>
                                             </tr>
