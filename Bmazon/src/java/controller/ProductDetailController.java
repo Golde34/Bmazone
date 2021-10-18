@@ -116,14 +116,57 @@ public class ProductDetailController extends HttpServlet {
 
     public void serviceRelatedProduct(HttpServletRequest request, HttpServletResponse response) {
         int id = Integer.parseInt(request.getParameter("pid"));
+        int count = daoProduct.totalRelatedProduct(id);
+        
         Product product = daoProduct.getProductByID(id);
         request.setAttribute("product", product);
         List<Gallery> listGallery = daoGallery.getAllGalleryOfProduct(id);
         request.setAttribute("listGallery", listGallery);
         List<ProductType> listProductType = daoProductType.getProductByProductID(id);
         request.setAttribute("listProductType", listProductType);
-        ArrayList<Product> listRelated = daoProduct.getRelatedProductByProductID(id);
+        
+        
+        int size = 10;
+        int total = count / size;
+        int page, end;
+
+        String page1 = request.getParameter("page");
+        if (page1 == null) {
+            page = 1;
+
+        } else {
+            page = Integer.parseInt(page1);
+        }
+        int begin = page;
+        String previous = "  <li><a class='' href=" + "ProductDetailControllerMap?service=getRelatedProduct&pid=" + id + "&page=" + (page - 1) + ">P</a></li>";
+        String next = "  <li><a class='' href=" + "ProductDetailControllerMap?service=getRelatedProduct&pid=" + id + "&page=" + (page + 1) + ">N</a></li>";
+
+        if (count % size != 0) {
+            total += 1;
+        }
+        if (page <= total - 2) {
+            end = page + 2;
+        } else {
+            end = total;
+            begin = total - 1 /* ban dau la total - 2*/;
+        }
+        if (page == 1) {
+            request.setAttribute("next", next);
+        } else if (page == total) {
+            request.setAttribute("previous", previous);
+        } else {
+            request.setAttribute("next", next);
+            request.setAttribute("previous", previous);
+        }
+        
+        ArrayList<Product> listRelated = daoProduct.getRelatedProductByProductIDPaging(page, id);
+        
         request.setAttribute("listRelated", listRelated);
+        request.setAttribute("end", end);
+        request.setAttribute("begin", begin);
+        request.setAttribute("pid", id);
+        request.setAttribute("count", count);
+        
         sendDispatcher(request, response, "product/relatedProduct.jsp");
     }
 
