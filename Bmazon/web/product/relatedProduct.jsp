@@ -20,6 +20,9 @@
 <%@page import="entity.ProductType"%>
 
 <%@ page contentType="text/html;charset=UTF-8" language="java" pageEncoding="UTF-8"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<c:set var="contextPath" value="${pageContext.request.contextPath}" />
+
 <% DecimalFormat nf = new DecimalFormat("###,###,###");%>
 <%
     ProductTypeDAO daoProductType = new ProductTypeDAO();
@@ -83,8 +86,8 @@
     <body class="home page-template page-template-page-blank page-template-page-blank-php page page-id-16 page-parent lightbox nav-dropdown-has-arrow" >
         <jsp:include page="../header.jsp"/>
 
-        <div class="col-inner text-center" >
-            <h1>Related Products</h1>
+        <div class="col-inner text-center" style="margin-top: 20px;">
+            <h1 style="font-size: 50px;">Related Products</h1>
         </div>
         <div id="wrapper">
             <br><br><br>
@@ -92,7 +95,7 @@
                 <div class="col large-12">              
                     <div class="shop-container">
 
-                        <div class="products row row-small large-columns-5 medium-columns-3 small-columns-2 has-shadow row-box-shadow-1" id="1">
+                        <div class="products row row-small large-columns-5 medium-columns-3 small-columns-2 has-shadow row-box-shadow-1" id="1" style="background-color: #e5e5e5; padding-top: 20px;">
                             <% for (Product pro : listRelated) {
                                     String str = "images/" + daoGallery.getSampleOfProduct(pro.getProductID());
                                     double price = Double.parseDouble(daoProductType.getProductPrice(product.getProductID()));
@@ -131,10 +134,15 @@
                             %>
                         </div>
                     </div>
-                    <div class="container">
+                    <div class="container" style="margin-top: 35px;">
                         <nav class="woocommerce-pagination">
                             <ul class="page-numbers nav-pagination links text-center">
+                                ${previous}
+                                <c:forEach  begin="${begin}" end="${end}" var="i">
 
+                                    <li><a class=" ${page==i?"active":""}" href="ProductDetailControllerMap?service=getRelatedProduct&pid=${pid}&page=${i}">${i}</a></li>
+                                    </c:forEach>
+                                    ${next}
                             </ul>
                         </nav>
                     </div>

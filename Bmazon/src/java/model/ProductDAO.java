@@ -417,7 +417,8 @@ public class ProductDAO extends BaseDAO {
 
 
     public static void main(String[] args) {
-//        ProductDAO pDAO = new ProductDAO();
+        ProductDAO pDAO = new ProductDAO();
+        System.out.println(pDAO.getRelatedProductByProductIDPaging(2, 13));
     }
 
     public int totalProductSeller(String sid) {
@@ -439,6 +440,23 @@ public class ProductDAO extends BaseDAO {
         return count;
     }
 
+    public int totalRelatedProduct(int id) {
+        int count = 0;
+        String xSql = "SELECT count(*) FROM Product a join ProductCategory b on a.productID=b.productID where b.categoryId=(SELECT categoryId FROM ProductCategory WHERE productID=" + id + ")";
+        try {
+            pre = conn.prepareStatement(xSql);
+            rs = pre.executeQuery();
+            while (rs.next()) {
+                count = rs.getInt(1);
+            }
+            rs.close();
+            pre.close();
+        } catch (SQLException e) {
+            Logger.getLogger(ProductDAO.class.getName()).log(Level.SEVERE, null, e);
+        }
+        return count;
+    }
+    
     public int totalProduct() {
         int count = 0;
 
@@ -617,6 +635,38 @@ public class ProductDAO extends BaseDAO {
         String sql = "SELECT * FROM Product a join ProductCategory b on a.productID=b.productID where b.categoryId=(SELECT categoryId FROM ProductCategory WHERE productID=" + id + ")";
         try {
             pre = conn.prepareStatement(sql);
+            rs = pre.executeQuery();
+            while (rs.next()) {
+                Product pro = new Product();
+                pro.setProductID(rs.getInt("productID"));
+                pro.setProductName(rs.getString("productName"));
+                pro.setDescription(rs.getString("description"));
+                pro.setRating(rs.getInt("rating"));
+                pro.setReleaseDate(rs.getDate("releaseDate"));
+                pro.setSeller(rs.getInt("sellerID"));
+                pro.setStatus(rs.getInt("status"));
+                list.add(pro);
+            }
+            rs.close();
+            pre.close();
+        } catch (SQLException e) {
+            Logger.getLogger(ProductDAO.class.getName()).log(Level.SEVERE, null, e);
+        }
+        return list;
+    }
+    
+    public ArrayList<Product> getRelatedProductByProductIDPaging(int index, int id) {
+        ArrayList<Product> list = new ArrayList<>();
+        String sql = " declare @PageNo INT = ? \n"
+                + " declare @PageSize INT=10 \n"
+                + " SELECT * from( \n"
+                + " SELECT a.productID, a.productName,a.description,a.rating,a.releaseDate,a.sellerID,a.status,\n  "
+                + " ROW_NUMBER() over (order by a.productID) as RowNum\n  "
+                + " FROM Product a join ProductCategory b on a.productID = b.productID where b.categoryId = (SELECT categoryId FROM ProductCategory WHERE productID=" + id + ")) as T \n "
+                + " where T.RowNum between ((@PageNo-1)*@PageSize)+1 and (@PageNo*@PageSize)";
+        try {
+            pre = conn.prepareStatement(sql);
+            pre.setInt(1, index);
             rs = pre.executeQuery();
             while (rs.next()) {
                 Product pro = new Product();
