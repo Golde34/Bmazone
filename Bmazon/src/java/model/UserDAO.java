@@ -5,6 +5,7 @@
  */
 package model;
 
+import entity.Role;
 import entity.Seller;
 import entity.User;
 import java.sql.PreparedStatement;
@@ -12,6 +13,8 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -22,61 +25,6 @@ import java.util.logging.Logger;
 public class UserDAO extends BaseDAO {
 
     BaseDAO dbConn = new BaseDAO();
-    
-    
-//    public User getUserLogin(String username, String password) {
-//        String sql = "SELECT * FROM [User] WHERE username = ? and password = ? and status = 1";
-//        try {
-//            pre = conn.prepareStatement(sql);
-//            pre.setString(1, username);
-//            pre.setString(2, password);
-//            ResultSet rs = pre.executeQuery();
-//            if (rs.next()) {
-//                User user = new User(rs.getString("userID"), rs.getString("username"),
-//                        rs.getString("password"), rs.getString("email"),
-//                        rs.getString("phoneNumber"), rs.getInt("sell"),
-//                        rs.getDouble("wallet"), rs.getString("fullname"),
-//                        rs.getString("publicName"), rs.getString("address"), rs.getString("profileImage"),
-//                        rs.getString("backgroundImage"), rs.getString("occupation"),
-//                        rs.getInt("gender"), rs.getDate("DOB"), rs.getString("bio"),
-//                        rs.getString("Facebook"), rs.getString("Instagram"),
-//                        rs.getString("Twitter"), rs.getString("Youtube"),
-//                        rs.getInt("activityPoint"), rs.getInt("systemRole"),
-//                        rs.getInt("status"));
-//                return user;
-//            }
-//        } catch (SQLException ex) {
-//            Logger.getLogger(UserDAO.class.getName()).log(Level.SEVERE, null, ex);
-//        }
-//        return null;
-//    }
-
-//    public User getEmailLogin(String email, String password) {
-//        String sql = "SELECT * FROM [User] WHERE email = ? and password = ? and status = 1";
-//        try {
-//            pre = conn.prepareStatement(sql);
-//            pre.setString(1, email);
-//            pre.setString(2, password);
-//            ResultSet rs = pre.executeQuery();
-//            if (rs.next()) {
-//                User user = new User(rs.getString("userID"), rs.getString("username"),
-//                        rs.getString("password"), rs.getString("email"),
-//                        rs.getString("phoneNumber"), rs.getInt("sell"),
-//                        rs.getDouble("wallet"), rs.getString("fullname"),
-//                        rs.getString("publicName"), rs.getString("address"), rs.getString("profileImage"),
-//                        rs.getString("backgroundImage"), rs.getString("occupation"),
-//                        rs.getInt("gender"), rs.getDate("DOB"), rs.getString("bio"),
-//                        rs.getString("Facebook"), rs.getString("Instagram"),
-//                        rs.getString("Twitter"), rs.getString("Youtube"),
-//                        rs.getInt("activityPoint"), rs.getInt("systemRole"),
-//                        rs.getInt("status"));
-//                return user;
-//            }
-//        } catch (SQLException ex) {
-//            Logger.getLogger(UserDAO.class.getName()).log(Level.SEVERE, null, ex);
-//        }
-//        return null;
-//    }
 
     public int addUserRegister(User obj) {
         int n = 0;
@@ -231,14 +179,40 @@ public class UserDAO extends BaseDAO {
         }
         return false;
     }
-    
+
+    public boolean checkExistMail(String mail) {
+        String sql = "SELECT * FROM [User] WHERE email = '" + mail + "'";
+        ResultSet rs = dbConn.getData(sql);
+        try {
+            if (rs.next()) {
+                return true;
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(UserDAO.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return false;
+    }
+
+    public boolean checkExistUserNameAndMail(String username, String mail) {
+        String sql = "SELECT * FROM [User] WHERE username = '" + username + "' and email = '" + mail + "' and status = 1";
+        ResultSet rs = dbConn.getData(sql);
+        try {
+            if (rs.next()) {
+                return true;
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(UserDAO.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return false;
+    }
+
     public int getPageNumber(String search) {
         int num = 0;
-        String xSql= "SELECT COUNT(*) FROM [Bmazon].[dbo].[User] where fullname like '%" + search + "%' or email like '%" + search + "%' or phoneNumber like '%" + search + "%' or address like '%" + search + "%'";
-        ResultSet rs =dbConn.getData(xSql);
+        String xSql = "SELECT COUNT(*) FROM [Bmazon].[dbo].[User] where fullname like '%" + search + "%' or email like '%" + search + "%' or phoneNumber like '%" + search + "%' or address like '%" + search + "%'";
+        ResultSet rs = dbConn.getData(xSql);
         try {
-            if(rs.next()){
-                num=rs.getInt(1);
+            if (rs.next()) {
+                num = rs.getInt(1);
             }
         } catch (SQLException ex) {
             Logger.getLogger(UserDAO.class.getName()).log(Level.SEVERE, null, ex);
@@ -248,7 +222,7 @@ public class UserDAO extends BaseDAO {
 
     public ArrayList<User> getAllPagingUser(int index, int numOfRow, String search) {
         ArrayList<User> list = new ArrayList<>();
-        String xSql= "declare @PageNo INT =" + index + "\n"
+        String xSql = "declare @PageNo INT =" + index + "\n"
                 + "declare @PageSize INT=" + numOfRow + "\n"
                 + "SELECT * from(\n"
                 + "SELECT *,\n"
@@ -276,32 +250,6 @@ public class UserDAO extends BaseDAO {
             Logger.getLogger(UserDAO.class.getName()).log(Level.SEVERE, null, ex);
         }
         return list;
-    }
-
-    public boolean checkExistMail(String mail) {
-        String sql = "SELECT * FROM [User] WHERE email = '" + mail + "'";
-        ResultSet rs = dbConn.getData(sql);
-        try {
-            if (rs.next()) {
-                return true;
-            }
-        } catch (SQLException ex) {
-            Logger.getLogger(UserDAO.class.getName()).log(Level.SEVERE, null, ex);
-        }
-        return false;
-    }
-    
-    public boolean checkExistUserNameAndMail(String username, String mail){
-        String sql = "SELECT * FROM [User] WHERE username = '" + username + "' and email = '" + mail + "' and status = 1";
-        ResultSet rs = dbConn.getData(sql);
-        try {
-            if (rs.next()) {
-                return true;
-            }
-        } catch (SQLException ex) {
-            Logger.getLogger(UserDAO.class.getName()).log(Level.SEVERE, null, ex);
-        }
-        return false;
     }
 
     public User getUserByUsername(String username) {
@@ -351,7 +299,7 @@ public class UserDAO extends BaseDAO {
         }
         return null;
     }
-    
+
     public User getUserBySellerId(Seller s) {
         String sql = "select * from [User] WHERE userID = " + s.getUserID();
         ResultSet rs = dbConn.getData(sql);
@@ -460,8 +408,26 @@ public class UserDAO extends BaseDAO {
         }
         return list;
     }
-    
-    public void updatePassword(String username, String mail, String password){
+
+    public HashMap<User, Role> getAllAuthorizationUser() {
+        HashMap<User, Role> map = new HashMap<>();
+        UserDAO uDao = new UserDAO();
+        RoleDAO rDao = new RoleDAO();
+        String sql = "SELECT u.userID, r.roleID FROM [User] u INNER JOIN [Role] r ON u.systemRole = r.roleID  where u.[status]=1";
+        ResultSet rs = dbConn.getData(sql);
+        try {
+            while (rs.next()) {
+                User u = uDao.getUserById(rs.getString("userID"));
+                Role r = rDao.getRoleById(rs.getInt("roleID"));
+                map.put(u, r);
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(UserDAO.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return map;
+    }
+
+    public void updatePassword(String username, String mail, String password) {
         String sql = "UPDATE [User] SET password = ? WHERE username = ? and email = ?";
         try {
             pre = conn.prepareStatement(sql);
@@ -524,7 +490,7 @@ public class UserDAO extends BaseDAO {
             Logger.getLogger(UserDAO.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
-        
+
     public void withdrawalWalletUser(User obj, double amount) {
 
         String sql = "UPDATE [User] SET wallet=? where userID=?";
@@ -616,4 +582,84 @@ public class UserDAO extends BaseDAO {
         }
         return n;
     }
+    
+    public HashMap<User, Role> getAllPagingUserHashMap(int index, int numOfRow, String search) {
+        HashMap<User, Role> map = new HashMap<>();
+        UserDAO uDao = new UserDAO();
+        RoleDAO rDao = new RoleDAO();
+        String xSql = "declare @PageNo INT =" + index + "\n"
+                + "declare @PageSize INT=" + numOfRow + "\n"
+                + "SELECT * from(\n"
+                + "SELECT u.userID, r.roleID,\n"
+                + "ROW_NUMBER() over (order by userID) as RowNum\n"
+                + "  FROM [Bmazon].[dbo].[User] u INNER JOIN [Role] r ON u.systemRole = r.roleID where u.fullname like '%" + search + "%' or r.roleName like '%" + search + "%')T\n"
+                + "where T.RowNum between ((@PageNo-1)*@PageSize)+1 and (@PageNo*@PageSize)";
+        ResultSet rs = dbConn.getData(xSql);
+        try {
+            while (rs.next()) {
+                User u = uDao.getUserById(rs.getString("userID"));
+                Role r = rDao.getRoleById(rs.getInt("roleID"));
+                map.put(u, r);
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(UserDAO.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return map;
+    }
+    
+    // <editor-fold defaultstate="collapsed" desc="Didn't use. Click on the + sign on the left to edit the code.">
+    public User getUserLogin(String username, String password) {
+        String sql = "SELECT * FROM [User] WHERE username = ? and password = ? and status = 1";
+        try {
+            pre = conn.prepareStatement(sql);
+            pre.setString(1, username);
+            pre.setString(2, password);
+            ResultSet rs = pre.executeQuery();
+            if (rs.next()) {
+                User user = new User(rs.getString("userID"), rs.getString("username"),
+                        rs.getString("password"), rs.getString("email"),
+                        rs.getString("phoneNumber"), rs.getInt("sell"),
+                        rs.getDouble("wallet"), rs.getString("fullname"),
+                        rs.getString("publicName"), rs.getString("address"), rs.getString("profileImage"),
+                        rs.getString("backgroundImage"), rs.getString("occupation"),
+                        rs.getInt("gender"), rs.getDate("DOB"), rs.getString("bio"),
+                        rs.getString("Facebook"), rs.getString("Instagram"),
+                        rs.getString("Twitter"), rs.getString("Youtube"),
+                        rs.getInt("activityPoint"), rs.getInt("systemRole"),
+                        rs.getInt("status"));
+                return user;
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(UserDAO.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return null;
+    }
+
+    public User getEmailLogin(String email, String password) {
+        String sql = "SELECT * FROM [User] WHERE email = ? and password = ? and status = 1";
+        try {
+            pre = conn.prepareStatement(sql);
+            pre.setString(1, email);
+            pre.setString(2, password);
+            ResultSet rs = pre.executeQuery();
+            if (rs.next()) {
+                User user = new User(rs.getString("userID"), rs.getString("username"),
+                        rs.getString("password"), rs.getString("email"),
+                        rs.getString("phoneNumber"), rs.getInt("sell"),
+                        rs.getDouble("wallet"), rs.getString("fullname"),
+                        rs.getString("publicName"), rs.getString("address"), rs.getString("profileImage"),
+                        rs.getString("backgroundImage"), rs.getString("occupation"),
+                        rs.getInt("gender"), rs.getDate("DOB"), rs.getString("bio"),
+                        rs.getString("Facebook"), rs.getString("Instagram"),
+                        rs.getString("Twitter"), rs.getString("Youtube"),
+                        rs.getInt("activityPoint"), rs.getInt("systemRole"),
+                        rs.getInt("status"));
+                return user;
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(UserDAO.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return null;
+    }
+// </editor-fold>
 }

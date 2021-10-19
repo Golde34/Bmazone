@@ -60,13 +60,13 @@
         <jsp:include page="../header.jsp"/>
 
         <div class="container">
-            <br>
-            <div class="title" style="text-align: center;">
-                <h1>Wallet</h1>
-            </div>
-            <br>
-            <div class="col-md-3"></div>
-            <div class="col-md-6">
+            <div class="col-lg-3"></div>
+            <div class="col-lg-6">
+                <br>
+                <div class="title" style="text-align: center;">
+                    <h1>Wallet</h1>
+                </div>
+                <br>
                 <%--change--%>
                 <div class="card">
                     <div class="box">
@@ -125,20 +125,16 @@
                                 </div>
                             </div> 
                             <br><br>
-
-
                         </form>
                     </div>
                 </div>
             </div>
         </div>
     </div>
+    <div class="col-lg-3"></div>
 </div>
 <br><br><br>
 <jsp:include page="../footer.jsp"/>
 <%--JS--%>
-<script type="text/javascript" src="//code.jquery.com/jquery-1.11.0.min.js"></script>
-<script type="text/javascript" src="//code.jquery.com/jquery-migrate-1.2.1.min.js"></script>
-<script src="https://kit.fontawesome.com/9650a62e47.js" crossorigin="anonymous"></script>
 </body>
 </html>

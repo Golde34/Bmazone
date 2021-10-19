@@ -52,10 +52,10 @@
         </style>
 
         <div class="container">
-            <h1>Your Account</h1>
-            <br>
+            <p class="col-lg-8 col-md-5" style="font-size: 2rem;">Your Account</p>
             <div class="row" style="padding: 15px;">
                 <!--Order-->
+                <br>
                 <div class="col-lg-4 col-md-5">
                     <a href="#">
                         <div class=" card shadow p-3 mb-5 bg-white rounded" style="width: 20rem; height: 9rem;"> 
@@ -130,7 +130,7 @@
                         </div>
                     </a>
                 </div>
-                
+
                 <!--Sales Feature-->
                 <% if (x.getSystemRole() != 2) { %>
                 <div class="col-lg-4 col-md-5">

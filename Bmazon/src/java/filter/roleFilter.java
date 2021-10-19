@@ -5,6 +5,7 @@
  */
 package filter;
 
+import entity.Role;
 import entity.User;
 import java.io.IOException;
 import java.io.PrintStream;
@@ -18,12 +19,13 @@ import javax.servlet.ServletRequest;
 import javax.servlet.ServletResponse;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import model.RoleDAO;
 
 /**
  *
  * @author Admin
  */
-public class adminFilter implements Filter {
+public class roleFilter implements Filter {
     
     private static final boolean debug = true;
 
@@ -32,13 +34,13 @@ public class adminFilter implements Filter {
     // configured. 
     private FilterConfig filterConfig = null;
     
-    public adminFilter() {
+    public roleFilter() {
     }    
     
     private void doBeforeProcessing(ServletRequest request, ServletResponse response)
             throws IOException, ServletException {
         if (debug) {
-            log("adminFilter:DoBeforeProcessing");
+            log("roleFilter:DoBeforeProcessing");
         }
 
         // Write code here to process the request and/or response before
@@ -66,7 +68,7 @@ public class adminFilter implements Filter {
     private void doAfterProcessing(ServletRequest request, ServletResponse response)
             throws IOException, ServletException {
         if (debug) {
-            log("adminFilter:DoAfterProcessing");
+            log("roleFilter:DoAfterProcessing");
         }
 
         // Write code here to process the request and/or response after
@@ -102,20 +104,28 @@ public class adminFilter implements Filter {
             throws IOException, ServletException {
         
         if (debug) {
-            log("adminFilter:doFilter()");
+            log("roleFilter:doFilter()");
         }
         
         doBeforeProcessing(request, response);
-        HttpServletRequest httprequest = (HttpServletRequest) request;
-        HttpServletResponse httpresponse = (HttpServletResponse) response;
-        User x = (User) httprequest.getSession().getAttribute("currUser");
-//        String url = httprequest.getRequestURL().toString();   
-        if(x==null){
+        
+        HttpServletRequest httpRequest = (HttpServletRequest) request;
+        HttpServletResponse httpResponse = (HttpServletResponse) response;
+        User x = (User) httpRequest.getSession().getAttribute("currUser");
+        RoleDAO daoRole = new RoleDAO();
+        Role role = daoRole.getRoleById(x.getSystemRole());
+        System.out.println(role.getAdminPermission() + " " + role.getSellerPermission() + " " + role.getRoleName());
+        String url = httpRequest.getServletPath();
+        
+        if (x == null) {
             chain.doFilter(request, response);
         }
-        if (x.getSystemRole()!=1 && x!=null) {
-            httpresponse.sendRedirect("HomePageControllerMap");
-        }
+        if (x != null && role.getAdminPermission() != 1 && url.contains("AdminControllerMap")) {
+            httpResponse.sendRedirect("HomePageControllerMap");
+        } 
+        if (x != null && role.getSellerPermission()!= 1 && url.contains("SellerControllerMap")) {
+            httpResponse.sendRedirect("HomePageControllerMap");
+        } 
         Throwable problem = null;
         try {
             chain.doFilter(request, response);
@@ -171,7 +181,7 @@ public class adminFilter implements Filter {
         this.filterConfig = filterConfig;
         if (filterConfig != null) {
             if (debug) {                
-                log("adminFilter:Initializing filter");
+                log("roleFilter:Initializing filter");
             }
         }
     }
@@ -182,9 +192,9 @@ public class adminFilter implements Filter {
     @Override
     public String toString() {
         if (filterConfig == null) {
-            return ("adminFilter()");
+            return ("roleFilter()");
         }
-        StringBuffer sb = new StringBuffer("adminFilter(");
+        StringBuffer sb = new StringBuffer("roleFilter(");
         sb.append(filterConfig);
         sb.append(")");
         return (sb.toString());
@@ -196,16 +206,18 @@ public class adminFilter implements Filter {
         if (stackTrace != null && !stackTrace.equals("")) {
             try {
                 response.setContentType("text/html");
-                try (PrintStream ps = new PrintStream(response.getOutputStream()); PrintWriter pw = new PrintWriter(ps)) {
-                    pw.print("<html>\n<head>\n<title>Error</title>\n</head>\n<body>\n"); //NOI18N
-                    
-                    // PENDING! Localize this for next official release
-                    pw.print("<h1>The resource did not process correctly</h1>\n<pre>\n");
-                    pw.print(stackTrace);
-                    pw.print("</pre></body>\n</html>"); //NOI18N
-                }
+                PrintStream ps = new PrintStream(response.getOutputStream());
+                PrintWriter pw = new PrintWriter(ps);                
+                pw.print("<html>\n<head>\n<title>Error</title>\n</head>\n<body>\n"); //NOI18N
+
+                // PENDING! Localize this for next official release
+                pw.print("<h1>The resource did not process correctly</h1>\n<pre>\n");                
+                pw.print(stackTrace);                
+                pw.print("</pre></body>\n</html>"); //NOI18N
+                pw.close();
+                ps.close();
                 response.getOutputStream().close();
-            } catch (IOException ex) {
+            } catch (Exception ex) {
             }
         } else {
             try {
@@ -213,7 +225,7 @@ public class adminFilter implements Filter {
                 t.printStackTrace(ps);
                 ps.close();
                 response.getOutputStream().close();
-            } catch (IOException ex) {
+            } catch (Exception ex) {
             }
         }
     }
@@ -227,7 +239,7 @@ public class adminFilter implements Filter {
             pw.close();
             sw.close();
             stackTrace = sw.getBuffer().toString();
-        } catch (IOException ex) {
+        } catch (Exception ex) {
         }
         return stackTrace;
     }
