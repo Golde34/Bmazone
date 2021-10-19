@@ -5,7 +5,7 @@
 <c:set var="contextPath" value="${pageContext.request.contextPath}" />
 <%
     User curUser = (User) request.getSession().getAttribute("currUser");
-    List<User> listUser = (List<User>) request.getAttribute("listUser");
+    HashMap<User, Role> listUser = (HashMap<User, Role>) request.getAttribute("listUser");
 %>
 
 <!DOCTYPE html>
@@ -75,28 +75,36 @@
                                                         <th>
                                                             Username
                                                         </th>
-                                                        <th>Admin</th>
-                                                        <th>Seller</th>
                                                         <th>Full Name</th>
-                                                        <th>Phone</th>
-                                                        <th>Address</th>
-                                                        <th></th>
+                                                        <th>System Role</th>
+                                                        <th>Role Name</th>
+                                                        <th>Admin Permission</th>
+                                                        <th>Seller Permission</th>
+                                                        <th>Customer Permission</th>
                                                         <th></th>
                                                     </tr>
                                                 </thead>
                                                 <tbody id="user">
-                                                <%for (User user : listUser) {%>
+                                                <%for (Map.Entry<User, Role> en : listUser.entrySet()) {
+                                                        User u = en.getKey();
+                                                        Role r = en.getValue();%>
                                                 <tr>
-                                                    <td><%=user.getUsername()%></td>
-                                                    <td><%=user.getPassword()%></td>
-                                                    <td><%=user.getEmail()%></td>
-                                                    <td><%=user.getFullname()%></td>
-                                                    <td><%=user.getPhoneNumber()%></td>
-                                                    <td><%=user.getAddress()%></td>
+                                                    <td><%=u.getUsername()%></td>
+                                                    <td><%=u.getFullname()%></td>
+                                                    <td><%=u.getSystemRole()%></td>
+                                                    <td><%=r.getRoleName()%></td>
+                                                    <td><%=r.getAdminPermission()%></td>
+                                                    <td><%=r.getSellerPermission()%></td>
+                                                    <td><%=r.getCustomerPermission()%></td>
                                                     <td>
-                                                        <a href="AdminControllerMap?service=updateuserdetail&userid=<%=user.getUserId()%>"><span class="fas fa-edit"></span></a>
+                                                        <% if (u.getStatus() == 1) {%>
+                                                        <a href="AdminControllerMap?service=deleteuserAuthor&userid=<%=u.getUserId()%>" 
+                                                           onclick="return confirm('Are you sure?');"><button class="btn btn-primary">Deactive</button></a>
+                                                        <%} else {%>
+                                                        <a href="AdminControllerMap?service=activeuserAuthor&userid=<%=u.getUserId()%>" 
+                                                           onclick="return confirm('Are you sure?');"><button class="btn btn-primary">Active</button></a>
+                                                        <%}%>
                                                     </td>
-                                                    <td><a href="AdminControllerMap?service=deleteuser&userid=<%=user.getUserId()%>" onclick="return confirm('Are you sure you want to Remove?');"><span class="fas fa-trash-alt"></span></a></td>
                                                 </tr>
                                                 <%}%>
                                             </tbody>

@@ -17,7 +17,6 @@ import java.sql.Date;
 import java.text.DecimalFormat;
 import java.text.NumberFormat;
 import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -31,7 +30,6 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.Part;
 import model.*;
 import org.apache.commons.fileupload.FileItem;
 import org.apache.commons.fileupload.FileUploadException;
@@ -77,30 +75,10 @@ public class AdminController extends HttpServlet {
                 service = "AdminDashBoard";
             }
 
-            //User Authorization
-            if (service.equalsIgnoreCase("userAuthorization")) {
-                serviceUserAuthorization(service, request, response);
-            }
-
             //Admin Dashboard
             if (service.equalsIgnoreCase("AdminDashBoard")) {
                 serviceAdminDashboard(service, request, response);
             }
-
-            // <editor-fold defaultstate="collapsed" desc="Seller Response. Click on the + sign on the left to edit the code.">
-            //SellerResposne
-            if (service.equalsIgnoreCase("sellerResponse")) {
-                serviceSellerResponse(service, request, response);
-            }
-            //Accept Seller Request
-            if (service.equalsIgnoreCase("acceptSeller")) {
-                serviceAcceptSellerRequest(service, request, response);
-            }
-            //Deny Seller Request
-            if (service.equalsIgnoreCase("denySeller")) {
-                serviceDenySellerRequest(service, request, response);
-            }
-            //</editor-fold>
 
             // <editor-fold defaultstate="collapsed" desc="User service. Click on the + sign on the left to edit the code.">
             //User Management
@@ -251,6 +229,34 @@ public class AdminController extends HttpServlet {
             }
             //</editor-fold>
 
+            //User Authorization
+            if (service.equalsIgnoreCase("userAuthorization")) {
+                serviceUserAuthorization(service, request, response);
+            }
+            //Delete user
+            if (service.equalsIgnoreCase("deleteuserAuthor")) {
+                serviceDeleteUserAuthor(service, request, response);
+            }
+            //Active user
+            if (service.equalsIgnoreCase("activeuserAuthor")) {
+                serviceActiveUserAuthor(service, request, response);
+            }
+
+            // <editor-fold defaultstate="collapsed" desc="Seller Response. Click on the + sign on the left to edit the code.">
+            //SellerResposne
+            if (service.equalsIgnoreCase("sellerResponse")) {
+                serviceSellerResponse(service, request, response);
+            }
+            //Accept Seller Request
+            if (service.equalsIgnoreCase("acceptSeller")) {
+                serviceAcceptSellerRequest(service, request, response);
+            }
+            //Deny Seller Request
+            if (service.equalsIgnoreCase("denySeller")) {
+                serviceDenySellerRequest(service, request, response);
+            }
+            //</editor-fold>
+            
             // <editor-fold defaultstate="collapsed" desc="Role serive. Click on the + sign on the left to edit the code.">
             //Role Display
             if (service.equalsIgnoreCase("roleDisplay")) {
@@ -280,13 +286,6 @@ public class AdminController extends HttpServlet {
         }
     }
 
-    public void serviceUserAuthorization(String service, HttpServletRequest request, HttpServletResponse response) {
-        request.setAttribute("service", service);
-        ArrayList<User> listUser = daouser.getAllUser();
-        request.setAttribute("listUser", listUser);
-        sendDispatcher(request, response, "admin/authorization/userAuthorization.jsp");
-    }
-
     public void serviceAdminDashboard(String service, HttpServletRequest request, HttpServletResponse response) {
         request.setAttribute("service", service);
         ArrayList<Product> listProduct = daoproduct.getAllProduct();
@@ -295,47 +294,6 @@ public class AdminController extends HttpServlet {
         request.setAttribute(("listUser"), listUser);
         sendDispatcher(request, response, "admin/admin.jsp");
     }
-
-    // <editor-fold defaultstate="collapsed" desc="Seller Response Method. Click on the + sign on the left to edit the code.">
-    public void serviceSellerResponse(String service, HttpServletRequest request, HttpServletResponse response) {
-        request.setAttribute("service", service);
-        List<Seller> listSellerRequest = daoseller.getSellerBySellerRequest();
-        request.setAttribute("listSellerRequest", listSellerRequest);
-        List<Seller> listAllSeller = daoseller.getAllSeller();
-        request.setAttribute("listAllSeller", listAllSeller);
-        sendDispatcher(request, response, "admin/authorization/sellerResponse.jsp");
-    }
-
-    private void serviceAcceptSellerRequest(String service, HttpServletRequest request, HttpServletResponse response) {
-        request.setAttribute("service", service);
-        //change seller status
-        int sellerID = Integer.parseInt(request.getParameter("sellerID"));
-        daoseller.acceptSellerRequest(sellerID);
-        String strSellerID = request.getParameter("sellerID");
-        //change user status
-        Seller s = daoseller.getSellerID(strSellerID);
-        User u = daouser.getUserBySellerId(s);
-        u.setSell(1);
-        u.setSystemRole(2);
-        //add parameter to jsp
-        List<Seller> listAllSeller = daoseller.getAllSeller();
-        request.setAttribute("listAllSeller", listAllSeller);
-        List<Seller> listSellerRequest = daoseller.getSellerBySellerRequest();
-        request.setAttribute("listSellerRequest", listSellerRequest);
-        sendDispatcher(request, response, "admin/authorization/sellerResponse.jsp");
-    }
-
-    private void serviceDenySellerRequest(String service, HttpServletRequest request, HttpServletResponse response) {
-        request.setAttribute("service", service);
-        int sellerID = Integer.parseInt(request.getParameter("sellerID"));
-        daoseller.denySellerRequest(sellerID);
-        List<Seller> listAllSeller = daoseller.getAllSeller();
-        request.setAttribute("listAllSeller", listAllSeller);
-        List<Seller> listSellerRequest = daoseller.getSellerBySellerRequest();
-        request.setAttribute("listSellerRequest", listSellerRequest);
-        sendDispatcher(request, response, "admin/authorization/sellerResponse.jsp");
-    }
-    // </editor-fold>
 
     // <editor-fold defaultstate="collapsed" desc="User methods. Click on the + sign on the left to edit the code.">
     public void serviceUserManagement(String service, HttpServletRequest request, HttpServletResponse response) {
@@ -1455,6 +1413,86 @@ public class AdminController extends HttpServlet {
         sendDispatcher(request, response, "admin/gallerydetail.jsp");
     }//</editor-fold>
 
+    public void serviceUserAuthorization(String service, HttpServletRequest request, HttpServletResponse response) {
+        request.setAttribute("service", service);
+        HashMap<User, Role> listUser = daouser.getAllAuthorizationUser();
+        request.setAttribute("listUser", listUser);
+        sendDispatcher(request, response, "admin/authorization/userAuthorization.jsp");
+    }
+    
+    public void serviceDeleteUserAuthor(String service, HttpServletRequest request, HttpServletResponse response) {
+        int userid = Integer.parseInt(request.getParameter("userid"));
+        daouser.changeStatus(userid, 0);
+        HashMap<User, Role> listPaging = daouser.getAllPagingUserHashMap(1, 5, "");
+        HashMap<User, Role> listUser = daouser.getAllAuthorizationUser();
+        int totalPage = listUser.size() / 5;
+        if (listUser.size() != totalPage * 5) {
+            totalPage += 1;
+        }
+        request.setAttribute("index", 1);
+        request.setAttribute("totalPage", totalPage);
+        request.setAttribute("listUser", listPaging);
+        request.setAttribute("service", "userAuthorization");
+        sendDispatcher(request, response, "admin/authorization/userAuthorization.jsp");
+    }
+
+    public void serviceActiveUserAuthor(String service, HttpServletRequest request, HttpServletResponse response) {
+        int id = Integer.parseInt(request.getParameter("userid"));
+        daouser.changeStatus(id, 1);
+        HashMap<User, Role> listPaging = daouser.getAllPagingUserHashMap(1, 5, "");
+        HashMap<User, Role> listUser = daouser.getAllAuthorizationUser();
+        int totalPage = listUser.size() / 5;
+        if (listUser.size() != totalPage * 5) {
+            totalPage += 1;
+        }
+        request.setAttribute("index", 1);
+        request.setAttribute("totalPage", totalPage);
+        request.setAttribute("listUser", listPaging);
+        request.setAttribute("service", "userAuthorization");
+        sendDispatcher(request, response, "admin/authorization/userAuthorization.jsp");
+    }
+    
+    // <editor-fold defaultstate="collapsed" desc="Seller Response Method. Click on the + sign on the left to edit the code.">
+    public void serviceSellerResponse(String service, HttpServletRequest request, HttpServletResponse response) {
+        request.setAttribute("service", service);
+        List<Seller> listSellerRequest = daoseller.getSellerBySellerRequest();
+        request.setAttribute("listSellerRequest", listSellerRequest);
+        List<Seller> listAllSeller = daoseller.getAllSeller();
+        request.setAttribute("listAllSeller", listAllSeller);
+        sendDispatcher(request, response, "admin/authorization/sellerResponse.jsp");
+    }
+
+    private void serviceAcceptSellerRequest(String service, HttpServletRequest request, HttpServletResponse response) {
+        request.setAttribute("service", service);
+        //change seller status
+        int sellerID = Integer.parseInt(request.getParameter("sellerID"));
+        daoseller.acceptSellerRequest(sellerID);
+        String strSellerID = request.getParameter("sellerID");
+        //change user status
+        Seller s = daoseller.getSellerID(strSellerID);
+        User u = daouser.getUserBySellerId(s);
+        u.setSell(1);
+        u.setSystemRole(2);
+        //add parameter to jsp
+        List<Seller> listAllSeller = daoseller.getAllSeller();
+        request.setAttribute("listAllSeller", listAllSeller);
+        List<Seller> listSellerRequest = daoseller.getSellerBySellerRequest();
+        request.setAttribute("listSellerRequest", listSellerRequest);
+        sendDispatcher(request, response, "admin/authorization/sellerResponse.jsp");
+    }
+
+    private void serviceDenySellerRequest(String service, HttpServletRequest request, HttpServletResponse response) {
+        request.setAttribute("service", service);
+        int sellerID = Integer.parseInt(request.getParameter("sellerID"));
+        daoseller.denySellerRequest(sellerID);
+        List<Seller> listAllSeller = daoseller.getAllSeller();
+        request.setAttribute("listAllSeller", listAllSeller);
+        List<Seller> listSellerRequest = daoseller.getSellerBySellerRequest();
+        request.setAttribute("listSellerRequest", listSellerRequest);
+        sendDispatcher(request, response, "admin/authorization/sellerResponse.jsp");
+    }
+    // </editor-fold>
+    
     // <editor-fold defaultstate="collapsed" desc="Role methods. Click on the + sign on the left to edit the code.">
     public void serviceRoleManagement(String service, HttpServletRequest request, HttpServletResponse response) {
         request.setAttribute("service", service);
