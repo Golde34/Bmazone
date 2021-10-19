@@ -77,7 +77,7 @@ public class SellerController extends HttpServlet {
             if (service.equalsIgnoreCase("deactiveproduct")) {
                 serviceDeactiveProduct(request, response);
             }
-            
+
             //Active Product
             if (service.equalsIgnoreCase("activeproduct")) {
                 serviceActiveProduct(request, response);
@@ -97,15 +97,25 @@ public class SellerController extends HttpServlet {
                 serviceActiveProductType(request, response);
             }
 
-            //Paging User
+            //Paging Product
             if (service.equalsIgnoreCase("pagingproduct")) {
                 servicePagingProduct(request, response);
             }
-            //Show Page User
+            //Show Page Product
             if (service.equalsIgnoreCase("showpageproduct")) {
                 serviceShowPageProduct(request, response);
             }
 
+            
+            //Paging Product Type
+            if (service.equalsIgnoreCase("pagingproducttype")) {
+                servicePagingProductType(request, response);
+            }
+            //Show Page ProductType
+            if (service.equalsIgnoreCase("showpageproducttype")) {
+                serviceShowPageProductType(request, response);
+            }
+            
             //Order Management
             if (service.equalsIgnoreCase("ordermanagement")) {
                 serviceOrderManagement(request, response);
@@ -151,7 +161,7 @@ public class SellerController extends HttpServlet {
         User account = (User) request.getSession().getAttribute("currUser");
         Seller seller = sellerDAO.getSellerByUserID(Integer.parseInt(account.getUserId()));
         String sellerID = Integer.toString(seller.getSellerID());
-        
+
         PrintWriter pr = response.getWriter();
 
         int index = 1, numOfRow = 5;
@@ -278,11 +288,149 @@ public class SellerController extends HttpServlet {
         String categoryId = pcDAO.getCategoryIdByProductId(product.getProductID());
         Category category = cateDAO.getCategoryByCateId(categoryId);
         ArrayList<Genre> listGenre = gDAO.getGenresByCategoryId(Integer.parseInt(categoryId));
+        
+        List<ProductType> listProductType = ptDAO.getProductByProductID(Integer.parseInt(id));
+        ArrayList<ProductType> listPaging = ptDAO.getAllPagingProductType(1, 1, "",id);
+        int totalPage = listProductType.size() / 1;
+        if (listProductType.size() != totalPage * 1) {
+            totalPage += 1;
+        }
+        request.setAttribute("index", 1);
+        request.setAttribute("totalPage", totalPage);
+        request.setAttribute("listProductType", listPaging);
         request.setAttribute("listGenre", listGenre);
         request.setAttribute("category", category);
         request.setAttribute("genre", genre);
         request.setAttribute("product", product);
         sendDispatcher(request, response, "seller/productdetail.jsp");
+    }
+
+    public void servicePagingProductType(HttpServletRequest request, HttpServletResponse response) throws IOException {
+        PrintWriter pr = response.getWriter();
+        int index = 1, numOfRow = 1;
+        String pid = request.getParameter("productid");
+        if (request.getParameter("index") != null) {
+            index = Integer.parseInt(request.getParameter("index"));
+        }
+        ArrayList<ProductType> listPaging = ptDAO.getAllPagingProductType(index, numOfRow, "", pid);
+        request.setAttribute("index", index);
+        request.setAttribute("listProductType", listPaging);
+        for (ProductType ptype : listPaging) {
+//            int proID = ptype.getProductID();
+//            String genreid = pgDAO.getGenreIdByProductId(ptype.getProductID());
+//            Genre genre = gDAO.getGenreById(Integer.parseInt(genreid));
+            Double price = Double.parseDouble(ptype.getPrice());
+            pr.print("<tr>"
+                    + "<td style=\"width: 90px;\"><label>Color</label></td>"
+                    + "<td>\n"
+                    + "                                                            <input required style=\"width: 100px;\" type=\"text\" name=\"color\" class=\"form-control\" value=\"<%=pt.getColor()%>\">\n"
+                    + "                                                            <input type=\"hidden\" name=\"ptid\" value=\"<%=pt.getProductTypeId()%>\">\n"
+                    + "                                                        </td>"
+                    + "<td><label>Size</label></td>\n" +
+"                                                        <td><input required style=\"width: 100px;\" type=\"text\" name=\"size\" class=\"form-control\" value=\"<%=pt.getSize()%>\"></td>"
+                    + "<td><label>Price</label></td>\n" +
+"                                                        <td><input required style=\"width: 100px;\" type=\"text\" name=\"price\" class=\"form-control price\" value=\"<%=nf.format(price)%>\"></td>"
+                    + "<td><label>Quantity</label></td>\n" +
+"                                                        <td><input required style=\"width: 100px;\"  type=\"text\" name=\"quantity\" class=\"form-control\" value=\"<%=pt.getQuantity()%>\"></td>"
+                    + "<td>");
+            if (ptype.getStatus() == 1) {
+                pr.print("<a href=\"SellerControllerMap?service=deactiveproducttype&producttypeid=" + ptype.getProductTypeId() + "\" onclick=\"return confirm('Are you sure?');\"><button class=\"btn btn-danger\">Deactive</button></a>");
+            } else {
+                pr.print("<a href=\"SellerControllerMap?service=activeproducttype&producttypeid=" + ptype.getProductTypeId() + "\" onclick=\"return confirm('Are you sure?');\"><button class=\"btn btn-success\">Active</button></a>");
+            }
+            pr.print("</td>"
+                    + "</tr>\n"
+                    + "<tr>\n" +
+"                                                        <td><label>Add image</label></td>\n" +
+"                                                        <td>\n" +
+"                                                            <%\n" +
+"                                                                List<Gallery> listGallery = gallerydao.getAllImageByProductTypeID(pt.getProductTypeId());\n" +
+"                                                                for (Gallery gallery : listGallery) {\n" +
+"                                                            %>\n" +
+"                                                    <img id=\"img\" src=\"images/<%=gallery.getLink()%>\" width=\"150px\" height=\"150px\"><br>                    \n" +
+"                                                    <input required accept=\"image/*\" onchange=\"loadFile(event)\" id=\"file\" type=\"file\" name=\"photo\">\n" +
+"                                                        </td>\n" +
+"                                                        <% } %>\n" +
+"                                                    </tr>"
+            );
+        }
+        if (request.getParameter("row") == null) {
+            sendDispatcher(request, response, "seller/productdetail.jsp");
+        }
+    }
+
+    public void serviceShowPageProductType(HttpServletRequest request, HttpServletResponse response) throws IOException {
+        
+        PrintWriter pr = response.getWriter();
+        int index = 1, numOfRow = 1;
+        String pid = request.getParameter("productid");
+        if (request.getParameter("row") != null) {
+            numOfRow = Integer.parseInt(request.getParameter("row"));
+        }
+        int totalResult = ptDAO.getPageNumber("", pid);
+        int totalPage = totalResult / numOfRow;
+        if (totalResult != numOfRow * totalPage) {
+            totalPage += 1;
+        }
+        int prev = index == 1 ? 1 : index - 1;
+        int next = index == totalPage ? totalPage : index + 1;
+        if (totalResult > numOfRow) {
+            pr.print("<li data-repair=\"1\" class=\"page-item\">");
+            pr.print("<a class=\"page-link\" aria-label=\"First\">");
+            pr.print("<span aria-hidden=\"true\"><i class=\"fas fa-backward\"></i>");
+            pr.print("<span class=\"sr-only\">(current)</span> ");
+            pr.print("</span>");
+            pr.print("</a>");
+            pr.print("</li>");
+            pr.print("<li data-repair=\"" + prev + "\" class=\"page-item\">");
+            pr.print("<a class=\"page-link\" aria-label=\"Previous\">");
+            pr.print("<span aria-hidden=\"true\"><i class=\"fas fa-arrow-left\"></i>");
+            pr.print("<span class=\"sr-only\">(current)</span> ");
+            pr.print("</span>");
+            pr.print("</a>");
+            pr.print("</li>");
+            for (int i = 1; i <= totalPage; i++) {
+                if (i < index - 2) {
+                    continue;
+                }
+                if (index < 3) {
+                    if (i > 5) {
+                        break;
+                    }
+                } else {
+                    if (i > index + 2) {
+                        break;
+                    }
+                }
+                if (index == i) {
+                    pr.print("<li  class=\"page-item active\" data-repair=\"" + i + "\">");
+                } else {
+                    pr.print("<li  class=\"page-item\" data-repair=\"" + i + "\">");
+                }
+                pr.print("<a class=\"page-link\">");
+                pr.print("<div class=\"index\">" + i + "</div>");
+                pr.print("<span class=\"sr-only\">(current)</span>");
+                pr.print("</a>");
+                pr.print("</li>");
+            }
+            pr.print("<li data-repair=\"" + next + "\" class=\"page-item\">");
+            pr.print("<a class=\"page-link\" aria-label=\"Next\">");
+            pr.print("<span aria-hidden=\"true\"><i class=\"fas fa-arrow-right\"></i>");
+            pr.print("<span class=\"sr-only\">(current)</span> ");
+            pr.print("</span>");
+            pr.print("</a>");
+            pr.print("</li>");
+            pr.print("<li data-repair=\"" + totalPage + "\" class=\"page-item\">");
+            pr.print("<a class=\"page-link\" aria-label=\"Last\">");
+            pr.print("<span aria-hidden=\"true\"><i class=\"fas fa-forward\"></i>");
+            pr.print("<span class=\"sr-only\">(current)</span> ");
+            pr.print("</span>");
+            pr.print("</a>");
+            pr.print("</li>");
+        }
+        if (request.getParameter("row") == null) {
+            sendDispatcher(request, response, "seller/productdetail.jsp");
+        }
     }
 
     public void serviceAddProduct(HttpServletRequest request, HttpServletResponse response) {

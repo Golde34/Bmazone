@@ -4,6 +4,8 @@
     Author     : DELL
 --%>
 
+<%@page import="entity.Gallery"%>
+<%@page import="model.GalleryDAO"%>
 <%@page import="entity.WareHouse"%>
 <%@page import="model.WareHouseDAO"%>
 <%@page import="entity.Category"%>
@@ -47,8 +49,6 @@
         <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
         <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
         <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
-        <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
-        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
         <style type="text/css">
             .modal .modal-dialog {
                 max-width: 400px;
@@ -89,6 +89,7 @@
         CategoryDAO daocat = new CategoryDAO();
         GenreDAO genredao = new GenreDAO();
         WareHouseDAO whdao = new WareHouseDAO();
+        GalleryDAO gallerydao = new GalleryDAO();
         String mess = (String) request.getAttribute("mess");
         if (mess == null) {
             mess = "";
@@ -102,13 +103,17 @@
         String date = (String) request.getAttribute("date");
         String service = (String) request.getAttribute("service");
         User curUser = (User) request.getSession().getAttribute("currUser");
+        int index = (Integer) request.getAttribute("index");
+        int totalPage = (Integer) request.getAttribute("totalPage");
+        int prev = index == 1 ? 1 : index - 1;
+        int next = index == totalPage ? totalPage : index + 1;
 
         List<WareHouse> listWh = whdao.getAllWareHouse();
         ArrayList<Category> listCategory = daocat.getAllCategories();
         ArrayList<Genre> listGenre = (ArrayList<Genre>) request.getAttribute("listGenre");
         Product product = (Product) request.getAttribute("product");
-        List<ProductType> listType = daopt.getProductByProductID(product.getProductID());
         DecimalFormat nf = new DecimalFormat("###,###,###");
+        ArrayList<ProductType> listPT = (ArrayList<ProductType>) request.getAttribute("listProductType");
     %>
 
     <body class="skin-black">
@@ -189,13 +194,13 @@
                                         <div class="card-body">
                                             <table class="table table-striped">
                                                 <tr>
-                                                    <td style="width: 30%;">Product Name</td>
-                                                    <td style="width: 70%;"><textarea required class="form-control" name="productname"><%=product.getProductName()%></textarea></td>
+                                                    <td style="width: 200px;">Product Name</td>
+                                                    <td><textarea style="width: 500px;" required class="form-control" name="productname"><%=product.getProductName()%></textarea></td>
                                                 </tr>
                                                 <tr>
                                                     <td>Category</td>
                                                     <td>
-                                                        <select required name="category" style="width: 50%;" class="form-select" id="category">
+                                                        <select required name="category" style="width: 150px;" class="form-select" id="category">
                                                             <%for (Category cate : listCategory) {
                                                             %>
                                                             <option
@@ -208,7 +213,7 @@
                                                 <tr>
                                                     <td>Genre</td>
                                                     <td>
-                                                        <select required name="genre" style="width: 50%;" class="form-select" id="genre">
+                                                        <select required name="genre" style="width: 150px;" class="form-select" id="genre">
                                                             <%for (Genre gen : listGenre) {
                                                             %>
                                                             <option
@@ -220,7 +225,7 @@
                                                 </tr>
                                                 <tr>
                                                     <td>Release Date</td>
-                                                    <td><input max="2000-01-01" id="inputDate" required class="form-control" value="<%=product.getReleaseDate()%>" type="date" name="date"></td>
+                                                    <td><input style="width: 200px;" max="2000-01-01" id="inputDate" required class="form-control" value="<%=product.getReleaseDate()%>" type="date" name="date"></td>
                                                 </tr>
                                             </table>
                                         </div>
@@ -230,41 +235,110 @@
                                             <h3 class="m-0 font-weight-bold text-primary">Detail Information</h3>
                                         </div>
                                         <div class="card-body">
-                                            <table id="productType" class="table table-borderless">
+                                            <table id="dataTable" class="table table-borderless">
                                                 <thead>
                                                     <tr>
-                                                        <th style="width: 35%;">Color</th>
-                                                        <th style="width: 40%;">Size</th>
-                                                        <th style="width: 15%;">Price</th>
-                                                        <th style="width: 5%;">Quantity</th>
-                                                        <th style="width: 5%;"></th>
+                                                        <th style="width: 50px;"></th>
+                                                        <th style="width: 50px;"></th>
+                                                        <th style="width: 50px;"></th>
+                                                        <th style="width: 50px;"></th>
+                                                        <th style="width: 50px;"></th>
+                                                        <th style="width: 50px;"></th>
+                                                        <th style="width: 50px;"></th>
+                                                        <th style="width: 50px;"></th>
                                                     </tr>
                                                 </thead>
-                                                <tbody>
-                                                    <% for (ProductType pt : listType) {%>
+                                                <tbody id="producttype">
+                                                    <% for (ProductType pt : listPT) {%>
                                                     <tr>
+                                                        <td style="width: 90px;"><label>Color</label></td>
                                                         <td>
-                                                            <input required style="width: 100%;" type="text" name="color" class="form-control" value="<%=pt.getColor()%>">
+                                                            <input required style="width: 100px;" type="text" name="color" class="form-control" value="<%=pt.getColor()%>">
                                                             <input type="hidden" name="ptid" value="<%=pt.getProductTypeId()%>">
                                                         </td>
-                                                        <td><input required style="width: 100%;" type="text" name="size" class="form-control" value="<%=pt.getSize()%>"></td>
+                                                        <td><label>Size</label></td>
+                                                        <td><input required style="width: 100px;" type="text" name="size" class="form-control" value="<%=pt.getSize()%>"></td>
                                                             <%Double price = Double.parseDouble(pt.getPrice());%>
-                                                        <td><input required style="width: 100%;" type="text" name="price" class="form-control price" value="<%=nf.format(price)%>"></td>
-                                                        <td><input required style="width: 100%;"  type="text" name="quantity" class="form-control" value="<%=pt.getQuantity()%>"></td>
+
+                                                        <td><label>Price</label></td>
+                                                        <td><input required style="width: 100px;" type="text" name="price" class="form-control price" value="<%=nf.format(price)%>"></td>
+
+                                                        <td><label>Quantity</label></td>
+                                                        <td><input required style="width: 100px;"  type="text" name="quantity" class="form-control" value="<%=pt.getQuantity()%>"></td>
                                                         <td>
                                                             <%if (pt.getStatus() == 1) {%>
-                                                            <a class="btn btn-danger" href="SellerControllerMap?service=deactiveproducttype&producttypeid=<%=pt.getProductTypeId()%>&productid=<%= product.getProductID() %>" onclick="return confirm('Are you sure you want to Remove?');">Deactive
+                                                            <a class="btn btn-danger" href="SellerControllerMap?service=deactiveproducttype&producttypeid=<%=pt.getProductTypeId()%>&productid=<%= product.getProductID()%>" onclick="return confirm('Are you sure you want to Remove?');">Deactive
                                                                 <!--<span class="fas fa-trash-alt mt-3 ml-3 delete"></span>-->
                                                             </a>
                                                             <%} else {%>
-                                                            <a class="btn btn-success" href="SellerControllerMap?service=activeproducttype&producttypeid=<%=pt.getProductTypeId()%>&productid=<%= product.getProductID() %>" onclick="return confirm('Are you sure you want to Remove?');">Active
+                                                            <a class="btn btn-success" href="SellerControllerMap?service=activeproducttype&producttypeid=<%=pt.getProductTypeId()%>&productid=<%= product.getProductID()%>" onclick="return confirm('Are you sure you want to Remove?');">Active
                                                                 <!--<span class="fas fa-link mt-3 ml-3 delete"></span>-->
                                                             </a><%}%>
                                                         </td>
                                                     </tr>
-                                                    <%}%>
+                                                    <tr>
+                                                        <td><label>Add image</label></td>
+                                                        <td>
+                                                            <%
+                                                                List<Gallery> listGallery = gallerydao.getAllImageByProductTypeID(pt.getProductTypeId());
+                                                                for (Gallery gallery : listGallery) {
+                                                            %>
+                                                            <img id="img" src="images/<%=gallery.getLink()%>" width="150px" height="150px"><br>                    
+                                                            <input required accept="image/*" onchange="loadFile(event)" id="file" type="file" name="photo">
+                                                        </td>
+                                                        <% } %>
+                                                    </tr>
+                                                    <% } %>
                                                 </tbody>
                                             </table>
+                                            <div class="pagination-container mt-4" style="display: flex;
+                                                 justify-content: space-around;cursor: pointer;">
+                                                <nav>
+                                                    <%if (totalPage > 1) {%>
+                                                    <ul class="pagination" id="showpage">
+                                                        <li data-repair="1" class="page-item">
+                                                            <a class="page-link" aria-label="First">
+                                                                <span aria-hidden="true"><i class="fas fa-backward"></i>
+                                                                    <span class="sr-only">(current)</span> 
+                                                                </span>
+                                                            </a>
+                                                        </li>
+                                                        <li data-repair="<%=prev%>" class="page-item">
+                                                            <a class="page-link" aria-label="Previous">
+                                                                <span aria-hidden="true"><i class="fas fa-arrow-left"></i>
+                                                                    <span class="sr-only">(current)</span> 
+                                                                </span>
+                                                            </a>
+                                                        </li>
+                                                        <%int limit = totalPage > 5 ? 5 : totalPage;%>
+                                                        <%for (int i = 1; i <= limit; i++) {%>
+                                                        <%if (index == i) {%>
+                                                        <li  class="page-item active" data-repair="<%=i%>">
+                                                        <%} else {%><li  class="page-item" data-repair="<%=i%>"> <%}%>
+                                                            <a class="page-link">
+                                                                <div class="index"><%=i%></div>
+                                                                <span class="sr-only">(current)</span>
+                                                            </a>
+                                                        </li>
+                                                        <%}%>
+                                                        <li data-repair="<%=next%>" class="page-item">
+                                                            <a class="page-link" aria-label="Next">
+                                                                <span aria-hidden="true"><i class="fas fa-arrow-right"></i>
+                                                                    <span class="sr-only">(current)</span> 
+                                                                </span>
+                                                            </a>
+                                                        </li>
+                                                        <li data-repair="<%=totalPage%>" class="page-item">
+                                                            <a class="page-link" aria-label="Last">
+                                                                <span aria-hidden="true"><i class="fas fa-forward"></i>
+                                                                    <span class="sr-only">(current)</span> 
+                                                                </span>
+                                                            </a>
+                                                        </li>
+                                                    </ul>
+                                                    <%}%>
+                                                </nav>
+                                            </div>
                                             <a href="#addEmployeeModal" data-toggle="modal"><btn class="btn btn-success">Add</btn></a>
                                             <div class="d-flex justify-content-center">
                                                 <input type="hidden" value="updateproductdetail" name="service">
@@ -338,32 +412,78 @@
     <script src="${contextPath}/js/plugins/smooth-scrollbar.min.js"></script>
     <script src="${contextPath}/js/plugins/chartjs.min.js"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
-        <script>
-            $("textarea").on('keyup', function () {
-                $(".noti").hide();
-            });
-            $(document).ready(function () {
-            $("#category").change(function () {
-            var val = $(this).val();
-            $(".noti").hide();
-            <% for (Category cate : listCategory) {%>
-            if (val == "<%=cate.getCategoryID()%>"){
-            console.log("<%=cate.getCategoryName()%>");
-                    $("#genre").html(
-            <% ArrayList<Genre> list = genredao.getGenresByCategoryId(cate.getCategoryID());
+    <script>
+                                                    
+
+                                                                var pageNum;
+                                                                $(document).on('click', '.pagination li', function () {
+                                                                pageNum = $(this).data('repair');
+                                                                pagination();
+                                                                });
+                                                                function pagination() {
+                                                                console.log(pageNum);
+                                                                $.ajax({
+                                                                url: "/Bmazon/SellerControllerMap",
+                                                                        type: "get",
+                                                                        data: {
+                                                                                index: pageNum,
+                                                                                service: "pagingproducttype"
+                                                                                productid: "<%= product.getProductID()%>"
+                                                                        },
+                                                                        success: function (respone) {
+                                                                        var text = document.getElementById("producttype");
+                                                                        text.innerHTML = respone;
+                                                                        showpage();
+                                                                        },
+                                                                        error: function (xhr) {
+                                                                        //Do Something to handle error
+                                                                        }
+                                                                });
+                                                                }
+                                                                function showpage() {
+                                                                $.ajax({
+                                                                url: "/Bmazon/SellerControllerMap",
+                                                                        type: "get",
+                                                                        data: {
+                                                                                index: pageNum,
+                                                                                service: "showpageproducttype"
+                                                                                productid: "<%= product.getProductID()%>"
+                                                                        },
+                                                                        success: function (respone) {
+                                                                        var text = document.getElementById("showpage");
+                                                                        text.innerHTML = respone;
+                                                                        },
+                                                                        error: function (xhr) {
+                                                                        //Do Something to handle error
+                                                                        } });
+                                                                }
+    </script>
+    <script>
+        $("textarea").on('keyup', function () {
+        $(".noti").hide();
+        });
+        $(document).ready(function () {
+        $("#category").change(function () {
+        var val = $(this).val();
+        $(".noti").hide();
+        <% for (Category cate : listCategory) {%>
+        if (val == "<%=cate.getCategoryID()%>"){
+        console.log("<%=cate.getCategoryName()%>");
+        $("#genre").html(
+        <% ArrayList<Genre> list = genredao.getGenresByCategoryId(cate.getCategoryID());
                 for (int i = 0; i < list.size(); i++) {
                 if (list.size() == 1 || i == list.size() - 1) {%>"<option value='<%=list.get(i).getGenreID()%>'><%=list.get(i).getGenreName()%></option>"
-                <%} else {%>"<option value='<%=list.get(i).getGenreID()%>'><%=list.get(i).getGenreName()%></option>" +
-                <%}
+        <%} else {%>"<option value='<%=list.get(i).getGenreID()%>'><%=list.get(i).getGenreName()%></option>" +
+        <%}
                 }%>);
-            }
-            <%}%>
-            });
-            });
+        }
+        <%}%>
+        });
+        });
         $(".number").on('keyup', function () {
         var n = parseInt($(this).val().replace(/\D/g, ''), 10);
-            $(this).val(n.toLocaleString());
-            $(".noti").hide();
+        $(this).val(n.toLocaleString());
+        $(".noti").hide();
         });
         (function () {
         'use strict'
@@ -379,17 +499,18 @@
                 }, false)
                 })
         })()
-        var today = new Date();
+                var today = new Date();
         var dd = today.getDate();
-        var mm = today.getMonth()+1; //January is 0!
+        var mm = today.getMonth() + 1; //January is 0!
         var yyyy = today.getFullYear();
-        if(dd<10){
-        dd='0'+dd
-        } 
-        if(mm<10){
-        mm='0'+mm
-        } 
-        today = yyyy+'-'+mm+'-'+dd;
+        if (dd < 10){
+        dd = '0' + dd
+        }
+        if (mm < 10){
+        mm = '0' + mm
+        }
+        today = yyyy + '-' + mm + '-' + dd;
         document.getElementById("inputDate").setAttribute("max", today);
-        </script>
+
+    </script>
 </html>

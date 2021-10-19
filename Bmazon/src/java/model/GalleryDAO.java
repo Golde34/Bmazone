@@ -220,6 +220,26 @@ public class GalleryDAO extends BaseDAO {
         }
         return s;
     }
+    
+    public List<Gallery> getAllImageByProductTypeID(String ptypeID) {
+        List<Gallery> list = new ArrayList<>();
+        String xSql = "select * from [Gallery] WHERE productTypeID = ?";
+        try {
+            pre = conn.prepareStatement(xSql);
+            rs = pre.executeQuery();
+            while (rs.next()) {
+                list.add(new Gallery(
+                        rs.getInt(1),
+                        rs.getInt(2),
+                        rs.getString(3),
+                        rs.getString(4),
+                        rs.getInt(5)));
+            }
+        } catch (Exception ex) {
+            Logger.getLogger(UserDAO.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return list;
+    }
 
 //    public List<Gallery> getGalleryBySizeAndColor(ProductType p) {
 //        List<Gallery> list = new ArrayList<>();

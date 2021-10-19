@@ -21,6 +21,64 @@ import java.util.logging.Logger;
  */
 public class ProductTypeDAO extends BaseDAO {
 
+    
+    
+    public static void main(String[] args) {
+        ProductTypeDAO dao = new ProductTypeDAO();
+        
+        List<ProductType> list = dao.getProductByProductID(25);
+        for (ProductType productType : list) {
+            System.out.println(productType.getColor());
+        }
+    }
+    public int getPageNumber(String search, String productID) {
+        int num = 0;
+        String xSql = "SELECT COUNT(*)from ProductType\n" +
+"       where color like '%" + search + "%' and productID = ?";
+        try {
+            pre = conn.prepareStatement(xSql);
+            pre.setString(1, productID);
+            rs = pre.executeQuery();
+            if (rs.next()) {
+                num = rs.getInt(1);
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(UserDAO.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return num;
+    }
+    
+    public ArrayList<ProductType> getAllPagingProductType(int index, int numOfRow, String search, String pid) {
+        ArrayList<ProductType> list = new ArrayList<>();
+        String sql = "declare @PageNo INT = " + index + "\n" +
+"                declare @PageSize INT=" + numOfRow + " \n" +
+"                SELECT * FROM\n" +
+"                (SELECT * ,\n" +
+"                ROW_NUMBER() over (order by productID) as RowNum\n" +
+"                FROM ProductType where productID = " + pid + " and(color like '%" + search + "%'))T\n" +
+"                where T.RowNum between ((@PageNo-1)*@PageSize)+1 and (@PageNo*@PageSize)";
+        try {
+            pre = conn.prepareStatement(sql);
+            rs = pre.executeQuery();
+            while (rs.next()) {
+                list.add(new ProductType(
+                        rs.getString(1),
+                        rs.getInt(2),
+                        rs.getString(3),
+                        rs.getString(4),
+                        rs.getString(5),
+                        rs.getInt(6),
+                        rs.getInt(7),
+                        rs.getInt(8)));
+            }
+            rs.close();
+            pre.close();
+        } catch (SQLException e) {
+            Logger.getLogger(ProductDAO.class.getName()).log(Level.SEVERE, null, e);
+        }
+        return list;
+    }
+
     public void deleteProductType(String ProTypeId) {
         String sql = "delete from ProductType where prodụctTypeID = ?";
         try {
@@ -126,10 +184,6 @@ public class ProductTypeDAO extends BaseDAO {
         return ptype;
     }
 
-    public static void main(String[] args) {
-        ProductTypeDAO dao = new ProductTypeDAO();
-        dao.changeStatus("Pr10Ty1", 1);
-    }
 
     public int getProductIdByProductTypeId(String id) {
         int pid = -1;
@@ -340,9 +394,9 @@ public class ProductTypeDAO extends BaseDAO {
         }
         return false;
     }
-    
+
     public boolean checkExistSizeAndColor(String size, String color, int productId) {
-        String sql = "SELECT * FROM [ProductType] WHERE size = '" + size + "' and color='" + color + "' and productID="+productId;
+        String sql = "SELECT * FROM [ProductType] WHERE size = '" + size + "' and color='" + color + "' and productID=" + productId;
         try {
             pre = conn.prepareStatement(sql);
             rs = pre.executeQuery();
