@@ -23,37 +23,24 @@ import static org.junit.Assert.*;
  * @author Admin
  */
 public class UserDAOTest {
-    
+
     public UserDAOTest() {
     }
-    
+
     @BeforeClass
     public static void setUpClass() {
-        UserDAO uDao = new UserDAO();
     }
-    
+
     @AfterClass
     public static void tearDownClass() {
     }
-    
+
     @Before
     public void setUp() {
     }
-    
+
     @After
     public void tearDown() {
-    }
-
-    /**
-     * Test of addUserRegister method, of class UserDAO.
-     */
-    @Test
-    public void testAddUserRegister() {
-        System.out.println("addUserRegister");
-        UserDAO dao = new UserDAO();
-        assertEquals(0, dao.addUserRegister(new User(null, "123456", "askdf@gmail.com", "0988907272", 1, 100, "Nguyen Viet", "Public name", "GIa Loc", "image.jpg", "lol.jpg", "SE", 1, "okok", "fb", "ins", "fe", "yt", 1, 1, 1)));
-        assertEquals(0, dao.addUserRegister(new User("Khanh", null, "asf@gmail.com", "0988907272", 1, 100, "Nguyen Viet", "Public name", "GIa Loc", "image.jpg", "lol.jpg", "SE", 1, "okok", "fb", "ins", "fe", "yt", 1, 1, 1)));
-        
     }
 
     /**
@@ -62,61 +49,120 @@ public class UserDAOTest {
     @Test
     public void testAddUser() {
         System.out.println("addUser");
-        User obj = null;
-        UserDAO instance = new UserDAO();
-        int expResult = 0;
-        int result = instance.addUser(obj);
-        assertEquals(expResult, result);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
+        UserDAO dao = new UserDAO();
+        assertEquals(1, dao.addUser(new User("G", "123456", "asf@gmail.com", "0988907272", 1, 100, "Nguyen Viet", "Public name", "GIa Loc", "image.jpg", "lol.jpg", "SE", 1, "okok", "fb", "ins", "fe", "yt", 1, 1, 1)));
     }
 
+    @Test
+    public void testAddUserWithNegativeID() {
+        System.out.println("addUser");
+        UserDAO dao = new UserDAO();
+        assertEquals(0, dao.addUser(new User("-1", "G", "123456", "asf@gmail.com", "0988907272", 1, 100, "Nguyen Viet", "Public name", "GIa Loc", "image.jpg", "lol.jpg", "SE", 1, Date.valueOf("2001-04-03"), "okok", "fb", "ins", "fe", "yt", 1, 1, 1)));
+    }
+
+    @Test
+    public void testAddUserWithUsernameNull() {
+        System.out.println("addUser");
+        UserDAO dao = new UserDAO();
+        assertEquals(0, dao.addUser(new User(null, "123456", "askdf@gmail.com", "0988907272", 1, 100, "Nguyen Viet", "Public name", "GIa Loc", "image.jpg", "lol.jpg", "SE", 1, "okok", "fb", "ins", "fe", "yt", 1, 1, 1)));
+    }
+
+    @Test
+    public void testAddUserWithPasswordNull() {
+        System.out.println("addUser");
+        UserDAO dao = new UserDAO();
+        assertEquals(0, dao.addUser(new User("K", null, "asf@gmail.com", "0988907272", 1, 100, "Nguyen Viet", "Public name", "GIa Loc", "image.jpg", "lol.jpg", "SE", 1, "okok", "fb", "ins", "fe", "yt", 1, 1, 1)));
+    } 
+    
     /**
      * Test of changePassword method, of class UserDAO.
      */
     @Test
     public void testChangePassword() {
         System.out.println("changePassword");
-        String username = "";
-        String newPass = "";
+        UserDAO instance = new UserDAO();     
+        assertEquals(1, instance.changePassword("G", "1000:5b39302c202d33302c202d32312c2035362c20322c2037342c20352c2038322c203132352c202d32322c2034302c2032312c202d32332c202d362c203130392c2034345d:f451937c010302b161bbdfe6e00a4227cddd945181807b3d"));
+    }
+    
+    @Test
+    public void testChangePasswordWithUsernameNotExist() {
+        System.out.println("changePassword");
         UserDAO instance = new UserDAO();
-        int expResult = 0;
-        int result = instance.changePassword(username, newPass);
-        assertEquals(expResult, result);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
+        assertEquals(0, instance.changePassword("", ""));
+        assertEquals(0, instance.changePassword("A", "123456"));
+    }
+    
+    @Test
+    public void testChangePasswordWithUsernameNull() {
+        System.out.println("changePassword");
+        UserDAO instance = new UserDAO();
+        assertEquals(0, instance.changePassword(null, "123456"));
+                
     }
 
+    @Test
+    public void testChangePasswordWithPasswordNull() {
+        System.out.println("changePassword");
+        UserDAO instance = new UserDAO();
+        assertEquals(0, instance.changePassword("G", null));
+    }
+    
     /**
      * Test of changeStatus method, of class UserDAO.
      */
     @Test
-    public void testChangeStatus_String_int() {
+    public void testChangeStatusWithUsername() {
         System.out.println("changeStatus");
-        String username = "";
-        int status = 0;
         UserDAO instance = new UserDAO();
-        int expResult = 0;
-        int result = instance.changeStatus(username, status);
-        assertEquals(expResult, result);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
+        assertEquals(1, instance.changeStatus("G", 1));
     }
 
+    @Test
+    public void testChangeStatusWithUsernameNotExist() {
+        System.out.println("changePassword");
+        UserDAO instance = new UserDAO();
+        assertEquals(0, instance.changeStatus("", 1));
+        assertEquals(0, instance.changeStatus("A", 1));
+    }
+    
+    @Test
+    public void testChangeStatusWithUsernameNull() {
+        System.out.println("changePassword");
+        UserDAO instance = new UserDAO();
+        assertEquals(0, instance.changeStatus(null, 1));
+                
+    }
+
+    @Test
+    public void testChangeStatusWithNegativeStatus() {
+        System.out.println("changePassword");
+        UserDAO instance = new UserDAO();
+        assertEquals(1, instance.changeStatus("G", -1));
+    }
+    
     /**
      * Test of changeStatus method, of class UserDAO.
      */
     @Test
-    public void testChangeStatus_int_int() {
+    public void testChangeStatusWithID() {
         System.out.println("changeStatus");
-        int id = 0;
-        int status = 0;
         UserDAO instance = new UserDAO();
-        int expResult = 0;
-        int result = instance.changeStatus(id, status);
-        assertEquals(expResult, result);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
+        assertEquals(1, instance.changeStatus(102, 1));
+    }
+
+    @Test
+    public void testChangeStatusWithIDNotExist() {
+        System.out.println("changePassword");
+        UserDAO instance = new UserDAO();
+        assertEquals(0, instance.changeStatus(-1, 1));
+        assertEquals(0, instance.changeStatus(0, 1));
+    }
+
+    @Test
+    public void testChangeStatusIntWithNegativeStatus() {
+        System.out.println("changePassword");
+        UserDAO instance = new UserDAO();
+        assertEquals(1, instance.changeStatus(102, -1));
     }
 
     /**
@@ -273,18 +319,6 @@ public class UserDAOTest {
     }
 
     /**
-     * Test of main method, of class UserDAO.
-     */
-    @Test
-    public void testMain() {
-        System.out.println("main");
-        String[] args = null;
-        UserDAO.main(args);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
-    }
-
-    /**
      * Test of getAllUser method, of class UserDAO.
      */
     @Test
@@ -422,7 +456,9 @@ public class UserDAOTest {
         System.out.println("updatePrivateInfo");
         User obj = null;
         UserDAO instance = new UserDAO();
-        instance.updatePrivateInfo(obj);
+        int expResult = 0;
+        int result = instance.updatePrivateInfo(obj);
+        assertEquals(expResult, result);
         // TODO review the generated test code and remove the default call to fail.
         fail("The test case is a prototype.");
     }
@@ -523,5 +559,5 @@ public class UserDAOTest {
         // TODO review the generated test code and remove the default call to fail.
         fail("The test case is a prototype.");
     }
-    
+
 }

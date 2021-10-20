@@ -8,14 +8,10 @@ package model;
 import entity.Role;
 import entity.Seller;
 import entity.User;
-import java.sql.Date;
-import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -26,18 +22,8 @@ import java.util.logging.Logger;
 public class UserDAO extends BaseDAO {
 
     BaseDAO dbConn = new BaseDAO();
-
-    public static void main(String[] args) {
-        System.out.println("addUserRegister");
-        UserDAO dao = new UserDAO();
-        int expResult = 1;
-        System.out.println(dao.addUserRegister(new User(null, "123456", "123", "askdf@gmail.com", "0988907272", 1, 100, "Nguyen Viet", "Public name", "GIa Loc", "image.jpg", "lol.jpg", "SE", 1, Date.valueOf("2001-04-03"), "okok", "fb", "ins", "fe", "yt", 1, 1, 1)));
-        System.out.println(dao.addUserRegister(new User("Khanh", "123456", "123", "asf@gmail.com", "0988907272", 1, 100, "Nguyen Viet", "Public name", "GIa Loc", "image.jpg", "lol.jpg", "SE", 1, Date.valueOf("2001-04-03"), "okok", "fb", "ins", "fe", "yt", 1, 1, 1)));
-        
-        
-    }
     
-    public int addUserRegister(User obj) {
+    public int addUser(User obj) {
         int n = 0;
         String sql = "INSERT INTO [User](username, password, email, phoneNumber, sell, wallet, fullname, publicName, address,"
                 + " profileImage, backgroundImage, occupation, gender, DOB, bio, Facebook, Instagram, Twitter, Youtube,"
@@ -66,43 +52,6 @@ public class UserDAO extends BaseDAO {
             pre.setInt(19, obj.getActivityPoint());
             pre.setInt(20, obj.getSystemRole());
             pre.setInt(21, obj.getStatus());
-            n = pre.executeUpdate();
-        } catch (SQLException ex) {
-            Logger.getLogger(UserDAO.class.getName()).log(Level.SEVERE, null, ex);
-        }
-        return n;
-    }
-
-    public int addUser(User obj) {
-        int n = 0;
-        String sql = "INSERT INTO [User](username, password, email, phoneNumber, sell, wallet, fullname, publicName, address,"
-                + " profileImage, backgroundImage, occupation, gender, DOB, bio, Facebook, Instagram, Twitter, Youtube,"
-                + " activityPoint, systemRole, status)"
-                + " values (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)";
-        try {
-            pre = conn.prepareStatement(sql);
-            pre.setString(1, obj.getUsername());
-            pre.setString(2, obj.getPassword());
-            pre.setString(3, obj.getEmail());
-            pre.setString(4, obj.getPhoneNumber());
-            pre.setInt(5, obj.getSell());
-            pre.setDouble(6, obj.getWallet());
-            pre.setString(7, obj.getFullname());
-            pre.setString(8, obj.getPublicName());
-            pre.setString(9, obj.getAddress());
-            pre.setString(10, obj.getProfileImage());
-            pre.setString(11, obj.getBackgroundImage());
-            pre.setString(12, obj.getOccupation());
-            pre.setInt(13, obj.getGender());
-            pre.setDate(14, obj.getDOB());
-            pre.setString(15, obj.getBio());
-            pre.setString(16, obj.getFacebook());
-            pre.setString(17, obj.getInstagram());
-            pre.setString(18, obj.getTwitter());
-            pre.setString(19, obj.getYoutube());
-            pre.setInt(20, obj.getActivityPoint());
-            pre.setInt(21, obj.getSystemRole());
-            pre.setInt(22, obj.getStatus());
             n = pre.executeUpdate();
         } catch (SQLException ex) {
             Logger.getLogger(UserDAO.class.getName()).log(Level.SEVERE, null, ex);

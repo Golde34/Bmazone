@@ -243,7 +243,7 @@ public class LoginController extends HttpServlet {
         //get code generated
         String authCode = (String) session.getAttribute("authcode");
         if (verifyCode.equals(authCode)) {
-            daoUser.addUserRegister(new User(Username, securePassword, Email, Phone, 0, 0, fullname, Username, "", "", "", "", 0, "", "", "", "", "", 0, 0, 1));
+            daoUser.addUser(new User(Username, securePassword, Email, Phone, 0, 0, fullname, Username, "", "", "", "", 0, "", "", "", "", "", 0, 0, 1));
             messVeri = "Signup Successfully!";
             request.setAttribute("mess", messVeri);
             sendDispatcher(request, response, "loginAndSecurity/register.jsp");
