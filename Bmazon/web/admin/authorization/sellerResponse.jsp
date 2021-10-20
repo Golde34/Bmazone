@@ -105,8 +105,6 @@
                                          style="display: flex;
                                          justify-content: space-between;">
                                         <h3 class="m-0 font-weight-bold text-primary">List All Seller</h3>
-                                        <a href="AdminControllerMap?service=userAuthorization">
-                                            <button class="btn-primary btn">User Authorization</button></a>
                                     </div>
                                     <div class="card-body">
                                         <div class="table_head py-3" style="display: flex;

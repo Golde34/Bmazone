@@ -8,6 +8,7 @@ package model;
 import entity.Role;
 import entity.Seller;
 import entity.User;
+import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -26,6 +27,16 @@ public class UserDAO extends BaseDAO {
 
     BaseDAO dbConn = new BaseDAO();
 
+    public static void main(String[] args) {
+        System.out.println("addUserRegister");
+        UserDAO dao = new UserDAO();
+        int expResult = 1;
+        System.out.println(dao.addUserRegister(new User(null, "123456", "123", "askdf@gmail.com", "0988907272", 1, 100, "Nguyen Viet", "Public name", "GIa Loc", "image.jpg", "lol.jpg", "SE", 1, Date.valueOf("2001-04-03"), "okok", "fb", "ins", "fe", "yt", 1, 1, 1)));
+        System.out.println(dao.addUserRegister(new User("Khanh", "123456", "123", "asf@gmail.com", "0988907272", 1, 100, "Nguyen Viet", "Public name", "GIa Loc", "image.jpg", "lol.jpg", "SE", 1, Date.valueOf("2001-04-03"), "okok", "fb", "ins", "fe", "yt", 1, 1, 1)));
+        
+        
+    }
+    
     public int addUserRegister(User obj) {
         int n = 0;
         String sql = "INSERT INTO [User](username, password, email, phoneNumber, sell, wallet, fullname, publicName, address,"
@@ -323,7 +334,7 @@ public class UserDAO extends BaseDAO {
         }
         return null;
     }
-
+    
     public ArrayList<User> getAllUser() {
         ArrayList<User> list = new ArrayList<>();
         String sql = "SELECT * FROM [User] where status=1";
@@ -525,7 +536,8 @@ public class UserDAO extends BaseDAO {
         }
     }
 
-    public void updatePrivateInfo(User obj) {
+    public int updatePrivateInfo(User obj) {
+        int n = 0;
         String sql = "UPDATE [User] SET  fullname=?, email=?, phoneNumber=?, [password]=?"
                 + " where userID=?";
         try {
@@ -535,10 +547,11 @@ public class UserDAO extends BaseDAO {
             pre.setString(3, obj.getPhoneNumber());
             pre.setString(4, obj.getPassword());
             pre.setString(5, obj.getUserId());
-            pre.executeUpdate();
+            n = pre.executeUpdate();
         } catch (SQLException ex) {
             Logger.getLogger(UserDAO.class.getName()).log(Level.SEVERE, null, ex);
         }
+        return n;
     }
 
     public int updateActivityPoint(User obj, int activityPoint) {

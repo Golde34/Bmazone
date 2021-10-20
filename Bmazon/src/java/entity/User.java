@@ -46,7 +46,7 @@ public class User implements Serializable{
 
     public User() {
     }
-
+    
     public User(String userId, String username, String password, String address, String bio, String facebook, String instagram, String twitter, String youtube) {
         this.userId = userId;
         this.username = username;
