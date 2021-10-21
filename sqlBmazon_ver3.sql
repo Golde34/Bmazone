@@ -142,7 +142,7 @@ CREATE TABLE Gallery (
 	link nvarchar(255) NOT NULL,
 	[status] bit,
 	FOREIGN KEY (productID) REFERENCES [Product](productID),
-	FOREIGN KEY (productTypeID) REFERENCES [ProductType](productTypeID)
+	FOREIGN KEY (productTypeID) REFERENCES [ProductType](productTypeId)
 )
 
 CREATE TABLE [Order](

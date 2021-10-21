@@ -51,7 +51,7 @@ public class GalleryDAO extends BaseDAO {
             Logger.getLogger(UserDAO.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
-    
+
     public int editGallery(Gallery g) {
         int n = 0;
         String xSql = "update Gallery set productID = ?, productTypeID = ?, link =?, status = ? where galleryID = ?";
@@ -141,13 +141,13 @@ public class GalleryDAO extends BaseDAO {
 
     public List<Gallery> getAllPagingGallery(int index, int numOfRow, String search) {
         List<Gallery> list = new ArrayList<>();
-        String xSql = "declare @PageNo INT ="+index+"\n"
-                + "declare @PageSize INT="+numOfRow+"\n"
+        String xSql = "declare @PageNo INT =" + index + "\n"
+                + "declare @PageSize INT=" + numOfRow + "\n"
                 + "SELECT * from(\n"
                 + "SELECT g.*,\n"
                 + "ROW_NUMBER() over (order by g.galleryID) as RowNum\n"
                 + "  FROM Gallery g join ProductType pt on g.productTypeID=pt.productTypeId join Product p on pt.productID=p.productID join Seller s on p.sellerID=s.sellerID\n"
-                + "   where p.productName like '%"+search+"%' or pt.size like '%"+search+"%' or pt.color like '%"+search+"%' or s.sellerShopName like '%"+search+"%')T\n"
+                + "   where p.productName like '%" + search + "%' or pt.size like '%" + search + "%' or pt.color like '%" + search + "%' or s.sellerShopName like '%" + search + "%')T\n"
                 + "where T.RowNum between ((@PageNo-1)*@PageSize)+1 and (@PageNo*@PageSize)";
         try {
             pre = conn.prepareStatement(xSql);
@@ -220,7 +220,7 @@ public class GalleryDAO extends BaseDAO {
         }
         return s;
     }
-    
+
     public List<Gallery> getAllImageByProductTypeID(String ptypeID) {
         List<Gallery> list = new ArrayList<>();
         String xSql = "select * from [Gallery] WHERE productTypeID = ?";
