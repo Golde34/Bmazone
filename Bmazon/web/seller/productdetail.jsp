@@ -427,7 +427,7 @@
                                                                         type: "get",
                                                                         data: {
                                                                                 index: pageNum,
-                                                                                service: "pagingproducttype"
+                                                                                service: "pagingproducttype",
                                                                                 productid: "<%= product.getProductID()%>"
                                                                         },
                                                                         success: function (respone) {
@@ -446,7 +446,7 @@
                                                                         type: "get",
                                                                         data: {
                                                                                 index: pageNum,
-                                                                                service: "showpageproducttype"
+                                                                                service: "showpageproducttype",
                                                                                 productid: "<%= product.getProductID()%>"
                                                                         },
                                                                         success: function (respone) {

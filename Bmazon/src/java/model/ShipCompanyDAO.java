@@ -35,14 +35,16 @@ public class ShipCompanyDAO extends BaseDAO {
         return n;
     }
     
-    public void deleteShipCompany(String companyID) {
+    public int deleteShipCompany(String companyID) {
+        int n = 0;
         String sql = "delete from ShipCompany where [companyID] = ?";
         try {
             pre = conn.prepareStatement(sql);
             pre.setString(1, companyID);
-            pre.executeUpdate();
+            n = pre.executeUpdate();
         } catch (SQLException e) {
         }
+        return n;
     }
 
     public boolean checkExistCompanyName(String companyname) {
@@ -60,7 +62,8 @@ public class ShipCompanyDAO extends BaseDAO {
         return false;
     }
 
-    public void addShipCompany(ShipCompany sp) {
+    public int addShipCompany(ShipCompany sp) {
+        int n = 0;
         String xSql= "INSERT INTO ShipCompany ([companyName],[unitCost],[commitDate],[status])\n"
                 + "     VALUES (?,?,?,?)";
         try {
@@ -69,9 +72,10 @@ public class ShipCompanyDAO extends BaseDAO {
             pre.setDouble(2, sp.getUnitCost());
             pre.setInt(3, sp.getCommitDate());
             pre.setInt(4, sp.getStatus());
-            pre.executeUpdate();
+            n = pre.executeUpdate();
         } catch (SQLException e) {
         }
+        return n;
     }
 
     public int editShipCompany(ShipCompany sp) {

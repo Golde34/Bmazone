@@ -25,18 +25,21 @@ public class GalleryDAO extends BaseDAO {
 
     BaseDAO dbConn = new BaseDAO();
 
-    public void deleteGallery(int id) {
+    public int deleteGallery(int id) {
+        int n = 0;
         String sql = "delete from Gallery where galleryID = ?";
         try {
             pre = conn.prepareStatement(sql);
             pre.setInt(1, id);
-            pre.executeUpdate();
+            n = pre.executeUpdate();
         } catch (Exception ex) {
             Logger.getLogger(UserDAO.class.getName()).log(Level.SEVERE, null, ex);
         }
+        return n;
     }
 
-    public void addGallery(Gallery g) {
+    public int addGallery(Gallery g) {
+        int n = 0;
         String xSql = "INSERT INTO Gallery ([galleryID],[productID],[productTypeID],[link],[status])\n"
                 + "     VALUES (?,?,?,?,?)";
         try {
@@ -46,10 +49,11 @@ public class GalleryDAO extends BaseDAO {
             pre.setString(3, g.getProductTypeID());
             pre.setString(4, g.getLink());
             pre.setDouble(5, g.getStatus());
-            pre.executeUpdate();
+            n = pre.executeUpdate();
         } catch (Exception ex) {
             Logger.getLogger(UserDAO.class.getName()).log(Level.SEVERE, null, ex);
         }
+        return n;
     }
 
     public int editGallery(Gallery g) {
@@ -62,7 +66,7 @@ public class GalleryDAO extends BaseDAO {
             pre.setString(3, g.getLink());
             pre.setDouble(4, g.getStatus());
             pre.setInt(5, g.getGalleryID());
-            pre.executeUpdate();
+            n = pre.executeUpdate();
         } catch (Exception ex) {
             Logger.getLogger(UserDAO.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -262,8 +266,5 @@ public class GalleryDAO extends BaseDAO {
 //    }
     public static void main(String[] args) {
         GalleryDAO g = new GalleryDAO();
-        Gallery ga = g.getGalleryById(1);
-        ga.setLink("Pr1Ty1Ga1.jpg");
-        g.editGallery(ga);
     }
 }
