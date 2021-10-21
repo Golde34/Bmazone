@@ -422,7 +422,7 @@
                                     <input type="text" name="quantity" value="1" class="qty">
                                     <div class="qtyplus">+</div>
 
-                                   
+
 
                                     <button type="submit"class="round-black-btn" name="service" value="AddToCart">Add to Cart</button>
                                 </div>
@@ -547,57 +547,53 @@
                             }
                         </style>
                     </div>
-
-
-                    <style scope="scope">
-
-                        #section_1788051855 {
-                            padding-top: 0px;
-                            padding-bottom: 0px;
-
-                        }
-                    </style>
+                </div>
             </section>
         </section>
+        <style scope="scope">
+            #section_1788051855 {
+                padding-top: 0px;
+                padding-bottom: 0px;
+            }
+        </style>
         <br><br><br>
-    </div>
-</div>
-<jsp:include page="../footer.jsp"/>
-</body>
-<!--    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>-->
-<script>
-    var color = document.getElementById("color").value;
-    var size = document.getElementById("size").value;
-    var quantity = document.getElementById("quantity").value;
-    var link = "CartControllerMap?service=AddToCart&pid=" +<%=product.getProductID()%> + "&size=" + size + "&color=" + color + "&quantity=" + quantity;
-    $("a[href='AddToCart']").attr('href',
-            link);
-    console.log(link);
 
-    function getPrice() {
-
+        <jsp:include page="../footer.jsp"/>
+    </body>
+    <!--    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>-->
+    <script>
         var color = document.getElementById("color").value;
         var size = document.getElementById("size").value;
-        console.log(size);
-        console.log(color);
-        console.log("<%=product.getProductID()%>");
-        $.ajax({
-            url: "/Bmazon/ProductDetailControllerMap",
-            type: "get",
-            data: {
-                color: color,
-                size: size,
-                pid: "<%=product.getProductID()%>",
-                service: "getPrice"
-            },
-            success: function (respone) {
-                var text = document.getElementById("price");
-                text.innerHTML = respone;
-            },
-            error: function (xhr) {
-                //Do Something to handle error
-            }
-        });
-    }
-</script>
+        var quantity = document.getElementById("quantity").value;
+        var link = "CartControllerMap?service=AddToCart&pid=" +<%=product.getProductID()%> + "&size=" + size + "&color=" + color + "&quantity=" + quantity;
+        $("a[href='AddToCart']").attr('href',
+                link);
+        console.log(link);
+
+        function getPrice() {
+
+            var color = document.getElementById("color").value;
+            var size = document.getElementById("size").value;
+            console.log(size);
+            console.log(color);
+            console.log("<%=product.getProductID()%>");
+            $.ajax({
+                url: "/Bmazon/ProductDetailControllerMap",
+                type: "get",
+                data: {
+                    color: color,
+                    size: size,
+                    pid: "<%=product.getProductID()%>",
+                    service: "getPrice"
+                },
+                success: function (respone) {
+                    var text = document.getElementById("price");
+                    text.innerHTML = respone;
+                },
+                error: function (xhr) {
+                    //Do Something to handle error
+                }
+            });
+        }
+    </script>
 </html>

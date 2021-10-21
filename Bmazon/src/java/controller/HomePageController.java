@@ -257,10 +257,12 @@ public class HomePageController extends HttpServlet {
         }
 
         List<Product> listProduct = proDAO.getProductBySellerPaging(page, id);
+        List<Product> listNewArrival = proDAO.getNewProductSeller(id);
 
         request.setAttribute("end", end);
         request.setAttribute("begin", begin);
         request.setAttribute("listProduct", listProduct);
+        request.setAttribute("listNewArrival", listNewArrival);
         request.setAttribute("sid", id);
         request.setAttribute("count", count);
 

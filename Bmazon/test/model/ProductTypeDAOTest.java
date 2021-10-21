@@ -40,7 +40,6 @@ public class ProductTypeDAOTest {
     public void tearDown() {
     }
 
-    
     /**
      * Test of getAllProductType method, of class ProductTypeDAO.
      */
@@ -288,9 +287,6 @@ public class ProductTypeDAOTest {
 //        int result = instance.changeStatus("Pr43Ty1", 1);
 //        assertEquals(1, result);
 //    }
-    /**
-     * Test of searchProduct method, of class ProductTypeDAO.
-     */
 
     /**
      * Test of checkExistColor method, of class ProductTypeDAO.
