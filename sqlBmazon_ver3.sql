@@ -82,7 +82,7 @@ CREATE TABLE [Genre] (
 -- co 1 bang Company
 CREATE TABLE [Warehouse](
 	wareHouseID int NOT NULL identity(1,1) PRIMARY KEY,
-	wareHouseAddress nvarchar(255),
+	wareHouseAddress nvarchar(255) not null,
 	[status] bit,
 )
 
@@ -128,8 +128,8 @@ CREATE TABLE [ProductType] (
 )
 
 CREATE TABLE ShipCompany (
-	companyID int identity(1,1) PRIMARY KEY,
-	companyName nvarchar(255),
+	companyID int not null identity(1,1) PRIMARY KEY,
+	companyName nvarchar(255) not null,
 	unitCost money,
 	commitDate int CHECK (commitDate>=0),
 	[status] bit,
