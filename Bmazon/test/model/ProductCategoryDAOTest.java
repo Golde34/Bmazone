@@ -130,4 +130,11 @@ public class ProductCategoryDAOTest {
         assertEquals(0, result.getCategoryID());
     }
     
+    @Test
+    public void testAddProductCategory(){
+        System.out.println("addProductCategory");
+        ProductCategoryDAO instance = new ProductCategoryDAO();
+        int result = instance.addProductCategory(91, 1);
+        assertEquals(1, result);
+    }
 }

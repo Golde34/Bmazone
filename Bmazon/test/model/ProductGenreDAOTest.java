@@ -75,13 +75,17 @@ public class ProductGenreDAOTest {
     @Test
     public void testGetProductGenreByProduct() {
         System.out.println("getProductGenreByProduct");
-        String pid = "";
         ProductGenreDAO instance = new ProductGenreDAO();
-        ProductGenre expResult = null;
-        ProductGenre result = instance.getProductGenreByProduct(pid);
-        assertEquals(expResult, result);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
+        ProductGenre result = instance.getProductGenreByProduct("1");
+        assertEquals(2, result.getGenreID());
+    }
+    
+        @Test
+    public void testGetProductGenreByProductNotExist() {
+        System.out.println("getProductGenreByProduct");
+        ProductGenreDAO instance = new ProductGenreDAO();
+        ProductGenre result = instance.getProductGenreByProduct("150");
+        assertEquals(0, result.getGenreID());
     }
 
     /**
@@ -125,6 +129,15 @@ public class ProductGenreDAOTest {
         int result = instance.updateProductGenre(obj);
         assertEquals(expResult, result);
     }
+    
+        @Test
+    public void testUpdateProductGenreNotExist() {
+        System.out.println("updateProductGenre");
+        ProductGenre obj = new ProductGenre(150, 50, 1);
+        ProductGenreDAO instance = new ProductGenreDAO();
+        int result = instance.updateProductGenre(obj);
+        assertEquals(0, result);
+    }
 
     /**
      * Test of addProductGenre method, of class ProductGenreDAO.
@@ -132,14 +145,9 @@ public class ProductGenreDAOTest {
     @Test
     public void testAddProductGenre() {
         System.out.println("addProductGenre");
-        int productID = 0;
-        int genreID = 0;
         ProductGenreDAO instance = new ProductGenreDAO();
-        int expResult = 0;
-        int result = instance.addProductGenre(productID, genreID);
-        assertEquals(expResult, result);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
+        int result = instance.addProductGenre(91, 21);
+        assertEquals(1, result);
     }
     
 }
