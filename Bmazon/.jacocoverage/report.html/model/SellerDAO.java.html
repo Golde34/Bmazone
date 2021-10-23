@@ -18,9 +18,9 @@ import sun.nio.ch.SelChImpl;
  *
  * @author Admin
  */
-<span class="nc" id="L21">public class SellerDAO extends BaseDAO {</span>
+<span class="fc" id="L21">public class SellerDAO extends BaseDAO {</span>
 
-<span class="nc" id="L23">    BaseDAO dbConn = new BaseDAO();</span>
+<span class="fc" id="L23">    BaseDAO dbConn = new BaseDAO();</span>
 
     public static void main(String[] args) {
 <span class="nc" id="L26">        SellerDAO sel = new SellerDAO();</span>
@@ -199,16 +199,16 @@ import sun.nio.ch.SelChImpl;
     }
 
     public Seller getSellerByUserID(int userID) {
-<span class="nc" id="L202">        String xSql= &quot;select * from [Bmazon].[dbo].[Seller] where userID = &quot; + userID;</span>
-<span class="nc" id="L203">        rs = dbConn.getData(xSql);</span>
+<span class="fc" id="L202">        String xSql= &quot;select * from [Bmazon].[dbo].[Seller] where userID = &quot; + userID;</span>
+<span class="fc" id="L203">        rs = dbConn.getData(xSql);</span>
         try {
-<span class="nc bnc" id="L205" title="All 2 branches missed.">            if (rs.next()) {</span>
-<span class="nc" id="L206">                Seller seller = new Seller(rs.getInt(&quot;sellerID&quot;), rs.getInt(&quot;userID&quot;),</span>
-<span class="nc" id="L207">                        rs.getString(&quot;sellerShopName&quot;), rs.getString(&quot;sellerPhone&quot;),</span>
-<span class="nc" id="L208">                        rs.getString(&quot;evidence&quot;), rs.getInt(&quot;sellerMainProduct&quot;),</span>
-<span class="nc" id="L209">                        rs.getString(&quot;description&quot;), rs.getInt(&quot;sellerVerification&quot;),</span>
-<span class="nc" id="L210">                        rs.getInt(&quot;status&quot;));</span>
-<span class="nc" id="L211">                return seller;</span>
+<span class="pc bpc" id="L205" title="1 of 2 branches missed.">            if (rs.next()) {</span>
+<span class="fc" id="L206">                Seller seller = new Seller(rs.getInt(&quot;sellerID&quot;), rs.getInt(&quot;userID&quot;),</span>
+<span class="fc" id="L207">                        rs.getString(&quot;sellerShopName&quot;), rs.getString(&quot;sellerPhone&quot;),</span>
+<span class="fc" id="L208">                        rs.getString(&quot;evidence&quot;), rs.getInt(&quot;sellerMainProduct&quot;),</span>
+<span class="fc" id="L209">                        rs.getString(&quot;description&quot;), rs.getInt(&quot;sellerVerification&quot;),</span>
+<span class="fc" id="L210">                        rs.getInt(&quot;status&quot;));</span>
+<span class="fc" id="L211">                return seller;</span>
             }
 <span class="nc" id="L213">        } catch (SQLException e) {</span>
 <span class="nc" id="L214">            Logger.getLogger(SellerDAO.class.getName()).log(Level.SEVERE, null, e);</span>
