@@ -7,7 +7,6 @@ package model;
 
 import entity.Role;
 import java.util.List;
-import java.util.concurrent.TimeUnit;
 import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.Before;
@@ -98,8 +97,7 @@ public class RoleDAOTest {
      * Test of editRole method, of class RoleDAO.
      */
     @Test
-    public void testEditRole() throws InterruptedException {
-        TimeUnit.SECONDS.sleep(10);
+    public void testEditRole(){
         System.out.println("editRole");
         Role r = new Role();
         r.setRoleID(98);
