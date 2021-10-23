@@ -378,7 +378,7 @@ public class UserDAO extends BaseDAO {
         try {
             while (rs.next()) {
                 User u = uDao.getUserById(rs.getString("userID"));
-                Role r = rDao.getRoleById(rs.getInt("roleID"));
+                Role r = rDao.getRoleId(rs.getInt("roleID"));
                 map.put(u, r);
             }
         } catch (SQLException ex) {
@@ -560,7 +560,7 @@ public class UserDAO extends BaseDAO {
         try {
             while (rs.next()) {
                 User u = uDao.getUserById(rs.getString("userID"));
-                Role r = rDao.getRoleById(rs.getInt("roleID"));
+                Role r = rDao.getRoleId(rs.getInt("roleID"));
                 map.put(u, r);
             }
         } catch (SQLException ex) {

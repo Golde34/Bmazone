@@ -230,6 +230,7 @@ public class GalleryDAO extends BaseDAO {
         String xSql = "select * from [Gallery] WHERE productTypeID = ?";
         try {
             pre = conn.prepareStatement(xSql);
+            pre.setString(1, ptypeID);
             rs = pre.executeQuery();
             while (rs.next()) {
                 list.add(new Gallery(
@@ -266,5 +267,9 @@ public class GalleryDAO extends BaseDAO {
 //    }
     public static void main(String[] args) {
         GalleryDAO g = new GalleryDAO();
+        List<Gallery> listGallery = g.getAllImageByProductTypeID("Pr25Ty1");
+        for (Gallery gallery : listGallery) {
+            System.out.println(gallery.getLink());
+        }
     }
 }

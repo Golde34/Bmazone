@@ -1508,7 +1508,7 @@ public class AdminController extends HttpServlet {
             return;
         }
         int id = Integer.parseInt(request.getParameter("roleID"));
-        Role roleDetail = daorole.getRoleById(id);
+        Role roleDetail = daorole.getRoleId(id);
         request.setAttribute("roleDetail", roleDetail);
         sendDispatcher(request, response, "admin/authorization/editRole.jsp");
     }
