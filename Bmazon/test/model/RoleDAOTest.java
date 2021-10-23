@@ -90,17 +90,17 @@ public class RoleDAOTest {
     public void testChangeStatus() {
         System.out.println("testChangeStatusWithRoleID");
         RoleDAO instance = new RoleDAO();
-        assertEquals(1, instance.changeStatus(99, 0));
+        assertEquals(1, instance.changeStatus(98, 0));
     }
 
     /**
      * Test of editRole method, of class RoleDAO.
      */
     @Test
-    public void testEditRole() {
+    public void testEditRole(){
         System.out.println("editRole");
         Role r = new Role();
-        r.setRoleID(99);
+        r.setRoleID(98);
         r.setRoleName("Test Case in id 99");
         r.setAdminPermission(0);
         r.setSellerPermission(0);
@@ -128,7 +128,7 @@ public class RoleDAOTest {
     @Test
     public void testCheckExistRoleId() {
         System.out.println("checkExistRoleId");
-        int id = 99;
+        int id = 98;
         RoleDAO instance = new RoleDAO();
         boolean result = instance.checkExistRoleId(id);
         assertEquals(true, result);
@@ -140,9 +140,8 @@ public class RoleDAOTest {
     @Test
     public void testGetRoleId() {
         System.out.println("getRoleById");
-        int id = 99;
+        int id = 98;
         RoleDAO instance = new RoleDAO();
-        Role expResult = null;
         Role result = instance.getRoleId(id);
         assertNotNull(result.getRoleName());
     }

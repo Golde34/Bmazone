@@ -48,9 +48,9 @@ public class ProductTypeDAOTest {
         System.out.println("getAllProductType");
         ProductTypeDAO instance = new ProductTypeDAO();
         List<ProductType> result = instance.getAllProductType();
-        assertEquals(161, result.size());
+        assertEquals(164, result.size());
     }
-    
+
     @Test
     public void testGetAllProductTypeWrong() {
         System.out.println("getAllProductType");
@@ -58,32 +58,18 @@ public class ProductTypeDAOTest {
         List<ProductType> result = instance.getAllProductType();
         assertNotEquals(160, result.size());
     }
-    
-    /**
-     * Test of deleteProductType method, of class ProductTypeDAO.
-     */
-    @Test
-    public void testDeleteProductType() {
-        System.out.println("deleteProductType");
-        ProductTypeDAO instance = new ProductTypeDAO();
-        assertEquals(1, instance.deleteProductType("Pr13Ty1"));
-    }
-     @Test
-    public void testDeleteProductTypeNotExist() {
-        System.out.println("deleteProductType");
-        ProductTypeDAO instance = new ProductTypeDAO();
-        assertEquals(0, instance.deleteProductType("Pr100Ty1"));
-    }
+
     /**
      * Test of addProductType method, of class ProductTypeDAO.
      */
     @Test
     public void testAddProductType() {
         System.out.println("addProductType");
-        ProductType p = new ProductType("Pr11Ty1", 11, "64GB", "White", "21000000", 1, 20, 1);
+        ProductType p = new ProductType("Pr100Ty1", 11, "64GB", "White", "21000000", 1, 20, 1);
         ProductTypeDAO instance = new ProductTypeDAO();
         assertEquals(1, instance.addProductType(p));
     }
+
     @Test
     public void testAddProductTypeNull() {
         System.out.println("addProductType");
@@ -91,6 +77,24 @@ public class ProductTypeDAOTest {
         ProductTypeDAO instance = new ProductTypeDAO();
         assertEquals(0, instance.addProductType(p));
     }
+
+    /**
+     * Test of deleteProductType method, of class ProductTypeDAO.
+     */
+    @Test
+    public void testDeleteProductType() {
+        System.out.println("deleteProductType");
+        ProductTypeDAO instance = new ProductTypeDAO();
+        assertEquals(1, instance.deleteProductType("Pr100Ty1"));
+    }
+
+    @Test
+    public void testDeleteProductTypeNotExist() {
+        System.out.println("deleteProductType");
+        ProductTypeDAO instance = new ProductTypeDAO();
+        assertEquals(0, instance.deleteProductType("Pr150Ty1"));
+    }
+
     /**
      * Test of editProduct method, of class ProductTypeDAO.
      */
@@ -122,7 +126,7 @@ public class ProductTypeDAOTest {
         int result = instance.checkoutProductType("Pr14Ty1", 20);
         assertEquals(1, result);
     }
-    
+
     @Test
     public void testCheckoutProductTypeNull() {
         System.out.println("checkoutProductType");
@@ -130,8 +134,6 @@ public class ProductTypeDAOTest {
         int result = instance.checkoutProductType(null, 20);
         assertEquals(0, result);
     }
-
-    
 
     /**
      * Test of getProductTypeByPTypeID method, of class ProductTypeDAO.
@@ -143,13 +145,13 @@ public class ProductTypeDAOTest {
         ProductType result = instance.getProductTypeByPTypeID("Pr15Ty1");
         assertEquals(15, result.getProductID());
     }
-    
+
     @Test
     public void testGetProductTypeByPTypeIDWrong() {
         System.out.println("getProductTypeByPTypeID");
         ProductTypeDAO instance = new ProductTypeDAO();
         ProductType result = instance.getProductTypeByPTypeID("Pr15Ty1");
-        assertEquals(16, result.getProductID());
+        assertEquals(15, result.getProductID());
     }
 
     /**
@@ -170,6 +172,7 @@ public class ProductTypeDAOTest {
         int result = instance.getProductIdByProductTypeId("Pr16Ty1");
         assertNotEquals(18, result);
     }
+
     /**
      * Test of getProductByProductID method, of class ProductTypeDAO.
      */
@@ -180,7 +183,7 @@ public class ProductTypeDAOTest {
         List<ProductType> result = instance.getProductByProductID(18);
         assertEquals(4, result.size());
     }
-    
+
     @Test
     public void testGetProductByProductIDWrong() {
         System.out.println("getProductByProductID");
@@ -199,7 +202,7 @@ public class ProductTypeDAOTest {
         ProductType result = instance.getProductTypeByColorAndSize("Phantom Black", "256GB", "20");
         assertEquals("Pr20Ty1", result.getProductTypeId());
     }
-    
+
     @Test
     public void testGetProductTypeByColorAndSizeWrong() {
         System.out.println("getProductTypeByColorAndSize");
@@ -216,9 +219,9 @@ public class ProductTypeDAOTest {
         System.out.println("getProductByColor");
         ProductTypeDAO instance = new ProductTypeDAO();
         ArrayList<ProductType> result = instance.getProductByColor("Black");
-        assertEquals(77, result.size());
+        assertEquals(78, result.size());
     }
-    
+
     @Test
     public void testGetProductByColorWrong() {
         System.out.println("getProductByColor");
@@ -237,7 +240,7 @@ public class ProductTypeDAOTest {
         ArrayList<String> result = instance.getAllSizeOfProduct(20);
         assertEquals(2, result.size());
     }
-    
+
     @Test
     public void testGetAllSizeOfProductWrong() {
         System.out.println("getAllSizeOfProduct");
@@ -256,7 +259,7 @@ public class ProductTypeDAOTest {
         ArrayList<String> result = instance.getAllColorOfProduct(20);
         assertEquals(3, result.size());
     }
-    
+
     @Test
     public void testGetAllColorOfProductWrong() {
         System.out.println("getAllColorOfProduct");
@@ -264,10 +267,6 @@ public class ProductTypeDAOTest {
         ArrayList<String> result = instance.getAllColorOfProduct(20);
         assertNotEquals(2, result.size());
     }
-
-    /**
-     * Test of getProductPrice method, of class ProductTypeDAO.
-     */
 
     /**
      * Test of changeStatus method, of class ProductTypeDAO.
@@ -287,9 +286,6 @@ public class ProductTypeDAOTest {
         int result = instance.changeStatus("Pr43Ty1", 1);
         assertEquals(1, result);
     }
-    /**
-     * Test of searchProduct method, of class ProductTypeDAO.
-     */
 
     /**
      * Test of checkExistColor method, of class ProductTypeDAO.
@@ -302,7 +298,7 @@ public class ProductTypeDAOTest {
         boolean result = instance.checkExistColor(color);
         assertEquals(true, result);
     }
-    
+
     @Test
     public void testCheckNonExistColor() {
         System.out.println("checkExistColor");
@@ -325,7 +321,7 @@ public class ProductTypeDAOTest {
         boolean result = instance.checkExistSizeAndColor(size, color, productId);
         assertEquals(true, result);
     }
-    
+
     @Test
     public void testCheckNonExistSizeAndColor() {
         System.out.println("checkExistSizeAndColor");
@@ -337,4 +333,49 @@ public class ProductTypeDAOTest {
         assertEquals(false, result);
     }
 
+    /**
+     * Test of getPageNumber method, of class ProductTypeDAO.
+     */
+    @Test
+    public void testGetPageNumber() {
+        System.out.println("getPageNumber");
+        ProductTypeDAO instance = new ProductTypeDAO();
+        int result = instance.getPageNumber("Black", "13");
+        assertEquals(2, result);
+    }
+
+    @Test
+    public void testGetPageNumberWrong() {
+        System.out.println("getPageNumber");
+        ProductTypeDAO instance = new ProductTypeDAO();
+        int result = instance.getPageNumber("Black", "13");
+        assertNotEquals(1, result);
+    }
+
+    @Test
+    public void testGetPageNumberNotExist() {
+        System.out.println("getPageNumber");
+        ProductTypeDAO instance = new ProductTypeDAO();
+        int result = instance.getPageNumber("Black", "100");
+        assertEquals(0, result);
+    }
+
+    /**
+     * Test of getAllPagingProductType method, of class ProductTypeDAO.
+     */
+    @Test
+    public void testGetAllPagingProductType() {
+        System.out.println("getAllPagingProductType");
+        ProductTypeDAO instance = new ProductTypeDAO();
+        List<ProductType> result = instance.getAllPagingProductType(1, 10, "Black", "13");
+        assertEquals(2, result.size());
+    }
+    
+        @Test
+    public void testGetAllPagingProductTypeWrong() {
+        System.out.println("getAllPagingProductType");
+        ProductTypeDAO instance = new ProductTypeDAO();
+        List<ProductType> result = instance.getAllPagingProductType(1, 10, "Black", "13");
+        assertNotEquals(100, result.size());
+    }
 }

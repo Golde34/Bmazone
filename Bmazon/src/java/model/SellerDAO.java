@@ -72,14 +72,16 @@ public class SellerDAO extends BaseDAO {
         return n;
     }
 
-    public void deleteSeller(int sellerID) {
+    public int deleteSeller(int sellerID) {
+        int n = 0;
         String sql = "delete from Seller where [sellerID] = ?";
         try {
             pre = conn.prepareStatement(sql);
             pre.setInt(1, sellerID);
-            pre.executeUpdate();
+            n = pre.executeUpdate();
         } catch (SQLException e) {
         }
+        return n;
     }
 
     public boolean checkExistPhone(String phone) {
@@ -236,28 +238,30 @@ public class SellerDAO extends BaseDAO {
         return null;
     }
 
-    public void acceptSellerRequest(int sellerID) {
-      
+    public int acceptSellerRequest(int sellerID) {
+        int n = 0;
         String xSql= "update [Bmazon].[dbo].[Seller] set [sellerVerification] = 1 where [sellerID] = ?";
         try {
             pre = conn.prepareStatement(xSql);
             pre.setInt(1, sellerID);
-            pre.executeUpdate();
+            n = pre.executeUpdate();
         } catch (SQLException e) {
              Logger.getLogger(SellerDAO.class.getName()).log(Level.SEVERE, null, e);
         }
+        return n;
     }
 
-    public void denySellerRequest(int sellerID) {
-        
+    public int denySellerRequest(int sellerID) {
+        int n = 0;
         String xSql= "update [Bmazon].[dbo].[Seller] set [sellerVerification] = 2 where [sellerID] = ?";
         try {
             pre = conn.prepareStatement(xSql);
             pre.setInt(1, sellerID);
-            pre.executeUpdate();
+            n = pre.executeUpdate();
         } catch (SQLException e) {
              Logger.getLogger(SellerDAO.class.getName()).log(Level.SEVERE, null, e);
         }
+        return n;
     }
 
     public List<Seller> searchSeller(String text) {
