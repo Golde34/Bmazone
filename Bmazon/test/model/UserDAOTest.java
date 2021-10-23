@@ -5,12 +5,9 @@
  */
 package model;
 
-import entity.Role;
 import entity.Seller;
 import entity.User;
 import java.sql.Date;
-import java.util.ArrayList;
-import java.util.HashMap;
 import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.Before;

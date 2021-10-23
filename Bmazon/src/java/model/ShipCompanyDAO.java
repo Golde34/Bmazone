@@ -125,10 +125,7 @@ public class ShipCompanyDAO extends BaseDAO {
         }
         return num;
     }
-    public static void main(String[] args) {
-        ShipCompanyDAO dao = new ShipCompanyDAO();
-        dao.changeStatus(1, 1);
-    }
+    
     public List<ShipCompany> getAllPagingShipCompany(int index, int numOfRow, String search) {
         List<ShipCompany> list = new ArrayList<>();
         String xSql= "declare @PageNo INT = ? \n"

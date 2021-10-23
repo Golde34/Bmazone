@@ -17,18 +17,18 @@ import java.util.logging.Logger;
  *
  * @author Duong
  */
-<span class="nc" id="L20">public class OrderDAO extends BaseDAO{</span>
+<span class="fc" id="L20">public class OrderDAO extends BaseDAO{</span>
 
-<span class="nc" id="L22">   BaseDAO dbConn= new BaseDAO();</span>
+<span class="fc" id="L22">   BaseDAO dbConn= new BaseDAO();</span>
 
     public int insertOrder(Order obj) {
-<span class="nc" id="L25">        int n = 0;</span>
-<span class="nc" id="L26">        String sql = &quot;INSERT INTO [Order]&quot; +</span>
+<span class="fc" id="L25">        int n = 0;</span>
+<span class="fc" id="L26">        String sql = &quot;INSERT INTO [Order]&quot; +</span>
 &quot;           ([userID],[orderDate],[requiredDate],[shippedDate],[shipName],[shipAddress],[shipCity]\n&quot; +
 &quot;           ,[shipPhone],[companyID],[shipMoney],[paymentMethod],[total],[status])&quot;+
 &quot;     VALUES (?,GETDATE(),?,?,?,?,?,?,?,?,?,?,?,1)&quot; ;
         try {
-<span class="nc" id="L31">            pre = conn.prepareStatement(sql);</span>
+<span class="fc" id="L31">            pre = conn.prepareStatement(sql);</span>
 <span class="nc" id="L32">            pre.setString(1, obj.getUserID());</span>
 <span class="nc" id="L33">            pre.setDate(2, obj.getOrderDate());</span>
 <span class="nc" id="L34">            pre.setDate(3, obj.getRequiredDate());</span>
@@ -49,25 +49,25 @@ import java.util.logging.Logger;
     }
 
     public int changeStatus(String orderId) {
-<span class="nc" id="L52">        int n = 0;</span>
-<span class="nc" id="L53">        String sql = &quot;UPDATE [Order] SET status = 1 WHERE orderID = '?'&quot;;</span>
+<span class="fc" id="L52">        int n = 0;</span>
+<span class="fc" id="L53">        String sql = &quot;UPDATE [Order] SET status = 1 WHERE orderID = '?'&quot;;</span>
         Statement state;
         try {
-<span class="nc" id="L56">            pre = conn.prepareStatement(sql);</span>
+<span class="fc" id="L56">            pre = conn.prepareStatement(sql);</span>
 <span class="nc" id="L57">            pre.setString(1, orderId);</span>
 <span class="nc" id="L58">            n = pre.executeUpdate();</span>
-<span class="nc" id="L59">        } catch (SQLException ex) {</span>
-<span class="nc" id="L60">            Logger.getLogger(OrderDAO.class.getName()).log(Level.SEVERE, null, ex);</span>
+<span class="fc" id="L59">        } catch (SQLException ex) {</span>
+<span class="fc" id="L60">            Logger.getLogger(OrderDAO.class.getName()).log(Level.SEVERE, null, ex);</span>
 <span class="nc" id="L61">        }</span>
-<span class="nc" id="L62">        return n;</span>
+<span class="fc" id="L62">        return n;</span>
     }
 
     public int updateOrder(Order obj) {
-<span class="nc" id="L66">        int n = 0;</span>
-<span class="nc" id="L67">        String sql = &quot;update [Order] set[orderDate]=? [requiredDate]=?[shippedDate]=?[shipName]=?[shipAddress]=?[shipCity]=?&quot; +</span>
+<span class="fc" id="L66">        int n = 0;</span>
+<span class="fc" id="L67">        String sql = &quot;update [Order] set[orderDate]=? [requiredDate]=?[shippedDate]=?[shipName]=?[shipAddress]=?[shipCity]=?&quot; +</span>
 &quot;           [shipPhone]=?[companyID]=?[shipMoney]=?[paymentMethod]=? [total]=? [status]=1 where orderID=?&quot;;
         try {
-<span class="nc" id="L70">            pre = conn.prepareStatement(sql);</span>
+<span class="fc" id="L70">            pre = conn.prepareStatement(sql);</span>
 <span class="nc" id="L71">            pre.setDate(1, obj.getOrderDate());</span>
 <span class="nc" id="L72">            pre.setDate(2, obj.getRequiredDate());</span>
 <span class="nc" id="L73">            pre.setDate(3, obj.getShippedDate());</span>
@@ -88,47 +88,47 @@ import java.util.logging.Logger;
     }
 
     public int removeOrder(String orderId) {
-<span class="nc" id="L91">        int n = 0;</span>
-<span class="nc" id="L92">        String sql = &quot;Select * from [Order] as a join OrderDetail as b on a.orderID = b.orderID where a.orderID = '&quot; + orderId + &quot;'&quot;;</span>
-<span class="nc" id="L93">        rs = dbConn.getData(sql);</span>
+<span class="fc" id="L91">        int n = 0;</span>
+<span class="fc" id="L92">        String sql = &quot;Select * from [Order] as a join OrderDetail as b on a.orderID = b.orderID where a.orderID = '&quot; + orderId + &quot;'&quot;;</span>
+<span class="fc" id="L93">        rs = dbConn.getData(sql);</span>
         try {
-<span class="nc bnc" id="L95" title="All 2 branches missed.">            if (rs.next()) {</span>
+<span class="pc bpc" id="L95" title="1 of 2 branches missed.">            if (rs.next()) {</span>
 <span class="nc" id="L96">                String s = rs.getString(&quot;orderID&quot;);</span>
 <span class="nc bnc" id="L97" title="All 2 branches missed.">                return s == null ? 0 : Integer.parseInt(s);</span>
             }
 <span class="nc" id="L99">        } catch (SQLException ex) {</span>
 <span class="nc" id="L100">            Logger.getLogger(OrderDAO.class.getName()).log(Level.SEVERE, null, ex);</span>
-<span class="nc" id="L101">        }</span>
-<span class="nc" id="L102">        return n;</span>
+<span class="fc" id="L101">        }</span>
+<span class="fc" id="L102">        return n;</span>
     }
 
     public ArrayList&lt;Order&gt; getAllOrder() {
-<span class="nc" id="L106">        ArrayList&lt;Order&gt; list = new ArrayList&lt;&gt;();</span>
-<span class="nc" id="L107">        String sql = &quot;select * from [Order] where status = 1  order by orderID desc&quot;;</span>
-<span class="nc" id="L108">        rs = dbConn.getData(sql);</span>
+<span class="fc" id="L106">        ArrayList&lt;Order&gt; list = new ArrayList&lt;&gt;();</span>
+<span class="fc" id="L107">        String sql = &quot;select * from [Order] where status = 1  order by orderID desc&quot;;</span>
+<span class="fc" id="L108">        rs = dbConn.getData(sql);</span>
         try {
-<span class="nc bnc" id="L110" title="All 2 branches missed.">            while (rs.next()) {</span>
-<span class="nc" id="L111">                Order o = new Order();</span>
-<span class="nc" id="L112">                o.setOrderID(rs.getInt(&quot;orderID&quot;));</span>
-<span class="nc" id="L113">                o.setUserID(rs.getString(&quot;userID&quot;));</span>
-<span class="nc" id="L114">                o.setOrderDate(rs.getDate(&quot;orderDate&quot;));</span>
-<span class="nc" id="L115">                o.setRequiredDate(rs.getDate(&quot;requiredDate&quot;));</span>
-<span class="nc" id="L116">                o.setShippedDate(rs.getDate(&quot;shippedDate&quot;));</span>
-<span class="nc" id="L117">                o.setShipName(rs.getString(&quot;shipname&quot;));</span>
-<span class="nc" id="L118">                o.setShipAddress(rs.getString(&quot;shipaddress&quot;));</span>
-<span class="nc" id="L119">                o.setShipCity(rs.getString(&quot;shipcity&quot;));</span>
-<span class="nc" id="L120">                o.setShipPhone(rs.getString(&quot;shipphone&quot;));</span>
-<span class="nc" id="L121">                o.setCompanyID(rs.getInt(&quot;companyID&quot;));</span>
-<span class="nc" id="L122">                o.setShipMoney(rs.getDouble(&quot;shipmoney&quot;));</span>
-<span class="nc" id="L123">                o.setPaymentMethod(rs.getString(&quot;paymentmethod&quot;));</span>
-<span class="nc" id="L124">                o.setTotal(rs.getDouble(&quot;total&quot;));</span>
-<span class="nc" id="L125">                o.setStatus(rs.getInt(&quot;status&quot;));</span>
-<span class="nc" id="L126">                list.add(o);</span>
-<span class="nc" id="L127">            }</span>
+<span class="fc bfc" id="L110" title="All 2 branches covered.">            while (rs.next()) {</span>
+<span class="fc" id="L111">                Order o = new Order();</span>
+<span class="fc" id="L112">                o.setOrderID(rs.getInt(&quot;orderID&quot;));</span>
+<span class="fc" id="L113">                o.setUserID(rs.getString(&quot;userID&quot;));</span>
+<span class="fc" id="L114">                o.setOrderDate(rs.getDate(&quot;orderDate&quot;));</span>
+<span class="fc" id="L115">                o.setRequiredDate(rs.getDate(&quot;requiredDate&quot;));</span>
+<span class="fc" id="L116">                o.setShippedDate(rs.getDate(&quot;shippedDate&quot;));</span>
+<span class="fc" id="L117">                o.setShipName(rs.getString(&quot;shipname&quot;));</span>
+<span class="fc" id="L118">                o.setShipAddress(rs.getString(&quot;shipaddress&quot;));</span>
+<span class="fc" id="L119">                o.setShipCity(rs.getString(&quot;shipcity&quot;));</span>
+<span class="fc" id="L120">                o.setShipPhone(rs.getString(&quot;shipphone&quot;));</span>
+<span class="fc" id="L121">                o.setCompanyID(rs.getInt(&quot;companyID&quot;));</span>
+<span class="fc" id="L122">                o.setShipMoney(rs.getDouble(&quot;shipmoney&quot;));</span>
+<span class="fc" id="L123">                o.setPaymentMethod(rs.getString(&quot;paymentmethod&quot;));</span>
+<span class="fc" id="L124">                o.setTotal(rs.getDouble(&quot;total&quot;));</span>
+<span class="fc" id="L125">                o.setStatus(rs.getInt(&quot;status&quot;));</span>
+<span class="fc" id="L126">                list.add(o);</span>
+<span class="fc" id="L127">            }</span>
 <span class="nc" id="L128">        } catch (SQLException ex) {</span>
 <span class="nc" id="L129">            Logger.getLogger(OrderDAO.class.getName()).log(Level.SEVERE, null, ex);</span>
-<span class="nc" id="L130">        }</span>
-<span class="nc" id="L131">        return list;</span>
+<span class="fc" id="L130">        }</span>
+<span class="fc" id="L131">        return list;</span>
     }
 //    public List&lt;Order&gt; getOrderBySeller(int userID) {
 //        List&lt;Order&gt; list = new ArrayList&lt;&gt;();

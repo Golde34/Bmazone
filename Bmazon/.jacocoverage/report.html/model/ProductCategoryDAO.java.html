@@ -17,16 +17,16 @@ import java.util.logging.Logger;
  *
  * @author Admin
  */
-<span class="nc" id="L20">public class ProductCategoryDAO extends BaseDAO{</span>
+<span class="fc" id="L20">public class ProductCategoryDAO extends BaseDAO{</span>
     
     public String getCategoryIdByProductId(int productId){
-<span class="nc" id="L23">        String xSql= &quot;select * from ProductCategory where productID=&quot; + productId;</span>
+<span class="fc" id="L23">        String xSql= &quot;select * from ProductCategory where productID=&quot; + productId;</span>
         try {
-<span class="nc" id="L25">            pre = conn.prepareStatement(xSql);</span>
-<span class="nc" id="L26">            rs = pre.executeQuery();</span>
-<span class="nc bnc" id="L27" title="All 2 branches missed.">            if(rs.next()){</span>
-<span class="nc" id="L28">                String cid=rs.getString(&quot;categoryId&quot;);</span>
-<span class="nc" id="L29">                return cid;</span>
+<span class="fc" id="L25">            pre = conn.prepareStatement(xSql);</span>
+<span class="fc" id="L26">            rs = pre.executeQuery();</span>
+<span class="pc bpc" id="L27" title="1 of 2 branches missed.">            if(rs.next()){</span>
+<span class="fc" id="L28">                String cid=rs.getString(&quot;categoryId&quot;);</span>
+<span class="fc" id="L29">                return cid;</span>
             }
 <span class="nc" id="L31">            pre.close();</span>
 <span class="nc" id="L32">        } catch (SQLException e) {</span>
@@ -36,39 +36,39 @@ import java.util.logging.Logger;
     }
     
     public int updateProductCategory(ProductCategory obj) {
-<span class="nc" id="L39">        int n = 0;</span>
-<span class="nc" id="L40">        String sql = &quot;UPDATE [Bmazon].[dbo].[ProductCategory] SET [categoryId] = ? WHERE [productID] = ?&quot;;</span>
+<span class="fc" id="L39">        int n = 0;</span>
+<span class="fc" id="L40">        String sql = &quot;UPDATE [Bmazon].[dbo].[ProductCategory] SET [categoryId] = ? WHERE [productID] = ?&quot;;</span>
         try {
-<span class="nc" id="L42">            pre = conn.prepareStatement(sql);</span>
-<span class="nc" id="L43">            pre.setInt(1, obj.getCategoryID());</span>
-<span class="nc" id="L44">            pre.setInt(2, obj.getProductID());</span>
-<span class="nc" id="L45">            n = pre.executeUpdate();</span>
-<span class="nc" id="L46">            pre.close();</span>
-<span class="nc" id="L47">        } catch (SQLException e) {</span>
-<span class="nc" id="L48">            Logger.getLogger(ProductCategoryDAO.class.getName()).log(Level.SEVERE, null, e);</span>
-<span class="nc" id="L49">        }</span>
-<span class="nc" id="L50">        return n;</span>
+<span class="fc" id="L42">            pre = conn.prepareStatement(sql);</span>
+<span class="fc" id="L43">            pre.setInt(1, obj.getCategoryID());</span>
+<span class="fc" id="L44">            pre.setInt(2, obj.getProductID());</span>
+<span class="fc" id="L45">            n = pre.executeUpdate();</span>
+<span class="fc" id="L46">            pre.close();</span>
+<span class="fc" id="L47">        } catch (SQLException e) {</span>
+<span class="fc" id="L48">            Logger.getLogger(ProductCategoryDAO.class.getName()).log(Level.SEVERE, null, e);</span>
+<span class="fc" id="L49">        }</span>
+<span class="fc" id="L50">        return n;</span>
     }
     
     public ArrayList&lt;ProductCategory&gt; getAllProductCategory() {
-<span class="nc" id="L54">        ArrayList&lt;ProductCategory&gt; list = new ArrayList&lt;&gt;();</span>
-<span class="nc" id="L55">        String sql = &quot;SELECT * FROM [Bmazon].[dbo].[ProductCategory] where status=1&quot;;</span>
+<span class="fc" id="L54">        ArrayList&lt;ProductCategory&gt; list = new ArrayList&lt;&gt;();</span>
+<span class="fc" id="L55">        String sql = &quot;SELECT * FROM [Bmazon].[dbo].[ProductCategory] where status=1&quot;;</span>
         try {
-<span class="nc" id="L57">            pre = conn.prepareStatement(sql);</span>
-<span class="nc" id="L58">            rs = pre.executeQuery();</span>
-<span class="nc bnc" id="L59" title="All 2 branches missed.">            while (rs.next()) {</span>
-<span class="nc" id="L60">                ProductCategory pc = new ProductCategory();</span>
-<span class="nc" id="L61">                pc.setCategoryID(rs.getInt(&quot;categoryId&quot;));</span>
-<span class="nc" id="L62">                pc.setProductID(rs.getInt(&quot;productID&quot;));</span>
-<span class="nc" id="L63">                pc.setStatus(rs.getInt(&quot;status&quot;));</span>
-<span class="nc" id="L64">                list.add(pc);</span>
-<span class="nc" id="L65">            }</span>
-<span class="nc" id="L66">            rs.close();</span>
-<span class="nc" id="L67">            pre.close();</span>
+<span class="fc" id="L57">            pre = conn.prepareStatement(sql);</span>
+<span class="fc" id="L58">            rs = pre.executeQuery();</span>
+<span class="fc bfc" id="L59" title="All 2 branches covered.">            while (rs.next()) {</span>
+<span class="fc" id="L60">                ProductCategory pc = new ProductCategory();</span>
+<span class="fc" id="L61">                pc.setCategoryID(rs.getInt(&quot;categoryId&quot;));</span>
+<span class="fc" id="L62">                pc.setProductID(rs.getInt(&quot;productID&quot;));</span>
+<span class="fc" id="L63">                pc.setStatus(rs.getInt(&quot;status&quot;));</span>
+<span class="fc" id="L64">                list.add(pc);</span>
+<span class="fc" id="L65">            }</span>
+<span class="fc" id="L66">            rs.close();</span>
+<span class="fc" id="L67">            pre.close();</span>
 <span class="nc" id="L68">        } catch (SQLException e) {</span>
 <span class="nc" id="L69">            Logger.getLogger(ProductCategoryDAO.class.getName()).log(Level.SEVERE, null, e);</span>
-<span class="nc" id="L70">        }</span>
-<span class="nc" id="L71">        return list;</span>
+<span class="fc" id="L70">        }</span>
+<span class="fc" id="L71">        return list;</span>
     }
     public static void main(String[] args) {
 <span class="nc" id="L74">        ProductCategoryDAO dao = new ProductCategoryDAO();</span>
@@ -76,22 +76,22 @@ import java.util.logging.Logger;
 <span class="nc" id="L76">        System.out.println(p.getProductID());</span>
 <span class="nc" id="L77">    }</span>
     public ProductCategory getProductCateByProductID(int pid){
-<span class="nc" id="L79">        ProductCategory proCate = new ProductCategory();</span>
-<span class="nc" id="L80">        String sql = &quot;SELECT * FROM [Bmazon].[dbo].[ProductCategory] where productID = &quot; + pid;</span>
+<span class="fc" id="L79">        ProductCategory proCate = new ProductCategory();</span>
+<span class="fc" id="L80">        String sql = &quot;SELECT * FROM [Bmazon].[dbo].[ProductCategory] where productID = &quot; + pid;</span>
         try {
-<span class="nc" id="L82">            pre = conn.prepareStatement(sql);</span>
-<span class="nc" id="L83">            rs = pre.executeQuery();</span>
-<span class="nc bnc" id="L84" title="All 2 branches missed.">            if (rs.next()) {</span>
-<span class="nc" id="L85">                proCate.setCategoryID(rs.getInt(&quot;categoryId&quot;));</span>
-<span class="nc" id="L86">                proCate.setProductID(rs.getInt(&quot;productID&quot;));</span>
-<span class="nc" id="L87">                proCate.setStatus(rs.getInt(&quot;status&quot;));</span>
+<span class="fc" id="L82">            pre = conn.prepareStatement(sql);</span>
+<span class="fc" id="L83">            rs = pre.executeQuery();</span>
+<span class="fc bfc" id="L84" title="All 2 branches covered.">            if (rs.next()) {</span>
+<span class="fc" id="L85">                proCate.setCategoryID(rs.getInt(&quot;categoryId&quot;));</span>
+<span class="fc" id="L86">                proCate.setProductID(rs.getInt(&quot;productID&quot;));</span>
+<span class="fc" id="L87">                proCate.setStatus(rs.getInt(&quot;status&quot;));</span>
             }
-<span class="nc" id="L89">            rs.close();</span>
-<span class="nc" id="L90">            pre.close();</span>
+<span class="fc" id="L89">            rs.close();</span>
+<span class="fc" id="L90">            pre.close();</span>
 <span class="nc" id="L91">        } catch (SQLException e) {</span>
 <span class="nc" id="L92">            Logger.getLogger(ProductCategoryDAO.class.getName()).log(Level.SEVERE, null, e);</span>
-<span class="nc" id="L93">        }</span>
-<span class="nc" id="L94">        return proCate;</span>
+<span class="fc" id="L93">        }</span>
+<span class="fc" id="L94">        return proCate;</span>
     }
     
     public int addProductCategory(int productID, int categoryID) {

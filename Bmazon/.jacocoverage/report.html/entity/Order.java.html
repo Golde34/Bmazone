@@ -32,8 +32,8 @@ public class Order implements Serializable {
 
     private static final long serialVersionUID = 1;
 
-<span class="nc" id="L35">    public Order() {</span>
-<span class="nc" id="L36">    }</span>
+<span class="fc" id="L35">    public Order() {</span>
+<span class="fc" id="L36">    }</span>
 
 <span class="nc" id="L38">    public Order(int orderID, String userID, Date orderDate, Date requiredDate, Date shippedDate, String shipName, String shipAddress, String shipCity, String shipPhone, String shipCompany, double shipMoney, double total, int companyID, String paymentMethod) {</span>
 <span class="nc" id="L39">        this.orderID = orderID;</span>
@@ -75,72 +75,72 @@ public class Order implements Serializable {
     }
 
     public void setOrderID(int orderID) {
-<span class="nc" id="L78">        this.orderID = orderID;</span>
-<span class="nc" id="L79">    }</span>
+<span class="fc" id="L78">        this.orderID = orderID;</span>
+<span class="fc" id="L79">    }</span>
 
     public String getUserID() {
 <span class="nc" id="L82">        return userID;</span>
     }
 
     public void setUserID(String userID) {
-<span class="nc" id="L86">        this.userID = userID;</span>
-<span class="nc" id="L87">    }</span>
+<span class="fc" id="L86">        this.userID = userID;</span>
+<span class="fc" id="L87">    }</span>
 
     public Date getOrderDate() {
 <span class="nc" id="L90">        return new Date(orderDate.getTime());</span>
     }
 
     public void setOrderDate(Date orderDate) {
-<span class="nc" id="L94">        this.orderDate = new Date(orderDate.getTime());</span>
-<span class="nc" id="L95">    }</span>
+<span class="fc" id="L94">        this.orderDate = new Date(orderDate.getTime());</span>
+<span class="fc" id="L95">    }</span>
 
     public Date getRequiredDate() {
 <span class="nc" id="L98">        return new Date(requiredDate.getTime());</span>
     }
 
     public void setRequiredDate(Date requiredDate) {
-<span class="nc" id="L102">        this.requiredDate = new Date(requiredDate.getTime());</span>
-<span class="nc" id="L103">    }</span>
+<span class="fc" id="L102">        this.requiredDate = new Date(requiredDate.getTime());</span>
+<span class="fc" id="L103">    }</span>
 
     public Date getShippedDate() {
 <span class="nc" id="L106">        return new Date(shippedDate.getTime());</span>
     }
 
     public void setShippedDate(Date shippedDate) {
-<span class="nc" id="L110">        this.shippedDate = new Date(shippedDate.getTime());</span>
-<span class="nc" id="L111">    }</span>
+<span class="fc" id="L110">        this.shippedDate = new Date(shippedDate.getTime());</span>
+<span class="fc" id="L111">    }</span>
 
     public String getShipName() {
 <span class="nc" id="L114">        return shipName;</span>
     }
 
     public void setShipName(String shipName) {
-<span class="nc" id="L118">        this.shipName = shipName;</span>
-<span class="nc" id="L119">    }</span>
+<span class="fc" id="L118">        this.shipName = shipName;</span>
+<span class="fc" id="L119">    }</span>
 
     public String getShipAddress() {
 <span class="nc" id="L122">        return shipAddress;</span>
     }
 
     public void setShipAddress(String shipAddress) {
-<span class="nc" id="L126">        this.shipAddress = shipAddress;</span>
-<span class="nc" id="L127">    }</span>
+<span class="fc" id="L126">        this.shipAddress = shipAddress;</span>
+<span class="fc" id="L127">    }</span>
 
     public String getShipCity() {
 <span class="nc" id="L130">        return shipCity;</span>
     }
 
     public void setShipCity(String shipCity) {
-<span class="nc" id="L134">        this.shipCity = shipCity;</span>
-<span class="nc" id="L135">    }</span>
+<span class="fc" id="L134">        this.shipCity = shipCity;</span>
+<span class="fc" id="L135">    }</span>
 
     public String getShipPhone() {
 <span class="nc" id="L138">        return shipPhone;</span>
     }
 
     public void setShipPhone(String shipPhone) {
-<span class="nc" id="L142">        this.shipPhone = shipPhone;</span>
-<span class="nc" id="L143">    }</span>
+<span class="fc" id="L142">        this.shipPhone = shipPhone;</span>
+<span class="fc" id="L143">    }</span>
 
     public String getShipCompany() {
 <span class="nc" id="L146">        return shipCompany;</span>
@@ -155,39 +155,39 @@ public class Order implements Serializable {
     }
 
     public void setShipMoney(double shipMoney) {
-<span class="nc" id="L158">        this.shipMoney = shipMoney;</span>
-<span class="nc" id="L159">    }</span>
+<span class="fc" id="L158">        this.shipMoney = shipMoney;</span>
+<span class="fc" id="L159">    }</span>
 
     public int getCompanyID() {
 <span class="nc" id="L162">        return companyID;</span>
     }
 
     public void setCompanyID(int companyID) {
-<span class="nc" id="L166">        this.companyID = companyID;</span>
-<span class="nc" id="L167">    }</span>
+<span class="fc" id="L166">        this.companyID = companyID;</span>
+<span class="fc" id="L167">    }</span>
 
     public String getPaymentMethod() {
 <span class="nc" id="L170">        return paymentMethod;</span>
     }
 
     public void setPaymentMethod(String paymentMethod) {
-<span class="nc" id="L174">        this.paymentMethod = paymentMethod;</span>
-<span class="nc" id="L175">    }</span>
+<span class="fc" id="L174">        this.paymentMethod = paymentMethod;</span>
+<span class="fc" id="L175">    }</span>
 
     public double getTotal() {
 <span class="nc" id="L178">        return total;</span>
     }
 
     public void setTotal(double total) {
-<span class="nc" id="L182">        this.total = total;</span>
-<span class="nc" id="L183">    }</span>
+<span class="fc" id="L182">        this.total = total;</span>
+<span class="fc" id="L183">    }</span>
 
     public int getStatus() {
 <span class="nc" id="L186">        return status;</span>
     }
 
     public void setStatus(int status) {
-<span class="nc" id="L190">        this.status = status;</span>
-<span class="nc" id="L191">    }</span>
+<span class="fc" id="L190">        this.status = status;</span>
+<span class="fc" id="L191">    }</span>
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.eclemma.org/jacoco">JaCoCo</a> 0.7.5.201505241946</span></div></body></html>
