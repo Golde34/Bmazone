@@ -7,13 +7,10 @@ import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-public class CategoryDAO extends BaseDAO{
-   BaseDAO dbConn= new BaseDAO();
-   
-    public static void main(String[] args) {
-        CategoryDAO dao = new CategoryDAO();
-        System.out.println(dao.getTrueCategories());
-    }
+public class CategoryDAO extends BaseDAO {
+
+    BaseDAO dbConn = new BaseDAO();
+
     public ArrayList<Category> getAllCategories() {
         String sql = "select * from Category WHERE status=1";
         ArrayList<Category> list = new ArrayList<>();
@@ -60,40 +57,43 @@ public class CategoryDAO extends BaseDAO{
         return list;
     }
 
-    public void insertCategory(Category cate) {
+    public int insertCategory(Category cate) {
+        int n = 0;
         String sql = "Insert into Category(categoryName,status) values (?,?)";
         try {
             pre = conn.prepareStatement(sql);
             pre.setString(1, cate.getCategoryName());
             pre.setInt(2, cate.getStatus());
-            pre.executeUpdate();
+            n = pre.executeUpdate();
         } catch (SQLException ex) {
             Logger.getLogger(CategoryDAO.class.getName()).log(Level.SEVERE, null, ex);
         }
+        return n;
     }
 
-    public void updateCategory(Category cate) {
+    public int updateCategory(Category cate) {
+        int n = 0;
         String sql = "update Category set categoryName=?, status=? where categoryID=?";
         try {
             pre = conn.prepareStatement(sql);
             pre.setString(1, cate.getCategoryName());
             pre.setInt(2, cate.getStatus());
             pre.setInt(3, cate.getCategoryID());
-            pre.executeUpdate();
+            n = pre.executeUpdate();
         } catch (SQLException ex) {
             Logger.getLogger(CategoryDAO.class.getName()).log(Level.SEVERE, null, ex);
         }
+        return n;
     }
-    
-    public Category getCategoryByCateId(String id){
+
+    public Category getCategoryByCateId(String id) {
         String xSql = "select * from Category where categoryID= ?";
-        Category cat = new Category();
-       
+        Category cat = null;
         try {
-            pre=conn.prepareStatement(xSql);
+            pre = conn.prepareStatement(xSql);
             pre.setString(1, id);
             rs = pre.executeQuery();
-            if(rs.next()){
+            if (rs.next()) {
                 cat.setCategoryID(rs.getInt("categoryID"));
                 cat.setCategoryName(rs.getString("categoryName"));
                 cat.setStatus(rs.getInt("status"));
@@ -105,52 +105,51 @@ public class CategoryDAO extends BaseDAO{
 
     public String getCategoryById(int fcaId) {
         String sql = "select categoryName from Category where categoryID=" + fcaId;
-       
-     
-        String categoryName=null;
-     
+
+        String categoryName = null;
+
         try {
             pre = conn.prepareStatement(sql);
             rs = pre.executeQuery();
             while (rs.next()) {
-                
+
                 categoryName = rs.getString("categoryName");
-                           
+
             }
         } catch (SQLException ex) {
             Logger.getLogger(CategoryDAO.class.getName()).log(Level.SEVERE, null, ex);
         }
         return categoryName;
     }
-    
+
     public int changeStatus(int id, int status) {
         int n = 0;
         String sql = "update Category set status = ? where categoryID = ?";
         try {
             pre = conn.prepareStatement(sql);
-            pre.setInt(1, status == 1 ? 1 : 0);
-            pre.setInt(1,id);
+            pre.setInt(1, status);
+            pre.setInt(1, id);
             n = pre.executeUpdate();
         } catch (SQLException ex) {
             Logger.getLogger(CategoryDAO.class.getName()).log(Level.SEVERE, null, ex);
         }
         return n;
     }
-    
+
     public int removeCategory(int id) {
         int n = 0;
         String sql = "delete from Category where categoryID = ?";
-         
+
         try {
-                pre=conn.prepareStatement(sql);
-                pre.setInt(1,id);
-                n = pre.executeUpdate();          
+            pre = conn.prepareStatement(sql);
+            pre.setInt(1, id);
+            n = pre.executeUpdate();
         } catch (SQLException ex) {
             Logger.getLogger(CategoryDAO.class.getName()).log(Level.SEVERE, null, ex);
         }
         return n;
     }
-    
+
     public boolean checkExistCategoryName(String categoryName) {
         String sql = "SELECT * FROM Category WHERE categoryName = '" + categoryName + "'";
         rs = dbConn.getData(sql);
@@ -163,5 +162,5 @@ public class CategoryDAO extends BaseDAO{
         }
         return false;
     }
-    
+
 }

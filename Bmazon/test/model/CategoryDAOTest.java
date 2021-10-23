@@ -47,9 +47,8 @@ public class CategoryDAOTest {
     public void testGetAllCategories() {
         System.out.println("getAllCategories");
         CategoryDAO instance = new CategoryDAO();
-        ArrayList<Category> expResult = null;
         ArrayList<Category> result = instance.getAllCategories();
-        assertEquals(expResult, result);
+        assertEquals(6, result.size());
     }
 
     /**
@@ -59,9 +58,8 @@ public class CategoryDAOTest {
     public void testGetTrueCategories() {
         System.out.println("getTrueCategories");
         CategoryDAO instance = new CategoryDAO();
-        ArrayList<Category> expResult = null;
         ArrayList<Category> result = instance.getTrueCategories();
-        assertEquals(expResult, result);
+        assertEquals(6, result.size());
     }
 
     /**
@@ -70,44 +68,78 @@ public class CategoryDAOTest {
     @Test
     public void testInsertCategory() {
         System.out.println("insertCategory");
-        Category cate = null;
+        Category cate = new Category();
+        cate.setCategoryName("test");
+        cate.setStatus(1);
         CategoryDAO instance = new CategoryDAO();
-        instance.insertCategory(cate);
+        assertEquals(1, instance.insertCategory(cate));
     }
 
     /**
      * Test of updateCategory method, of class CategoryDAO.
      */
     @Test
-    public void testUpdateCategory() {
+    public void testUpdateFalseCategory() {
         System.out.println("updateCategory");
-        Category cate = null;
+        Category cate = new Category();
+        cate.setCategoryID(0);
+        cate.setCategoryName("test");
+        cate.setStatus(1);
         CategoryDAO instance = new CategoryDAO();
-        instance.updateCategory(cate);
+        assertEquals(0, instance.updateCategory(cate));
+    }
+    
+    @Test
+    public void testUpdateTrueCategory() {
+        System.out.println("updateCategory");
+        Category cate = new Category();
+        cate.setCategoryID(1);
+        cate.setCategoryName("test");
+        cate.setStatus(1);
+        CategoryDAO instance = new CategoryDAO();
+        assertEquals(1, instance.updateCategory(cate));
     }
 
     /**
      * Test of getCategoryByCateId method, of class CategoryDAO.
      */
     @Test
-    public void testGetCategoryByCateId() {
+    public void testGetCategoryByTrueCateId() {
         System.out.println("getCategoryByCateId");
-        String id = "";
+        String id = "1";
         CategoryDAO instance = new CategoryDAO();
-        Category expResult = null;
         Category result = instance.getCategoryByCateId(id);
-        assertEquals(expResult, result);
+        assertNotNull(result);
+    }
+    
+    @Test
+    public void testGetCategoryByFalseCateId() {
+        System.out.println("getCategoryByCateId");
+        String id = "-1";
+        CategoryDAO instance = new CategoryDAO();
+        Category result = instance.getCategoryByCateId(id);
+        assertNull(result);
     }
 
     /**
      * Test of getCategoryById method, of class CategoryDAO.
      */
     @Test
-    public void testGetCategoryById() {
+    public void testGetCategoryByFalseId() {
         System.out.println("getCategoryById");
         int fcaId = 0;
         CategoryDAO instance = new CategoryDAO();
-        String expResult = "";
+        String expResult = null;
+        String result = instance.getCategoryById(fcaId);
+        assertEquals(expResult, result);
+    }
+    
+    @Test
+    public void testGetCategoryByTrueId() {
+        System.out.println("getCategoryById");
+        int fcaId = 1;
+        CategoryDAO instance = new CategoryDAO();
+        String expResult = "Book";
         String result = instance.getCategoryById(fcaId);
         assertEquals(expResult, result);
     }
@@ -116,12 +148,22 @@ public class CategoryDAOTest {
      * Test of changeStatus method, of class CategoryDAO.
      */
     @Test
-    public void testChangeStatus() {
+    public void testChangeStatusFalseCategory() {
         System.out.println("changeStatus");
         int id = 0;
-        int status = 0;
+        int status = 1;
         CategoryDAO instance = new CategoryDAO();
         int expResult = 0;
+        int result = instance.changeStatus(id, status);
+        assertEquals(expResult, result);
+    }
+    
+    public void testChangeStatusTrueCategory() {
+        System.out.println("changeStatus");
+        int id = 1;
+        int status = 1;
+        CategoryDAO instance = new CategoryDAO();
+        int expResult = 1;
         int result = instance.changeStatus(id, status);
         assertEquals(expResult, result);
     }
@@ -144,6 +186,16 @@ public class CategoryDAOTest {
      */
     @Test
     public void testCheckExistCategoryName() {
+        System.out.println("checkExistCategoryName");
+        String categoryName = "Book";
+        CategoryDAO instance = new CategoryDAO();
+        boolean expResult = true;
+        boolean result = instance.checkExistCategoryName(categoryName);
+        assertEquals(expResult, result);
+    }
+    
+    @Test
+    public void testCheckNotExistCategoryName() {
         System.out.println("checkExistCategoryName");
         String categoryName = "";
         CategoryDAO instance = new CategoryDAO();

@@ -7,13 +7,11 @@ import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-public class GenreDAO extends BaseDAO{
-BaseDAO dbConn= new BaseDAO();
-   
-    public static void main(String[] args) {
-        GenreDAO dao = new GenreDAO();
-        System.out.println(dao.getGenresByCategoryId(2));
-    }
+public class GenreDAO extends BaseDAO {
+
+    BaseDAO dbConn = new BaseDAO();
+
+
     public ArrayList<Genre> getAllGenres() {
         String sql = "select * from Genre WHERE status=1";
         ArrayList<Genre> list = new ArrayList<>();
@@ -38,9 +36,9 @@ BaseDAO dbConn= new BaseDAO();
         }
         return list;
     }
-    
-    public ArrayList<Genre> getGenresByCategoryId(int categoryId){
-        String sql = "select * from Genre WHERE categoryID="+categoryId;
+
+    public ArrayList<Genre> getGenresByCategoryId(int categoryId) {
+        String sql = "select * from Genre WHERE categoryID=" + categoryId;
         ArrayList<Genre> list = new ArrayList<>();
         Genre x = null;
         int genreID;
@@ -88,12 +86,13 @@ BaseDAO dbConn= new BaseDAO();
         }
         return list;
     }
-     public ArrayList<Genre> getHomeGenre() {
+
+    public ArrayList<Genre> getHomeGenre() {
         String sql = "select top 16* from Genre";
         ArrayList<Genre> list = new ArrayList<>();
         Genre x = null;
         int genreID;
-        String genreName,images;
+        String genreName, images;
         int categoryID;
         int status;
         try {
@@ -103,7 +102,7 @@ BaseDAO dbConn= new BaseDAO();
                 genreID = rs.getInt("genreID");
                 genreName = rs.getString("genreName");
                 categoryID = rs.getInt("categoryID");
-                images=rs.getString("images");
+                images = rs.getString("images");
                 status = rs.getInt("status");
                 x = new Genre(genreID, genreName, categoryID, status, images);
                 list.add(x);
@@ -114,7 +113,8 @@ BaseDAO dbConn= new BaseDAO();
         return list;
     }
 
-    public void insertGenre(Genre gen) {
+    public int insertGenre(Genre gen) {
+        int n = 0;
         String sql = "Insert into Genre(genreName,categoryID,status) values (?,?,?)";
         try {
             pre = conn.prepareStatement(sql);
@@ -122,13 +122,15 @@ BaseDAO dbConn= new BaseDAO();
             pre.setInt(2, gen.getCategoryID());
             pre.setString(3, gen.getImages());
             pre.setInt(4, gen.getStatus());
-            pre.executeUpdate();
+            n = pre.executeUpdate();
         } catch (SQLException ex) {
             Logger.getLogger(CategoryDAO.class.getName()).log(Level.SEVERE, null, ex);
         }
+        return n;
     }
 
-    public void updateGenre(Genre gen) {
+    public int updateGenre(Genre gen) {
+        int n = 0;
         String sql = "update Genre set genreName=?, categoryID=?, status=? where genreID=?";
         try {
             pre = conn.prepareStatement(sql);
@@ -136,10 +138,11 @@ BaseDAO dbConn= new BaseDAO();
             pre.setInt(2, gen.getCategoryID());
             pre.setInt(3, gen.getStatus());
             pre.setInt(4, gen.getGenreID());
-            pre.executeUpdate();
+            n = pre.executeUpdate();
         } catch (SQLException ex) {
             Logger.getLogger(CategoryDAO.class.getName()).log(Level.SEVERE, null, ex);
         }
+        return n;
     }
 
     public Genre getGenreById(int gId) {
@@ -164,34 +167,34 @@ BaseDAO dbConn= new BaseDAO();
         }
         return x;
     }
-    
+
     public int changeStatus(int id, int status) {
         int n = 0;
         String sql = "update Genre set status = ? where genreID = ?";
         try {
             pre = conn.prepareStatement(sql);
-            pre.setInt(1,(status == 1 ? 1 : 0));
-            pre.setInt(2,id);
+            pre.setInt(1, status);
+            pre.setInt(2, id);
             n = pre.executeUpdate();
         } catch (SQLException ex) {
             Logger.getLogger(CategoryDAO.class.getName()).log(Level.SEVERE, null, ex);
         }
         return n;
     }
-    
+
     public int removeGenre(int id) {
         int n = 0;
         String sql = "delete from Genre where genreID =?";
         try {
-                pre = conn.prepareStatement(sql);
-                pre.setInt(1, id);
-                n =pre.executeUpdate();          
+            pre = conn.prepareStatement(sql);
+            pre.setInt(1, id);
+            n = pre.executeUpdate();
         } catch (SQLException ex) {
             Logger.getLogger(CategoryDAO.class.getName()).log(Level.SEVERE, null, ex);
         }
         return n;
     }
-    
+
     public boolean checkExistGenreName(String genreName) {
         String sql = "SELECT * FROM Genre WHERE genreName = '" + genreName + "'";
         rs = dbConn.getData(sql);
@@ -204,6 +207,5 @@ BaseDAO dbConn= new BaseDAO();
         }
         return false;
     }
-    
-    
+
 }

@@ -88,7 +88,7 @@ public class GalleryDAO extends BaseDAO {
     }
 
     public Gallery getGalleryById(int id) {
-        Gallery gallery = null;
+        Gallery gallery = new Gallery();
         String sql = "SELECT * FROM [Bmazon].[dbo].[Gallery] where galleryID=" + id;
         try {
             pre = conn.prepareStatement(sql);
@@ -215,7 +215,7 @@ public class GalleryDAO extends BaseDAO {
             pre = conn.prepareStatement(xSql);
             pre.setString(1, ps);
             rs = pre.executeQuery();
-            while (rs.next()) {
+            if (rs.next()) {
                 s = rs.getString("link");
             }
         } catch (Exception ex) {
