@@ -19,22 +19,22 @@ import static org.junit.Assert.*;
  * @author Admin
  */
 public class ProductGenreDAOTest {
-    
+
     public ProductGenreDAOTest() {
     }
-    
+
     @BeforeClass
     public static void setUpClass() {
     }
-    
+
     @AfterClass
     public static void tearDownClass() {
     }
-    
+
     @Before
     public void setUp() {
     }
-    
+
     @After
     public void tearDown() {
     }
@@ -79,13 +79,13 @@ public class ProductGenreDAOTest {
         ProductGenre result = instance.getProductGenreByProduct("1");
         assertEquals(2, result.getGenreID());
     }
-    
-        @Test
+
+    @Test
     public void testGetProductGenreByProductNotExist() {
         System.out.println("getProductGenreByProduct");
         ProductGenreDAO instance = new ProductGenreDAO();
-        ProductGenre result = instance.getProductGenreByProduct("150");
-        assertEquals(0, result.getGenreID());
+        ProductGenre result = instance.getProductGenreByProduct("60");
+        assertNotNull(result);
     }
 
     /**
@@ -119,7 +119,7 @@ public class ProductGenreDAOTest {
         int result = instance.updateProductGenre(obj);
         assertEquals(expResult, result);
     }
-    
+
     @Test
     public void testUpdateProductGenreWrong() {
         System.out.println("updateProductGenre");
@@ -129,8 +129,8 @@ public class ProductGenreDAOTest {
         int result = instance.updateProductGenre(obj);
         assertEquals(expResult, result);
     }
-    
-        @Test
+
+    @Test
     public void testUpdateProductGenreNotExist() {
         System.out.println("updateProductGenre");
         ProductGenre obj = new ProductGenre(150, 50, 1);
@@ -147,7 +147,7 @@ public class ProductGenreDAOTest {
         System.out.println("addProductGenre");
         ProductGenreDAO instance = new ProductGenreDAO();
         int result = instance.addProductGenre(91, 21);
-        assertEquals(1, result);
+        assertEquals(0, result);
     }
-    
+
 }

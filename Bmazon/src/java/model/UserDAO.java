@@ -537,33 +537,9 @@ public class UserDAO extends BaseDAO {
         return n;
     }
     
-//    public HashMap<User, Role> getAllPagingUserHashMap(int index, int numOfRow, String search) {
-//        HashMap<User, Role> map = new HashMap<>();
-//        UserDAO uDao = new UserDAO();
-//        RoleDAO rDao = new RoleDAO();
-//        String xSql = "declare @PageNo INT =" + index + "\n"
-//                + "declare @PageSize INT=" + numOfRow + "\n"
-//                + "SELECT * from(\n"
-//                + "SELECT u.userID, r.roleID,\n"
-//                + "ROW_NUMBER() over (order by userID) as RowNum\n"
-//                + "  FROM [Bmazon].[dbo].[User] u INNER JOIN [Role] r ON u.systemRole = r.roleID where u.fullname like '%" + search + "%' or r.roleName like '%" + search + "%')T\n"
-//                + "where T.RowNum between ((@PageNo-1)*@PageSize)+1 and (@PageNo*@PageSize)";
-//        ResultSet rs = dbConn.getData(xSql);
-//        try {
-//            while (rs.next()) {
-//                User u = uDao.getUserById(rs.getString("userID"));
-//                Role r = rDao.getRoleId(rs.getInt("roleID"));
-//                map.put(u, r);
-//            }
-//        } catch (SQLException ex) {
-//            Logger.getLogger(UserDAO.class.getName()).log(Level.SEVERE, null, ex);
-//        }
-//        return map;
-//    }
-    
     // <editor-fold defaultstate="collapsed" desc="Didn't use. Click on the + sign on the left to edit the code.">
     public User getUserLogin(String username, String password) {
-        String sql = "SELECT * FROM [User] WHERE username = ? and password = ? and status = 1";
+        String sql = "SELECT * FROM [User] WHERE username = ? and password = ?";
         try {
             pre = conn.prepareStatement(sql);
             pre.setString(1, username);
