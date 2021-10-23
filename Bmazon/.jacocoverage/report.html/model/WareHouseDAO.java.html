@@ -6,68 +6,162 @@
 package model;
 
 import entity.WareHouse;
+import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  *
  * @author DELL
  */
-<span class="nc" id="L17">public class WareHouseDAO extends BaseDAO{</span>
+<span class="fc" id="L20">public class WareHouseDAO extends BaseDAO{</span>
 
+<span class="fc" id="L22">    BaseDAO dbConn = new BaseDAO();</span>
    
 
-    public void deleteWareHouse(String wareHouseID) {
-<span class="nc" id="L22">        String sql = &quot;delete from WareHouse where [wareHouseID] = ?&quot;;</span>
+//    public void deleteWareHouse(String wareHouseID) {
+//        String sql = &quot;delete from WareHouse where [wareHouseID] = ?&quot;;
+//        try {
+//            pre = conn.prepareStatement(sql);
+//            pre.setString(1, wareHouseID);
+//            pre.executeUpdate();
+//        } catch (SQLException e) {
+//        }
+//    }
+    
+    public int getPageNumber(String search) {
+<span class="fc" id="L36">        int num = 0;</span>
+<span class="fc" id="L37">        String xSql= &quot;SELECT COUNT(*) FROM [Bmazon].[dbo].[WareHouse] where wareHouseAddress like '%&quot; + search + &quot;%'&quot;;</span>
+<span class="fc" id="L38">        ResultSet rs = dbConn.getData(xSql);</span>
         try {
-<span class="nc" id="L24">            pre = conn.prepareStatement(sql);</span>
-<span class="nc" id="L25">            pre.setString(1, wareHouseID);</span>
-<span class="nc" id="L26">            pre.executeUpdate();</span>
-<span class="nc" id="L27">        } catch (SQLException e) {</span>
-<span class="nc" id="L28">        }</span>
-<span class="nc" id="L29">    }</span>
-
-    public void addWareHouse(WareHouse wh) {
-<span class="nc" id="L32">        String xSql= &quot;INSERT INTO WareHouse ([wareHouseAddress],[status])\n&quot;</span>
-                + &quot;     VALUES (?,1)&quot;;
+<span class="pc bpc" id="L40" title="1 of 2 branches missed.">            if (rs.next()) {</span>
+<span class="fc" id="L41">                num = rs.getInt(1);</span>
+            }
+<span class="nc" id="L43">        } catch (SQLException ex) {</span>
+<span class="nc" id="L44">            Logger.getLogger(UserDAO.class.getName()).log(Level.SEVERE, null, ex);</span>
+<span class="fc" id="L45">        }</span>
+<span class="fc" id="L46">        return num;</span>
+    }
+    
+    public List&lt;WareHouse&gt; getAllPagingWareHouse(int index, int numOfRow, String search) {
+<span class="fc" id="L50">        List&lt;WareHouse&gt; list = new ArrayList&lt;&gt;();</span>
+<span class="fc" id="L51">        String xSql= &quot;declare @PageNo INT = ? \n&quot;</span>
+                + &quot;declare @PageSize INT= ? \n&quot;
+                + &quot;SELECT * from(\n&quot;
+                + &quot;SELECT *,\n&quot;
+                + &quot;ROW_NUMBER() over (order by wareHouseID) as RowNum\n&quot;
+                + &quot;  FROM [Bmazon].[dbo].[WareHouse] where wareHouseAddress like '%&quot; + search + &quot;%')T\n&quot;
+                + &quot;where T.RowNum between ((@PageNo-1)*@PageSize)+1 and (@PageNo*@PageSize)&quot;;
         try {
-<span class="nc" id="L35">            pre = conn.prepareStatement(xSql);</span>
-<span class="nc" id="L36">            pre.setString(1, wh.getWareHouseAddress());</span>
-<span class="nc" id="L37">            pre.executeUpdate();</span>
-<span class="nc" id="L38">        } catch (SQLException e) {</span>
-<span class="nc" id="L39">        }</span>
-<span class="nc" id="L40">    }</span>
-
-    public int editWareHouse(WareHouse wh) {
-<span class="nc" id="L43">        int n = 0;</span>
-<span class="nc" id="L44">        String xSql= &quot;update WareHouse set [wareHouseAddress] = ? [status] =? where [wareHouseID] = ?&quot;;</span>
-        try {
-<span class="nc" id="L46">            pre = conn.prepareStatement(xSql);</span>
-<span class="nc" id="L47">            pre.setString(1, wh.getWareHouseAddress());</span>
-<span class="nc" id="L48">            pre.setInt(2, wh.getStatus());</span>
-<span class="nc" id="L49">            pre.setInt(3, wh.getWareHouseID());</span>
-<span class="nc" id="L50">            pre.executeUpdate();</span>
-<span class="nc" id="L51">        } catch (SQLException e) {</span>
-<span class="nc" id="L52">        }</span>
-<span class="nc" id="L53">        return n;</span>
+<span class="fc" id="L59">            pre = conn.prepareStatement(xSql);</span>
+<span class="fc" id="L60">            pre.setInt(1, index);</span>
+<span class="fc" id="L61">            pre.setInt(2, numOfRow);</span>
+//            pre.setString(3, search);
+//            pre.setString(4, search);
+//            pre.setString(5, search);
+<span class="fc" id="L65">            rs = pre.executeQuery();</span>
+<span class="fc bfc" id="L66" title="All 2 branches covered.">            while (rs.next()) {</span>
+<span class="fc" id="L67">                list.add(new WareHouse(</span>
+<span class="fc" id="L68">                        rs.getInt(1),</span>
+<span class="fc" id="L69">                        rs.getString(2),</span>
+<span class="fc" id="L70">                        rs.getInt(3)));</span>
+            }
+<span class="nc" id="L72">        } catch (SQLException ex) {</span>
+<span class="nc" id="L73">            Logger.getLogger(UserDAO.class.getName()).log(Level.SEVERE, null, ex);</span>
+<span class="fc" id="L74">        }</span>
+<span class="fc" id="L75">        return list;</span>
     }
 
-    public List&lt;WareHouse&gt; getAllWareHouse() {
-<span class="nc" id="L57">        List&lt;WareHouse&gt; list = new ArrayList&lt;&gt;();</span>
-<span class="nc" id="L58">        String xSql= &quot;select * from WareHouse where [status] = 1&quot;;</span>
+    public int changeStatus(int id, int status) {
+<span class="fc" id="L79">        int n = 0;</span>
+<span class="fc" id="L80">        String sql = &quot;update [WareHouse] set status = ? where [wareHouseID] = ?&quot;;</span>
         try {
-<span class="nc" id="L60">            pre = conn.prepareStatement(xSql);</span>
-<span class="nc" id="L61">            rs = pre.executeQuery();</span>
-<span class="nc bnc" id="L62" title="All 2 branches missed.">            while (rs.next()) {</span>
-<span class="nc" id="L63">                list.add(new WareHouse(</span>
-<span class="nc" id="L64">                        rs.getInt(1),</span>
-<span class="nc" id="L65">                        rs.getString(2),</span>
-<span class="nc" id="L66">                        rs.getInt(3)));</span>
+<span class="fc" id="L82">            pre = conn.prepareStatement(sql);</span>
+<span class="pc bpc" id="L83" title="1 of 2 branches missed.">            pre.setInt(1, status == 1 ? 1 : 0);</span>
+<span class="fc" id="L84">            pre.setInt(2, id);</span>
+<span class="fc" id="L85">            n = pre.executeUpdate();</span>
+<span class="nc" id="L86">        } catch (SQLException ex) {</span>
+<span class="nc" id="L87">            Logger.getLogger(ProductDAO.class.getName()).log(Level.SEVERE, null, ex);</span>
+<span class="fc" id="L88">        }</span>
+<span class="fc" id="L89">        return n;</span>
+    }
+    
+    public int addWareHouse(WareHouse wh) {
+<span class="fc" id="L93">        int n = 0;</span>
+<span class="fc" id="L94">        String xSql= &quot;INSERT INTO WareHouse ([wareHouseAddress],[status]) VALUES (?,1)&quot;;</span>
+        try {
+<span class="fc" id="L96">            pre = conn.prepareStatement(xSql);</span>
+<span class="fc" id="L97">            pre.setString(1, wh.getWareHouseAddress());</span>
+<span class="fc" id="L98">            n = pre.executeUpdate();</span>
+<span class="nc" id="L99">        } catch (SQLException e) {</span>
+<span class="fc" id="L100">        }</span>
+<span class="fc" id="L101">        return n;</span>
+    }
+
+    public int editWareHouse(WareHouse wh) {
+<span class="fc" id="L105">        int n = 0;</span>
+<span class="fc" id="L106">        String xSql= &quot;update WareHouse set [wareHouseAddress] = ?, [status] =? where [wareHouseID] = ?&quot;;</span>
+        try {
+<span class="fc" id="L108">            pre = conn.prepareStatement(xSql);</span>
+<span class="fc" id="L109">            pre.setString(1, wh.getWareHouseAddress());</span>
+<span class="fc" id="L110">            pre.setInt(2, wh.getStatus());</span>
+<span class="fc" id="L111">            pre.setInt(3, wh.getWareHouseID());</span>
+<span class="fc" id="L112">            n = pre.executeUpdate();</span>
+<span class="nc" id="L113">        } catch (SQLException e) {</span>
+<span class="fc" id="L114">        }</span>
+<span class="fc" id="L115">        return n;</span>
+    }
+
+    public boolean checkExistWareHouse(String warehouse) {
+<span class="fc" id="L119">        String xSql= &quot;SELECT * FROM [Bmazon].[dbo].[Warehouse] where wareHouseAddress like ?&quot;;</span>
+        try {
+<span class="fc" id="L121">            pre = conn.prepareStatement(xSql);</span>
+<span class="fc" id="L122">            pre.setString(1, warehouse);</span>
+<span class="fc" id="L123">            rs = pre.executeQuery();</span>
+<span class="pc bpc" id="L124" title="1 of 2 branches missed.">            if (rs.next()) {</span>
+<span class="fc" id="L125">                return true;</span>
             }
-<span class="nc" id="L68">        } catch (SQLException e) {</span>
-<span class="nc" id="L69">        }</span>
-<span class="nc" id="L70">        return list;</span>
+<span class="nc" id="L127">        } catch (SQLException ex) {</span>
+<span class="nc" id="L128">            Logger.getLogger(UserDAO.class.getName()).log(Level.SEVERE, null, ex);</span>
+<span class="nc" id="L129">        }</span>
+<span class="nc" id="L130">        return false;</span>
+    }
+    
+    public WareHouse getWareHouseById(int id) {
+<span class="fc" id="L134">        WareHouse wh = new WareHouse();</span>
+<span class="fc" id="L135">        String xSql= &quot;select * from WareHouse where wareHouseID = ?&quot; ;</span>
+        try {
+<span class="fc" id="L137">            pre = conn.prepareStatement(xSql);</span>
+<span class="fc" id="L138">            pre.setInt(1, id);</span>
+<span class="fc" id="L139">            rs = pre.executeQuery();</span>
+<span class="pc bpc" id="L140" title="1 of 2 branches missed.">            if (rs.next()) {</span>
+<span class="fc" id="L141">                wh.setWareHouseID(rs.getInt(1));</span>
+<span class="fc" id="L142">                wh.setWareHouseAddress(rs.getString(2));</span>
+<span class="fc" id="L143">                wh.setStatus(rs.getInt(3));</span>
+            }
+<span class="nc" id="L145">        } catch (SQLException e) {</span>
+<span class="fc" id="L146">        }</span>
+<span class="fc" id="L147">        return wh;</span>
+    }
+    
+    public List&lt;WareHouse&gt; getAllWareHouse() {
+<span class="fc" id="L151">        List&lt;WareHouse&gt; list = new ArrayList&lt;&gt;();</span>
+<span class="fc" id="L152">        String xSql= &quot;select * from WareHouse where [status] = 1&quot;;</span>
+        try {
+<span class="fc" id="L154">            pre = conn.prepareStatement(xSql);</span>
+<span class="fc" id="L155">            rs = pre.executeQuery();</span>
+<span class="fc bfc" id="L156" title="All 2 branches covered.">            while (rs.next()) {</span>
+<span class="fc" id="L157">                list.add(new WareHouse(</span>
+<span class="fc" id="L158">                        rs.getInt(1),</span>
+<span class="fc" id="L159">                        rs.getString(2),</span>
+<span class="fc" id="L160">                        rs.getInt(3)));</span>
+            }
+<span class="nc" id="L162">        } catch (SQLException e) {</span>
+<span class="fc" id="L163">        }</span>
+<span class="fc" id="L164">        return list;</span>
     }
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.eclemma.org/jacoco">JaCoCo</a> 0.7.5.201505241946</span></div></body></html>

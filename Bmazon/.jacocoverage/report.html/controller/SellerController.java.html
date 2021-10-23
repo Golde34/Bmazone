@@ -40,598 +40,593 @@ import model.*;
 <span class="nc" id="L40">    ProductCategoryDAO pcDAO = new ProductCategoryDAO();</span>
 <span class="nc" id="L41">    ProductGenreDAO pgDAO = new ProductGenreDAO();</span>
 <span class="nc" id="L42">    SellerDAO sellerDAO = new SellerDAO();</span>
+<span class="nc" id="L43">    GalleryDAO galleryDAO = new GalleryDAO();</span>
     private static final long serialVersionUID = 1;
 
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException, ParseException {
-<span class="nc" id="L47">        response.setContentType(&quot;text/html;charset=UTF-8&quot;);</span>
-<span class="nc" id="L48">        try (PrintWriter out = response.getWriter()) {</span>
-<span class="nc" id="L49">            String service = request.getParameter(&quot;service&quot;);</span>
+<span class="nc" id="L48">        response.setContentType(&quot;text/html;charset=UTF-8&quot;);</span>
+<span class="nc" id="L49">        try (PrintWriter out = response.getWriter()) {</span>
+<span class="nc" id="L50">            String service = request.getParameter(&quot;service&quot;);</span>
 
-<span class="nc bnc" id="L51" title="All 2 branches missed.">            if (service == null) {</span>
-<span class="nc" id="L52">                service = &quot;SellerDashboard&quot;;</span>
+<span class="nc bnc" id="L52" title="All 2 branches missed.">            if (service == null) {</span>
+<span class="nc" id="L53">                service = &quot;SellerDashboard&quot;;</span>
             }
             //Seller Dashboard
-<span class="nc bnc" id="L55" title="All 2 branches missed.">            if (service.equalsIgnoreCase(&quot;SellerDashboard&quot;)) {</span>
-<span class="nc" id="L56">                serviceSellerDashboard(request, response);</span>
+<span class="nc bnc" id="L56" title="All 2 branches missed.">            if (service.equalsIgnoreCase(&quot;SellerDashboard&quot;)) {</span>
+<span class="nc" id="L57">                serviceSellerDashboard(request, response);</span>
             }
 
             //Product Management
-<span class="nc bnc" id="L60" title="All 2 branches missed.">            if (service.equalsIgnoreCase(&quot;productmanagement&quot;)) {</span>
-<span class="nc" id="L61">                serviceProductManagement(request, response);</span>
+<span class="nc bnc" id="L61" title="All 2 branches missed.">            if (service.equalsIgnoreCase(&quot;productmanagement&quot;)) {</span>
+<span class="nc" id="L62">                serviceProductManagement(request, response);</span>
             }
             //Product detail to add and update
-<span class="nc bnc" id="L64" title="All 2 branches missed.">            if (service.equalsIgnoreCase(&quot;productdetail&quot;)) {</span>
-<span class="nc" id="L65">                serviceProductDetail(request, response);</span>
+<span class="nc bnc" id="L65" title="All 2 branches missed.">            if (service.equalsIgnoreCase(&quot;productdetail&quot;)) {</span>
+<span class="nc" id="L66">                serviceProductDetail(request, response);</span>
             }
 
             //Add Product
-<span class="nc bnc" id="L69" title="All 2 branches missed.">            if (service.equalsIgnoreCase(&quot;addproduct&quot;)) {</span>
-<span class="nc" id="L70">                serviceAddProduct(request, response);</span>
+<span class="nc bnc" id="L70" title="All 2 branches missed.">            if (service.equalsIgnoreCase(&quot;addproduct&quot;)) {</span>
+<span class="nc" id="L71">                serviceAddProduct(request, response);</span>
             }
             //Update Product 
-<span class="nc bnc" id="L73" title="All 2 branches missed.">            if (service.equalsIgnoreCase(&quot;updateproductdetail&quot;)) {</span>
-<span class="nc" id="L74">                serviceUpdateProductDetail(request, response);</span>
+<span class="nc bnc" id="L74" title="All 2 branches missed.">            if (service.equalsIgnoreCase(&quot;updateproductdetail&quot;)) {</span>
+<span class="nc" id="L75">                serviceUpdateProductDetail(request, response);</span>
             }
             //Delete Product
-<span class="nc bnc" id="L77" title="All 2 branches missed.">            if (service.equalsIgnoreCase(&quot;deactiveproduct&quot;)) {</span>
-<span class="nc" id="L78">                serviceDeactiveProduct(request, response);</span>
+<span class="nc bnc" id="L78" title="All 2 branches missed.">            if (service.equalsIgnoreCase(&quot;deactiveproduct&quot;)) {</span>
+<span class="nc" id="L79">                serviceDeactiveProduct(request, response);</span>
             }
 
             //Active Product
-<span class="nc bnc" id="L82" title="All 2 branches missed.">            if (service.equalsIgnoreCase(&quot;activeproduct&quot;)) {</span>
-<span class="nc" id="L83">                serviceActiveProduct(request, response);</span>
+<span class="nc bnc" id="L83" title="All 2 branches missed.">            if (service.equalsIgnoreCase(&quot;activeproduct&quot;)) {</span>
+<span class="nc" id="L84">                serviceActiveProduct(request, response);</span>
             }
 
             //Add Product Type
-<span class="nc bnc" id="L87" title="All 2 branches missed.">            if (service.equalsIgnoreCase(&quot;addproducttype&quot;)) {</span>
-<span class="nc" id="L88">                serviceAddProductType(request, response);</span>
+<span class="nc bnc" id="L88" title="All 2 branches missed.">            if (service.equalsIgnoreCase(&quot;addproducttype&quot;)) {</span>
+<span class="nc" id="L89">                serviceAddProductType(request, response);</span>
             }
 
             //Delete Product Type
-<span class="nc bnc" id="L92" title="All 2 branches missed.">            if (service.equalsIgnoreCase(&quot;deactiveproducttype&quot;)) {</span>
-<span class="nc" id="L93">                serviceDeactiveProductType(request, response);</span>
+<span class="nc bnc" id="L93" title="All 2 branches missed.">            if (service.equalsIgnoreCase(&quot;deactiveproducttype&quot;)) {</span>
+<span class="nc" id="L94">                serviceDeactiveProductType(request, response);</span>
             }
             //Active Product Type
-<span class="nc bnc" id="L96" title="All 2 branches missed.">            if (service.equalsIgnoreCase(&quot;activeproducttype&quot;)) {</span>
-<span class="nc" id="L97">                serviceActiveProductType(request, response);</span>
+<span class="nc bnc" id="L97" title="All 2 branches missed.">            if (service.equalsIgnoreCase(&quot;activeproducttype&quot;)) {</span>
+<span class="nc" id="L98">                serviceActiveProductType(request, response);</span>
             }
 
             //Paging Product
-<span class="nc bnc" id="L101" title="All 2 branches missed.">            if (service.equalsIgnoreCase(&quot;pagingproduct&quot;)) {</span>
-<span class="nc" id="L102">                servicePagingProduct(request, response);</span>
+<span class="nc bnc" id="L102" title="All 2 branches missed.">            if (service.equalsIgnoreCase(&quot;pagingproduct&quot;)) {</span>
+<span class="nc" id="L103">                servicePagingProduct(request, response);</span>
             }
             //Show Page Product
-<span class="nc bnc" id="L105" title="All 2 branches missed.">            if (service.equalsIgnoreCase(&quot;showpageproduct&quot;)) {</span>
-<span class="nc" id="L106">                serviceShowPageProduct(request, response);</span>
+<span class="nc bnc" id="L106" title="All 2 branches missed.">            if (service.equalsIgnoreCase(&quot;showpageproduct&quot;)) {</span>
+<span class="nc" id="L107">                serviceShowPageProduct(request, response);</span>
             }
 
             
             //Paging Product Type
-<span class="nc bnc" id="L111" title="All 2 branches missed.">            if (service.equalsIgnoreCase(&quot;pagingproducttype&quot;)) {</span>
-<span class="nc" id="L112">                servicePagingProductType(request, response);</span>
+<span class="nc bnc" id="L112" title="All 2 branches missed.">            if (service.equalsIgnoreCase(&quot;pagingproducttype&quot;)) {</span>
+<span class="nc" id="L113">                servicePagingProductType(request, response);</span>
             }
             //Show Page ProductType
-<span class="nc bnc" id="L115" title="All 2 branches missed.">            if (service.equalsIgnoreCase(&quot;showpageproducttype&quot;)) {</span>
-<span class="nc" id="L116">                serviceShowPageProductType(request, response);</span>
+<span class="nc bnc" id="L116" title="All 2 branches missed.">            if (service.equalsIgnoreCase(&quot;showpageproducttype&quot;)) {</span>
+<span class="nc" id="L117">                serviceShowPageProductType(request, response);</span>
             }
             
             //Order Management
-<span class="nc bnc" id="L120" title="All 2 branches missed.">            if (service.equalsIgnoreCase(&quot;ordermanagement&quot;)) {</span>
-<span class="nc" id="L121">                serviceOrderManagement(request, response);</span>
+<span class="nc bnc" id="L121" title="All 2 branches missed.">            if (service.equalsIgnoreCase(&quot;ordermanagement&quot;)) {</span>
+<span class="nc" id="L122">                serviceOrderManagement(request, response);</span>
             }
 //
 
             //Edit Seller Information
-<span class="nc bnc" id="L126" title="All 2 branches missed.">            if (service.equalsIgnoreCase(&quot;editSellerInformation&quot;)) {</span>
-<span class="nc" id="L127">                serviceEditSellerInformation(request, response);</span>
+<span class="nc bnc" id="L127" title="All 2 branches missed.">            if (service.equalsIgnoreCase(&quot;editSellerInformation&quot;)) {</span>
+<span class="nc" id="L128">                serviceEditSellerInformation(request, response);</span>
             }
-<span class="nc bnc" id="L129" title="All 8 branches missed.">        }</span>
-<span class="nc" id="L130">    }</span>
+<span class="nc bnc" id="L130" title="All 8 branches missed.">        }</span>
+<span class="nc" id="L131">    }</span>
 
     // &lt;editor-fold defaultstate=&quot;collapsed&quot; desc=&quot;Dashboard methods. Click on the + sign on the left to edit the code.&quot;&gt;
     public void serviceSellerDashboard(HttpServletRequest request, HttpServletResponse response) {
-<span class="nc" id="L134">        User account = (User) request.getSession().getAttribute(&quot;currUser&quot;);</span>
-<span class="nc" id="L135">        String seller = account.getUserId();</span>
-<span class="nc" id="L136">        List&lt;Product&gt; listProduct = pDAO.getProductBySeller(seller);</span>
-<span class="nc" id="L137">        request.setAttribute(&quot;listP&quot;, listProduct);</span>
-<span class="nc" id="L138">        sendDispatcher(request, response, &quot;seller/dashboard.jsp&quot;);</span>
-<span class="nc" id="L139">    }</span>
+<span class="nc" id="L135">        User account = (User) request.getSession().getAttribute(&quot;currUser&quot;);</span>
+<span class="nc" id="L136">        String seller = account.getUserId();</span>
+<span class="nc" id="L137">        List&lt;Product&gt; listProduct = pDAO.getProductBySeller(seller);</span>
+<span class="nc" id="L138">        request.setAttribute(&quot;listP&quot;, listProduct);</span>
+<span class="nc" id="L139">        sendDispatcher(request, response, &quot;seller/dashboard.jsp&quot;);</span>
+<span class="nc" id="L140">    }</span>
     //&lt;/editor-fold&gt;
 
     // &lt;editor-fold defaultstate=&quot;collapsed&quot; desc=&quot;Product methods. Click on the + sign on the left to edit the code.&quot;&gt;
     public void serviceProductManagement(HttpServletRequest request, HttpServletResponse response) {
-<span class="nc" id="L144">        User account = (User) request.getSession().getAttribute(&quot;currUser&quot;);</span>
-<span class="nc" id="L145">        String userID = account.getUserId();</span>
-<span class="nc" id="L146">        Seller seller = sellerDAO.getSellerByUserID(Integer.parseInt(userID));</span>
-<span class="nc" id="L147">        String sellerID = Integer.toString(seller.getSellerID());</span>
-<span class="nc" id="L148">        ArrayList&lt;Product&gt; listProduct = pDAO.getProductBySeller(sellerID);</span>
-<span class="nc" id="L149">        ArrayList&lt;Product&gt; listPaging = pDAO.getAllPagingProductBySeller(1, 5, &quot;&quot;, sellerID);</span>
-<span class="nc" id="L150">        int totalPage = listProduct.size() / 5;</span>
-<span class="nc bnc" id="L151" title="All 2 branches missed.">        if (listProduct.size() != totalPage * 5) {</span>
-<span class="nc" id="L152">            totalPage += 1;</span>
+<span class="nc" id="L145">        User account = (User) request.getSession().getAttribute(&quot;currUser&quot;);</span>
+<span class="nc" id="L146">        String userID = account.getUserId();</span>
+<span class="nc" id="L147">        Seller seller = sellerDAO.getSellerByUserID(Integer.parseInt(userID));</span>
+<span class="nc" id="L148">        String sellerID = Integer.toString(seller.getSellerID());</span>
+<span class="nc" id="L149">        ArrayList&lt;Product&gt; listProduct = pDAO.getProductBySeller(sellerID);</span>
+<span class="nc" id="L150">        ArrayList&lt;Product&gt; listPaging = pDAO.getAllPagingProductBySeller(1, 5, &quot;&quot;, sellerID);</span>
+<span class="nc" id="L151">        int totalPage = listProduct.size() / 5;</span>
+<span class="nc bnc" id="L152" title="All 2 branches missed.">        if (listProduct.size() != totalPage * 5) {</span>
+<span class="nc" id="L153">            totalPage += 1;</span>
         }
-<span class="nc" id="L154">        request.setAttribute(&quot;index&quot;, 1);</span>
-<span class="nc" id="L155">        request.setAttribute(&quot;totalPage&quot;, totalPage);</span>
-<span class="nc" id="L156">        request.setAttribute(&quot;listProduct&quot;, listPaging);</span>
-<span class="nc" id="L157">        sendDispatcher(request, response, &quot;seller/productSeller.jsp&quot;);</span>
-<span class="nc" id="L158">    }</span>
+<span class="nc" id="L155">        request.setAttribute(&quot;index&quot;, 1);</span>
+<span class="nc" id="L156">        request.setAttribute(&quot;totalPage&quot;, totalPage);</span>
+<span class="nc" id="L157">        request.setAttribute(&quot;listProduct&quot;, listPaging);</span>
+<span class="nc" id="L158">        sendDispatcher(request, response, &quot;seller/productSeller.jsp&quot;);</span>
+<span class="nc" id="L159">    }</span>
 
     public void servicePagingProduct(HttpServletRequest request, HttpServletResponse response) throws IOException {
-<span class="nc" id="L161">        User account = (User) request.getSession().getAttribute(&quot;currUser&quot;);</span>
-<span class="nc" id="L162">        Seller seller = sellerDAO.getSellerByUserID(Integer.parseInt(account.getUserId()));</span>
-<span class="nc" id="L163">        String sellerID = Integer.toString(seller.getSellerID());</span>
+<span class="nc" id="L162">        User account = (User) request.getSession().getAttribute(&quot;currUser&quot;);</span>
+<span class="nc" id="L163">        Seller seller = sellerDAO.getSellerByUserID(Integer.parseInt(account.getUserId()));</span>
+<span class="nc" id="L164">        String sellerID = Integer.toString(seller.getSellerID());</span>
 
-<span class="nc" id="L165">        PrintWriter pr = response.getWriter();</span>
+<span class="nc" id="L166">        PrintWriter pr = response.getWriter();</span>
 
-<span class="nc" id="L167">        int index = 1, numOfRow = 5;</span>
-<span class="nc" id="L168">        String search = request.getParameter(&quot;search&quot;);</span>
-<span class="nc bnc" id="L169" title="All 2 branches missed.">        if (request.getParameter(&quot;row&quot;) != null) {</span>
-<span class="nc" id="L170">            numOfRow = Integer.parseInt(request.getParameter(&quot;row&quot;));</span>
+<span class="nc" id="L168">        int index = 1, numOfRow = 5;</span>
+<span class="nc" id="L169">        String search = request.getParameter(&quot;search&quot;);</span>
+<span class="nc bnc" id="L170" title="All 2 branches missed.">        if (request.getParameter(&quot;row&quot;) != null) {</span>
+<span class="nc" id="L171">            numOfRow = Integer.parseInt(request.getParameter(&quot;row&quot;));</span>
         }
-<span class="nc bnc" id="L172" title="All 2 branches missed.">        if (request.getParameter(&quot;index&quot;) != null) {</span>
-<span class="nc" id="L173">            index = Integer.parseInt(request.getParameter(&quot;index&quot;));</span>
+<span class="nc bnc" id="L173" title="All 2 branches missed.">        if (request.getParameter(&quot;index&quot;) != null) {</span>
+<span class="nc" id="L174">            index = Integer.parseInt(request.getParameter(&quot;index&quot;));</span>
         }
-<span class="nc" id="L175">        ArrayList&lt;Product&gt; listPaging = pDAO.getAllPagingProductBySeller(index, numOfRow, search, sellerID);</span>
-<span class="nc" id="L176">        request.setAttribute(&quot;index&quot;, index);</span>
-<span class="nc" id="L177">        request.setAttribute(&quot;listProduct&quot;, listPaging);</span>
-<span class="nc bnc" id="L178" title="All 2 branches missed.">        for (Product product : listPaging) {</span>
-<span class="nc" id="L179">            int proID = product.getProductID();</span>
-<span class="nc" id="L180">            String genreid = pgDAO.getGenreIdByProductId(product.getProductID());</span>
-<span class="nc" id="L181">            Genre genre = gDAO.getGenreById(Integer.parseInt(genreid));</span>
-<span class="nc" id="L182">            pr.print(&quot;&lt;tr&gt;&quot;</span>
-<span class="nc" id="L183">                    + &quot;&lt;td&gt;&lt;div&gt;&quot; + product.getProductName() + &quot;&lt;/div&gt;&lt;/td&gt;&quot;</span>
-<span class="nc" id="L184">                    + &quot;&lt;td&gt;&quot; + product.getReleaseDate() + &quot;&lt;/td&gt;&quot;</span>
-<span class="nc" id="L185">                    + &quot;&lt;td&gt;&quot; + cateDAO.getCategoryById(pcDAO.getProductCateByProductID(proID).getCategoryID()) + &quot;&lt;/td&gt;&quot;</span>
-<span class="nc" id="L186">                    + &quot;&lt;td&gt;&quot; + genre.getGenreName() + &quot;&lt;/td&gt;&quot;</span>
-<span class="nc" id="L187">                    + &quot;&lt;td&gt;&lt;div&gt;&lt;a href=\&quot;SellerControllerMap?service=productdetail&amp;productid=&quot; + product.getProductID() + &quot;\&quot;&gt;&lt;button class=\&quot;btn btn-primary\&quot;&gt;Edit&lt;/button&gt;&lt;/a&gt;&quot;</span>
+<span class="nc" id="L176">        ArrayList&lt;Product&gt; listPaging = pDAO.getAllPagingProductBySeller(index, numOfRow, search, sellerID);</span>
+<span class="nc" id="L177">        request.setAttribute(&quot;index&quot;, index);</span>
+<span class="nc" id="L178">        request.setAttribute(&quot;listProduct&quot;, listPaging);</span>
+<span class="nc bnc" id="L179" title="All 2 branches missed.">        for (Product product : listPaging) {</span>
+<span class="nc" id="L180">            int proID = product.getProductID();</span>
+<span class="nc" id="L181">            String genreid = pgDAO.getGenreIdByProductId(product.getProductID());</span>
+<span class="nc" id="L182">            Genre genre = gDAO.getGenreById(Integer.parseInt(genreid));</span>
+<span class="nc" id="L183">            pr.print(&quot;&lt;tr&gt;&quot;</span>
+<span class="nc" id="L184">                    + &quot;&lt;td&gt;&lt;div&gt;&quot; + product.getProductName() + &quot;&lt;/div&gt;&lt;/td&gt;&quot;</span>
+<span class="nc" id="L185">                    + &quot;&lt;td&gt;&quot; + product.getReleaseDate() + &quot;&lt;/td&gt;&quot;</span>
+<span class="nc" id="L186">                    + &quot;&lt;td&gt;&quot; + cateDAO.getCategoryById(pcDAO.getProductCateByProductID(proID).getCategoryID()) + &quot;&lt;/td&gt;&quot;</span>
+<span class="nc" id="L187">                    + &quot;&lt;td&gt;&quot; + genre.getGenreName() + &quot;&lt;/td&gt;&quot;</span>
+<span class="nc" id="L188">                    + &quot;&lt;td&gt;&lt;div&gt;&lt;a href=\&quot;SellerControllerMap?service=productdetail&amp;productid=&quot; + product.getProductID() + &quot;\&quot;&gt;&lt;button class=\&quot;btn btn-primary\&quot;&gt;Edit&lt;/button&gt;&lt;/a&gt;&quot;</span>
                     + &quot;&lt;/div&gt;&lt;/td&gt;&quot;
                     + &quot;&lt;td&gt;&quot;);
-<span class="nc bnc" id="L190" title="All 2 branches missed.">            if (product.getStatus() == 1) {</span>
-<span class="nc" id="L191">                pr.print(&quot;&lt;a href=\&quot;SellerControllerMap?service=deactiveproduct&amp;productid=&quot; + product.getProductID() + &quot;\&quot; onclick=\&quot;return confirm('Are you sure?');\&quot;&gt;&lt;button class=\&quot;btn btn-danger\&quot;&gt;Deactive&lt;/button&gt;&lt;/a&gt;&quot;);</span>
+<span class="nc bnc" id="L191" title="All 2 branches missed.">            if (product.getStatus() == 1) {</span>
+<span class="nc" id="L192">                pr.print(&quot;&lt;a href=\&quot;SellerControllerMap?service=deactiveproduct&amp;productid=&quot; + product.getProductID() + &quot;\&quot; onclick=\&quot;return confirm('Are you sure?');\&quot;&gt;&lt;button class=\&quot;btn btn-danger\&quot;&gt;Deactive&lt;/button&gt;&lt;/a&gt;&quot;);</span>
             } else {
-<span class="nc" id="L193">                pr.print(&quot;&lt;a href=\&quot;SellerControllerMap?service=activeproduct&amp;productid=&quot; + product.getProductID() + &quot;\&quot; onclick=\&quot;return confirm('Are you sure?');\&quot;&gt;&lt;button class=\&quot;btn btn-success\&quot;&gt;Active&lt;/button&gt;&lt;/a&gt;&quot;);</span>
+<span class="nc" id="L194">                pr.print(&quot;&lt;a href=\&quot;SellerControllerMap?service=activeproduct&amp;productid=&quot; + product.getProductID() + &quot;\&quot; onclick=\&quot;return confirm('Are you sure?');\&quot;&gt;&lt;button class=\&quot;btn btn-success\&quot;&gt;Active&lt;/button&gt;&lt;/a&gt;&quot;);</span>
             }
-<span class="nc" id="L195">            pr.print(&quot;&lt;/td&gt;&quot;</span>
+<span class="nc" id="L196">            pr.print(&quot;&lt;/td&gt;&quot;</span>
                     + &quot;&lt;/tr&gt;&quot;
             );
-<span class="nc" id="L198">        }</span>
-<span class="nc bnc" id="L199" title="All 2 branches missed.">        if (request.getParameter(&quot;row&quot;) == null) {</span>
-<span class="nc" id="L200">            sendDispatcher(request, response, &quot;seller/productSeller.jsp&quot;);</span>
+<span class="nc" id="L199">        }</span>
+<span class="nc bnc" id="L200" title="All 2 branches missed.">        if (request.getParameter(&quot;row&quot;) == null) {</span>
+<span class="nc" id="L201">            sendDispatcher(request, response, &quot;seller/productSeller.jsp&quot;);</span>
         }
-<span class="nc" id="L202">    }</span>
+<span class="nc" id="L203">    }</span>
 
     public void serviceShowPageProduct(HttpServletRequest request, HttpServletResponse response) throws IOException {
-<span class="nc" id="L205">        User account = (User) request.getSession().getAttribute(&quot;currUser&quot;);</span>
-<span class="nc" id="L206">        Seller seller = sellerDAO.getSellerByUserID(Integer.parseInt(account.getUserId()));</span>
-<span class="nc" id="L207">        int sellerID = seller.getSellerID();</span>
-<span class="nc" id="L208">        PrintWriter pr = response.getWriter();</span>
-<span class="nc" id="L209">        int index = 1, numOfRow = 5;</span>
-<span class="nc" id="L210">        String search = request.getParameter(&quot;search&quot;);</span>
-<span class="nc bnc" id="L211" title="All 2 branches missed.">        if (request.getParameter(&quot;index&quot;) != null) {</span>
-<span class="nc" id="L212">            index = Integer.parseInt(request.getParameter(&quot;index&quot;));</span>
+<span class="nc" id="L206">        User account = (User) request.getSession().getAttribute(&quot;currUser&quot;);</span>
+<span class="nc" id="L207">        Seller seller = sellerDAO.getSellerByUserID(Integer.parseInt(account.getUserId()));</span>
+<span class="nc" id="L208">        int sellerID = seller.getSellerID();</span>
+<span class="nc" id="L209">        PrintWriter pr = response.getWriter();</span>
+<span class="nc" id="L210">        int index = 1, numOfRow = 5;</span>
+<span class="nc" id="L211">        String search = request.getParameter(&quot;search&quot;);</span>
+<span class="nc bnc" id="L212" title="All 2 branches missed.">        if (request.getParameter(&quot;index&quot;) != null) {</span>
+<span class="nc" id="L213">            index = Integer.parseInt(request.getParameter(&quot;index&quot;));</span>
         }
-<span class="nc bnc" id="L214" title="All 2 branches missed.">        if (request.getParameter(&quot;row&quot;) != null) {</span>
-<span class="nc" id="L215">            numOfRow = Integer.parseInt(request.getParameter(&quot;row&quot;));</span>
+<span class="nc bnc" id="L215" title="All 2 branches missed.">        if (request.getParameter(&quot;row&quot;) != null) {</span>
+<span class="nc" id="L216">            numOfRow = Integer.parseInt(request.getParameter(&quot;row&quot;));</span>
         }
-<span class="nc" id="L217">        int totalResult = pDAO.getPageNumberBySeller(search, sellerID);</span>
-<span class="nc" id="L218">        int totalPage = totalResult / numOfRow;</span>
-<span class="nc bnc" id="L219" title="All 2 branches missed.">        if (totalResult != numOfRow * totalPage) {</span>
-<span class="nc" id="L220">            totalPage += 1;</span>
+<span class="nc" id="L218">        int totalResult = pDAO.getPageNumberBySeller(search, sellerID);</span>
+<span class="nc" id="L219">        int totalPage = totalResult / numOfRow;</span>
+<span class="nc bnc" id="L220" title="All 2 branches missed.">        if (totalResult != numOfRow * totalPage) {</span>
+<span class="nc" id="L221">            totalPage += 1;</span>
         }
-<span class="nc bnc" id="L222" title="All 2 branches missed.">        int prev = index == 1 ? 1 : index - 1;</span>
-<span class="nc bnc" id="L223" title="All 2 branches missed.">        int next = index == totalPage ? totalPage : index + 1;</span>
-<span class="nc bnc" id="L224" title="All 2 branches missed.">        if (totalResult &gt; numOfRow) {</span>
-<span class="nc" id="L225">            pr.print(&quot;&lt;li data-repair=\&quot;1\&quot; class=\&quot;page-item\&quot;&gt;&quot;);</span>
-<span class="nc" id="L226">            pr.print(&quot;&lt;a class=\&quot;page-link\&quot; aria-label=\&quot;First\&quot;&gt;&quot;);</span>
-<span class="nc" id="L227">            pr.print(&quot;&lt;span aria-hidden=\&quot;true\&quot;&gt;&lt;i class=\&quot;fas fa-backward\&quot;&gt;&lt;/i&gt;&quot;);</span>
-<span class="nc" id="L228">            pr.print(&quot;&lt;span class=\&quot;sr-only\&quot;&gt;(current)&lt;/span&gt; &quot;);</span>
-<span class="nc" id="L229">            pr.print(&quot;&lt;/span&gt;&quot;);</span>
-<span class="nc" id="L230">            pr.print(&quot;&lt;/a&gt;&quot;);</span>
-<span class="nc" id="L231">            pr.print(&quot;&lt;/li&gt;&quot;);</span>
-<span class="nc" id="L232">            pr.print(&quot;&lt;li data-repair=\&quot;&quot; + prev + &quot;\&quot; class=\&quot;page-item\&quot;&gt;&quot;);</span>
-<span class="nc" id="L233">            pr.print(&quot;&lt;a class=\&quot;page-link\&quot; aria-label=\&quot;Previous\&quot;&gt;&quot;);</span>
-<span class="nc" id="L234">            pr.print(&quot;&lt;span aria-hidden=\&quot;true\&quot;&gt;&lt;i class=\&quot;fas fa-arrow-left\&quot;&gt;&lt;/i&gt;&quot;);</span>
-<span class="nc" id="L235">            pr.print(&quot;&lt;span class=\&quot;sr-only\&quot;&gt;(current)&lt;/span&gt; &quot;);</span>
-<span class="nc" id="L236">            pr.print(&quot;&lt;/span&gt;&quot;);</span>
-<span class="nc" id="L237">            pr.print(&quot;&lt;/a&gt;&quot;);</span>
-<span class="nc" id="L238">            pr.print(&quot;&lt;/li&gt;&quot;);</span>
-<span class="nc bnc" id="L239" title="All 2 branches missed.">            for (int i = 1; i &lt;= totalPage; i++) {</span>
-<span class="nc bnc" id="L240" title="All 2 branches missed.">                if (i &lt; index - 2) {</span>
-<span class="nc" id="L241">                    continue;</span>
+<span class="nc bnc" id="L223" title="All 2 branches missed.">        int prev = index == 1 ? 1 : index - 1;</span>
+<span class="nc bnc" id="L224" title="All 2 branches missed.">        int next = index == totalPage ? totalPage : index + 1;</span>
+<span class="nc bnc" id="L225" title="All 2 branches missed.">        if (totalResult &gt; numOfRow) {</span>
+<span class="nc" id="L226">            pr.print(&quot;&lt;li data-repair=\&quot;1\&quot; class=\&quot;page-item\&quot;&gt;&quot;);</span>
+<span class="nc" id="L227">            pr.print(&quot;&lt;a class=\&quot;page-link\&quot; aria-label=\&quot;First\&quot;&gt;&quot;);</span>
+<span class="nc" id="L228">            pr.print(&quot;&lt;span aria-hidden=\&quot;true\&quot;&gt;&lt;i class=\&quot;fas fa-backward\&quot;&gt;&lt;/i&gt;&quot;);</span>
+<span class="nc" id="L229">            pr.print(&quot;&lt;span class=\&quot;sr-only\&quot;&gt;(current)&lt;/span&gt; &quot;);</span>
+<span class="nc" id="L230">            pr.print(&quot;&lt;/span&gt;&quot;);</span>
+<span class="nc" id="L231">            pr.print(&quot;&lt;/a&gt;&quot;);</span>
+<span class="nc" id="L232">            pr.print(&quot;&lt;/li&gt;&quot;);</span>
+<span class="nc" id="L233">            pr.print(&quot;&lt;li data-repair=\&quot;&quot; + prev + &quot;\&quot; class=\&quot;page-item\&quot;&gt;&quot;);</span>
+<span class="nc" id="L234">            pr.print(&quot;&lt;a class=\&quot;page-link\&quot; aria-label=\&quot;Previous\&quot;&gt;&quot;);</span>
+<span class="nc" id="L235">            pr.print(&quot;&lt;span aria-hidden=\&quot;true\&quot;&gt;&lt;i class=\&quot;fas fa-arrow-left\&quot;&gt;&lt;/i&gt;&quot;);</span>
+<span class="nc" id="L236">            pr.print(&quot;&lt;span class=\&quot;sr-only\&quot;&gt;(current)&lt;/span&gt; &quot;);</span>
+<span class="nc" id="L237">            pr.print(&quot;&lt;/span&gt;&quot;);</span>
+<span class="nc" id="L238">            pr.print(&quot;&lt;/a&gt;&quot;);</span>
+<span class="nc" id="L239">            pr.print(&quot;&lt;/li&gt;&quot;);</span>
+<span class="nc bnc" id="L240" title="All 2 branches missed.">            for (int i = 1; i &lt;= totalPage; i++) {</span>
+<span class="nc bnc" id="L241" title="All 2 branches missed.">                if (i &lt; index - 2) {</span>
+<span class="nc" id="L242">                    continue;</span>
                 }
-<span class="nc bnc" id="L243" title="All 2 branches missed.">                if (index &lt; 3) {</span>
-<span class="nc bnc" id="L244" title="All 2 branches missed.">                    if (i &gt; 5) {</span>
-<span class="nc" id="L245">                        break;</span>
+<span class="nc bnc" id="L244" title="All 2 branches missed.">                if (index &lt; 3) {</span>
+<span class="nc bnc" id="L245" title="All 2 branches missed.">                    if (i &gt; 5) {</span>
+<span class="nc" id="L246">                        break;</span>
                     }
                 } else {
-<span class="nc bnc" id="L248" title="All 2 branches missed.">                    if (i &gt; index + 2) {</span>
-<span class="nc" id="L249">                        break;</span>
+<span class="nc bnc" id="L249" title="All 2 branches missed.">                    if (i &gt; index + 2) {</span>
+<span class="nc" id="L250">                        break;</span>
                     }
                 }
-<span class="nc bnc" id="L252" title="All 2 branches missed.">                if (index == i) {</span>
-<span class="nc" id="L253">                    pr.print(&quot;&lt;li  class=\&quot;page-item active\&quot; data-repair=\&quot;&quot; + i + &quot;\&quot;&gt;&quot;);</span>
+<span class="nc bnc" id="L253" title="All 2 branches missed.">                if (index == i) {</span>
+<span class="nc" id="L254">                    pr.print(&quot;&lt;li  class=\&quot;page-item active\&quot; data-repair=\&quot;&quot; + i + &quot;\&quot;&gt;&quot;);</span>
                 } else {
-<span class="nc" id="L255">                    pr.print(&quot;&lt;li  class=\&quot;page-item\&quot; data-repair=\&quot;&quot; + i + &quot;\&quot;&gt;&quot;);</span>
+<span class="nc" id="L256">                    pr.print(&quot;&lt;li  class=\&quot;page-item\&quot; data-repair=\&quot;&quot; + i + &quot;\&quot;&gt;&quot;);</span>
                 }
-<span class="nc" id="L257">                pr.print(&quot;&lt;a class=\&quot;page-link\&quot;&gt;&quot;);</span>
-<span class="nc" id="L258">                pr.print(&quot;&lt;div class=\&quot;index\&quot;&gt;&quot; + i + &quot;&lt;/div&gt;&quot;);</span>
-<span class="nc" id="L259">                pr.print(&quot;&lt;span class=\&quot;sr-only\&quot;&gt;(current)&lt;/span&gt;&quot;);</span>
-<span class="nc" id="L260">                pr.print(&quot;&lt;/a&gt;&quot;);</span>
-<span class="nc" id="L261">                pr.print(&quot;&lt;/li&gt;&quot;);</span>
+<span class="nc" id="L258">                pr.print(&quot;&lt;a class=\&quot;page-link\&quot;&gt;&quot;);</span>
+<span class="nc" id="L259">                pr.print(&quot;&lt;div class=\&quot;index\&quot;&gt;&quot; + i + &quot;&lt;/div&gt;&quot;);</span>
+<span class="nc" id="L260">                pr.print(&quot;&lt;span class=\&quot;sr-only\&quot;&gt;(current)&lt;/span&gt;&quot;);</span>
+<span class="nc" id="L261">                pr.print(&quot;&lt;/a&gt;&quot;);</span>
+<span class="nc" id="L262">                pr.print(&quot;&lt;/li&gt;&quot;);</span>
             }
-<span class="nc" id="L263">            pr.print(&quot;&lt;li data-repair=\&quot;&quot; + next + &quot;\&quot; class=\&quot;page-item\&quot;&gt;&quot;);</span>
-<span class="nc" id="L264">            pr.print(&quot;&lt;a class=\&quot;page-link\&quot; aria-label=\&quot;Next\&quot;&gt;&quot;);</span>
-<span class="nc" id="L265">            pr.print(&quot;&lt;span aria-hidden=\&quot;true\&quot;&gt;&lt;i class=\&quot;fas fa-arrow-right\&quot;&gt;&lt;/i&gt;&quot;);</span>
-<span class="nc" id="L266">            pr.print(&quot;&lt;span class=\&quot;sr-only\&quot;&gt;(current)&lt;/span&gt; &quot;);</span>
-<span class="nc" id="L267">            pr.print(&quot;&lt;/span&gt;&quot;);</span>
-<span class="nc" id="L268">            pr.print(&quot;&lt;/a&gt;&quot;);</span>
-<span class="nc" id="L269">            pr.print(&quot;&lt;/li&gt;&quot;);</span>
-<span class="nc" id="L270">            pr.print(&quot;&lt;li data-repair=\&quot;&quot; + totalPage + &quot;\&quot; class=\&quot;page-item\&quot;&gt;&quot;);</span>
-<span class="nc" id="L271">            pr.print(&quot;&lt;a class=\&quot;page-link\&quot; aria-label=\&quot;Last\&quot;&gt;&quot;);</span>
-<span class="nc" id="L272">            pr.print(&quot;&lt;span aria-hidden=\&quot;true\&quot;&gt;&lt;i class=\&quot;fas fa-forward\&quot;&gt;&lt;/i&gt;&quot;);</span>
-<span class="nc" id="L273">            pr.print(&quot;&lt;span class=\&quot;sr-only\&quot;&gt;(current)&lt;/span&gt; &quot;);</span>
-<span class="nc" id="L274">            pr.print(&quot;&lt;/span&gt;&quot;);</span>
-<span class="nc" id="L275">            pr.print(&quot;&lt;/a&gt;&quot;);</span>
-<span class="nc" id="L276">            pr.print(&quot;&lt;/li&gt;&quot;);</span>
+<span class="nc" id="L264">            pr.print(&quot;&lt;li data-repair=\&quot;&quot; + next + &quot;\&quot; class=\&quot;page-item\&quot;&gt;&quot;);</span>
+<span class="nc" id="L265">            pr.print(&quot;&lt;a class=\&quot;page-link\&quot; aria-label=\&quot;Next\&quot;&gt;&quot;);</span>
+<span class="nc" id="L266">            pr.print(&quot;&lt;span aria-hidden=\&quot;true\&quot;&gt;&lt;i class=\&quot;fas fa-arrow-right\&quot;&gt;&lt;/i&gt;&quot;);</span>
+<span class="nc" id="L267">            pr.print(&quot;&lt;span class=\&quot;sr-only\&quot;&gt;(current)&lt;/span&gt; &quot;);</span>
+<span class="nc" id="L268">            pr.print(&quot;&lt;/span&gt;&quot;);</span>
+<span class="nc" id="L269">            pr.print(&quot;&lt;/a&gt;&quot;);</span>
+<span class="nc" id="L270">            pr.print(&quot;&lt;/li&gt;&quot;);</span>
+<span class="nc" id="L271">            pr.print(&quot;&lt;li data-repair=\&quot;&quot; + totalPage + &quot;\&quot; class=\&quot;page-item\&quot;&gt;&quot;);</span>
+<span class="nc" id="L272">            pr.print(&quot;&lt;a class=\&quot;page-link\&quot; aria-label=\&quot;Last\&quot;&gt;&quot;);</span>
+<span class="nc" id="L273">            pr.print(&quot;&lt;span aria-hidden=\&quot;true\&quot;&gt;&lt;i class=\&quot;fas fa-forward\&quot;&gt;&lt;/i&gt;&quot;);</span>
+<span class="nc" id="L274">            pr.print(&quot;&lt;span class=\&quot;sr-only\&quot;&gt;(current)&lt;/span&gt; &quot;);</span>
+<span class="nc" id="L275">            pr.print(&quot;&lt;/span&gt;&quot;);</span>
+<span class="nc" id="L276">            pr.print(&quot;&lt;/a&gt;&quot;);</span>
+<span class="nc" id="L277">            pr.print(&quot;&lt;/li&gt;&quot;);</span>
         }
-<span class="nc bnc" id="L278" title="All 2 branches missed.">        if (request.getParameter(&quot;row&quot;) == null) {</span>
-<span class="nc" id="L279">            sendDispatcher(request, response, &quot;seller/productSeller.jsp&quot;);</span>
+<span class="nc bnc" id="L279" title="All 2 branches missed.">        if (request.getParameter(&quot;row&quot;) == null) {</span>
+<span class="nc" id="L280">            sendDispatcher(request, response, &quot;seller/productSeller.jsp&quot;);</span>
         }
-<span class="nc" id="L281">    }</span>
+<span class="nc" id="L282">    }</span>
 
     public void serviceProductDetail(HttpServletRequest request, HttpServletResponse response) {
-<span class="nc" id="L284">        String id = request.getParameter(&quot;productid&quot;);</span>
-<span class="nc" id="L285">        Product product = pDAO.getProductByID(Integer.parseInt(id));</span>
-<span class="nc" id="L286">        String genreid = pgDAO.getGenreIdByProductId(product.getProductID());</span>
-<span class="nc" id="L287">        Genre genre = gDAO.getGenreById(Integer.parseInt(genreid));</span>
-<span class="nc" id="L288">        String categoryId = pcDAO.getCategoryIdByProductId(product.getProductID());</span>
-<span class="nc" id="L289">        Category category = cateDAO.getCategoryByCateId(categoryId);</span>
-<span class="nc" id="L290">        ArrayList&lt;Genre&gt; listGenre = gDAO.getGenresByCategoryId(Integer.parseInt(categoryId));</span>
+<span class="nc" id="L285">        String id = request.getParameter(&quot;productid&quot;);</span>
+<span class="nc" id="L286">        Product product = pDAO.getProductByID(Integer.parseInt(id));</span>
+<span class="nc" id="L287">        String genreid = pgDAO.getGenreIdByProductId(product.getProductID());</span>
+<span class="nc" id="L288">        Genre genre = gDAO.getGenreById(Integer.parseInt(genreid));</span>
+<span class="nc" id="L289">        String categoryId = pcDAO.getCategoryIdByProductId(product.getProductID());</span>
+<span class="nc" id="L290">        Category category = cateDAO.getCategoryByCateId(categoryId);</span>
+<span class="nc" id="L291">        ArrayList&lt;Genre&gt; listGenre = gDAO.getGenresByCategoryId(Integer.parseInt(categoryId));</span>
         
-<span class="nc" id="L292">        List&lt;ProductType&gt; listProductType = ptDAO.getProductByProductID(Integer.parseInt(id));</span>
-<span class="nc" id="L293">        ArrayList&lt;ProductType&gt; listPaging = ptDAO.getAllPagingProductType(1, 1, &quot;&quot;,id);</span>
-<span class="nc" id="L294">        int totalPage = listProductType.size() / 1;</span>
-<span class="nc bnc" id="L295" title="All 2 branches missed.">        if (listProductType.size() != totalPage * 1) {</span>
-<span class="nc" id="L296">            totalPage += 1;</span>
+<span class="nc" id="L293">        List&lt;ProductType&gt; listProductType = ptDAO.getProductByProductID(Integer.parseInt(id));</span>
+<span class="nc" id="L294">        ArrayList&lt;ProductType&gt; listPaging = ptDAO.getAllPagingProductType(1, 1, &quot;&quot;,id);</span>
+<span class="nc" id="L295">        int totalPage = listProductType.size() / 1;</span>
+<span class="nc bnc" id="L296" title="All 2 branches missed.">        if (listProductType.size() != totalPage * 1) {</span>
+<span class="nc" id="L297">            totalPage += 1;</span>
         }
-<span class="nc" id="L298">        request.setAttribute(&quot;index&quot;, 1);</span>
-<span class="nc" id="L299">        request.setAttribute(&quot;totalPage&quot;, totalPage);</span>
-<span class="nc" id="L300">        request.setAttribute(&quot;listProductType&quot;, listPaging);</span>
-<span class="nc" id="L301">        request.setAttribute(&quot;listGenre&quot;, listGenre);</span>
-<span class="nc" id="L302">        request.setAttribute(&quot;category&quot;, category);</span>
-<span class="nc" id="L303">        request.setAttribute(&quot;genre&quot;, genre);</span>
-<span class="nc" id="L304">        request.setAttribute(&quot;product&quot;, product);</span>
-<span class="nc" id="L305">        sendDispatcher(request, response, &quot;seller/productdetail.jsp&quot;);</span>
-<span class="nc" id="L306">    }</span>
+<span class="nc" id="L299">        request.setAttribute(&quot;index&quot;, 1);</span>
+<span class="nc" id="L300">        request.setAttribute(&quot;totalPage&quot;, totalPage);</span>
+<span class="nc" id="L301">        request.setAttribute(&quot;listProductType&quot;, listPaging);</span>
+<span class="nc" id="L302">        request.setAttribute(&quot;listGenre&quot;, listGenre);</span>
+<span class="nc" id="L303">        request.setAttribute(&quot;category&quot;, category);</span>
+<span class="nc" id="L304">        request.setAttribute(&quot;genre&quot;, genre);</span>
+<span class="nc" id="L305">        request.setAttribute(&quot;product&quot;, product);</span>
+<span class="nc" id="L306">        sendDispatcher(request, response, &quot;seller/productdetail.jsp&quot;);</span>
+<span class="nc" id="L307">    }</span>
 
     public void servicePagingProductType(HttpServletRequest request, HttpServletResponse response) throws IOException {
-<span class="nc" id="L309">        PrintWriter pr = response.getWriter();</span>
-<span class="nc" id="L310">        int index = 1, numOfRow = 1;</span>
-<span class="nc" id="L311">        String pid = request.getParameter(&quot;productid&quot;);</span>
-<span class="nc bnc" id="L312" title="All 2 branches missed.">        if (request.getParameter(&quot;index&quot;) != null) {</span>
-<span class="nc" id="L313">            index = Integer.parseInt(request.getParameter(&quot;index&quot;));</span>
+<span class="nc" id="L310">        PrintWriter pr = response.getWriter();</span>
+<span class="nc" id="L311">        int index = 1, numOfRow = 1;</span>
+<span class="nc" id="L312">        String pid = request.getParameter(&quot;productid&quot;);</span>
+<span class="nc bnc" id="L313" title="All 2 branches missed.">        if (request.getParameter(&quot;index&quot;) != null) {</span>
+<span class="nc" id="L314">            index = Integer.parseInt(request.getParameter(&quot;index&quot;));</span>
         }
-<span class="nc" id="L315">        ArrayList&lt;ProductType&gt; listPaging = ptDAO.getAllPagingProductType(index, numOfRow, &quot;&quot;, pid);</span>
-<span class="nc" id="L316">        request.setAttribute(&quot;index&quot;, index);</span>
-<span class="nc" id="L317">        request.setAttribute(&quot;listProductType&quot;, listPaging);</span>
-<span class="nc bnc" id="L318" title="All 2 branches missed.">        for (ProductType ptype : listPaging) {</span>
+<span class="nc" id="L316">        ArrayList&lt;ProductType&gt; listPaging = ptDAO.getAllPagingProductType(index, numOfRow, &quot;&quot;, pid);</span>
+<span class="nc" id="L317">        request.setAttribute(&quot;index&quot;, index);</span>
+<span class="nc" id="L318">        request.setAttribute(&quot;listProductType&quot;, listPaging);</span>
+<span class="nc bnc" id="L319" title="All 2 branches missed.">        for (ProductType ptype : listPaging) {</span>
 //            int proID = ptype.getProductID();
 //            String genreid = pgDAO.getGenreIdByProductId(ptype.getProductID());
 //            Genre genre = gDAO.getGenreById(Integer.parseInt(genreid));
-<span class="nc" id="L322">            Double price = Double.parseDouble(ptype.getPrice());</span>
-<span class="nc" id="L323">            pr.print(&quot;&lt;tr&gt;&quot;</span>
+<span class="nc" id="L323">            Double price = Double.parseDouble(ptype.getPrice());</span>
+<span class="nc" id="L324">            pr.print(&quot;&lt;tr&gt;&quot;</span>
                     + &quot;&lt;td style=\&quot;width: 90px;\&quot;&gt;&lt;label&gt;Color&lt;/label&gt;&lt;/td&gt;&quot;
                     + &quot;&lt;td&gt;\n&quot;
-                    + &quot;                                                            &lt;input required style=\&quot;width: 100px;\&quot; type=\&quot;text\&quot; name=\&quot;color\&quot; class=\&quot;form-control\&quot; value=\&quot;&lt;%=pt.getColor()%&gt;\&quot;&gt;\n&quot;
-                    + &quot;                                                            &lt;input type=\&quot;hidden\&quot; name=\&quot;ptid\&quot; value=\&quot;&lt;%=pt.getProductTypeId()%&gt;\&quot;&gt;\n&quot;
-                    + &quot;                                                        &lt;/td&gt;&quot;
+<span class="nc" id="L327">                    + &quot;&lt;input required style=\&quot;width: 100px;\&quot; type=\&quot;text\&quot; name=\&quot;color\&quot; class=\&quot;form-control\&quot; value=\&quot;&quot; + ptype.getColor() + &quot;\&quot;&gt;\n&quot;</span>
+<span class="nc" id="L328">                    + &quot;&lt;input type=\&quot;hidden\&quot; name=\&quot;ptid\&quot; value=\&quot;&quot; + ptype.getProductTypeId() + &quot;\&quot;&gt;\n&quot;</span>
+                    + &quot;&lt;/td&gt;&quot;
                     + &quot;&lt;td&gt;&lt;label&gt;Size&lt;/label&gt;&lt;/td&gt;\n&quot; +
-&quot;                                                        &lt;td&gt;&lt;input required style=\&quot;width: 100px;\&quot; type=\&quot;text\&quot; name=\&quot;size\&quot; class=\&quot;form-control\&quot; value=\&quot;&lt;%=pt.getSize()%&gt;\&quot;&gt;&lt;/td&gt;&quot;
+<span class="nc" id="L331">&quot;                                                        &lt;td&gt;&lt;input required style=\&quot;width: 100px;\&quot; type=\&quot;text\&quot; name=\&quot;size\&quot; class=\&quot;form-control\&quot; value=\&quot;&quot; + ptype.getSize() + &quot;\&quot;&gt;&lt;/td&gt;&quot;</span>
                     + &quot;&lt;td&gt;&lt;label&gt;Price&lt;/label&gt;&lt;/td&gt;\n&quot; +
-&quot;                                                        &lt;td&gt;&lt;input required style=\&quot;width: 100px;\&quot; type=\&quot;text\&quot; name=\&quot;price\&quot; class=\&quot;form-control price\&quot; value=\&quot;&lt;%=nf.format(price)%&gt;\&quot;&gt;&lt;/td&gt;&quot;
+<span class="nc" id="L333">&quot;                                                        &lt;td&gt;&lt;input required style=\&quot;width: 100px;\&quot; type=\&quot;text\&quot; name=\&quot;price\&quot; class=\&quot;form-control price\&quot; value=\&quot;&quot; + nf.format(price) + &quot;\&quot;&gt;&lt;/td&gt;&quot;</span>
                     + &quot;&lt;td&gt;&lt;label&gt;Quantity&lt;/label&gt;&lt;/td&gt;\n&quot; +
-&quot;                                                        &lt;td&gt;&lt;input required style=\&quot;width: 100px;\&quot;  type=\&quot;text\&quot; name=\&quot;quantity\&quot; class=\&quot;form-control\&quot; value=\&quot;&lt;%=pt.getQuantity()%&gt;\&quot;&gt;&lt;/td&gt;&quot;
+<span class="nc" id="L335">&quot;                                                        &lt;td&gt;&lt;input required style=\&quot;width: 100px;\&quot;  type=\&quot;text\&quot; name=\&quot;quantity\&quot; class=\&quot;form-control\&quot; value=\&quot;&quot; + ptype.getQuantity() + &quot;\&quot;&gt;&lt;/td&gt;&quot;</span>
                     + &quot;&lt;td&gt;&quot;);
-<span class="nc bnc" id="L336" title="All 2 branches missed.">            if (ptype.getStatus() == 1) {</span>
-<span class="nc" id="L337">                pr.print(&quot;&lt;a href=\&quot;SellerControllerMap?service=deactiveproducttype&amp;producttypeid=&quot; + ptype.getProductTypeId() + &quot;\&quot; onclick=\&quot;return confirm('Are you sure?');\&quot;&gt;&lt;button class=\&quot;btn btn-danger\&quot;&gt;Deactive&lt;/button&gt;&lt;/a&gt;&quot;);</span>
+<span class="nc bnc" id="L337" title="All 2 branches missed.">            if (ptype.getStatus() == 1) {</span>
+<span class="nc" id="L338">                pr.print(&quot;&lt;a href=\&quot;SellerControllerMap?service=deactiveproducttype&amp;producttypeid=&quot; + ptype.getProductTypeId() + &quot;\&quot; onclick=\&quot;return confirm('Are you sure?');\&quot;&gt;&lt;button class=\&quot;btn btn-danger\&quot;&gt;Deactive&lt;/button&gt;&lt;/a&gt;&quot;);</span>
             } else {
-<span class="nc" id="L339">                pr.print(&quot;&lt;a href=\&quot;SellerControllerMap?service=activeproducttype&amp;producttypeid=&quot; + ptype.getProductTypeId() + &quot;\&quot; onclick=\&quot;return confirm('Are you sure?');\&quot;&gt;&lt;button class=\&quot;btn btn-success\&quot;&gt;Active&lt;/button&gt;&lt;/a&gt;&quot;);</span>
+<span class="nc" id="L340">                pr.print(&quot;&lt;a href=\&quot;SellerControllerMap?service=activeproducttype&amp;producttypeid=&quot; + ptype.getProductTypeId() + &quot;\&quot; onclick=\&quot;return confirm('Are you sure?');\&quot;&gt;&lt;button class=\&quot;btn btn-success\&quot;&gt;Active&lt;/button&gt;&lt;/a&gt;&quot;);</span>
             }
-<span class="nc" id="L341">            pr.print(&quot;&lt;/td&gt;&quot;</span>
+<span class="nc" id="L342">            pr.print(&quot;&lt;/td&gt;&quot;</span>
                     + &quot;&lt;/tr&gt;\n&quot;
-                    + &quot;&lt;tr&gt;\n&quot; +
-&quot;                                                        &lt;td&gt;&lt;label&gt;Add image&lt;/label&gt;&lt;/td&gt;\n&quot; +
-&quot;                                                        &lt;td&gt;\n&quot; +
-&quot;                                                            &lt;%\n&quot; +
-&quot;                                                                List&lt;Gallery&gt; listGallery = gallerydao.getAllImageByProductTypeID(pt.getProductTypeId());\n&quot; +
-&quot;                                                                for (Gallery gallery : listGallery) {\n&quot; +
-&quot;                                                            %&gt;\n&quot; +
-&quot;                                                    &lt;img id=\&quot;img\&quot; src=\&quot;images/&lt;%=gallery.getLink()%&gt;\&quot; width=\&quot;150px\&quot; height=\&quot;150px\&quot;&gt;&lt;br&gt;                    \n&quot; +
-&quot;                                                    &lt;input required accept=\&quot;image/*\&quot; onchange=\&quot;loadFile(event)\&quot; id=\&quot;file\&quot; type=\&quot;file\&quot; name=\&quot;photo\&quot;&gt;\n&quot; +
-&quot;                                                        &lt;/td&gt;\n&quot; +
-&quot;                                                        &lt;% } %&gt;\n&quot; +
-&quot;                                                    &lt;/tr&gt;&quot;
+                    + &quot;&lt;tr&gt;\n&quot;
+                    + &quot;&lt;td&gt;&lt;label&gt;Image&lt;/label&gt;&lt;/td&gt;\n&quot;
+                    + &quot;&lt;td&gt;\n&quot;);
+<span class="nc" id="L347">                    List&lt;Gallery&gt; listGallery = galleryDAO.getAllImageByProductTypeID(ptype.getProductTypeId());</span>
+<span class="nc bnc" id="L348" title="All 2 branches missed.">                        for (Gallery gallery : listGallery) {</span>
+<span class="nc" id="L349">            pr.print(</span>
+<span class="nc" id="L350">                    &quot;&lt;img id=\&quot;img\&quot; src=\&quot;images/&quot; + gallery.getLink() + &quot;\&quot; width=\&quot;250px\&quot; height=\&quot;200px\&quot;&gt;&lt;br&gt;                    \n&quot; +</span>
+                    &quot;&lt;input required accept=\&quot;image/*\&quot; onchange=\&quot;loadFile(event)\&quot; id=\&quot;file\&quot; type=\&quot;file\&quot; name=\&quot;photo\&quot;&gt;\n&quot; +
+                    &quot;&lt;/td&gt;\n&quot; );
+<span class="nc" id="L353">                    }</span>
+<span class="nc" id="L354">            pr.print(</span>
+                    &quot;&lt;/tr&gt;&quot;
             );
-<span class="nc" id="L356">        }</span>
-<span class="nc bnc" id="L357" title="All 2 branches missed.">        if (request.getParameter(&quot;row&quot;) == null) {</span>
-<span class="nc" id="L358">            sendDispatcher(request, response, &quot;seller/productdetail.jsp&quot;);</span>
-        }
-<span class="nc" id="L360">    }</span>
+<span class="nc" id="L357">        }</span>
+<span class="nc" id="L358">    }</span>
 
     public void serviceShowPageProductType(HttpServletRequest request, HttpServletResponse response) throws IOException {
         
-<span class="nc" id="L364">        PrintWriter pr = response.getWriter();</span>
-<span class="nc" id="L365">        int index = 1, numOfRow = 1;</span>
-<span class="nc" id="L366">        String pid = request.getParameter(&quot;productid&quot;);</span>
-<span class="nc bnc" id="L367" title="All 2 branches missed.">        if (request.getParameter(&quot;row&quot;) != null) {</span>
-<span class="nc" id="L368">            numOfRow = Integer.parseInt(request.getParameter(&quot;row&quot;));</span>
+<span class="nc" id="L362">        PrintWriter pr = response.getWriter();</span>
+<span class="nc" id="L363">        int index = 1, numOfRow = 1;</span>
+<span class="nc" id="L364">        String pid = request.getParameter(&quot;productid&quot;);</span>
+<span class="nc bnc" id="L365" title="All 2 branches missed.">        if (request.getParameter(&quot;index&quot;) != null) {</span>
+<span class="nc" id="L366">            index = Integer.parseInt(request.getParameter(&quot;index&quot;));</span>
         }
-<span class="nc" id="L370">        int totalResult = ptDAO.getPageNumber(&quot;&quot;, pid);</span>
-<span class="nc" id="L371">        int totalPage = totalResult / numOfRow;</span>
-<span class="nc bnc" id="L372" title="All 2 branches missed.">        if (totalResult != numOfRow * totalPage) {</span>
-<span class="nc" id="L373">            totalPage += 1;</span>
+<span class="nc" id="L368">        int totalResult = ptDAO.getPageNumber(&quot;&quot;, pid);</span>
+<span class="nc" id="L369">        int totalPage = totalResult / numOfRow;</span>
+<span class="nc bnc" id="L370" title="All 2 branches missed.">        if (totalResult != numOfRow * totalPage) {</span>
+<span class="nc" id="L371">            totalPage += 1;</span>
         }
-<span class="nc bnc" id="L375" title="All 2 branches missed.">        int prev = index == 1 ? 1 : index - 1;</span>
-<span class="nc bnc" id="L376" title="All 2 branches missed.">        int next = index == totalPage ? totalPage : index + 1;</span>
-<span class="nc bnc" id="L377" title="All 2 branches missed.">        if (totalResult &gt; numOfRow) {</span>
-<span class="nc" id="L378">            pr.print(&quot;&lt;li data-repair=\&quot;1\&quot; class=\&quot;page-item\&quot;&gt;&quot;);</span>
-<span class="nc" id="L379">            pr.print(&quot;&lt;a class=\&quot;page-link\&quot; aria-label=\&quot;First\&quot;&gt;&quot;);</span>
-<span class="nc" id="L380">            pr.print(&quot;&lt;span aria-hidden=\&quot;true\&quot;&gt;&lt;i class=\&quot;fas fa-backward\&quot;&gt;&lt;/i&gt;&quot;);</span>
-<span class="nc" id="L381">            pr.print(&quot;&lt;span class=\&quot;sr-only\&quot;&gt;(current)&lt;/span&gt; &quot;);</span>
-<span class="nc" id="L382">            pr.print(&quot;&lt;/span&gt;&quot;);</span>
-<span class="nc" id="L383">            pr.print(&quot;&lt;/a&gt;&quot;);</span>
-<span class="nc" id="L384">            pr.print(&quot;&lt;/li&gt;&quot;);</span>
-<span class="nc" id="L385">            pr.print(&quot;&lt;li data-repair=\&quot;&quot; + prev + &quot;\&quot; class=\&quot;page-item\&quot;&gt;&quot;);</span>
-<span class="nc" id="L386">            pr.print(&quot;&lt;a class=\&quot;page-link\&quot; aria-label=\&quot;Previous\&quot;&gt;&quot;);</span>
-<span class="nc" id="L387">            pr.print(&quot;&lt;span aria-hidden=\&quot;true\&quot;&gt;&lt;i class=\&quot;fas fa-arrow-left\&quot;&gt;&lt;/i&gt;&quot;);</span>
-<span class="nc" id="L388">            pr.print(&quot;&lt;span class=\&quot;sr-only\&quot;&gt;(current)&lt;/span&gt; &quot;);</span>
-<span class="nc" id="L389">            pr.print(&quot;&lt;/span&gt;&quot;);</span>
-<span class="nc" id="L390">            pr.print(&quot;&lt;/a&gt;&quot;);</span>
-<span class="nc" id="L391">            pr.print(&quot;&lt;/li&gt;&quot;);</span>
-<span class="nc bnc" id="L392" title="All 2 branches missed.">            for (int i = 1; i &lt;= totalPage; i++) {</span>
-<span class="nc bnc" id="L393" title="All 2 branches missed.">                if (i &lt; index - 2) {</span>
-<span class="nc" id="L394">                    continue;</span>
+<span class="nc bnc" id="L373" title="All 2 branches missed.">        int prev = index == 1 ? 1 : index - 1;</span>
+<span class="nc bnc" id="L374" title="All 2 branches missed.">        int next = index == totalPage ? totalPage : index + 1;</span>
+<span class="nc bnc" id="L375" title="All 2 branches missed.">        if (totalResult &gt; numOfRow) {</span>
+<span class="nc" id="L376">            pr.print(&quot;&lt;li data-repair=\&quot;1\&quot; class=\&quot;page-item\&quot;&gt;&quot;);</span>
+<span class="nc" id="L377">            pr.print(&quot;&lt;a class=\&quot;page-link\&quot; aria-label=\&quot;First\&quot;&gt;&quot;);</span>
+<span class="nc" id="L378">            pr.print(&quot;&lt;span aria-hidden=\&quot;true\&quot;&gt;&lt;i class=\&quot;fas fa-backward\&quot;&gt;&lt;/i&gt;&quot;);</span>
+<span class="nc" id="L379">            pr.print(&quot;&lt;span class=\&quot;sr-only\&quot;&gt;(current)&lt;/span&gt; &quot;);</span>
+<span class="nc" id="L380">            pr.print(&quot;&lt;/span&gt;&quot;);</span>
+<span class="nc" id="L381">            pr.print(&quot;&lt;/a&gt;&quot;);</span>
+<span class="nc" id="L382">            pr.print(&quot;&lt;/li&gt;&quot;);</span>
+<span class="nc" id="L383">            pr.print(&quot;&lt;li data-repair=\&quot;&quot; + prev + &quot;\&quot; class=\&quot;page-item\&quot;&gt;&quot;);</span>
+<span class="nc" id="L384">            pr.print(&quot;&lt;a class=\&quot;page-link\&quot; aria-label=\&quot;Previous\&quot;&gt;&quot;);</span>
+<span class="nc" id="L385">            pr.print(&quot;&lt;span aria-hidden=\&quot;true\&quot;&gt;&lt;i class=\&quot;fas fa-arrow-left\&quot;&gt;&lt;/i&gt;&quot;);</span>
+<span class="nc" id="L386">            pr.print(&quot;&lt;span class=\&quot;sr-only\&quot;&gt;(current)&lt;/span&gt; &quot;);</span>
+<span class="nc" id="L387">            pr.print(&quot;&lt;/span&gt;&quot;);</span>
+<span class="nc" id="L388">            pr.print(&quot;&lt;/a&gt;&quot;);</span>
+<span class="nc" id="L389">            pr.print(&quot;&lt;/li&gt;&quot;);</span>
+<span class="nc bnc" id="L390" title="All 2 branches missed.">            for (int i = 1; i &lt;= totalPage; i++) {</span>
+<span class="nc bnc" id="L391" title="All 2 branches missed.">                if (i &lt; index - 2) {</span>
+<span class="nc" id="L392">                    continue;</span>
                 }
-<span class="nc bnc" id="L396" title="All 2 branches missed.">                if (index &lt; 3) {</span>
-<span class="nc bnc" id="L397" title="All 2 branches missed.">                    if (i &gt; 5) {</span>
-<span class="nc" id="L398">                        break;</span>
+<span class="nc bnc" id="L394" title="All 2 branches missed.">                if (index &lt; 3) {</span>
+<span class="nc bnc" id="L395" title="All 2 branches missed.">                    if (i &gt; 5) {</span>
+<span class="nc" id="L396">                        break;</span>
                     }
                 } else {
-<span class="nc bnc" id="L401" title="All 2 branches missed.">                    if (i &gt; index + 2) {</span>
-<span class="nc" id="L402">                        break;</span>
+<span class="nc bnc" id="L399" title="All 2 branches missed.">                    if (i &gt; index + 2) {</span>
+<span class="nc" id="L400">                        break;</span>
                     }
                 }
-<span class="nc bnc" id="L405" title="All 2 branches missed.">                if (index == i) {</span>
-<span class="nc" id="L406">                    pr.print(&quot;&lt;li  class=\&quot;page-item active\&quot; data-repair=\&quot;&quot; + i + &quot;\&quot;&gt;&quot;);</span>
+<span class="nc bnc" id="L403" title="All 2 branches missed.">                if (index == i) {</span>
+<span class="nc" id="L404">                    pr.print(&quot;&lt;li  class=\&quot;page-item active\&quot; data-repair=\&quot;&quot; + i + &quot;\&quot;&gt;&quot;);</span>
                 } else {
-<span class="nc" id="L408">                    pr.print(&quot;&lt;li  class=\&quot;page-item\&quot; data-repair=\&quot;&quot; + i + &quot;\&quot;&gt;&quot;);</span>
+<span class="nc" id="L406">                    pr.print(&quot;&lt;li  class=\&quot;page-item\&quot; data-repair=\&quot;&quot; + i + &quot;\&quot;&gt;&quot;);</span>
                 }
-<span class="nc" id="L410">                pr.print(&quot;&lt;a class=\&quot;page-link\&quot;&gt;&quot;);</span>
-<span class="nc" id="L411">                pr.print(&quot;&lt;div class=\&quot;index\&quot;&gt;&quot; + i + &quot;&lt;/div&gt;&quot;);</span>
-<span class="nc" id="L412">                pr.print(&quot;&lt;span class=\&quot;sr-only\&quot;&gt;(current)&lt;/span&gt;&quot;);</span>
-<span class="nc" id="L413">                pr.print(&quot;&lt;/a&gt;&quot;);</span>
-<span class="nc" id="L414">                pr.print(&quot;&lt;/li&gt;&quot;);</span>
+<span class="nc" id="L408">                pr.print(&quot;&lt;a class=\&quot;page-link\&quot;&gt;&quot;);</span>
+<span class="nc" id="L409">                pr.print(&quot;&lt;div class=\&quot;index\&quot;&gt;&quot; + i + &quot;&lt;/div&gt;&quot;);</span>
+<span class="nc" id="L410">                pr.print(&quot;&lt;span class=\&quot;sr-only\&quot;&gt;(current)&lt;/span&gt;&quot;);</span>
+<span class="nc" id="L411">                pr.print(&quot;&lt;/a&gt;&quot;);</span>
+<span class="nc" id="L412">                pr.print(&quot;&lt;/li&gt;&quot;);</span>
             }
-<span class="nc" id="L416">            pr.print(&quot;&lt;li data-repair=\&quot;&quot; + next + &quot;\&quot; class=\&quot;page-item\&quot;&gt;&quot;);</span>
-<span class="nc" id="L417">            pr.print(&quot;&lt;a class=\&quot;page-link\&quot; aria-label=\&quot;Next\&quot;&gt;&quot;);</span>
-<span class="nc" id="L418">            pr.print(&quot;&lt;span aria-hidden=\&quot;true\&quot;&gt;&lt;i class=\&quot;fas fa-arrow-right\&quot;&gt;&lt;/i&gt;&quot;);</span>
-<span class="nc" id="L419">            pr.print(&quot;&lt;span class=\&quot;sr-only\&quot;&gt;(current)&lt;/span&gt; &quot;);</span>
-<span class="nc" id="L420">            pr.print(&quot;&lt;/span&gt;&quot;);</span>
-<span class="nc" id="L421">            pr.print(&quot;&lt;/a&gt;&quot;);</span>
-<span class="nc" id="L422">            pr.print(&quot;&lt;/li&gt;&quot;);</span>
-<span class="nc" id="L423">            pr.print(&quot;&lt;li data-repair=\&quot;&quot; + totalPage + &quot;\&quot; class=\&quot;page-item\&quot;&gt;&quot;);</span>
-<span class="nc" id="L424">            pr.print(&quot;&lt;a class=\&quot;page-link\&quot; aria-label=\&quot;Last\&quot;&gt;&quot;);</span>
-<span class="nc" id="L425">            pr.print(&quot;&lt;span aria-hidden=\&quot;true\&quot;&gt;&lt;i class=\&quot;fas fa-forward\&quot;&gt;&lt;/i&gt;&quot;);</span>
-<span class="nc" id="L426">            pr.print(&quot;&lt;span class=\&quot;sr-only\&quot;&gt;(current)&lt;/span&gt; &quot;);</span>
-<span class="nc" id="L427">            pr.print(&quot;&lt;/span&gt;&quot;);</span>
-<span class="nc" id="L428">            pr.print(&quot;&lt;/a&gt;&quot;);</span>
-<span class="nc" id="L429">            pr.print(&quot;&lt;/li&gt;&quot;);</span>
+<span class="nc" id="L414">            pr.print(&quot;&lt;li data-repair=\&quot;&quot; + next + &quot;\&quot; class=\&quot;page-item\&quot;&gt;&quot;);</span>
+<span class="nc" id="L415">            pr.print(&quot;&lt;a class=\&quot;page-link\&quot; aria-label=\&quot;Next\&quot;&gt;&quot;);</span>
+<span class="nc" id="L416">            pr.print(&quot;&lt;span aria-hidden=\&quot;true\&quot;&gt;&lt;i class=\&quot;fas fa-arrow-right\&quot;&gt;&lt;/i&gt;&quot;);</span>
+<span class="nc" id="L417">            pr.print(&quot;&lt;span class=\&quot;sr-only\&quot;&gt;(current)&lt;/span&gt; &quot;);</span>
+<span class="nc" id="L418">            pr.print(&quot;&lt;/span&gt;&quot;);</span>
+<span class="nc" id="L419">            pr.print(&quot;&lt;/a&gt;&quot;);</span>
+<span class="nc" id="L420">            pr.print(&quot;&lt;/li&gt;&quot;);</span>
+<span class="nc" id="L421">            pr.print(&quot;&lt;li data-repair=\&quot;&quot; + totalPage + &quot;\&quot; class=\&quot;page-item\&quot;&gt;&quot;);</span>
+<span class="nc" id="L422">            pr.print(&quot;&lt;a class=\&quot;page-link\&quot; aria-label=\&quot;Last\&quot;&gt;&quot;);</span>
+<span class="nc" id="L423">            pr.print(&quot;&lt;span aria-hidden=\&quot;true\&quot;&gt;&lt;i class=\&quot;fas fa-forward\&quot;&gt;&lt;/i&gt;&quot;);</span>
+<span class="nc" id="L424">            pr.print(&quot;&lt;span class=\&quot;sr-only\&quot;&gt;(current)&lt;/span&gt; &quot;);</span>
+<span class="nc" id="L425">            pr.print(&quot;&lt;/span&gt;&quot;);</span>
+<span class="nc" id="L426">            pr.print(&quot;&lt;/a&gt;&quot;);</span>
+<span class="nc" id="L427">            pr.print(&quot;&lt;/li&gt;&quot;);</span>
         }
-<span class="nc bnc" id="L431" title="All 2 branches missed.">        if (request.getParameter(&quot;row&quot;) == null) {</span>
-<span class="nc" id="L432">            sendDispatcher(request, response, &quot;seller/productdetail.jsp&quot;);</span>
-        }
-<span class="nc" id="L434">    }</span>
+<span class="nc" id="L429">    }</span>
 
     public void serviceAddProduct(HttpServletRequest request, HttpServletResponse response) {
 
         //get data input
-<span class="nc" id="L439">        String productname = request.getParameter(&quot;pname&quot;);</span>
-<span class="nc" id="L440">        String description = request.getParameter(&quot;description&quot;);</span>
-<span class="nc" id="L441">        String date = request.getParameter(&quot;date&quot;);</span>
-<span class="nc" id="L442">        int category = Integer.parseInt(request.getParameter(&quot;category&quot;));</span>
-<span class="nc" id="L443">        int genre = Integer.parseInt(request.getParameter(&quot;genre&quot;));</span>
-<span class="nc" id="L444">        Product product = new Product();</span>
-<span class="nc" id="L445">        User account = (User) request.getSession().getAttribute(&quot;currUser&quot;);</span>
-<span class="nc" id="L446">        String userID = account.getUserId();</span>
-<span class="nc" id="L447">        Seller seller = sellerDAO.getSellerByUserID(Integer.parseInt(userID));</span>
+<span class="nc" id="L434">        String productname = request.getParameter(&quot;pname&quot;);</span>
+<span class="nc" id="L435">        String description = request.getParameter(&quot;description&quot;);</span>
+<span class="nc" id="L436">        String date = request.getParameter(&quot;date&quot;);</span>
+<span class="nc" id="L437">        int category = Integer.parseInt(request.getParameter(&quot;category&quot;));</span>
+<span class="nc" id="L438">        int genre = Integer.parseInt(request.getParameter(&quot;genre&quot;));</span>
+<span class="nc" id="L439">        Product product = new Product();</span>
+<span class="nc" id="L440">        User account = (User) request.getSession().getAttribute(&quot;currUser&quot;);</span>
+<span class="nc" id="L441">        String userID = account.getUserId();</span>
+<span class="nc" id="L442">        Seller seller = sellerDAO.getSellerByUserID(Integer.parseInt(userID));</span>
 
         // Add product
-<span class="nc" id="L450">        product.setProductName(productname);</span>
-<span class="nc" id="L451">        product.setDescription(description);</span>
-<span class="nc" id="L452">        product.setReleaseDate(Date.valueOf(date));</span>
-<span class="nc" id="L453">        product.setSeller(seller.getSellerID());</span>
+<span class="nc" id="L445">        product.setProductName(productname);</span>
+<span class="nc" id="L446">        product.setDescription(description);</span>
+<span class="nc" id="L447">        product.setReleaseDate(Date.valueOf(date));</span>
+<span class="nc" id="L448">        product.setSeller(seller.getSellerID());</span>
 
-<span class="nc" id="L455">        pDAO.addProduct(product);</span>
-<span class="nc" id="L456">        Product productToken = pDAO.getProductLatest(seller.getSellerID());</span>
+<span class="nc" id="L450">        pDAO.addProduct(product);</span>
+<span class="nc" id="L451">        Product productToken = pDAO.getProductLatest(seller.getSellerID());</span>
 
         // Add product cate
 //        pc.setProductID(product.getProductID());
-<span class="nc" id="L460">        pcDAO.addProductCategory(productToken.getProductID(), category);</span>
+<span class="nc" id="L455">        pcDAO.addProductCategory(productToken.getProductID(), category);</span>
 
         //Add product genre
 //        pg.setProductID(product.getProductID());
 //        pg.setGenreID(Integer.parseInt(genre));
-<span class="nc" id="L465">        pgDAO.addProductGenre(productToken.getProductID(), genre);</span>
+<span class="nc" id="L460">        pgDAO.addProductGenre(productToken.getProductID(), genre);</span>
 
-<span class="nc" id="L467">        ArrayList&lt;Product&gt; listProduct = pDAO.getAllProduct();</span>
-<span class="nc" id="L468">        request.setAttribute(&quot;listProduct&quot;, listProduct);</span>
-<span class="nc" id="L469">        sendDispatcher(request, response, &quot;SellerControllerMap?service=productmanagement&quot;);</span>
-<span class="nc" id="L470">    }</span>
+<span class="nc" id="L462">        ArrayList&lt;Product&gt; listProduct = pDAO.getAllProduct();</span>
+<span class="nc" id="L463">        request.setAttribute(&quot;listProduct&quot;, listProduct);</span>
+<span class="nc" id="L464">        sendDispatcher(request, response, &quot;SellerControllerMap?service=productmanagement&quot;);</span>
+<span class="nc" id="L465">    }</span>
 
     public void serviceAddProductType(HttpServletRequest request, HttpServletResponse response) {
 
 //        String productname = request.getParameter(&quot;productname&quot;);
-<span class="nc" id="L475">        String color = request.getParameter(&quot;color&quot;);</span>
-<span class="nc" id="L476">        String size = request.getParameter(&quot;size&quot;);</span>
-<span class="nc" id="L477">        String price = request.getParameter(&quot;price&quot;);</span>
-<span class="nc" id="L478">        int quantity = Integer.parseInt(request.getParameter(&quot;quantity&quot;));</span>
-<span class="nc" id="L479">        int warehouse = Integer.parseInt(request.getParameter(&quot;warehouse&quot;));</span>
-<span class="nc" id="L480">        int pid = Integer.parseInt(request.getParameter(&quot;proID&quot;));</span>
-<span class="nc" id="L481">        Product product = pDAO.getProductByID(pid);</span>
-<span class="nc" id="L482">        List&lt;ProductType&gt; listProductType = ptDAO.getProductByProductID(product.getProductID());</span>
-<span class="nc" id="L483">        String ptypeID = &quot;Pr&quot; + product.getProductID() + &quot;Ty&quot; + (listProductType.size() + 1);</span>
-<span class="nc" id="L484">        ProductType pt = new ProductType(ptypeID, pid, size, color, price, warehouse, quantity, 1);</span>
-<span class="nc" id="L485">        pt.setProductTypeId(ptypeID);</span>
-<span class="nc" id="L486">        pt.setColor(color);</span>
-<span class="nc" id="L487">        pt.setPrice(price);</span>
-<span class="nc" id="L488">        pt.setSize(size);</span>
-<span class="nc" id="L489">        pt.setQuantity(quantity);</span>
-<span class="nc" id="L490">        pt.setWareHouseID(warehouse);</span>
-<span class="nc" id="L491">        ptDAO.addProductType(pt);</span>
-<span class="nc" id="L492">        sendDispatcher(request, response, &quot;SellerControllerMap?service=productdetail&amp;productid=&quot; + pid + &quot;&quot;);</span>
-<span class="nc" id="L493">    }</span>
+<span class="nc" id="L470">        String color = request.getParameter(&quot;color&quot;);</span>
+<span class="nc" id="L471">        String size = request.getParameter(&quot;size&quot;);</span>
+<span class="nc" id="L472">        String price = request.getParameter(&quot;price&quot;);</span>
+<span class="nc" id="L473">        int quantity = Integer.parseInt(request.getParameter(&quot;quantity&quot;));</span>
+<span class="nc" id="L474">        int warehouse = Integer.parseInt(request.getParameter(&quot;warehouse&quot;));</span>
+<span class="nc" id="L475">        int pid = Integer.parseInt(request.getParameter(&quot;proID&quot;));</span>
+<span class="nc" id="L476">        Product product = pDAO.getProductByID(pid);</span>
+<span class="nc" id="L477">        List&lt;ProductType&gt; listProductType = ptDAO.getProductByProductID(product.getProductID());</span>
+<span class="nc" id="L478">        String ptypeID = &quot;Pr&quot; + product.getProductID() + &quot;Ty&quot; + (listProductType.size() + 1);</span>
+<span class="nc" id="L479">        ProductType pt = new ProductType(ptypeID, pid, size, color, price, warehouse, quantity, 1);</span>
+<span class="nc" id="L480">        pt.setProductTypeId(ptypeID);</span>
+<span class="nc" id="L481">        pt.setColor(color);</span>
+<span class="nc" id="L482">        pt.setPrice(price);</span>
+<span class="nc" id="L483">        pt.setSize(size);</span>
+<span class="nc" id="L484">        pt.setQuantity(quantity);</span>
+<span class="nc" id="L485">        pt.setWareHouseID(warehouse);</span>
+<span class="nc" id="L486">        ptDAO.addProductType(pt);</span>
+<span class="nc" id="L487">        sendDispatcher(request, response, &quot;SellerControllerMap?service=productdetail&amp;productid=&quot; + pid + &quot;&quot;);</span>
+<span class="nc" id="L488">    }</span>
 
     public void serviceDeactiveProduct(HttpServletRequest request, HttpServletResponse response) {
-<span class="nc" id="L496">        String id = request.getParameter(&quot;productid&quot;);</span>
-<span class="nc" id="L497">        pDAO.changeStatus(Integer.parseInt(id), 0);</span>
-<span class="nc" id="L498">        sendDispatcher(request, response, &quot;SellerControllerMap?service=productmanagement&quot;);</span>
-<span class="nc" id="L499">    }</span>
+<span class="nc" id="L491">        String id = request.getParameter(&quot;productid&quot;);</span>
+<span class="nc" id="L492">        pDAO.changeStatus(Integer.parseInt(id), 0);</span>
+<span class="nc" id="L493">        sendDispatcher(request, response, &quot;SellerControllerMap?service=productmanagement&quot;);</span>
+<span class="nc" id="L494">    }</span>
 
     public void serviceActiveProduct(HttpServletRequest request, HttpServletResponse response) {
 
-<span class="nc" id="L503">        String id = request.getParameter(&quot;productid&quot;);</span>
-<span class="nc" id="L504">        pDAO.changeStatus(Integer.parseInt(id), 1);</span>
-<span class="nc" id="L505">        sendDispatcher(request, response, &quot;SellerControllerMap?service=productmanagement&quot;);</span>
-<span class="nc" id="L506">    }</span>
+<span class="nc" id="L498">        String id = request.getParameter(&quot;productid&quot;);</span>
+<span class="nc" id="L499">        pDAO.changeStatus(Integer.parseInt(id), 1);</span>
+<span class="nc" id="L500">        sendDispatcher(request, response, &quot;SellerControllerMap?service=productmanagement&quot;);</span>
+<span class="nc" id="L501">    }</span>
 
     public void serviceDeactiveProductType(HttpServletRequest request, HttpServletResponse response) {
 
-<span class="nc" id="L510">        String pid = request.getParameter(&quot;productid&quot;);</span>
-<span class="nc" id="L511">        String ptypeid = request.getParameter(&quot;producttypeid&quot;);</span>
-<span class="nc" id="L512">        ptDAO.changeStatus(ptypeid, 0);</span>
-<span class="nc" id="L513">        request.setAttribute(&quot;productid&quot;, pid);</span>
-<span class="nc" id="L514">        sendDispatcher(request, response, &quot;SellerControllerMap?service=productdetail&quot;);</span>
-<span class="nc" id="L515">    }</span>
+<span class="nc" id="L505">        String pid = request.getParameter(&quot;productid&quot;);</span>
+<span class="nc" id="L506">        String ptypeid = request.getParameter(&quot;producttypeid&quot;);</span>
+<span class="nc" id="L507">        ptDAO.changeStatus(ptypeid, 0);</span>
+<span class="nc" id="L508">        request.setAttribute(&quot;productid&quot;, pid);</span>
+<span class="nc" id="L509">        sendDispatcher(request, response, &quot;SellerControllerMap?service=productdetail&quot;);</span>
+<span class="nc" id="L510">    }</span>
 
     public void serviceActiveProductType(HttpServletRequest request, HttpServletResponse response) {
 
-<span class="nc" id="L519">        String pid = request.getParameter(&quot;productid&quot;);</span>
-<span class="nc" id="L520">        String id = request.getParameter(&quot;producttypeid&quot;);</span>
-<span class="nc" id="L521">        ptDAO.changeStatus(id, 1);</span>
-<span class="nc" id="L522">        request.setAttribute(&quot;productid&quot;, pid);</span>
-<span class="nc" id="L523">        sendDispatcher(request, response, &quot;SellerControllerMap?service=productdetail&quot;);</span>
-<span class="nc" id="L524">    }</span>
+<span class="nc" id="L514">        String pid = request.getParameter(&quot;productid&quot;);</span>
+<span class="nc" id="L515">        String id = request.getParameter(&quot;producttypeid&quot;);</span>
+<span class="nc" id="L516">        ptDAO.changeStatus(id, 1);</span>
+<span class="nc" id="L517">        request.setAttribute(&quot;productid&quot;, pid);</span>
+<span class="nc" id="L518">        sendDispatcher(request, response, &quot;SellerControllerMap?service=productdetail&quot;);</span>
+<span class="nc" id="L519">    }</span>
 
     public void serviceUpdateProductDetail(HttpServletRequest request, HttpServletResponse response) throws ParseException {
 
         //Get information about product
-<span class="nc" id="L529">        String pid = request.getParameter(&quot;pid&quot;);</span>
-<span class="nc" id="L530">        String productname = request.getParameter(&quot;productname&quot;);</span>
-<span class="nc" id="L531">        String cat = request.getParameter(&quot;category&quot;);</span>
-<span class="nc" id="L532">        String gen = request.getParameter(&quot;genre&quot;);</span>
-<span class="nc" id="L533">        String date = request.getParameter(&quot;date&quot;);</span>
-<span class="nc" id="L534">        Date sqlDate = Date.valueOf(date);</span>
+<span class="nc" id="L524">        String pid = request.getParameter(&quot;pid&quot;);</span>
+<span class="nc" id="L525">        String productname = request.getParameter(&quot;productname&quot;);</span>
+<span class="nc" id="L526">        String cat = request.getParameter(&quot;category&quot;);</span>
+<span class="nc" id="L527">        String gen = request.getParameter(&quot;genre&quot;);</span>
+<span class="nc" id="L528">        String date = request.getParameter(&quot;date&quot;);</span>
+<span class="nc" id="L529">        Date sqlDate = Date.valueOf(date);</span>
         //Update product
-<span class="nc" id="L536">        ProductCategory pc = pcDAO.getProductCateByProductID(Integer.parseInt(pid));</span>
-<span class="nc" id="L537">        ProductGenre pg = pgDAO.getProductGenreByProduct(pid);</span>
-<span class="nc" id="L538">        Product product = pDAO.getProductByID(Integer.parseInt(pid));</span>
-<span class="nc" id="L539">        product.setProductName(productname);</span>
-<span class="nc" id="L540">        product.setReleaseDate(sqlDate);</span>
-<span class="nc" id="L541">        pDAO.updateProduct(product);</span>
-<span class="nc" id="L542">        pc.setCategoryID(Integer.parseInt(cat));</span>
-<span class="nc" id="L543">        pcDAO.updateProductCategory(pc);</span>
-<span class="nc" id="L544">        pg.setGenreID(Integer.parseInt(gen));</span>
-<span class="nc" id="L545">        pgDAO.updateProductGenre(pg);</span>
+<span class="nc" id="L531">        ProductCategory pc = pcDAO.getProductCateByProductID(Integer.parseInt(pid));</span>
+<span class="nc" id="L532">        ProductGenre pg = pgDAO.getProductGenreByProduct(pid);</span>
+<span class="nc" id="L533">        Product product = pDAO.getProductByID(Integer.parseInt(pid));</span>
+<span class="nc" id="L534">        product.setProductName(productname);</span>
+<span class="nc" id="L535">        product.setReleaseDate(sqlDate);</span>
+<span class="nc" id="L536">        pDAO.updateProduct(product);</span>
+<span class="nc" id="L537">        pc.setCategoryID(Integer.parseInt(cat));</span>
+<span class="nc" id="L538">        pcDAO.updateProductCategory(pc);</span>
+<span class="nc" id="L539">        pg.setGenreID(Integer.parseInt(gen));</span>
+<span class="nc" id="L540">        pgDAO.updateProductGenre(pg);</span>
         //Get information about product type
 
-<span class="nc" id="L548">        String[] typeids = request.getParameterValues(&quot;ptid&quot;);</span>
-<span class="nc" id="L549">        String[] colors = request.getParameterValues(&quot;color&quot;);</span>
-<span class="nc" id="L550">        String[] sizes = request.getParameterValues(&quot;size&quot;);</span>
-<span class="nc" id="L551">        String[] prices = request.getParameterValues(&quot;price&quot;);</span>
-<span class="nc" id="L552">        String[] quantities = request.getParameterValues(&quot;quantity&quot;);</span>
+<span class="nc" id="L543">        String[] typeids = request.getParameterValues(&quot;ptid&quot;);</span>
+<span class="nc" id="L544">        String[] colors = request.getParameterValues(&quot;color&quot;);</span>
+<span class="nc" id="L545">        String[] sizes = request.getParameterValues(&quot;size&quot;);</span>
+<span class="nc" id="L546">        String[] prices = request.getParameterValues(&quot;price&quot;);</span>
+<span class="nc" id="L547">        String[] quantities = request.getParameterValues(&quot;quantity&quot;);</span>
 
         //Update product type
-<span class="nc bnc" id="L555" title="All 2 branches missed.">        for (int i = 0; i &lt; typeids.length; i++) {</span>
-<span class="nc" id="L556">            ProductType pt = ptDAO.getProductTypeByPTypeID(typeids[i]);</span>
-<span class="nc" id="L557">            pt.setColor(colors[i]);</span>
-<span class="nc" id="L558">            pt.setSize(sizes[i]);</span>
-<span class="nc" id="L559">            pt.setPrice(prices[i]);</span>
-<span class="nc" id="L560">            pt.setQuantity(Integer.parseInt(quantities[i]));</span>
-<span class="nc" id="L561">            ptDAO.editProduct(pt);</span>
+<span class="nc bnc" id="L550" title="All 2 branches missed.">        for (int i = 0; i &lt; typeids.length; i++) {</span>
+<span class="nc" id="L551">            ProductType pt = ptDAO.getProductTypeByPTypeID(typeids[i]);</span>
+<span class="nc" id="L552">            pt.setColor(colors[i]);</span>
+<span class="nc" id="L553">            pt.setSize(sizes[i]);</span>
+<span class="nc" id="L554">            pt.setPrice(prices[i]);</span>
+<span class="nc" id="L555">            pt.setQuantity(Integer.parseInt(quantities[i]));</span>
+<span class="nc" id="L556">            ptDAO.editProduct(pt);</span>
         }
         //Success
-<span class="nc" id="L564">        String state = &quot;success&quot;;</span>
-<span class="nc" id="L565">        String mess = &quot;Update successfully&quot;;</span>
-<span class="nc" id="L566">        String genreid = pgDAO.getGenreIdByProductId(product.getProductID());</span>
-<span class="nc" id="L567">        Genre genre = gDAO.getGenreById(Integer.parseInt(genreid));</span>
-<span class="nc" id="L568">        String categoryId = pcDAO.getCategoryIdByProductId(product.getProductID());</span>
-<span class="nc" id="L569">        Category category = cateDAO.getCategoryByCateId(categoryId);</span>
-<span class="nc" id="L570">        ArrayList&lt;Genre&gt; listGenre = gDAO.getGenresByCategoryId(Integer.parseInt(categoryId));</span>
+<span class="nc" id="L559">        String state = &quot;success&quot;;</span>
+<span class="nc" id="L560">        String mess = &quot;Update successfully&quot;;</span>
+<span class="nc" id="L561">        String genreid = pgDAO.getGenreIdByProductId(product.getProductID());</span>
+<span class="nc" id="L562">        Genre genre = gDAO.getGenreById(Integer.parseInt(genreid));</span>
+<span class="nc" id="L563">        String categoryId = pcDAO.getCategoryIdByProductId(product.getProductID());</span>
+<span class="nc" id="L564">        Category category = cateDAO.getCategoryByCateId(categoryId);</span>
+<span class="nc" id="L565">        ArrayList&lt;Genre&gt; listGenre = gDAO.getGenresByCategoryId(Integer.parseInt(categoryId));</span>
 
         //Set request
-<span class="nc" id="L573">        request.setAttribute(&quot;listGenre&quot;, listGenre);</span>
-<span class="nc" id="L574">        request.setAttribute(&quot;category&quot;, category);</span>
-<span class="nc" id="L575">        request.setAttribute(&quot;genre&quot;, genre);</span>
-<span class="nc" id="L576">        request.setAttribute(&quot;state&quot;, state);</span>
-<span class="nc" id="L577">        request.setAttribute(&quot;product&quot;, product);</span>
-<span class="nc" id="L578">        request.setAttribute(&quot;mess&quot;, mess);</span>
-<span class="nc" id="L579">        request.setAttribute(&quot;service&quot;, &quot;updateproductdetail&quot;);</span>
-<span class="nc" id="L580">        sendDispatcher(request, response, &quot;seller/productdetail.jsp&quot;);</span>
-<span class="nc" id="L581">    }//&lt;/editor-fold&gt;</span>
+<span class="nc" id="L568">        request.setAttribute(&quot;listGenre&quot;, listGenre);</span>
+<span class="nc" id="L569">        request.setAttribute(&quot;category&quot;, category);</span>
+<span class="nc" id="L570">        request.setAttribute(&quot;genre&quot;, genre);</span>
+<span class="nc" id="L571">        request.setAttribute(&quot;state&quot;, state);</span>
+<span class="nc" id="L572">        request.setAttribute(&quot;product&quot;, product);</span>
+<span class="nc" id="L573">        request.setAttribute(&quot;mess&quot;, mess);</span>
+<span class="nc" id="L574">        request.setAttribute(&quot;service&quot;, &quot;updateproductdetail&quot;);</span>
+<span class="nc" id="L575">        sendDispatcher(request, response, &quot;seller/productdetail.jsp&quot;);</span>
+<span class="nc" id="L576">    }//&lt;/editor-fold&gt;</span>
 
     // &lt;editor-fold defaultstate=&quot;collapsed&quot; desc=&quot;Order methods. Click on the + sign on the left to edit the code.&quot;&gt;
     public void serviceOrderManagement(HttpServletRequest request, HttpServletResponse response) {
-<span class="nc" id="L585">        User account = (User) request.getSession().getAttribute(&quot;currUser&quot;);</span>
-<span class="nc" id="L586">        String seller = account.getUserId();</span>
-<span class="nc" id="L587">        List&lt;Product&gt; listProduct = pDAO.getProductBySeller(seller);</span>
-<span class="nc" id="L588">        request.setAttribute(&quot;listP&quot;, listProduct);</span>
-<span class="nc" id="L589">        sendDispatcher(request, response, &quot;seller/orderSeller.jsp&quot;);</span>
-<span class="nc" id="L590">    }</span>
+<span class="nc" id="L580">        User account = (User) request.getSession().getAttribute(&quot;currUser&quot;);</span>
+<span class="nc" id="L581">        String seller = account.getUserId();</span>
+<span class="nc" id="L582">        List&lt;Product&gt; listProduct = pDAO.getProductBySeller(seller);</span>
+<span class="nc" id="L583">        request.setAttribute(&quot;listP&quot;, listProduct);</span>
+<span class="nc" id="L584">        sendDispatcher(request, response, &quot;seller/orderSeller.jsp&quot;);</span>
+<span class="nc" id="L585">    }</span>
     //&lt;/editor-fold&gt;
 
     //
     private void serviceEditSellerInformation(HttpServletRequest request, HttpServletResponse response) {
-<span class="nc" id="L595">        String mess = &quot;&quot;;</span>
+<span class="nc" id="L590">        String mess = &quot;&quot;;</span>
 
-<span class="nc" id="L597">        User x = (User) request.getSession().getAttribute(&quot;currUser&quot;);</span>
-<span class="nc" id="L598">        request.setAttribute(&quot;currUser&quot;, x);</span>
-<span class="nc" id="L599">        int userID = Integer.parseInt(x.getUserId());</span>
-<span class="nc" id="L600">        Seller seller = sellerDAO.getSellerByUserID(userID);</span>
+<span class="nc" id="L592">        User x = (User) request.getSession().getAttribute(&quot;currUser&quot;);</span>
+<span class="nc" id="L593">        request.setAttribute(&quot;currUser&quot;, x);</span>
+<span class="nc" id="L594">        int userID = Integer.parseInt(x.getUserId());</span>
+<span class="nc" id="L595">        Seller seller = sellerDAO.getSellerByUserID(userID);</span>
 
-<span class="nc" id="L602">        String shopName = request.getParameter(&quot;shopName&quot;);</span>
-<span class="nc" id="L603">        String sellerPhone = request.getParameter(&quot;sellerPhone&quot;);</span>
-<span class="nc" id="L604">        int sellerMainProduct = Integer.parseInt(request.getParameter(&quot;sellerMainProduct&quot;));</span>
-<span class="nc" id="L605">        seller.setSellerShopName(shopName);</span>
-<span class="nc" id="L606">        seller.setSellerPhone(sellerPhone);</span>
-<span class="nc" id="L607">        seller.setSellerMainProduct(sellerMainProduct);</span>
+<span class="nc" id="L597">        String shopName = request.getParameter(&quot;shopName&quot;);</span>
+<span class="nc" id="L598">        String sellerPhone = request.getParameter(&quot;sellerPhone&quot;);</span>
+<span class="nc" id="L599">        int sellerMainProduct = Integer.parseInt(request.getParameter(&quot;sellerMainProduct&quot;));</span>
+<span class="nc" id="L600">        seller.setSellerShopName(shopName);</span>
+<span class="nc" id="L601">        seller.setSellerPhone(sellerPhone);</span>
+<span class="nc" id="L602">        seller.setSellerMainProduct(sellerMainProduct);</span>
 
-<span class="nc" id="L609">        sellerDAO.editSeller(seller);</span>
-<span class="nc" id="L610">        mess = &quot;Update successfully!&quot;;</span>
-<span class="nc" id="L611">        request.setAttribute(&quot;mess&quot;, mess);</span>
-<span class="nc" id="L612">        sendDispatcher(request, response, &quot;UserControllerMap?service=turnOnSalesFeature&quot;);</span>
-<span class="nc" id="L613">    }</span>
+<span class="nc" id="L604">        sellerDAO.editSeller(seller);</span>
+<span class="nc" id="L605">        mess = &quot;Update successfully!&quot;;</span>
+<span class="nc" id="L606">        request.setAttribute(&quot;mess&quot;, mess);</span>
+<span class="nc" id="L607">        sendDispatcher(request, response, &quot;UserControllerMap?service=turnOnSalesFeature&quot;);</span>
+<span class="nc" id="L608">    }</span>
 
     public void sendDispatcher(HttpServletRequest request, HttpServletResponse response, String path) {
         try {
-<span class="nc" id="L617">            RequestDispatcher rd = request.getRequestDispatcher(path);</span>
-<span class="nc" id="L618">            rd.forward(request, response);</span>
+<span class="nc" id="L612">            RequestDispatcher rd = request.getRequestDispatcher(path);</span>
+<span class="nc" id="L613">            rd.forward(request, response);</span>
 
-<span class="nc" id="L620">        } catch (ServletException | IOException ex) {</span>
-<span class="nc" id="L621">            Logger.getLogger(AdminController.class</span>
-<span class="nc" id="L622">                    .getName()).log(Level.SEVERE, null, ex);</span>
-<span class="nc" id="L623">        }</span>
-<span class="nc" id="L624">    }</span>
+<span class="nc" id="L615">        } catch (ServletException | IOException ex) {</span>
+<span class="nc" id="L616">            Logger.getLogger(AdminController.class</span>
+<span class="nc" id="L617">                    .getName()).log(Level.SEVERE, null, ex);</span>
+<span class="nc" id="L618">        }</span>
+<span class="nc" id="L619">    }</span>
 
     private void writeObject(ObjectOutputStream stream)
             throws IOException {
-<span class="nc" id="L628">        stream.defaultWriteObject();</span>
-<span class="nc" id="L629">    }</span>
+<span class="nc" id="L623">        stream.defaultWriteObject();</span>
+<span class="nc" id="L624">    }</span>
 
     private void readObject(ObjectInputStream stream)
             throws IOException, ClassNotFoundException {
-<span class="nc" id="L633">        stream.defaultReadObject();</span>
-<span class="nc" id="L634">    }</span>
+<span class="nc" id="L628">        stream.defaultReadObject();</span>
+<span class="nc" id="L629">    }</span>
 
     // &lt;editor-fold defaultstate=&quot;collapsed&quot; desc=&quot;HttpServlet methods. Click on the + sign on the left to edit the code.&quot;&gt;
     /**
@@ -646,11 +641,11 @@ import model.*;
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         try {
-<span class="nc" id="L649">            processRequest(request, response);</span>
-<span class="nc" id="L650">        } catch (ParseException ex) {</span>
-<span class="nc" id="L651">            Logger.getLogger(SellerController.class.getName()).log(Level.SEVERE, null, ex);</span>
-<span class="nc" id="L652">        }</span>
-<span class="nc" id="L653">    }</span>
+<span class="nc" id="L644">            processRequest(request, response);</span>
+<span class="nc" id="L645">        } catch (ParseException ex) {</span>
+<span class="nc" id="L646">            Logger.getLogger(SellerController.class.getName()).log(Level.SEVERE, null, ex);</span>
+<span class="nc" id="L647">        }</span>
+<span class="nc" id="L648">    }</span>
 
     /**
      * Handles the HTTP &lt;code&gt;POST&lt;/code&gt; method.
@@ -664,11 +659,11 @@ import model.*;
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         try {
-<span class="nc" id="L667">            processRequest(request, response);</span>
-<span class="nc" id="L668">        } catch (ParseException ex) {</span>
-<span class="nc" id="L669">            Logger.getLogger(SellerController.class.getName()).log(Level.SEVERE, null, ex);</span>
-<span class="nc" id="L670">        }</span>
-<span class="nc" id="L671">    }</span>
+<span class="nc" id="L662">            processRequest(request, response);</span>
+<span class="nc" id="L663">        } catch (ParseException ex) {</span>
+<span class="nc" id="L664">            Logger.getLogger(SellerController.class.getName()).log(Level.SEVERE, null, ex);</span>
+<span class="nc" id="L665">        }</span>
+<span class="nc" id="L666">    }</span>
 
     /**
      * Returns a short description of the servlet.
@@ -677,7 +672,7 @@ import model.*;
      */
     @Override
     public String getServletInfo() {
-<span class="nc" id="L680">        return &quot;Short description&quot;;</span>
+<span class="nc" id="L675">        return &quot;Short description&quot;;</span>
     }// &lt;/editor-fold&gt;
 
 }

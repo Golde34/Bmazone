@@ -6,6 +6,7 @@
 package model;
 
 import entity.Role;
+import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
@@ -16,159 +17,201 @@ import java.util.logging.Logger;
  *
  * @author Admin
  */
-<span class="fc" id="L19">public class RoleDAO extends BaseDAO {</span>
+<span class="fc" id="L20">public class RoleDAO extends BaseDAO {</span>
+<span class="fc" id="L21">    BaseDAO dbConn = new BaseDAO();</span>
 
-    public int addRole(Role sp) {
-<span class="nc" id="L22">        int n = 0;</span>
-<span class="nc" id="L23">        String xSql= &quot;INSERT INTO [Bmazon].[dbo].[Role] ([roleID], [roleName], [adminPermission], [sellerPermission], [customerPermission], [status])&quot;</span>
-                + &quot;     VALUES (?,?,?,?,?,1)&quot;;
+    public int getPageNumber(String search) {
+<span class="fc" id="L24">        int num = 0;</span>
+<span class="fc" id="L25">        String xSql= &quot;SELECT COUNT(*) FROM [Bmazon].[dbo].[Role] where roleName like '%&quot; + search + &quot;%'&quot;;</span>
+<span class="fc" id="L26">        ResultSet rs = dbConn.getData(xSql);</span>
         try {
-<span class="nc" id="L26">            pre = conn.prepareStatement(xSql);</span>
-<span class="nc" id="L27">            pre.setInt(1, sp.getRoleID());</span>
-<span class="nc" id="L28">            pre.setString(2, sp.getRoleName());</span>
-<span class="nc" id="L29">            pre.setInt(3, sp.getAdminPermission());</span>
-<span class="nc" id="L30">            pre.setInt(4, sp.getSellerPermission());</span>
-<span class="nc" id="L31">            pre.setInt(5, sp.getCustomerPermission());</span>
-<span class="nc" id="L32">            n = pre.executeUpdate();</span>
-<span class="nc" id="L33">            pre.close();</span>
-<span class="nc" id="L34">        } catch (Exception e) {</span>
-<span class="nc" id="L35">            Logger.getLogger(RoleDAO.class.getName()).log(Level.SEVERE, null, e);</span>
-<span class="nc" id="L36">        }</span>
-<span class="nc" id="L37">        return n;</span>
+<span class="pc bpc" id="L28" title="1 of 2 branches missed.">            if (rs.next()) {</span>
+<span class="fc" id="L29">                num = rs.getInt(1);</span>
+            }
+<span class="nc" id="L31">        } catch (SQLException ex) {</span>
+<span class="nc" id="L32">            Logger.getLogger(UserDAO.class.getName()).log(Level.SEVERE, null, ex);</span>
+<span class="fc" id="L33">        }</span>
+<span class="fc" id="L34">        return num;</span>
+    }
+    
+    public List&lt;Role&gt; getAllPagingRole(int index, int numOfRow, String search) {
+<span class="fc" id="L38">        List&lt;Role&gt; list = new ArrayList&lt;&gt;();</span>
+<span class="fc" id="L39">        String xSql= &quot;declare @PageNo INT = ? \n&quot;</span>
+                + &quot;declare @PageSize INT= ? \n&quot;
+                + &quot;SELECT * from(\n&quot;
+                + &quot;SELECT *,\n&quot;
+                + &quot;ROW_NUMBER() over (order by roleID) as RowNum\n&quot;
+                + &quot;  FROM [Bmazon].[dbo].[Role] where roleName like '%&quot; + search + &quot;%')T\n&quot;
+                + &quot;where T.RowNum between ((@PageNo-1)*@PageSize)+1 and (@PageNo*@PageSize)&quot;;
+        try {
+<span class="fc" id="L47">            pre = conn.prepareStatement(xSql);</span>
+<span class="fc" id="L48">            pre.setInt(1, index);</span>
+<span class="fc" id="L49">            pre.setInt(2, numOfRow);</span>
+//            pre.setString(3, search);
+//            pre.setString(4, search);
+//            pre.setString(5, search);
+<span class="fc" id="L53">            rs = pre.executeQuery();</span>
+<span class="fc bfc" id="L54" title="All 2 branches covered.">            while (rs.next()) {</span>
+<span class="fc" id="L55">                list.add(new Role(</span>
+<span class="fc" id="L56">                        rs.getInt(1),</span>
+<span class="fc" id="L57">                        rs.getString(2),</span>
+<span class="fc" id="L58">                        rs.getInt(3),</span>
+<span class="fc" id="L59">                        rs.getInt(4),</span>
+<span class="fc" id="L60">                        rs.getInt(5),</span>
+<span class="fc" id="L61">                        rs.getInt(6)));</span>
+            }
+<span class="nc" id="L63">        } catch (SQLException ex) {</span>
+<span class="nc" id="L64">            Logger.getLogger(UserDAO.class.getName()).log(Level.SEVERE, null, ex);</span>
+<span class="fc" id="L65">        }</span>
+<span class="fc" id="L66">        return list;</span>
     }
 
-    public int editRole(Role sp) {
-<span class="nc" id="L41">        int n = 0;</span>
-<span class="nc" id="L42">        String xSql= &quot;update Role set [roleName] = ? ,[adminPermission] = ?, [sellerPermission] = ?,[customerPermission] = ?, [status] = ? where [roleID] = ?&quot;;</span>
+    public int changeStatus(int id, int status) {
+<span class="fc" id="L70">        int n = 0;</span>
+<span class="fc" id="L71">        String sql = &quot;update [Role] set status = ? where [roleID] = ?&quot;;</span>
         try {
-<span class="nc" id="L44">            pre = conn.prepareStatement(xSql);</span>
-<span class="nc" id="L45">            pre.setInt(6, sp.getRoleID());</span>
-<span class="nc" id="L46">            pre.setString(1, sp.getRoleName());</span>
-<span class="nc" id="L47">            pre.setInt(2, sp.getAdminPermission());</span>
-<span class="nc" id="L48">            pre.setInt(3, sp.getSellerPermission());</span>
-<span class="nc" id="L49">            pre.setInt(4, sp.getCustomerPermission());</span>
-<span class="nc" id="L50">            pre.setInt(5, sp.getStatus());</span>
-<span class="nc" id="L51">            pre.executeUpdate();</span>
-<span class="nc" id="L52">        } catch (SQLException e) {</span>
-<span class="nc" id="L53">        }</span>
-<span class="nc" id="L54">        return n;</span>
+<span class="fc" id="L73">            pre = conn.prepareStatement(sql);</span>
+<span class="pc bpc" id="L74" title="1 of 2 branches missed.">            pre.setInt(1, status == 1 ? 1 : 0);</span>
+<span class="fc" id="L75">            pre.setInt(2, id);</span>
+<span class="fc" id="L76">            n = pre.executeUpdate();</span>
+<span class="nc" id="L77">        } catch (SQLException ex) {</span>
+<span class="nc" id="L78">            Logger.getLogger(ProductDAO.class.getName()).log(Level.SEVERE, null, ex);</span>
+<span class="fc" id="L79">        }</span>
+<span class="fc" id="L80">        return n;</span>
+    }
+    
+    public int addRole(Role r) {
+<span class="fc" id="L84">        int n = 0;</span>
+<span class="fc" id="L85">        String xSql= &quot;INSERT INTO [Bmazon].[dbo].[Role] ([roleID], [roleName], [adminPermission], [sellerPermission], [customerPermission], [status])&quot;</span>
+                + &quot;     VALUES (?,?,?,?,?,1)&quot;;
+        try {
+<span class="fc" id="L88">            pre = conn.prepareStatement(xSql);</span>
+<span class="fc" id="L89">            pre.setInt(1, r.getRoleID());</span>
+<span class="fc" id="L90">            pre.setString(2, r.getRoleName());</span>
+<span class="fc" id="L91">            pre.setInt(3, r.getAdminPermission());</span>
+<span class="fc" id="L92">            pre.setInt(4, r.getSellerPermission());</span>
+<span class="fc" id="L93">            pre.setInt(5, r.getCustomerPermission());</span>
+<span class="nc" id="L94">            n = pre.executeUpdate();</span>
+<span class="nc" id="L95">            pre.close();</span>
+<span class="fc" id="L96">        } catch (Exception e) {</span>
+<span class="fc" id="L97">            Logger.getLogger(RoleDAO.class.getName()).log(Level.SEVERE, null, e);</span>
+<span class="nc" id="L98">        }</span>
+<span class="fc" id="L99">        return n;</span>
+    }
+
+    public int editRole(Role r) {
+<span class="fc" id="L103">        int n = 0;</span>
+<span class="fc" id="L104">        String xSql= &quot;update [Role] set [roleName] = ? ,[adminPermission] = ?, [sellerPermission] = ?,[customerPermission] = ?, [status] = ? where [roleID] = ?&quot;;</span>
+        try {
+<span class="fc" id="L106">            pre = conn.prepareStatement(xSql);</span>
+<span class="fc" id="L107">            pre.setString(1, r.getRoleName());</span>
+<span class="fc" id="L108">            pre.setInt(2, r.getAdminPermission());</span>
+<span class="fc" id="L109">            pre.setInt(3, r.getSellerPermission());</span>
+<span class="fc" id="L110">            pre.setInt(4, r.getCustomerPermission());</span>
+<span class="fc" id="L111">            pre.setInt(5, r.getStatus());</span>
+<span class="fc" id="L112">            pre.setInt(6, r.getRoleID());</span>
+<span class="fc" id="L113">            n = pre.executeUpdate();</span>
+<span class="nc" id="L114">        } catch (SQLException e) {</span>
+<span class="fc" id="L115">        }</span>
+<span class="fc" id="L116">        return n;</span>
     }
 
     public void deleteRole(int roleID) {
-<span class="nc" id="L58">        String sql = &quot;delete from Role where [roleID] = ?&quot;;</span>
+<span class="nc" id="L120">        String sql = &quot;delete from Role where [roleID] = ?&quot;;</span>
         try {
-<span class="nc" id="L60">            pre = conn.prepareStatement(sql);</span>
-<span class="nc" id="L61">            pre.setInt(1, roleID);</span>
-<span class="nc" id="L62">            pre.executeUpdate();</span>
-<span class="nc" id="L63">        } catch (SQLException e) {</span>
-<span class="nc" id="L64">        }</span>
-<span class="nc" id="L65">    }</span>
+<span class="nc" id="L122">            pre = conn.prepareStatement(sql);</span>
+<span class="nc" id="L123">            pre.setInt(1, roleID);</span>
+<span class="nc" id="L124">            pre.executeUpdate();</span>
+<span class="nc" id="L125">        } catch (SQLException e) {</span>
+<span class="nc" id="L126">        }</span>
+<span class="nc" id="L127">    }</span>
 
     public boolean checkExistRoleName(String roleName) {
-<span class="nc" id="L68">        String xSql= &quot;SELECT * FROM [Bmazon].[dbo].[Role] where roleName like ?&quot;;</span>
+<span class="fc" id="L130">        String xSql= &quot;SELECT * FROM [Bmazon].[dbo].[Role] where roleName like ?&quot;;</span>
         try {
-<span class="nc" id="L70">            pre = conn.prepareStatement(xSql);</span>
-<span class="nc" id="L71">            pre.setString(1, roleName);</span>
-<span class="nc" id="L72">            rs = pre.executeQuery();</span>
-<span class="nc bnc" id="L73" title="All 2 branches missed.">            if (rs.next()) {</span>
-<span class="nc" id="L74">                return true;</span>
+<span class="fc" id="L132">            pre = conn.prepareStatement(xSql);</span>
+<span class="fc" id="L133">            pre.setString(1, roleName);</span>
+<span class="fc" id="L134">            rs = pre.executeQuery();</span>
+<span class="pc bpc" id="L135" title="1 of 2 branches missed.">            if (rs.next()) {</span>
+<span class="fc" id="L136">                return true;</span>
             }
-<span class="nc" id="L76">        } catch (SQLException ex) {</span>
-<span class="nc" id="L77">            Logger.getLogger(UserDAO.class.getName()).log(Level.SEVERE, null, ex);</span>
-<span class="nc" id="L78">        }</span>
-<span class="nc" id="L79">        return false;</span>
+<span class="nc" id="L138">        } catch (SQLException ex) {</span>
+<span class="nc" id="L139">            Logger.getLogger(UserDAO.class.getName()).log(Level.SEVERE, null, ex);</span>
+<span class="nc" id="L140">        }</span>
+<span class="nc" id="L141">        return false;</span>
     }
 
     public boolean checkExistRoleId(int id) {
-<span class="nc" id="L83">        String xSql= &quot;SELECT * FROM [Bmazon].[dbo].[Role] where roleID = &quot; + id;</span>
+<span class="fc" id="L145">        String xSql= &quot;SELECT * FROM [Bmazon].[dbo].[Role] where roleID = &quot; + id;</span>
         try {
-<span class="nc" id="L85">            pre = conn.prepareStatement(xSql);</span>
-<span class="nc" id="L86">            rs = pre.executeQuery();</span>
-<span class="nc bnc" id="L87" title="All 2 branches missed.">            if (rs.next()) {</span>
-<span class="nc" id="L88">                return true;</span>
+<span class="fc" id="L147">            pre = conn.prepareStatement(xSql);</span>
+<span class="fc" id="L148">            rs = pre.executeQuery();</span>
+<span class="pc bpc" id="L149" title="1 of 2 branches missed.">            if (rs.next()) {</span>
+<span class="fc" id="L150">                return true;</span>
             }
-<span class="nc" id="L90">        } catch (SQLException ex) {</span>
-<span class="nc" id="L91">            Logger.getLogger(UserDAO.class.getName()).log(Level.SEVERE, null, ex);</span>
-<span class="nc" id="L92">        }</span>
-<span class="nc" id="L93">        return false;</span>
+<span class="nc" id="L152">        } catch (SQLException ex) {</span>
+<span class="nc" id="L153">            Logger.getLogger(UserDAO.class.getName()).log(Level.SEVERE, null, ex);</span>
+<span class="nc" id="L154">        }</span>
+<span class="nc" id="L155">        return false;</span>
     }
 
     public Role getRoleId(int id) {
-<span class="nc" id="L97">        Role role = new Role();</span>
-<span class="nc" id="L98">        String xSql= &quot;select * from Role where roleID = &quot; + id;</span>
+<span class="fc" id="L159">        Role role = new Role();</span>
+<span class="fc" id="L160">        String xSql= &quot;select * from Role where roleID = &quot; + id;</span>
         try {
-<span class="nc" id="L100">            pre = conn.prepareStatement(xSql);</span>
-<span class="nc" id="L101">            rs = pre.executeQuery();</span>
-<span class="nc bnc" id="L102" title="All 2 branches missed.">            if (rs.next()) {;</span>
-<span class="nc" id="L103">                role.setRoleName(rs.getString(&quot;roleName&quot;));</span>
-<span class="nc" id="L104">                role.setAdminPermission(rs.getInt(&quot;adminPermission&quot;));</span>
-<span class="nc" id="L105">                role.setSellerPermission(rs.getInt(&quot;sellerPermission&quot;));</span>
-<span class="nc" id="L106">                role.setCustomerPermission(rs.getInt(&quot;customerPermission&quot;));</span>
-<span class="nc" id="L107">                role.setStatus(rs.getInt(&quot;status&quot;));</span>
-<span class="nc" id="L108">                role.setRoleID(rs.getInt(&quot;roleID&quot;));</span>
+<span class="fc" id="L162">            pre = conn.prepareStatement(xSql);</span>
+<span class="fc" id="L163">            rs = pre.executeQuery();</span>
+<span class="pc bpc" id="L164" title="1 of 2 branches missed.">            if (rs.next()) {;</span>
+<span class="fc" id="L165">                role.setRoleName(rs.getString(&quot;roleName&quot;));</span>
+<span class="fc" id="L166">                role.setAdminPermission(rs.getInt(&quot;adminPermission&quot;));</span>
+<span class="fc" id="L167">                role.setSellerPermission(rs.getInt(&quot;sellerPermission&quot;));</span>
+<span class="fc" id="L168">                role.setCustomerPermission(rs.getInt(&quot;customerPermission&quot;));</span>
+<span class="fc" id="L169">                role.setStatus(rs.getInt(&quot;status&quot;));</span>
+<span class="fc" id="L170">                role.setRoleID(rs.getInt(&quot;roleID&quot;));</span>
             }
-<span class="nc" id="L110">        } catch (SQLException e) {</span>
-<span class="nc" id="L111">        }</span>
-<span class="nc" id="L112">        return role;</span>
+<span class="nc" id="L172">        } catch (SQLException e) {</span>
+<span class="fc" id="L173">        }</span>
+<span class="fc" id="L174">        return role;</span>
     }
 
     public List&lt;Role&gt; getAllRole() {
-<span class="nc" id="L116">        List&lt;Role&gt; list = new ArrayList&lt;&gt;();</span>
-<span class="nc" id="L117">        String xSql= &quot;select * from Role where [status] = 1&quot;;</span>
+<span class="fc" id="L178">        List&lt;Role&gt; list = new ArrayList&lt;&gt;();</span>
+<span class="fc" id="L179">        String xSql= &quot;select * from Role where [status] = 1&quot;;</span>
         try {
-<span class="nc" id="L119">            pre = conn.prepareStatement(xSql);</span>
-<span class="nc" id="L120">            rs = pre.executeQuery();</span>
-<span class="nc bnc" id="L121" title="All 2 branches missed.">            while (rs.next()) {</span>
-<span class="nc" id="L122">                list.add(new Role(</span>
-<span class="nc" id="L123">                        rs.getInt(1),</span>
-<span class="nc" id="L124">                        rs.getString(2),</span>
-<span class="nc" id="L125">                        rs.getInt(3),</span>
-<span class="nc" id="L126">                        rs.getInt(4),</span>
-<span class="nc" id="L127">                        rs.getInt(5),</span>
-<span class="nc" id="L128">                        rs.getInt(6)));</span>
+<span class="fc" id="L181">            pre = conn.prepareStatement(xSql);</span>
+<span class="fc" id="L182">            rs = pre.executeQuery();</span>
+<span class="fc bfc" id="L183" title="All 2 branches covered.">            while (rs.next()) {</span>
+<span class="fc" id="L184">                list.add(new Role(</span>
+<span class="fc" id="L185">                        rs.getInt(1),</span>
+<span class="fc" id="L186">                        rs.getString(2),</span>
+<span class="fc" id="L187">                        rs.getInt(3),</span>
+<span class="fc" id="L188">                        rs.getInt(4),</span>
+<span class="fc" id="L189">                        rs.getInt(5),</span>
+<span class="fc" id="L190">                        rs.getInt(6)));</span>
             }
-<span class="nc" id="L130">        } catch (SQLException e) {</span>
-<span class="nc" id="L131">        }</span>
-<span class="nc" id="L132">        return list;</span>
+<span class="nc" id="L192">        } catch (SQLException e) {</span>
+<span class="fc" id="L193">        }</span>
+<span class="fc" id="L194">        return list;</span>
     }
 
     public List&lt;Role&gt; searchRole(String text) {
-<span class="nc" id="L136">        List&lt;Role&gt; list = new ArrayList&lt;&gt;();</span>
-<span class="nc" id="L137">        String xSql= &quot;SELECT * FROM [Bmazon].[dbo].[Role] where roleName like '%&quot; + text + &quot;%'&quot;;</span>
+<span class="fc" id="L198">        List&lt;Role&gt; list = new ArrayList&lt;&gt;();</span>
+<span class="fc" id="L199">        String xSql= &quot;SELECT * FROM [Bmazon].[dbo].[Role] where roleName like '%&quot; + text + &quot;%'&quot;;</span>
         try {
-<span class="nc" id="L139">            pre = conn.prepareStatement(xSql);</span>
-<span class="nc" id="L140">            rs = pre.executeQuery();</span>
-<span class="nc bnc" id="L141" title="All 2 branches missed.">            while (rs.next()) {</span>
-<span class="nc" id="L142">                list.add(new Role(</span>
-<span class="nc" id="L143">                        rs.getInt(1),</span>
-<span class="nc" id="L144">                        rs.getString(2),</span>
-<span class="nc" id="L145">                        rs.getInt(3),</span>
-<span class="nc" id="L146">                        rs.getInt(4),</span>
-<span class="nc" id="L147">                        rs.getInt(5),</span>
-<span class="nc" id="L148">                        rs.getInt(6)));</span>
+<span class="fc" id="L201">            pre = conn.prepareStatement(xSql);</span>
+<span class="fc" id="L202">            rs = pre.executeQuery();</span>
+<span class="fc bfc" id="L203" title="All 2 branches covered.">            while (rs.next()) {</span>
+<span class="fc" id="L204">                list.add(new Role(</span>
+<span class="fc" id="L205">                        rs.getInt(1),</span>
+<span class="fc" id="L206">                        rs.getString(2),</span>
+<span class="fc" id="L207">                        rs.getInt(3),</span>
+<span class="fc" id="L208">                        rs.getInt(4),</span>
+<span class="fc" id="L209">                        rs.getInt(5),</span>
+<span class="fc" id="L210">                        rs.getInt(6)));</span>
             }
-<span class="nc" id="L150">        } catch (SQLException e) {</span>
-<span class="nc" id="L151">        }</span>
-<span class="nc" id="L152">        return list;</span>
-    }
-
-    public Role getRoleById(int id) {
-<span class="fc" id="L156">        Role role = new Role();</span>
-<span class="fc" id="L157">        String xSql= &quot;select * from Role where roleID = &quot; + id;</span>
-        try {
-<span class="fc" id="L159">            pre = conn.prepareStatement(xSql);</span>
-<span class="fc" id="L160">            rs = pre.executeQuery();</span>
-<span class="pc bpc" id="L161" title="1 of 2 branches missed.">            if (rs.next()) {</span>
-<span class="fc" id="L162">                role.setRoleID(rs.getInt(&quot;roleID&quot;));</span>
-<span class="fc" id="L163">                role.setRoleName(rs.getString(&quot;roleName&quot;));</span>
-<span class="fc" id="L164">                role.setAdminPermission(rs.getInt(&quot;adminPermission&quot;));</span>
-<span class="fc" id="L165">                role.setSellerPermission(rs.getInt(&quot;sellerPermission&quot;));</span>
-<span class="fc" id="L166">                role.setCustomerPermission(rs.getInt(&quot;customerPermission&quot;));</span>
-<span class="fc" id="L167">                role.setStatus(rs.getInt(&quot;status&quot;));</span>
-            }
-<span class="nc" id="L169">        } catch (SQLException e) {</span>
-<span class="fc" id="L170">        }</span>
-<span class="fc" id="L171">        return role;</span>
+<span class="nc" id="L212">        } catch (SQLException e) {</span>
+<span class="fc" id="L213">        }</span>
+<span class="fc" id="L214">        return list;</span>
     }
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.eclemma.org/jacoco">JaCoCo</a> 0.7.5.201505241946</span></div></body></html>

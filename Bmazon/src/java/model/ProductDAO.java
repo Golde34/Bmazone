@@ -327,7 +327,7 @@ public class ProductDAO extends BaseDAO {
 
     public ArrayList<Product> getProductGear() {
         ArrayList<Product> list = new ArrayList<>();
-        String sql = "SELECT price * FROM Product where description like '%apple%'";
+        String sql = "SELECT top 8* FROM Product p join ProductCategory pc on p.productID=pc.productId where pc.categoryId = 5";
         try {
             pre = conn.prepareStatement(sql);
             rs = pre.executeQuery();

@@ -7,63 +7,63 @@ import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-<span class="nc" id="L10">public class CategoryDAO extends BaseDAO{</span>
-<span class="nc" id="L11">   BaseDAO dbConn= new BaseDAO();</span>
+<span class="fc" id="L10">public class CategoryDAO extends BaseDAO{</span>
+<span class="fc" id="L11">   BaseDAO dbConn= new BaseDAO();</span>
    
     public static void main(String[] args) {
 <span class="nc" id="L14">        CategoryDAO dao = new CategoryDAO();</span>
 <span class="nc" id="L15">        System.out.println(dao.getTrueCategories());</span>
 <span class="nc" id="L16">    }</span>
     public ArrayList&lt;Category&gt; getAllCategories() {
-<span class="nc" id="L18">        String sql = &quot;select * from Category WHERE status=1&quot;;</span>
-<span class="nc" id="L19">        ArrayList&lt;Category&gt; list = new ArrayList&lt;&gt;();</span>
-<span class="nc" id="L20">        Category x = null;</span>
+<span class="fc" id="L18">        String sql = &quot;select * from Category WHERE status=1&quot;;</span>
+<span class="fc" id="L19">        ArrayList&lt;Category&gt; list = new ArrayList&lt;&gt;();</span>
+<span class="fc" id="L20">        Category x = null;</span>
         int categoryID;
         String categoryName;
         int status;
         try {
-<span class="nc" id="L25">            pre = conn.prepareStatement(sql);</span>
-<span class="nc" id="L26">            rs = pre.executeQuery();</span>
-<span class="nc bnc" id="L27" title="All 2 branches missed.">            while (rs.next()) {</span>
-<span class="nc" id="L28">                categoryID = rs.getInt(&quot;categoryID&quot;);</span>
-<span class="nc" id="L29">                categoryName = rs.getString(&quot;categoryName&quot;);</span>
-<span class="nc" id="L30">                status = rs.getInt(&quot;status&quot;);</span>
-<span class="nc" id="L31">                x = new Category(categoryID, categoryName, status);</span>
-<span class="nc" id="L32">                list.add(x);</span>
+<span class="fc" id="L25">            pre = conn.prepareStatement(sql);</span>
+<span class="fc" id="L26">            rs = pre.executeQuery();</span>
+<span class="fc bfc" id="L27" title="All 2 branches covered.">            while (rs.next()) {</span>
+<span class="fc" id="L28">                categoryID = rs.getInt(&quot;categoryID&quot;);</span>
+<span class="fc" id="L29">                categoryName = rs.getString(&quot;categoryName&quot;);</span>
+<span class="fc" id="L30">                status = rs.getInt(&quot;status&quot;);</span>
+<span class="fc" id="L31">                x = new Category(categoryID, categoryName, status);</span>
+<span class="fc" id="L32">                list.add(x);</span>
             }
 <span class="nc" id="L34">        } catch (SQLException ex) {</span>
 <span class="nc" id="L35">            Logger.getLogger(CategoryDAO.class.getName()).log(Level.SEVERE, null, ex);</span>
-<span class="nc" id="L36">        }</span>
-<span class="nc" id="L37">        return list;</span>
+<span class="fc" id="L36">        }</span>
+<span class="fc" id="L37">        return list;</span>
     }
 
     public ArrayList&lt;Category&gt; getTrueCategories() {
-<span class="nc" id="L41">        String sql = &quot;select * from Category&quot;;</span>
-<span class="nc" id="L42">        ArrayList&lt;Category&gt; list = new ArrayList&lt;&gt;();</span>
-<span class="nc" id="L43">        Category x = null;</span>
+<span class="fc" id="L41">        String sql = &quot;select * from Category&quot;;</span>
+<span class="fc" id="L42">        ArrayList&lt;Category&gt; list = new ArrayList&lt;&gt;();</span>
+<span class="fc" id="L43">        Category x = null;</span>
         int categoryID;
         String categoryName;
         int status;
         try {
-<span class="nc" id="L48">            pre = conn.prepareStatement(sql);</span>
-<span class="nc" id="L49">            rs = pre.executeQuery();</span>
-<span class="nc bnc" id="L50" title="All 2 branches missed.">            while (rs.next()) {</span>
-<span class="nc" id="L51">                categoryID = rs.getInt(&quot;categoryID&quot;);</span>
-<span class="nc" id="L52">                categoryName = rs.getString(&quot;categoryName&quot;);</span>
-<span class="nc" id="L53">                status = rs.getInt(&quot;status&quot;);</span>
-<span class="nc" id="L54">                x = new Category(categoryID, categoryName, status);</span>
-<span class="nc" id="L55">                list.add(x);</span>
+<span class="fc" id="L48">            pre = conn.prepareStatement(sql);</span>
+<span class="fc" id="L49">            rs = pre.executeQuery();</span>
+<span class="fc bfc" id="L50" title="All 2 branches covered.">            while (rs.next()) {</span>
+<span class="fc" id="L51">                categoryID = rs.getInt(&quot;categoryID&quot;);</span>
+<span class="fc" id="L52">                categoryName = rs.getString(&quot;categoryName&quot;);</span>
+<span class="fc" id="L53">                status = rs.getInt(&quot;status&quot;);</span>
+<span class="fc" id="L54">                x = new Category(categoryID, categoryName, status);</span>
+<span class="fc" id="L55">                list.add(x);</span>
             }
 <span class="nc" id="L57">        } catch (SQLException ex) {</span>
 <span class="nc" id="L58">            Logger.getLogger(CategoryDAO.class.getName()).log(Level.SEVERE, null, ex);</span>
-<span class="nc" id="L59">        }</span>
-<span class="nc" id="L60">        return list;</span>
+<span class="fc" id="L59">        }</span>
+<span class="fc" id="L60">        return list;</span>
     }
 
     public void insertCategory(Category cate) {
-<span class="nc" id="L64">        String sql = &quot;Insert into Category(categoryName,status) values (?,?)&quot;;</span>
+<span class="fc" id="L64">        String sql = &quot;Insert into Category(categoryName,status) values (?,?)&quot;;</span>
         try {
-<span class="nc" id="L66">            pre = conn.prepareStatement(sql);</span>
+<span class="fc" id="L66">            pre = conn.prepareStatement(sql);</span>
 <span class="nc" id="L67">            pre.setString(1, cate.getCategoryName());</span>
 <span class="nc" id="L68">            pre.setInt(2, cate.getStatus());</span>
 <span class="nc" id="L69">            pre.executeUpdate();</span>
@@ -73,9 +73,9 @@ import java.util.logging.Logger;
 <span class="nc" id="L73">    }</span>
 
     public void updateCategory(Category cate) {
-<span class="nc" id="L76">        String sql = &quot;update Category set categoryName=?, status=? where categoryID=?&quot;;</span>
+<span class="fc" id="L76">        String sql = &quot;update Category set categoryName=?, status=? where categoryID=?&quot;;</span>
         try {
-<span class="nc" id="L78">            pre = conn.prepareStatement(sql);</span>
+<span class="fc" id="L78">            pre = conn.prepareStatement(sql);</span>
 <span class="nc" id="L79">            pre.setString(1, cate.getCategoryName());</span>
 <span class="nc" id="L80">            pre.setInt(2, cate.getStatus());</span>
 <span class="nc" id="L81">            pre.setInt(3, cate.getCategoryID());</span>
@@ -86,82 +86,82 @@ import java.util.logging.Logger;
 <span class="nc" id="L86">    }</span>
     
     public Category getCategoryByCateId(String id){
-<span class="nc" id="L89">        String xSql = &quot;select * from Category where categoryID= ?&quot;;</span>
-<span class="nc" id="L90">        Category cat = new Category();</span>
+<span class="fc" id="L89">        String xSql = &quot;select * from Category where categoryID= ?&quot;;</span>
+<span class="fc" id="L90">        Category cat = new Category();</span>
        
         try {
-<span class="nc" id="L93">            pre=conn.prepareStatement(xSql);</span>
-<span class="nc" id="L94">            pre.setString(1, id);</span>
-<span class="nc" id="L95">            rs = pre.executeQuery();</span>
-<span class="nc bnc" id="L96" title="All 2 branches missed.">            if(rs.next()){</span>
+<span class="fc" id="L93">            pre=conn.prepareStatement(xSql);</span>
+<span class="fc" id="L94">            pre.setString(1, id);</span>
+<span class="fc" id="L95">            rs = pre.executeQuery();</span>
+<span class="pc bpc" id="L96" title="1 of 2 branches missed.">            if(rs.next()){</span>
 <span class="nc" id="L97">                cat.setCategoryID(rs.getInt(&quot;categoryID&quot;));</span>
 <span class="nc" id="L98">                cat.setCategoryName(rs.getString(&quot;categoryName&quot;));</span>
 <span class="nc" id="L99">                cat.setStatus(rs.getInt(&quot;status&quot;));</span>
             }
 <span class="nc" id="L101">        } catch (SQLException ex) {</span>
-<span class="nc" id="L102">        }</span>
-<span class="nc" id="L103">        return cat;</span>
+<span class="fc" id="L102">        }</span>
+<span class="fc" id="L103">        return cat;</span>
     }
 
     public String getCategoryById(int fcaId) {
-<span class="nc" id="L107">        String sql = &quot;select categoryName from Category where categoryID=&quot; + fcaId;</span>
+<span class="fc" id="L107">        String sql = &quot;select categoryName from Category where categoryID=&quot; + fcaId;</span>
        
      
-<span class="nc" id="L110">        String categoryName=null;</span>
+<span class="fc" id="L110">        String categoryName=null;</span>
      
         try {
-<span class="nc" id="L113">            pre = conn.prepareStatement(sql);</span>
-<span class="nc" id="L114">            rs = pre.executeQuery();</span>
-<span class="nc bnc" id="L115" title="All 2 branches missed.">            while (rs.next()) {</span>
+<span class="fc" id="L113">            pre = conn.prepareStatement(sql);</span>
+<span class="fc" id="L114">            rs = pre.executeQuery();</span>
+<span class="pc bpc" id="L115" title="1 of 2 branches missed.">            while (rs.next()) {</span>
                 
 <span class="nc" id="L117">                categoryName = rs.getString(&quot;categoryName&quot;);</span>
                            
             }
 <span class="nc" id="L120">        } catch (SQLException ex) {</span>
 <span class="nc" id="L121">            Logger.getLogger(CategoryDAO.class.getName()).log(Level.SEVERE, null, ex);</span>
-<span class="nc" id="L122">        }</span>
-<span class="nc" id="L123">        return categoryName;</span>
+<span class="fc" id="L122">        }</span>
+<span class="fc" id="L123">        return categoryName;</span>
     }
     
     public int changeStatus(int id, int status) {
-<span class="nc" id="L127">        int n = 0;</span>
-<span class="nc" id="L128">        String sql = &quot;update Category set status = ? where categoryID = ?&quot;;</span>
+<span class="fc" id="L127">        int n = 0;</span>
+<span class="fc" id="L128">        String sql = &quot;update Category set status = ? where categoryID = ?&quot;;</span>
         try {
-<span class="nc" id="L130">            pre = conn.prepareStatement(sql);</span>
-<span class="nc bnc" id="L131" title="All 2 branches missed.">            pre.setInt(1, status == 1 ? 1 : 0);</span>
-<span class="nc" id="L132">            pre.setInt(1,id);</span>
+<span class="fc" id="L130">            pre = conn.prepareStatement(sql);</span>
+<span class="pc bpc" id="L131" title="1 of 2 branches missed.">            pre.setInt(1, status == 1 ? 1 : 0);</span>
+<span class="fc" id="L132">            pre.setInt(1,id);</span>
 <span class="nc" id="L133">            n = pre.executeUpdate();</span>
-<span class="nc" id="L134">        } catch (SQLException ex) {</span>
-<span class="nc" id="L135">            Logger.getLogger(CategoryDAO.class.getName()).log(Level.SEVERE, null, ex);</span>
+<span class="fc" id="L134">        } catch (SQLException ex) {</span>
+<span class="fc" id="L135">            Logger.getLogger(CategoryDAO.class.getName()).log(Level.SEVERE, null, ex);</span>
 <span class="nc" id="L136">        }</span>
-<span class="nc" id="L137">        return n;</span>
+<span class="fc" id="L137">        return n;</span>
     }
     
     public int removeCategory(int id) {
-<span class="nc" id="L141">        int n = 0;</span>
-<span class="nc" id="L142">        String sql = &quot;delete from Category where categoryID = ?&quot;;</span>
+<span class="fc" id="L141">        int n = 0;</span>
+<span class="fc" id="L142">        String sql = &quot;delete from Category where categoryID = ?&quot;;</span>
          
         try {
-<span class="nc" id="L145">                pre=conn.prepareStatement(sql);</span>
-<span class="nc" id="L146">                pre.setInt(1,id);</span>
-<span class="nc" id="L147">                n = pre.executeUpdate();          </span>
+<span class="fc" id="L145">                pre=conn.prepareStatement(sql);</span>
+<span class="fc" id="L146">                pre.setInt(1,id);</span>
+<span class="fc" id="L147">                n = pre.executeUpdate();          </span>
 <span class="nc" id="L148">        } catch (SQLException ex) {</span>
 <span class="nc" id="L149">            Logger.getLogger(CategoryDAO.class.getName()).log(Level.SEVERE, null, ex);</span>
-<span class="nc" id="L150">        }</span>
-<span class="nc" id="L151">        return n;</span>
+<span class="fc" id="L150">        }</span>
+<span class="fc" id="L151">        return n;</span>
     }
     
     public boolean checkExistCategoryName(String categoryName) {
-<span class="nc" id="L155">        String sql = &quot;SELECT * FROM Category WHERE categoryName = '&quot; + categoryName + &quot;'&quot;;</span>
-<span class="nc" id="L156">        rs = dbConn.getData(sql);</span>
+<span class="fc" id="L155">        String sql = &quot;SELECT * FROM Category WHERE categoryName = '&quot; + categoryName + &quot;'&quot;;</span>
+<span class="fc" id="L156">        rs = dbConn.getData(sql);</span>
         try {
-<span class="nc bnc" id="L158" title="All 2 branches missed.">            if (rs.next()) {</span>
+<span class="pc bpc" id="L158" title="1 of 2 branches missed.">            if (rs.next()) {</span>
 <span class="nc" id="L159">                return true;</span>
             }
 <span class="nc" id="L161">        } catch (SQLException ex) {</span>
 <span class="nc" id="L162">            Logger.getLogger(CategoryDAO.class.getName()).log(Level.SEVERE, null, ex);</span>
-<span class="nc" id="L163">        }</span>
-<span class="nc" id="L164">        return false;</span>
+<span class="fc" id="L163">        }</span>
+<span class="fc" id="L164">        return false;</span>
     }
     
 }

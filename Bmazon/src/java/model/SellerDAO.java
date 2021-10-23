@@ -266,7 +266,7 @@ public class SellerDAO extends BaseDAO {
 
     public List<Seller> searchSeller(String text) {
         List<Seller> list = new ArrayList<>();
-        String xSql= "SELECT * FROM [Bmazon].[dbo].[Role] where roleName like '%" + text + "%'";
+        String xSql= "SELECT * FROM [Bmazon].[dbo].[Seller] where sellerShopName like '%" + text + "%'";
         try {
             pre = conn.prepareStatement(xSql);
             rs = pre.executeQuery();
