@@ -123,7 +123,6 @@ public class WareHouseDAOTest {
         System.out.println("getWareHouseById");
         int id = 1;
         WareHouseDAO instance = new WareHouseDAO();
-        WareHouse expResult = null;
         WareHouse result = instance.getWareHouseById(id);
         assertNotNull(result.getWareHouseAddress());
     }

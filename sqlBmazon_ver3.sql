@@ -184,7 +184,7 @@ CREATE TABLE [Comment](
 	[userId] int not null,
 	content nvarchar(max),
 	rating real not null CHECK(rating >= 0 AND rating <= 5),
-	status bit,
+	[status] bit,
 	FOREIGN KEY ([userId]) REFERENCES dbo.[User]([userId]),
 	FOREIGN KEY ([productID]) REFERENCES [Product]([productID])
 
