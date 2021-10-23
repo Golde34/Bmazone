@@ -64,6 +64,8 @@ CREATE TABLE Seller (
 	sellerMainProduct int,
 	[description] nvarchar(255),
 	sellerVerification int,
+	backGroundImage nvarchar(255),
+	avatar nvarchar(255),
 	[status] bit,
 	FOREIGN KEY ([userID]) REFERENCES [User]([userID]),
 	FOREIGN KEY (sellerMainProduct) REFERENCES Category([categoryID])
@@ -82,7 +84,7 @@ CREATE TABLE [Genre] (
 -- co 1 bang Company
 CREATE TABLE [Warehouse](
 	wareHouseID int NOT NULL identity(1,1) PRIMARY KEY,
-	wareHouseAddress nvarchar(255),
+	wareHouseAddress nvarchar(255) not null,
 	[status] bit,
 )
 
@@ -128,8 +130,8 @@ CREATE TABLE [ProductType] (
 )
 
 CREATE TABLE ShipCompany (
-	companyID int identity(1,1) PRIMARY KEY,
-	companyName nvarchar(255),
+	companyID int not null identity(1,1) PRIMARY KEY,
+	companyName nvarchar(255) not null,
 	unitCost money,
 	commitDate int CHECK (commitDate>=0),
 	[status] bit,
@@ -142,7 +144,7 @@ CREATE TABLE Gallery (
 	link nvarchar(255) NOT NULL,
 	[status] bit,
 	FOREIGN KEY (productID) REFERENCES [Product](productID),
-	FOREIGN KEY (productTypeID) REFERENCES [ProductType](productTypeID)
+	FOREIGN KEY (productTypeID) REFERENCES [ProductType](productTypeId)
 )
 
 CREATE TABLE [Order](

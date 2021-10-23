@@ -249,41 +249,41 @@
                                                     </tr>
                                                 </thead>
                                                 <tbody id="producttype">
-                                                    <% for (ProductType pt : listPT) {%>
+                                                    <% for (ProductType ptype : listPT) {%>
                                                     <tr>
                                                         <td style="width: 90px;"><label>Color</label></td>
                                                         <td>
-                                                            <input required style="width: 100px;" type="text" name="color" class="form-control" value="<%=pt.getColor()%>">
-                                                            <input type="hidden" name="ptid" value="<%=pt.getProductTypeId()%>">
+                                                            <input required style="width: 100px;" type="text" name="color" class="form-control" value="<%=ptype.getColor()%>">
+                                                            <input type="hidden" name="ptid" value="<%=ptype.getProductTypeId()%>">
                                                         </td>
                                                         <td><label>Size</label></td>
-                                                        <td><input required style="width: 100px;" type="text" name="size" class="form-control" value="<%=pt.getSize()%>"></td>
-                                                            <%Double price = Double.parseDouble(pt.getPrice());%>
+                                                        <td><input required style="width: 100px;" type="text" name="size" class="form-control" value="<%=ptype.getSize()%>"></td>
+                                                            <%Double price = Double.parseDouble(ptype.getPrice());%>
 
                                                         <td><label>Price</label></td>
                                                         <td><input required style="width: 100px;" type="text" name="price" class="form-control price" value="<%=nf.format(price)%>"></td>
 
                                                         <td><label>Quantity</label></td>
-                                                        <td><input required style="width: 100px;"  type="text" name="quantity" class="form-control" value="<%=pt.getQuantity()%>"></td>
+                                                        <td><input required style="width: 100px;"  type="text" name="quantity" class="form-control" value="<%=ptype.getQuantity()%>"></td>
                                                         <td>
-                                                            <%if (pt.getStatus() == 1) {%>
-                                                            <a class="btn btn-danger" href="SellerControllerMap?service=deactiveproducttype&producttypeid=<%=pt.getProductTypeId()%>&productid=<%= product.getProductID()%>" onclick="return confirm('Are you sure you want to Remove?');">Deactive
+                                                            <%if (ptype.getStatus() == 1) {%>
+                                                            <a class="btn btn-danger" href="SellerControllerMap?service=deactiveproducttype&producttypeid=<%=ptype.getProductTypeId()%>&productid=<%= product.getProductID()%>" onclick="return confirm('Are you sure you want to Remove?');">Deactive
                                                                 <!--<span class="fas fa-trash-alt mt-3 ml-3 delete"></span>-->
                                                             </a>
                                                             <%} else {%>
-                                                            <a class="btn btn-success" href="SellerControllerMap?service=activeproducttype&producttypeid=<%=pt.getProductTypeId()%>&productid=<%= product.getProductID()%>" onclick="return confirm('Are you sure you want to Remove?');">Active
+                                                            <a class="btn btn-success" href="SellerControllerMap?service=activeproducttype&producttypeid=<%=ptype.getProductTypeId()%>&productid=<%= product.getProductID()%>" onclick="return confirm('Are you sure you want to Remove?');">Active
                                                                 <!--<span class="fas fa-link mt-3 ml-3 delete"></span>-->
                                                             </a><%}%>
                                                         </td>
                                                     </tr>
                                                     <tr>
-                                                        <td><label>Add image</label></td>
+                                                        <td><label>Image</label></td>
                                                         <td>
                                                             <%
-                                                                List<Gallery> listGallery = gallerydao.getAllImageByProductTypeID(pt.getProductTypeId());
+                                                                List<Gallery> listGallery = gallerydao.getAllImageByProductTypeID(ptype.getProductTypeId());
                                                                 for (Gallery gallery : listGallery) {
                                                             %>
-                                                            <img id="img" src="images/<%=gallery.getLink()%>" width="150px" height="150px"><br>                    
+                                                            <img id="img" src="images/<%=gallery.getLink()%>" width="250px" height="200px"><br>                    
                                                             <input required accept="image/*" onchange="loadFile(event)" id="file" type="file" name="photo">
                                                         </td>
                                                         <% } %>
@@ -413,6 +413,15 @@
     <script src="${contextPath}/js/plugins/chartjs.min.js"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
     <script>
+        var loadFile = function (event) {
+            var output = document.getElementById('img');
+            img.src = URL.createObjectURL(event.target.files[0]);
+            img.onload = function () {
+                URL.revokeObjectURL(img.src)
+            }
+        };
+    </script>
+    <script>
                                                     
 
                                                                 var pageNum;
@@ -427,7 +436,7 @@
                                                                         type: "get",
                                                                         data: {
                                                                                 index: pageNum,
-                                                                                service: "pagingproducttype"
+                                                                                service: "pagingproducttype",
                                                                                 productid: "<%= product.getProductID()%>"
                                                                         },
                                                                         success: function (respone) {
@@ -446,7 +455,7 @@
                                                                         type: "get",
                                                                         data: {
                                                                                 index: pageNum,
-                                                                                service: "showpageproducttype"
+                                                                                service: "showpageproducttype",
                                                                                 productid: "<%= product.getProductID()%>"
                                                                         },
                                                                         success: function (respone) {

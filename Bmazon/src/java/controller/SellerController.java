@@ -40,6 +40,7 @@ public class SellerController extends HttpServlet {
     ProductCategoryDAO pcDAO = new ProductCategoryDAO();
     ProductGenreDAO pgDAO = new ProductGenreDAO();
     SellerDAO sellerDAO = new SellerDAO();
+    GalleryDAO galleryDAO = new GalleryDAO();
     private static final long serialVersionUID = 1;
 
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
@@ -323,15 +324,15 @@ public class SellerController extends HttpServlet {
             pr.print("<tr>"
                     + "<td style=\"width: 90px;\"><label>Color</label></td>"
                     + "<td>\n"
-                    + "                                                            <input required style=\"width: 100px;\" type=\"text\" name=\"color\" class=\"form-control\" value=\"<%=pt.getColor()%>\">\n"
-                    + "                                                            <input type=\"hidden\" name=\"ptid\" value=\"<%=pt.getProductTypeId()%>\">\n"
-                    + "                                                        </td>"
+                    + "<input required style=\"width: 100px;\" type=\"text\" name=\"color\" class=\"form-control\" value=\"" + ptype.getColor() + "\">\n"
+                    + "<input type=\"hidden\" name=\"ptid\" value=\"" + ptype.getProductTypeId() + "\">\n"
+                    + "</td>"
                     + "<td><label>Size</label></td>\n" +
-"                                                        <td><input required style=\"width: 100px;\" type=\"text\" name=\"size\" class=\"form-control\" value=\"<%=pt.getSize()%>\"></td>"
+"                                                        <td><input required style=\"width: 100px;\" type=\"text\" name=\"size\" class=\"form-control\" value=\"" + ptype.getSize() + "\"></td>"
                     + "<td><label>Price</label></td>\n" +
-"                                                        <td><input required style=\"width: 100px;\" type=\"text\" name=\"price\" class=\"form-control price\" value=\"<%=nf.format(price)%>\"></td>"
+"                                                        <td><input required style=\"width: 100px;\" type=\"text\" name=\"price\" class=\"form-control price\" value=\"" + nf.format(price) + "\"></td>"
                     + "<td><label>Quantity</label></td>\n" +
-"                                                        <td><input required style=\"width: 100px;\"  type=\"text\" name=\"quantity\" class=\"form-control\" value=\"<%=pt.getQuantity()%>\"></td>"
+"                                                        <td><input required style=\"width: 100px;\"  type=\"text\" name=\"quantity\" class=\"form-control\" value=\"" + ptype.getQuantity() + "\"></td>"
                     + "<td>");
             if (ptype.getStatus() == 1) {
                 pr.print("<a href=\"SellerControllerMap?service=deactiveproducttype&producttypeid=" + ptype.getProductTypeId() + "\" onclick=\"return confirm('Are you sure?');\"><button class=\"btn btn-danger\">Deactive</button></a>");
@@ -340,22 +341,19 @@ public class SellerController extends HttpServlet {
             }
             pr.print("</td>"
                     + "</tr>\n"
-                    + "<tr>\n" +
-"                                                        <td><label>Add image</label></td>\n" +
-"                                                        <td>\n" +
-"                                                            <%\n" +
-"                                                                List<Gallery> listGallery = gallerydao.getAllImageByProductTypeID(pt.getProductTypeId());\n" +
-"                                                                for (Gallery gallery : listGallery) {\n" +
-"                                                            %>\n" +
-"                                                    <img id=\"img\" src=\"images/<%=gallery.getLink()%>\" width=\"150px\" height=\"150px\"><br>                    \n" +
-"                                                    <input required accept=\"image/*\" onchange=\"loadFile(event)\" id=\"file\" type=\"file\" name=\"photo\">\n" +
-"                                                        </td>\n" +
-"                                                        <% } %>\n" +
-"                                                    </tr>"
+                    + "<tr>\n"
+                    + "<td><label>Image</label></td>\n"
+                    + "<td>\n");
+                    List<Gallery> listGallery = galleryDAO.getAllImageByProductTypeID(ptype.getProductTypeId());
+                        for (Gallery gallery : listGallery) {
+            pr.print(
+                    "<img id=\"img\" src=\"images/" + gallery.getLink() + "\" width=\"250px\" height=\"200px\"><br>                    \n" +
+                    "<input required accept=\"image/*\" onchange=\"loadFile(event)\" id=\"file\" type=\"file\" name=\"photo\">\n" +
+                    "</td>\n" );
+                    }
+            pr.print(
+                    "</tr>"
             );
-        }
-        if (request.getParameter("row") == null) {
-            sendDispatcher(request, response, "seller/productdetail.jsp");
         }
     }
 
@@ -364,8 +362,8 @@ public class SellerController extends HttpServlet {
         PrintWriter pr = response.getWriter();
         int index = 1, numOfRow = 1;
         String pid = request.getParameter("productid");
-        if (request.getParameter("row") != null) {
-            numOfRow = Integer.parseInt(request.getParameter("row"));
+        if (request.getParameter("index") != null) {
+            index = Integer.parseInt(request.getParameter("index"));
         }
         int totalResult = ptDAO.getPageNumber("", pid);
         int totalPage = totalResult / numOfRow;
@@ -427,9 +425,6 @@ public class SellerController extends HttpServlet {
             pr.print("</span>");
             pr.print("</a>");
             pr.print("</li>");
-        }
-        if (request.getParameter("row") == null) {
-            sendDispatcher(request, response, "seller/productdetail.jsp");
         }
     }
 

@@ -45,19 +45,7 @@ public class User implements Serializable{
     private int status;
 
     public User() {
-    }
-    
-    public User(String userId, String username, String password, String address, String bio, String facebook, String instagram, String twitter, String youtube) {
-        this.userId = userId;
-        this.username = username;
-        this.password = password;
-        this.address = address;
-        this.bio = bio;
-        this.facebook = facebook;
-        this.instagram = instagram;
-        this.twitter = twitter;
-        this.youtube = youtube;
-    }
+    } 
 
     public User(String userId, String username, String password, String email, String phoneNumber, int sell, double wallet, String fullname, String publicName, String address, String profileImage, String backgroundImage, String occupation, int gender, Date DOB, String bio, String facebook, String instagram, String twitter, String youtube, int activityPoint, int systemRole, int status) {
         this.userId = userId;
@@ -108,19 +96,31 @@ public class User implements Serializable{
         this.systemRole = systemRole;
         this.status = status;
     }
-
-    public User(String username, String password, String email, int sell, String fullname,String publicName, int systemRole, int status) {
+    
+    public User(String username, String password, String email, String phoneNumber, int sell, double wallet, String fullname, String publicName, String address, String profileImage, String backgroundImage, String occupation, int gender, Date DOB, String bio, String facebook, String instagram, String twitter, String youtube, int activityPoint, int systemRole, int status) {
         this.username = username;
         this.password = password;
         this.email = email;
+        this.phoneNumber = phoneNumber;
         this.sell = sell;
+        this.wallet = wallet;
         this.fullname = fullname;
         this.publicName = publicName;
+        this.address = address;
+        this.profileImage = profileImage;
+        this.backgroundImage = backgroundImage;
+        this.occupation = occupation;
+        this.gender = gender;
+        this.DOB = new Date(DOB.getTime());
+        this.bio = bio;
+        this.facebook = facebook;
+        this.instagram = instagram;
+        this.twitter = twitter;
+        this.youtube = youtube;
+        this.activityPoint = activityPoint;
         this.systemRole = systemRole;
         this.status = status;
     }
-    
-    
 
     public String getUserId() {
         return userId;

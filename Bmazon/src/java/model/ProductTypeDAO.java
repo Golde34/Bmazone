@@ -21,20 +21,17 @@ import java.util.logging.Logger;
  */
 public class ProductTypeDAO extends BaseDAO {
 
-    
-    
     public static void main(String[] args) {
-        ProductTypeDAO dao = new ProductTypeDAO();
-        
-        List<ProductType> list = dao.getProductByProductID(25);
-        for (ProductType productType : list) {
-            System.out.println(productType.getColor());
-        }
+//        ProductTypeDAO dao = new ProductTypeDAO();
+//        List<ProductType> list = new ArrayList<>();
+//        list = dao.getProductByColor("Black");
+//        System.out.println(list.size());
     }
+
     public int getPageNumber(String search, String productID) {
         int num = 0;
-        String xSql = "SELECT COUNT(*)from ProductType\n" +
-"       where color like '%" + search + "%' and productID = ?";
+        String xSql = "SELECT COUNT(*)from ProductType\n"
+                + "       where color like '%" + search + "%' and productID = ?";
         try {
             pre = conn.prepareStatement(xSql);
             pre.setString(1, productID);
@@ -47,16 +44,16 @@ public class ProductTypeDAO extends BaseDAO {
         }
         return num;
     }
-    
+
     public ArrayList<ProductType> getAllPagingProductType(int index, int numOfRow, String search, String pid) {
         ArrayList<ProductType> list = new ArrayList<>();
-        String sql = "declare @PageNo INT = " + index + "\n" +
-"                declare @PageSize INT=" + numOfRow + " \n" +
-"                SELECT * FROM\n" +
-"                (SELECT * ,\n" +
-"                ROW_NUMBER() over (order by productID) as RowNum\n" +
-"                FROM ProductType where productID = " + pid + " and(color like '%" + search + "%'))T\n" +
-"                where T.RowNum between ((@PageNo-1)*@PageSize)+1 and (@PageNo*@PageSize)";
+        String sql = "declare @PageNo INT = " + index + "\n"
+                + "                declare @PageSize INT=" + numOfRow + " \n"
+                + "                SELECT * FROM\n"
+                + "                (SELECT * ,\n"
+                + "                ROW_NUMBER() over (order by productID) as RowNum\n"
+                + "                FROM ProductType where productID = " + pid + " and(color like '%" + search + "%'))T\n"
+                + "                where T.RowNum between ((@PageNo-1)*@PageSize)+1 and (@PageNo*@PageSize)";
         try {
             pre = conn.prepareStatement(sql);
             rs = pre.executeQuery();
@@ -79,17 +76,20 @@ public class ProductTypeDAO extends BaseDAO {
         return list;
     }
 
-    public void deleteProductType(String ProTypeId) {
-        String sql = "delete from ProductType where prodụctTypeID = ?";
+    public int deleteProductType(String ProTypeId) {
+        int n = 0;
+        String sql = "delete from ProductType where productTypeId = ?";
         try {
             pre = conn.prepareStatement(sql);
             pre.setString(1, ProTypeId);
-            pre.executeUpdate();
+            n = pre.executeUpdate();
         } catch (SQLException e) {
         }
+        return n;
     }
 
-    public void addProductType(ProductType p) {
+    public int addProductType(ProductType p) {
+        int n = 0;
         String xSql = "INSERT INTO ProductType ([productTypeId],[productID],[size],[color],[price],[wareHouseID],[quantity],[status])\n"
                 + "     VALUES (?,?,?,?,?,?,?,?)";
         try {
@@ -102,9 +102,10 @@ public class ProductTypeDAO extends BaseDAO {
             pre.setInt(6, p.getWareHouseID());
             pre.setInt(7, p.getQuantity());
             pre.setInt(8, p.getStatus());
-            pre.executeUpdate();
+            n = pre.executeUpdate();
         } catch (SQLException e) {
         }
+        return n;
     }
 
     public int editProduct(ProductType p) {
@@ -120,19 +121,19 @@ public class ProductTypeDAO extends BaseDAO {
             pre.setInt(6, p.getQuantity());
             pre.setInt(7, p.getStatus());
             pre.setString(8, p.getProductTypeId());
-            pre.executeUpdate();
+            n = pre.executeUpdate();
         } catch (SQLException e) {
         }
         return n;
     }
 
-    public int checkoutProductType(int ProTypeId, int quantity) {
+    public int checkoutProductType(String ProTypeId, int quantity) {
         int n = 0;
-        String xSql = "update product set quantity =? where productTypeId = ?";
+        String xSql = "update ProductType set quantity =? where productTypeId = ?";
         try {
             pre = conn.prepareStatement(xSql);
             pre.setInt(1, quantity);
-            pre.setInt(2, ProTypeId);
+            pre.setString(2, ProTypeId);
             n = pre.executeUpdate();
         } catch (SQLException e) {
         }
@@ -183,7 +184,6 @@ public class ProductTypeDAO extends BaseDAO {
         }
         return ptype;
     }
-
 
     public int getProductIdByProductTypeId(String id) {
         int pid = -1;
@@ -335,9 +335,7 @@ public class ProductTypeDAO extends BaseDAO {
             pre = conn.prepareStatement(xSql);
             rs = pre.executeQuery();
             while (rs.next()) {
-
                 price = rs.getString("price");
-
             }
         } catch (SQLException e) {
         }

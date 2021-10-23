@@ -35,15 +35,17 @@ public class ShipCompanyDAO extends BaseDAO {
         return n;
     }
     
-    public void deleteShipCompany(String companyID) {
-        String sql = "delete from ShipCompany where [companyID] = ?";
-        try {
-            pre = conn.prepareStatement(sql);
-            pre.setString(1, companyID);
-            pre.executeUpdate();
-        } catch (SQLException e) {
-        }
-    }
+//    public int deleteShipCompany(String companyID) {
+//        int n = 0;
+//        String sql = "delete from ShipCompany where [companyID] = ?";
+//        try {
+//            pre = conn.prepareStatement(sql);
+//            pre.setString(1, companyID);
+//            n = pre.executeUpdate();
+//        } catch (SQLException e) {
+//        }
+//        return n;
+//    }
 
     public boolean checkExistCompanyName(String companyname) {
         String xSql= "SELECT * FROM [Bmazon].[dbo].[ShipCompany] where companyName like ?";
@@ -60,7 +62,8 @@ public class ShipCompanyDAO extends BaseDAO {
         return false;
     }
 
-    public void addShipCompany(ShipCompany sp) {
+    public int addShipCompany(ShipCompany sp) {
+        int n = 0;
         String xSql= "INSERT INTO ShipCompany ([companyName],[unitCost],[commitDate],[status])\n"
                 + "     VALUES (?,?,?,?)";
         try {
@@ -69,9 +72,10 @@ public class ShipCompanyDAO extends BaseDAO {
             pre.setDouble(2, sp.getUnitCost());
             pre.setInt(3, sp.getCommitDate());
             pre.setInt(4, sp.getStatus());
-            pre.executeUpdate();
+            n = pre.executeUpdate();
         } catch (SQLException e) {
         }
+        return n;
     }
 
     public int editShipCompany(ShipCompany sp) {
@@ -84,7 +88,7 @@ public class ShipCompanyDAO extends BaseDAO {
             pre.setInt(3, sp.getCommitDate());
             pre.setInt(4, sp.getStatus());
             pre.setInt(5, sp.getCompanyID());
-            pre.executeUpdate();
+            n = pre.executeUpdate();
         } catch (SQLException e) {
         }
         return n;
@@ -121,10 +125,10 @@ public class ShipCompanyDAO extends BaseDAO {
         }
         return num;
     }
-    public static void main(String[] args) {
-        ShipCompanyDAO dao = new ShipCompanyDAO();
-        dao.changeStatus(1, 1);
-    }
+//    public static void main(String[] args) {
+//        ShipCompanyDAO dao = new ShipCompanyDAO();
+//        dao.changeStatus(1, 1);
+//    }
     public List<ShipCompany> getAllPagingShipCompany(int index, int numOfRow, String search) {
         List<ShipCompany> list = new ArrayList<>();
         String xSql= "declare @PageNo INT = ? \n"

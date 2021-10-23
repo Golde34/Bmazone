@@ -41,9 +41,7 @@
         <link href='http://fonts.googleapis.com/css?family=Lato' rel='stylesheet' type='text/css'>
         <link href="${contextPath}/css/seller/style.css" rel="stylesheet" type="text/css" />
         <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.0.7/css/all.css"> 
-        <style type="text/css">
-
-        </style>
+        <style type="text/css"></style>
     </head>
 
     <!--%
@@ -378,55 +376,55 @@
         document.getElementById("inputDate").setAttribute("max", today);
         </script>
     <script>
-                                                    var pageNum;
-                                                $(document).on('click', '.pagination li', function () {
-                                                    pageNum = $(this).data('repair');
-                                                    pagination();
-                                                });
-                                                function pagination() {
-                                                    var row = document.getElementById("maxRows").value;
-                                                    var search = document.getElementById("search").value;
-                                                    console.log(row);
-                                                    console.log(search);
-                                                    console.log(pageNum);
-                                                    $.ajax({
-                                                        url: "/Bmazon/SellerControllerMap",
-                                                        type: "get",
-                                                        data: {
-                                                            search: search,
-                                                            row: row,
-                                                            index: pageNum,
-                                                            service: "pagingproduct"
-                                                        },
-                                                        success: function (respone) {
-                                                            var text = document.getElementById("product");
-                                                            text.innerHTML = respone;
-                                                            showpage();
-                                                        },
-                                                        error: function (xhr) {
-                                                            //Do Something to handle error
-                                                        }
-                                                    });
-                                                }
-                                                function showpage() {
-                                                    var row = document.getElementById("maxRows").value;
-                                                    var search = document.getElementById("search").value;
-                                                    $.ajax({
-                                                        url: "/Bmazon/SellerControllerMap",
-                                                        type: "get",
-                                                        data: {
-                                                            search: search,
-                                                            row: row,
-                                                            index: pageNum,
-                                                            service: "showpageproduct"
-                                                        },
-                                                        success: function (respone) {
-                                                            var text = document.getElementById("showpage");
-                                                            text.innerHTML = respone;
-                                                        },
-                                                        error: function (xhr) {
-                                                            //Do Something to handle error
-                                                        } });
-                                                }
+        var pageNum;
+        $(document).on('click', '.pagination li', function () {
+            pageNum = $(this).data('repair');
+            pagination();
+        });
+        function pagination() {
+            var row = document.getElementById("maxRows").value;
+            var search = document.getElementById("search").value;
+            console.log(row);
+            console.log(search);
+            console.log(pageNum);
+            $.ajax({
+                url: "/Bmazon/SellerControllerMap",
+                type: "get",
+                data: {
+                    search: search,
+                    row: row,
+                    index: pageNum,
+                    service: "pagingproduct"
+                },
+                success: function (respone) {
+                    var text = document.getElementById("product");
+                    text.innerHTML = respone;
+                    showpage();
+                },
+                error: function (xhr) {
+                    //Do Something to handle error
+                }
+            });
+        }
+        function showpage() {
+            var row = document.getElementById("maxRows").value;
+            var search = document.getElementById("search").value;
+            $.ajax({
+                url: "/Bmazon/SellerControllerMap",
+                type: "get",
+                data: {
+                    search: search,
+                    row: row,
+                    index: pageNum,
+                    service: "showpageproduct"
+                },
+                success: function (respone) {
+                    var text = document.getElementById("showpage");
+                    text.innerHTML = respone;
+                },
+                error: function (xhr) {
+                    //Do Something to handle error
+                } });
+        }
     </script>
 </html>

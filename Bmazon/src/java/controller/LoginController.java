@@ -70,7 +70,6 @@ public class LoginController extends HttpServlet {
 //            if (service.equalsIgnoreCase("facebookLogin")) {
 //                serviceFacebookLogin(request, response);
 //            }
-
             //register
             if (service.equalsIgnoreCase("register")) {
                 serviceRegister(request, response);
@@ -80,9 +79,15 @@ public class LoginController extends HttpServlet {
             if (service.equalsIgnoreCase("verify")) {
                 serviceVerifyAccount(request, response);
             }
+
             //Forgot password
             if (service.equalsIgnoreCase("forgotPass")) {
                 serviceForgotPassword(request, response);
+            }
+
+            //Reset password after click forgot password
+            if (service.equalsIgnoreCase("resetPass")) {
+                serviceResetPassword(request, response);
             }
         }
     }
@@ -120,7 +125,7 @@ public class LoginController extends HttpServlet {
 //            Logger.getLogger(SystemEmail.class.getName()).log(Level.SEVERE, null, ex);
 //        }
 //    }\
-    public void serviceLogin(HttpServletRequest request, HttpServletResponse response) throws NoSuchAlgorithmException, InvalidKeySpecException  {
+    public void serviceLogin(HttpServletRequest request, HttpServletResponse response) throws NoSuchAlgorithmException, InvalidKeySpecException {
 //        String checkLogin = "checked";
 //        request.setAttribute("checkLogin", checkLogin);
         HttpSession session = request.getSession();
@@ -243,7 +248,7 @@ public class LoginController extends HttpServlet {
         //get code generated
         String authCode = (String) session.getAttribute("authcode");
         if (verifyCode.equals(authCode)) {
-            daoUser.addUserRegister(new User(Username, securePassword, Email, Phone, 0, 0, fullname, Username, "", "", "", "", 0, "", "", "", "", "", 0, 0, 1));
+            daoUser.addUser(new User(Username, securePassword, Email, Phone, 0, 0, fullname, Username, "", "", "", "", 0, "", "", "", "", "", 0, 0, 1));
             messVeri = "Signup Successfully!";
             request.setAttribute("mess", messVeri);
             sendDispatcher(request, response, "loginAndSecurity/register.jsp");
@@ -259,16 +264,17 @@ public class LoginController extends HttpServlet {
     public void serviceForgotPassword(HttpServletRequest request, HttpServletResponse response) throws NoSuchAlgorithmException, InvalidKeySpecException {
         SendEmail s = new SendEmail();
         String mess = "";
+        HttpSession session = request.getSession();
+        User account = (User) session.getAttribute("currUser");
         String username = request.getParameter("username");
         String email = request.getParameter("mail");
         boolean exist = daoUser.checkExistUserNameAndMail(username, email);
         if (exist == true) {
             String option = "forgot";
-            String password = s.randomString(6);
-            String securePassword = SecurePBKDF2.generateStrongPasswordHash(password);
-            daoUser.updatePassword(username, email, securePassword);
-            boolean test = s.sendEmail(username, email, password, option);
+            String href = "http://localhost:8080/Bmazon/loginAndSecurity/resetPass.jsp";
+            boolean test = s.sendEmail(username, email, href, option);
             if (test == true) {
+                session.setAttribute("usename", username);
                 sendDispatcher(request, response, "loginAndSecurity/notification.jsp");
                 // include: xu ly xong thang path quay lai, forward: ko quay lai.
             } else {
@@ -279,6 +285,24 @@ public class LoginController extends HttpServlet {
             mess = "Your username or your mail does not exist!";
             request.setAttribute("mess", mess);
             sendDispatcher(request, response, "loginAndSecurity/forgot.jsp");
+        }
+    }
+
+    public void serviceResetPassword(HttpServletRequest request, HttpServletResponse response) throws NoSuchAlgorithmException, InvalidKeySpecException {
+        HttpSession session = request.getSession();
+        String mess = "";
+        String newPass = request.getParameter("newPass");
+        String reNewPass = request.getParameter("reNewPass");
+        String username = (String) session.getAttribute("username");
+        if (!newPass.equals(reNewPass)) {
+            mess = "New password and Re-new password do not match";
+            request.setAttribute("mess", mess);
+            sendDispatcher(request, response, "loginAndSecurity/resetPass.jsp");
+        } else {
+            daoUser.changePassword(username, newPass);
+            mess = "Reset password successfully!";
+            request.setAttribute("mess", mess);
+            sendDispatcher(request, response, "loginAndSecurity/login.jsp");
         }
     }
 
@@ -307,7 +331,6 @@ public class LoginController extends HttpServlet {
 //        request.getSession().setAttribute("ShoppingCart", ShoppingCart);
 //        sendDispatcher(request, response, "index.jsp");
 //    }
-
     public void sendDispatcher(HttpServletRequest request, HttpServletResponse response, String path) {
         try {
             RequestDispatcher rd = request.getRequestDispatcher(path);

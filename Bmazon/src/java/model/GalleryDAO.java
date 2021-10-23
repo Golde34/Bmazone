@@ -25,33 +25,36 @@ public class GalleryDAO extends BaseDAO {
 
     BaseDAO dbConn = new BaseDAO();
 
-    public void deleteGallery(int id) {
+    public int deleteGallery(int id) {
+        int n = 0;
         String sql = "delete from Gallery where galleryID = ?";
         try {
             pre = conn.prepareStatement(sql);
             pre.setInt(1, id);
-            pre.executeUpdate();
+            n = pre.executeUpdate();
         } catch (Exception ex) {
             Logger.getLogger(UserDAO.class.getName()).log(Level.SEVERE, null, ex);
         }
+        return n;
     }
 
-    public void addGallery(Gallery g) {
-        String xSql = "INSERT INTO Gallery ([galleryID],[productID],[productTypeID],[link],[status])\n"
-                + "     VALUES (?,?,?,?,?)";
+    public int addGallery(Gallery g) {
+        int n = 0;
+        String xSql = "INSERT INTO [Bmazon].[dbo].[Gallery]([productID] ,[productTypeID] ,[link],[status])\n"
+                + "VALUES (?, ?,? ,?)";
         try {
             pre = conn.prepareStatement(xSql);
-            pre.setInt(1, g.getGalleryID());
-            pre.setInt(2, g.getProductID());
-            pre.setString(3, g.getProductTypeID());
-            pre.setString(4, g.getLink());
-            pre.setDouble(5, g.getStatus());
-            pre.executeUpdate();
+            pre.setInt(1, g.getProductID());
+            pre.setString(2, g.getProductTypeID());
+            pre.setString(3, g.getLink());
+            pre.setInt(4, g.getStatus());
+            n = pre.executeUpdate();
         } catch (Exception ex) {
             Logger.getLogger(UserDAO.class.getName()).log(Level.SEVERE, null, ex);
         }
+        return n;
     }
-    
+
     public int editGallery(Gallery g) {
         int n = 0;
         String xSql = "update Gallery set productID = ?, productTypeID = ?, link =?, status = ? where galleryID = ?";
@@ -62,7 +65,7 @@ public class GalleryDAO extends BaseDAO {
             pre.setString(3, g.getLink());
             pre.setDouble(4, g.getStatus());
             pre.setInt(5, g.getGalleryID());
-            pre.executeUpdate();
+            n = pre.executeUpdate();
         } catch (Exception ex) {
             Logger.getLogger(UserDAO.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -85,7 +88,7 @@ public class GalleryDAO extends BaseDAO {
     }
 
     public Gallery getGalleryById(int id) {
-        Gallery gallery = new Gallery();
+        Gallery gallery = null;
         String sql = "SELECT * FROM [Bmazon].[dbo].[Gallery] where galleryID=" + id;
         try {
             pre = conn.prepareStatement(sql);
@@ -141,13 +144,13 @@ public class GalleryDAO extends BaseDAO {
 
     public List<Gallery> getAllPagingGallery(int index, int numOfRow, String search) {
         List<Gallery> list = new ArrayList<>();
-        String xSql = "declare @PageNo INT ="+index+"\n"
-                + "declare @PageSize INT="+numOfRow+"\n"
+        String xSql = "declare @PageNo INT =" + index + "\n"
+                + "declare @PageSize INT=" + numOfRow + "\n"
                 + "SELECT * from(\n"
                 + "SELECT g.*,\n"
                 + "ROW_NUMBER() over (order by g.galleryID) as RowNum\n"
                 + "  FROM Gallery g join ProductType pt on g.productTypeID=pt.productTypeId join Product p on pt.productID=p.productID join Seller s on p.sellerID=s.sellerID\n"
-                + "   where p.productName like '%"+search+"%' or pt.size like '%"+search+"%' or pt.color like '%"+search+"%' or s.sellerShopName like '%"+search+"%')T\n"
+                + "   where p.productName like '%" + search + "%' or pt.size like '%" + search + "%' or pt.color like '%" + search + "%' or s.sellerShopName like '%" + search + "%')T\n"
                 + "where T.RowNum between ((@PageNo-1)*@PageSize)+1 and (@PageNo*@PageSize)";
         try {
             pre = conn.prepareStatement(xSql);
@@ -220,12 +223,13 @@ public class GalleryDAO extends BaseDAO {
         }
         return s;
     }
-    
+
     public List<Gallery> getAllImageByProductTypeID(String ptypeID) {
         List<Gallery> list = new ArrayList<>();
         String xSql = "select * from [Gallery] WHERE productTypeID = ?";
         try {
             pre = conn.prepareStatement(xSql);
+            pre.setString(1, ptypeID);
             rs = pre.executeQuery();
             while (rs.next()) {
                 list.add(new Gallery(
@@ -260,10 +264,12 @@ public class GalleryDAO extends BaseDAO {
 //        }
 //        return list;
 //    }
-    public static void main(String[] args) {
-        GalleryDAO g = new GalleryDAO();
-        Gallery ga = g.getGalleryById(1);
-        ga.setLink("Pr1Ty1Ga1.jpg");
-        g.editGallery(ga);
-    }
+    
+//    public static void main(String[] args) {
+//        GalleryDAO g = new GalleryDAO();
+//        List<Gallery> list = g.getAllImageByProductTypeID("Pr1Ty1");
+//        for (Gallery gallery : list) {
+//            System.out.println(gallery.getLink());
+//        }
+//    }
 }
