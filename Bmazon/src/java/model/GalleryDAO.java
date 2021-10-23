@@ -40,15 +40,14 @@ public class GalleryDAO extends BaseDAO {
 
     public int addGallery(Gallery g) {
         int n = 0;
-        String xSql = "INSERT INTO Gallery ([galleryID],[productID],[productTypeID],[link],[status])\n"
-                + "     VALUES (?,?,?,?,?)";
+        String xSql = "INSERT INTO [Bmazon].[dbo].[Gallery]([productID] ,[productTypeID] ,[link],[status])\n"
+                + "VALUES (?, ?,? ,?)";
         try {
             pre = conn.prepareStatement(xSql);
-            pre.setInt(1, g.getGalleryID());
-            pre.setInt(2, g.getProductID());
-            pre.setString(3, g.getProductTypeID());
-            pre.setString(4, g.getLink());
-            pre.setDouble(5, g.getStatus());
+            pre.setInt(1, g.getProductID());
+            pre.setString(2, g.getProductTypeID());
+            pre.setString(3, g.getLink());
+            pre.setInt(4, g.getStatus());
             n = pre.executeUpdate();
         } catch (Exception ex) {
             Logger.getLogger(UserDAO.class.getName()).log(Level.SEVERE, null, ex);
@@ -89,7 +88,7 @@ public class GalleryDAO extends BaseDAO {
     }
 
     public Gallery getGalleryById(int id) {
-        Gallery gallery = new Gallery();
+        Gallery gallery = null;
         String sql = "SELECT * FROM [Bmazon].[dbo].[Gallery] where galleryID=" + id;
         try {
             pre = conn.prepareStatement(sql);
@@ -230,6 +229,7 @@ public class GalleryDAO extends BaseDAO {
         String xSql = "select * from [Gallery] WHERE productTypeID = ?";
         try {
             pre = conn.prepareStatement(xSql);
+            pre.setString(1, ptypeID);
             rs = pre.executeQuery();
             while (rs.next()) {
                 list.add(new Gallery(
@@ -264,7 +264,12 @@ public class GalleryDAO extends BaseDAO {
 //        }
 //        return list;
 //    }
-    public static void main(String[] args) {
-        GalleryDAO g = new GalleryDAO();
-    }
+    
+//    public static void main(String[] args) {
+//        GalleryDAO g = new GalleryDAO();
+//        List<Gallery> list = g.getAllImageByProductTypeID("Pr1Ty1");
+//        for (Gallery gallery : list) {
+//            System.out.println(gallery.getLink());
+//        }
+//    }
 }

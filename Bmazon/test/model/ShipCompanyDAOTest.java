@@ -58,17 +58,6 @@ public class ShipCompanyDAOTest {
     }
 
     /**
-     * Test of deleteShipCompany method, of class ShipCompanyDAO.
-     */
-    @Test
-    public void testDeleteShipCompanyNotExist() {
-        System.out.println("deleteShipCompany");
-        ShipCompanyDAO instance = new ShipCompanyDAO();
-        assertEquals(0, instance.deleteShipCompany("-1"));
-    }
-    
-    
-    /**
      * Test of checkExistCompanyName method, of class ShipCompanyDAO.
      */
     @Test
@@ -95,39 +84,54 @@ public class ShipCompanyDAOTest {
     @Test
     public void testAddShipCompany() {
         System.out.println("addShipCompany");
-        ShipCompany p = new ShipCompany();
-        p.setCompanyName("Gojek");
-        p.setUnitCost(5000);
-        p.setCommitDate(9);
-        p.setCommitDate(12);
+        ShipCompany sp = new ShipCompany();
+        sp.setCompanyName("Gojek");
+        sp.setUnitCost(5000);
+        sp.setCommitDate(9);
+        sp.setStatus(1);
         ShipCompanyDAO instance = new ShipCompanyDAO();
-        assertEquals(1, instance.addShipCompany(p));
+        assertEquals(1, instance.addShipCompany(sp));
     }
+    
     @Test
     public void testAddShipCompanyNull() {
         System.out.println("addShipCompanyNull");
-        ShipCompany p = new ShipCompany();
-        p.setCompanyName(null);
-        p.setUnitCost(5000);
-        p.setCommitDate(9);
-        p.setCommitDate(12);
+        ShipCompany sp = new ShipCompany();
+        sp.setCompanyName(null);
+        sp.setUnitCost(5000);
+        sp.setCommitDate(9);
+        sp.setStatus(1);
         ShipCompanyDAO instance = new ShipCompanyDAO();
-        assertEquals(0, instance.addShipCompany(p));
+        assertEquals(0, instance.addShipCompany(sp));
     }
 
-    /**
-     * Test of editShipCompany method, of class ShipCompanyDAO.
-     */
+//    /**
+//     * Test of editShipCompany method, of class ShipCompanyDAO.
+//     */
     @Test
     public void testEditShipCompany() {
         System.out.println("editShipCompany");
-        ShipCompany sp = null;
+        ShipCompany sp = new ShipCompany();
+        sp.setCompanyID(1);
+        sp.setCompanyName("Test Case in id 1");
+        sp.setUnitCost(5000);
+        sp.setCommitDate(9);
+        sp.setStatus(1);
         ShipCompanyDAO instance = new ShipCompanyDAO();
-        int expResult = 0;
-        int result = instance.editShipCompany(sp);
-        assertEquals(expResult, result);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
+        assertEquals(1, instance.editShipCompany(sp));
+    }
+    
+    @Test
+    public void testEditShipCompanyNull() {
+        System.out.println("editShipCompanyNull");
+        ShipCompany sp = new ShipCompany();
+        sp.setCompanyID(1);
+        sp.setCompanyName(null);
+        sp.setUnitCost(5000);
+        sp.setCommitDate(9);
+        sp.setStatus(1);
+        ShipCompanyDAO instance = new ShipCompanyDAO();
+        assertEquals(0, instance.editShipCompany(sp));
     }
 
     /**
@@ -136,13 +140,21 @@ public class ShipCompanyDAOTest {
     @Test
     public void testGetShipCompanyById() {
         System.out.println("getShipCompanyById");
-        int id = 0;
+        int id = 1;
         ShipCompanyDAO instance = new ShipCompanyDAO();
         ShipCompany expResult = null;
         ShipCompany result = instance.getShipCompanyById(id);
-        assertEquals(expResult, result);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
+        assertNotNull(result.getCompanyName());
+    }
+    
+    @Test
+    public void testGetShipCompanyByCompanyIdNotExist() {
+        System.out.println("getShipCompanyById");
+        int id = -1;
+        ShipCompanyDAO instance = new ShipCompanyDAO();
+        ShipCompany expResult = null;
+        ShipCompany result = instance.getShipCompanyById(id);
+        assertNull(result.getCompanyName());
     }
 
     /**
@@ -155,9 +167,17 @@ public class ShipCompanyDAOTest {
         ShipCompanyDAO instance = new ShipCompanyDAO();
         int expResult = 0;
         int result = instance.getPageNumber(search);
-        assertEquals(expResult, result);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
+        assertNotSame(expResult, result);
+    }
+
+    @Test
+    public void testGetPageNumberWithNonExistSearch() {
+        System.out.println("getPageNumber");
+        String search = "xc12vklxc3kl";
+        ShipCompanyDAO instance = new ShipCompanyDAO();
+        int expResult = 0;
+        int result = instance.getPageNumber(search);
+        assertSame(expResult, result);
     }
 
     /**
@@ -166,15 +186,24 @@ public class ShipCompanyDAOTest {
     @Test
     public void testGetAllPagingShipCompany() {
         System.out.println("getAllPagingShipCompany");
-        int index = 0;
-        int numOfRow = 0;
+        int index = 1;
+        int numOfRow = 5;
         String search = "";
         ShipCompanyDAO instance = new ShipCompanyDAO();
-        List<ShipCompany> expResult = null;
         List<ShipCompany> result = instance.getAllPagingShipCompany(index, numOfRow, search);
-        assertEquals(expResult, result);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
+        assertNotNull(result);
+    }
+    
+    
+    @Test
+    public void testGetAllPagingShipCompanyWithNonExistSearch() {
+        System.out.println("getAllPagingShipCompany");
+        int index = 1;
+        int numOfRow = 5;
+        String search = "d23sfvdzcvs";
+        ShipCompanyDAO instance = new ShipCompanyDAO();
+        List<ShipCompany> result = instance.getAllPagingShipCompany(index, numOfRow, search);
+        assertEquals(0,result.size());
     }
 
     /**
@@ -184,11 +213,8 @@ public class ShipCompanyDAOTest {
     public void testGetAllShipCompany() {
         System.out.println("getAllShipCompany");
         ShipCompanyDAO instance = new ShipCompanyDAO();
-        List<ShipCompany> expResult = null;
         List<ShipCompany> result = instance.getAllShipCompany();
-        assertEquals(expResult, result);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
+        assertNotNull(result);
     }
     
 }

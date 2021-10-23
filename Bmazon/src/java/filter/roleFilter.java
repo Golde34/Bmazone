@@ -113,7 +113,7 @@ public class roleFilter implements Filter {
         HttpServletResponse httpResponse = (HttpServletResponse) response;
         User x = (User) httpRequest.getSession().getAttribute("currUser");
         RoleDAO daoRole = new RoleDAO();
-        Role role = daoRole.getRoleById(x.getSystemRole());
+        Role role = daoRole.getRoleId(x.getSystemRole());
         System.out.println(role.getAdminPermission() + " " + role.getSellerPermission() + " " + role.getRoleName());
         String url = httpRequest.getServletPath();
         

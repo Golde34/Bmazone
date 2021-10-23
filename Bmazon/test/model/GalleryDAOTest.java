@@ -75,13 +75,12 @@ public class GalleryDAOTest {
         assertEquals(0, instance.addGallery(g));
     }
     @Test
-    public void testAddGalleryGivenNotEmptyGalleryReturn1() {
+    public void testAddGalleryGivenTrueGalleryReturn1() {
         System.out.println("addGallery");
         Gallery g = new Gallery();
-        g.setGalleryID(10);
-        g.setProductID(10);
+        g.setProductID(1);
         g.setLink("test");
-        g.setProductTypeID("test");
+        g.setProductTypeID("Pr1Ty1");
         g.setStatus(1);
         GalleryDAO instance = new GalleryDAO();
         assertEquals(1, instance.addGallery(g));
@@ -105,17 +104,17 @@ public class GalleryDAOTest {
         Gallery g = new Gallery();
         GalleryDAO instance = new GalleryDAO();
         int result = instance.editGallery(g);
-        assertEquals(1, result);
+        assertEquals(0, result);
     }
     
     @Test
-    public void testEditGalleryGivenNotEmptyGalleryReturn1() {
+    public void testEditGalleryGivenTrueGalleryReturn1() {
         System.out.println("editGallery");
         Gallery g = new Gallery();
-        g.setGalleryID(15);
-        g.setProductID(10);
+        g.setGalleryID(2);
+        g.setProductID(1);
         g.setLink("test");
-        g.setProductTypeID("test");
+        g.setProductTypeID("Pr1Ty1");
         g.setStatus(1);
         GalleryDAO instance = new GalleryDAO();
         int result = instance.editGallery(g);
@@ -310,4 +309,14 @@ public class GalleryDAOTest {
         List<Gallery> result = instance.getAllImageByProductTypeID(ptypeID);
         assertEquals(expResult, result);
     }
+    
+    @Test
+    public void testGetAllImageByGivenTrueProductTypeID() {
+        System.out.println("getAllImageByProductTypeID");
+        String ptypeID = "Pr2Ty1";
+        GalleryDAO instance = new GalleryDAO();
+        List<Gallery> result = instance.getAllImageByProductTypeID(ptypeID);
+        assertEquals(3, result.size());
+    }
+
 }
