@@ -319,5 +319,4 @@ public class GalleryDAOTest {
         assertEquals(3, result.size());
     }
 
-
 }
