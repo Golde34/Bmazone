@@ -64,6 +64,8 @@ CREATE TABLE Seller (
 	sellerMainProduct int,
 	[description] nvarchar(255),
 	sellerVerification int,
+	backGroundImage nvarchar(255),
+	avatar nvarchar(255),
 	[status] bit,
 	FOREIGN KEY ([userID]) REFERENCES [User]([userID]),
 	FOREIGN KEY (sellerMainProduct) REFERENCES Category([categoryID])

@@ -23,7 +23,6 @@ public class Order implements Serializable {
     private String shipAddress;
     private String shipCity;
     private String shipPhone;
-    private String shipCompany;
     private double shipMoney;
     private double total;
     private int companyID;
@@ -35,7 +34,7 @@ public class Order implements Serializable {
     public Order() {
     }
 
-    public Order(int orderID, String userID, Date orderDate, Date requiredDate, Date shippedDate, String shipName, String shipAddress, String shipCity, String shipPhone, String shipCompany, double shipMoney, double total, int companyID, String paymentMethod) {
+    public Order(int orderID, String userID, Date orderDate, Date requiredDate, Date shippedDate, String shipName, String shipAddress, String shipCity, String shipPhone, double shipMoney, double total, int companyID, String paymentMethod) {
         this.orderID = orderID;
         this.userID = userID;
         this.orderDate = new Date(orderDate.getTime());
@@ -45,14 +44,13 @@ public class Order implements Serializable {
         this.shipAddress = shipAddress;
         this.shipCity = shipCity;
         this.shipPhone = shipPhone;
-        this.shipCompany = shipCompany;
         this.shipMoney = shipMoney;
         this.total = total;
         this.companyID = companyID;
         this.paymentMethod = paymentMethod;
     }
 
-    public Order(int orderID, String userID, Date orderDate, Date requiredDate, Date shippedDate, String shipName, String shipAddress, String shipCity, String shipPhone, String shipCompany, double shipMoney, double total, int companyID, String paymentMethod, int status) {
+    public Order(int orderID, String userID, Date orderDate, Date requiredDate, Date shippedDate, String shipName, String shipAddress, String shipCity, String shipPhone, double shipMoney, double total, int companyID, String paymentMethod, int status) {
         this.orderID = orderID;
         this.userID = userID;
         this.orderDate = new Date(orderDate.getTime());
@@ -62,12 +60,25 @@ public class Order implements Serializable {
         this.shipAddress = shipAddress;
         this.shipCity = shipCity;
         this.shipPhone = shipPhone;
-        this.shipCompany = shipCompany;
         this.shipMoney = shipMoney;
         this.total = total;
         this.companyID = companyID;
         this.paymentMethod = paymentMethod;
         this.status = status;
+    }
+    
+    public Order(String userID,Date requiredDate, Date shippedDate, String shipName, String shipAddress, String shipCity, String shipPhone, double shipMoney, double total, int companyID, String paymentMethod) {
+        this.userID = userID;
+        this.requiredDate = new Date(requiredDate.getTime());
+        this.shippedDate = new Date(shippedDate.getTime());
+        this.shipName = shipName;
+        this.shipAddress = shipAddress;
+        this.shipCity = shipCity;
+        this.shipPhone = shipPhone;
+        this.shipMoney = shipMoney;
+        this.total = total;
+        this.companyID = companyID;
+        this.paymentMethod = paymentMethod;
     }
 
     public int getOrderID() {
@@ -140,14 +151,6 @@ public class Order implements Serializable {
 
     public void setShipPhone(String shipPhone) {
         this.shipPhone = shipPhone;
-    }
-
-    public String getShipCompany() {
-        return shipCompany;
-    }
-
-    public void setShipCompany(String shipCompany) {
-        this.shipCompany = shipCompany;
     }
 
     public double getShipMoney() {

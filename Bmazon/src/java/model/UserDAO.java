@@ -101,19 +101,6 @@ public class UserDAO extends BaseDAO {
         return n;
     }
 
-    public int removeUser(int id) {
-        int n = 0;
-        String sql = "DELETE [User] WHERE userID = ?";
-        try {
-            pre = conn.prepareStatement(sql);
-            pre.setInt(1, id);
-            n = pre.executeUpdate();
-        } catch (SQLException ex) {
-            Logger.getLogger(UserDAO.class.getName()).log(Level.SEVERE, null, ex);
-        }
-        return n;
-    }
-
     public boolean checkExistUserName(String username) {
         String sql = "SELECT * FROM [User] WHERE username = '" + username + "'";
         ResultSet rs = dbConn.getData(sql);
@@ -286,31 +273,6 @@ public class UserDAO extends BaseDAO {
     
     public ArrayList<User> getAllUser() {
         ArrayList<User> list = new ArrayList<>();
-        String sql = "SELECT * FROM [User] where status=1";
-        ResultSet rs = dbConn.getData(sql);
-        try {
-            while (rs.next()) {
-                User user = new User(rs.getString("userID"), rs.getString("username"),
-                        rs.getString("password"), rs.getString("email"),
-                        rs.getString("phoneNumber"), rs.getInt("sell"),
-                        rs.getDouble("wallet"), rs.getString("fullname"),
-                        rs.getString("publicName"), rs.getString("address"), rs.getString("profileImage"),
-                        rs.getString("backgroundImage"), rs.getString("occupation"),
-                        rs.getInt("gender"), rs.getDate("DOB"), rs.getString("bio"),
-                        rs.getString("Facebook"), rs.getString("Instagram"),
-                        rs.getString("Twitter"), rs.getString("Youtube"),
-                        rs.getInt("activityPoint"), rs.getInt("systemRole"),
-                        rs.getInt("status"));
-                list.add(user);
-            }
-        } catch (SQLException ex) {
-            Logger.getLogger(UserDAO.class.getName()).log(Level.SEVERE, null, ex);
-        }
-        return list;
-    }
-
-    public ArrayList<User> getTrueUser() {
-        ArrayList<User> list = new ArrayList<>();
         String sql = "SELECT * FROM [User]";
         ResultSet rs = dbConn.getData(sql);
         try {
@@ -346,7 +308,7 @@ public class UserDAO extends BaseDAO {
             s2 = " and status = " + status + " ";
         }
 
-        String sql = "SELECT * FROM [User] WHERE status=1 and username like '%" + uName + "%' " + s1 + " " + s2;
+        String sql = "SELECT * FROM [User] WHERE status = 1 and username like '%" + uName + "%' " + s1 + " " + s2;
         ResultSet rs = dbConn.getData(sql);
         try {
             while (rs.next()) {
@@ -387,17 +349,43 @@ public class UserDAO extends BaseDAO {
         return map;
     }
 
-    public void updatePassword(String username, String mail, String password) {
+    public HashMap<User, Role> getAllPagingUserHashMap(int index, int numOfRow, String search) {
+        HashMap<User, Role> map = new HashMap<>();
+        UserDAO uDao = new UserDAO();
+        RoleDAO rDao = new RoleDAO();
+        String xSql = "declare @PageNo INT =" + index + "\n"
+                + "declare @PageSize INT=" + numOfRow + "\n"
+                + "SELECT * from(\n"
+                + "SELECT u.userID, r.roleID,\n"
+                + "ROW_NUMBER() over (order by userID) as RowNum\n"
+                + "  FROM [Bmazon].[dbo].[User] u INNER JOIN [Role] r ON u.systemRole = r.roleID where u.fullname like '%" + search + "%' or r.roleName like '%" + search + "%')T\n"
+                + "where T.RowNum between ((@PageNo-1)*@PageSize)+1 and (@PageNo*@PageSize)";
+        ResultSet rs = dbConn.getData(xSql);
+        try {
+            while (rs.next()) {
+                User u = uDao.getUserById(rs.getString("userID"));
+                Role r = rDao.getRoleId(rs.getInt("roleID"));
+                map.put(u, r);
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(UserDAO.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return map;
+    }
+    
+    public int updatePassword(String username, String mail, String password) {
+        int n = 0;
         String sql = "UPDATE [User] SET password = ? WHERE username = ? and email = ?";
         try {
             pre = conn.prepareStatement(sql);
             pre.setString(1, password);
             pre.setString(2, username);
             pre.setString(3, mail);
-            pre.executeUpdate();
+            n = pre.executeUpdate();
         } catch (SQLException ex) {
             Logger.getLogger(UserDAO.class.getName()).log(Level.SEVERE, null, ex);
         }
+        return n;
     }
 
     public int updateInfoUserByAdmin(User obj) {
@@ -438,33 +426,36 @@ public class UserDAO extends BaseDAO {
         return n;
     }
 
-    public void depositWalletUser(User obj, double amount) {
-
+    public int depositWalletUser(User obj, double amount) {
+        int n = 0;
         String sql = "UPDATE [User] SET wallet=? where userID=?";
         try {
             pre = conn.prepareStatement(sql);
             pre.setDouble(1, obj.getWallet() + amount);
             pre.setString(2, obj.getUserId());
-            pre.executeUpdate();
+            n = pre.executeUpdate();
         } catch (SQLException ex) {
             Logger.getLogger(UserDAO.class.getName()).log(Level.SEVERE, null, ex);
         }
+        return n;
     }
 
-    public void withdrawalWalletUser(User obj, double amount) {
-
+    public int withdrawalWalletUser(User obj, double amount) {
+        int n = 0;
         String sql = "UPDATE [User] SET wallet=? where userID=?";
         try {
             pre = conn.prepareStatement(sql);
             pre.setDouble(1, obj.getWallet() - amount);
             pre.setString(2, obj.getUserId());
-            pre.executeUpdate();
+            n = pre.executeUpdate();
         } catch (SQLException ex) {
             Logger.getLogger(UserDAO.class.getName()).log(Level.SEVERE, null, ex);
         }
+        return n;
     }
 
-    public void updatePublicInfo(User obj) {
+    public int updatePublicInfo(User obj) {
+        int n =0;
         String sql = "UPDATE [User] SET  username=?, [address]=?,"
                 + " bio=?, Facebook=?, Instagram=?, Twitter=?, Youtube=? , [password]=?"
                 + " where userID=?";
@@ -479,10 +470,11 @@ public class UserDAO extends BaseDAO {
             pre.setString(7, obj.getYoutube());
             pre.setString(8, obj.getPassword());
             pre.setString(9, obj.getUserId());
-            pre.executeUpdate();
+            n = pre.executeUpdate();
         } catch (SQLException ex) {
             Logger.getLogger(UserDAO.class.getName()).log(Level.SEVERE, null, ex);
         }
+        return n;
     }
 
     public int updatePrivateInfo(User obj) {
@@ -545,29 +537,29 @@ public class UserDAO extends BaseDAO {
         return n;
     }
     
-    public HashMap<User, Role> getAllPagingUserHashMap(int index, int numOfRow, String search) {
-        HashMap<User, Role> map = new HashMap<>();
-        UserDAO uDao = new UserDAO();
-        RoleDAO rDao = new RoleDAO();
-        String xSql = "declare @PageNo INT =" + index + "\n"
-                + "declare @PageSize INT=" + numOfRow + "\n"
-                + "SELECT * from(\n"
-                + "SELECT u.userID, r.roleID,\n"
-                + "ROW_NUMBER() over (order by userID) as RowNum\n"
-                + "  FROM [Bmazon].[dbo].[User] u INNER JOIN [Role] r ON u.systemRole = r.roleID where u.fullname like '%" + search + "%' or r.roleName like '%" + search + "%')T\n"
-                + "where T.RowNum between ((@PageNo-1)*@PageSize)+1 and (@PageNo*@PageSize)";
-        ResultSet rs = dbConn.getData(xSql);
-        try {
-            while (rs.next()) {
-                User u = uDao.getUserById(rs.getString("userID"));
-                Role r = rDao.getRoleId(rs.getInt("roleID"));
-                map.put(u, r);
-            }
-        } catch (SQLException ex) {
-            Logger.getLogger(UserDAO.class.getName()).log(Level.SEVERE, null, ex);
-        }
-        return map;
-    }
+//    public HashMap<User, Role> getAllPagingUserHashMap(int index, int numOfRow, String search) {
+//        HashMap<User, Role> map = new HashMap<>();
+//        UserDAO uDao = new UserDAO();
+//        RoleDAO rDao = new RoleDAO();
+//        String xSql = "declare @PageNo INT =" + index + "\n"
+//                + "declare @PageSize INT=" + numOfRow + "\n"
+//                + "SELECT * from(\n"
+//                + "SELECT u.userID, r.roleID,\n"
+//                + "ROW_NUMBER() over (order by userID) as RowNum\n"
+//                + "  FROM [Bmazon].[dbo].[User] u INNER JOIN [Role] r ON u.systemRole = r.roleID where u.fullname like '%" + search + "%' or r.roleName like '%" + search + "%')T\n"
+//                + "where T.RowNum between ((@PageNo-1)*@PageSize)+1 and (@PageNo*@PageSize)";
+//        ResultSet rs = dbConn.getData(xSql);
+//        try {
+//            while (rs.next()) {
+//                User u = uDao.getUserById(rs.getString("userID"));
+//                Role r = rDao.getRoleId(rs.getInt("roleID"));
+//                map.put(u, r);
+//            }
+//        } catch (SQLException ex) {
+//            Logger.getLogger(UserDAO.class.getName()).log(Level.SEVERE, null, ex);
+//        }
+//        return map;
+//    }
     
     // <editor-fold defaultstate="collapsed" desc="Didn't use. Click on the + sign on the left to edit the code.">
     public User getUserLogin(String username, String password) {

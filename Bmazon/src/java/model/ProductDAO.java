@@ -249,6 +249,32 @@ public class ProductDAO extends BaseDAO {
         }
         return list;
     }
+    
+    public ArrayList<Product> getNewProductSeller(String sid) {
+        ArrayList<Product> list = new ArrayList<>();
+        String sql = "SELECT TOP 6 * FROM Product where sellerID = ? order by releaseDate asc";
+        try {
+            pre = conn.prepareStatement(sql);
+            pre.setString(1, sid);
+            rs = pre.executeQuery();
+            while (rs.next()) {
+                Product pro = new Product();
+                pro.setProductID(rs.getInt("productID"));
+                pro.setProductName(rs.getString("productName"));
+                pro.setDescription(rs.getString("description"));
+                pro.setRating(rs.getInt("rating"));
+                pro.setReleaseDate(rs.getDate("releaseDate"));
+                pro.setSeller(rs.getInt("sellerID"));
+                pro.setStatus(rs.getInt("status"));
+                list.add(pro);
+            }
+            rs.close();
+            pre.close();
+        } catch (SQLException e) {
+            Logger.getLogger(ProductDAO.class.getName()).log(Level.SEVERE, null, e);
+        }
+        return list;
+    }
 
     public Product getProductLatest(int sellerID) {
         Product pro = new Product();
@@ -418,7 +444,7 @@ public class ProductDAO extends BaseDAO {
 
     public static void main(String[] args) {
         ProductDAO pDAO = new ProductDAO();
-        System.out.println(pDAO.getRelatedProductByProductIDPaging(2, 13));
+        System.out.println(pDAO.getNewProductSeller("1"));
     }
 
     public int totalProductSeller(String sid) {

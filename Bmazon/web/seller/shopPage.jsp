@@ -31,6 +31,7 @@
     GalleryDAO daoGallery = new GalleryDAO();
     Product product = (Product) request.getAttribute("product");
     List<Product> listProduct = (List<Product>) request.getAttribute("listProduct");
+    List<Product> listNewArrival = (List<Product>) request.getAttribute("listNewArrival");
     User user = (User) request.getAttribute("user");
     Seller seller = (Seller) request.getAttribute("seller");
     CategoryDAO daoCate = new CategoryDAO();
@@ -76,6 +77,18 @@
                 .woocommerce-pagination a:hover:not(.active){
                     background-color: chocolate;
                 }
+                .cover{
+                    background-color: black;
+                    background-image: url(${contextPath}/upload/<%= user.getBackgroundImage()%>);
+                    background-size: cover;
+                    background-repeat: no-repeat;
+                    background-position:center; 
+                    height: 230px;
+                    position: relative;
+                    width: 100%;
+                    margin-left: auto;
+                    margin-right: auto;
+                }
             </style>
             <script src="js/1.js"></script>
             <noscript><style>.woocommerce-product-gallery{ opacity: 1 !important; }</style></noscript>
@@ -89,22 +102,22 @@
         <body >
             <jsp:include page="../header.jsp"/>
             <!--Background image-->
-            <div class="row cover"></div>
+
             <div class="row" style="margin-top: 20px;">
                 <div class="col-md-4" style="border-top: 2px solid white; border-radius: 15px; border-bottom: 2px solid white; text-align: center; background-color: #222222;">
                     <%String img = "images/" + user.getBackgroundImage();%> 
                     <img style="border-radius: 100%; border: 5px solid #AAAAAA; margin-top: 10px; height: 100px; width: 100px;" src="<%=img%>">
-                    <h1 style="text-align: center; margin-top: 5px; margin-bottom: 5px; font-size: 25px;  text-align: center; color: white;"><%=seller.getSellerShopName()%></h1>
+                    <h1 style="text-align: center; margin-top: 8px; margin-bottom: 8px; font-size: 25px;  text-align: center; color: white; background-color: grey; border-radius: 15px;"><%=seller.getSellerShopName()%></h1>
                 </div>
                 <div class="col-md-4" style="border: 2px solid white; padding-left: 80px;">
                     <div class="col-md-12" style="font-size: 16px; margin-top: 18px;">
                         <span class="glyphicon glyphicon-home" style="margin-right: 10px;"></span><span>Address: <%=user.getAddress()%></span>
                     </div>
                     <div class="col-md-12" style="font-size: 16px; margin-top: 20px;">
-                        <span class="glyphicon glyphicon-phone-alt" style="margin-right: 10px;"></span><span>Phone: <%=user.getPhoneNumber()%></span>
+                        <span class="glyphicon glyphicon-phone-alt" style="margin-right: 10px;"></span><span>Phone: <%=seller.getSellerPhone()%></span>
                     </div>
                     <div class="col-md-12" style="font-size: 16px; margin-top: 20px;">
-                        <span class="glyphicon glyphicon-envelope" style="margin-right: 10px;"></span><span>Email: <%=user.getEmail()%></span>
+                        <span class="glyphicon glyphicon-pencil" style="margin-right: 10px;"></span><span><%=seller.getDescription()%></span>
                     </div>
                 </div>
                 <div class="col-md-4" style="border: 2px solid white">
@@ -114,18 +127,88 @@
                     <div class="col-md-12" style="font-size: 16px; margin-top: 20px;">
                         <i class="fa fa-instagram" style="margin-right: 10px;"></i><span>Instagram: <%=user.getInstagram()%></span>
                     </div>
+                    <div class="col-md-12" style="font-size: 16px; margin-top: 20px;">
+                        <span class="glyphicon glyphicon-envelope" style="margin-right: 10px;"></span><span>Email: <%=user.getEmail()%></span>
+                    </div>
                 </div>
             </div>
 
+            <br>
+            <div class="row cover"></div>
 
-               
+            <section class="section sec_dien_thoai" id="section_1788051855">
+                <section class="section sec_dien_thoai" id="section_1788051855">
+                    <div class="section-content relative">
+                        <div class="gap-element" style="display:block; height:auto; padding-top:30px" class="clearfix"></div>
+                        <br><br>
+                        <div class="row row-collapse align-equal"  id="row-1706731289">
+                            <div class="text">
+                                <div class="col-inner text-center" >
+                                    <h1>New Arrival</h1>
+                                </div>
+                            </div>              
+                            <br>
+                            <br>
+                            <br>
+                            <div class="col medium-12 small-12 large-12" >
+                                <div class="col-inner"  >
+                                    <div class="row large-columns-5 medium-columns- small-columns-2 row-collapse has-shadow row-box-shadow-1 slider row-slider slider-nav-reveal slider-nav-push"  data-flickity-options='{"imagesLoaded": true, "groupCells": "100%", "dragThreshold" : 5, "cellAlign": "left","wrapAround": true,"prevNextButtons": true,"percentPosition": true,"pageDots": false, "rightToLeft": false, "autoPlay" : 3000}'>
+                                        <% for (Product pr : listNewArrival) {
+                                                String str2 = "images/" + daoGallery.getSampleOfProduct(pr.getProductID());
+                                                double price2 = Double.parseDouble(daoProductType.getProductPrice(pr.getProductID()));
+                                        %>
+                                        <div class="col" >
+                                            <div class="col-inner">
+                                                <div class="product-small box has-hover box-normal box-text-bottom">
+                                                    <div class="box-image" style="width:150px; height:150px ">
+                                                        <div class="" >
+                                                            <a href="ProductDetailControllerMap?service=getProductDetail&pid=<%=pr.getProductID()%>">
+                                                                <img src="<%=str2%>"></a>
+                                                        </div>
+                                                    </div><!-- box-image -->
+                                                    <div class="box-text text-center" style="background-color:rgb(255, 255, 255);">
+                                                        <div class="title-wrapper" >		
+                                                            <p class="category uppercase is-smaller no-text-overflow product-cat op-7">   </p> <%--category--%>
+                                                            <p class="name product-title"><a href=""> <%=pr.getProductName()%> </a></p>
+                                                        </div> 
+                                                        <div class="price-wrapper" 
+                                                             <span class="price"><del><span class="woocommerce-Price-amount amount"><%=nf.format(price2 * 1.05)%>&nbsp; <span class="woocommerce-Price-currencySymbol">&#8363;</span></span></del> 
+                                                                <ins><span class="woocommerce-Price-amount amount"><%=nf.format(price2)%>&nbsp; <span class="woocommerce-Price-currencySymbol">&#8363;</span></span></ins></span>
+                                                        </div>							
+                                                    </div><!-- box-text -->
+                                                </div><!-- box -->
+                                            </div><!-- .col-inner -->
+                                        </div><!-- col -->
+                                        <% }
+                                        %>
+                                    </div>
+                                </div>
+                            </div>
+                            <%--Arrival LEFT PIC --%>          
+                            <style scope="scope">
+                                #row-1706731289 > .col > .col-inner {
+                                    background-color: rgb(255, 255, 255);
+                                }
+                            </style>
+                        </div>
+                    </div>
+                    <style scope="scope">
+                        #section_1788051855 {
+                            padding-top: 0px;
+                            padding-bottom: 0px;
+                        }
+                    </style>
+                </section>
+            </section>
+            <br><br>
+
             <div id="wrapper">
                 <br><br><br>
                 <main id="main" class="">
                     <div class="col large-12">              
                         <div class="shop-container">
 
-                            <div class="products row row-small large-columns-5 medium-columns-3 small-columns-2 has-shadow row-box-shadow-1" id="1" style="background-color: silver">
+                            <div class="products row row-small large-columns-5 medium-columns-3 small-columns-2 has-shadow row-box-shadow-1" id="1">
                                 <% for (Product pro : listProduct) {
                                         String str = "images/" + daoGallery.getSampleOfProduct(pro.getProductID());
                                         double price = Double.parseDouble(daoProductType.getProductPrice(pro.getProductID()));

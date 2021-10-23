@@ -57,7 +57,6 @@ public class ShipCompanyDAOTest {
         assertEquals(0, instance.changeStatus(0, 1));
     }
 
-    
     /**
      * Test of checkExistCompanyName method, of class ShipCompanyDAO.
      */
@@ -93,6 +92,7 @@ public class ShipCompanyDAOTest {
         ShipCompanyDAO instance = new ShipCompanyDAO();
         assertEquals(1, instance.addShipCompany(sp));
     }
+    
     @Test
     public void testAddShipCompanyNull() {
         System.out.println("addShipCompanyNull");
@@ -120,6 +120,7 @@ public class ShipCompanyDAOTest {
         ShipCompanyDAO instance = new ShipCompanyDAO();
         assertEquals(1, instance.editShipCompany(sp));
     }
+    
     @Test
     public void testEditShipCompanyNull() {
         System.out.println("editShipCompanyNull");
@@ -212,7 +213,6 @@ public class ShipCompanyDAOTest {
     public void testGetAllShipCompany() {
         System.out.println("getAllShipCompany");
         ShipCompanyDAO instance = new ShipCompanyDAO();
-        List<ShipCompany> expResult = null;
         List<ShipCompany> result = instance.getAllShipCompany();
         assertNotNull(result);
     }
