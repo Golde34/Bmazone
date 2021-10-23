@@ -1,0 +1,210 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../.resources/report.css" type="text/css"/><link rel="shortcut icon" href="../.resources/report.gif" type="image/gif"/><title>GenreDAO.java</title><link rel="stylesheet" href="../.resources/prettify.css" type="text/css"/><script type="text/javascript" src="../.resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../.sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">JaCoCoverage analysis of project &quot;Bmazon&quot; (powered by JaCoCo from EclEmma)</a> &gt; <a href="index.source.html" class="el_package">model</a> &gt; <span class="el_source">GenreDAO.java</span></div><h1>GenreDAO.java</h1><pre class="source lang-java linenums">package model;
+
+import entity.Genre;
+import java.sql.SQLException;
+import java.sql.Statement;
+import java.util.ArrayList;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
+<span class="nc" id="L10">public class GenreDAO extends BaseDAO{</span>
+<span class="nc" id="L11">BaseDAO dbConn= new BaseDAO();</span>
+   
+    public static void main(String[] args) {
+<span class="nc" id="L14">        GenreDAO dao = new GenreDAO();</span>
+<span class="nc" id="L15">        System.out.println(dao.getGenresByCategoryId(2));</span>
+<span class="nc" id="L16">    }</span>
+    public ArrayList&lt;Genre&gt; getAllGenres() {
+<span class="nc" id="L18">        String sql = &quot;select * from Genre WHERE status=1&quot;;</span>
+<span class="nc" id="L19">        ArrayList&lt;Genre&gt; list = new ArrayList&lt;&gt;();</span>
+<span class="nc" id="L20">        Genre x = null;</span>
+        int genreID;
+        String genreName;
+        int categoryID;
+        int status;
+        try {
+<span class="nc" id="L26">            pre = conn.prepareStatement(sql);</span>
+<span class="nc" id="L27">            rs = pre.executeQuery();</span>
+<span class="nc bnc" id="L28" title="All 2 branches missed.">            while (rs.next()) {</span>
+<span class="nc" id="L29">                genreID = rs.getInt(&quot;genreID&quot;);</span>
+<span class="nc" id="L30">                genreName = rs.getString(&quot;genreName&quot;);</span>
+<span class="nc" id="L31">                categoryID = rs.getInt(&quot;categoryID&quot;);</span>
+<span class="nc" id="L32">                status = rs.getInt(&quot;status&quot;);</span>
+<span class="nc" id="L33">                x = new Genre(genreID, genreName, categoryID, status);</span>
+<span class="nc" id="L34">                list.add(x);</span>
+            }
+<span class="nc" id="L36">        } catch (SQLException ex) {</span>
+<span class="nc" id="L37">            Logger.getLogger(CategoryDAO.class.getName()).log(Level.SEVERE, null, ex);</span>
+<span class="nc" id="L38">        }</span>
+<span class="nc" id="L39">        return list;</span>
+    }
+    
+    public ArrayList&lt;Genre&gt; getGenresByCategoryId(int categoryId){
+<span class="nc" id="L43">        String sql = &quot;select * from Genre WHERE categoryID=&quot;+categoryId;</span>
+<span class="nc" id="L44">        ArrayList&lt;Genre&gt; list = new ArrayList&lt;&gt;();</span>
+<span class="nc" id="L45">        Genre x = null;</span>
+        int genreID;
+        String genreName;
+        int categoryID;
+        int status;
+        try {
+<span class="nc" id="L51">            pre = conn.prepareStatement(sql);</span>
+<span class="nc" id="L52">            rs = pre.executeQuery();</span>
+<span class="nc bnc" id="L53" title="All 2 branches missed.">            while (rs.next()) {</span>
+<span class="nc" id="L54">                genreID = rs.getInt(&quot;genreID&quot;);</span>
+<span class="nc" id="L55">                genreName = rs.getString(&quot;genreName&quot;);</span>
+<span class="nc" id="L56">                categoryID = rs.getInt(&quot;categoryID&quot;);</span>
+<span class="nc" id="L57">                status = rs.getInt(&quot;status&quot;);</span>
+<span class="nc" id="L58">                x = new Genre(genreID, genreName, categoryID, status);</span>
+<span class="nc" id="L59">                list.add(x);</span>
+            }
+<span class="nc" id="L61">        } catch (SQLException ex) {</span>
+<span class="nc" id="L62">            Logger.getLogger(CategoryDAO.class.getName()).log(Level.SEVERE, null, ex);</span>
+<span class="nc" id="L63">        }</span>
+<span class="nc" id="L64">        return list;</span>
+    }
+
+    public ArrayList&lt;Genre&gt; getTrueGenres() {
+<span class="nc" id="L68">        String sql = &quot;select * from Genre&quot;;</span>
+<span class="nc" id="L69">        ArrayList&lt;Genre&gt; list = new ArrayList&lt;&gt;();</span>
+<span class="nc" id="L70">        Genre x = null;</span>
+        int genreID;
+        String genreName;
+        int categoryID;
+        int status;
+        try {
+<span class="nc" id="L76">            pre = conn.prepareStatement(sql);</span>
+<span class="nc" id="L77">            rs = pre.executeQuery();</span>
+<span class="nc bnc" id="L78" title="All 2 branches missed.">            while (rs.next()) {</span>
+<span class="nc" id="L79">                genreID = rs.getInt(&quot;genreID&quot;);</span>
+<span class="nc" id="L80">                genreName = rs.getString(&quot;genreName&quot;);</span>
+<span class="nc" id="L81">                categoryID = rs.getInt(&quot;categoryID&quot;);</span>
+<span class="nc" id="L82">                status = rs.getInt(&quot;status&quot;);</span>
+<span class="nc" id="L83">                x = new Genre(genreID, genreName, categoryID, status);</span>
+<span class="nc" id="L84">                list.add(x);</span>
+            }
+<span class="nc" id="L86">        } catch (SQLException ex) {</span>
+<span class="nc" id="L87">            Logger.getLogger(CategoryDAO.class.getName()).log(Level.SEVERE, null, ex);</span>
+<span class="nc" id="L88">        }</span>
+<span class="nc" id="L89">        return list;</span>
+    }
+     public ArrayList&lt;Genre&gt; getHomeGenre() {
+<span class="nc" id="L92">        String sql = &quot;select top 16* from Genre&quot;;</span>
+<span class="nc" id="L93">        ArrayList&lt;Genre&gt; list = new ArrayList&lt;&gt;();</span>
+<span class="nc" id="L94">        Genre x = null;</span>
+        int genreID;
+        String genreName,images;
+        int categoryID;
+        int status;
+        try {
+<span class="nc" id="L100">            pre = conn.prepareStatement(sql);</span>
+<span class="nc" id="L101">            rs = pre.executeQuery();</span>
+<span class="nc bnc" id="L102" title="All 2 branches missed.">            while (rs.next()) {</span>
+<span class="nc" id="L103">                genreID = rs.getInt(&quot;genreID&quot;);</span>
+<span class="nc" id="L104">                genreName = rs.getString(&quot;genreName&quot;);</span>
+<span class="nc" id="L105">                categoryID = rs.getInt(&quot;categoryID&quot;);</span>
+<span class="nc" id="L106">                images=rs.getString(&quot;images&quot;);</span>
+<span class="nc" id="L107">                status = rs.getInt(&quot;status&quot;);</span>
+<span class="nc" id="L108">                x = new Genre(genreID, genreName, categoryID, status, images);</span>
+<span class="nc" id="L109">                list.add(x);</span>
+            }
+<span class="nc" id="L111">        } catch (SQLException ex) {</span>
+<span class="nc" id="L112">            Logger.getLogger(CategoryDAO.class.getName()).log(Level.SEVERE, null, ex);</span>
+<span class="nc" id="L113">        }</span>
+<span class="nc" id="L114">        return list;</span>
+    }
+
+    public void insertGenre(Genre gen) {
+<span class="nc" id="L118">        String sql = &quot;Insert into Genre(genreName,categoryID,status) values (?,?,?)&quot;;</span>
+        try {
+<span class="nc" id="L120">            pre = conn.prepareStatement(sql);</span>
+<span class="nc" id="L121">            pre.setString(1, gen.getGenreName());</span>
+<span class="nc" id="L122">            pre.setInt(2, gen.getCategoryID());</span>
+<span class="nc" id="L123">            pre.setString(3, gen.getImages());</span>
+<span class="nc" id="L124">            pre.setInt(4, gen.getStatus());</span>
+<span class="nc" id="L125">            pre.executeUpdate();</span>
+<span class="nc" id="L126">        } catch (SQLException ex) {</span>
+<span class="nc" id="L127">            Logger.getLogger(CategoryDAO.class.getName()).log(Level.SEVERE, null, ex);</span>
+<span class="nc" id="L128">        }</span>
+<span class="nc" id="L129">    }</span>
+
+    public void updateGenre(Genre gen) {
+<span class="nc" id="L132">        String sql = &quot;update Genre set genreName=?, categoryID=?, status=? where genreID=?&quot;;</span>
+        try {
+<span class="nc" id="L134">            pre = conn.prepareStatement(sql);</span>
+<span class="nc" id="L135">            pre.setString(1, gen.getGenreName());</span>
+<span class="nc" id="L136">            pre.setInt(2, gen.getCategoryID());</span>
+<span class="nc" id="L137">            pre.setInt(3, gen.getStatus());</span>
+<span class="nc" id="L138">            pre.setInt(4, gen.getGenreID());</span>
+<span class="nc" id="L139">            pre.executeUpdate();</span>
+<span class="nc" id="L140">        } catch (SQLException ex) {</span>
+<span class="nc" id="L141">            Logger.getLogger(CategoryDAO.class.getName()).log(Level.SEVERE, null, ex);</span>
+<span class="nc" id="L142">        }</span>
+<span class="nc" id="L143">    }</span>
+
+    public Genre getGenreById(int gId) {
+<span class="nc" id="L146">        String sql = &quot;select * from Genre where genreID=&quot; + gId;</span>
+<span class="nc" id="L147">        Genre x = null;</span>
+        int genreID;
+        String genreName;
+        int categoryID;
+        int status;
+        try {
+<span class="nc" id="L153">            pre = conn.prepareStatement(sql);</span>
+<span class="nc" id="L154">            rs = pre.executeQuery();</span>
+<span class="nc bnc" id="L155" title="All 2 branches missed.">            while (rs.next()) {</span>
+<span class="nc" id="L156">                genreID = rs.getInt(&quot;genreID&quot;);</span>
+<span class="nc" id="L157">                genreName = rs.getString(&quot;genreName&quot;);</span>
+<span class="nc" id="L158">                categoryID = rs.getInt(&quot;categoryID&quot;);</span>
+<span class="nc" id="L159">                status = rs.getInt(&quot;status&quot;);</span>
+<span class="nc" id="L160">                x = new Genre(genreID, genreName, categoryID, status);</span>
+            }
+<span class="nc" id="L162">        } catch (SQLException ex) {</span>
+<span class="nc" id="L163">            Logger.getLogger(CategoryDAO.class.getName()).log(Level.SEVERE, null, ex);</span>
+<span class="nc" id="L164">        }</span>
+<span class="nc" id="L165">        return x;</span>
+    }
+    
+    public int changeStatus(int id, int status) {
+<span class="nc" id="L169">        int n = 0;</span>
+<span class="nc" id="L170">        String sql = &quot;update Genre set status = ? where genreID = ?&quot;;</span>
+        try {
+<span class="nc" id="L172">            pre = conn.prepareStatement(sql);</span>
+<span class="nc bnc" id="L173" title="All 2 branches missed.">            pre.setInt(1,(status == 1 ? 1 : 0));</span>
+<span class="nc" id="L174">            pre.setInt(2,id);</span>
+<span class="nc" id="L175">            n = pre.executeUpdate();</span>
+<span class="nc" id="L176">        } catch (SQLException ex) {</span>
+<span class="nc" id="L177">            Logger.getLogger(CategoryDAO.class.getName()).log(Level.SEVERE, null, ex);</span>
+<span class="nc" id="L178">        }</span>
+<span class="nc" id="L179">        return n;</span>
+    }
+    
+    public int removeGenre(int id) {
+<span class="nc" id="L183">        int n = 0;</span>
+<span class="nc" id="L184">        String sql = &quot;delete from Genre where genreID =?&quot;;</span>
+        try {
+<span class="nc" id="L186">                pre = conn.prepareStatement(sql);</span>
+<span class="nc" id="L187">                pre.setInt(1, id);</span>
+<span class="nc" id="L188">                n =pre.executeUpdate();          </span>
+<span class="nc" id="L189">        } catch (SQLException ex) {</span>
+<span class="nc" id="L190">            Logger.getLogger(CategoryDAO.class.getName()).log(Level.SEVERE, null, ex);</span>
+<span class="nc" id="L191">        }</span>
+<span class="nc" id="L192">        return n;</span>
+    }
+    
+    public boolean checkExistGenreName(String genreName) {
+<span class="nc" id="L196">        String sql = &quot;SELECT * FROM Genre WHERE genreName = '&quot; + genreName + &quot;'&quot;;</span>
+<span class="nc" id="L197">        rs = dbConn.getData(sql);</span>
+        try {
+<span class="nc bnc" id="L199" title="All 2 branches missed.">            if (rs.next()) {</span>
+<span class="nc" id="L200">                return true;</span>
+            }
+<span class="nc" id="L202">        } catch (SQLException ex) {</span>
+<span class="nc" id="L203">            Logger.getLogger(CategoryDAO.class.getName()).log(Level.SEVERE, null, ex);</span>
+<span class="nc" id="L204">        }</span>
+<span class="nc" id="L205">        return false;</span>
+    }
+    
+    
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.eclemma.org/jacoco">JaCoCo</a> 0.7.5.201505241946</span></div></body></html>

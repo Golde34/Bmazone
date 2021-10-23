@@ -1,0 +1,596 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../.resources/report.css" type="text/css"/><link rel="shortcut icon" href="../.resources/report.gif" type="image/gif"/><title>UserDAO.java</title><link rel="stylesheet" href="../.resources/prettify.css" type="text/css"/><script type="text/javascript" src="../.resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../.sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">JaCoCoverage analysis of project &quot;Bmazon&quot; (powered by JaCoCo from EclEmma)</a> &gt; <a href="index.source.html" class="el_package">model</a> &gt; <span class="el_source">UserDAO.java</span></div><h1>UserDAO.java</h1><pre class="source lang-java linenums">/*
+ * To change this license header, choose License Headers in Project Properties.
+ * To change this template file, choose Tools | Templates
+ * and open the template in the editor.
+ */
+package model;
+
+import entity.Role;
+import entity.Seller;
+import entity.User;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
+/**
+ *
+ * @author Admin
+ */
+<span class="fc" id="L22">public class UserDAO extends BaseDAO {</span>
+
+<span class="fc" id="L24">    BaseDAO dbConn = new BaseDAO();</span>
+    
+    public int addUser(User obj) {
+<span class="fc" id="L27">        int n = 0;</span>
+<span class="fc" id="L28">        String sql = &quot;INSERT INTO [User](username, password, email, phoneNumber, sell, wallet, fullname, publicName, address,&quot;</span>
+                + &quot; profileImage, backgroundImage, occupation, gender, DOB, bio, Facebook, Instagram, Twitter, Youtube,&quot;
+                + &quot; activityPoint, systemRole, status)&quot;
+                + &quot; values (?,?,?,?,?,?,?,?,?,?,?,?,?,GETDATE(),?,?,?,?,?,?,?,?)&quot;;
+        try {
+<span class="fc" id="L33">            pre = conn.prepareStatement(sql);</span>
+<span class="fc" id="L34">            pre.setString(1, obj.getUsername());</span>
+<span class="fc" id="L35">            pre.setString(2, obj.getPassword());</span>
+<span class="fc" id="L36">            pre.setString(3, obj.getEmail());</span>
+<span class="fc" id="L37">            pre.setString(4, obj.getPhoneNumber());</span>
+<span class="fc" id="L38">            pre.setInt(5, obj.getSell());</span>
+<span class="fc" id="L39">            pre.setDouble(6, obj.getWallet());</span>
+<span class="fc" id="L40">            pre.setString(7, obj.getFullname());</span>
+<span class="fc" id="L41">            pre.setString(8, obj.getPublicName());</span>
+<span class="fc" id="L42">            pre.setString(9, obj.getAddress());</span>
+<span class="fc" id="L43">            pre.setString(10, obj.getProfileImage());</span>
+<span class="fc" id="L44">            pre.setString(11, obj.getBackgroundImage());</span>
+<span class="fc" id="L45">            pre.setString(12, obj.getOccupation());</span>
+<span class="fc" id="L46">            pre.setInt(13, obj.getGender());</span>
+<span class="fc" id="L47">            pre.setString(14, obj.getBio());</span>
+<span class="fc" id="L48">            pre.setString(15, obj.getFacebook());</span>
+<span class="fc" id="L49">            pre.setString(16, obj.getInstagram());</span>
+<span class="fc" id="L50">            pre.setString(17, obj.getTwitter());</span>
+<span class="fc" id="L51">            pre.setString(18, obj.getYoutube());</span>
+<span class="fc" id="L52">            pre.setInt(19, obj.getActivityPoint());</span>
+<span class="fc" id="L53">            pre.setInt(20, obj.getSystemRole());</span>
+<span class="fc" id="L54">            pre.setInt(21, obj.getStatus());</span>
+<span class="fc" id="L55">            n = pre.executeUpdate();</span>
+<span class="fc" id="L56">        } catch (SQLException ex) {</span>
+<span class="fc" id="L57">            Logger.getLogger(UserDAO.class.getName()).log(Level.SEVERE, null, ex);</span>
+<span class="fc" id="L58">        }</span>
+<span class="fc" id="L59">        return n;</span>
+    }
+
+    public int changePassword(String username, String newPass) {
+        try {
+<span class="fc" id="L64">            String sqlUpdate = &quot;Update [User] set password = ? where username = ?&quot;;</span>
+<span class="fc" id="L65">            pre = conn.prepareStatement(sqlUpdate);</span>
+<span class="fc" id="L66">            pre.setString(1, newPass);</span>
+<span class="fc" id="L67">            pre.setString(2, username);</span>
+<span class="fc" id="L68">            int n = pre.executeUpdate();</span>
+<span class="fc" id="L69">            return n;</span>
+<span class="fc" id="L70">        } catch (SQLException ex) {</span>
+<span class="fc" id="L71">            Logger.getLogger(UserDAO.class.getName()).log(Level.SEVERE, null, ex);</span>
+        }
+<span class="fc" id="L73">        return 0;</span>
+    }
+
+    public int changeStatus(String username, int status) {
+<span class="fc" id="L77">        int n = 0;</span>
+<span class="fc" id="L78">        String sql = &quot;UPDATE [User] SET status = ? WHERE username = ?&quot;;</span>
+        try {
+<span class="fc" id="L80">            pre = conn.prepareStatement(sql);</span>
+<span class="fc bfc" id="L81" title="All 2 branches covered.">            pre.setInt(1, (status == 1 ? 1 : 0));</span>
+<span class="fc" id="L82">            pre.setString(2, username);</span>
+<span class="fc" id="L83">            n = pre.executeUpdate();</span>
+<span class="nc" id="L84">        } catch (SQLException ex) {</span>
+<span class="nc" id="L85">            Logger.getLogger(UserDAO.class.getName()).log(Level.SEVERE, null, ex);</span>
+<span class="fc" id="L86">        }</span>
+<span class="fc" id="L87">        return n;</span>
+    }
+
+    public int changeStatus(int id, int status) {
+<span class="fc" id="L91">        int n = 0;</span>
+<span class="fc" id="L92">        String sql = &quot;UPDATE [User] SET status = ? WHERE userID = ?&quot;;</span>
+        try {
+<span class="fc" id="L94">            pre = conn.prepareStatement(sql);</span>
+<span class="fc bfc" id="L95" title="All 2 branches covered.">            pre.setInt(1, (status == 1 ? 1 : 0));</span>
+<span class="fc" id="L96">            pre.setInt(2, id);</span>
+<span class="fc" id="L97">            n = pre.executeUpdate();</span>
+<span class="nc" id="L98">        } catch (SQLException ex) {</span>
+<span class="nc" id="L99">            Logger.getLogger(UserDAO.class.getName()).log(Level.SEVERE, null, ex);</span>
+<span class="fc" id="L100">        }</span>
+<span class="fc" id="L101">        return n;</span>
+    }
+
+    public boolean checkExistUserName(String username) {
+<span class="fc" id="L105">        String sql = &quot;SELECT * FROM [User] WHERE username = '&quot; + username + &quot;'&quot;;</span>
+<span class="fc" id="L106">        ResultSet rs = dbConn.getData(sql);</span>
+        try {
+<span class="fc bfc" id="L108" title="All 2 branches covered.">            if (rs.next()) {</span>
+<span class="fc" id="L109">                return true;</span>
+            }
+<span class="nc" id="L111">        } catch (SQLException ex) {</span>
+<span class="nc" id="L112">            Logger.getLogger(UserDAO.class.getName()).log(Level.SEVERE, null, ex);</span>
+<span class="fc" id="L113">        }</span>
+<span class="fc" id="L114">        return false;</span>
+    }
+
+    public boolean checkExistPhone(String phone) {
+<span class="fc" id="L118">        String sql = &quot;SELECT * FROM [User] WHERE phoneNumber = '&quot; + phone + &quot;'&quot;;</span>
+<span class="fc" id="L119">        ResultSet rs = dbConn.getData(sql);</span>
+        try {
+<span class="fc bfc" id="L121" title="All 2 branches covered.">            if (rs.next()) {</span>
+<span class="fc" id="L122">                return true;</span>
+            }
+<span class="nc" id="L124">        } catch (SQLException ex) {</span>
+<span class="nc" id="L125">            Logger.getLogger(UserDAO.class.getName()).log(Level.SEVERE, null, ex);</span>
+<span class="fc" id="L126">        }</span>
+<span class="fc" id="L127">        return false;</span>
+    }
+
+    public boolean checkExistMail(String mail) {
+<span class="fc" id="L131">        String sql = &quot;SELECT * FROM [User] WHERE email = '&quot; + mail + &quot;'&quot;;</span>
+<span class="fc" id="L132">        ResultSet rs = dbConn.getData(sql);</span>
+        try {
+<span class="fc bfc" id="L134" title="All 2 branches covered.">            if (rs.next()) {</span>
+<span class="fc" id="L135">                return true;</span>
+            }
+<span class="nc" id="L137">        } catch (SQLException ex) {</span>
+<span class="nc" id="L138">            Logger.getLogger(UserDAO.class.getName()).log(Level.SEVERE, null, ex);</span>
+<span class="fc" id="L139">        }</span>
+<span class="fc" id="L140">        return false;</span>
+    }
+
+    public boolean checkExistUserNameAndMail(String username, String mail) {
+<span class="fc" id="L144">        String sql = &quot;SELECT * FROM [User] WHERE username = '&quot; + username + &quot;' and email = '&quot; + mail + &quot;' and status = 1&quot;;</span>
+<span class="fc" id="L145">        ResultSet rs = dbConn.getData(sql);</span>
+        try {
+<span class="fc bfc" id="L147" title="All 2 branches covered.">            if (rs.next()) {</span>
+<span class="fc" id="L148">                return true;</span>
+            }
+<span class="nc" id="L150">        } catch (SQLException ex) {</span>
+<span class="nc" id="L151">            Logger.getLogger(UserDAO.class.getName()).log(Level.SEVERE, null, ex);</span>
+<span class="fc" id="L152">        }</span>
+<span class="fc" id="L153">        return false;</span>
+    }
+
+    public int getPageNumber(String search) {
+<span class="fc" id="L157">        int num = 0;</span>
+<span class="fc" id="L158">        String xSql = &quot;SELECT COUNT(*) FROM [Bmazon].[dbo].[User] where fullname like '%&quot; + search + &quot;%' or email like '%&quot; + search + &quot;%' or phoneNumber like '%&quot; + search + &quot;%' or address like '%&quot; + search + &quot;%'&quot;;</span>
+<span class="fc" id="L159">        ResultSet rs = dbConn.getData(xSql);</span>
+        try {
+<span class="pc bpc" id="L161" title="1 of 2 branches missed.">            if (rs.next()) {</span>
+<span class="fc" id="L162">                num = rs.getInt(1);</span>
+            }
+<span class="nc" id="L164">        } catch (SQLException ex) {</span>
+<span class="nc" id="L165">            Logger.getLogger(UserDAO.class.getName()).log(Level.SEVERE, null, ex);</span>
+<span class="fc" id="L166">        }</span>
+<span class="fc" id="L167">        return num;</span>
+    }
+
+    public ArrayList&lt;User&gt; getAllPagingUser(int index, int numOfRow, String search) {
+<span class="fc" id="L171">        ArrayList&lt;User&gt; list = new ArrayList&lt;&gt;();</span>
+<span class="fc" id="L172">        String xSql = &quot;declare @PageNo INT =&quot; + index + &quot;\n&quot;</span>
+                + &quot;declare @PageSize INT=&quot; + numOfRow + &quot;\n&quot;
+                + &quot;SELECT * from(\n&quot;
+                + &quot;SELECT *,\n&quot;
+                + &quot;ROW_NUMBER() over (order by userID) as RowNum\n&quot;
+                + &quot;  FROM [Bmazon].[dbo].[User] where fullname like '%&quot; + search + &quot;%' or email like '%&quot; + search + &quot;%' or phoneNumber like '%&quot; + search + &quot;%'\n&quot;
+                + &quot;  or address like '%&quot; + search + &quot;%')T\n&quot;
+                + &quot;where T.RowNum between ((@PageNo-1)*@PageSize)+1 and (@PageNo*@PageSize)&quot;;
+<span class="fc" id="L180">        ResultSet rs = dbConn.getData(xSql);</span>
+        try {
+<span class="fc bfc" id="L182" title="All 2 branches covered.">            while (rs.next()) {</span>
+<span class="fc" id="L183">                User user = new User(rs.getString(&quot;userID&quot;), rs.getString(&quot;username&quot;),</span>
+<span class="fc" id="L184">                        rs.getString(&quot;password&quot;), rs.getString(&quot;email&quot;),</span>
+<span class="fc" id="L185">                        rs.getString(&quot;phoneNumber&quot;), rs.getInt(&quot;sell&quot;),</span>
+<span class="fc" id="L186">                        rs.getDouble(&quot;wallet&quot;), rs.getString(&quot;fullname&quot;),</span>
+<span class="fc" id="L187">                        rs.getString(&quot;publicName&quot;), rs.getString(&quot;address&quot;), rs.getString(&quot;profileImage&quot;),</span>
+<span class="fc" id="L188">                        rs.getString(&quot;backgroundImage&quot;), rs.getString(&quot;occupation&quot;),</span>
+<span class="fc" id="L189">                        rs.getInt(&quot;gender&quot;), rs.getDate(&quot;DOB&quot;), rs.getString(&quot;bio&quot;),</span>
+<span class="fc" id="L190">                        rs.getString(&quot;Facebook&quot;), rs.getString(&quot;Instagram&quot;),</span>
+<span class="fc" id="L191">                        rs.getString(&quot;Twitter&quot;), rs.getString(&quot;Youtube&quot;),</span>
+<span class="fc" id="L192">                        rs.getInt(&quot;activityPoint&quot;), rs.getInt(&quot;systemRole&quot;),</span>
+<span class="fc" id="L193">                        rs.getInt(&quot;status&quot;));</span>
+<span class="fc" id="L194">                list.add(user);</span>
+<span class="fc" id="L195">            }</span>
+<span class="nc" id="L196">        } catch (SQLException ex) {</span>
+<span class="nc" id="L197">            Logger.getLogger(UserDAO.class.getName()).log(Level.SEVERE, null, ex);</span>
+<span class="fc" id="L198">        }</span>
+<span class="fc" id="L199">        return list;</span>
+    }
+
+    public User getUserByUsername(String username) {
+<span class="fc" id="L203">        String sql = &quot;SELECT * FROM [User] WHERE username = '&quot; + username + &quot;' and status=1&quot;;</span>
+<span class="fc" id="L204">        ResultSet rs = dbConn.getData(sql);</span>
+        try {
+<span class="fc bfc" id="L206" title="All 2 branches covered.">            if (rs.next()) {</span>
+<span class="fc" id="L207">                User user = new User(rs.getString(&quot;userID&quot;), rs.getString(&quot;username&quot;),</span>
+<span class="fc" id="L208">                        rs.getString(&quot;password&quot;), rs.getString(&quot;email&quot;),</span>
+<span class="fc" id="L209">                        rs.getString(&quot;phoneNumber&quot;), rs.getInt(&quot;sell&quot;),</span>
+<span class="fc" id="L210">                        rs.getDouble(&quot;wallet&quot;), rs.getString(&quot;fullname&quot;),</span>
+<span class="fc" id="L211">                        rs.getString(&quot;publicName&quot;), rs.getString(&quot;address&quot;), rs.getString(&quot;profileImage&quot;),</span>
+<span class="fc" id="L212">                        rs.getString(&quot;backgroundImage&quot;), rs.getString(&quot;occupation&quot;),</span>
+<span class="fc" id="L213">                        rs.getInt(&quot;gender&quot;), rs.getDate(&quot;DOB&quot;), rs.getString(&quot;bio&quot;),</span>
+<span class="fc" id="L214">                        rs.getString(&quot;Facebook&quot;), rs.getString(&quot;Instagram&quot;),</span>
+<span class="fc" id="L215">                        rs.getString(&quot;Twitter&quot;), rs.getString(&quot;Youtube&quot;),</span>
+<span class="fc" id="L216">                        rs.getInt(&quot;activityPoint&quot;), rs.getInt(&quot;systemRole&quot;),</span>
+<span class="fc" id="L217">                        rs.getInt(&quot;status&quot;));</span>
+<span class="fc" id="L218">                return user;</span>
+            }
+<span class="nc" id="L220">        } catch (SQLException ex) {</span>
+<span class="nc" id="L221">            Logger.getLogger(UserDAO.class.getName()).log(Level.SEVERE, null, ex);</span>
+<span class="fc" id="L222">        }</span>
+<span class="fc" id="L223">        return null;</span>
+    }
+
+    public User getUserById(String id) {
+<span class="fc" id="L227">        String sql = &quot;SELECT * FROM [User] WHERE userID = '&quot; + id + &quot;'&quot;;</span>
+<span class="fc" id="L228">        ResultSet rs = dbConn.getData(sql);</span>
+        try {
+<span class="fc bfc" id="L230" title="All 2 branches covered.">            if (rs.next()) {</span>
+<span class="fc" id="L231">                User user = new User(rs.getString(&quot;userID&quot;), rs.getString(&quot;username&quot;),</span>
+<span class="fc" id="L232">                        rs.getString(&quot;password&quot;), rs.getString(&quot;email&quot;),</span>
+<span class="fc" id="L233">                        rs.getString(&quot;phoneNumber&quot;), rs.getInt(&quot;sell&quot;),</span>
+<span class="fc" id="L234">                        rs.getDouble(&quot;wallet&quot;), rs.getString(&quot;fullname&quot;),</span>
+<span class="fc" id="L235">                        rs.getString(&quot;publicName&quot;), rs.getString(&quot;address&quot;), rs.getString(&quot;profileImage&quot;),</span>
+<span class="fc" id="L236">                        rs.getString(&quot;backgroundImage&quot;), rs.getString(&quot;occupation&quot;),</span>
+<span class="fc" id="L237">                        rs.getInt(&quot;gender&quot;), rs.getDate(&quot;DOB&quot;), rs.getString(&quot;bio&quot;),</span>
+<span class="fc" id="L238">                        rs.getString(&quot;Facebook&quot;), rs.getString(&quot;Instagram&quot;),</span>
+<span class="fc" id="L239">                        rs.getString(&quot;Twitter&quot;), rs.getString(&quot;Youtube&quot;),</span>
+<span class="fc" id="L240">                        rs.getInt(&quot;activityPoint&quot;), rs.getInt(&quot;systemRole&quot;),</span>
+<span class="fc" id="L241">                        rs.getInt(&quot;status&quot;));</span>
+<span class="fc" id="L242">                return user;</span>
+            }
+<span class="nc" id="L244">        } catch (SQLException ex) {</span>
+<span class="nc" id="L245">            Logger.getLogger(UserDAO.class.getName()).log(Level.SEVERE, null, ex);</span>
+<span class="fc" id="L246">        }</span>
+<span class="fc" id="L247">        return null;</span>
+    }
+
+    public User getUserBySellerId(Seller s) {
+<span class="fc" id="L251">        String sql = &quot;select * from [User] WHERE userID = &quot; + s.getUserID();</span>
+<span class="fc" id="L252">        ResultSet rs = dbConn.getData(sql);</span>
+        try {
+<span class="pc bpc" id="L254" title="1 of 2 branches missed.">            if (rs.next()) {</span>
+<span class="fc" id="L255">                User user = new User(rs.getString(&quot;userID&quot;), rs.getString(&quot;username&quot;),</span>
+<span class="fc" id="L256">                        rs.getString(&quot;password&quot;), rs.getString(&quot;email&quot;),</span>
+<span class="fc" id="L257">                        rs.getString(&quot;phoneNumber&quot;), rs.getInt(&quot;sell&quot;),</span>
+<span class="fc" id="L258">                        rs.getDouble(&quot;wallet&quot;), rs.getString(&quot;fullname&quot;),</span>
+<span class="fc" id="L259">                        rs.getString(&quot;publicName&quot;), rs.getString(&quot;address&quot;), rs.getString(&quot;profileImage&quot;),</span>
+<span class="fc" id="L260">                        rs.getString(&quot;backgroundImage&quot;), rs.getString(&quot;occupation&quot;),</span>
+<span class="fc" id="L261">                        rs.getInt(&quot;gender&quot;), rs.getDate(&quot;DOB&quot;), rs.getString(&quot;bio&quot;),</span>
+<span class="fc" id="L262">                        rs.getString(&quot;Facebook&quot;), rs.getString(&quot;Instagram&quot;),</span>
+<span class="fc" id="L263">                        rs.getString(&quot;Twitter&quot;), rs.getString(&quot;Youtube&quot;),</span>
+<span class="fc" id="L264">                        rs.getInt(&quot;activityPoint&quot;), rs.getInt(&quot;systemRole&quot;),</span>
+<span class="fc" id="L265">                        rs.getInt(&quot;status&quot;));</span>
+<span class="fc" id="L266">                return user;</span>
+            }
+<span class="nc" id="L268">        } catch (SQLException ex) {</span>
+<span class="nc" id="L269">            Logger.getLogger(UserDAO.class.getName()).log(Level.SEVERE, null, ex);</span>
+<span class="nc" id="L270">        }</span>
+<span class="nc" id="L271">        return null;</span>
+    }
+    
+    public ArrayList&lt;User&gt; getAllUser() {
+<span class="fc" id="L275">        ArrayList&lt;User&gt; list = new ArrayList&lt;&gt;();</span>
+<span class="fc" id="L276">        String sql = &quot;SELECT * FROM [User]&quot;;</span>
+<span class="fc" id="L277">        ResultSet rs = dbConn.getData(sql);</span>
+        try {
+<span class="fc bfc" id="L279" title="All 2 branches covered.">            while (rs.next()) {</span>
+<span class="fc" id="L280">                User user = new User(rs.getString(&quot;userID&quot;), rs.getString(&quot;username&quot;),</span>
+<span class="fc" id="L281">                        rs.getString(&quot;password&quot;), rs.getString(&quot;email&quot;),</span>
+<span class="fc" id="L282">                        rs.getString(&quot;phoneNumber&quot;), rs.getInt(&quot;sell&quot;),</span>
+<span class="fc" id="L283">                        rs.getDouble(&quot;wallet&quot;), rs.getString(&quot;fullname&quot;),</span>
+<span class="fc" id="L284">                        rs.getString(&quot;publicName&quot;), rs.getString(&quot;address&quot;), rs.getString(&quot;profileImage&quot;),</span>
+<span class="fc" id="L285">                        rs.getString(&quot;backgroundImage&quot;), rs.getString(&quot;occupation&quot;),</span>
+<span class="fc" id="L286">                        rs.getInt(&quot;gender&quot;), rs.getDate(&quot;DOB&quot;), rs.getString(&quot;bio&quot;),</span>
+<span class="fc" id="L287">                        rs.getString(&quot;Facebook&quot;), rs.getString(&quot;Instagram&quot;),</span>
+<span class="fc" id="L288">                        rs.getString(&quot;Twitter&quot;), rs.getString(&quot;Youtube&quot;),</span>
+<span class="fc" id="L289">                        rs.getInt(&quot;activityPoint&quot;), rs.getInt(&quot;systemRole&quot;),</span>
+<span class="fc" id="L290">                        rs.getInt(&quot;status&quot;));</span>
+<span class="fc" id="L291">                list.add(user);</span>
+<span class="fc" id="L292">            }</span>
+<span class="nc" id="L293">        } catch (SQLException ex) {</span>
+<span class="nc" id="L294">            Logger.getLogger(UserDAO.class.getName()).log(Level.SEVERE, null, ex);</span>
+<span class="fc" id="L295">        }</span>
+<span class="fc" id="L296">        return list;</span>
+    }
+
+    public ArrayList&lt;User&gt; getSearchUser(int uId, String uName, int status) {
+<span class="fc" id="L300">        ArrayList&lt;User&gt; list = new ArrayList&lt;&gt;();</span>
+<span class="fc" id="L301">        String s1 = &quot; &quot;;</span>
+<span class="fc bfc" id="L302" title="All 2 branches covered.">        if (uId != 0) {</span>
+<span class="fc" id="L303">            s1 = &quot; and userID = &quot; + uId + &quot; &quot;;</span>
+        }
+
+<span class="fc" id="L306">        String s2 = &quot; &quot;;</span>
+<span class="fc bfc" id="L307" title="All 2 branches covered.">        if (status != -1) {</span>
+<span class="fc" id="L308">            s2 = &quot; and status = &quot; + status + &quot; &quot;;</span>
+        }
+
+<span class="fc" id="L311">        String sql = &quot;SELECT * FROM [User] WHERE status = 1 and username like '%&quot; + uName + &quot;%' &quot; + s1 + &quot; &quot; + s2;</span>
+<span class="fc" id="L312">        ResultSet rs = dbConn.getData(sql);</span>
+        try {
+<span class="fc bfc" id="L314" title="All 2 branches covered.">            while (rs.next()) {</span>
+<span class="fc" id="L315">                User user = new User(rs.getString(&quot;userID&quot;), rs.getString(&quot;username&quot;),</span>
+<span class="fc" id="L316">                        rs.getString(&quot;password&quot;), rs.getString(&quot;email&quot;),</span>
+<span class="fc" id="L317">                        rs.getString(&quot;phoneNumber&quot;), rs.getInt(&quot;sell&quot;),</span>
+<span class="fc" id="L318">                        rs.getDouble(&quot;wallet&quot;), rs.getString(&quot;fullname&quot;),</span>
+<span class="fc" id="L319">                        rs.getString(&quot;publicName&quot;), rs.getString(&quot;address&quot;), rs.getString(&quot;profileImage&quot;),</span>
+<span class="fc" id="L320">                        rs.getString(&quot;backgroundImage&quot;), rs.getString(&quot;occupation&quot;),</span>
+<span class="fc" id="L321">                        rs.getInt(&quot;gender&quot;), rs.getDate(&quot;DOB&quot;), rs.getString(&quot;bio&quot;),</span>
+<span class="fc" id="L322">                        rs.getString(&quot;Facebook&quot;), rs.getString(&quot;Instagram&quot;),</span>
+<span class="fc" id="L323">                        rs.getString(&quot;Twitter&quot;), rs.getString(&quot;Youtube&quot;),</span>
+<span class="fc" id="L324">                        rs.getInt(&quot;activityPoint&quot;), rs.getInt(&quot;systemRole&quot;),</span>
+<span class="fc" id="L325">                        rs.getInt(&quot;status&quot;));</span>
+<span class="fc" id="L326">                list.add(user);</span>
+<span class="fc" id="L327">            }</span>
+<span class="nc" id="L328">        } catch (SQLException ex) {</span>
+<span class="nc" id="L329">            Logger.getLogger(UserDAO.class.getName()).log(Level.SEVERE, null, ex);</span>
+<span class="fc" id="L330">        }</span>
+<span class="fc" id="L331">        return list;</span>
+    }
+
+    public HashMap&lt;User, Role&gt; getAllAuthorizationUser() {
+<span class="fc" id="L335">        HashMap&lt;User, Role&gt; map = new HashMap&lt;&gt;();</span>
+<span class="fc" id="L336">        UserDAO uDao = new UserDAO();</span>
+<span class="fc" id="L337">        RoleDAO rDao = new RoleDAO();</span>
+<span class="fc" id="L338">        String sql = &quot;SELECT u.userID, r.roleID FROM [User] u INNER JOIN [Role] r ON u.systemRole = r.roleID  where u.[status]=1&quot;;</span>
+<span class="fc" id="L339">        ResultSet rs = dbConn.getData(sql);</span>
+        try {
+<span class="fc bfc" id="L341" title="All 2 branches covered.">            while (rs.next()) {</span>
+<span class="fc" id="L342">                User u = uDao.getUserById(rs.getString(&quot;userID&quot;));</span>
+<span class="fc" id="L343">                Role r = rDao.getRoleById(rs.getInt(&quot;roleID&quot;));</span>
+<span class="fc" id="L344">                map.put(u, r);</span>
+<span class="fc" id="L345">            }</span>
+<span class="nc" id="L346">        } catch (SQLException ex) {</span>
+<span class="nc" id="L347">            Logger.getLogger(UserDAO.class.getName()).log(Level.SEVERE, null, ex);</span>
+<span class="fc" id="L348">        }</span>
+<span class="fc" id="L349">        return map;</span>
+    }
+
+    public HashMap&lt;User, Role&gt; getAllPagingUserHashMap(int index, int numOfRow, String search) {
+<span class="fc" id="L353">        HashMap&lt;User, Role&gt; map = new HashMap&lt;&gt;();</span>
+<span class="fc" id="L354">        UserDAO uDao = new UserDAO();</span>
+<span class="fc" id="L355">        RoleDAO rDao = new RoleDAO();</span>
+<span class="fc" id="L356">        String xSql = &quot;declare @PageNo INT =&quot; + index + &quot;\n&quot;</span>
+                + &quot;declare @PageSize INT=&quot; + numOfRow + &quot;\n&quot;
+                + &quot;SELECT * from(\n&quot;
+                + &quot;SELECT u.userID, r.roleID,\n&quot;
+                + &quot;ROW_NUMBER() over (order by userID) as RowNum\n&quot;
+                + &quot;  FROM [Bmazon].[dbo].[User] u INNER JOIN [Role] r ON u.systemRole = r.roleID where u.fullname like '%&quot; + search + &quot;%' or r.roleName like '%&quot; + search + &quot;%')T\n&quot;
+                + &quot;where T.RowNum between ((@PageNo-1)*@PageSize)+1 and (@PageNo*@PageSize)&quot;;
+<span class="fc" id="L363">        ResultSet rs = dbConn.getData(xSql);</span>
+        try {
+<span class="fc bfc" id="L365" title="All 2 branches covered.">            while (rs.next()) {</span>
+<span class="fc" id="L366">                User u = uDao.getUserById(rs.getString(&quot;userID&quot;));</span>
+<span class="fc" id="L367">                Role r = rDao.getRoleById(rs.getInt(&quot;roleID&quot;));</span>
+<span class="fc" id="L368">                map.put(u, r);</span>
+<span class="fc" id="L369">            }</span>
+<span class="nc" id="L370">        } catch (SQLException ex) {</span>
+<span class="nc" id="L371">            Logger.getLogger(UserDAO.class.getName()).log(Level.SEVERE, null, ex);</span>
+<span class="fc" id="L372">        }</span>
+<span class="fc" id="L373">        return map;</span>
+    }
+    
+    public int updatePassword(String username, String mail, String password) {
+<span class="fc" id="L377">        int n = 0;</span>
+<span class="fc" id="L378">        String sql = &quot;UPDATE [User] SET password = ? WHERE username = ? and email = ?&quot;;</span>
+        try {
+<span class="fc" id="L380">            pre = conn.prepareStatement(sql);</span>
+<span class="fc" id="L381">            pre.setString(1, password);</span>
+<span class="fc" id="L382">            pre.setString(2, username);</span>
+<span class="fc" id="L383">            pre.setString(3, mail);</span>
+<span class="fc" id="L384">            n = pre.executeUpdate();</span>
+<span class="nc" id="L385">        } catch (SQLException ex) {</span>
+<span class="nc" id="L386">            Logger.getLogger(UserDAO.class.getName()).log(Level.SEVERE, null, ex);</span>
+<span class="fc" id="L387">        }</span>
+<span class="fc" id="L388">        return n;</span>
+    }
+
+    public int updateInfoUserByAdmin(User obj) {
+<span class="fc" id="L392">        int n = 0;</span>
+<span class="fc" id="L393">        String sql = &quot;UPDATE [User] SET username=?, password=?, email=?, phoneNumber=?, sell=?, wallet=?, fullname=?, publicName=?, address=?,&quot;</span>
+                + &quot; profileImage=?, backgroundImage=?, occupation=?, gender=?, DOB=?, bio=?, Facebook=?, Instagram=?, Twitter=?, &quot;
+                + &quot;Youtube=?, activityPoint=?, systemRole=?, status=?&quot;
+                + &quot; where userID=?&quot;;
+        try {
+<span class="fc" id="L398">            pre = conn.prepareStatement(sql);</span>
+<span class="fc" id="L399">            pre.setString(1, obj.getUsername());</span>
+<span class="fc" id="L400">            pre.setString(2, obj.getPassword());</span>
+<span class="fc" id="L401">            pre.setString(3, obj.getEmail());</span>
+<span class="fc" id="L402">            pre.setString(4, obj.getPhoneNumber());</span>
+<span class="fc" id="L403">            pre.setInt(5, obj.getSell());</span>
+<span class="fc" id="L404">            pre.setDouble(6, obj.getWallet());</span>
+<span class="fc" id="L405">            pre.setString(7, obj.getFullname());</span>
+<span class="fc" id="L406">            pre.setString(8, obj.getPublicName());</span>
+<span class="fc" id="L407">            pre.setString(9, obj.getAddress());</span>
+<span class="fc" id="L408">            pre.setString(10, obj.getProfileImage());</span>
+<span class="fc" id="L409">            pre.setString(11, obj.getBackgroundImage());</span>
+<span class="fc" id="L410">            pre.setString(12, obj.getOccupation());</span>
+<span class="fc" id="L411">            pre.setInt(13, obj.getGender());</span>
+<span class="fc" id="L412">            pre.setDate(14, obj.getDOB());</span>
+<span class="fc" id="L413">            pre.setString(15, obj.getBio());</span>
+<span class="fc" id="L414">            pre.setString(16, obj.getFacebook());</span>
+<span class="fc" id="L415">            pre.setString(17, obj.getInstagram());</span>
+<span class="fc" id="L416">            pre.setString(18, obj.getTwitter());</span>
+<span class="fc" id="L417">            pre.setString(19, obj.getYoutube());</span>
+<span class="fc" id="L418">            pre.setInt(20, obj.getActivityPoint());</span>
+<span class="fc" id="L419">            pre.setInt(21, obj.getSystemRole());</span>
+<span class="fc" id="L420">            pre.setInt(22, obj.getStatus());</span>
+<span class="fc" id="L421">            pre.setString(23, obj.getUserId());</span>
+<span class="fc" id="L422">            n = pre.executeUpdate();</span>
+<span class="nc" id="L423">        } catch (SQLException ex) {</span>
+<span class="nc" id="L424">            Logger.getLogger(UserDAO.class.getName()).log(Level.SEVERE, null, ex);</span>
+<span class="fc" id="L425">        }</span>
+<span class="fc" id="L426">        return n;</span>
+    }
+
+    public int depositWalletUser(User obj, double amount) {
+<span class="fc" id="L430">        int n = 0;</span>
+<span class="fc" id="L431">        String sql = &quot;UPDATE [User] SET wallet=? where userID=?&quot;;</span>
+        try {
+<span class="fc" id="L433">            pre = conn.prepareStatement(sql);</span>
+<span class="fc" id="L434">            pre.setDouble(1, obj.getWallet() + amount);</span>
+<span class="fc" id="L435">            pre.setString(2, obj.getUserId());</span>
+<span class="fc" id="L436">            n = pre.executeUpdate();</span>
+<span class="nc" id="L437">        } catch (SQLException ex) {</span>
+<span class="nc" id="L438">            Logger.getLogger(UserDAO.class.getName()).log(Level.SEVERE, null, ex);</span>
+<span class="fc" id="L439">        }</span>
+<span class="fc" id="L440">        return n;</span>
+    }
+
+    public int withdrawalWalletUser(User obj, double amount) {
+<span class="fc" id="L444">        int n = 0;</span>
+<span class="fc" id="L445">        String sql = &quot;UPDATE [User] SET wallet=? where userID=?&quot;;</span>
+        try {
+<span class="fc" id="L447">            pre = conn.prepareStatement(sql);</span>
+<span class="fc" id="L448">            pre.setDouble(1, obj.getWallet() - amount);</span>
+<span class="fc" id="L449">            pre.setString(2, obj.getUserId());</span>
+<span class="fc" id="L450">            n = pre.executeUpdate();</span>
+<span class="nc" id="L451">        } catch (SQLException ex) {</span>
+<span class="nc" id="L452">            Logger.getLogger(UserDAO.class.getName()).log(Level.SEVERE, null, ex);</span>
+<span class="fc" id="L453">        }</span>
+<span class="fc" id="L454">        return n;</span>
+    }
+
+    public int updatePublicInfo(User obj) {
+<span class="fc" id="L458">        int n =0;</span>
+<span class="fc" id="L459">        String sql = &quot;UPDATE [User] SET  username=?, [address]=?,&quot;</span>
+                + &quot; bio=?, Facebook=?, Instagram=?, Twitter=?, Youtube=? , [password]=?&quot;
+                + &quot; where userID=?&quot;;
+        try {
+<span class="fc" id="L463">            pre = conn.prepareStatement(sql);</span>
+<span class="fc" id="L464">            pre.setString(1, obj.getUsername());</span>
+<span class="fc" id="L465">            pre.setString(2, obj.getAddress());</span>
+<span class="fc" id="L466">            pre.setString(3, obj.getBio());</span>
+<span class="fc" id="L467">            pre.setString(4, obj.getFacebook());</span>
+<span class="fc" id="L468">            pre.setString(5, obj.getInstagram());</span>
+<span class="fc" id="L469">            pre.setString(6, obj.getTwitter());</span>
+<span class="fc" id="L470">            pre.setString(7, obj.getYoutube());</span>
+<span class="fc" id="L471">            pre.setString(8, obj.getPassword());</span>
+<span class="fc" id="L472">            pre.setString(9, obj.getUserId());</span>
+<span class="fc" id="L473">            n = pre.executeUpdate();</span>
+<span class="nc" id="L474">        } catch (SQLException ex) {</span>
+<span class="nc" id="L475">            Logger.getLogger(UserDAO.class.getName()).log(Level.SEVERE, null, ex);</span>
+<span class="fc" id="L476">        }</span>
+<span class="fc" id="L477">        return n;</span>
+    }
+
+    public int updatePrivateInfo(User obj) {
+<span class="fc" id="L481">        int n = 0;</span>
+<span class="fc" id="L482">        String sql = &quot;UPDATE [User] SET  fullname=?, email=?, phoneNumber=?, [password]=?&quot;</span>
+                + &quot; where userID=?&quot;;
+        try {
+<span class="fc" id="L485">            pre = conn.prepareStatement(sql);</span>
+<span class="fc" id="L486">            pre.setString(1, obj.getFullname());</span>
+<span class="fc" id="L487">            pre.setString(2, obj.getEmail());</span>
+<span class="fc" id="L488">            pre.setString(3, obj.getPhoneNumber());</span>
+<span class="fc" id="L489">            pre.setString(4, obj.getPassword());</span>
+<span class="fc" id="L490">            pre.setString(5, obj.getUserId());</span>
+<span class="fc" id="L491">            n = pre.executeUpdate();</span>
+<span class="fc" id="L492">        } catch (SQLException ex) {</span>
+<span class="fc" id="L493">            Logger.getLogger(UserDAO.class.getName()).log(Level.SEVERE, null, ex);</span>
+<span class="fc" id="L494">        }</span>
+<span class="fc" id="L495">        return n;</span>
+    }
+
+    public int updateActivityPoint(User obj, int activityPoint) {
+<span class="fc" id="L499">        int n = 0;</span>
+<span class="fc" id="L500">        String sql = &quot;UPDATE [User] SET activityPoint=? where userID=?&quot;;</span>
+        try {
+<span class="fc" id="L502">            pre = conn.prepareStatement(sql);</span>
+<span class="fc" id="L503">            pre.setInt(1, activityPoint);</span>
+<span class="fc" id="L504">            pre.setString(2, obj.getUserId());</span>
+<span class="fc" id="L505">            n = pre.executeUpdate();</span>
+<span class="nc" id="L506">        } catch (SQLException ex) {</span>
+<span class="nc" id="L507">            Logger.getLogger(UserDAO.class.getName()).log(Level.SEVERE, null, ex);</span>
+<span class="fc" id="L508">        }</span>
+<span class="fc" id="L509">        return n;</span>
+    }
+
+    public int uploadprofileImage(User obj, String uploadImg) {
+<span class="fc" id="L513">        int n = 0;</span>
+<span class="fc" id="L514">        String sql = &quot;UPDATE [User] SET profileImage = ? WHERE userID = ?&quot;;</span>
+        try {
+<span class="fc" id="L516">            pre = conn.prepareStatement(sql);</span>
+<span class="fc" id="L517">            pre.setString(1, uploadImg);</span>
+<span class="fc" id="L518">            pre.setString(2, obj.getUserId());</span>
+<span class="fc" id="L519">            n = pre.executeUpdate();</span>
+<span class="nc" id="L520">        } catch (SQLException ex) {</span>
+<span class="nc" id="L521">            Logger.getLogger(UserDAO.class.getName()).log(Level.SEVERE, null, ex);</span>
+<span class="fc" id="L522">        }</span>
+<span class="fc" id="L523">        return n;</span>
+    }
+
+    public int uploadBackgroundImage(User obj, String uploadImg) {
+<span class="fc" id="L527">        int n = 0;</span>
+<span class="fc" id="L528">        String sql = &quot;UPDATE [User] SET backgroundImage = ? WHERE userID = ?&quot;;</span>
+        try {
+<span class="fc" id="L530">            pre = conn.prepareStatement(sql);</span>
+<span class="fc" id="L531">            pre.setString(1, uploadImg);</span>
+<span class="fc" id="L532">            pre.setString(2, obj.getUserId());</span>
+<span class="fc" id="L533">            n = pre.executeUpdate();</span>
+<span class="nc" id="L534">        } catch (SQLException ex) {</span>
+<span class="nc" id="L535">            Logger.getLogger(UserDAO.class.getName()).log(Level.SEVERE, null, ex);</span>
+<span class="fc" id="L536">        }</span>
+<span class="fc" id="L537">        return n;</span>
+    }
+    
+    // &lt;editor-fold defaultstate=&quot;collapsed&quot; desc=&quot;Didn't use. Click on the + sign on the left to edit the code.&quot;&gt;
+    public User getUserLogin(String username, String password) {
+<span class="fc" id="L542">        String sql = &quot;SELECT * FROM [User] WHERE username = ? and password = ? and status = 1&quot;;</span>
+        try {
+<span class="fc" id="L544">            pre = conn.prepareStatement(sql);</span>
+<span class="fc" id="L545">            pre.setString(1, username);</span>
+<span class="fc" id="L546">            pre.setString(2, password);</span>
+<span class="fc" id="L547">            ResultSet rs = pre.executeQuery();</span>
+<span class="fc bfc" id="L548" title="All 2 branches covered.">            if (rs.next()) {</span>
+<span class="fc" id="L549">                User user = new User(rs.getString(&quot;userID&quot;), rs.getString(&quot;username&quot;),</span>
+<span class="fc" id="L550">                        rs.getString(&quot;password&quot;), rs.getString(&quot;email&quot;),</span>
+<span class="fc" id="L551">                        rs.getString(&quot;phoneNumber&quot;), rs.getInt(&quot;sell&quot;),</span>
+<span class="fc" id="L552">                        rs.getDouble(&quot;wallet&quot;), rs.getString(&quot;fullname&quot;),</span>
+<span class="fc" id="L553">                        rs.getString(&quot;publicName&quot;), rs.getString(&quot;address&quot;), rs.getString(&quot;profileImage&quot;),</span>
+<span class="fc" id="L554">                        rs.getString(&quot;backgroundImage&quot;), rs.getString(&quot;occupation&quot;),</span>
+<span class="fc" id="L555">                        rs.getInt(&quot;gender&quot;), rs.getDate(&quot;DOB&quot;), rs.getString(&quot;bio&quot;),</span>
+<span class="fc" id="L556">                        rs.getString(&quot;Facebook&quot;), rs.getString(&quot;Instagram&quot;),</span>
+<span class="fc" id="L557">                        rs.getString(&quot;Twitter&quot;), rs.getString(&quot;Youtube&quot;),</span>
+<span class="fc" id="L558">                        rs.getInt(&quot;activityPoint&quot;), rs.getInt(&quot;systemRole&quot;),</span>
+<span class="fc" id="L559">                        rs.getInt(&quot;status&quot;));</span>
+<span class="fc" id="L560">                return user;</span>
+            }
+<span class="nc" id="L562">        } catch (SQLException ex) {</span>
+<span class="nc" id="L563">            Logger.getLogger(UserDAO.class.getName()).log(Level.SEVERE, null, ex);</span>
+<span class="fc" id="L564">        }</span>
+<span class="fc" id="L565">        return null;</span>
+    }
+
+    public User getEmailLogin(String email, String password) {
+<span class="fc" id="L569">        String sql = &quot;SELECT * FROM [User] WHERE email = ? and password = ? and status = 1&quot;;</span>
+        try {
+<span class="fc" id="L571">            pre = conn.prepareStatement(sql);</span>
+<span class="fc" id="L572">            pre.setString(1, email);</span>
+<span class="fc" id="L573">            pre.setString(2, password);</span>
+<span class="fc" id="L574">            ResultSet rs = pre.executeQuery();</span>
+<span class="fc bfc" id="L575" title="All 2 branches covered.">            if (rs.next()) {</span>
+<span class="fc" id="L576">                User user = new User(rs.getString(&quot;userID&quot;), rs.getString(&quot;username&quot;),</span>
+<span class="fc" id="L577">                        rs.getString(&quot;password&quot;), rs.getString(&quot;email&quot;),</span>
+<span class="fc" id="L578">                        rs.getString(&quot;phoneNumber&quot;), rs.getInt(&quot;sell&quot;),</span>
+<span class="fc" id="L579">                        rs.getDouble(&quot;wallet&quot;), rs.getString(&quot;fullname&quot;),</span>
+<span class="fc" id="L580">                        rs.getString(&quot;publicName&quot;), rs.getString(&quot;address&quot;), rs.getString(&quot;profileImage&quot;),</span>
+<span class="fc" id="L581">                        rs.getString(&quot;backgroundImage&quot;), rs.getString(&quot;occupation&quot;),</span>
+<span class="fc" id="L582">                        rs.getInt(&quot;gender&quot;), rs.getDate(&quot;DOB&quot;), rs.getString(&quot;bio&quot;),</span>
+<span class="fc" id="L583">                        rs.getString(&quot;Facebook&quot;), rs.getString(&quot;Instagram&quot;),</span>
+<span class="fc" id="L584">                        rs.getString(&quot;Twitter&quot;), rs.getString(&quot;Youtube&quot;),</span>
+<span class="fc" id="L585">                        rs.getInt(&quot;activityPoint&quot;), rs.getInt(&quot;systemRole&quot;),</span>
+<span class="fc" id="L586">                        rs.getInt(&quot;status&quot;));</span>
+<span class="fc" id="L587">                return user;</span>
+            }
+<span class="nc" id="L589">        } catch (SQLException ex) {</span>
+<span class="nc" id="L590">            Logger.getLogger(UserDAO.class.getName()).log(Level.SEVERE, null, ex);</span>
+<span class="fc" id="L591">        }</span>
+<span class="fc" id="L592">        return null;</span>
+    }
+// &lt;/editor-fold&gt;
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.eclemma.org/jacoco">JaCoCo</a> 0.7.5.201505241946</span></div></body></html>

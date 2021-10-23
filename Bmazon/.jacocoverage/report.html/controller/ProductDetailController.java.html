@@ -1,0 +1,256 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../.resources/report.css" type="text/css"/><link rel="shortcut icon" href="../.resources/report.gif" type="image/gif"/><title>ProductDetailController.java</title><link rel="stylesheet" href="../.resources/prettify.css" type="text/css"/><script type="text/javascript" src="../.resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../.sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">JaCoCoverage analysis of project &quot;Bmazon&quot; (powered by JaCoCo from EclEmma)</a> &gt; <a href="index.source.html" class="el_package">controller</a> &gt; <span class="el_source">ProductDetailController.java</span></div><h1>ProductDetailController.java</h1><pre class="source lang-java linenums">/*
+ * To change this license header, choose License Headers in Project Properties.
+ * To change this template file, choose Tools | Templates
+ * and open the template in the editor.
+ */
+package controller;
+
+import entity.Comment;
+import entity.Gallery;
+import entity.Product;
+import entity.ProductType;
+import entity.User;
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
+import java.io.PrintWriter;
+import java.text.DecimalFormat;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.servlet.RequestDispatcher;
+import javax.servlet.ServletException;
+import javax.servlet.http.HttpServlet;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import model.CommentDAO;
+import model.DBConnection;
+import model.GalleryDAO;
+import model.ProductDAO;
+import model.ProductTypeDAO;
+
+/**
+ *
+ * @author AD
+ */
+<span class="fc" id="L37">public class ProductDetailController extends HttpServlet {</span>
+
+    /**
+     * Processes requests for both HTTP &lt;code&gt;GET&lt;/code&gt; and &lt;code&gt;POST&lt;/code&gt;
+     * methods.
+     *
+     * @param request servlet request
+     * @param response servlet response
+     * @throws ServletException if a servlet-specific error occurs
+     * @throws IOException if an I/O error occurs
+     */
+    public void sendDispatcher(HttpServletRequest request, HttpServletResponse response, String path) {
+        try {
+<span class="nc" id="L50">            RequestDispatcher rd = request.getRequestDispatcher(path);</span>
+<span class="nc" id="L51">            rd.forward(request, response);</span>
+<span class="nc" id="L52">        } catch (ServletException | IOException ex) {</span>
+<span class="nc" id="L53">            Logger.getLogger(HomePageController.class.getName()).log(Level.SEVERE, null, ex);</span>
+<span class="nc" id="L54">        }</span>
+<span class="nc" id="L55">    }</span>
+
+<span class="fc" id="L57">    DBConnection dbCon = new DBConnection();</span>
+<span class="fc" id="L58">    ProductDAO daoProduct = new ProductDAO();</span>
+<span class="fc" id="L59">    GalleryDAO daoGallery = new GalleryDAO();</span>
+<span class="fc" id="L60">    ProductTypeDAO daoProductType = new ProductTypeDAO();</span>
+<span class="fc" id="L61">    CommentDAO daoComment = new CommentDAO();</span>
+    private static final long serialVersionUID = 1;
+
+    protected void processRequest(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException {
+<span class="nc" id="L66">        response.setContentType(&quot;text/html;charset=UTF-8&quot;);</span>
+<span class="nc" id="L67">        try (PrintWriter out = response.getWriter()) {</span>
+
+<span class="nc" id="L69">            String service = request.getParameter(&quot;service&quot;);</span>
+
+<span class="nc bnc" id="L71" title="All 2 branches missed.">            if (service == null) {</span>
+<span class="nc" id="L72">                service = &quot;&quot;;</span>
+            }
+
+<span class="nc bnc" id="L75" title="All 2 branches missed.">            if (service.equalsIgnoreCase(&quot;getProductDetail&quot;)) {</span>
+<span class="nc" id="L76">                serviceProductDetail(request, response);</span>
+            }
+
+<span class="nc bnc" id="L79" title="All 2 branches missed.">            if (service.equalsIgnoreCase(&quot;getRelatedProduct&quot;)) {</span>
+<span class="nc" id="L80">                serviceRelatedProduct(request, response);</span>
+
+            }
+<span class="nc bnc" id="L83" title="All 2 branches missed.">            if (service.equalsIgnoreCase(&quot;getPrice&quot;)) {</span>
+<span class="nc" id="L84">                serviceGetPrice(request, response);</span>
+            }
+
+<span class="nc bnc" id="L87" title="All 2 branches missed.">            if (service.equalsIgnoreCase(&quot;comment&quot;)) {</span>
+<span class="nc" id="L88">                serviceComment(request, response);</span>
+            }
+<span class="nc bnc" id="L90" title="All 8 branches missed.">        }</span>
+<span class="nc" id="L91">    }</span>
+
+    public void serviceProductDetail(HttpServletRequest request, HttpServletResponse response) {
+<span class="nc" id="L94">        int id = Integer.parseInt(request.getParameter(&quot;pid&quot;));</span>
+<span class="nc" id="L95">        Product product = daoProduct.getProductByID(id);</span>
+<span class="nc" id="L96">        request.setAttribute(&quot;product&quot;, product);</span>
+<span class="nc" id="L97">        List&lt;Gallery&gt; listGallery = daoGallery.getAllGalleryOfProduct(id);</span>
+<span class="nc" id="L98">        request.setAttribute(&quot;listGallery&quot;, listGallery);</span>
+<span class="nc" id="L99">        List&lt;ProductType&gt; listProductType = daoProductType.getProductByProductID(id);</span>
+<span class="nc" id="L100">        request.setAttribute(&quot;listProductType&quot;, listProductType);</span>
+<span class="nc" id="L101">        ArrayList&lt;Product&gt; listRelated = daoProduct.getRelatedProductByProductID(id);</span>
+<span class="nc" id="L102">        request.setAttribute(&quot;listRelated&quot;, listRelated);</span>
+<span class="nc" id="L103">        ArrayList&lt;String&gt; listSize = daoProductType.getAllSizeOfProduct(id);</span>
+<span class="nc" id="L104">        request.setAttribute(&quot;listSize&quot;, listSize);</span>
+<span class="nc" id="L105">        ArrayList&lt;String&gt; listColor = daoProductType.getAllColorOfProduct(id);</span>
+<span class="nc" id="L106">        request.setAttribute(&quot;listColor&quot;, listColor);</span>
+<span class="nc" id="L107">        ArrayList&lt;Comment&gt; comments = daoComment.getCommentsByProductId(id);</span>
+<span class="nc" id="L108">        request.setAttribute(&quot;comments&quot;, comments);</span>
+<span class="nc" id="L109">        int count = 0;</span>
+//        for (Comment comment : comments) {
+//            count++;
+//        }
+<span class="nc" id="L113">        request.setAttribute(&quot;count&quot;, count);</span>
+<span class="nc" id="L114">        sendDispatcher(request, response, &quot;product/productDetail.jsp&quot;);</span>
+<span class="nc" id="L115">    }</span>
+
+    public void serviceRelatedProduct(HttpServletRequest request, HttpServletResponse response) {
+<span class="nc" id="L118">        int id = Integer.parseInt(request.getParameter(&quot;pid&quot;));</span>
+<span class="nc" id="L119">        int count = daoProduct.totalRelatedProduct(id);</span>
+        
+<span class="nc" id="L121">        Product product = daoProduct.getProductByID(id);</span>
+<span class="nc" id="L122">        request.setAttribute(&quot;product&quot;, product);</span>
+<span class="nc" id="L123">        List&lt;Gallery&gt; listGallery = daoGallery.getAllGalleryOfProduct(id);</span>
+<span class="nc" id="L124">        request.setAttribute(&quot;listGallery&quot;, listGallery);</span>
+<span class="nc" id="L125">        List&lt;ProductType&gt; listProductType = daoProductType.getProductByProductID(id);</span>
+<span class="nc" id="L126">        request.setAttribute(&quot;listProductType&quot;, listProductType);</span>
+        
+        
+<span class="nc" id="L129">        int size = 10;</span>
+<span class="nc" id="L130">        int total = count / size;</span>
+        int page, end;
+
+<span class="nc" id="L133">        String page1 = request.getParameter(&quot;page&quot;);</span>
+<span class="nc bnc" id="L134" title="All 2 branches missed.">        if (page1 == null) {</span>
+<span class="nc" id="L135">            page = 1;</span>
+
+        } else {
+<span class="nc" id="L138">            page = Integer.parseInt(page1);</span>
+        }
+<span class="nc" id="L140">        int begin = page;</span>
+<span class="nc" id="L141">        String previous = &quot;  &lt;li&gt;&lt;a class='' href=&quot; + &quot;ProductDetailControllerMap?service=getRelatedProduct&amp;pid=&quot; + id + &quot;&amp;page=&quot; + (page - 1) + &quot;&gt;P&lt;/a&gt;&lt;/li&gt;&quot;;</span>
+<span class="nc" id="L142">        String next = &quot;  &lt;li&gt;&lt;a class='' href=&quot; + &quot;ProductDetailControllerMap?service=getRelatedProduct&amp;pid=&quot; + id + &quot;&amp;page=&quot; + (page + 1) + &quot;&gt;N&lt;/a&gt;&lt;/li&gt;&quot;;</span>
+
+<span class="nc bnc" id="L144" title="All 2 branches missed.">        if (count % size != 0) {</span>
+<span class="nc" id="L145">            total += 1;</span>
+        }
+<span class="nc bnc" id="L147" title="All 2 branches missed.">        if (page &lt;= total - 2) {</span>
+<span class="nc" id="L148">            end = page + 2;</span>
+        } else {
+<span class="nc" id="L150">            end = total;</span>
+<span class="nc" id="L151">            begin = total - 1 /* ban dau la total - 2*/;</span>
+        }
+<span class="nc bnc" id="L153" title="All 2 branches missed.">        if (page == 1) {</span>
+<span class="nc" id="L154">            request.setAttribute(&quot;next&quot;, next);</span>
+<span class="nc bnc" id="L155" title="All 2 branches missed.">        } else if (page == total) {</span>
+<span class="nc" id="L156">            request.setAttribute(&quot;previous&quot;, previous);</span>
+        } else {
+<span class="nc" id="L158">            request.setAttribute(&quot;next&quot;, next);</span>
+<span class="nc" id="L159">            request.setAttribute(&quot;previous&quot;, previous);</span>
+        }
+        
+<span class="nc" id="L162">        ArrayList&lt;Product&gt; listRelated = daoProduct.getRelatedProductByProductIDPaging(page, id);</span>
+        
+<span class="nc" id="L164">        request.setAttribute(&quot;listRelated&quot;, listRelated);</span>
+<span class="nc" id="L165">        request.setAttribute(&quot;end&quot;, end);</span>
+<span class="nc" id="L166">        request.setAttribute(&quot;begin&quot;, begin);</span>
+<span class="nc" id="L167">        request.setAttribute(&quot;pid&quot;, id);</span>
+<span class="nc" id="L168">        request.setAttribute(&quot;count&quot;, count);</span>
+        
+<span class="nc" id="L170">        sendDispatcher(request, response, &quot;product/relatedProduct.jsp&quot;);</span>
+<span class="nc" id="L171">    }</span>
+
+    private void serviceGetPrice(HttpServletRequest request, HttpServletResponse response) throws IOException {
+<span class="nc" id="L174">        PrintWriter pr = response.getWriter();</span>
+<span class="nc" id="L175">        String size = request.getParameter(&quot;size&quot;);</span>
+<span class="nc" id="L176">        String color = request.getParameter(&quot;color&quot;);</span>
+<span class="nc" id="L177">        String productId = request.getParameter(&quot;pid&quot;);</span>
+<span class="nc" id="L178">        ProductType pt = daoProductType.getProductTypeByColorAndSize(color, size, productId);</span>
+<span class="nc" id="L179">        DecimalFormat nf = new DecimalFormat(&quot;###,###,###&quot;);</span>
+<span class="nc" id="L180">        Double price = Double.parseDouble(pt.getPrice());</span>
+<span class="nc" id="L181">        String price1 = nf.format(price);</span>
+<span class="nc" id="L182">        pr.print(price1);</span>
+<span class="nc" id="L183">    }</span>
+
+    private void serviceComment(HttpServletRequest request, HttpServletResponse response) {
+<span class="nc" id="L186">        User user = (User) request.getSession().getAttribute(&quot;currUser&quot;);</span>
+<span class="nc" id="L187">        int id = Integer.parseInt(request.getParameter(&quot;pid&quot;));</span>
+<span class="nc" id="L188">        int rating = Integer.parseInt(request.getParameter(&quot;rating&quot;));</span>
+<span class="nc" id="L189">        String content = (String) request.getParameter(&quot;content&quot;);</span>
+<span class="nc" id="L190">        ArrayList&lt;Comment&gt; comments = daoComment.getCommentsByProductId(id);</span>
+<span class="nc" id="L191">        int numOfComment = comments.size() + 2;</span>
+<span class="nc" id="L192">        Product update = daoProduct.getProductByID(id);</span>
+<span class="nc" id="L193">        double newRating = rating / numOfComment + update.getRating() * (numOfComment - 1) / numOfComment;</span>
+<span class="nc" id="L194">        int x = (int) Math.round(newRating);</span>
+<span class="nc" id="L195">        update.setRating(x);</span>
+<span class="nc" id="L196">        daoProduct.updateProduct(update);</span>
+<span class="nc" id="L197">        Comment newCom = new Comment();</span>
+<span class="nc" id="L198">        newCom.setProductID(id);</span>
+<span class="nc" id="L199">        newCom.setUserID(user.getUserId());</span>
+<span class="nc" id="L200">        newCom.setRating(rating);</span>
+<span class="nc" id="L201">        newCom.setContent(content);</span>
+<span class="nc" id="L202">        daoComment.insertComment(newCom);</span>
+<span class="nc" id="L203">        sendDispatcher(request, response, &quot;ProductDetailControllerMap?service=getProductDetail&amp;pid=&quot; + id);</span>
+<span class="nc" id="L204">    }</span>
+
+
+    private void writeObject(ObjectOutputStream stream)
+            throws IOException {
+<span class="nc" id="L209">        stream.defaultWriteObject();</span>
+<span class="nc" id="L210">    }</span>
+
+    private void readObject(ObjectInputStream stream)
+            throws IOException, ClassNotFoundException {
+<span class="nc" id="L214">        stream.defaultReadObject();</span>
+<span class="nc" id="L215">    }</span>
+    // &lt;editor-fold defaultstate=&quot;collapsed&quot; desc=&quot;HttpServlet methods. Click on the + sign on the left to edit the code.&quot;&gt;
+    /**
+     * Handles the HTTP &lt;code&gt;GET&lt;/code&gt; method.
+     *
+     * @param request servlet request
+     * @param response servlet response
+     * @throws ServletException if a servlet-specific error occurs
+     * @throws IOException if an I/O error occurs
+     */
+    @Override
+    protected void doGet(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException {
+<span class="nc" id="L228">        processRequest(request, response);</span>
+<span class="nc" id="L229">    }</span>
+
+    /**
+     * Handles the HTTP &lt;code&gt;POST&lt;/code&gt; method.
+     *
+     * @param request servlet request
+     * @param response servlet response
+     * @throws ServletException if a servlet-specific error occurs
+     * @throws IOException if an I/O error occurs
+     */
+    @Override
+    protected void doPost(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException {
+<span class="nc" id="L242">        processRequest(request, response);</span>
+<span class="nc" id="L243">    }</span>
+
+    /**
+     * Returns a short description of the servlet.
+     *
+     * @return a String containing servlet description
+     */
+    @Override
+    public String getServletInfo() {
+<span class="fc" id="L252">        return &quot;Short description&quot;;</span>
+    }// &lt;/editor-fold&gt;
+
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.eclemma.org/jacoco">JaCoCo</a> 0.7.5.201505241946</span></div></body></html>

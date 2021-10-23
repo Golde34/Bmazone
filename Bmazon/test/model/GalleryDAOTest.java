@@ -310,5 +310,4 @@ public class GalleryDAOTest {
         List<Gallery> result = instance.getAllImageByProductTypeID(ptypeID);
         assertEquals(expResult, result);
     }
-
 }

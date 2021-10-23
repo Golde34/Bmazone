@@ -1,0 +1,777 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../.resources/report.css" type="text/css"/><link rel="shortcut icon" href="../.resources/report.gif" type="image/gif"/><title>ProductDAO.java</title><link rel="stylesheet" href="../.resources/prettify.css" type="text/css"/><script type="text/javascript" src="../.resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../.sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">JaCoCoverage analysis of project &quot;Bmazon&quot; (powered by JaCoCo from EclEmma)</a> &gt; <a href="index.source.html" class="el_package">model</a> &gt; <span class="el_source">ProductDAO.java</span></div><h1>ProductDAO.java</h1><pre class="source lang-java linenums">/*
+ * To change this license header, choose License Headers in Project Properties.
+ * To change this template file, choose Tools | Templates
+ * and open the template in the editor.
+ */
+package model;
+
+import entity.*;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import java.util.*;
+
+/**
+ *
+ * @author Admin
+ */
+<span class="fc" id="L22">public class ProductDAO extends BaseDAO {</span>
+
+<span class="fc" id="L24">    BaseDAO dbConn = new BaseDAO();</span>
+
+    public int getPageNumber(String search) {
+<span class="nc" id="L27">        int num = 0;</span>
+<span class="nc" id="L28">        String xSql = &quot;SELECT COUNT(*)from Product p join Seller s on p.sellerID=s.sellerID join ProductCategory pc on p.productID=pc.productID join Category c on pc.categoryId=c.categoryID join ProductGenre pg on pg.productID=p.productID join Genre g on g.genreID=pg.genreID\n&quot;</span>
+                + &quot;   where p.productName like '%&quot; + search + &quot;%' or c.categoryName like '%&quot; + search + &quot;%' or g.genreName like '%&quot; + search + &quot;%' or s.sellerShopName like '%&quot; + search + &quot;%'&quot;;
+<span class="nc" id="L30">        ResultSet rs = dbConn.getData(xSql);</span>
+        try {
+<span class="nc bnc" id="L32" title="All 2 branches missed.">            if (rs.next()) {</span>
+<span class="nc" id="L33">                num = rs.getInt(1);</span>
+            }
+<span class="nc" id="L35">        } catch (SQLException ex) {</span>
+<span class="nc" id="L36">            Logger.getLogger(UserDAO.class.getName()).log(Level.SEVERE, null, ex);</span>
+<span class="nc" id="L37">        }</span>
+<span class="nc" id="L38">        return num;</span>
+    }
+
+    public int getPageNumberBySeller(String search, int sellerID) {
+<span class="nc" id="L42">        int num = 0;</span>
+<span class="nc" id="L43">        String xSql = &quot;SELECT COUNT(*)from Product p join Seller s on p.sellerID=s.sellerID join ProductCategory pc on p.productID=pc.productID join Category c on pc.categoryId=c.categoryID join ProductGenre pg on pg.productID=p.productID join Genre g on g.genreID=pg.genreID\n&quot;</span>
+                + &quot;   where p.productName like '%&quot; + search + &quot;%' and p.sellerID = ?&quot;;
+        try {
+<span class="nc" id="L46">            pre = conn.prepareStatement(xSql);</span>
+<span class="nc" id="L47">            pre.setInt(1, sellerID);</span>
+<span class="nc" id="L48">            rs = pre.executeQuery();</span>
+<span class="nc bnc" id="L49" title="All 2 branches missed.">            if (rs.next()) {</span>
+<span class="nc" id="L50">                num = rs.getInt(1);</span>
+            }
+<span class="nc" id="L52">        } catch (SQLException ex) {</span>
+<span class="nc" id="L53">            Logger.getLogger(UserDAO.class.getName()).log(Level.SEVERE, null, ex);</span>
+<span class="nc" id="L54">        }</span>
+<span class="nc" id="L55">        return num;</span>
+    }
+
+    public ArrayList&lt;Product&gt; getAllPagingProduct(int index, int numOfRow, String search) {
+<span class="nc" id="L59">        ArrayList&lt;Product&gt; list = new ArrayList&lt;&gt;();</span>
+<span class="nc" id="L60">        String sql = &quot;declare @PageNo INT =&quot; + index + &quot;\n&quot;</span>
+                + &quot;declare @PageSize INT=&quot; + numOfRow + &quot;\n&quot;
+                + &quot;SELECT * from(\n&quot;
+                + &quot;SELECT p.*,s.sellerShopName,g.genreName,c.categoryName,\n&quot;
+                + &quot;ROW_NUMBER() over (order by p.productID) as RowNum\n&quot;
+                + &quot;  from Product p join Seller s on p.sellerID=s.sellerID join ProductCategory pc on p.productID=pc.productID join Category c on pc.categoryId=c.categoryID join ProductGenre pg on pg.productID=p.productID join Genre g on g.genreID=pg.genreID\n&quot;
+                + &quot;   where p.productName like '%&quot; + search + &quot;%' or c.categoryName like '%&quot; + search + &quot;%' or g.genreName like '%&quot; + search + &quot;%' or s.sellerShopName like '%&quot; + search + &quot;%')T\n&quot;
+                + &quot;where T.RowNum between ((@PageNo-1)*@PageSize)+1 and (@PageNo*@PageSize)&quot;;
+        try {
+<span class="nc" id="L69">            pre = conn.prepareStatement(sql);</span>
+<span class="nc" id="L70">            rs = pre.executeQuery();</span>
+<span class="nc bnc" id="L71" title="All 2 branches missed.">            while (rs.next()) {</span>
+<span class="nc" id="L72">                Product pro = new Product();</span>
+<span class="nc" id="L73">                pro.setProductID(rs.getInt(&quot;productID&quot;));</span>
+<span class="nc" id="L74">                pro.setProductName(rs.getString(&quot;productName&quot;));</span>
+<span class="nc" id="L75">                pro.setDescription(rs.getString(&quot;description&quot;));</span>
+<span class="nc" id="L76">                pro.setRating(rs.getInt(&quot;rating&quot;));</span>
+<span class="nc" id="L77">                pro.setReleaseDate(rs.getDate(&quot;releaseDate&quot;));</span>
+<span class="nc" id="L78">                pro.setSeller(rs.getInt(&quot;sellerID&quot;));</span>
+<span class="nc" id="L79">                pro.setStatus(rs.getInt(&quot;status&quot;));</span>
+<span class="nc" id="L80">                list.add(pro);</span>
+<span class="nc" id="L81">            }</span>
+<span class="nc" id="L82">            rs.close();</span>
+<span class="nc" id="L83">            pre.close();</span>
+<span class="nc" id="L84">        } catch (SQLException e) {</span>
+<span class="nc" id="L85">            Logger.getLogger(ProductDAO.class.getName()).log(Level.SEVERE, null, e);</span>
+<span class="nc" id="L86">        }</span>
+<span class="nc" id="L87">        return list;</span>
+    }
+
+    public ArrayList&lt;Product&gt; getAllPagingProductBySeller(int index, int numOfRow, String search, String seller) {
+<span class="nc" id="L91">        ArrayList&lt;Product&gt; list = new ArrayList&lt;&gt;();</span>
+<span class="nc" id="L92">        String sql = &quot;declare @PageNo INT =&quot; + index + &quot;\n&quot;</span>
+                + &quot;declare @PageSize INT=&quot; + numOfRow + &quot;\n&quot;
+                + &quot;SELECT * from(\n&quot;
+                + &quot;SELECT productID,productName,[description],rating,sellerID,[User].fullname,releaseDate,Product.[status],\n&quot;
+                + &quot;ROW_NUMBER() over (order by Product.productID) as RowNum\n&quot;
+                + &quot;  FROM Product inner join [User] on Product.sellerID=[User].userID where Product.sellerID = &quot; + seller + &quot; and(productName like '%&quot; + search + &quot;%' ))T\n&quot;
+                + &quot;where T.RowNum between ((@PageNo-1)*@PageSize)+1 and (@PageNo*@PageSize)&quot;;
+        try {
+<span class="nc" id="L100">            pre = conn.prepareStatement(sql);</span>
+<span class="nc" id="L101">            rs = pre.executeQuery();</span>
+<span class="nc bnc" id="L102" title="All 2 branches missed.">            while (rs.next()) {</span>
+<span class="nc" id="L103">                Product pro = new Product();</span>
+<span class="nc" id="L104">                pro.setProductID(rs.getInt(&quot;productID&quot;));</span>
+<span class="nc" id="L105">                pro.setProductName(rs.getString(&quot;productName&quot;));</span>
+<span class="nc" id="L106">                pro.setDescription(rs.getString(&quot;description&quot;));</span>
+<span class="nc" id="L107">                pro.setRating(rs.getInt(&quot;rating&quot;));</span>
+<span class="nc" id="L108">                pro.setReleaseDate(rs.getDate(&quot;releaseDate&quot;));</span>
+<span class="nc" id="L109">                pro.setSeller(rs.getInt(&quot;sellerID&quot;));</span>
+<span class="nc" id="L110">                pro.setStatus(rs.getInt(&quot;status&quot;));</span>
+<span class="nc" id="L111">                list.add(pro);</span>
+<span class="nc" id="L112">            }</span>
+<span class="nc" id="L113">            rs.close();</span>
+<span class="nc" id="L114">            pre.close();</span>
+<span class="nc" id="L115">        } catch (SQLException e) {</span>
+<span class="nc" id="L116">            Logger.getLogger(ProductDAO.class.getName()).log(Level.SEVERE, null, e);</span>
+<span class="nc" id="L117">        }</span>
+<span class="nc" id="L118">        return list;</span>
+    }
+
+    public ArrayList&lt;Product&gt; getAllProduct() {
+<span class="nc" id="L122">        ArrayList&lt;Product&gt; list = new ArrayList&lt;&gt;();</span>
+<span class="nc" id="L123">        String sql = &quot;SELECT * FROM Product where status=1&quot;;</span>
+        try {
+<span class="nc" id="L125">            pre = conn.prepareStatement(sql);</span>
+<span class="nc" id="L126">            rs = pre.executeQuery();</span>
+<span class="nc bnc" id="L127" title="All 2 branches missed.">            while (rs.next()) {</span>
+<span class="nc" id="L128">                Product pro = new Product();</span>
+<span class="nc" id="L129">                pro.setProductID(rs.getInt(&quot;productID&quot;));</span>
+<span class="nc" id="L130">                pro.setProductName(rs.getString(&quot;productName&quot;));</span>
+<span class="nc" id="L131">                pro.setDescription(rs.getString(&quot;description&quot;));</span>
+<span class="nc" id="L132">                pro.setRating(rs.getInt(&quot;rating&quot;));</span>
+<span class="nc" id="L133">                pro.setReleaseDate(rs.getDate(&quot;releaseDate&quot;));</span>
+<span class="nc" id="L134">                pro.setSeller(rs.getInt(&quot;sellerID&quot;));</span>
+<span class="nc" id="L135">                pro.setStatus(rs.getInt(&quot;status&quot;));</span>
+<span class="nc" id="L136">                list.add(pro);</span>
+<span class="nc" id="L137">            }</span>
+<span class="nc" id="L138">            rs.close();</span>
+<span class="nc" id="L139">            pre.close();</span>
+<span class="nc" id="L140">        } catch (SQLException e) {</span>
+<span class="nc" id="L141">            Logger.getLogger(ProductDAO.class.getName()).log(Level.SEVERE, null, e);</span>
+<span class="nc" id="L142">        }</span>
+<span class="nc" id="L143">        return list;</span>
+    }
+
+    public ArrayList&lt;Product&gt; getTrueProduct(int index) {
+<span class="nc" id="L147">        ArrayList&lt;Product&gt; list = new ArrayList&lt;&gt;();</span>
+<span class="nc" id="L148">        String sql = &quot; declare @PageNo INT = &quot; + index + &quot; \n&quot;</span>
+                + &quot; declare @PageSize INT=20 \n&quot;
+                + &quot; SELECT * from( \n&quot;
+                + &quot; SELECT *,\n  &quot;
+                + &quot; ROW_NUMBER() over (order by releaseDate) as RowNum\n  &quot;
+                + &quot;   FROM [Bmazon].[dbo].[Product] p ) as T \n &quot;
+                + &quot; where T.RowNum between ((@PageNo-1)*@PageSize)+1 and (@PageNo*@PageSize)  &quot;;
+        try {
+<span class="nc" id="L156">            pre = conn.prepareStatement(sql);</span>
+<span class="nc" id="L157">            rs = pre.executeQuery();</span>
+<span class="nc bnc" id="L158" title="All 2 branches missed.">            while (rs.next()) {</span>
+<span class="nc" id="L159">                Product pro = new Product();</span>
+<span class="nc" id="L160">                pro.setProductID(rs.getInt(&quot;productID&quot;));</span>
+<span class="nc" id="L161">                pro.setProductName(rs.getString(&quot;productName&quot;));</span>
+<span class="nc" id="L162">                pro.setDescription(rs.getString(&quot;description&quot;));</span>
+<span class="nc" id="L163">                pro.setRating(rs.getInt(&quot;rating&quot;));</span>
+<span class="nc" id="L164">                pro.setReleaseDate(rs.getDate(&quot;releaseDate&quot;));</span>
+<span class="nc" id="L165">                pro.setSeller(rs.getInt(&quot;sellerID&quot;));</span>
+<span class="nc" id="L166">                pro.setStatus(rs.getInt(&quot;status&quot;));</span>
+<span class="nc" id="L167">                list.add(pro);</span>
+<span class="nc" id="L168">            }</span>
+<span class="nc" id="L169">            rs.close();</span>
+<span class="nc" id="L170">            pre.close();</span>
+<span class="nc" id="L171">        } catch (SQLException e) {</span>
+<span class="nc" id="L172">            Logger.getLogger(ProductDAO.class.getName()).log(Level.SEVERE, null, e);</span>
+<span class="nc" id="L173">        }</span>
+<span class="nc" id="L174">        return list;</span>
+    }
+
+    public ArrayList&lt;Product&gt; getTrueProductPaging(int total, int end) {
+<span class="nc" id="L178">        ArrayList&lt;Product&gt; list = new ArrayList&lt;&gt;();</span>
+<span class="nc" id="L179">        String sql = &quot;SELECT * FROM Product  where status=1 order by releaseDate OFFSET &quot; + total + &quot; ROWS \n&quot;</span>
+                + &quot;FETCH NEXT &quot; + end + &quot; ROWS ONLY&quot;;
+        try {
+<span class="nc" id="L182">            pre = conn.prepareStatement(sql);</span>
+<span class="nc" id="L183">            rs = pre.executeQuery();</span>
+<span class="nc bnc" id="L184" title="All 2 branches missed.">            while (rs.next()) {</span>
+<span class="nc" id="L185">                Product pro = new Product();</span>
+<span class="nc" id="L186">                pro.setProductID(rs.getInt(&quot;productID&quot;));</span>
+<span class="nc" id="L187">                pro.setProductName(rs.getString(&quot;productName&quot;));</span>
+<span class="nc" id="L188">                pro.setDescription(rs.getString(&quot;description&quot;));</span>
+<span class="nc" id="L189">                pro.setRating(rs.getInt(&quot;rating&quot;));</span>
+<span class="nc" id="L190">                pro.setReleaseDate(rs.getDate(&quot;releaseDate&quot;));</span>
+<span class="nc" id="L191">                pro.setSeller(rs.getInt(&quot;sellerID&quot;));</span>
+<span class="nc" id="L192">                pro.setStatus(rs.getInt(&quot;status&quot;));</span>
+<span class="nc" id="L193">                list.add(pro);</span>
+<span class="nc" id="L194">            }</span>
+<span class="nc" id="L195">            rs.close();</span>
+<span class="nc" id="L196">            pre.close();</span>
+<span class="nc" id="L197">        } catch (SQLException e) {</span>
+<span class="nc" id="L198">            Logger.getLogger(ProductDAO.class.getName()).log(Level.SEVERE, null, e);</span>
+<span class="nc" id="L199">        }</span>
+<span class="nc" id="L200">        return list;</span>
+    }
+
+    public ArrayList&lt;Product&gt; getProductSale() {
+<span class="nc" id="L204">        ArrayList&lt;Product&gt; list = new ArrayList&lt;&gt;();</span>
+<span class="nc" id="L205">        String sql = &quot;SELECT TOP 8 * FROM Product&quot;;</span>
+        try {
+<span class="nc" id="L207">            pre = conn.prepareStatement(sql);</span>
+<span class="nc" id="L208">            rs = pre.executeQuery();</span>
+<span class="nc bnc" id="L209" title="All 2 branches missed.">            while (rs.next()) {</span>
+<span class="nc" id="L210">                Product pro = new Product();</span>
+<span class="nc" id="L211">                pro.setProductID(rs.getInt(&quot;productID&quot;));</span>
+<span class="nc" id="L212">                pro.setProductName(rs.getString(&quot;productName&quot;));</span>
+<span class="nc" id="L213">                pro.setDescription(rs.getString(&quot;description&quot;));</span>
+<span class="nc" id="L214">                pro.setRating(rs.getInt(&quot;rating&quot;));</span>
+<span class="nc" id="L215">                pro.setReleaseDate(rs.getDate(&quot;releaseDate&quot;));</span>
+<span class="nc" id="L216">                pro.setSeller(rs.getInt(&quot;sellerID&quot;));</span>
+<span class="nc" id="L217">                pro.setStatus(rs.getInt(&quot;status&quot;));</span>
+<span class="nc" id="L218">                list.add(pro);</span>
+<span class="nc" id="L219">            }</span>
+<span class="nc" id="L220">            rs.close();</span>
+<span class="nc" id="L221">            pre.close();</span>
+<span class="nc" id="L222">        } catch (SQLException e) {</span>
+<span class="nc" id="L223">            Logger.getLogger(ProductDAO.class.getName()).log(Level.SEVERE, null, e);</span>
+<span class="nc" id="L224">        }</span>
+<span class="nc" id="L225">        return list;</span>
+    }
+
+    public ArrayList&lt;Product&gt; getProductNew() {
+<span class="nc" id="L229">        ArrayList&lt;Product&gt; list = new ArrayList&lt;&gt;();</span>
+<span class="nc" id="L230">        String sql = &quot;SELECT TOP 8 * FROM Product order by releaseDate&quot;;</span>
+        try {
+<span class="nc" id="L232">            pre = conn.prepareStatement(sql);</span>
+<span class="nc" id="L233">            rs = pre.executeQuery();</span>
+<span class="nc bnc" id="L234" title="All 2 branches missed.">            while (rs.next()) {</span>
+<span class="nc" id="L235">                Product pro = new Product();</span>
+<span class="nc" id="L236">                pro.setProductID(rs.getInt(&quot;productID&quot;));</span>
+<span class="nc" id="L237">                pro.setProductName(rs.getString(&quot;productName&quot;));</span>
+<span class="nc" id="L238">                pro.setDescription(rs.getString(&quot;description&quot;));</span>
+<span class="nc" id="L239">                pro.setRating(rs.getInt(&quot;rating&quot;));</span>
+<span class="nc" id="L240">                pro.setReleaseDate(rs.getDate(&quot;releaseDate&quot;));</span>
+<span class="nc" id="L241">                pro.setSeller(rs.getInt(&quot;sellerID&quot;));</span>
+<span class="nc" id="L242">                pro.setStatus(rs.getInt(&quot;status&quot;));</span>
+<span class="nc" id="L243">                list.add(pro);</span>
+<span class="nc" id="L244">            }</span>
+<span class="nc" id="L245">            rs.close();</span>
+<span class="nc" id="L246">            pre.close();</span>
+<span class="nc" id="L247">        } catch (SQLException e) {</span>
+<span class="nc" id="L248">            Logger.getLogger(ProductDAO.class.getName()).log(Level.SEVERE, null, e);</span>
+<span class="nc" id="L249">        }</span>
+<span class="nc" id="L250">        return list;</span>
+    }
+    
+    public ArrayList&lt;Product&gt; getNewProductSeller(String sid) {
+<span class="nc" id="L254">        ArrayList&lt;Product&gt; list = new ArrayList&lt;&gt;();</span>
+<span class="nc" id="L255">        String sql = &quot;SELECT TOP 6 * FROM Product where sellerID = ? order by releaseDate asc&quot;;</span>
+        try {
+<span class="nc" id="L257">            pre = conn.prepareStatement(sql);</span>
+<span class="nc" id="L258">            pre.setString(1, sid);</span>
+<span class="nc" id="L259">            rs = pre.executeQuery();</span>
+<span class="nc bnc" id="L260" title="All 2 branches missed.">            while (rs.next()) {</span>
+<span class="nc" id="L261">                Product pro = new Product();</span>
+<span class="nc" id="L262">                pro.setProductID(rs.getInt(&quot;productID&quot;));</span>
+<span class="nc" id="L263">                pro.setProductName(rs.getString(&quot;productName&quot;));</span>
+<span class="nc" id="L264">                pro.setDescription(rs.getString(&quot;description&quot;));</span>
+<span class="nc" id="L265">                pro.setRating(rs.getInt(&quot;rating&quot;));</span>
+<span class="nc" id="L266">                pro.setReleaseDate(rs.getDate(&quot;releaseDate&quot;));</span>
+<span class="nc" id="L267">                pro.setSeller(rs.getInt(&quot;sellerID&quot;));</span>
+<span class="nc" id="L268">                pro.setStatus(rs.getInt(&quot;status&quot;));</span>
+<span class="nc" id="L269">                list.add(pro);</span>
+<span class="nc" id="L270">            }</span>
+<span class="nc" id="L271">            rs.close();</span>
+<span class="nc" id="L272">            pre.close();</span>
+<span class="nc" id="L273">        } catch (SQLException e) {</span>
+<span class="nc" id="L274">            Logger.getLogger(ProductDAO.class.getName()).log(Level.SEVERE, null, e);</span>
+<span class="nc" id="L275">        }</span>
+<span class="nc" id="L276">        return list;</span>
+    }
+
+    public Product getProductLatest(int sellerID) {
+<span class="nc" id="L280">        Product pro = new Product();</span>
+<span class="nc" id="L281">        String sql = &quot;SELECT TOP 1 * FROM Product where sellerID = ? order by productID desc&quot;;</span>
+        try {
+<span class="nc" id="L283">            pre = conn.prepareStatement(sql);</span>
+<span class="nc" id="L284">            pre.setInt(1, sellerID);</span>
+<span class="nc" id="L285">            rs = pre.executeQuery();</span>
+<span class="nc bnc" id="L286" title="All 2 branches missed.">            if (rs.next()) {</span>
+<span class="nc" id="L287">                pro.setProductID(rs.getInt(&quot;productID&quot;));</span>
+<span class="nc" id="L288">                pro.setProductName(rs.getString(&quot;productName&quot;));</span>
+<span class="nc" id="L289">                pro.setDescription(rs.getString(&quot;description&quot;));</span>
+<span class="nc" id="L290">                pro.setRating(rs.getInt(&quot;rating&quot;));</span>
+<span class="nc" id="L291">                pro.setReleaseDate(rs.getDate(&quot;releaseDate&quot;));</span>
+<span class="nc" id="L292">                pro.setSeller(rs.getInt(&quot;sellerID&quot;));</span>
+<span class="nc" id="L293">                pro.setStatus(rs.getInt(&quot;status&quot;));</span>
+            }
+<span class="nc" id="L295">            rs.close();</span>
+<span class="nc" id="L296">            pre.close();</span>
+<span class="nc" id="L297">        } catch (SQLException e) {</span>
+<span class="nc" id="L298">            Logger.getLogger(ProductDAO.class.getName()).log(Level.SEVERE, null, e);</span>
+<span class="nc" id="L299">        }</span>
+<span class="nc" id="L300">        return pro;</span>
+    }
+
+    public ArrayList&lt;Product&gt; getProductApple() {
+<span class="nc" id="L304">        ArrayList&lt;Product&gt; list = new ArrayList&lt;&gt;();</span>
+<span class="nc" id="L305">        String sql = &quot;SELECT TOP 8 * FROM Product where description like '%apple%'&quot;;</span>
+        try {
+<span class="nc" id="L307">            pre = conn.prepareStatement(sql);</span>
+<span class="nc" id="L308">            rs = pre.executeQuery();</span>
+<span class="nc bnc" id="L309" title="All 2 branches missed.">            while (rs.next()) {</span>
+<span class="nc" id="L310">                Product pro = new Product();</span>
+<span class="nc" id="L311">                pro.setProductID(rs.getInt(&quot;productID&quot;));</span>
+<span class="nc" id="L312">                pro.setProductName(rs.getString(&quot;productName&quot;));</span>
+<span class="nc" id="L313">                pro.setDescription(rs.getString(&quot;description&quot;));</span>
+<span class="nc" id="L314">                pro.setRating(rs.getInt(&quot;rating&quot;));</span>
+<span class="nc" id="L315">                pro.setReleaseDate(rs.getDate(&quot;releaseDate&quot;));</span>
+<span class="nc" id="L316">                pro.setSeller(rs.getInt(&quot;sellerID&quot;));</span>
+<span class="nc" id="L317">                pro.setStatus(rs.getInt(&quot;status&quot;));</span>
+<span class="nc" id="L318">                list.add(pro);</span>
+<span class="nc" id="L319">            }</span>
+<span class="nc" id="L320">            rs.close();</span>
+<span class="nc" id="L321">            pre.close();</span>
+<span class="nc" id="L322">        } catch (SQLException e) {</span>
+<span class="nc" id="L323">            Logger.getLogger(ProductDAO.class.getName()).log(Level.SEVERE, null, e);</span>
+<span class="nc" id="L324">        }</span>
+<span class="nc" id="L325">        return list;</span>
+    }
+
+    public ArrayList&lt;Product&gt; getProductGear() {
+<span class="nc" id="L329">        ArrayList&lt;Product&gt; list = new ArrayList&lt;&gt;();</span>
+<span class="nc" id="L330">        String sql = &quot;SELECT price * FROM Product where description like '%apple%'&quot;;</span>
+        try {
+<span class="nc" id="L332">            pre = conn.prepareStatement(sql);</span>
+<span class="nc" id="L333">            rs = pre.executeQuery();</span>
+<span class="nc bnc" id="L334" title="All 2 branches missed.">            while (rs.next()) {</span>
+<span class="nc" id="L335">                Product pro = new Product();</span>
+<span class="nc" id="L336">                pro.setProductID(rs.getInt(&quot;productID&quot;));</span>
+<span class="nc" id="L337">                pro.setProductName(rs.getString(&quot;productName&quot;));</span>
+<span class="nc" id="L338">                pro.setDescription(rs.getString(&quot;description&quot;));</span>
+<span class="nc" id="L339">                pro.setRating(rs.getInt(&quot;rating&quot;));</span>
+<span class="nc" id="L340">                pro.setReleaseDate(rs.getDate(&quot;releaseDate&quot;));</span>
+<span class="nc" id="L341">                pro.setSeller(rs.getInt(&quot;sellerID&quot;));</span>
+<span class="nc" id="L342">                pro.setStatus(rs.getInt(&quot;status&quot;));</span>
+<span class="nc" id="L343">                list.add(pro);</span>
+<span class="nc" id="L344">            }</span>
+<span class="nc" id="L345">            rs.close();</span>
+<span class="nc" id="L346">            pre.close();</span>
+<span class="nc" id="L347">        } catch (SQLException e) {</span>
+<span class="nc" id="L348">            Logger.getLogger(ProductDAO.class.getName()).log(Level.SEVERE, null, e);</span>
+<span class="nc" id="L349">        }</span>
+<span class="nc" id="L350">        return list;</span>
+    }
+
+    public ArrayList&lt;Product&gt; getProductBySellerPaging(int index, String seller) {
+<span class="nc" id="L354">        ArrayList&lt;Product&gt; list = new ArrayList&lt;&gt;();</span>
+<span class="nc" id="L355">        String sql = &quot; declare @PageNo INT = ? \n&quot;</span>
+                + &quot; declare @PageSize INT=10 \n&quot;
+                + &quot; SELECT * from( \n&quot;
+                + &quot; SELECT *,\n  &quot;
+                + &quot; ROW_NUMBER() over (order by productID) as RowNum\n  &quot;
+                + &quot;   FROM [Bmazon].[dbo].[Product] p  where sellerID = ?) as T \n &quot;
+                + &quot; where T.RowNum between ((@PageNo-1)*@PageSize)+1 and (@PageNo*@PageSize)  &quot;;
+        //String sql = &quot;SELECT * FROM Product where seller = '&quot; + seller + &quot;'&quot;;
+        try {
+<span class="nc" id="L364">            pre = conn.prepareStatement(sql);</span>
+<span class="nc" id="L365">            pre.setInt(1, index);</span>
+<span class="nc" id="L366">            pre.setString(2, seller);</span>
+<span class="nc" id="L367">            rs = pre.executeQuery();</span>
+<span class="nc bnc" id="L368" title="All 2 branches missed.">            while (rs.next()) {</span>
+<span class="nc" id="L369">                Product pro = new Product();</span>
+<span class="nc" id="L370">                pro.setProductID(rs.getInt(&quot;productID&quot;));</span>
+<span class="nc" id="L371">                pro.setProductName(rs.getString(&quot;productName&quot;));</span>
+<span class="nc" id="L372">                pro.setDescription(rs.getString(&quot;description&quot;));</span>
+<span class="nc" id="L373">                pro.setRating(rs.getInt(&quot;rating&quot;));</span>
+<span class="nc" id="L374">                pro.setReleaseDate(rs.getDate(&quot;releaseDate&quot;));</span>
+<span class="nc" id="L375">                pro.setSeller(rs.getInt(&quot;sellerID&quot;));</span>
+<span class="nc" id="L376">                pro.setStatus(rs.getInt(&quot;status&quot;));</span>
+<span class="nc" id="L377">                list.add(pro);</span>
+<span class="nc" id="L378">            }</span>
+<span class="nc" id="L379">            rs.close();</span>
+<span class="nc" id="L380">            pre.close();</span>
+<span class="nc" id="L381">        } catch (SQLException e) {</span>
+<span class="nc" id="L382">            Logger.getLogger(ProductDAO.class.getName()).log(Level.SEVERE, null, e);</span>
+<span class="nc" id="L383">        }</span>
+<span class="nc" id="L384">        return list;</span>
+    }
+
+    public ArrayList&lt;Product&gt; getProductBySeller(String seller) {
+<span class="nc" id="L388">        ArrayList&lt;Product&gt; list = new ArrayList&lt;&gt;();</span>
+<span class="nc" id="L389">        String sql = &quot;SELECT * FROM Product where sellerID = ?&quot;;</span>
+        try {
+<span class="nc" id="L391">            pre = conn.prepareStatement(sql);</span>
+<span class="nc" id="L392">            pre.setInt(1,Integer.parseInt(seller));</span>
+<span class="nc" id="L393">            rs = pre.executeQuery();</span>
+<span class="nc bnc" id="L394" title="All 2 branches missed.">            while (rs.next()) {</span>
+<span class="nc" id="L395">                Product pro = new Product();</span>
+<span class="nc" id="L396">                pro.setProductID(rs.getInt(&quot;productID&quot;));</span>
+<span class="nc" id="L397">                pro.setProductName(rs.getString(&quot;productName&quot;));</span>
+<span class="nc" id="L398">                pro.setDescription(rs.getString(&quot;description&quot;));</span>
+<span class="nc" id="L399">                pro.setRating(rs.getInt(&quot;rating&quot;));</span>
+<span class="nc" id="L400">                pro.setReleaseDate(rs.getDate(&quot;releaseDate&quot;));</span>
+<span class="nc" id="L401">                pro.setSeller(rs.getInt(&quot;sellerID&quot;));</span>
+<span class="nc" id="L402">                pro.setStatus(rs.getInt(&quot;status&quot;));</span>
+<span class="nc" id="L403">                list.add(pro);</span>
+<span class="nc" id="L404">            }</span>
+<span class="nc" id="L405">            rs.close();</span>
+<span class="nc" id="L406">            pre.close();</span>
+<span class="nc" id="L407">        } catch (SQLException e) {</span>
+<span class="nc" id="L408">            Logger.getLogger(ProductDAO.class.getName()).log(Level.SEVERE, null, e);</span>
+<span class="nc" id="L409">        }</span>
+<span class="nc" id="L410">        return list;</span>
+    }
+
+    public ArrayList&lt;Product&gt; searchProduct(String S) {
+<span class="nc" id="L414">        ArrayList&lt;Product&gt; list = new ArrayList&lt;&gt;();</span>
+<span class="nc" id="L415">        return list;</span>
+    }
+
+    public ArrayList&lt;Product&gt; getProductSuggest() {
+
+<span class="nc" id="L420">        ArrayList&lt;Product&gt; list = new ArrayList&lt;&gt;();</span>
+<span class="nc" id="L421">        String sql = &quot;SELECT TOP 16 * FROM Product order by releaseDate&quot;;</span>
+        try {
+<span class="nc" id="L423">            pre = conn.prepareStatement(sql);</span>
+<span class="nc" id="L424">            rs = pre.executeQuery();</span>
+<span class="nc bnc" id="L425" title="All 2 branches missed.">            while (rs.next()) {</span>
+<span class="nc" id="L426">                Product pro = new Product();</span>
+<span class="nc" id="L427">                pro.setProductID(rs.getInt(&quot;productID&quot;));</span>
+<span class="nc" id="L428">                pro.setProductName(rs.getString(&quot;productName&quot;));</span>
+<span class="nc" id="L429">                pro.setDescription(rs.getString(&quot;description&quot;));</span>
+<span class="nc" id="L430">                pro.setRating(rs.getInt(&quot;rating&quot;));</span>
+<span class="nc" id="L431">                pro.setReleaseDate(rs.getDate(&quot;releaseDate&quot;));</span>
+<span class="nc" id="L432">                pro.setSeller(rs.getInt(&quot;sellerID&quot;));</span>
+<span class="nc" id="L433">                pro.setStatus(rs.getInt(&quot;status&quot;));</span>
+<span class="nc" id="L434">                list.add(pro);</span>
+<span class="nc" id="L435">            }</span>
+<span class="nc" id="L436">            rs.close();</span>
+<span class="nc" id="L437">            pre.close();</span>
+<span class="nc" id="L438">        } catch (SQLException e) {</span>
+<span class="nc" id="L439">            Logger.getLogger(ProductDAO.class.getName()).log(Level.SEVERE, null, e);</span>
+<span class="nc" id="L440">        }</span>
+<span class="nc" id="L441">        return list;</span>
+    }
+
+
+    public static void main(String[] args) {
+<span class="nc" id="L446">        ProductDAO pDAO = new ProductDAO();</span>
+<span class="nc" id="L447">        System.out.println(pDAO.getNewProductSeller(&quot;1&quot;));</span>
+<span class="nc" id="L448">    }</span>
+
+    public int totalProductSeller(String sid) {
+<span class="nc" id="L451">        int count = 0;</span>
+
+<span class="nc" id="L453">        String xSql = &quot;SELECT count(*) FROM [Bmazon].[dbo].[Product] where sellerID = ?&quot;;</span>
+        try {
+<span class="nc" id="L455">            pre = conn.prepareStatement(xSql);</span>
+<span class="nc" id="L456">            pre.setString(1, sid);</span>
+<span class="nc" id="L457">            rs = pre.executeQuery();</span>
+<span class="nc bnc" id="L458" title="All 2 branches missed.">            while (rs.next()) {</span>
+<span class="nc" id="L459">                count = rs.getInt(1);</span>
+            }
+<span class="nc" id="L461">            rs.close();</span>
+<span class="nc" id="L462">            pre.close();</span>
+<span class="nc" id="L463">        } catch (SQLException e) {</span>
+<span class="nc" id="L464">            Logger.getLogger(ProductDAO.class.getName()).log(Level.SEVERE, null, e);</span>
+<span class="nc" id="L465">        }</span>
+<span class="nc" id="L466">        return count;</span>
+    }
+
+    public int totalRelatedProduct(int id) {
+<span class="nc" id="L470">        int count = 0;</span>
+<span class="nc" id="L471">        String xSql = &quot;SELECT count(*) FROM Product a join ProductCategory b on a.productID=b.productID where b.categoryId=(SELECT categoryId FROM ProductCategory WHERE productID=&quot; + id + &quot;)&quot;;</span>
+        try {
+<span class="nc" id="L473">            pre = conn.prepareStatement(xSql);</span>
+<span class="nc" id="L474">            rs = pre.executeQuery();</span>
+<span class="nc bnc" id="L475" title="All 2 branches missed.">            while (rs.next()) {</span>
+<span class="nc" id="L476">                count = rs.getInt(1);</span>
+            }
+<span class="nc" id="L478">            rs.close();</span>
+<span class="nc" id="L479">            pre.close();</span>
+<span class="nc" id="L480">        } catch (SQLException e) {</span>
+<span class="nc" id="L481">            Logger.getLogger(ProductDAO.class.getName()).log(Level.SEVERE, null, e);</span>
+<span class="nc" id="L482">        }</span>
+<span class="nc" id="L483">        return count;</span>
+    }
+    
+    public int totalProduct() {
+<span class="nc" id="L487">        int count = 0;</span>
+
+<span class="nc" id="L489">        String xSql = &quot;SELECT count(*) FROM [Bmazon].[dbo].[Product] &quot;;</span>
+        try {
+<span class="nc" id="L491">            pre = conn.prepareStatement(xSql);</span>
+<span class="nc" id="L492">            rs = pre.executeQuery();</span>
+<span class="nc bnc" id="L493" title="All 2 branches missed.">            while (rs.next()) {</span>
+<span class="nc" id="L494">                count = rs.getInt(1);</span>
+            }
+<span class="nc" id="L496">            rs.close();</span>
+<span class="nc" id="L497">            pre.close();</span>
+<span class="nc" id="L498">        } catch (SQLException e) {</span>
+<span class="nc" id="L499">            Logger.getLogger(ProductDAO.class.getName()).log(Level.SEVERE, null, e);</span>
+<span class="nc" id="L500">        }</span>
+<span class="nc" id="L501">        return count;</span>
+    }
+
+    public int totalSearchProduct(String text) {
+<span class="nc" id="L505">        int count = 0;</span>
+
+<span class="nc" id="L507">        String xSql = &quot;SELECT count(*) FROM [Bmazon].[dbo].[Product] where productName like '%&quot; + text + &quot;%' or productName like '%&quot; + text + &quot;%' or description like '%&quot; + text + &quot;%' or rating like '%&quot; + text + &quot;%'&quot;;</span>
+        try {
+<span class="nc" id="L509">            pre = conn.prepareStatement(xSql);</span>
+<span class="nc" id="L510">            rs = pre.executeQuery();</span>
+<span class="nc bnc" id="L511" title="All 2 branches missed.">            while (rs.next()) {</span>
+<span class="nc" id="L512">                count = rs.getInt(1);</span>
+            }
+<span class="nc" id="L514">            rs.close();</span>
+<span class="nc" id="L515">            pre.close();</span>
+<span class="nc" id="L516">        } catch (SQLException e) {</span>
+<span class="nc" id="L517">            Logger.getLogger(ProductDAO.class.getName()).log(Level.SEVERE, null, e);</span>
+<span class="nc" id="L518">        }</span>
+<span class="nc" id="L519">        return count;</span>
+    }
+
+    public ArrayList&lt;Product&gt; getProductByName(int index, String name) {
+<span class="nc" id="L523">        ArrayList&lt;Product&gt; list = new ArrayList&lt;&gt;();</span>
+<span class="nc" id="L524">        String sql = &quot; declare @PageNo INT = &quot; + index + &quot; \n&quot;</span>
+                + &quot; declare @PageSize INT=20 \n&quot;
+                + &quot; SELECT * from( \n&quot;
+                + &quot; SELECT *,\n  &quot;
+                + &quot; ROW_NUMBER() over (order by productID) as RowNum\n  &quot;
+                + &quot;   FROM [Bmazon].[dbo].[Product] p  where productName like '%&quot; + name + &quot;%' OR description like '%&quot; + name + &quot;%') as T \n &quot;
+                + &quot; where T.RowNum between ((@PageNo-1)*@PageSize)+1 and (@PageNo*@PageSize)  &quot;;
+        try {
+<span class="nc" id="L532">            pre = conn.prepareStatement(sql);</span>
+<span class="nc" id="L533">            rs = pre.executeQuery();</span>
+<span class="nc bnc" id="L534" title="All 2 branches missed.">            while (rs.next()) {</span>
+<span class="nc" id="L535">                Product pro = new Product();</span>
+<span class="nc" id="L536">                pro.setProductID(rs.getInt(&quot;productID&quot;));</span>
+<span class="nc" id="L537">                pro.setProductName(rs.getString(&quot;productName&quot;));</span>
+<span class="nc" id="L538">                pro.setDescription(rs.getString(&quot;description&quot;));</span>
+<span class="nc" id="L539">                pro.setRating(rs.getInt(&quot;rating&quot;));</span>
+<span class="nc" id="L540">                pro.setReleaseDate(rs.getDate(&quot;releaseDate&quot;));</span>
+<span class="nc" id="L541">                pro.setSeller(rs.getInt(&quot;sellerID&quot;));</span>
+<span class="nc" id="L542">                pro.setStatus(rs.getInt(&quot;status&quot;));</span>
+<span class="nc" id="L543">                list.add(pro);</span>
+<span class="nc" id="L544">            }</span>
+<span class="nc" id="L545">            rs.close();</span>
+<span class="nc" id="L546">            pre.close();</span>
+<span class="nc" id="L547">        } catch (SQLException e) {</span>
+<span class="nc" id="L548">            Logger.getLogger(ProductDAO.class.getName()).log(Level.SEVERE, null, e);</span>
+<span class="nc" id="L549">        }</span>
+<span class="nc" id="L550">        return list;</span>
+    }
+
+    public ArrayList&lt;Product&gt; getProductByFilter(int index, String name, int cateID) {
+<span class="nc" id="L554">        ArrayList&lt;Product&gt; list = new ArrayList&lt;&gt;();</span>
+<span class="nc" id="L555">        String sql = &quot; declare @PageNo INT = &quot; + index + &quot; \n&quot;</span>
+                + &quot; declare @PageSize INT=20 \n&quot;
+                + &quot; SELECT * from( \n&quot;
+                + &quot; SELECT p.productID,p.productName,p.description,p.rating,p.releaseDate,p.sellerID,p.[status],\n  &quot;
+                + &quot; ROW_NUMBER() over (order by p.productID) as RowNum \n  &quot;
+                + &quot;  FROM Product p join ProductCategory pc on p.productID=pc.productID where productName like '%&quot; + name + &quot;%' OR description like '%&quot; + name + &quot;%' and categoryId= &quot; + cateID + &quot;  ) as T  \n &quot;
+                + &quot; where T.RowNum between ((@PageNo-1)*@PageSize)+1 and (@PageNo*@PageSize)  &quot;;
+        try {
+<span class="nc" id="L563">            pre = conn.prepareStatement(sql);</span>
+<span class="nc" id="L564">            rs = pre.executeQuery();</span>
+<span class="nc bnc" id="L565" title="All 2 branches missed.">            while (rs.next()) {</span>
+<span class="nc" id="L566">                Product pro = new Product();</span>
+<span class="nc" id="L567">                pro.setProductID(rs.getInt(&quot;productID&quot;));</span>
+<span class="nc" id="L568">                pro.setProductName(rs.getString(&quot;productName&quot;));</span>
+<span class="nc" id="L569">                pro.setDescription(rs.getString(&quot;description&quot;));</span>
+<span class="nc" id="L570">                pro.setRating(rs.getInt(&quot;rating&quot;));</span>
+<span class="nc" id="L571">                pro.setReleaseDate(rs.getDate(&quot;releaseDate&quot;));</span>
+<span class="nc" id="L572">                pro.setSeller(rs.getInt(&quot;sellerID&quot;));</span>
+<span class="nc" id="L573">                pro.setStatus(rs.getInt(&quot;status&quot;));</span>
+<span class="nc" id="L574">                list.add(pro);</span>
+<span class="nc" id="L575">            }</span>
+<span class="nc" id="L576">            rs.close();</span>
+<span class="nc" id="L577">            pre.close();</span>
+<span class="nc" id="L578">        } catch (SQLException e) {</span>
+<span class="nc" id="L579">            Logger.getLogger(ProductDAO.class.getName()).log(Level.SEVERE, null, e);</span>
+<span class="nc" id="L580">        }</span>
+<span class="nc" id="L581">        return list;</span>
+    }
+
+    public Product getProductByID(int id) {
+<span class="nc" id="L585">        Product pro = new Product();</span>
+<span class="nc" id="L586">        String sql = &quot;SELECT * FROM [Bmazon].[dbo].[Product] where productID=&quot; + id;</span>
+        try {
+<span class="nc" id="L588">            pre = conn.prepareStatement(sql);</span>
+<span class="nc" id="L589">            rs = pre.executeQuery();</span>
+<span class="nc bnc" id="L590" title="All 2 branches missed.">            if (rs.next()) {</span>
+<span class="nc" id="L591">                pro.setProductID(rs.getInt(&quot;productID&quot;));</span>
+<span class="nc" id="L592">                pro.setProductName(rs.getString(&quot;productName&quot;));</span>
+<span class="nc" id="L593">                pro.setDescription(rs.getString(&quot;description&quot;));</span>
+<span class="nc" id="L594">                pro.setRating(rs.getInt(&quot;rating&quot;));</span>
+<span class="nc" id="L595">                pro.setReleaseDate(rs.getDate(&quot;releaseDate&quot;));</span>
+<span class="nc" id="L596">                pro.setSeller(rs.getInt(&quot;sellerID&quot;));</span>
+<span class="nc" id="L597">                pro.setStatus(rs.getInt(&quot;status&quot;));</span>
+            }
+<span class="nc" id="L599">            rs.close();</span>
+<span class="nc" id="L600">            pre.close();</span>
+<span class="nc" id="L601">        } catch (SQLException e) {</span>
+<span class="nc" id="L602">            Logger.getLogger(ProductDAO.class.getName()).log(Level.SEVERE, null, e);</span>
+<span class="nc" id="L603">        }</span>
+<span class="nc" id="L604">        return pro;</span>
+    }
+
+    public ArrayList&lt;Product&gt; getProductByCategory(int categoryID) {
+<span class="nc" id="L608">        ArrayList&lt;Product&gt; list = new ArrayList&lt;&gt;();</span>
+<span class="nc" id="L609">        String sql = &quot;SELECT * FROM [Bmazon].[dbo].[Product] as a join ProductCategory as b on a.productID=b.productID\n&quot;</span>
+                + &quot;WHERE a.status=1 and b.categoryId=&quot; + categoryID;
+        try {
+<span class="nc" id="L612">            pre = conn.prepareStatement(sql);</span>
+<span class="nc" id="L613">            rs = pre.executeQuery();</span>
+<span class="nc bnc" id="L614" title="All 2 branches missed.">            while (rs.next()) {</span>
+<span class="nc" id="L615">                Product pro = new Product();</span>
+<span class="nc" id="L616">                pro.setProductID(rs.getInt(&quot;productID&quot;));</span>
+<span class="nc" id="L617">                pro.setProductName(rs.getString(&quot;productName&quot;));</span>
+<span class="nc" id="L618">                pro.setDescription(rs.getString(&quot;description&quot;));</span>
+<span class="nc" id="L619">                pro.setRating(rs.getInt(&quot;rating&quot;));</span>
+<span class="nc" id="L620">                pro.setReleaseDate(rs.getDate(&quot;releaseDate&quot;));</span>
+<span class="nc" id="L621">                pro.setSeller(rs.getInt(&quot;sellerID&quot;));</span>
+<span class="nc" id="L622">                pro.setStatus(rs.getInt(&quot;status&quot;));</span>
+<span class="nc" id="L623">                list.add(pro);</span>
+<span class="nc" id="L624">            }</span>
+<span class="nc" id="L625">            rs.close();</span>
+<span class="nc" id="L626">            pre.close();</span>
+<span class="nc" id="L627">        } catch (SQLException e) {</span>
+<span class="nc" id="L628">            Logger.getLogger(ProductDAO.class.getName()).log(Level.SEVERE, null, e);</span>
+<span class="nc" id="L629">        }</span>
+<span class="nc" id="L630">        return list;</span>
+    }
+
+    public ArrayList&lt;Product&gt; getProductByGenre(int genreID) {
+<span class="nc" id="L634">        ArrayList&lt;Product&gt; list = new ArrayList&lt;&gt;();</span>
+<span class="nc" id="L635">        String sql = &quot;SELECT * FROM [Bmazon].[dbo].[Product] as a join ProductGenre as b on a.productID=b.productID WHERE a.status=1 and b.genreID=&quot; + genreID;</span>
+
+        try {
+<span class="nc" id="L638">            pre = conn.prepareStatement(sql);</span>
+<span class="nc" id="L639">            rs = pre.executeQuery();</span>
+<span class="nc bnc" id="L640" title="All 2 branches missed.">            while (rs.next()) {</span>
+<span class="nc" id="L641">                Product pro = new Product();</span>
+<span class="nc" id="L642">                pro.setProductID(rs.getInt(&quot;productID&quot;));</span>
+<span class="nc" id="L643">                pro.setProductName(rs.getString(&quot;productName&quot;));</span>
+<span class="nc" id="L644">                pro.setDescription(rs.getString(&quot;description&quot;));</span>
+<span class="nc" id="L645">                pro.setRating(rs.getInt(&quot;rating&quot;));</span>
+<span class="nc" id="L646">                pro.setReleaseDate(rs.getDate(&quot;releaseDate&quot;));</span>
+<span class="nc" id="L647">                pro.setSeller(rs.getInt(&quot;sellerID&quot;));</span>
+<span class="nc" id="L648">                pro.setStatus(rs.getInt(&quot;status&quot;));</span>
+<span class="nc" id="L649">                list.add(pro);</span>
+<span class="nc" id="L650">            }</span>
+<span class="nc" id="L651">            rs.close();</span>
+<span class="nc" id="L652">            pre.close();</span>
+<span class="nc" id="L653">        } catch (SQLException e) {</span>
+<span class="nc" id="L654">            Logger.getLogger(ProductDAO.class.getName()).log(Level.SEVERE, null, e);</span>
+<span class="nc" id="L655">        }</span>
+<span class="nc" id="L656">        return list;</span>
+    }
+
+    public ArrayList&lt;Product&gt; getRelatedProductByProductID(int id) {
+<span class="nc" id="L660">        ArrayList&lt;Product&gt; list = new ArrayList&lt;&gt;();</span>
+<span class="nc" id="L661">        String sql = &quot;SELECT * FROM Product a join ProductCategory b on a.productID=b.productID where b.categoryId=(SELECT categoryId FROM ProductCategory WHERE productID=&quot; + id + &quot;)&quot;;</span>
+        try {
+<span class="nc" id="L663">            pre = conn.prepareStatement(sql);</span>
+<span class="nc" id="L664">            rs = pre.executeQuery();</span>
+<span class="nc bnc" id="L665" title="All 2 branches missed.">            while (rs.next()) {</span>
+<span class="nc" id="L666">                Product pro = new Product();</span>
+<span class="nc" id="L667">                pro.setProductID(rs.getInt(&quot;productID&quot;));</span>
+<span class="nc" id="L668">                pro.setProductName(rs.getString(&quot;productName&quot;));</span>
+<span class="nc" id="L669">                pro.setDescription(rs.getString(&quot;description&quot;));</span>
+<span class="nc" id="L670">                pro.setRating(rs.getInt(&quot;rating&quot;));</span>
+<span class="nc" id="L671">                pro.setReleaseDate(rs.getDate(&quot;releaseDate&quot;));</span>
+<span class="nc" id="L672">                pro.setSeller(rs.getInt(&quot;sellerID&quot;));</span>
+<span class="nc" id="L673">                pro.setStatus(rs.getInt(&quot;status&quot;));</span>
+<span class="nc" id="L674">                list.add(pro);</span>
+<span class="nc" id="L675">            }</span>
+<span class="nc" id="L676">            rs.close();</span>
+<span class="nc" id="L677">            pre.close();</span>
+<span class="nc" id="L678">        } catch (SQLException e) {</span>
+<span class="nc" id="L679">            Logger.getLogger(ProductDAO.class.getName()).log(Level.SEVERE, null, e);</span>
+<span class="nc" id="L680">        }</span>
+<span class="nc" id="L681">        return list;</span>
+    }
+    
+    public ArrayList&lt;Product&gt; getRelatedProductByProductIDPaging(int index, int id) {
+<span class="nc" id="L685">        ArrayList&lt;Product&gt; list = new ArrayList&lt;&gt;();</span>
+<span class="nc" id="L686">        String sql = &quot; declare @PageNo INT = ? \n&quot;</span>
+                + &quot; declare @PageSize INT=10 \n&quot;
+                + &quot; SELECT * from( \n&quot;
+                + &quot; SELECT a.productID, a.productName,a.description,a.rating,a.releaseDate,a.sellerID,a.status,\n  &quot;
+                + &quot; ROW_NUMBER() over (order by a.productID) as RowNum\n  &quot;
+                + &quot; FROM Product a join ProductCategory b on a.productID = b.productID where b.categoryId = (SELECT categoryId FROM ProductCategory WHERE productID=&quot; + id + &quot;)) as T \n &quot;
+                + &quot; where T.RowNum between ((@PageNo-1)*@PageSize)+1 and (@PageNo*@PageSize)&quot;;
+        try {
+<span class="nc" id="L694">            pre = conn.prepareStatement(sql);</span>
+<span class="nc" id="L695">            pre.setInt(1, index);</span>
+<span class="nc" id="L696">            rs = pre.executeQuery();</span>
+<span class="nc bnc" id="L697" title="All 2 branches missed.">            while (rs.next()) {</span>
+<span class="nc" id="L698">                Product pro = new Product();</span>
+<span class="nc" id="L699">                pro.setProductID(rs.getInt(&quot;productID&quot;));</span>
+<span class="nc" id="L700">                pro.setProductName(rs.getString(&quot;productName&quot;));</span>
+<span class="nc" id="L701">                pro.setDescription(rs.getString(&quot;description&quot;));</span>
+<span class="nc" id="L702">                pro.setRating(rs.getInt(&quot;rating&quot;));</span>
+<span class="nc" id="L703">                pro.setReleaseDate(rs.getDate(&quot;releaseDate&quot;));</span>
+<span class="nc" id="L704">                pro.setSeller(rs.getInt(&quot;sellerID&quot;));</span>
+<span class="nc" id="L705">                pro.setStatus(rs.getInt(&quot;status&quot;));</span>
+<span class="nc" id="L706">                list.add(pro);</span>
+<span class="nc" id="L707">            }</span>
+<span class="nc" id="L708">            rs.close();</span>
+<span class="nc" id="L709">            pre.close();</span>
+<span class="nc" id="L710">        } catch (SQLException e) {</span>
+<span class="nc" id="L711">            Logger.getLogger(ProductDAO.class.getName()).log(Level.SEVERE, null, e);</span>
+<span class="nc" id="L712">        }</span>
+<span class="nc" id="L713">        return list;</span>
+    }
+
+    public int addProduct(Product obj) {
+<span class="nc" id="L717">        int n = 0;</span>
+<span class="nc" id="L718">        String sql = &quot;INSERT INTO [Bmazon].[dbo].[Product]([productName],[description],[rating],[releaseDate],[sellerID],[status])&quot;</span>
+                + &quot;VALUES(?,?,?,?,?,1)&quot;;
+        try {
+<span class="nc" id="L721">            pre = conn.prepareStatement(sql);</span>
+<span class="nc" id="L722">            pre.setString(1, obj.getProductName());</span>
+<span class="nc" id="L723">            pre.setString(2, obj.getDescription());</span>
+<span class="nc" id="L724">            pre.setInt(3, obj.getRating());</span>
+<span class="nc" id="L725">            pre.setDate(4, obj.getReleaseDate());</span>
+<span class="nc" id="L726">            pre.setInt(5, obj.getSeller());</span>
+<span class="nc" id="L727">            n = pre.executeUpdate();</span>
+<span class="nc" id="L728">            pre.close();</span>
+<span class="nc" id="L729">        } catch (SQLException e) {</span>
+<span class="nc" id="L730">            Logger.getLogger(ProductDAO.class.getName()).log(Level.SEVERE, null, e);</span>
+<span class="nc" id="L731">        }</span>
+<span class="nc" id="L732">        return n;</span>
+    }
+
+    public int updateProduct(Product obj) {
+<span class="nc" id="L736">        int n = 0;</span>
+<span class="nc" id="L737">        String sql = &quot;UPDATE [Bmazon].[dbo].[Product]\n&quot;</span>
+                + &quot;   SET [productName] = ?&quot;
+                + &quot;      ,[description] = ?&quot;
+                + &quot;      ,[rating] = ?&quot;
+                + &quot;      ,[releaseDate] = ?&quot;
+                + &quot;      ,[sellerID] = ?&quot;
+                + &quot;      ,[status] = ?&quot;
+                + &quot; WHERE productID=?&quot;;
+        try {
+<span class="nc" id="L746">            pre = conn.prepareStatement(sql);</span>
+<span class="nc" id="L747">            pre.setString(1, obj.getProductName());</span>
+<span class="nc" id="L748">            pre.setString(2, obj.getDescription());</span>
+<span class="nc" id="L749">            pre.setInt(3, obj.getRating());</span>
+<span class="nc" id="L750">            pre.setDate(4, obj.getReleaseDate());</span>
+<span class="nc" id="L751">            pre.setInt(5, obj.getSeller());</span>
+<span class="nc" id="L752">            pre.setInt(6, obj.getStatus());</span>
+<span class="nc" id="L753">            pre.setInt(7, obj.getProductID());</span>
+<span class="nc" id="L754">            n = pre.executeUpdate();</span>
+<span class="nc" id="L755">            pre.close();</span>
+<span class="nc" id="L756">        } catch (SQLException e) {</span>
+<span class="nc" id="L757">            Logger.getLogger(ProductDAO.class.getName()).log(Level.SEVERE, null, e);</span>
+<span class="nc" id="L758">        }</span>
+<span class="nc" id="L759">        return n;</span>
+    }
+
+    public int changeStatus(int id, int status) {
+<span class="nc" id="L763">        int n = 0;</span>
+<span class="nc" id="L764">        String sql = &quot;update Product set status = ? where productID = ?&quot;;</span>
+        try {
+<span class="nc" id="L766">            pre = conn.prepareStatement(sql);</span>
+<span class="nc bnc" id="L767" title="All 2 branches missed.">            pre.setInt(1, (status == 1 ? 1 : 0));</span>
+<span class="nc" id="L768">            pre.setInt(2, id);</span>
+<span class="nc" id="L769">            n = pre.executeUpdate();</span>
+<span class="nc" id="L770">        } catch (SQLException ex) {</span>
+<span class="nc" id="L771">            Logger.getLogger(ProductDAO.class.getName()).log(Level.SEVERE, null, ex);</span>
+<span class="nc" id="L772">        }</span>
+<span class="nc" id="L773">        return n;</span>
+    }
+
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.eclemma.org/jacoco">JaCoCo</a> 0.7.5.201505241946</span></div></body></html>

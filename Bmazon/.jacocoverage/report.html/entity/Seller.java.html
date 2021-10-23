@@ -1,0 +1,123 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../.resources/report.css" type="text/css"/><link rel="shortcut icon" href="../.resources/report.gif" type="image/gif"/><title>Seller.java</title><link rel="stylesheet" href="../.resources/prettify.css" type="text/css"/><script type="text/javascript" src="../.resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../.sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">JaCoCoverage analysis of project &quot;Bmazon&quot; (powered by JaCoCo from EclEmma)</a> &gt; <a href="index.source.html" class="el_package">entity</a> &gt; <span class="el_source">Seller.java</span></div><h1>Seller.java</h1><pre class="source lang-java linenums">/*
+ * To change this license header, choose License Headers in Project Properties.
+ * To change this template file, choose Tools | Templates
+ * and open the template in the editor.
+ */
+package entity;
+
+import java.io.Serializable;
+
+/**
+ *
+ * @author Admin
+ */
+public class Seller implements Serializable {
+    private static final long serialVersionUID = 1;
+    private int sellerID;
+    private int userID;
+    private String sellerShopName;
+    private String sellerPhone;
+    private String evidence;
+    private int sellerMainProduct;
+    private String description;
+    private int sellerVerification;
+    private int status;
+
+<span class="nc" id="L26">    public Seller() {</span>
+<span class="nc" id="L27">    }</span>
+
+<span class="fc" id="L29">    public Seller(int sellerID, int userID, String sellerShopName, String sellerPhone, String evidence, int sellerMainProduct, String description, int sellerVerification, int status) {</span>
+<span class="fc" id="L30">        this.sellerID = sellerID;</span>
+<span class="fc" id="L31">        this.userID = userID;</span>
+<span class="fc" id="L32">        this.sellerShopName = sellerShopName;</span>
+<span class="fc" id="L33">        this.sellerPhone = sellerPhone;</span>
+<span class="fc" id="L34">        this.evidence = evidence;</span>
+<span class="fc" id="L35">        this.sellerMainProduct = sellerMainProduct;</span>
+<span class="fc" id="L36">        this.description = description;</span>
+<span class="fc" id="L37">        this.sellerVerification = sellerVerification;</span>
+<span class="fc" id="L38">        this.status = status;</span>
+<span class="fc" id="L39">    }</span>
+
+<span class="nc" id="L41">    public Seller(int userID, String sellerShopName, String sellerPhone, String evidence, int sellerMainProduct, String description, int sellerVerification) {</span>
+<span class="nc" id="L42">        this.userID = userID;</span>
+<span class="nc" id="L43">        this.sellerShopName = sellerShopName;</span>
+<span class="nc" id="L44">        this.sellerPhone = sellerPhone;</span>
+<span class="nc" id="L45">        this.evidence = evidence;</span>
+<span class="nc" id="L46">        this.sellerMainProduct = sellerMainProduct;</span>
+<span class="nc" id="L47">        this.description = description;</span>
+<span class="nc" id="L48">        this.sellerVerification = sellerVerification;</span>
+<span class="nc" id="L49">    }</span>
+
+    public int getSellerID() {
+<span class="nc" id="L52">        return sellerID;</span>
+    }
+
+    public void setSellerID(int sellerID) {
+<span class="nc" id="L56">        this.sellerID = sellerID;</span>
+<span class="nc" id="L57">    }</span>
+
+    public int getUserID() {
+<span class="fc" id="L60">        return userID;</span>
+    }
+
+    public void setUserID(int userID) {
+<span class="nc" id="L64">        this.userID = userID;</span>
+<span class="nc" id="L65">    }</span>
+
+    public String getSellerShopName() {
+<span class="nc" id="L68">        return sellerShopName;</span>
+    }
+
+    public void setSellerShopName(String sellerShopName) {
+<span class="nc" id="L72">        this.sellerShopName = sellerShopName;</span>
+<span class="nc" id="L73">    }</span>
+
+    public String getSellerPhone() {
+<span class="nc" id="L76">        return sellerPhone;</span>
+    }
+
+    public void setSellerPhone(String sellerPhone) {
+<span class="nc" id="L80">        this.sellerPhone = sellerPhone;</span>
+<span class="nc" id="L81">    }</span>
+
+    public String getEvidence() {
+<span class="nc" id="L84">        return evidence;</span>
+    }
+
+    public void setEvidence(String evidence) {
+<span class="nc" id="L88">        this.evidence = evidence;</span>
+<span class="nc" id="L89">    }</span>
+
+    public int getSellerMainProduct() {
+<span class="nc" id="L92">        return sellerMainProduct;</span>
+    }
+
+    public void setSellerMainProduct(int sellerMainProduct) {
+<span class="nc" id="L96">        this.sellerMainProduct = sellerMainProduct;</span>
+<span class="nc" id="L97">    }</span>
+
+    public String getDescription() {
+<span class="nc" id="L100">        return description;</span>
+    }
+
+    public void setDescription(String description) {
+<span class="nc" id="L104">        this.description = description;</span>
+<span class="nc" id="L105">    }</span>
+
+    public int getSellerVerification() {
+<span class="nc" id="L108">        return sellerVerification;</span>
+    }
+
+    public void setSellerVerification(int sellerVerification) {
+<span class="nc" id="L112">        this.sellerVerification = sellerVerification;</span>
+<span class="nc" id="L113">    }</span>
+
+    public int getStatus() {
+<span class="nc" id="L116">        return status;</span>
+    }
+
+    public void setStatus(int status) {
+<span class="nc" id="L120">        this.status = status;</span>
+<span class="nc" id="L121">    }</span>
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.eclemma.org/jacoco">JaCoCo</a> 0.7.5.201505241946</span></div></body></html>
