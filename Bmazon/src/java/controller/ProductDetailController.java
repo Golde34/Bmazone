@@ -196,7 +196,7 @@ public class ProductDetailController extends HttpServlet {
         daoProduct.updateProduct(update);
         Comment newCom = new Comment();
         newCom.setProductID(id);
-        newCom.setUserID(user.getUserId());
+        newCom.setUserID(Integer.parseInt(user.getUserId()));
         newCom.setRating(rating);
         newCom.setContent(content);
         daoComment.insertComment(newCom);

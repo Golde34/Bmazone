@@ -18,13 +18,13 @@ import java.util.logging.Logger;
  *
  * @author Duong
  */
-public class OrderDAO extends BaseDAO{
+public class OrderDAO extends BaseDAO {
 
-   BaseDAO dbConn= new BaseDAO();
+    BaseDAO dbConn = new BaseDAO();
 
-   public int getPageNumber(String search) {
+    public int getPageNumber(String search) {
         int num = 0;
-        String Sql= "SELECT COUNT(*) FROM [Bmazon].[dbo].[Order]";
+        String Sql = "SELECT COUNT(*) FROM [Bmazon].[dbo].[Order]";
         ResultSet rs = dbConn.getData(Sql);
         try {
             if (rs.next()) {
@@ -35,10 +35,10 @@ public class OrderDAO extends BaseDAO{
         }
         return num;
     }
-    
+
     public List<Order> getAllPagingOrder(int index, int numOfRow, String search) {
         List<Order> list = new ArrayList<>();
-        String sql= "declare @PageNo INT = ? \n"
+        String sql = "declare @PageNo INT = ? \n"
                 + "declare @PageSize INT= ? \n"
                 + "SELECT * from(\n"
                 + "SELECT *,\n"
@@ -76,13 +76,13 @@ public class OrderDAO extends BaseDAO{
         }
         return list;
     }
-   
+
     public int insertOrder(Order obj) {
         int n = 0;
-        String sql = "INSERT INTO [Order]" +
-"           ([userID],[orderDate],[requiredDate],[shippedDate],[shipName],[shipAddress],[shipCity]\n" +
-"           ,[shipPhone],[companyID],[shipMoney],[paymentMethod],[total],[status])"+
-"     VALUES (?,GETDATE(),?,?,?,?,?,?,?,?,?,?,?,1)" ;
+        String sql = "INSERT INTO [Order]"
+                + "           ([userID],[orderDate],[requiredDate],[shippedDate],[shipName],[shipAddress],[shipCity]\n"
+                + "           ,[shipPhone],[companyID],[shipMoney],[paymentMethod],[total],[status])"
+                + "     VALUES (?,GETDATE(),?,?,?,?,?,?,?,?,?,?,?,1)";
         try {
             pre = conn.prepareStatement(sql);
             pre.setString(1, obj.getUserID());
@@ -119,8 +119,8 @@ public class OrderDAO extends BaseDAO{
 
     public int updateOrder(Order obj) {
         int n = 0;
-        String sql = "update [Order] set[orderDate]=? ,[requiredDate]=?,[shippedDate]=?,[shipName]=?,[shipAddress]=?,[shipCity]=?," +
-"           [shipPhone]=?,[companyID]=?,[shipMoney]=?,[paymentMethod]=? ,[total]=? ,[status]=1 where orderID=?";
+        String sql = "update [Order] set[orderDate]=? ,[requiredDate]=?,[shippedDate]=?,[shipName]=?,[shipAddress]=?,[shipCity]=?,"
+                + "           [shipPhone]=?,[companyID]=?,[shipMoney]=?,[paymentMethod]=? ,[total]=? ,[status]=1 where orderID=?";
         try {
             pre = conn.prepareStatement(sql);
             pre.setDate(1, obj.getOrderDate());
@@ -156,10 +156,10 @@ public class OrderDAO extends BaseDAO{
 //        }
 //        return n;
 //    }
-
     public ArrayList<Order> getAllOrder() {
         ArrayList<Order> list = new ArrayList<>();
         String sql = "select * from [Order] where status = 1  order by orderID desc";
+        ResultSet rs = dbConn.getData(sql);
         try {
             while (rs.next()) {
                 Order o = new Order();
@@ -184,10 +184,11 @@ public class OrderDAO extends BaseDAO{
         }
         return list;
     }
-    
+
     public List<Order> getOrderByUser(int userID) {
         List<Order> list = new ArrayList<>();
-        String sql = "select * from Order where userID = ? and status = 1";
+        String sql = "select * from [Order] where userID = " + userID + "and status = 1";
+        ResultSet rs = dbConn.getData(sql);
         try {
             while (rs.next()) {
                 Order o = new Order();
@@ -207,7 +208,7 @@ public class OrderDAO extends BaseDAO{
                 o.setStatus(rs.getInt("status"));
                 list.add(o);
             }
-        } catch (Exception e) {
+        } catch (SQLException e) {
         }
         return list;
     }

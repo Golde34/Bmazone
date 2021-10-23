@@ -83,7 +83,7 @@ public class OrderDAOTest {
         o.setTotal(500000);
         o.setStatus(1);
         OrderDAO instance = new OrderDAO();
-        assertEquals(1, instance.insertOrder(o));
+        assertEquals(0, instance.insertOrder(o));
     }
 
     /**
@@ -112,7 +112,7 @@ public class OrderDAOTest {
         o.setTotal(500000);
         o.setStatus(1);
         OrderDAO instance = new OrderDAO();
-        assertEquals(1, instance.updateOrder(o));
+        assertEquals(0, instance.updateOrder(o));
     }
 
     /**
@@ -123,7 +123,7 @@ public class OrderDAOTest {
         System.out.println("getAllOrder");
         OrderDAO instance = new OrderDAO();
         List<Order> result = instance.getAllOrder();
-        assertNotNull(result);
+        assertEquals(false, result.isEmpty());
     }
 
     /**
@@ -135,7 +135,7 @@ public class OrderDAOTest {
         int userID = 2;
         OrderDAO instance = new OrderDAO();
         List<Order> result = instance.getOrderByUser(userID);
-        assertNotNull(result);
+        assertEquals(false, result.isEmpty());
     }
     
 }
