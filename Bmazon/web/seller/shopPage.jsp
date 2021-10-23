@@ -107,7 +107,7 @@
                 <div class="col-md-4" style="border-top: 2px solid white; border-radius: 15px; border-bottom: 2px solid white; text-align: center; background-color: #222222;">
                     <%String img = "images/" + user.getBackgroundImage();%> 
                     <img style="border-radius: 100%; border: 5px solid #AAAAAA; margin-top: 10px; height: 100px; width: 100px;" src="<%=img%>">
-                    <h1 style="text-align: center; margin-top: 5px; margin-bottom: 5px; font-size: 25px;  text-align: center; color: white;"><%=seller.getSellerShopName()%></h1>
+                    <h1 style="text-align: center; margin-top: 8px; margin-bottom: 8px; font-size: 25px;  text-align: center; color: white; background-color: grey; border-radius: 15px;"><%=seller.getSellerShopName()%></h1>
                 </div>
                 <div class="col-md-4" style="border: 2px solid white; padding-left: 80px;">
                     <div class="col-md-12" style="font-size: 16px; margin-top: 18px;">
@@ -117,7 +117,7 @@
                         <span class="glyphicon glyphicon-phone-alt" style="margin-right: 10px;"></span><span>Phone: <%=seller.getSellerPhone()%></span>
                     </div>
                     <div class="col-md-12" style="font-size: 16px; margin-top: 20px;">
-                        <span class="glyphicon glyphicon-envelope" style="margin-right: 10px;"></span><span>Email: <%=user.getEmail()%></span>
+                        <span class="glyphicon glyphicon-pencil" style="margin-right: 10px;"></span><span><%=seller.getDescription()%></span>
                     </div>
                 </div>
                 <div class="col-md-4" style="border: 2px solid white">
@@ -128,7 +128,7 @@
                         <i class="fa fa-instagram" style="margin-right: 10px;"></i><span>Instagram: <%=user.getInstagram()%></span>
                     </div>
                     <div class="col-md-12" style="font-size: 16px; margin-top: 20px;">
-                        <span class="glyphicon glyphicon-pencil" style="margin-right: 10px;"></span><span><%=seller.getDescription()%></span>
+                        <span class="glyphicon glyphicon-envelope" style="margin-right: 10px;"></span><span>Email: <%=user.getEmail()%></span>
                     </div>
                 </div>
             </div>
