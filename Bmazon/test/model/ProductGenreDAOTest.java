@@ -16,7 +16,7 @@ import static org.junit.Assert.*;
 
 /**
  *
- * @author AD
+ * @author Admin
  */
 public class ProductGenreDAOTest {
     
@@ -70,6 +70,21 @@ public class ProductGenreDAOTest {
     }
 
     /**
+     * Test of getProductGenreByProduct method, of class ProductGenreDAO.
+     */
+    @Test
+    public void testGetProductGenreByProduct() {
+        System.out.println("getProductGenreByProduct");
+        String pid = "";
+        ProductGenreDAO instance = new ProductGenreDAO();
+        ProductGenre expResult = null;
+        ProductGenre result = instance.getProductGenreByProduct(pid);
+        assertEquals(expResult, result);
+        // TODO review the generated test code and remove the default call to fail.
+        fail("The test case is a prototype.");
+    }
+
+    /**
      * Test of getAllProductGenre method, of class ProductGenreDAO.
      */
     @Test
@@ -87,6 +102,7 @@ public class ProductGenreDAOTest {
         ArrayList<ProductGenre> result = instance.getAllProductGenre();
         assertNotEquals(150, result.size());
     }
+
     /**
      * Test of updateProductGenre method, of class ProductGenreDAO.
      */
@@ -110,4 +126,20 @@ public class ProductGenreDAOTest {
         assertEquals(expResult, result);
     }
 
+    /**
+     * Test of addProductGenre method, of class ProductGenreDAO.
+     */
+    @Test
+    public void testAddProductGenre() {
+        System.out.println("addProductGenre");
+        int productID = 0;
+        int genreID = 0;
+        ProductGenreDAO instance = new ProductGenreDAO();
+        int expResult = 0;
+        int result = instance.addProductGenre(productID, genreID);
+        assertEquals(expResult, result);
+        // TODO review the generated test code and remove the default call to fail.
+        fail("The test case is a prototype.");
+    }
+    
 }

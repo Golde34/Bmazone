@@ -23,7 +23,6 @@ public class Order implements Serializable {
     private String shipAddress;
     private String shipCity;
     private String shipPhone;
-    private String shipCompany;
     private double shipMoney;
     private double total;
     private int companyID;
@@ -32,162 +31,166 @@ public class Order implements Serializable {
 
     private static final long serialVersionUID = 1;
 
-<span class="fc" id="L35">    public Order() {</span>
-<span class="fc" id="L36">    }</span>
+<span class="fc" id="L34">    public Order() {</span>
+<span class="fc" id="L35">    }</span>
 
-<span class="nc" id="L38">    public Order(int orderID, String userID, Date orderDate, Date requiredDate, Date shippedDate, String shipName, String shipAddress, String shipCity, String shipPhone, String shipCompany, double shipMoney, double total, int companyID, String paymentMethod) {</span>
-<span class="nc" id="L39">        this.orderID = orderID;</span>
-<span class="nc" id="L40">        this.userID = userID;</span>
-<span class="nc" id="L41">        this.orderDate = new Date(orderDate.getTime());</span>
-<span class="nc" id="L42">        this.requiredDate = new Date(requiredDate.getTime());</span>
-<span class="nc" id="L43">        this.shippedDate = new Date(shippedDate.getTime());</span>
-<span class="nc" id="L44">        this.shipName = shipName;</span>
-<span class="nc" id="L45">        this.shipAddress = shipAddress;</span>
-<span class="nc" id="L46">        this.shipCity = shipCity;</span>
-<span class="nc" id="L47">        this.shipPhone = shipPhone;</span>
-<span class="nc" id="L48">        this.shipCompany = shipCompany;</span>
-<span class="nc" id="L49">        this.shipMoney = shipMoney;</span>
-<span class="nc" id="L50">        this.total = total;</span>
-<span class="nc" id="L51">        this.companyID = companyID;</span>
-<span class="nc" id="L52">        this.paymentMethod = paymentMethod;</span>
-<span class="nc" id="L53">    }</span>
+<span class="nc" id="L37">    public Order(int orderID, String userID, Date orderDate, Date requiredDate, Date shippedDate, String shipName, String shipAddress, String shipCity, String shipPhone, double shipMoney, double total, int companyID, String paymentMethod) {</span>
+<span class="nc" id="L38">        this.orderID = orderID;</span>
+<span class="nc" id="L39">        this.userID = userID;</span>
+<span class="nc" id="L40">        this.orderDate = new Date(orderDate.getTime());</span>
+<span class="nc" id="L41">        this.requiredDate = new Date(requiredDate.getTime());</span>
+<span class="nc" id="L42">        this.shippedDate = new Date(shippedDate.getTime());</span>
+<span class="nc" id="L43">        this.shipName = shipName;</span>
+<span class="nc" id="L44">        this.shipAddress = shipAddress;</span>
+<span class="nc" id="L45">        this.shipCity = shipCity;</span>
+<span class="nc" id="L46">        this.shipPhone = shipPhone;</span>
+<span class="nc" id="L47">        this.shipMoney = shipMoney;</span>
+<span class="nc" id="L48">        this.total = total;</span>
+<span class="nc" id="L49">        this.companyID = companyID;</span>
+<span class="nc" id="L50">        this.paymentMethod = paymentMethod;</span>
+<span class="nc" id="L51">    }</span>
 
-<span class="nc" id="L55">    public Order(int orderID, String userID, Date orderDate, Date requiredDate, Date shippedDate, String shipName, String shipAddress, String shipCity, String shipPhone, String shipCompany, double shipMoney, double total, int companyID, String paymentMethod, int status) {</span>
-<span class="nc" id="L56">        this.orderID = orderID;</span>
-<span class="nc" id="L57">        this.userID = userID;</span>
-<span class="nc" id="L58">        this.orderDate = new Date(orderDate.getTime());</span>
-<span class="nc" id="L59">        this.requiredDate = new Date(requiredDate.getTime());</span>
-<span class="nc" id="L60">        this.shippedDate = new Date(shippedDate.getTime());</span>
-<span class="nc" id="L61">        this.shipName = shipName;</span>
-<span class="nc" id="L62">        this.shipAddress = shipAddress;</span>
-<span class="nc" id="L63">        this.shipCity = shipCity;</span>
-<span class="nc" id="L64">        this.shipPhone = shipPhone;</span>
-<span class="nc" id="L65">        this.shipCompany = shipCompany;</span>
-<span class="nc" id="L66">        this.shipMoney = shipMoney;</span>
-<span class="nc" id="L67">        this.total = total;</span>
-<span class="nc" id="L68">        this.companyID = companyID;</span>
-<span class="nc" id="L69">        this.paymentMethod = paymentMethod;</span>
-<span class="nc" id="L70">        this.status = status;</span>
-<span class="nc" id="L71">    }</span>
+<span class="nc" id="L53">    public Order(int orderID, String userID, Date orderDate, Date requiredDate, Date shippedDate, String shipName, String shipAddress, String shipCity, String shipPhone, double shipMoney, double total, int companyID, String paymentMethod, int status) {</span>
+<span class="nc" id="L54">        this.orderID = orderID;</span>
+<span class="nc" id="L55">        this.userID = userID;</span>
+<span class="nc" id="L56">        this.orderDate = new Date(orderDate.getTime());</span>
+<span class="nc" id="L57">        this.requiredDate = new Date(requiredDate.getTime());</span>
+<span class="nc" id="L58">        this.shippedDate = new Date(shippedDate.getTime());</span>
+<span class="nc" id="L59">        this.shipName = shipName;</span>
+<span class="nc" id="L60">        this.shipAddress = shipAddress;</span>
+<span class="nc" id="L61">        this.shipCity = shipCity;</span>
+<span class="nc" id="L62">        this.shipPhone = shipPhone;</span>
+<span class="nc" id="L63">        this.shipMoney = shipMoney;</span>
+<span class="nc" id="L64">        this.total = total;</span>
+<span class="nc" id="L65">        this.companyID = companyID;</span>
+<span class="nc" id="L66">        this.paymentMethod = paymentMethod;</span>
+<span class="nc" id="L67">        this.status = status;</span>
+<span class="nc" id="L68">    }</span>
+    
+<span class="fc" id="L70">    public Order(String userID,Date requiredDate, Date shippedDate, String shipName, String shipAddress, String shipCity, String shipPhone, double shipMoney, double total, int companyID, String paymentMethod) {</span>
+<span class="fc" id="L71">        this.userID = userID;</span>
+<span class="fc" id="L72">        this.requiredDate = new Date(requiredDate.getTime());</span>
+<span class="fc" id="L73">        this.shippedDate = new Date(shippedDate.getTime());</span>
+<span class="fc" id="L74">        this.shipName = shipName;</span>
+<span class="fc" id="L75">        this.shipAddress = shipAddress;</span>
+<span class="fc" id="L76">        this.shipCity = shipCity;</span>
+<span class="fc" id="L77">        this.shipPhone = shipPhone;</span>
+<span class="fc" id="L78">        this.shipMoney = shipMoney;</span>
+<span class="fc" id="L79">        this.total = total;</span>
+<span class="fc" id="L80">        this.companyID = companyID;</span>
+<span class="fc" id="L81">        this.paymentMethod = paymentMethod;</span>
+<span class="fc" id="L82">    }</span>
 
     public int getOrderID() {
-<span class="nc" id="L74">        return orderID;</span>
+<span class="nc" id="L85">        return orderID;</span>
     }
 
     public void setOrderID(int orderID) {
-<span class="fc" id="L78">        this.orderID = orderID;</span>
-<span class="fc" id="L79">    }</span>
+<span class="fc" id="L89">        this.orderID = orderID;</span>
+<span class="fc" id="L90">    }</span>
 
     public String getUserID() {
-<span class="nc" id="L82">        return userID;</span>
+<span class="fc" id="L93">        return userID;</span>
     }
 
     public void setUserID(String userID) {
-<span class="fc" id="L86">        this.userID = userID;</span>
-<span class="fc" id="L87">    }</span>
+<span class="fc" id="L97">        this.userID = userID;</span>
+<span class="fc" id="L98">    }</span>
 
     public Date getOrderDate() {
-<span class="nc" id="L90">        return new Date(orderDate.getTime());</span>
+<span class="nc" id="L101">        return new Date(orderDate.getTime());</span>
     }
 
     public void setOrderDate(Date orderDate) {
-<span class="fc" id="L94">        this.orderDate = new Date(orderDate.getTime());</span>
-<span class="fc" id="L95">    }</span>
+<span class="fc" id="L105">        this.orderDate = new Date(orderDate.getTime());</span>
+<span class="fc" id="L106">    }</span>
 
     public Date getRequiredDate() {
-<span class="nc" id="L98">        return new Date(requiredDate.getTime());</span>
+<span class="nc" id="L109">        return new Date(requiredDate.getTime());</span>
     }
 
     public void setRequiredDate(Date requiredDate) {
-<span class="fc" id="L102">        this.requiredDate = new Date(requiredDate.getTime());</span>
-<span class="fc" id="L103">    }</span>
+<span class="fc" id="L113">        this.requiredDate = new Date(requiredDate.getTime());</span>
+<span class="fc" id="L114">    }</span>
 
     public Date getShippedDate() {
-<span class="nc" id="L106">        return new Date(shippedDate.getTime());</span>
+<span class="nc" id="L117">        return new Date(shippedDate.getTime());</span>
     }
 
     public void setShippedDate(Date shippedDate) {
-<span class="fc" id="L110">        this.shippedDate = new Date(shippedDate.getTime());</span>
-<span class="fc" id="L111">    }</span>
+<span class="fc" id="L121">        this.shippedDate = new Date(shippedDate.getTime());</span>
+<span class="fc" id="L122">    }</span>
 
     public String getShipName() {
-<span class="nc" id="L114">        return shipName;</span>
+<span class="nc" id="L125">        return shipName;</span>
     }
 
     public void setShipName(String shipName) {
-<span class="fc" id="L118">        this.shipName = shipName;</span>
-<span class="fc" id="L119">    }</span>
+<span class="fc" id="L129">        this.shipName = shipName;</span>
+<span class="fc" id="L130">    }</span>
 
     public String getShipAddress() {
-<span class="nc" id="L122">        return shipAddress;</span>
+<span class="nc" id="L133">        return shipAddress;</span>
     }
 
     public void setShipAddress(String shipAddress) {
-<span class="fc" id="L126">        this.shipAddress = shipAddress;</span>
-<span class="fc" id="L127">    }</span>
+<span class="fc" id="L137">        this.shipAddress = shipAddress;</span>
+<span class="fc" id="L138">    }</span>
 
     public String getShipCity() {
-<span class="nc" id="L130">        return shipCity;</span>
+<span class="nc" id="L141">        return shipCity;</span>
     }
 
     public void setShipCity(String shipCity) {
-<span class="fc" id="L134">        this.shipCity = shipCity;</span>
-<span class="fc" id="L135">    }</span>
+<span class="fc" id="L145">        this.shipCity = shipCity;</span>
+<span class="fc" id="L146">    }</span>
 
     public String getShipPhone() {
-<span class="nc" id="L138">        return shipPhone;</span>
+<span class="nc" id="L149">        return shipPhone;</span>
     }
 
     public void setShipPhone(String shipPhone) {
-<span class="fc" id="L142">        this.shipPhone = shipPhone;</span>
-<span class="fc" id="L143">    }</span>
-
-    public String getShipCompany() {
-<span class="nc" id="L146">        return shipCompany;</span>
-    }
-
-    public void setShipCompany(String shipCompany) {
-<span class="nc" id="L150">        this.shipCompany = shipCompany;</span>
-<span class="nc" id="L151">    }</span>
+<span class="fc" id="L153">        this.shipPhone = shipPhone;</span>
+<span class="fc" id="L154">    }</span>
 
     public double getShipMoney() {
-<span class="nc" id="L154">        return shipMoney;</span>
+<span class="nc" id="L157">        return shipMoney;</span>
     }
 
     public void setShipMoney(double shipMoney) {
-<span class="fc" id="L158">        this.shipMoney = shipMoney;</span>
-<span class="fc" id="L159">    }</span>
+<span class="fc" id="L161">        this.shipMoney = shipMoney;</span>
+<span class="fc" id="L162">    }</span>
 
     public int getCompanyID() {
-<span class="nc" id="L162">        return companyID;</span>
+<span class="nc" id="L165">        return companyID;</span>
     }
 
     public void setCompanyID(int companyID) {
-<span class="fc" id="L166">        this.companyID = companyID;</span>
-<span class="fc" id="L167">    }</span>
+<span class="fc" id="L169">        this.companyID = companyID;</span>
+<span class="fc" id="L170">    }</span>
 
     public String getPaymentMethod() {
-<span class="nc" id="L170">        return paymentMethod;</span>
+<span class="nc" id="L173">        return paymentMethod;</span>
     }
 
     public void setPaymentMethod(String paymentMethod) {
-<span class="fc" id="L174">        this.paymentMethod = paymentMethod;</span>
-<span class="fc" id="L175">    }</span>
+<span class="fc" id="L177">        this.paymentMethod = paymentMethod;</span>
+<span class="fc" id="L178">    }</span>
 
     public double getTotal() {
-<span class="nc" id="L178">        return total;</span>
+<span class="nc" id="L181">        return total;</span>
     }
 
     public void setTotal(double total) {
-<span class="fc" id="L182">        this.total = total;</span>
-<span class="fc" id="L183">    }</span>
+<span class="fc" id="L185">        this.total = total;</span>
+<span class="fc" id="L186">    }</span>
 
     public int getStatus() {
-<span class="nc" id="L186">        return status;</span>
+<span class="nc" id="L189">        return status;</span>
     }
 
     public void setStatus(int status) {
-<span class="fc" id="L190">        this.status = status;</span>
-<span class="fc" id="L191">    }</span>
+<span class="fc" id="L193">        this.status = status;</span>
+<span class="fc" id="L194">    }</span>
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.eclemma.org/jacoco">JaCoCo</a> 0.7.5.201505241946</span></div></body></html>

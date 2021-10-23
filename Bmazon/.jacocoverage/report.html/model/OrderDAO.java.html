@@ -29,7 +29,7 @@ import java.util.logging.Logger;
 &quot;     VALUES (?,GETDATE(),?,?,?,?,?,?,?,?,?,?,?,1)&quot; ;
         try {
 <span class="fc" id="L31">            pre = conn.prepareStatement(sql);</span>
-<span class="nc" id="L32">            pre.setString(1, obj.getUserID());</span>
+<span class="fc" id="L32">            pre.setString(1, obj.getUserID());</span>
 <span class="nc" id="L33">            pre.setDate(2, obj.getOrderDate());</span>
 <span class="nc" id="L34">            pre.setDate(3, obj.getRequiredDate());</span>
 <span class="nc" id="L35">            pre.setDate(4, obj.getShippedDate());</span>

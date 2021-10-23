@@ -73,37 +73,14 @@ public class OrderDAOTest {
         OrderDAO instance = new OrderDAO();
         assertEquals(1, instance.changeStatus("3"));
     }
-    
-    @Test
-    public void testChangeStatusWithUsername() {
-        System.out.println("changeStatus");
-        UserDAO instance = new UserDAO();
-        assertEquals(1, instance.changeStatus("G", 1));
-    }
 
     @Test
-    public void testChangeStatusWithUsernameNotExist() {
+    public void testChangeStatusNull() {
         System.out.println("changePassword");
-        UserDAO instance = new UserDAO();
-        assertEquals(0, instance.changeStatus("", 1));
-        assertEquals(0, instance.changeStatus("A", 1));
-    }
-
-    @Test
-    public void testChangeStatusWithUsernameNull() {
-        System.out.println("changePassword");
-        UserDAO instance = new UserDAO();
-        assertEquals(0, instance.changeStatus(null, 1));
+        OrderDAO instance = new OrderDAO();
+        assertEquals(0, instance.changeStatus(null));
 
     }
-
-    @Test
-    public void testChangeStatusWithNegativeStatus() {
-        System.out.println("changePassword");
-        UserDAO instance = new UserDAO();
-        assertEquals(1, instance.changeStatus("Golde", -1));
-    }
-
     /**
      * Test of updateOrder method, of class OrderDAO.
      */
