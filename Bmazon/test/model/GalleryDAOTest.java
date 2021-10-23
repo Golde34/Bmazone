@@ -20,22 +20,22 @@ import static org.junit.Assert.*;
  * @author Admin
  */
 public class GalleryDAOTest {
-    
+
     public GalleryDAOTest() {
     }
-    
+
     @BeforeClass
     public static void setUpClass() {
     }
-    
+
     @AfterClass
     public static void tearDownClass() {
     }
-    
+
     @Before
     public void setUp() {
     }
-    
+
     @After
     public void tearDown() {
     }
@@ -50,8 +50,9 @@ public class GalleryDAOTest {
         assertEquals(0, instance.deleteGallery(0));
         assertEquals(0, instance.deleteGallery(-100));
     }
+
     @Test
-    public void testDeleteGalleryGivenTrueIdReturn1(){
+    public void testDeleteGalleryGivenTrueIdReturn1() {
         System.out.println("deleteGallery");
         GalleryDAO instance = new GalleryDAO();
         assertEquals(1, instance.deleteGallery(99));
@@ -67,6 +68,7 @@ public class GalleryDAOTest {
         GalleryDAO instance = new GalleryDAO();
         assertEquals(0, instance.addGallery(g));
     }
+
     @Test
     public void testAddGalleryGivenEmptyReturn0() {
         System.out.println("addGallery");
@@ -74,6 +76,7 @@ public class GalleryDAOTest {
         GalleryDAO instance = new GalleryDAO();
         assertEquals(0, instance.addGallery(g));
     }
+
     @Test
     public void testAddGalleryGivenTrueGalleryReturn1() {
         System.out.println("addGallery");
@@ -106,7 +109,7 @@ public class GalleryDAOTest {
         int result = instance.editGallery(g);
         assertEquals(0, result);
     }
-    
+
     @Test
     public void testEditGalleryGivenTrueGalleryReturn1() {
         System.out.println("editGallery");
@@ -120,6 +123,7 @@ public class GalleryDAOTest {
         int result = instance.editGallery(g);
         assertEquals(1, result);
     }
+
     /**
      * Test of getPageNumber method, of class GalleryDAO.
      */
@@ -137,13 +141,21 @@ public class GalleryDAOTest {
      * Test of getGalleryById method, of class GalleryDAO.
      */
     @Test
-    public void testGetGalleryById() {
+    public void testGetGalleryByFalseId() {
         System.out.println("getGalleryById");
         int id = 0;
         GalleryDAO instance = new GalleryDAO();
         Gallery expResult = null;
         Gallery result = instance.getGalleryById(id);
         assertEquals(expResult, result);
+    }
+
+    @Test
+    public void testGetGalleryByTrueId() {
+        System.out.println("getGalleryById");
+        GalleryDAO instance = new GalleryDAO();
+        Gallery result = instance.getGalleryById(5);
+        assertNotNull(result);
     }
 
     /**
@@ -159,7 +171,7 @@ public class GalleryDAOTest {
         int result = instance.changeStatus(id, status);
         assertEquals(expResult, result);
     }
-    
+
     @Test
     public void testChangeStatusGivenStatusEqual0Return1() {
         System.out.println("changeStatus");
@@ -170,7 +182,7 @@ public class GalleryDAOTest {
         int result = instance.changeStatus(id, status);
         assertEquals(expResult, result);
     }
-    
+
     @Test
     public void testChangeStatusGivenStatusEqual1Return1() {
         System.out.println("changeStatus");
@@ -207,7 +219,7 @@ public class GalleryDAOTest {
         List<Gallery> result = instance.getAllPagingGallery(index, numOfRow, search);
         assertEquals(expResult, result);
     }
-    
+
     @Test
     public void testGetAllPagingGalleryGivenNegativeNumOfRowReturnEmptyList() {
         System.out.println("getAllPagingGallery");
@@ -218,6 +230,17 @@ public class GalleryDAOTest {
         List<Gallery> expResult = new ArrayList<>();
         List<Gallery> result = instance.getAllPagingGallery(index, numOfRow, search);
         assertEquals(expResult, result);
+    }
+    
+    @Test
+    public void testGetAllPagingGalleryGivenTrueCondition() {
+        System.out.println("getAllPagingGallery");
+        int index = 1;
+        int numOfRow = 5;
+        String search = "";
+        GalleryDAO instance = new GalleryDAO();
+        List<Gallery> result = instance.getAllPagingGallery(index, numOfRow, search);
+        assertEquals(5, result.size());
     }
 
     /**
@@ -232,7 +255,7 @@ public class GalleryDAOTest {
         List<Gallery> result = instance.getAllGalleryOfProduct(pid);
         assertEquals(expResult, result);
     }
-    
+
     @Test
     public void testGetAllGalleryOfProductGivenNotExistProductIdReturnEmptyList() {
         System.out.println("getAllGalleryOfProduct");
@@ -242,7 +265,7 @@ public class GalleryDAOTest {
         List<Gallery> result = instance.getAllGalleryOfProduct(pid);
         assertEquals(expResult, result);
     }
-    
+
     @Test
     public void testGetAllGalleryOfProductGivenExistProductIdReturnList() {
         System.out.println("getAllGalleryOfProduct");
@@ -264,7 +287,7 @@ public class GalleryDAOTest {
         String result = instance.getSampleOfProduct(pid);
         assertEquals(expResult, result);
     }
-    
+
     @Test
     public void testGetSampleOfProductGivenTrueProductId() {
         System.out.println("getSampleOfProduct");
@@ -287,7 +310,7 @@ public class GalleryDAOTest {
         String result = instance.getImageByProductTypeID(ps);
         assertEquals(expResult, result);
     }
-    
+
     public void testGetImageGivenExistProductTypeID() {
         System.out.println("getImageByProductTypeID");
         String ps = "Pr1Ty1";
@@ -309,7 +332,7 @@ public class GalleryDAOTest {
         List<Gallery> result = instance.getAllImageByProductTypeID(ptypeID);
         assertEquals(expResult, result);
     }
-    
+
     @Test
     public void testGetAllImageByGivenTrueProductTypeID() {
         System.out.println("getAllImageByProductTypeID");

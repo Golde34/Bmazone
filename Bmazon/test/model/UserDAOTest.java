@@ -137,7 +137,7 @@ public class UserDAOTest {
     public void testChangeStatusWithNegativeStatus() {
         System.out.println("changePassword");
         UserDAO instance = new UserDAO();
-        assertEquals(1, instance.changeStatus("Golde", -1));
+        assertEquals(1, instance.changeStatus("G", -1));
     }
 
     /**
@@ -147,7 +147,7 @@ public class UserDAOTest {
     public void testChangeStatusWithID() {
         System.out.println("changeStatus");
         UserDAO instance = new UserDAO();
-        assertEquals(1, instance.changeStatus(102, 1));
+        assertEquals(1, instance.changeStatus(8, 1));
     }
 
     @Test
@@ -162,7 +162,7 @@ public class UserDAOTest {
     public void testChangeStatusIntWithNegativeStatus() {
         System.out.println("changePassword");
         UserDAO instance = new UserDAO();
-        assertEquals(1, instance.changeStatus(102, -1));
+        assertEquals(1, instance.changeStatus(8, -1));
     }
 
     /**
@@ -370,14 +370,14 @@ public class UserDAOTest {
     public void testGetSearchUser() {
         System.out.println("getSearchUser");
         UserDAO instance = new UserDAO();
-        assertEquals(0, instance.getSearchUser(102, "G", 1).size());
+        assertEquals(0, instance.getSearchUser(8, "G", 1).size());
     }
 
     @Test
     public void testGetSearchUserStatusNegative() {
         System.out.println("getSearchUser");
         UserDAO instance = new UserDAO();
-        assertEquals(0, instance.getSearchUser(102, "G", -1).size());
+        assertEquals(0, instance.getSearchUser(8, "G", -1).size());
     }
 
     @Test
@@ -459,7 +459,7 @@ public class UserDAOTest {
     public void testUpdateInfoUserByAdmin() {
         System.out.println("updateInfoUserByAdmin");
         UserDAO instance = new UserDAO();
-        User obj = instance.getUserById("102");
+        User obj = instance.getUserById("8");
         int result = instance.updateInfoUserByAdmin(obj);
         assertEquals(1, result);
     }
@@ -471,7 +471,7 @@ public class UserDAOTest {
     public void testDepositWalletUser() {
         System.out.println("depositWalletUser");
         UserDAO instance = new UserDAO();
-        User obj = instance.getUserById("102");
+        User obj = instance.getUserById("8");
         assertEquals(1, instance.depositWalletUser(obj, 1000));
     }
 
@@ -482,7 +482,7 @@ public class UserDAOTest {
     public void testWithdrawalWalletUser() {
         System.out.println("withdrawalWalletUser");
         UserDAO instance = new UserDAO();
-        User obj = instance.getUserById("102");
+        User obj = instance.getUserById("8");
         assertEquals(1, instance.withdrawalWalletUser(obj, 500));
     }
 
@@ -493,7 +493,7 @@ public class UserDAOTest {
     public void testUpdatePublicInfo() {
         System.out.println("updatePublicInfo");
         UserDAO instance = new UserDAO();
-        User obj = instance.getUserById("102");
+        User obj = instance.getUserById("8");
         obj.setFacebook("okokokokokokok");
         assertEquals(1, instance.updatePublicInfo(obj));
 
@@ -506,7 +506,7 @@ public class UserDAOTest {
     public void testUpdatePrivateInfo() {
         System.out.println("updatePrivateInfo");
         UserDAO instance = new UserDAO();
-        User obj = instance.getUserById("102");
+        User obj = instance.getUserById("8");
         obj.setFullname("Dong Viet Dep Trai");
         assertEquals(1, instance.updatePrivateInfo(obj));
     }
@@ -515,7 +515,7 @@ public class UserDAOTest {
     public void testUpdatePrivateInfoNullPassword() {
         System.out.println("updatePrivateInfo");
         UserDAO instance = new UserDAO();
-        User obj = instance.getUserById("102");
+        User obj = instance.getUserById("8");
         obj.setPassword(null);
         assertEquals(0, instance.updatePrivateInfo(obj));
     }
@@ -527,7 +527,7 @@ public class UserDAOTest {
     public void testUpdateActivityPoint() {
         System.out.println("updateActivityPoint");
         UserDAO instance = new UserDAO();
-        User obj = instance.getUserById("102");
+        User obj = instance.getUserById("8");
         assertEquals(1, instance.updateActivityPoint(obj, 1200));
     }
 
@@ -538,7 +538,7 @@ public class UserDAOTest {
     public void testUploadprofileImage() {
         System.out.println("uploadprofileImage");
         UserDAO instance = new UserDAO();
-        User obj = instance.getUserById("102");
+        User obj = instance.getUserById("8");
         assertEquals(1, instance.uploadprofileImage(obj, "link profile image"));
     }
 
@@ -549,7 +549,7 @@ public class UserDAOTest {
     public void testUploadBackgroundImage() {
         System.out.println("uploadBackgroundImage");
         UserDAO instance = new UserDAO();
-        User obj = instance.getUserById("102");
+        User obj = instance.getUserById("8");
         assertEquals(1, instance.uploadBackgroundImage(obj, "link background image"));
     }
 
@@ -574,7 +574,7 @@ public class UserDAOTest {
     public void testGetUserLoginWithPasswordNull() {
         System.out.println("getUserLogin");
         UserDAO instance = new UserDAO();
-        assertNull(instance.getUserLogin("asf@gmail.com", null));
+        assertNull(instance.getUserLogin("G", null));
     }
 
     /**
