@@ -1508,7 +1508,7 @@ import org.apache.commons.fileupload.servlet.ServletFileUpload;
 <span class="nc" id="L1508">            return;</span>
         }
 <span class="nc" id="L1510">        int id = Integer.parseInt(request.getParameter(&quot;roleID&quot;));</span>
-<span class="nc" id="L1511">        Role roleDetail = daorole.getRoleById(id);</span>
+<span class="nc" id="L1511">        Role roleDetail = daorole.getRoleId(id);</span>
 <span class="nc" id="L1512">        request.setAttribute(&quot;roleDetail&quot;, roleDetail);</span>
 <span class="nc" id="L1513">        sendDispatcher(request, response, &quot;admin/authorization/editRole.jsp&quot;);</span>
 <span class="nc" id="L1514">    }</span>
