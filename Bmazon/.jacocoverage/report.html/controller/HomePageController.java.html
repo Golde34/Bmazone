@@ -1,0 +1,396 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../.resources/report.css" type="text/css"/><link rel="shortcut icon" href="../.resources/report.gif" type="image/gif"/><title>HomePageController.java</title><link rel="stylesheet" href="../.resources/prettify.css" type="text/css"/><script type="text/javascript" src="../.resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../.sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">JaCoCoverage analysis of project &quot;Bmazon&quot; (powered by JaCoCo from EclEmma)</a> &gt; <a href="index.source.html" class="el_package">controller</a> &gt; <span class="el_source">HomePageController.java</span></div><h1>HomePageController.java</h1><pre class="source lang-java linenums">/*
+ * To change this license header, choose License Headers in Project Properties.
+ * To change this template file, choose Tools | Templates
+ * and open the template in the editor.
+ */
+package controller;
+
+import entity.CartItem;
+import entity.Category;
+import entity.Product;
+import java.io.IOException;
+import java.io.PrintWriter;
+import java.util.ArrayList;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.servlet.RequestDispatcher;
+import javax.servlet.ServletException;
+import javax.servlet.http.HttpServlet;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import model.ProductDAO;
+import model.CategoryDAO;
+import model.GenreDAO;
+import entity.Genre;
+import entity.Seller;
+import entity.User;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
+import java.util.List;
+import model.DBConnection;
+import model.SellerDAO;
+import model.UserDAO;
+
+/**
+ *
+ * @author Admin
+ */
+<span class="nc" id="L38">public class HomePageController extends HttpServlet {</span>
+
+    /**
+     * Processes requests for both HTTP &lt;code&gt;GET&lt;/code&gt; and &lt;code&gt;POST&lt;/code&gt;
+     * methods.
+     *
+     * @param request servlet request
+     * @param response servlet response
+     * @throws ServletException if a servlet-specific error occurs
+     * @throws IOException if an I/O error occurs
+     */
+<span class="nc" id="L49">    DBConnection dbCon = new DBConnection();</span>
+<span class="nc" id="L50">    CategoryDAO cateDAO = new CategoryDAO();</span>
+<span class="nc" id="L51">    GenreDAO genDAO = new GenreDAO();</span>
+<span class="nc" id="L52">    ProductDAO proDAO = new ProductDAO();</span>
+<span class="nc" id="L53">    SellerDAO sellerDAO = new SellerDAO();</span>
+<span class="nc" id="L54">    UserDAO userDAO = new UserDAO();</span>
+    private static final long serialVersionUID = 1;
+
+    protected void processRequest(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException {
+<span class="nc" id="L59">        response.setContentType(&quot;text/html;charset=UTF-8&quot;);</span>
+<span class="nc" id="L60">        try (PrintWriter out = response.getWriter()) {</span>
+
+<span class="nc" id="L62">            String service = request.getParameter(&quot;service&quot;);</span>
+<span class="nc bnc" id="L63" title="All 2 branches missed.">            if (service == null) {</span>
+<span class="nc" id="L64">                service = &quot;Homepage&quot;;</span>
+            }
+<span class="nc bnc" id="L66" title="All 2 branches missed.">            if (service.equalsIgnoreCase(&quot;Homepage&quot;)) {</span>
+<span class="nc" id="L67">                serviceHomepage(request, response);</span>
+            }
+
+<span class="nc bnc" id="L70" title="All 2 branches missed.">            if (service.equalsIgnoreCase(&quot;list&quot;)) {</span>
+<span class="nc" id="L71">                serviceList(request, response);</span>
+            }
+<span class="nc bnc" id="L73" title="All 2 branches missed.">            if (service.equalsIgnoreCase(&quot;ByCate&quot;)) {</span>
+<span class="nc" id="L74">                serviceByCate(request, response);</span>
+            }
+<span class="nc bnc" id="L76" title="All 2 branches missed.">            if (service.equalsIgnoreCase(&quot;ByGenre&quot;)) {</span>
+<span class="nc" id="L77">                serviceByGenre(request, response);</span>
+            }
+<span class="nc bnc" id="L79" title="All 2 branches missed.">            if (service.equalsIgnoreCase(&quot;search&quot;)) {</span>
+<span class="nc" id="L80">                serviceSearch(request, response);</span>
+            }
+<span class="nc bnc" id="L82" title="All 2 branches missed.">            if (service.equalsIgnoreCase(&quot;shopPage&quot;)) {</span>
+<span class="nc" id="L83">                serviceShopPage(request, response);</span>
+            }
+<span class="nc bnc" id="L85" title="All 2 branches missed.">            if (service.equalsIgnoreCase(&quot;check&quot;)) {</span>
+<span class="nc" id="L86">                serviceFilter(request, response);</span>
+            }
+<span class="nc bnc" id="L88" title="All 8 branches missed.">        }</span>
+<span class="nc" id="L89">    }</span>
+
+    public void serviceHomepage(HttpServletRequest request, HttpServletResponse response) {
+
+<span class="nc" id="L93">        List&lt;Product&gt; ListSale = proDAO.getProductSale();</span>
+<span class="nc" id="L94">        List&lt;Product&gt; ListNew = proDAO.getProductNew();</span>
+<span class="nc" id="L95">        List&lt;Product&gt; ListApple = proDAO.getProductApple();</span>
+<span class="nc" id="L96">        List&lt;Product&gt; ListSuggest = proDAO.getProductSuggest();</span>
+<span class="nc" id="L97">        request.setAttribute(&quot;ListSale&quot;, ListSale);</span>
+<span class="nc" id="L98">        request.setAttribute(&quot;ListNew&quot;, ListNew);</span>
+<span class="nc" id="L99">        request.setAttribute(&quot;ListApple&quot;, ListApple);</span>
+<span class="nc" id="L100">        request.setAttribute(&quot;ListSuggest&quot;, ListSuggest);</span>
+<span class="nc" id="L101">        sendDispatcher(request, response, &quot;/index.jsp&quot;);</span>
+
+<span class="nc" id="L103">    }</span>
+
+    public void serviceList(HttpServletRequest request, HttpServletResponse response) {
+<span class="nc" id="L106">        int count = proDAO.totalProduct();</span>
+<span class="nc" id="L107">        int size = 24;</span>
+<span class="nc" id="L108">        int total = count / size;</span>
+        int page, end;
+<span class="nc" id="L110">        String pageString = request.getParameter(&quot;page&quot;);</span>
+<span class="nc bnc" id="L111" title="All 2 branches missed.">        if (pageString == null) {</span>
+<span class="nc" id="L112">            page = 1;</span>
+        } else {
+<span class="nc" id="L114">            page = Integer.parseInt(pageString);</span>
+        }
+<span class="nc" id="L116">        int begin = page;</span>
+<span class="nc" id="L117">        String previous = &quot;  &lt;li&gt;&lt;a class='' href=&quot; + &quot;HomePageControllerMap?service=list&amp;page=&quot; + (page - 1) + &quot;&gt;P&lt;/a&gt;&lt;/li&gt;&quot;;</span>
+<span class="nc" id="L118">        String next = &quot;  &lt;li&gt;&lt;a class='' href=&quot; + &quot;HomePageControllerMap?service=list&amp;page=&quot; + (page + 1) + &quot;&gt;N&lt;/a&gt;&lt;/li&gt;&quot;;</span>
+<span class="nc bnc" id="L119" title="All 2 branches missed.">        if (count % size != 0) {</span>
+<span class="nc" id="L120">            total += 1;</span>
+        }
+<span class="nc bnc" id="L122" title="All 2 branches missed.">        if (page &lt;= total - 2) {</span>
+<span class="nc" id="L123">            end = page + 2;</span>
+        } else {
+<span class="nc" id="L125">            end = total;</span>
+<span class="nc" id="L126">            begin = total - 2;</span>
+        }
+<span class="nc bnc" id="L128" title="All 2 branches missed.">        if (page == 1) {</span>
+<span class="nc" id="L129">            request.setAttribute(&quot;next&quot;, next);</span>
+<span class="nc bnc" id="L130" title="All 2 branches missed.">        } else if (page == total) {</span>
+<span class="nc" id="L131">            request.setAttribute(&quot;previous&quot;, previous);</span>
+        } else {
+<span class="nc" id="L133">            request.setAttribute(&quot;next&quot;, next);</span>
+<span class="nc" id="L134">            request.setAttribute(&quot;previous&quot;, previous);</span>
+        }
+<span class="nc" id="L136">        List&lt;Product&gt; ListP = proDAO.getTrueProduct(page);</span>
+<span class="nc" id="L137">        request.setAttribute(&quot;end&quot;, end);</span>
+<span class="nc" id="L138">        request.setAttribute(&quot;href&quot;, &quot;list&quot;);</span>
+<span class="nc" id="L139">        request.setAttribute(&quot;begin&quot;, begin);</span>
+<span class="nc" id="L140">        request.setAttribute(&quot;listP&quot;, ListP);</span>
+<span class="nc" id="L141">        request.setAttribute(&quot;count&quot;, count);</span>
+<span class="nc" id="L142">        sendDispatcher(request, response, &quot;productList/list.jsp&quot;);</span>
+
+<span class="nc" id="L144">    }</span>
+
+    public void serviceByCate(HttpServletRequest request, HttpServletResponse response) {
+<span class="nc" id="L147">        int id = Integer.parseInt(request.getParameter(&quot;cid&quot;));</span>
+<span class="nc" id="L148">        List&lt;Product&gt; ListP = proDAO.getProductByCategory(id);</span>
+        String address;
+<span class="nc" id="L150">        address = &quot;&lt;a href=&quot; + &quot;HomePageControllerMap?service=ByCate&amp;cid=&quot; + id + &quot;&gt;&quot; + cateDAO.getCategoryById(id) + &quot;  &lt;/a&gt; &lt;span class=&quot; + &quot;divider&quot; + &quot;&gt;&amp;#47;&lt;/span&gt;&quot;;</span>
+<span class="nc" id="L151">        request.setAttribute(&quot;address&quot;, address);</span>
+<span class="nc" id="L152">        request.setAttribute(&quot;listP&quot;, ListP);</span>
+<span class="nc" id="L153">        sendDispatcher(request, response, &quot;productList/list.jsp&quot;);</span>
+
+<span class="nc" id="L155">    }</span>
+
+    public void serviceByGenre(HttpServletRequest request, HttpServletResponse response) {
+<span class="nc" id="L158">        int id = Integer.parseInt(request.getParameter(&quot;gid&quot;));</span>
+<span class="nc" id="L159">        List&lt;Product&gt; ListP = proDAO.getProductByGenre(id);</span>
+        String address;
+<span class="nc" id="L161">        address = &quot;&lt;a href=&quot; + &quot;HomePageControllerMap?service=ByCate&amp;cid=&quot; + genDAO.getGenreById(id).getCategoryID() + &quot;&gt;&quot; + cateDAO.getCategoryById(genDAO.getGenreById(id).getCategoryID()) + &quot;  &lt;/a&gt; &lt;span class=&quot; + &quot;divider&quot; + &quot;&gt;&amp;#47;&lt;/span&gt;&quot;;</span>
+
+<span class="nc" id="L163">        address += &quot;&lt;a href=&quot; + &quot;HomePageControllerMap?service=ByGenre&amp;gid=&quot; + id + &quot;&gt;&quot; + genDAO.getGenreById(id).getGenreName() + &quot;  &lt;/a&gt; &lt;span class=&quot; + &quot;divider&quot; + &quot;&gt;&amp;#47;&lt;/span&gt;&quot;;</span>
+<span class="nc" id="L164">        request.setAttribute(&quot;address&quot;, address);</span>
+<span class="nc" id="L165">        request.setAttribute(&quot;listP&quot;, ListP);</span>
+<span class="nc" id="L166">        sendDispatcher(request, response, &quot;productList/list.jsp&quot;);</span>
+
+<span class="nc" id="L168">    }</span>
+
+    public void serviceSearch(HttpServletRequest request, HttpServletResponse response) {
+<span class="nc" id="L171">        String str = request.getParameter(&quot;search&quot;).trim();</span>
+<span class="nc" id="L172">        int count = proDAO.totalSearchProduct(str);</span>
+        String address;
+<span class="nc" id="L174">        int size = 20;</span>
+<span class="nc" id="L175">        int total = count / size;</span>
+        int page, end;
+<span class="nc" id="L177">        String pageString = request.getParameter(&quot;page&quot;);</span>
+<span class="nc bnc" id="L178" title="All 2 branches missed.">        if (pageString == null) {</span>
+<span class="nc" id="L179">            page = 1;</span>
+        } else {
+<span class="nc" id="L181">            page = Integer.parseInt(pageString);</span>
+        }
+<span class="nc" id="L183">        int begin = page;</span>
+<span class="nc" id="L184">        String previous = &quot;  &lt;li&gt;&lt;a class='' href=&quot; + &quot;HomePageControllerMap?service=search&amp;search=&quot; + str + &quot;&amp;page=&quot; + (page - 1) + &quot;&gt;P&lt;/a&gt;&lt;/li&gt;&quot;;</span>
+<span class="nc" id="L185">        String next = &quot;  &lt;li&gt;&lt;a class='' href=&quot; + &quot;HomePageControllerMap?service=search&amp;search=&quot; + str + &quot;&amp;page=&quot; + (page + 1) + &quot;&gt;N&lt;/a&gt;&lt;/li&gt;&quot;;</span>
+<span class="nc bnc" id="L186" title="All 2 branches missed.">        if (count % size != 0) {</span>
+<span class="nc" id="L187">            total += 1;</span>
+        }
+<span class="nc bnc" id="L189" title="All 2 branches missed.">        if (page &lt;= total - 2) {</span>
+<span class="nc" id="L190">            end = page + 2;</span>
+        } else {
+<span class="nc" id="L192">            end = total;</span>
+<span class="nc" id="L193">            begin = total - 2;</span>
+        }
+<span class="nc bnc" id="L195" title="All 2 branches missed.">        if (page == 1) {</span>
+<span class="nc" id="L196">            request.setAttribute(&quot;next&quot;, next);</span>
+<span class="nc bnc" id="L197" title="All 2 branches missed.">        } else if (page == total) {</span>
+<span class="nc" id="L198">            request.setAttribute(&quot;previous&quot;, previous);</span>
+        } else {
+<span class="nc" id="L200">            request.setAttribute(&quot;next&quot;, next);</span>
+<span class="nc" id="L201">            request.setAttribute(&quot;previous&quot;, previous);</span>
+        }
+<span class="nc" id="L203">        List&lt;Product&gt; ListP = proDAO.getProductByName(page, str);</span>
+<span class="nc" id="L204">        address = &quot;&lt;a&gt;&quot; + &quot; Results for &quot; + str + &quot;  &lt;/a&gt; &lt;span class=&quot; + &quot;divider&quot; + &quot;&gt;&amp;#47;&lt;/span&gt;&quot;;</span>
+<span class="nc" id="L205">        request.setAttribute(&quot;address&quot;, address);</span>
+<span class="nc" id="L206">        request.setAttribute(&quot;end&quot;, end);</span>
+<span class="nc" id="L207">        request.setAttribute(&quot;begin&quot;, begin);</span>
+<span class="nc" id="L208">        request.setAttribute(&quot;listP&quot;, ListP);</span>
+<span class="nc" id="L209">        request.setAttribute(&quot;search&quot;, str);</span>
+<span class="nc" id="L210">        request.setAttribute(&quot;count&quot;, count);</span>
+<span class="nc" id="L211">        request.setAttribute(&quot;href&quot;, (&quot;search&amp;search=&quot; + str));</span>
+<span class="nc" id="L212">        sendDispatcher(request, response, &quot;productList/list.jsp&quot;);</span>
+
+<span class="nc" id="L214">    }</span>
+
+    public void serviceShopPage(HttpServletRequest request, HttpServletResponse response) {
+
+<span class="nc" id="L218">        String id = request.getParameter(&quot;sid&quot;);</span>
+<span class="nc" id="L219">        int count = proDAO.totalProductSeller(id);</span>
+
+<span class="nc" id="L221">        User user = userDAO.getUserById(id);</span>
+<span class="nc" id="L222">        Seller seller = sellerDAO.getSellerByUserID(Integer.parseInt(id));</span>
+<span class="nc" id="L223">        request.setAttribute(&quot;seller&quot;, seller);</span>
+<span class="nc" id="L224">        request.setAttribute(&quot;user&quot;, user);</span>
+
+<span class="nc" id="L226">        int size = 10;</span>
+<span class="nc" id="L227">        int total = count / size;</span>
+        int page, end;
+
+<span class="nc" id="L230">        String page1 = request.getParameter(&quot;page&quot;);</span>
+<span class="nc bnc" id="L231" title="All 2 branches missed.">        if (page1 == null) {</span>
+<span class="nc" id="L232">            page = 1;</span>
+
+        } else {
+<span class="nc" id="L235">            page = Integer.parseInt(page1);</span>
+        }
+<span class="nc" id="L237">        int begin = page;</span>
+<span class="nc" id="L238">        String previous = &quot;  &lt;li&gt;&lt;a class='' href=&quot; + &quot;HomePageControllerMap?service=shopPage&amp;sid=&quot; + id + &quot;&amp;page=&quot; + (page - 1) + &quot;&gt;P&lt;/a&gt;&lt;/li&gt;&quot;;</span>
+<span class="nc" id="L239">        String next = &quot;  &lt;li&gt;&lt;a class='' href=&quot; + &quot;HomePageControllerMap?service=shopPage&amp;sid=&quot; + id + &quot;&amp;page=&quot; + (page + 1) + &quot;&gt;N&lt;/a&gt;&lt;/li&gt;&quot;;</span>
+
+<span class="nc bnc" id="L241" title="All 2 branches missed.">        if (count % size != 0) {</span>
+<span class="nc" id="L242">            total += 1;</span>
+        }
+<span class="nc bnc" id="L244" title="All 2 branches missed.">        if (page &lt;= total - 2) {</span>
+<span class="nc" id="L245">            end = page + 2;</span>
+        } else {
+<span class="nc" id="L247">            end = total;</span>
+<span class="nc" id="L248">            begin = total - 1 /* ban dau la total - 2*/;</span>
+        }
+<span class="nc bnc" id="L250" title="All 2 branches missed.">        if (page == 1) {</span>
+<span class="nc" id="L251">            request.setAttribute(&quot;next&quot;, next);</span>
+<span class="nc bnc" id="L252" title="All 2 branches missed.">        } else if (page == total) {</span>
+<span class="nc" id="L253">            request.setAttribute(&quot;previous&quot;, previous);</span>
+        } else {
+<span class="nc" id="L255">            request.setAttribute(&quot;next&quot;, next);</span>
+<span class="nc" id="L256">            request.setAttribute(&quot;previous&quot;, previous);</span>
+        }
+
+<span class="nc" id="L259">        List&lt;Product&gt; listProduct = proDAO.getProductBySellerPaging(page, id);</span>
+
+<span class="nc" id="L261">        request.setAttribute(&quot;end&quot;, end);</span>
+<span class="nc" id="L262">        request.setAttribute(&quot;begin&quot;, begin);</span>
+<span class="nc" id="L263">        request.setAttribute(&quot;listProduct&quot;, listProduct);</span>
+<span class="nc" id="L264">        request.setAttribute(&quot;sid&quot;, id);</span>
+<span class="nc" id="L265">        request.setAttribute(&quot;count&quot;, count);</span>
+
+<span class="nc" id="L267">        sendDispatcher(request, response, &quot;seller/shopPage.jsp&quot;);</span>
+<span class="nc" id="L268">    }</span>
+
+    public void serviceFilter(HttpServletRequest request, HttpServletResponse response) throws IOException {
+
+<span class="nc" id="L272">        String str = request.getParameter(&quot;search&quot;).trim();</span>
+<span class="nc" id="L273">        int count = proDAO.totalSearchProduct(str);</span>
+<span class="nc" id="L274">        String[] idcate = request.getParameterValues(&quot;cid&quot;);</span>
+        String address;
+<span class="nc" id="L276">        int size = 20;</span>
+<span class="nc" id="L277">        int total = count / size;</span>
+        int page, end;
+<span class="nc" id="L279">        String pageString = request.getParameter(&quot;page&quot;);</span>
+<span class="nc bnc" id="L280" title="All 2 branches missed.">        if (pageString == null) {</span>
+<span class="nc" id="L281">            page = 1;</span>
+        } else {
+<span class="nc" id="L283">            page = Integer.parseInt(pageString);</span>
+        }
+<span class="nc" id="L285">        int begin = page;</span>
+<span class="nc" id="L286">        String previous = &quot;  &lt;li&gt;&lt;a class='' href=&quot; + &quot;HomePageControllerMap?service=search&amp;search=&quot; + str + &quot;&amp;page=&quot; + (page - 1) + &quot;&gt;P&lt;/a&gt;&lt;/li&gt;&quot;;</span>
+<span class="nc" id="L287">        String next = &quot;  &lt;li&gt;&lt;a class='' href=&quot; + &quot;HomePageControllerMap?service=search&amp;search=&quot; + str + &quot;&amp;page=&quot; + (page + 1) + &quot;&gt;N&lt;/a&gt;&lt;/li&gt;&quot;;</span>
+<span class="nc bnc" id="L288" title="All 2 branches missed.">        if (count % size != 0) {</span>
+<span class="nc" id="L289">            total += 1;</span>
+        }
+<span class="nc bnc" id="L291" title="All 2 branches missed.">        if (page &lt;= total - 2) {</span>
+<span class="nc" id="L292">            end = page + 2;</span>
+        } else {
+<span class="nc" id="L294">            end = total;</span>
+<span class="nc" id="L295">            begin = total - 2;</span>
+        }
+<span class="nc bnc" id="L297" title="All 2 branches missed.">        if (page == 1) {</span>
+<span class="nc" id="L298">            request.setAttribute(&quot;next&quot;, next);</span>
+<span class="nc bnc" id="L299" title="All 2 branches missed.">        } else if (page == total) {</span>
+<span class="nc" id="L300">            request.setAttribute(&quot;previous&quot;, previous);</span>
+        } else {
+<span class="nc" id="L302">            request.setAttribute(&quot;next&quot;, next);</span>
+<span class="nc" id="L303">            request.setAttribute(&quot;previous&quot;, previous);</span>
+        }
+<span class="nc" id="L305">        String s=&quot;And (&quot;;</span>
+<span class="nc" id="L306">        int j=0;</span>
+<span class="nc" id="L307">        String [] catef=new String[7];</span>
+<span class="nc bnc" id="L308" title="All 2 branches missed.">        for (int i = 0; i &lt; idcate.length; i++) {</span>
+<span class="nc bnc" id="L309" title="All 2 branches missed.">            if (idcate[i]!=null) {</span>
+<span class="nc" id="L310">                catef[j]=idcate[i];</span>
+<span class="nc" id="L311">                j++;</span>
+            }
+        }
+<span class="nc bnc" id="L314" title="All 2 branches missed.">        for (int i = 0; i &lt; j; i++) {</span>
+<span class="nc bnc" id="L315" title="All 2 branches missed.">            if (i&lt;j-1) {</span>
+<span class="nc" id="L316">               s+=&quot;pc.categoryId=&quot;+catef[i]+&quot; OR &quot;; </span>
+            }else {
+<span class="nc" id="L318">                s+=&quot;pc.categoryID=&quot;+catef[i]+&quot; &quot;; </span>
+            }
+            
+        }
+<span class="nc" id="L322">        s+=&quot;)&quot;;</span>
+<span class="nc" id="L323">        List&lt;Product&gt; ListP = proDAO.getProductByFilter(page, &quot;&quot;, s);</span>
+<span class="nc" id="L324">        address = &quot;&lt;a&gt;&quot; + &quot; Results for &quot; + str + &quot;  &lt;/a&gt; &lt;span class=&quot; + &quot;divider&quot; + &quot;&gt;&amp;#47;&lt;/span&gt;&quot;;</span>
+<span class="nc" id="L325">        request.setAttribute(&quot;address&quot;, s);</span>
+<span class="nc" id="L326">        request.setAttribute(&quot;end&quot;, end);</span>
+<span class="nc" id="L327">        request.setAttribute(&quot;begin&quot;, begin);</span>
+<span class="nc" id="L328">        request.setAttribute(&quot;listP&quot;, ListP);</span>
+<span class="nc" id="L329">        request.setAttribute(&quot;search&quot;, str);</span>
+<span class="nc" id="L330">        request.setAttribute(&quot;count&quot;, count);</span>
+<span class="nc" id="L331">        request.setAttribute(&quot;idcate&quot;, idcate);</span>
+<span class="nc" id="L332">        request.setAttribute(&quot;href&quot;, (&quot;&amp;search=&quot;+&quot;&quot;+&quot;&amp;s=&quot;+s));</span>
+<span class="nc" id="L333">        sendDispatcher(request, response, &quot;productList/list.jsp&quot;);</span>
+
+<span class="nc" id="L335">    }</span>
+
+    public void sendDispatcher(HttpServletRequest request, HttpServletResponse response, String path) {
+        try {
+<span class="nc" id="L339">            RequestDispatcher rd = request.getRequestDispatcher(path);</span>
+<span class="nc" id="L340">            rd.forward(request, response);</span>
+<span class="nc" id="L341">        } catch (ServletException | IOException ex) {</span>
+<span class="nc" id="L342">            Logger.getLogger(HomePageController.class.getName()).log(Level.SEVERE, null, ex);</span>
+<span class="nc" id="L343">        }</span>
+<span class="nc" id="L344">    }</span>
+
+    private void writeObject(ObjectOutputStream stream)
+            throws IOException {
+<span class="nc" id="L348">        stream.defaultWriteObject();</span>
+<span class="nc" id="L349">    }</span>
+
+    private void readObject(ObjectInputStream stream)
+            throws IOException, ClassNotFoundException {
+<span class="nc" id="L353">        stream.defaultReadObject();</span>
+<span class="nc" id="L354">    }</span>
+
+    // &lt;editor-fold defaultstate=&quot;collapsed&quot; desc=&quot;HttpServlet methods. Click on the + sign on the left to edit the code.&quot;&gt;
+    /**
+     * Handles the HTTP &lt;code&gt;GET&lt;/code&gt; method.
+     *
+     * @param request servlet request
+     * @param response servlet response
+     * @throws ServletException if a servlet-specific error occurs
+     * @throws IOException if an I/O error occurs
+     */
+    @Override
+    protected void doGet(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException {
+<span class="nc" id="L368">        processRequest(request, response);</span>
+<span class="nc" id="L369">    }</span>
+
+    /**
+     * Handles the HTTP &lt;code&gt;POST&lt;/code&gt; method.
+     *
+     * @param request servlet request
+     * @param response servlet response
+     * @throws ServletException if a servlet-specific error occurs
+     * @throws IOException if an I/O error occurs
+     */
+    @Override
+    protected void doPost(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException {
+<span class="nc" id="L382">        processRequest(request, response);</span>
+<span class="nc" id="L383">    }</span>
+
+    /**
+     * Returns a short description of the servlet.
+     *
+     * @return a String containing servlet description
+     */
+    @Override
+    public String getServletInfo() {
+<span class="nc" id="L392">        return &quot;Short description&quot;;</span>
+    }// &lt;/editor-fold&gt;
+
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.eclemma.org/jacoco">JaCoCo</a> 0.7.5.201505241946</span></div></body></html>

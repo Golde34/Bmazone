@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../.resources/report.css" type="text/css"/><link rel="shortcut icon" href="../.resources/report.gif" type="image/gif"/><title>CommentDAO.java</title><link rel="stylesheet" href="../.resources/prettify.css" type="text/css"/><script type="text/javascript" src="../.resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../.sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">JaCoCoverage analysis of project &quot;Bmazon&quot; (powered by JaCoCo from EclEmma)</a> &gt; <a href="index.source.html" class="el_package">model</a> &gt; <span class="el_source">CommentDAO.java</span></div><h1>CommentDAO.java</h1><pre class="source lang-java linenums">/*
+ * To change this license header, choose License Headers in Project Properties.
+ * To change this template file, choose Tools | Templates
+ * and open the template in the editor.
+ */
+package model;
+
+import entity.Comment;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
+/**
+ *
+ * @author AD
+ */
+<span class="fc" id="L20">public class CommentDAO extends BaseDAO {</span>
+
+    public int insertComment(Comment obj) {
+<span class="nc" id="L23">        int n = 0;</span>
+<span class="nc" id="L24">        String sql = &quot;insert into Comment(productID,userId,content,rating,status) values (?,?,?,?,1)&quot;;</span>
+        try {
+<span class="nc" id="L26">            pre = conn.prepareStatement(sql);</span>
+<span class="nc" id="L27">            pre.setInt(1, obj.getProductID());</span>
+<span class="nc" id="L28">            pre.setString(2, obj.getUserID());</span>
+<span class="nc" id="L29">            pre.setString(3, obj.getContent());</span>
+<span class="nc" id="L30">            pre.setDouble(4, obj.getRating());</span>
+<span class="nc" id="L31">            n = pre.executeUpdate();</span>
+<span class="nc" id="L32">        } catch (SQLException ex) {</span>
+<span class="nc" id="L33">            Logger.getLogger(CommentDAO.class.getName()).log(Level.SEVERE, null, ex);</span>
+<span class="nc" id="L34">        }</span>
+<span class="nc" id="L35">        return n;</span>
+    }
+
+    public ArrayList&lt;Comment&gt; getCommentsByProductId(int pid) {
+<span class="nc" id="L39">        ArrayList&lt;Comment&gt; comments = new ArrayList&lt;&gt;();</span>
+<span class="nc" id="L40">        String sql = &quot;select * from Comment where productID  = ? order by commentID desc&quot;;</span>
+        try {
+<span class="nc" id="L42">            pre = conn.prepareStatement(sql);</span>
+<span class="nc" id="L43">            pre.setInt(1, pid);</span>
+<span class="nc" id="L44">            rs= pre.executeQuery();</span>
+<span class="nc bnc" id="L45" title="All 2 branches missed.">            while (rs.next()) {</span>
+<span class="nc" id="L46">                Comment x = new Comment();</span>
+<span class="nc" id="L47">                x.setCommentID(rs.getInt(&quot;commentID&quot;));</span>
+<span class="nc" id="L48">                x.setProductID(rs.getInt(&quot;productID&quot;));</span>
+<span class="nc" id="L49">                x.setUserID(rs.getString(&quot;userId&quot;));</span>
+<span class="nc" id="L50">                x.setContent(rs.getString(&quot;content&quot;));</span>
+<span class="nc" id="L51">                x.setRating(rs.getInt(&quot;rating&quot;));</span>
+<span class="nc" id="L52">                x.setStatus(rs.getInt(&quot;status&quot;));</span>
+<span class="nc" id="L53">                comments.add(x);</span>
+<span class="nc" id="L54">            }</span>
+<span class="nc" id="L55">        } catch (SQLException ex) {</span>
+<span class="nc" id="L56">            Logger.getLogger(CommentDAO.class.getName()).log(Level.SEVERE, null, ex);</span>
+<span class="nc" id="L57">        }</span>
+<span class="nc" id="L58">        return comments;</span>
+    }
+    
+//    public int countAllCommentsByProductId(int pid){
+//        int n = 1;
+//        String sql = &quot;select count(*) from Comment where productID = ?&quot;;
+//        try{
+//            pre = conn.prepareStatement(sql);
+//            pre.setInt(1, pid);
+//            ResultSet rs = pre.executeQuery();
+//        }catch (SQLException ex) {
+//            Logger.getLogger(CommentDAO.class.getName()).log(Level.SEVERE, null, ex);
+//        }
+//        return n;
+//    }
+
+    public boolean checkExistComment(int pid, int uid) {
+        
+<span class="nc" id="L76">        boolean check = false;</span>
+<span class="nc" id="L77">        String sql = &quot;select * from Comment where productID  = ? and userId = ? order by commentID desc&quot;;</span>
+        try {
+<span class="nc" id="L79">            pre = conn.prepareStatement(sql);</span>
+<span class="nc" id="L80">            pre.setInt(1, pid);</span>
+<span class="nc" id="L81">            pre.setInt(2, uid);</span>
+<span class="nc" id="L82">            rs = pre.executeQuery();</span>
+<span class="nc bnc" id="L83" title="All 2 branches missed.">            while (rs.next()) {</span>
+<span class="nc" id="L84">                check = true;</span>
+            }
+<span class="nc" id="L86">        } catch (SQLException ex) {</span>
+<span class="nc" id="L87">            Logger.getLogger(CommentDAO.class.getName()).log(Level.SEVERE, null, ex);</span>
+<span class="nc" id="L88">        }</span>
+<span class="nc" id="L89">        return check;</span>
+    }
+
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.eclemma.org/jacoco">JaCoCo</a> 0.7.5.201505241946</span></div></body></html>

@@ -1,0 +1,252 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../.resources/report.css" type="text/css"/><link rel="shortcut icon" href="../.resources/report.gif" type="image/gif"/><title>roleFilter.java</title><link rel="stylesheet" href="../.resources/prettify.css" type="text/css"/><script type="text/javascript" src="../.resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../.sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">JaCoCoverage analysis of project &quot;Bmazon&quot; (powered by JaCoCo from EclEmma)</a> &gt; <a href="index.source.html" class="el_package">filter</a> &gt; <span class="el_source">roleFilter.java</span></div><h1>roleFilter.java</h1><pre class="source lang-java linenums">/*
+ * To change this license header, choose License Headers in Project Properties.
+ * To change this template file, choose Tools | Templates
+ * and open the template in the editor.
+ */
+package filter;
+
+import entity.Role;
+import entity.User;
+import java.io.IOException;
+import java.io.PrintStream;
+import java.io.PrintWriter;
+import java.io.StringWriter;
+import javax.servlet.Filter;
+import javax.servlet.FilterChain;
+import javax.servlet.FilterConfig;
+import javax.servlet.ServletException;
+import javax.servlet.ServletRequest;
+import javax.servlet.ServletResponse;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import model.RoleDAO;
+
+/**
+ *
+ * @author Admin
+ */
+public class roleFilter implements Filter {
+    
+    private static final boolean debug = true;
+
+    // The filter configuration object we are associated with.  If
+    // this value is null, this filter instance is not currently
+    // configured. 
+<span class="nc" id="L35">    private FilterConfig filterConfig = null;</span>
+    
+<span class="nc" id="L37">    public roleFilter() {</span>
+<span class="nc" id="L38">    }    </span>
+    
+    private void doBeforeProcessing(ServletRequest request, ServletResponse response)
+            throws IOException, ServletException {
+        if (debug) {
+<span class="nc" id="L43">            log(&quot;roleFilter:DoBeforeProcessing&quot;);</span>
+        }
+
+        // Write code here to process the request and/or response before
+        // the rest of the filter chain is invoked.
+        // For example, a logging filter might log items on the request object,
+        // such as the parameters.
+        /*
+	for (Enumeration en = request.getParameterNames(); en.hasMoreElements(); ) {
+	    String name = (String)en.nextElement();
+	    String values[] = request.getParameterValues(name);
+	    int n = values.length;
+	    StringBuffer buf = new StringBuffer();
+	    buf.append(name);
+	    buf.append(&quot;=&quot;);
+	    for(int i=0; i &lt; n; i++) {
+	        buf.append(values[i]);
+	        if (i &lt; n-1)
+	            buf.append(&quot;,&quot;);
+	    }
+	    log(buf.toString());
+	}
+         */
+<span class="nc" id="L66">    }    </span>
+    
+    private void doAfterProcessing(ServletRequest request, ServletResponse response)
+            throws IOException, ServletException {
+        if (debug) {
+<span class="nc" id="L71">            log(&quot;roleFilter:DoAfterProcessing&quot;);</span>
+        }
+
+        // Write code here to process the request and/or response after
+        // the rest of the filter chain is invoked.
+        // For example, a logging filter might log the attributes on the
+        // request object after the request has been processed. 
+        /*
+	for (Enumeration en = request.getAttributeNames(); en.hasMoreElements(); ) {
+	    String name = (String)en.nextElement();
+	    Object value = request.getAttribute(name);
+	    log(&quot;attribute: &quot; + name + &quot;=&quot; + value.toString());
+
+	}
+         */
+        // For example, a filter might append something to the response.
+        /*
+	PrintWriter respOut = new PrintWriter(response.getWriter());
+	respOut.println(&quot;&lt;P&gt;&lt;B&gt;This has been appended by an intrusive filter.&lt;/B&gt;&quot;);
+         */
+<span class="nc" id="L91">    }</span>
+
+    /**
+     *
+     * @param request The servlet request we are processing
+     * @param response The servlet response we are creating
+     * @param chain The filter chain we are processing
+     *
+     * @exception IOException if an input/output error occurs
+     * @exception ServletException if a servlet error occurs
+     */
+    public void doFilter(ServletRequest request, ServletResponse response,
+            FilterChain chain)
+            throws IOException, ServletException {
+        
+        if (debug) {
+<span class="nc" id="L107">            log(&quot;roleFilter:doFilter()&quot;);</span>
+        }
+        
+<span class="nc" id="L110">        doBeforeProcessing(request, response);</span>
+        
+<span class="nc" id="L112">        HttpServletRequest httpRequest = (HttpServletRequest) request;</span>
+<span class="nc" id="L113">        HttpServletResponse httpResponse = (HttpServletResponse) response;</span>
+<span class="nc" id="L114">        User x = (User) httpRequest.getSession().getAttribute(&quot;currUser&quot;);</span>
+<span class="nc" id="L115">        RoleDAO daoRole = new RoleDAO();</span>
+<span class="nc" id="L116">        Role role = daoRole.getRoleById(x.getSystemRole());</span>
+<span class="nc" id="L117">        System.out.println(role.getAdminPermission() + &quot; &quot; + role.getSellerPermission() + &quot; &quot; + role.getRoleName());</span>
+<span class="nc" id="L118">        String url = httpRequest.getServletPath();</span>
+        
+<span class="nc bnc" id="L120" title="All 2 branches missed.">        if (x == null) {</span>
+<span class="nc" id="L121">            chain.doFilter(request, response);</span>
+        }
+<span class="nc bnc" id="L123" title="All 6 branches missed.">        if (x != null &amp;&amp; role.getAdminPermission() != 1 &amp;&amp; url.contains(&quot;AdminControllerMap&quot;)) {</span>
+<span class="nc" id="L124">            httpResponse.sendRedirect(&quot;HomePageControllerMap&quot;);</span>
+        } 
+<span class="nc bnc" id="L126" title="All 6 branches missed.">        if (x != null &amp;&amp; role.getSellerPermission()!= 1 &amp;&amp; url.contains(&quot;SellerControllerMap&quot;)) {</span>
+<span class="nc" id="L127">            httpResponse.sendRedirect(&quot;HomePageControllerMap&quot;);</span>
+        } 
+<span class="nc" id="L129">        Throwable problem = null;</span>
+        try {
+<span class="nc" id="L131">            chain.doFilter(request, response);</span>
+<span class="nc" id="L132">        } catch (Throwable t) {</span>
+            // If an exception is thrown somewhere down the filter chain,
+            // we still want to execute our after processing, and then
+            // rethrow the problem after that.
+<span class="nc" id="L136">            problem = t;</span>
+<span class="nc" id="L137">            t.printStackTrace();</span>
+<span class="nc" id="L138">        }</span>
+        
+<span class="nc" id="L140">        doAfterProcessing(request, response);</span>
+
+        // If there was a problem, we want to rethrow it if it is
+        // a known type, otherwise log it.
+<span class="nc bnc" id="L144" title="All 2 branches missed.">        if (problem != null) {</span>
+<span class="nc bnc" id="L145" title="All 2 branches missed.">            if (problem instanceof ServletException) {</span>
+<span class="nc" id="L146">                throw (ServletException) problem;</span>
+            }
+<span class="nc bnc" id="L148" title="All 2 branches missed.">            if (problem instanceof IOException) {</span>
+<span class="nc" id="L149">                throw (IOException) problem;</span>
+            }
+<span class="nc" id="L151">            sendProcessingError(problem, response);</span>
+        }
+<span class="nc" id="L153">    }</span>
+
+    /**
+     * Return the filter configuration object for this filter.
+     */
+    public FilterConfig getFilterConfig() {
+<span class="nc" id="L159">        return (this.filterConfig);</span>
+    }
+
+    /**
+     * Set the filter configuration object for this filter.
+     *
+     * @param filterConfig The filter configuration object
+     */
+    public void setFilterConfig(FilterConfig filterConfig) {
+<span class="nc" id="L168">        this.filterConfig = filterConfig;</span>
+<span class="nc" id="L169">    }</span>
+
+    /**
+     * Destroy method for this filter
+     */
+    public void destroy() {        
+<span class="nc" id="L175">    }</span>
+
+    /**
+     * Init method for this filter
+     */
+    public void init(FilterConfig filterConfig) {        
+<span class="nc" id="L181">        this.filterConfig = filterConfig;</span>
+<span class="nc bnc" id="L182" title="All 2 branches missed.">        if (filterConfig != null) {</span>
+            if (debug) {                
+<span class="nc" id="L184">                log(&quot;roleFilter:Initializing filter&quot;);</span>
+            }
+        }
+<span class="nc" id="L187">    }</span>
+
+    /**
+     * Return a String representation of this object.
+     */
+    @Override
+    public String toString() {
+<span class="nc bnc" id="L194" title="All 2 branches missed.">        if (filterConfig == null) {</span>
+<span class="nc" id="L195">            return (&quot;roleFilter()&quot;);</span>
+        }
+<span class="nc" id="L197">        StringBuffer sb = new StringBuffer(&quot;roleFilter(&quot;);</span>
+<span class="nc" id="L198">        sb.append(filterConfig);</span>
+<span class="nc" id="L199">        sb.append(&quot;)&quot;);</span>
+<span class="nc" id="L200">        return (sb.toString());</span>
+    }
+    
+    private void sendProcessingError(Throwable t, ServletResponse response) {
+<span class="nc" id="L204">        String stackTrace = getStackTrace(t);        </span>
+        
+<span class="nc bnc" id="L206" title="All 4 branches missed.">        if (stackTrace != null &amp;&amp; !stackTrace.equals(&quot;&quot;)) {</span>
+            try {
+<span class="nc" id="L208">                response.setContentType(&quot;text/html&quot;);</span>
+<span class="nc" id="L209">                PrintStream ps = new PrintStream(response.getOutputStream());</span>
+<span class="nc" id="L210">                PrintWriter pw = new PrintWriter(ps);                </span>
+<span class="nc" id="L211">                pw.print(&quot;&lt;html&gt;\n&lt;head&gt;\n&lt;title&gt;Error&lt;/title&gt;\n&lt;/head&gt;\n&lt;body&gt;\n&quot;); //NOI18N</span>
+
+                // PENDING! Localize this for next official release
+<span class="nc" id="L214">                pw.print(&quot;&lt;h1&gt;The resource did not process correctly&lt;/h1&gt;\n&lt;pre&gt;\n&quot;);                </span>
+<span class="nc" id="L215">                pw.print(stackTrace);                </span>
+<span class="nc" id="L216">                pw.print(&quot;&lt;/pre&gt;&lt;/body&gt;\n&lt;/html&gt;&quot;); //NOI18N</span>
+<span class="nc" id="L217">                pw.close();</span>
+<span class="nc" id="L218">                ps.close();</span>
+<span class="nc" id="L219">                response.getOutputStream().close();</span>
+<span class="nc" id="L220">            } catch (Exception ex) {</span>
+<span class="nc" id="L221">            }</span>
+        } else {
+            try {
+<span class="nc" id="L224">                PrintStream ps = new PrintStream(response.getOutputStream());</span>
+<span class="nc" id="L225">                t.printStackTrace(ps);</span>
+<span class="nc" id="L226">                ps.close();</span>
+<span class="nc" id="L227">                response.getOutputStream().close();</span>
+<span class="nc" id="L228">            } catch (Exception ex) {</span>
+<span class="nc" id="L229">            }</span>
+        }
+<span class="nc" id="L231">    }</span>
+    
+    public static String getStackTrace(Throwable t) {
+<span class="nc" id="L234">        String stackTrace = null;</span>
+        try {
+<span class="nc" id="L236">            StringWriter sw = new StringWriter();</span>
+<span class="nc" id="L237">            PrintWriter pw = new PrintWriter(sw);</span>
+<span class="nc" id="L238">            t.printStackTrace(pw);</span>
+<span class="nc" id="L239">            pw.close();</span>
+<span class="nc" id="L240">            sw.close();</span>
+<span class="nc" id="L241">            stackTrace = sw.getBuffer().toString();</span>
+<span class="nc" id="L242">        } catch (Exception ex) {</span>
+<span class="nc" id="L243">        }</span>
+<span class="nc" id="L244">        return stackTrace;</span>
+    }
+    
+    public void log(String msg) {
+<span class="nc" id="L248">        filterConfig.getServletContext().log(msg);        </span>
+<span class="nc" id="L249">    }</span>
+    
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.eclemma.org/jacoco">JaCoCo</a> 0.7.5.201505241946</span></div></body></html>

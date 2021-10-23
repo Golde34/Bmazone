@@ -213,7 +213,7 @@
                                                     <ul class="woocommerce-mini-cart cart_list product_list_widget ">
                                                         <li class="woocommerce-mini-cart-item mini_cart_item">
                                                             <a href="CartControllerMap?service=Delete&cartID=<%=item.getCartID()%>" class="remove remove_from_cart_button" aria-label="Xóa sản phẩm này" data-product_id="139" data-cart_item_key="e00da03b685a0dd18fb6a08af0923de0" data-product_sku="">&times;</a>													
-                                                            <a href="http://mauweb.monamedia.net/lazada/san-pham/ao-so-mi-caro-kem-belt/">
+                                                            <a href="">
                                                                 <img width="180" height="180" src="<%=image%>" class="attachment-shop_thumbnail size-shop_thumbnail wp-post-image" ><%=item.getName() + "(" + item.getSize() + ")" + "(" + item.getColor() + ")"%> &nbsp;	</a>
 
                                                             <span class="quantity"><%=item.getQuantity()%>&times; <span class="woocommerce-Price-amount amount"><%= nf.format(item.getPrice())%>&nbsp;<span class="woocommerce-Price-currencySymbol">&#8363;</span></span></span>					</li>

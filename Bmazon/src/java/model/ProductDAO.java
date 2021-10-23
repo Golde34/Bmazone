@@ -363,7 +363,7 @@ public class ProductDAO extends BaseDAO {
         String sql = "SELECT * FROM Product where sellerID = ?";
         try {
             pre = conn.prepareStatement(sql);
-            pre.setInt(1,Integer.parseInt(seller));
+            pre.setInt(1, Integer.parseInt(seller));
             rs = pre.executeQuery();
             while (rs.next()) {
                 Product pro = new Product();
@@ -381,11 +381,6 @@ public class ProductDAO extends BaseDAO {
         } catch (SQLException e) {
             Logger.getLogger(ProductDAO.class.getName()).log(Level.SEVERE, null, e);
         }
-        return list;
-    }
-
-    public ArrayList<Product> searchProduct(String S) {
-        ArrayList<Product> list = new ArrayList<>();
         return list;
     }
 
@@ -413,12 +408,6 @@ public class ProductDAO extends BaseDAO {
             Logger.getLogger(ProductDAO.class.getName()).log(Level.SEVERE, null, e);
         }
         return list;
-    }
-
-
-    public static void main(String[] args) {
-        ProductDAO pDAO = new ProductDAO();
-        System.out.println(pDAO.getRelatedProductByProductIDPaging(2, 13));
     }
 
     public int totalProductSeller(String sid) {
@@ -456,7 +445,7 @@ public class ProductDAO extends BaseDAO {
         }
         return count;
     }
-    
+
     public int totalProduct() {
         int count = 0;
 
@@ -524,14 +513,19 @@ public class ProductDAO extends BaseDAO {
         return list;
     }
 
-    public ArrayList<Product> getProductByFilter(int index, String name, int cateID) {
+    public static void main(String[] args) {
+        ProductDAO pDAO = new ProductDAO();
+        System.out.println(pDAO.getRelatedProductByProductIDPaging(1, 1).size());
+    }
+
+    public ArrayList<Product> getProductByFilter(int index, String name, String s) {
         ArrayList<Product> list = new ArrayList<>();
         String sql = " declare @PageNo INT = " + index + " \n"
                 + " declare @PageSize INT=20 \n"
                 + " SELECT * from( \n"
-                + " SELECT p.productID,p.productName,p.description,p.rating,p.releaseDate,p.sellerID,p.[status],\n  "
-                + " ROW_NUMBER() over (order by p.productID) as RowNum \n  "
-                + "  FROM Product p join ProductCategory pc on p.productID=pc.productID where productName like '%" + name + "%' OR description like '%" + name + "%' and categoryId= " + cateID + "  ) as T  \n "
+                + " SELECT p.productID,p.productName,p.description,p.releaseDate,p.rating,p.sellerID,p.status,\n  "
+                + " ROW_NUMBER() over (order by p.productID) as RowNum\n  "
+                + "   FROM [Bmazon].[dbo].[Product] p join ProductCategory pc on p.productID=pc.productID  where (productName like '%" + name + "%' OR description like '%" + name + "%') " + s + " ) as T \n "
                 + " where T.RowNum between ((@PageNo-1)*@PageSize)+1 and (@PageNo*@PageSize)  ";
         try {
             pre = conn.prepareStatement(sql);
@@ -654,7 +648,7 @@ public class ProductDAO extends BaseDAO {
         }
         return list;
     }
-    
+
     public ArrayList<Product> getRelatedProductByProductIDPaging(int index, int id) {
         ArrayList<Product> list = new ArrayList<>();
         String sql = " declare @PageNo INT = ? \n"

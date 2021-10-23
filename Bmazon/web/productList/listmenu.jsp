@@ -156,22 +156,24 @@
 
 
                                                                 %>
-                                                                <li class="woof_term_182" ><input type="checkbox" class="woof_checkbox_term woof_checkbox_term_182" data-tax="product_cat" name="cid" data-term-id="" value="<%=cate.getCategoryID()%>"/>
+                                                                <li class="woof_term_182" >
+                                                                    <input type="checkbox" class="woof_checkbox_term woof_checkbox_term_182" data-tax="product_cat" name="cid" data-term-id="" value="<%=cate.getCategoryID()%>"/>
                                                                     <label class="woof_checkbox_label " for="cid"><%=cate.getCategoryName()%>
-                                                                        <span class="woof_checkbox_count">(1)</span>
+                                                                   
                                                                     </label>
-                                                                    <%
+                                                                   
+                                                                </li>
+                                                                 <%
                                                                         }
 
                                                                     %>  
 
-                                                                </li>
                                                             </ul>
-                                                            <button type="submit" style="float: right;" class="button woof_reset_search_form" name="service" value="check">Add Filter</button>
+
                                                         </div>
                                                     </form>
 
-                                                    <input type="hidden" name="woof_t_product_cat" value="Danh mục sản phẩm" /><!-- for red button search nav panel -->
+                                                  
 
                                                 </div>
                                             </div>
@@ -201,6 +203,7 @@
 
 
                                                 <button style="float: right;" class="button woof_reset_search_form" data-link="">Reset</button>
+                                                <button type="submit" style="float: right;" class="button woof_reset_search_form" name="service" value="check">Add Filter</button>
 
 
 

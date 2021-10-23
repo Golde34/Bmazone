@@ -1,0 +1,385 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../.resources/report.css" type="text/css"/><link rel="shortcut icon" href="../.resources/report.gif" type="image/gif"/><title>LoginController.java</title><link rel="stylesheet" href="../.resources/prettify.css" type="text/css"/><script type="text/javascript" src="../.resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../.sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">JaCoCoverage analysis of project &quot;Bmazon&quot; (powered by JaCoCo from EclEmma)</a> &gt; <a href="index.source.html" class="el_package">controller</a> &gt; <span class="el_source">LoginController.java</span></div><h1>LoginController.java</h1><pre class="source lang-java linenums">/*
+ * To change this license header, choose License Headers in Project Properties.
+ * To change this template file, choose Tools | Templates
+ * and open the template in the editor.
+ */
+package controller;
+
+import APIs.SecurePBKDF2;
+import static APIs.SecurePBKDF2.validatePassword;
+import entity.Product;
+import APIs.SendEmail;
+import entity.User;
+import java.io.IOException;
+import java.io.PrintWriter;
+import java.util.ArrayList;
+import java.util.Random;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.servlet.RequestDispatcher;
+import javax.servlet.ServletException;
+import javax.servlet.http.HttpServlet;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
+import model.DBConnection;
+import model.UserDAO;
+import entity.CartItem;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
+import java.security.NoSuchAlgorithmException;
+import java.security.spec.InvalidKeySpecException;
+
+/**
+ *
+ * @author Admin
+ */
+<span class="nc" id="L37">public class LoginController extends HttpServlet {</span>
+
+    /**
+     * Processes requests for both HTTP &lt;code&gt;GET&lt;/code&gt; and &lt;code&gt;POST&lt;/code&gt;
+     * methods.
+     *
+     * @param request servlet request
+     * @param response servlet response
+     * @throws ServletException if a servlet-specific error occurs
+     * @throws IOException if an I/O error occurs
+     */
+<span class="nc" id="L48">    DBConnection dbCon = new DBConnection();</span>
+<span class="nc" id="L49">    UserDAO daoUser = new UserDAO();</span>
+    private static final long serialVersionUID = 1;
+
+    protected void processRequest(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException, NoSuchAlgorithmException, InvalidKeySpecException {
+<span class="nc" id="L54">        response.setContentType(&quot;text/html;charset=UTF-8&quot;);</span>
+
+<span class="nc" id="L56">        try (PrintWriter out = response.getWriter()) {</span>
+<span class="nc" id="L57">            String service = request.getParameter(&quot;service&quot;);</span>
+            /* TODO output your page here. You may use following sample code. */
+            //Login service
+<span class="nc bnc" id="L60" title="All 2 branches missed.">            if (service.equalsIgnoreCase(&quot;login&quot;)) {</span>
+<span class="nc" id="L61">                serviceLogin(request, response);</span>
+            }
+
+//            //Login google
+//            if (service.equalsIgnoreCase(&quot;googleLogin&quot;)) {
+//                serviceGoogleLogin(request, response);
+//            }
+//
+//            //Login facebook
+//            if (service.equalsIgnoreCase(&quot;facebookLogin&quot;)) {
+//                serviceFacebookLogin(request, response);
+//            }
+
+            //register
+<span class="nc bnc" id="L75" title="All 2 branches missed.">            if (service.equalsIgnoreCase(&quot;register&quot;)) {</span>
+<span class="nc" id="L76">                serviceRegister(request, response);</span>
+            }
+
+            //verify
+<span class="nc bnc" id="L80" title="All 2 branches missed.">            if (service.equalsIgnoreCase(&quot;verify&quot;)) {</span>
+<span class="nc" id="L81">                serviceVerifyAccount(request, response);</span>
+            }
+            //Forgot password
+<span class="nc bnc" id="L84" title="All 2 branches missed.">            if (service.equalsIgnoreCase(&quot;forgotPass&quot;)) {</span>
+<span class="nc" id="L85">                serviceForgotPassword(request, response);</span>
+            }
+<span class="nc bnc" id="L87" title="All 8 branches missed.">        }</span>
+<span class="nc" id="L88">    }</span>
+
+//    public void sendEmail(String toEmail, String subject, String body) {
+//        try {
+//            Properties props = new Properties();
+//            props.put(&quot;mail.smtp.host&quot;, &quot;smtp.gmail.com&quot;); //SMTP Host
+//            props.put(&quot;mail.smtp.port&quot;, &quot;587&quot;); //TLS Port
+//            props.put(&quot;mail.smtp.auth&quot;, &quot;true&quot;); //enable authentication
+//            props.put(&quot;mail.smtp.starttls.enable&quot;, &quot;true&quot;); //enable STARTTLS
+//            Authenticator auth = new Authenticator() {
+//                @Override
+//                protected PasswordAuthentication getPasswordAuthentication() {
+//                    return new PasswordAuthentication(fromEmail, password);
+//                }
+//            };
+//            Session session = Session.getInstance(props, auth);
+//            MimeMessage msg = new MimeMessage(session);
+//            //set message headers
+//            msg.addHeader(&quot;Content-type&quot;, &quot;text/HTML; charset=UTF-8&quot;);
+//            msg.addHeader(&quot;format&quot;, &quot;flowed&quot;);
+//            msg.addHeader(&quot;Content-Transfer-Encoding&quot;, &quot;8bit&quot;);
+//            msg.setFrom(new InternetAddress(fromEmail, &quot;Quiz Practice System&quot;));
+//            msg.setReplyTo(InternetAddress.parse(fromEmail, false));
+//            msg.setSubject(subject, &quot;UTF-8&quot;);
+//            msg.setText(body, &quot;UTF-8&quot;);
+//            msg.setSentDate(new Date());
+//            msg.setRecipients(Message.RecipientType.TO, InternetAddress.parse(toEmail, false));
+//            Transport.send(msg);
+////            System.out.println(&quot;Gui mail thanh cong&quot;);
+//        } catch (MessagingException ex) {
+//            Logger.getLogger(SystemEmail.class.getName()).log(Level.SEVERE, null, ex);
+//        } catch (UnsupportedEncodingException ex) {
+//            Logger.getLogger(SystemEmail.class.getName()).log(Level.SEVERE, null, ex);
+//        }
+//    }\
+    public void serviceLogin(HttpServletRequest request, HttpServletResponse response) throws NoSuchAlgorithmException, InvalidKeySpecException  {
+//        String checkLogin = &quot;checked&quot;;
+//        request.setAttribute(&quot;checkLogin&quot;, checkLogin);
+<span class="nc" id="L126">        HttpSession session = request.getSession();</span>
+<span class="nc" id="L127">        String userName = request.getParameter(&quot;username&quot;);</span>
+<span class="nc" id="L128">        String messLogin = &quot;&quot;;</span>
+<span class="nc" id="L129">        String userPass = request.getParameter(&quot;password&quot;);</span>
+<span class="nc" id="L130">        User log = daoUser.getUserByUsername(userName);</span>
+
+<span class="nc bnc" id="L132" title="All 2 branches missed.">        if (log != null) {</span>
+<span class="nc" id="L133">            boolean matched = validatePassword(userPass, log.getPassword());</span>
+<span class="nc bnc" id="L134" title="All 2 branches missed.">            if (matched == true) {</span>
+<span class="nc" id="L135">                session.setAttribute(&quot;currUser&quot;, log);</span>
+<span class="nc" id="L136">                session.setAttribute(&quot;role&quot;, log.getSystemRole());</span>
+<span class="nc" id="L137">                ArrayList&lt;CartItem&gt; ShoppingCart = new ArrayList&lt;&gt;();</span>
+<span class="nc" id="L138">                session.setAttribute(&quot;ShoppingCart&quot;, ShoppingCart);</span>
+<span class="nc" id="L139">                sendDispatcher(request, response, &quot;index.jsp&quot;);</span>
+<span class="nc" id="L140">            } else {</span>
+<span class="nc" id="L141">                messLogin = &quot;Login failed, check your username or your password.&quot;;</span>
+<span class="nc" id="L142">                request.setAttribute(&quot;usernameLogin&quot;, userName);</span>
+<span class="nc" id="L143">                request.setAttribute(&quot;userpassLogin&quot;, userPass);</span>
+<span class="nc" id="L144">                request.setAttribute(&quot;mess&quot;, messLogin);</span>
+<span class="nc" id="L145">                sendDispatcher(request, response, &quot;loginAndSecurity/login.jsp&quot;);</span>
+            }
+<span class="nc" id="L147">        } else {</span>
+<span class="nc" id="L148">            messLogin = &quot;Login failed, check your username or your password.&quot;;</span>
+<span class="nc" id="L149">            request.setAttribute(&quot;usernameLogin&quot;, userName);</span>
+<span class="nc" id="L150">            request.setAttribute(&quot;userpassLogin&quot;, userPass);</span>
+<span class="nc" id="L151">            request.setAttribute(&quot;mess&quot;, messLogin);</span>
+<span class="nc" id="L152">            sendDispatcher(request, response, &quot;loginAndSecurity/login.jsp&quot;);</span>
+        }
+<span class="nc" id="L154">    }</span>
+
+    public void serviceRegister(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+//        String checkRegis = &quot;checked&quot;;
+//        request.setAttribute(&quot;checkRegis&quot;, checkRegis);
+<span class="nc" id="L159">        HttpSession session = request.getSession();</span>
+<span class="nc" id="L160">        String messRegis = &quot;&quot;;</span>
+<span class="nc" id="L161">        String Username = request.getParameter(&quot;signupusername&quot;);</span>
+<span class="nc" id="L162">        String Password = request.getParameter(&quot;signuppass&quot;);</span>
+<span class="nc" id="L163">        String Repassword = request.getParameter(&quot;resignuppass&quot;);</span>
+<span class="nc" id="L164">        String fullname = request.getParameter(&quot;fname&quot;);</span>
+<span class="nc" id="L165">        String Email = request.getParameter(&quot;email&quot;);</span>
+<span class="nc" id="L166">        String Phone = request.getParameter(&quot;phone&quot;);</span>
+
+<span class="nc bnc" id="L168" title="All 2 branches missed.">        if (!Password.equals(Repassword)) {</span>
+<span class="nc" id="L169">            request.setAttribute(&quot;mess&quot;, &quot;Password must be same as repeat password&quot;);</span>
+<span class="nc" id="L170">            request.setAttribute(&quot;usernameRegis&quot;, Username);</span>
+<span class="nc" id="L171">            request.setAttribute(&quot;passwordRegis&quot;, Password);</span>
+<span class="nc" id="L172">            request.setAttribute(&quot;repasswordRegis&quot;, Repassword);</span>
+<span class="nc" id="L173">            request.setAttribute(&quot;fullnameRegis&quot;, fullname);</span>
+<span class="nc" id="L174">            request.setAttribute(&quot;emailRegis&quot;, Email);</span>
+<span class="nc" id="L175">            request.setAttribute(&quot;phoneRegis&quot;, Phone);</span>
+<span class="nc" id="L176">            request.getRequestDispatcher(&quot;loginAndSecurity/register.jsp&quot;).include(request, response);</span>
+<span class="nc" id="L177">            return;</span>
+        }
+<span class="nc" id="L179">        boolean isExist = false;</span>
+<span class="nc bnc" id="L180" title="All 2 branches missed.">        if (daoUser.checkExistUserName(Username) == true) {</span>
+<span class="nc" id="L181">            messRegis = &quot;Duplicate username!&quot;;</span>
+<span class="nc" id="L182">            isExist = true;</span>
+<span class="nc bnc" id="L183" title="All 2 branches missed.">        } else if (daoUser.checkExistMail(Email) == true) {</span>
+<span class="nc" id="L184">            messRegis = &quot;Duplicate mail!&quot;;</span>
+<span class="nc" id="L185">            isExist = true;</span>
+<span class="nc bnc" id="L186" title="All 2 branches missed.">        } else if (daoUser.checkExistPhone(Phone) == true) {</span>
+<span class="nc" id="L187">            messRegis = &quot;Duplicate phone!&quot;;</span>
+<span class="nc" id="L188">            isExist = true;</span>
+        } else {
+<span class="nc" id="L190">            isExist = false;</span>
+        }
+<span class="nc" id="L192">        request.setAttribute(&quot;usernameRegis&quot;, Username);</span>
+<span class="nc" id="L193">        request.setAttribute(&quot;passwordRegis&quot;, Password);</span>
+<span class="nc" id="L194">        request.setAttribute(&quot;repasswordRegis&quot;, Repassword);</span>
+<span class="nc" id="L195">        request.setAttribute(&quot;fullnameRegis&quot;, fullname);</span>
+<span class="nc" id="L196">        request.setAttribute(&quot;emailRegis&quot;, Email);</span>
+<span class="nc" id="L197">        request.setAttribute(&quot;phoneRegis&quot;, Phone);</span>
+<span class="nc" id="L198">        request.setAttribute(&quot;mess&quot;, messRegis);</span>
+<span class="nc bnc" id="L199" title="All 2 branches missed.">        if (isExist == false) {</span>
+<span class="nc" id="L200">            String option = &quot;register&quot;;</span>
+<span class="nc" id="L201">            SendEmail sm = new SendEmail();</span>
+            //get the 6-digit code
+<span class="nc" id="L203">            String code = sm.getRandom();</span>
+
+            //call the send email method
+<span class="nc" id="L206">            boolean test = sm.sendEmail(Username, Email, code, option);</span>
+            //check if the email send successfully
+<span class="nc bnc" id="L208" title="All 2 branches missed.">            if (test == true) {</span>
+<span class="nc" id="L209">                session.setAttribute(&quot;usernameRegis&quot;, Username);</span>
+<span class="nc" id="L210">                session.setAttribute(&quot;passwordRegis&quot;, Password);</span>
+<span class="nc" id="L211">                session.setAttribute(&quot;repasswordRegis&quot;, Repassword);</span>
+<span class="nc" id="L212">                session.setAttribute(&quot;fullnameRegis&quot;, fullname);</span>
+<span class="nc" id="L213">                session.setAttribute(&quot;emailRegis&quot;, Email);</span>
+<span class="nc" id="L214">                session.setAttribute(&quot;phoneRegis&quot;, Phone);</span>
+<span class="nc" id="L215">                session.setAttribute(&quot;authcode&quot;, code);</span>
+<span class="nc" id="L216">                sendDispatcher(request, response, &quot;loginAndSecurity/verify.jsp&quot;);</span>
+                // include: xu ly xong thang path quay lai, forward: ko quay lai.
+            } else {
+<span class="nc" id="L219">                request.setAttribute(&quot;mess&quot;, &quot;Failed to send verification email&quot;);</span>
+<span class="nc" id="L220">                sendDispatcher(request, response, &quot;loginAndSecurity/register.jsp&quot;);</span>
+            }
+<span class="nc" id="L222">        } else {</span>
+<span class="nc" id="L223">            sendDispatcher(request, response, &quot;loginAndSecurity/register.jsp&quot;);</span>
+        }
+<span class="nc" id="L225">    }</span>
+
+    public void serviceVerifyAccount(HttpServletRequest request, HttpServletResponse response) throws NoSuchAlgorithmException, InvalidKeySpecException {
+        // get code user submit
+<span class="nc" id="L229">        HttpSession session = request.getSession();</span>
+<span class="nc" id="L230">        String verifyCode = request.getParameter(&quot;veriCode&quot;);</span>
+<span class="nc" id="L231">        String messVeri = &quot;&quot;;</span>
+
+        //get data from serviceRegister
+<span class="nc" id="L234">        String Username = (String) session.getAttribute(&quot;usernameRegis&quot;);</span>
+<span class="nc" id="L235">        String Password = (String) session.getAttribute(&quot;passwordRegis&quot;);</span>
+//        String Repassword = (String) session.getAttribute(&quot;repasswordRegis&quot;); //(fix FindBugs )
+<span class="nc" id="L237">        String fullname = (String) session.getAttribute(&quot;fullnameRegis&quot;);</span>
+<span class="nc" id="L238">        String Email = (String) session.getAttribute(&quot;emailRegis&quot;);</span>
+<span class="nc" id="L239">        String Phone = (String) session.getAttribute(&quot;phoneRegis&quot;);</span>
+
+<span class="nc" id="L241">        String securePassword = SecurePBKDF2.generateStrongPasswordHash(Password);</span>
+
+        //get code generated
+<span class="nc" id="L244">        String authCode = (String) session.getAttribute(&quot;authcode&quot;);</span>
+<span class="nc bnc" id="L245" title="All 2 branches missed.">        if (verifyCode.equals(authCode)) {</span>
+<span class="nc" id="L246">            daoUser.addUserRegister(new User(Username, securePassword, Email, Phone, 0, 0, fullname, Username, &quot;&quot;, &quot;&quot;, &quot;&quot;, &quot;&quot;, 0, &quot;&quot;, &quot;&quot;, &quot;&quot;, &quot;&quot;, &quot;&quot;, 0, 0, 1));</span>
+<span class="nc" id="L247">            messVeri = &quot;Signup Successfully!&quot;;</span>
+<span class="nc" id="L248">            request.setAttribute(&quot;mess&quot;, messVeri);</span>
+<span class="nc" id="L249">            sendDispatcher(request, response, &quot;loginAndSecurity/register.jsp&quot;);</span>
+        } else {
+<span class="nc" id="L251">            messVeri = &quot;Verification code is not right!&quot;;</span>
+<span class="nc" id="L252">            request.setAttribute(&quot;veriCode&quot;, verifyCode);</span>
+<span class="nc" id="L253">            request.setAttribute(&quot;mess&quot;, messVeri);</span>
+<span class="nc" id="L254">            sendDispatcher(request, response, &quot;loginAndSecurity/verify.jsp&quot;);</span>
+        }
+
+<span class="nc" id="L257">    }</span>
+
+    public void serviceForgotPassword(HttpServletRequest request, HttpServletResponse response) throws NoSuchAlgorithmException, InvalidKeySpecException {
+<span class="nc" id="L260">        SendEmail s = new SendEmail();</span>
+<span class="nc" id="L261">        String mess = &quot;&quot;;</span>
+<span class="nc" id="L262">        String username = request.getParameter(&quot;username&quot;);</span>
+<span class="nc" id="L263">        String email = request.getParameter(&quot;mail&quot;);</span>
+<span class="nc" id="L264">        boolean exist = daoUser.checkExistUserNameAndMail(username, email);</span>
+<span class="nc bnc" id="L265" title="All 2 branches missed.">        if (exist == true) {</span>
+<span class="nc" id="L266">            String option = &quot;forgot&quot;;</span>
+<span class="nc" id="L267">            String password = s.randomString(6);</span>
+<span class="nc" id="L268">            String securePassword = SecurePBKDF2.generateStrongPasswordHash(password);</span>
+<span class="nc" id="L269">            daoUser.updatePassword(username, email, securePassword);</span>
+<span class="nc" id="L270">            boolean test = s.sendEmail(username, email, password, option);</span>
+<span class="nc bnc" id="L271" title="All 2 branches missed.">            if (test == true) {</span>
+<span class="nc" id="L272">                sendDispatcher(request, response, &quot;loginAndSecurity/notification.jsp&quot;);</span>
+                // include: xu ly xong thang path quay lai, forward: ko quay lai.
+            } else {
+<span class="nc" id="L275">                request.setAttribute(&quot;mess&quot;, &quot;Failed to send reset email&quot;);</span>
+<span class="nc" id="L276">                sendDispatcher(request, response, &quot;loginAndSecurity/forgot.jsp&quot;);</span>
+            }
+<span class="nc" id="L278">        } else {</span>
+<span class="nc" id="L279">            mess = &quot;Your username or your mail does not exist!&quot;;</span>
+<span class="nc" id="L280">            request.setAttribute(&quot;mess&quot;, mess);</span>
+<span class="nc" id="L281">            sendDispatcher(request, response, &quot;loginAndSecurity/forgot.jsp&quot;);</span>
+        }
+<span class="nc" id="L283">    }</span>
+
+//    public void serviceGoogleLogin(HttpServletRequest request, HttpServletResponse response) {
+//        String userName = &quot;gg.&quot; + request.getParameter(&quot;username&quot;);
+//        String messLogin = &quot;&quot;;
+//        String userPass = &quot;guest&quot;;
+//        User log = null;
+//        log = new User(userName, userPass, userName, 0, &quot;gg.guest&quot;, &quot;gg.guest&quot;, 0, 1);
+//        request.getSession().setAttribute(&quot;currUser&quot;, log);
+//        request.getSession().setAttribute(&quot;role&quot;, log.getSystemRole());
+//        ArrayList&lt;CartItem&gt; ShoppingCart = new ArrayList&lt;&gt;();
+//        request.getSession().setAttribute(&quot;ShoppingCart&quot;, ShoppingCart);
+//        sendDispatcher(request, response, &quot;index.jsp&quot;);
+//    }
+//
+//    public void serviceFacebookLogin(HttpServletRequest request, HttpServletResponse response) {
+//        String userName = &quot;fb.&quot; + request.getParameter(&quot;username&quot;);
+//        String messLogin = &quot;&quot;;
+//        String userPass = &quot;guest&quot;;
+//        User log = null;
+//        log = new User(userName, userPass, &quot;&quot;, 0, &quot;fb.guest&quot;, &quot;fb.guest&quot;, 0, 1);
+//        request.getSession().setAttribute(&quot;currUser&quot;, log);
+//        request.getSession().setAttribute(&quot;role&quot;, log.getSystemRole());
+//        ArrayList&lt;CartItem&gt; ShoppingCart = new ArrayList&lt;&gt;();
+//        request.getSession().setAttribute(&quot;ShoppingCart&quot;, ShoppingCart);
+//        sendDispatcher(request, response, &quot;index.jsp&quot;);
+//    }
+
+    public void sendDispatcher(HttpServletRequest request, HttpServletResponse response, String path) {
+        try {
+<span class="nc" id="L313">            RequestDispatcher rd = request.getRequestDispatcher(path);</span>
+<span class="nc" id="L314">            rd.forward(request, response);</span>
+
+<span class="nc" id="L316">        } catch (ServletException | IOException ex) {</span>
+<span class="nc" id="L317">            Logger.getLogger(UserController.class</span>
+<span class="nc" id="L318">                    .getName()).log(Level.SEVERE, null, ex);</span>
+<span class="nc" id="L319">        }</span>
+<span class="nc" id="L320">    }</span>
+
+    private void writeObject(ObjectOutputStream stream)
+            throws IOException {
+<span class="nc" id="L324">        stream.defaultWriteObject();</span>
+<span class="nc" id="L325">    }</span>
+
+    private void readObject(ObjectInputStream stream)
+            throws IOException, ClassNotFoundException {
+<span class="nc" id="L329">        stream.defaultReadObject();</span>
+<span class="nc" id="L330">    }</span>
+
+    public String getSiteURL(HttpServletRequest request) {
+<span class="nc" id="L333">        String siteURL = request.getRequestURL().toString();</span>
+<span class="nc" id="L334">        return siteURL.replace(request.getServletPath(), &quot;&quot;);</span>
+    }
+
+    // &lt;editor-fold defaultstate=&quot;collapsed&quot; desc=&quot;HttpServlet methods. Click on the + sign on the left to edit the code.&quot;&gt;
+    /**
+     * Handles the HTTP &lt;code&gt;GET&lt;/code&gt; method.
+     *
+     * @param request servlet request
+     * @param response servlet response
+     * @throws ServletException if a servlet-specific error occurs
+     * @throws IOException if an I/O error occurs
+     */
+    @Override
+    protected void doGet(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException {
+        try {
+<span class="nc" id="L350">            processRequest(request, response);</span>
+<span class="nc" id="L351">        } catch (NoSuchAlgorithmException | InvalidKeySpecException ex) {</span>
+<span class="nc" id="L352">            Logger.getLogger(LoginController.class.getName()).log(Level.SEVERE, null, ex);</span>
+<span class="nc" id="L353">        }</span>
+<span class="nc" id="L354">    }</span>
+
+    /**
+     * Handles the HTTP &lt;code&gt;POST&lt;/code&gt; method.
+     *
+     * @param request servlet request
+     * @param response servlet response
+     * @throws ServletException if a servlet-specific error occurs
+     * @throws IOException if an I/O error occurs
+     */
+    @Override
+    protected void doPost(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException {
+        try {
+<span class="nc" id="L368">            processRequest(request, response);</span>
+<span class="nc" id="L369">        } catch (NoSuchAlgorithmException | InvalidKeySpecException ex) {</span>
+<span class="nc" id="L370">            Logger.getLogger(LoginController.class.getName()).log(Level.SEVERE, null, ex);</span>
+<span class="nc" id="L371">        }</span>
+<span class="nc" id="L372">    }</span>
+
+    /**
+     * Returns a short description of the servlet.
+     *
+     * @return a String containing servlet description
+     */
+    @Override
+    public String getServletInfo() {
+<span class="nc" id="L381">        return &quot;Short description&quot;;</span>
+    }// &lt;/editor-fold&gt;
+
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.eclemma.org/jacoco">JaCoCo</a> 0.7.5.201505241946</span></div></body></html>

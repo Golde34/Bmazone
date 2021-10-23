@@ -12,7 +12,7 @@ public class CategoryDAO extends BaseDAO{
    
     public static void main(String[] args) {
         CategoryDAO dao = new CategoryDAO();
-        System.out.println(dao.getCategoryByCateId("2").getCategoryName());
+        System.out.println(dao.getTrueCategories());
     }
     public ArrayList<Category> getAllCategories() {
         String sql = "select * from Category WHERE status=1";

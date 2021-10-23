@@ -1,0 +1,178 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../.resources/report.css" type="text/css"/><link rel="shortcut icon" href="../.resources/report.gif" type="image/gif"/><title>ShipCompanyDAO.java</title><link rel="stylesheet" href="../.resources/prettify.css" type="text/css"/><script type="text/javascript" src="../.resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../.sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">JaCoCoverage analysis of project &quot;Bmazon&quot; (powered by JaCoCo from EclEmma)</a> &gt; <a href="index.source.html" class="el_package">model</a> &gt; <span class="el_source">ShipCompanyDAO.java</span></div><h1>ShipCompanyDAO.java</h1><pre class="source lang-java linenums">/*
+ * To change this license header, choose License Headers in Project Properties.
+ * To change this template file, choose Tools | Templates
+ * and open the template in the editor.
+ */
+package model;
+
+import entity.ShipCompany;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
+/**
+ *
+ * @author DELL
+ */
+<span class="nc" id="L20">public class ShipCompanyDAO extends BaseDAO {</span>
+
+<span class="nc" id="L22">    BaseDAO dbConn = new BaseDAO();</span>
+    
+    public int changeStatus(int id, int status) {
+<span class="nc" id="L25">        int n = 0;</span>
+<span class="nc" id="L26">        String sql = &quot;update [ShipCompany] set status = ? where [companyID] = ?&quot;;</span>
+        try {
+<span class="nc" id="L28">            pre = conn.prepareStatement(sql);</span>
+<span class="nc bnc" id="L29" title="All 2 branches missed.">            pre.setInt(1, status == 1 ? 1 : 0);</span>
+<span class="nc" id="L30">            pre.setInt(2, id);</span>
+<span class="nc" id="L31">            n = pre.executeUpdate();</span>
+<span class="nc" id="L32">        } catch (SQLException ex) {</span>
+<span class="nc" id="L33">            Logger.getLogger(ProductDAO.class.getName()).log(Level.SEVERE, null, ex);</span>
+<span class="nc" id="L34">        }</span>
+<span class="nc" id="L35">        return n;</span>
+    }
+    
+    public void deleteShipCompany(String companyID) {
+<span class="nc" id="L39">        String sql = &quot;delete from ShipCompany where [companyID] = ?&quot;;</span>
+        try {
+<span class="nc" id="L41">            pre = conn.prepareStatement(sql);</span>
+<span class="nc" id="L42">            pre.setString(1, companyID);</span>
+<span class="nc" id="L43">            pre.executeUpdate();</span>
+<span class="nc" id="L44">        } catch (SQLException e) {</span>
+<span class="nc" id="L45">        }</span>
+<span class="nc" id="L46">    }</span>
+
+    public boolean checkExistCompanyName(String companyname) {
+<span class="nc" id="L49">        String xSql= &quot;SELECT * FROM [Bmazon].[dbo].[ShipCompany] where companyName like ?&quot;;</span>
+        try {
+<span class="nc" id="L51">            pre = conn.prepareStatement(xSql);</span>
+<span class="nc" id="L52">            pre.setString(1, companyname);</span>
+<span class="nc" id="L53">            rs = pre.executeQuery();</span>
+<span class="nc bnc" id="L54" title="All 2 branches missed.">            if (rs.next()) {</span>
+<span class="nc" id="L55">                return true;</span>
+            }
+<span class="nc" id="L57">        } catch (SQLException ex) {</span>
+<span class="nc" id="L58">            Logger.getLogger(UserDAO.class.getName()).log(Level.SEVERE, null, ex);</span>
+<span class="nc" id="L59">        }</span>
+<span class="nc" id="L60">        return false;</span>
+    }
+
+    public void addShipCompany(ShipCompany sp) {
+<span class="nc" id="L64">        String xSql= &quot;INSERT INTO ShipCompany ([companyName],[unitCost],[commitDate],[status])\n&quot;</span>
+                + &quot;     VALUES (?,?,?,?)&quot;;
+        try {
+<span class="nc" id="L67">            pre = conn.prepareStatement(xSql);</span>
+<span class="nc" id="L68">            pre.setString(1, sp.getCompanyName());</span>
+<span class="nc" id="L69">            pre.setDouble(2, sp.getUnitCost());</span>
+<span class="nc" id="L70">            pre.setInt(3, sp.getCommitDate());</span>
+<span class="nc" id="L71">            pre.setInt(4, sp.getStatus());</span>
+<span class="nc" id="L72">            pre.executeUpdate();</span>
+<span class="nc" id="L73">        } catch (SQLException e) {</span>
+<span class="nc" id="L74">        }</span>
+<span class="nc" id="L75">    }</span>
+
+    public int editShipCompany(ShipCompany sp) {
+<span class="nc" id="L78">        int n = 0;</span>
+<span class="nc" id="L79">        String xSql= &quot;update ShipCompany set [companyName] = ? ,[unitCost] = ? ,[commitDate] = ? ,[status] =? where [companyID] = ?&quot;;</span>
+        try {
+<span class="nc" id="L81">            pre = conn.prepareStatement(xSql);</span>
+<span class="nc" id="L82">            pre.setString(1, sp.getCompanyName());</span>
+<span class="nc" id="L83">            pre.setDouble(2, sp.getUnitCost());</span>
+<span class="nc" id="L84">            pre.setInt(3, sp.getCommitDate());</span>
+<span class="nc" id="L85">            pre.setInt(4, sp.getStatus());</span>
+<span class="nc" id="L86">            pre.setInt(5, sp.getCompanyID());</span>
+<span class="nc" id="L87">            pre.executeUpdate();</span>
+<span class="nc" id="L88">        } catch (SQLException e) {</span>
+<span class="nc" id="L89">        }</span>
+<span class="nc" id="L90">        return n;</span>
+    }
+
+    public ShipCompany getShipCompanyById(int id) {
+<span class="nc" id="L94">        ShipCompany company = new ShipCompany();</span>
+<span class="nc" id="L95">        String xSql= &quot;select * from ShipCompany where companyID = &quot; + id;</span>
+        try {
+<span class="nc" id="L97">            pre = conn.prepareStatement(xSql);</span>
+<span class="nc" id="L98">            rs = pre.executeQuery();</span>
+<span class="nc bnc" id="L99" title="All 2 branches missed.">            if (rs.next()) {</span>
+<span class="nc" id="L100">                company.setCommitDate(rs.getInt(&quot;commitDate&quot;));</span>
+<span class="nc" id="L101">                company.setCompanyName(rs.getString(&quot;companyName&quot;));</span>
+<span class="nc" id="L102">                company.setStatus(rs.getInt(&quot;status&quot;));</span>
+<span class="nc" id="L103">                company.setUnitCost(rs.getDouble(&quot;unitCost&quot;));</span>
+<span class="nc" id="L104">                company.setCompanyID(rs.getInt(&quot;companyID&quot;));</span>
+            }
+<span class="nc" id="L106">        } catch (SQLException e) {</span>
+<span class="nc" id="L107">        }</span>
+<span class="nc" id="L108">        return company;</span>
+    }
+
+    public int getPageNumber(String search) {
+<span class="nc" id="L112">        int num = 0;</span>
+<span class="nc" id="L113">        String xSql= &quot;SELECT COUNT(*) FROM [Bmazon].[dbo].[ShipCompany] where companyName like '%&quot; + search + &quot;%' or commitDate like '%&quot; + search + &quot;%' or unitCost like '%&quot; + search + &quot;%'&quot;;</span>
+<span class="nc" id="L114">        ResultSet rs = dbConn.getData(xSql);</span>
+        try {
+<span class="nc bnc" id="L116" title="All 2 branches missed.">            if (rs.next()) {</span>
+<span class="nc" id="L117">                num = rs.getInt(1);</span>
+            }
+<span class="nc" id="L119">        } catch (SQLException ex) {</span>
+<span class="nc" id="L120">            Logger.getLogger(UserDAO.class.getName()).log(Level.SEVERE, null, ex);</span>
+<span class="nc" id="L121">        }</span>
+<span class="nc" id="L122">        return num;</span>
+    }
+    public static void main(String[] args) {
+<span class="nc" id="L125">        ShipCompanyDAO dao = new ShipCompanyDAO();</span>
+<span class="nc" id="L126">        dao.changeStatus(1, 1);</span>
+<span class="nc" id="L127">    }</span>
+    public List&lt;ShipCompany&gt; getAllPagingShipCompany(int index, int numOfRow, String search) {
+<span class="nc" id="L129">        List&lt;ShipCompany&gt; list = new ArrayList&lt;&gt;();</span>
+<span class="nc" id="L130">        String xSql= &quot;declare @PageNo INT = ? \n&quot;</span>
+                + &quot;declare @PageSize INT= ? \n&quot;
+                + &quot;SELECT * from(\n&quot;
+                + &quot;SELECT *,\n&quot;
+                + &quot;ROW_NUMBER() over (order by companyID) as RowNum\n&quot;
+                + &quot;  FROM [Bmazon].[dbo].[ShipCompany] where companyName like '%&quot; + search + &quot;%' or commitDate like '%&quot; + search + &quot;%' or unitCost like '%&quot; + search + &quot;%')T\n&quot;
+                + &quot;where T.RowNum between ((@PageNo-1)*@PageSize)+1 and (@PageNo*@PageSize)&quot;;
+        try {
+<span class="nc" id="L138">            pre = conn.prepareStatement(xSql);</span>
+<span class="nc" id="L139">            pre.setInt(1, index);</span>
+<span class="nc" id="L140">            pre.setInt(2, numOfRow);</span>
+//            pre.setString(3, search);
+//            pre.setString(4, search);
+//            pre.setString(5, search);
+<span class="nc" id="L144">            rs = pre.executeQuery();</span>
+<span class="nc bnc" id="L145" title="All 2 branches missed.">            while (rs.next()) {</span>
+<span class="nc" id="L146">                list.add(new ShipCompany(</span>
+<span class="nc" id="L147">                        rs.getInt(1),</span>
+<span class="nc" id="L148">                        rs.getString(2),</span>
+<span class="nc" id="L149">                        rs.getDouble(3),</span>
+<span class="nc" id="L150">                        rs.getInt(4),</span>
+<span class="nc" id="L151">                        rs.getInt(5)));</span>
+            }
+<span class="nc" id="L153">        } catch (SQLException ex) {</span>
+<span class="nc" id="L154">            Logger.getLogger(UserDAO.class.getName()).log(Level.SEVERE, null, ex);</span>
+<span class="nc" id="L155">        }</span>
+<span class="nc" id="L156">        return list;</span>
+    }
+
+    public List&lt;ShipCompany&gt; getAllShipCompany() {
+<span class="nc" id="L160">        List&lt;ShipCompany&gt; list = new ArrayList&lt;&gt;();</span>
+<span class="nc" id="L161">        String xSql= &quot;select * from ShipCompany&quot;;</span>
+        try {
+<span class="nc" id="L163">            pre = conn.prepareStatement(xSql);</span>
+<span class="nc" id="L164">            rs = pre.executeQuery();</span>
+<span class="nc bnc" id="L165" title="All 2 branches missed.">            while (rs.next()) {</span>
+<span class="nc" id="L166">                list.add(new ShipCompany(</span>
+<span class="nc" id="L167">                        rs.getInt(1),</span>
+<span class="nc" id="L168">                        rs.getString(2),</span>
+<span class="nc" id="L169">                        rs.getDouble(3),</span>
+<span class="nc" id="L170">                        rs.getInt(4),</span>
+<span class="nc" id="L171">                        rs.getInt(5)));</span>
+            }
+<span class="nc" id="L173">        } catch (SQLException e) {</span>
+<span class="nc" id="L174">        }</span>
+<span class="nc" id="L175">        return list;</span>
+    }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.eclemma.org/jacoco">JaCoCo</a> 0.7.5.201505241946</span></div></body></html>

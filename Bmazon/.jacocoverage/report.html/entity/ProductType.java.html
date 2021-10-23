@@ -1,0 +1,115 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../.resources/report.css" type="text/css"/><link rel="shortcut icon" href="../.resources/report.gif" type="image/gif"/><title>ProductType.java</title><link rel="stylesheet" href="../.resources/prettify.css" type="text/css"/><script type="text/javascript" src="../.resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../.sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">JaCoCoverage analysis of project &quot;Bmazon&quot; (powered by JaCoCo from EclEmma)</a> &gt; <a href="index.source.html" class="el_package">entity</a> &gt; <span class="el_source">ProductType.java</span></div><h1>ProductType.java</h1><pre class="source lang-java linenums">/*
+ * To change this license header, choose License Headers in Project Properties.
+ * To change this template file, choose Tools | Templates
+ * and open the template in the editor.
+ */
+package entity;
+
+import java.io.Serializable;
+
+/**
+ *
+ * @author Admin
+ */
+public class ProductType implements Serializable {
+    private static final long serialVersionUID = 1;
+    private String productTypeId;
+    private int productID;
+    private String size;
+    private String color;
+    private String price;
+    private int wareHouseID;
+    private int quantity;
+    private int status;
+
+<span class="nc" id="L25">    public ProductType() {</span>
+<span class="nc" id="L26">    }</span>
+
+<span class="nc" id="L28">    public ProductType(String productTypeId, int productID, String size, String color, String price, int wareHouseID, int quantity, int status) {</span>
+<span class="nc" id="L29">        this.productTypeId = productTypeId;</span>
+<span class="nc" id="L30">        this.productID = productID;</span>
+<span class="nc" id="L31">        this.size = size;</span>
+<span class="nc" id="L32">        this.color = color;</span>
+<span class="nc" id="L33">        this.price = price;</span>
+<span class="nc" id="L34">        this.wareHouseID = wareHouseID;</span>
+<span class="nc" id="L35">        this.quantity = quantity;</span>
+<span class="nc" id="L36">        this.status = status;</span>
+<span class="nc" id="L37">    }</span>
+
+<span class="nc" id="L39">    public ProductType(String productTypeId, int productID, String size, String color, String price, int wareHouseID, int quantity) {</span>
+<span class="nc" id="L40">        this.productTypeId = productTypeId;</span>
+<span class="nc" id="L41">        this.productID = productID;</span>
+<span class="nc" id="L42">        this.size = size;</span>
+<span class="nc" id="L43">        this.color = color;</span>
+<span class="nc" id="L44">        this.price = price;</span>
+<span class="nc" id="L45">        this.wareHouseID = wareHouseID;</span>
+<span class="nc" id="L46">        this.quantity = quantity;</span>
+<span class="nc" id="L47">    }</span>
+
+    public String getProductTypeId() {
+<span class="nc" id="L50">        return productTypeId;</span>
+    }
+
+    public void setProductTypeId(String productTypeId) {
+<span class="nc" id="L54">        this.productTypeId = productTypeId;</span>
+<span class="nc" id="L55">    }</span>
+
+    public int getProductID() {
+<span class="nc" id="L58">        return productID;</span>
+    }
+
+    public void setProductID(int productID) {
+<span class="nc" id="L62">        this.productID = productID;</span>
+<span class="nc" id="L63">    }</span>
+
+    public String getSize() {
+<span class="nc" id="L66">        return size;</span>
+    }
+
+    public void setSize(String size) {
+<span class="nc" id="L70">        this.size = size;</span>
+<span class="nc" id="L71">    }</span>
+
+    public String getColor() {
+<span class="nc" id="L74">        return color;</span>
+    }
+
+    public void setColor(String color) {
+<span class="nc" id="L78">        this.color = color;</span>
+<span class="nc" id="L79">    }</span>
+
+    public String getPrice() {
+<span class="nc" id="L82">        return price;</span>
+    }
+
+    public void setPrice(String price) {
+<span class="nc" id="L86">        this.price = price;</span>
+<span class="nc" id="L87">    }</span>
+
+   
+
+    public int getWareHouseID() {
+<span class="nc" id="L92">        return wareHouseID;</span>
+    }
+
+    public void setWareHouseID(int wareHouseID) {
+<span class="nc" id="L96">        this.wareHouseID = wareHouseID;</span>
+<span class="nc" id="L97">    }</span>
+
+    public int getQuantity() {
+<span class="nc" id="L100">        return quantity;</span>
+    }
+
+    public void setQuantity(int quantity) {
+<span class="nc" id="L104">        this.quantity = quantity;</span>
+<span class="nc" id="L105">    }</span>
+
+    public int getStatus() {
+<span class="nc" id="L108">        return status;</span>
+    }
+
+    public void setStatus(int status) {
+<span class="nc" id="L112">        this.status = status;</span>
+<span class="nc" id="L113">    }</span>
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.eclemma.org/jacoco">JaCoCo</a> 0.7.5.201505241946</span></div></body></html>

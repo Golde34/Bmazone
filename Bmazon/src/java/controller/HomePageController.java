@@ -103,10 +103,10 @@ public class HomePageController extends HttpServlet {
     }
 
     public void serviceList(HttpServletRequest request, HttpServletResponse response) {
-        int count = proDAO.totalProduct();       
-        int size=24;
-        int total=count/size;
-        int page,end;
+        int count = proDAO.totalProduct();
+        int size = 24;
+        int total = count / size;
+        int page, end;
         String pageString = request.getParameter("page");
         if (pageString == null) {
             page = 1;
@@ -269,9 +269,67 @@ public class HomePageController extends HttpServlet {
 
     public void serviceFilter(HttpServletRequest request, HttpServletResponse response) throws IOException {
 
-        PrintWriter out = response.getWriter();
-        out.print("thinh dep trai");
-
+        String str = request.getParameter("search").trim();
+        int count = proDAO.totalSearchProduct(str);
+        String[] idcate = request.getParameterValues("cid");
+        String address;
+        int size = 20;
+        int total = count / size;
+        int page, end;
+        String pageString = request.getParameter("page");
+        if (pageString == null) {
+            page = 1;
+        } else {
+            page = Integer.parseInt(pageString);
+        }
+        int begin = page;
+        String previous = "  <li><a class='' href=" + "HomePageControllerMap?service=search&search=" + str + "&page=" + (page - 1) + ">P</a></li>";
+        String next = "  <li><a class='' href=" + "HomePageControllerMap?service=search&search=" + str + "&page=" + (page + 1) + ">N</a></li>";
+        if (count % size != 0) {
+            total += 1;
+        }
+        if (page <= total - 2) {
+            end = page + 2;
+        } else {
+            end = total;
+            begin = total - 2;
+        }
+        if (page == 1) {
+            request.setAttribute("next", next);
+        } else if (page == total) {
+            request.setAttribute("previous", previous);
+        } else {
+            request.setAttribute("next", next);
+            request.setAttribute("previous", previous);
+        }
+        String s="And (";
+        int j=0;
+        String [] catef=new String[7];
+        for (int i = 0; i < idcate.length; i++) {
+            if (idcate[i]!=null) {
+                catef[j]=idcate[i];
+                j++;
+            }
+        }
+        for (int i = 0; i < j; i++) {
+            if (i<j-1) {
+               s+="pc.categoryId="+catef[i]+" OR "; 
+            }else {
+                s+="pc.categoryID="+catef[i]+" "; 
+            }
+            
+        }
+        s+=")";
+        List<Product> ListP = proDAO.getProductByFilter(page, "", s);
+        address = "<a>" + " Results for " + str + "  </a> <span class=" + "divider" + ">&#47;</span>";
+        request.setAttribute("address", s);
+        request.setAttribute("end", end);
+        request.setAttribute("begin", begin);
+        request.setAttribute("listP", ListP);
+        request.setAttribute("search", str);
+        request.setAttribute("count", count);
+        request.setAttribute("idcate", idcate);
+        request.setAttribute("href", ("&search="+""+"&s="+s));
         sendDispatcher(request, response, "productList/list.jsp");
 
     }

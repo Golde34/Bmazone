@@ -1,0 +1,1703 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../.resources/report.css" type="text/css"/><link rel="shortcut icon" href="../.resources/report.gif" type="image/gif"/><title>AdminController.java</title><link rel="stylesheet" href="../.resources/prettify.css" type="text/css"/><script type="text/javascript" src="../.resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../.sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">JaCoCoverage analysis of project &quot;Bmazon&quot; (powered by JaCoCo from EclEmma)</a> &gt; <a href="index.source.html" class="el_package">controller</a> &gt; <span class="el_source">AdminController.java</span></div><h1>AdminController.java</h1><pre class="source lang-java linenums">/*
+ * To change this license header, choose License Headers in Project Properties.
+ * To change this template file, choose Tools | Templates
+ * and open the template in the editor.
+ */
+package controller;
+
+import entity.*;
+import java.io.File;
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
+import java.io.PrintWriter;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.sql.Date;
+import java.text.DecimalFormat;
+import java.text.NumberFormat;
+import java.text.ParseException;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Locale;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.servlet.RequestDispatcher;
+import javax.servlet.ServletContext;
+import javax.servlet.ServletException;
+import javax.servlet.http.HttpServlet;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import model.*;
+import org.apache.commons.fileupload.FileItem;
+import org.apache.commons.fileupload.FileUploadException;
+import org.apache.commons.fileupload.disk.DiskFileItemFactory;
+import org.apache.commons.fileupload.servlet.ServletFileUpload;
+
+/**
+ *
+ * @author Admin
+ */
+<span class="nc" id="L43">public class AdminController extends HttpServlet {</span>
+
+    /**
+     * Processes requests for both HTTP &lt;code&gt;GET&lt;/code&gt; and &lt;code&gt;POST&lt;/code&gt;
+     * methods.
+     *
+     * @param request servlet request
+     * @param response servlet response
+     * @throws ServletException if a servlet-specific error occurs
+     * @throws IOException if an I/O error occurs
+     */
+<span class="nc" id="L54">    ProductCategoryDAO daopc = new ProductCategoryDAO();</span>
+<span class="nc" id="L55">    ProductGenreDAO daopg = new ProductGenreDAO();</span>
+<span class="nc" id="L56">    SellerDAO daoseller = new SellerDAO();</span>
+<span class="nc" id="L57">    GalleryDAO daogallery = new GalleryDAO();</span>
+<span class="nc" id="L58">    ShipCompanyDAO daocompany = new ShipCompanyDAO();</span>
+<span class="nc" id="L59">    ProductDAO daoproduct = new ProductDAO();</span>
+<span class="nc" id="L60">    ProductTypeDAO daoproducttype = new ProductTypeDAO();</span>
+<span class="nc" id="L61">    CategoryDAO daocategory = new CategoryDAO();</span>
+<span class="nc" id="L62">    GenreDAO daogenre = new GenreDAO();</span>
+<span class="nc" id="L63">    UserDAO daouser = new UserDAO();</span>
+<span class="nc" id="L64">    WareHouseDAO daowarehouse = new WareHouseDAO();</span>
+<span class="nc" id="L65">    RoleDAO daorole = new RoleDAO();</span>
+    private static final long serialVersionUID = 1;
+
+    protected void processRequest(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException, ParseException, FileUploadException {
+<span class="nc" id="L70">        response.setContentType(&quot;text/html;charset=UTF-8&quot;);</span>
+<span class="nc" id="L71">        try (PrintWriter out = response.getWriter()) {</span>
+<span class="nc" id="L72">            String service = request.getParameter(&quot;service&quot;);</span>
+
+<span class="nc bnc" id="L74" title="All 2 branches missed.">            if (service == null) {</span>
+<span class="nc" id="L75">                service = &quot;AdminDashBoard&quot;;</span>
+            }
+
+            //Admin Dashboard
+<span class="nc bnc" id="L79" title="All 2 branches missed.">            if (service.equalsIgnoreCase(&quot;AdminDashBoard&quot;)) {</span>
+<span class="nc" id="L80">                serviceAdminDashboard(service, request, response);</span>
+            }
+
+            // &lt;editor-fold defaultstate=&quot;collapsed&quot; desc=&quot;User service. Click on the + sign on the left to edit the code.&quot;&gt;
+            //User Management
+<span class="nc bnc" id="L85" title="All 2 branches missed.">            if (service.equalsIgnoreCase(&quot;usermanagement&quot;)) {</span>
+<span class="nc" id="L86">                serviceUserManagement(service, request, response);</span>
+            }
+            //User detail to add and update
+<span class="nc bnc" id="L89" title="All 4 branches missed.">            if (service.equalsIgnoreCase(&quot;updateuserdetail&quot;) || service.equalsIgnoreCase(&quot;adduserdetail&quot;)) {</span>
+<span class="nc" id="L90">                serviceUserDetail(service, request, response);</span>
+            }
+            //Paging User
+<span class="nc bnc" id="L93" title="All 2 branches missed.">            if (service.equalsIgnoreCase(&quot;paginguser&quot;)) {</span>
+<span class="nc" id="L94">                servicePagingUser(service, request, response);</span>
+            }
+            //Show Page User
+<span class="nc bnc" id="L97" title="All 2 branches missed.">            if (service.equalsIgnoreCase(&quot;showpageuser&quot;)) {</span>
+<span class="nc" id="L98">                serviceShowPageUser(request, response);</span>
+            }
+            //Add user
+<span class="nc bnc" id="L101" title="All 2 branches missed.">            if (service.equalsIgnoreCase(&quot;adduser&quot;)) {</span>
+<span class="nc" id="L102">                serviceAddUser(service, request, response);</span>
+            }
+            //Update User 
+<span class="nc bnc" id="L105" title="All 2 branches missed.">            if (service.equalsIgnoreCase(&quot;updateuser&quot;)) {</span>
+<span class="nc" id="L106">                serviceUpdateUser(service, request, response);</span>
+            }
+            //Delete user
+<span class="nc bnc" id="L109" title="All 2 branches missed.">            if (service.equalsIgnoreCase(&quot;deleteuser&quot;)) {</span>
+<span class="nc" id="L110">                serviceDeleteUser(service, request, response);</span>
+            }
+            //Active user
+<span class="nc bnc" id="L113" title="All 2 branches missed.">            if (service.equalsIgnoreCase(&quot;activeuser&quot;)) {</span>
+<span class="nc" id="L114">                serviceActiveUser(service, request, response);</span>
+            }
+            //&lt;/editor-fold&gt;
+
+            // &lt;editor-fold defaultstate=&quot;collapsed&quot; desc=&quot;Product service. Click on the + sign on the left to edit the code.&quot;&gt;
+            //Product Manage
+<span class="nc bnc" id="L120" title="All 2 branches missed.">            if (service.equalsIgnoreCase(&quot;productmanagement&quot;)) {</span>
+<span class="nc" id="L121">                serviceProductManagement(service, request, response);</span>
+            }
+            //Product detail to add and update
+<span class="nc bnc" id="L124" title="All 2 branches missed.">            if (service.equalsIgnoreCase(&quot;productdetail&quot;)) {</span>
+<span class="nc" id="L125">                serviceProductDetail(service, request, response);</span>
+            }
+            //Paging Product
+<span class="nc bnc" id="L128" title="All 2 branches missed.">            if (service.equalsIgnoreCase(&quot;pagingproduct&quot;)) {</span>
+<span class="nc" id="L129">                servicePagingProduct(service, request, response);</span>
+            }
+            //Show Page Product
+<span class="nc bnc" id="L132" title="All 2 branches missed.">            if (service.equalsIgnoreCase(&quot;showpageproduct&quot;)) {</span>
+<span class="nc" id="L133">                serviceShowPageProduct(request, response);</span>
+            }
+            //Add Product
+<span class="nc bnc" id="L136" title="All 2 branches missed.">            if (service.equalsIgnoreCase(&quot;addproduct&quot;)) {</span>
+<span class="nc" id="L137">                serviceAddProduct(service, request, response);</span>
+            }
+            //Update Product 
+<span class="nc bnc" id="L140" title="All 2 branches missed.">            if (service.equalsIgnoreCase(&quot;updateproduct&quot;)) {</span>
+<span class="nc" id="L141">                serviceUpdateProduct(service, request, response);</span>
+            }
+            //Delete Product
+<span class="nc bnc" id="L144" title="All 2 branches missed.">            if (service.equalsIgnoreCase(&quot;deleteproduct&quot;)) {</span>
+<span class="nc" id="L145">                serviceDeleteProduct(service, request, response);</span>
+            }
+            //Active Product
+<span class="nc bnc" id="L148" title="All 2 branches missed.">            if (service.equalsIgnoreCase(&quot;activeproduct&quot;)) {</span>
+<span class="nc" id="L149">                serviceActiveProduct(service, request, response);</span>
+            }
+            //Delete Product Type
+<span class="nc bnc" id="L152" title="All 2 branches missed.">            if (service.equalsIgnoreCase(&quot;deleteproducttype&quot;)) {</span>
+<span class="nc" id="L153">                serviceDeleteProductType(service, request, response);</span>
+            }
+            //Active Product Type
+<span class="nc bnc" id="L156" title="All 2 branches missed.">            if (service.equalsIgnoreCase(&quot;activeproducttype&quot;)) {</span>
+<span class="nc" id="L157">                serviceActiveProductType(service, request, response);</span>
+            }
+            //&lt;/editor-fold&gt;
+
+            // &lt;editor-fold defaultstate=&quot;collapsed&quot; desc=&quot;Ship Company service. Click on the + sign on the left to edit the code.&quot;&gt;
+            //Ship Company Manage
+<span class="nc bnc" id="L163" title="All 2 branches missed.">            if (service.equalsIgnoreCase(&quot;companymanagement&quot;)) {</span>
+<span class="nc" id="L164">                serviceCompanyManagement(service, request, response);</span>
+            }
+            //Paging User
+<span class="nc bnc" id="L167" title="All 2 branches missed.">            if (service.equalsIgnoreCase(&quot;pagingcompany&quot;)) {</span>
+<span class="nc" id="L168">                servicePagingCompany(service, request, response);</span>
+            }
+            //Show Page User
+<span class="nc bnc" id="L171" title="All 2 branches missed.">            if (service.equalsIgnoreCase(&quot;showpagecompany&quot;)) {</span>
+<span class="nc" id="L172">                serviceShowPageCompany(request, response);</span>
+            }
+            //Ship Company detail to add and update
+<span class="nc bnc" id="L175" title="All 4 branches missed.">            if (service.equalsIgnoreCase(&quot;updatecompanydetail&quot;) || service.equalsIgnoreCase(&quot;addcompanydetail&quot;)) {</span>
+<span class="nc" id="L176">                serviceCompanyDetail(service, request, response);</span>
+            }
+
+            //Add Ship Company
+<span class="nc bnc" id="L180" title="All 2 branches missed.">            if (service.equalsIgnoreCase(&quot;addcompany&quot;)) {</span>
+<span class="nc" id="L181">                serviceAddCompany(service, request, response);</span>
+            }
+            //Update Ship Company 
+<span class="nc bnc" id="L184" title="All 2 branches missed.">            if (service.equalsIgnoreCase(&quot;updatecompany&quot;)) {</span>
+<span class="nc" id="L185">                serviceUpdateCompany(service, request, response);</span>
+            }
+            //Delete Ship Company
+<span class="nc bnc" id="L188" title="All 2 branches missed.">            if (service.equalsIgnoreCase(&quot;deletecompany&quot;)) {</span>
+<span class="nc" id="L189">                serviceDeleteCompany(service, request, response);</span>
+            }
+            //Delete Ship Company
+<span class="nc bnc" id="L192" title="All 2 branches missed.">            if (service.equalsIgnoreCase(&quot;activecompany&quot;)) {</span>
+<span class="nc" id="L193">                serviceActiveCompany(service, request, response);</span>
+            }
+            //&lt;/editor-fold&gt;
+
+            // &lt;editor-fold defaultstate=&quot;collapsed&quot; desc=&quot;Gallery service. Click on the + sign on the left to edit the code.&quot;&gt;
+            //Gallery Manage
+<span class="nc bnc" id="L199" title="All 2 branches missed.">            if (service.equalsIgnoreCase(&quot;gallerymanagement&quot;)) {</span>
+<span class="nc" id="L200">                serviceGalleryManagement(service, request, response);</span>
+            }
+            //Paging Gallery
+<span class="nc bnc" id="L203" title="All 2 branches missed.">            if (service.equalsIgnoreCase(&quot;pagingGallery&quot;)) {</span>
+<span class="nc" id="L204">                servicePagingGallery(service, request, response);</span>
+            }
+            //Show Page Gallery
+<span class="nc bnc" id="L207" title="All 2 branches missed.">            if (service.equalsIgnoreCase(&quot;showpageGallery&quot;)) {</span>
+<span class="nc" id="L208">                serviceShowPageGallery(request, response);</span>
+            }
+            //Gallery detail to add and update
+<span class="nc bnc" id="L211" title="All 2 branches missed.">            if (service.equalsIgnoreCase(&quot;gallerydetail&quot;)) {</span>
+<span class="nc" id="L212">                serviceGalleryDetail(service, request, response);</span>
+            }
+            //Add Gallery
+<span class="nc bnc" id="L215" title="All 2 branches missed.">            if (service.equalsIgnoreCase(&quot;addproduct&quot;)) {</span>
+<span class="nc" id="L216">                serviceAddGallery(service, request, response);</span>
+            }
+            //Update Gallery 
+<span class="nc bnc" id="L219" title="All 2 branches missed.">            if (service.equalsIgnoreCase(&quot;updategallery&quot;)) {</span>
+<span class="nc" id="L220">                serviceUpdateGallery(service, request, response);</span>
+            }
+            //Delete Gallery
+<span class="nc bnc" id="L223" title="All 2 branches missed.">            if (service.equalsIgnoreCase(&quot;deletegallery&quot;)) {</span>
+<span class="nc" id="L224">                serviceDeleteGallery(service, request, response);</span>
+            }
+            //Active Gallery
+<span class="nc bnc" id="L227" title="All 2 branches missed.">            if (service.equalsIgnoreCase(&quot;activegallery&quot;)) {</span>
+<span class="nc" id="L228">                serviceActiveGallery(service, request, response);</span>
+            }
+            //&lt;/editor-fold&gt;
+
+            //User Authorization
+<span class="nc bnc" id="L233" title="All 2 branches missed.">            if (service.equalsIgnoreCase(&quot;userAuthorization&quot;)) {</span>
+<span class="nc" id="L234">                serviceUserAuthorization(service, request, response);</span>
+            }
+            //Delete user
+<span class="nc bnc" id="L237" title="All 2 branches missed.">            if (service.equalsIgnoreCase(&quot;deleteuserAuthor&quot;)) {</span>
+<span class="nc" id="L238">                serviceDeleteUserAuthor(service, request, response);</span>
+            }
+            //Active user
+<span class="nc bnc" id="L241" title="All 2 branches missed.">            if (service.equalsIgnoreCase(&quot;activeuserAuthor&quot;)) {</span>
+<span class="nc" id="L242">                serviceActiveUserAuthor(service, request, response);</span>
+            }
+
+            // &lt;editor-fold defaultstate=&quot;collapsed&quot; desc=&quot;Seller Response. Click on the + sign on the left to edit the code.&quot;&gt;
+            //SellerResposne
+<span class="nc bnc" id="L247" title="All 2 branches missed.">            if (service.equalsIgnoreCase(&quot;sellerResponse&quot;)) {</span>
+<span class="nc" id="L248">                serviceSellerResponse(service, request, response);</span>
+            }
+            //Accept Seller Request
+<span class="nc bnc" id="L251" title="All 2 branches missed.">            if (service.equalsIgnoreCase(&quot;acceptSeller&quot;)) {</span>
+<span class="nc" id="L252">                serviceAcceptSellerRequest(service, request, response);</span>
+            }
+            //Deny Seller Request
+<span class="nc bnc" id="L255" title="All 2 branches missed.">            if (service.equalsIgnoreCase(&quot;denySeller&quot;)) {</span>
+<span class="nc" id="L256">                serviceDenySellerRequest(service, request, response);</span>
+            }
+            //&lt;/editor-fold&gt;
+            
+            // &lt;editor-fold defaultstate=&quot;collapsed&quot; desc=&quot;Role serive. Click on the + sign on the left to edit the code.&quot;&gt;
+            //Role Display
+<span class="nc bnc" id="L262" title="All 2 branches missed.">            if (service.equalsIgnoreCase(&quot;roleDisplay&quot;)) {</span>
+<span class="nc" id="L263">                serviceRoleManagement(service, request, response);</span>
+            }
+            //Role Detail
+<span class="nc bnc" id="L266" title="All 4 branches missed.">            if (service.equalsIgnoreCase(&quot;updateRoleDetail&quot;) || service.equalsIgnoreCase(&quot;addRoleDetail&quot;)) {</span>
+<span class="nc" id="L267">                serviceRoleDetail(service, request, response);</span>
+            }
+            //Add role
+<span class="nc bnc" id="L270" title="All 2 branches missed.">            if (service.equalsIgnoreCase(&quot;addRole&quot;)) {</span>
+<span class="nc" id="L271">                serviceAddRole(service, request, response);</span>
+            }
+            //Update role
+<span class="nc bnc" id="L274" title="All 2 branches missed.">            if (service.equalsIgnoreCase(&quot;updateRole&quot;)) {</span>
+<span class="nc" id="L275">                serviceUpdateRole(service, request, response);</span>
+            }
+            //Delete role
+<span class="nc bnc" id="L278" title="All 2 branches missed.">            if (service.equalsIgnoreCase(&quot;deleteRole&quot;)) {</span>
+<span class="nc" id="L279">                serviceDeleteRole(service, request, response);</span>
+            }
+            //Search role
+<span class="nc bnc" id="L282" title="All 2 branches missed.">            if (service.equalsIgnoreCase(&quot;searchRole&quot;)) {</span>
+<span class="nc" id="L283">                serviceSearchRole(service, request, response);</span>
+            }
+            //&lt;/editor-fold&gt;
+<span class="nc bnc" id="L286" title="All 8 branches missed.">        }</span>
+<span class="nc" id="L287">    }</span>
+
+    public void serviceAdminDashboard(String service, HttpServletRequest request, HttpServletResponse response) {
+<span class="nc" id="L290">        request.setAttribute(&quot;service&quot;, service);</span>
+<span class="nc" id="L291">        ArrayList&lt;Product&gt; listProduct = daoproduct.getAllProduct();</span>
+<span class="nc" id="L292">        request.setAttribute(&quot;listProduct&quot;, listProduct);</span>
+<span class="nc" id="L293">        ArrayList&lt;User&gt; listUser = daouser.getAllUser();</span>
+<span class="nc" id="L294">        request.setAttribute((&quot;listUser&quot;), listUser);</span>
+<span class="nc" id="L295">        sendDispatcher(request, response, &quot;admin/admin.jsp&quot;);</span>
+<span class="nc" id="L296">    }</span>
+
+    // &lt;editor-fold defaultstate=&quot;collapsed&quot; desc=&quot;User methods. Click on the + sign on the left to edit the code.&quot;&gt;
+    public void serviceUserManagement(String service, HttpServletRequest request, HttpServletResponse response) {
+<span class="nc" id="L300">        ArrayList&lt;User&gt; listPaging = daouser.getAllPagingUser(1, 5, &quot;&quot;);</span>
+<span class="nc" id="L301">        ArrayList&lt;User&gt; listUser = daouser.getAllUser();</span>
+<span class="nc" id="L302">        int totalPage = listUser.size() / 5;</span>
+<span class="nc bnc" id="L303" title="All 2 branches missed.">        if (listUser.size() != totalPage * 5) {</span>
+<span class="nc" id="L304">            totalPage += 1;</span>
+        }
+<span class="nc" id="L306">        request.setAttribute(&quot;index&quot;, 1);</span>
+<span class="nc" id="L307">        request.setAttribute(&quot;totalPage&quot;, totalPage);</span>
+<span class="nc" id="L308">        request.setAttribute(&quot;listUser&quot;, listPaging);</span>
+<span class="nc" id="L309">        request.setAttribute(&quot;service&quot;, service);</span>
+<span class="nc" id="L310">        sendDispatcher(request, response, &quot;admin/usermanagement.jsp&quot;);</span>
+<span class="nc" id="L311">    }</span>
+
+    public void serviceUserDetail(String service, HttpServletRequest request, HttpServletResponse response) {
+<span class="nc" id="L314">        request.setAttribute(&quot;service&quot;, service);</span>
+<span class="nc bnc" id="L315" title="All 2 branches missed.">        if (service.equalsIgnoreCase(&quot;adduserdetail&quot;)) {</span>
+<span class="nc" id="L316">            sendDispatcher(request, response, &quot;admin/userdetail.jsp&quot;);</span>
+<span class="nc" id="L317">            return;</span>
+        }
+<span class="nc" id="L319">        String id = request.getParameter(&quot;userid&quot;);</span>
+<span class="nc" id="L320">        User user = daouser.getUserById(id);</span>
+<span class="nc" id="L321">        request.setAttribute(&quot;user&quot;, user);</span>
+<span class="nc" id="L322">        request.setAttribute(&quot;service&quot;, service);</span>
+<span class="nc" id="L323">        sendDispatcher(request, response, &quot;admin/userdetail.jsp&quot;);</span>
+<span class="nc" id="L324">    }</span>
+
+    public void servicePagingUser(String service, HttpServletRequest request, HttpServletResponse response) throws IOException {
+<span class="nc" id="L327">        PrintWriter pr = response.getWriter();</span>
+<span class="nc" id="L328">        request.setAttribute(&quot;service&quot;, service);</span>
+<span class="nc" id="L329">        int index = 1, numOfRow = 5;</span>
+<span class="nc" id="L330">        String search = request.getParameter(&quot;search&quot;);</span>
+<span class="nc bnc" id="L331" title="All 2 branches missed.">        if (request.getParameter(&quot;row&quot;) != null) {</span>
+<span class="nc" id="L332">            numOfRow = Integer.parseInt(request.getParameter(&quot;row&quot;));</span>
+        }
+<span class="nc bnc" id="L334" title="All 2 branches missed.">        if (request.getParameter(&quot;index&quot;) != null) {</span>
+<span class="nc" id="L335">            index = Integer.parseInt(request.getParameter(&quot;index&quot;));</span>
+        }
+<span class="nc" id="L337">        ArrayList&lt;User&gt; listPaging = daouser.getAllPagingUser(index, numOfRow, search);</span>
+<span class="nc" id="L338">        request.setAttribute(&quot;index&quot;, index);</span>
+<span class="nc" id="L339">        request.setAttribute(&quot;listUser&quot;, listPaging);</span>
+<span class="nc bnc" id="L340" title="All 2 branches missed.">        for (User user : listPaging) {</span>
+<span class="nc" id="L341">            pr.print(&quot;&lt;tr&gt;&quot;</span>
+<span class="nc" id="L342">                    + &quot;&lt;td&gt;&quot; + user.getUsername() + &quot; &lt;/td&gt;&quot;</span>
+<span class="nc" id="L343">                    + &quot;&lt;td&gt;&quot; + user.getEmail() + &quot;&lt;/td&gt;&quot;</span>
+<span class="nc" id="L344">                    + &quot;&lt;td&gt;&quot; + user.getFullname() + &quot;&lt;/td&gt;&quot;</span>
+<span class="nc" id="L345">                    + &quot;&lt;td&gt;&quot; + user.getPhoneNumber() + &quot;&lt;/td&gt;&quot;</span>
+<span class="nc" id="L346">                    + &quot;&lt;td&gt;&quot; + user.getAddress() + &quot;&lt;/td&gt;&quot;</span>
+<span class="nc" id="L347">                    + &quot;&lt;td&gt;&lt;a href=\&quot;AdminControllerMap?service=updateuserdetail&amp;userid=&quot; + user.getUserId() + &quot;\&quot;&gt;&lt;button class=\&quot;btn btn-primary\&quot;&gt;Edit&lt;/button&gt;&lt;/a&gt;&quot;</span>
+                    + &quot;&lt;/td&gt;&quot;
+                    + &quot;&lt;td&gt;&quot;);
+<span class="nc bnc" id="L350" title="All 2 branches missed.">            if (user.getStatus() == 1) {</span>
+<span class="nc" id="L351">                pr.print(&quot;&lt;a href=\&quot;AdminControllerMap?service=deleteuser&amp;userid=&quot; + user.getUserId() + &quot;\&quot; onclick=\&quot;return confirm('Are you sure?');\&quot;&gt;&lt;button class=\&quot;btn btn-primary\&quot;&gt;Deactive&lt;/button&gt;&lt;/a&gt;&quot;);</span>
+            } else {
+<span class="nc" id="L353">                pr.print(&quot;&lt;a href=\&quot;AdminControllerMap?service=activeuser&amp;userid=&quot; + user.getUserId() + &quot;\&quot; onclick=\&quot;return confirm('Are you sure?');\&quot;&gt;&lt;button class=\&quot;btn btn-primary\&quot;&gt;Active&lt;/button&gt;&lt;/a&gt;&quot;);</span>
+            }
+<span class="nc" id="L355">            pr.print(&quot;&lt;/td&gt;&quot;</span>
+                    + &quot;&lt;/tr&gt;&quot;
+            );
+<span class="nc" id="L358">        }</span>
+<span class="nc bnc" id="L359" title="All 2 branches missed.">        if (request.getParameter(&quot;row&quot;) == null) {</span>
+<span class="nc" id="L360">            sendDispatcher(request, response, &quot;admin/usermanagement.jsp&quot;);</span>
+        }
+<span class="nc" id="L362">    }</span>
+
+    public void serviceShowPageUser(HttpServletRequest request, HttpServletResponse response) throws IOException {
+<span class="nc" id="L365">        PrintWriter pr = response.getWriter();</span>
+<span class="nc" id="L366">        int index = 1, numOfRow = 5;</span>
+<span class="nc" id="L367">        String search = request.getParameter(&quot;search&quot;);</span>
+<span class="nc bnc" id="L368" title="All 2 branches missed.">        if (request.getParameter(&quot;index&quot;) != null) {</span>
+<span class="nc" id="L369">            index = Integer.parseInt(request.getParameter(&quot;index&quot;));</span>
+        }
+<span class="nc bnc" id="L371" title="All 2 branches missed.">        if (request.getParameter(&quot;row&quot;) != null) {</span>
+<span class="nc" id="L372">            numOfRow = Integer.parseInt(request.getParameter(&quot;row&quot;));</span>
+        }
+<span class="nc" id="L374">        int totalResult = daouser.getPageNumber(search);</span>
+<span class="nc" id="L375">        int totalPage = totalResult / numOfRow;</span>
+<span class="nc bnc" id="L376" title="All 2 branches missed.">        if (totalResult != numOfRow * totalPage) {</span>
+<span class="nc" id="L377">            totalPage += 1;</span>
+        }
+<span class="nc bnc" id="L379" title="All 2 branches missed.">        int prev = index == 1 ? 1 : index - 1;</span>
+<span class="nc bnc" id="L380" title="All 2 branches missed.">        int next = index == totalPage ? totalPage : index + 1;</span>
+<span class="nc bnc" id="L381" title="All 2 branches missed.">        if (totalResult &gt; numOfRow) {</span>
+<span class="nc" id="L382">            pr.print(&quot;&lt;li data-repair=\&quot;1\&quot; class=\&quot;page-item\&quot;&gt;&quot;);</span>
+<span class="nc" id="L383">            pr.print(&quot;&lt;a class=\&quot;page-link\&quot; aria-label=\&quot;First\&quot;&gt;&quot;);</span>
+<span class="nc" id="L384">            pr.print(&quot;&lt;span aria-hidden=\&quot;true\&quot;&gt;&lt;i class=\&quot;fas fa-backward\&quot;&gt;&lt;/i&gt;&quot;);</span>
+<span class="nc" id="L385">            pr.print(&quot;&lt;span class=\&quot;sr-only\&quot;&gt;(current)&lt;/span&gt; &quot;);</span>
+<span class="nc" id="L386">            pr.print(&quot;&lt;/span&gt;&quot;);</span>
+<span class="nc" id="L387">            pr.print(&quot;&lt;/a&gt;&quot;);</span>
+<span class="nc" id="L388">            pr.print(&quot;&lt;/li&gt;&quot;);</span>
+<span class="nc" id="L389">            pr.print(&quot;&lt;li data-repair=\&quot;&quot; + prev + &quot;\&quot; class=\&quot;page-item\&quot;&gt;&quot;);</span>
+<span class="nc" id="L390">            pr.print(&quot;&lt;a class=\&quot;page-link\&quot; aria-label=\&quot;Previous\&quot;&gt;&quot;);</span>
+<span class="nc" id="L391">            pr.print(&quot;&lt;span aria-hidden=\&quot;true\&quot;&gt;&lt;i class=\&quot;fas fa-arrow-left\&quot;&gt;&lt;/i&gt;&quot;);</span>
+<span class="nc" id="L392">            pr.print(&quot;&lt;span class=\&quot;sr-only\&quot;&gt;(current)&lt;/span&gt; &quot;);</span>
+<span class="nc" id="L393">            pr.print(&quot;&lt;/span&gt;&quot;);</span>
+<span class="nc" id="L394">            pr.print(&quot;&lt;/a&gt;&quot;);</span>
+<span class="nc" id="L395">            pr.print(&quot;&lt;/li&gt;&quot;);</span>
+<span class="nc bnc" id="L396" title="All 2 branches missed.">            for (int i = 1; i &lt;= totalPage; i++) {</span>
+<span class="nc bnc" id="L397" title="All 2 branches missed.">                if (i &lt; index - 2) {</span>
+<span class="nc" id="L398">                    continue;</span>
+                }
+<span class="nc bnc" id="L400" title="All 2 branches missed.">                if (index &lt; 3) {</span>
+<span class="nc bnc" id="L401" title="All 2 branches missed.">                    if (i &gt; 5) {</span>
+<span class="nc" id="L402">                        break;</span>
+                    }
+                } else {
+<span class="nc bnc" id="L405" title="All 2 branches missed.">                    if (i &gt; index + 2) {</span>
+<span class="nc" id="L406">                        break;</span>
+                    }
+                }
+<span class="nc bnc" id="L409" title="All 2 branches missed.">                if (index == i) {</span>
+<span class="nc" id="L410">                    pr.print(&quot;&lt;li  class=\&quot;page-item active\&quot; data-repair=\&quot;&quot; + i + &quot;\&quot;&gt;&quot;);</span>
+                } else {
+<span class="nc" id="L412">                    pr.print(&quot;&lt;li  class=\&quot;page-item\&quot; data-repair=\&quot;&quot; + i + &quot;\&quot;&gt;&quot;);</span>
+                }
+<span class="nc" id="L414">                pr.print(&quot;&lt;a class=\&quot;page-link\&quot;&gt;&quot;);</span>
+<span class="nc" id="L415">                pr.print(&quot;&lt;div class=\&quot;index\&quot;&gt;&quot; + i + &quot;&lt;/div&gt;&quot;);</span>
+<span class="nc" id="L416">                pr.print(&quot;&lt;span class=\&quot;sr-only\&quot;&gt;(current)&lt;/span&gt;&quot;);</span>
+<span class="nc" id="L417">                pr.print(&quot;&lt;/a&gt;&quot;);</span>
+<span class="nc" id="L418">                pr.print(&quot;&lt;/li&gt;&quot;);</span>
+            }
+<span class="nc" id="L420">            pr.print(&quot;&lt;li data-repair=\&quot;&quot; + next + &quot;\&quot; class=\&quot;page-item\&quot;&gt;&quot;);</span>
+<span class="nc" id="L421">            pr.print(&quot;&lt;a class=\&quot;page-link\&quot; aria-label=\&quot;Next\&quot;&gt;&quot;);</span>
+<span class="nc" id="L422">            pr.print(&quot;&lt;span aria-hidden=\&quot;true\&quot;&gt;&lt;i class=\&quot;fas fa-arrow-right\&quot;&gt;&lt;/i&gt;&quot;);</span>
+<span class="nc" id="L423">            pr.print(&quot;&lt;span class=\&quot;sr-only\&quot;&gt;(current)&lt;/span&gt; &quot;);</span>
+<span class="nc" id="L424">            pr.print(&quot;&lt;/span&gt;&quot;);</span>
+<span class="nc" id="L425">            pr.print(&quot;&lt;/a&gt;&quot;);</span>
+<span class="nc" id="L426">            pr.print(&quot;&lt;/li&gt;&quot;);</span>
+<span class="nc" id="L427">            pr.print(&quot;&lt;li data-repair=\&quot;&quot; + totalPage + &quot;\&quot; class=\&quot;page-item\&quot;&gt;&quot;);</span>
+<span class="nc" id="L428">            pr.print(&quot;&lt;a class=\&quot;page-link\&quot; aria-label=\&quot;Last\&quot;&gt;&quot;);</span>
+<span class="nc" id="L429">            pr.print(&quot;&lt;span aria-hidden=\&quot;true\&quot;&gt;&lt;i class=\&quot;fas fa-forward\&quot;&gt;&lt;/i&gt;&quot;);</span>
+<span class="nc" id="L430">            pr.print(&quot;&lt;span class=\&quot;sr-only\&quot;&gt;(current)&lt;/span&gt; &quot;);</span>
+<span class="nc" id="L431">            pr.print(&quot;&lt;/span&gt;&quot;);</span>
+<span class="nc" id="L432">            pr.print(&quot;&lt;/a&gt;&quot;);</span>
+<span class="nc" id="L433">            pr.print(&quot;&lt;/li&gt;&quot;);</span>
+        }
+<span class="nc bnc" id="L435" title="All 2 branches missed.">        if (request.getParameter(&quot;row&quot;) == null) {</span>
+<span class="nc" id="L436">            sendDispatcher(request, response, &quot;admin/usermanagement.jsp&quot;);</span>
+        }
+<span class="nc" id="L438">    }</span>
+
+    public void serviceAddUser(String service, HttpServletRequest request, HttpServletResponse response) {
+<span class="nc" id="L441">        request.setAttribute(&quot;service&quot;, service);</span>
+<span class="nc" id="L442">        String username = request.getParameter(&quot;username&quot;);</span>
+<span class="nc" id="L443">        String password = request.getParameter(&quot;password&quot;);</span>
+<span class="nc" id="L444">        String fullname = request.getParameter(&quot;fullname&quot;);</span>
+<span class="nc" id="L445">        String email = request.getParameter(&quot;email&quot;);</span>
+<span class="nc" id="L446">        String phone = request.getParameter(&quot;phone&quot;);</span>
+<span class="nc" id="L447">        String address = request.getParameter(&quot;address&quot;);</span>
+<span class="nc" id="L448">        int gender = Integer.parseInt(request.getParameter(&quot;gender&quot;));</span>
+<span class="nc" id="L449">        boolean isExist = false;</span>
+<span class="nc bnc" id="L450" title="All 2 branches missed.">        if (daouser.checkExistMail(email) == true</span>
+<span class="nc bnc" id="L451" title="All 2 branches missed.">                || daouser.checkExistPhone(phone) == true</span>
+<span class="nc bnc" id="L452" title="All 2 branches missed.">                || daouser.checkExistUserName(username) == true) {</span>
+<span class="nc" id="L453">            isExist = true;</span>
+        }
+<span class="nc bnc" id="L455" title="All 2 branches missed.">        if (isExist == true) {</span>
+<span class="nc" id="L456">            request.setAttribute(&quot;username&quot;, username);</span>
+<span class="nc" id="L457">            request.setAttribute(&quot;password&quot;, password);</span>
+<span class="nc" id="L458">            request.setAttribute(&quot;fullname&quot;, fullname);</span>
+<span class="nc" id="L459">            request.setAttribute(&quot;email&quot;, email);</span>
+<span class="nc" id="L460">            request.setAttribute(&quot;phone&quot;, phone);</span>
+<span class="nc" id="L461">            request.setAttribute(&quot;address&quot;, address);</span>
+<span class="nc" id="L462">            String mess = &quot;Add fail because duplicate information&quot;;</span>
+<span class="nc" id="L463">            request.setAttribute(&quot;mess&quot;, mess);</span>
+<span class="nc" id="L464">            String state = &quot;fail&quot;;</span>
+<span class="nc" id="L465">            request.setAttribute(&quot;state&quot;, state);</span>
+<span class="nc" id="L466">            request.setAttribute(&quot;service&quot;, &quot;adduserdetail&quot;);</span>
+<span class="nc" id="L467">            sendDispatcher(request, response, &quot;admin/userdetail.jsp&quot;);</span>
+        }
+<span class="nc bnc" id="L469" title="All 2 branches missed.">        if (isExist == false) {</span>
+<span class="nc" id="L470">            User user = new User(username, password, email, phone, 0, 0, fullname, &quot;&quot;, address, &quot;&quot;, &quot;&quot;, &quot;&quot;, gender, &quot;&quot;, &quot;&quot;, &quot;&quot;, &quot;&quot;, &quot;&quot;, 0, 0, 1);</span>
+<span class="nc" id="L471">            daouser.addUser(user);</span>
+<span class="nc" id="L472">            ArrayList&lt;User&gt; listPaging = daouser.getAllPagingUser(1, 5, &quot;&quot;);</span>
+<span class="nc" id="L473">            String state = &quot;success&quot;;</span>
+<span class="nc" id="L474">            request.setAttribute(&quot;state&quot;, state);</span>
+<span class="nc" id="L475">            request.setAttribute(&quot;listUser&quot;, listPaging);</span>
+<span class="nc" id="L476">            String mess = &quot;Add successfully&quot;;</span>
+<span class="nc" id="L477">            request.setAttribute(&quot;mess&quot;, mess);</span>
+<span class="nc" id="L478">            request.setAttribute(&quot;service&quot;, &quot;adduserdetail&quot;);</span>
+<span class="nc" id="L479">            sendDispatcher(request, response, &quot;admin/userdetail.jsp&quot;);</span>
+        }
+<span class="nc" id="L481">    }</span>
+
+    public void serviceUpdateUser(String service, HttpServletRequest request, HttpServletResponse response) {
+<span class="nc" id="L484">        request.setAttribute(&quot;service&quot;, service);</span>
+<span class="nc" id="L485">        String id = request.getParameter(&quot;id&quot;);</span>
+<span class="nc" id="L486">        User user = daouser.getUserById(id);</span>
+<span class="nc" id="L487">        String username = request.getParameter(&quot;username&quot;);</span>
+<span class="nc" id="L488">        String password = request.getParameter(&quot;password&quot;);</span>
+<span class="nc" id="L489">        String fullname = request.getParameter(&quot;fullname&quot;);</span>
+<span class="nc" id="L490">        String email = request.getParameter(&quot;email&quot;);</span>
+<span class="nc" id="L491">        String phone = request.getParameter(&quot;phone&quot;);</span>
+<span class="nc" id="L492">        String address = request.getParameter(&quot;address&quot;);</span>
+<span class="nc" id="L493">        int gender = Integer.parseInt(request.getParameter(&quot;gender&quot;));</span>
+<span class="nc" id="L494">        boolean isExist = false;</span>
+<span class="nc bnc" id="L495" title="All 4 branches missed.">        if ((daouser.checkExistMail(email) &amp;&amp; !email.equalsIgnoreCase(user.getEmail()))</span>
+<span class="nc bnc" id="L496" title="All 4 branches missed.">                || (daouser.checkExistPhone(phone) &amp;&amp; !phone.equalsIgnoreCase(user.getPhoneNumber()))</span>
+<span class="nc bnc" id="L497" title="All 4 branches missed.">                || (daouser.checkExistUserName(username) &amp;&amp; !username.equalsIgnoreCase(user.getUsername()))) {</span>
+<span class="nc" id="L498">            isExist = true;</span>
+        }
+<span class="nc bnc" id="L500" title="All 2 branches missed.">        if (isExist == true) {</span>
+<span class="nc" id="L501">            String state = &quot;fail&quot;;</span>
+<span class="nc" id="L502">            request.setAttribute(&quot;state&quot;, state);</span>
+<span class="nc" id="L503">            String mess = &quot;Update fail because duplicate information&quot;;</span>
+<span class="nc" id="L504">            request.setAttribute(&quot;mess&quot;, mess);</span>
+<span class="nc" id="L505">            request.setAttribute(&quot;user&quot;, user);</span>
+<span class="nc" id="L506">            request.setAttribute(&quot;service&quot;, &quot;updateuserdetail&quot;);</span>
+<span class="nc" id="L507">            sendDispatcher(request, response, &quot;admin/userdetail.jsp&quot;);</span>
+        }
+<span class="nc bnc" id="L509" title="All 2 branches missed.">        if (isExist == false) {</span>
+<span class="nc" id="L510">            user.setUsername(username);</span>
+<span class="nc" id="L511">            user.setPassword(password);</span>
+<span class="nc" id="L512">            user.setFullname(fullname);</span>
+<span class="nc" id="L513">            user.setEmail(email);</span>
+<span class="nc" id="L514">            user.setPhoneNumber(phone);</span>
+<span class="nc" id="L515">            user.setAddress(address);</span>
+<span class="nc" id="L516">            user.setGender(gender);</span>
+<span class="nc" id="L517">            daouser.updateInfoUserByAdmin(user);</span>
+<span class="nc" id="L518">            String state = &quot;success&quot;;</span>
+<span class="nc" id="L519">            request.setAttribute(&quot;state&quot;, state);</span>
+<span class="nc" id="L520">            ArrayList&lt;User&gt; listPaging = daouser.getAllPagingUser(1, 5, &quot;&quot;);</span>
+<span class="nc" id="L521">            request.setAttribute(&quot;listUser&quot;, listPaging);</span>
+<span class="nc" id="L522">            request.setAttribute(&quot;user&quot;, user);</span>
+<span class="nc" id="L523">            request.setAttribute(&quot;service&quot;, &quot;updateuserdetail&quot;);</span>
+<span class="nc" id="L524">            String mess = &quot;Update successfully&quot;;</span>
+<span class="nc" id="L525">            request.setAttribute(&quot;mess&quot;, mess);</span>
+<span class="nc" id="L526">            sendDispatcher(request, response, &quot;admin/userdetail.jsp&quot;);</span>
+        }
+<span class="nc" id="L528">    }</span>
+
+    public void serviceDeleteUser(String service, HttpServletRequest request, HttpServletResponse response) {
+<span class="nc" id="L531">        int id = Integer.parseInt(request.getParameter(&quot;userid&quot;));</span>
+<span class="nc" id="L532">        daouser.changeStatus(id, 0);</span>
+<span class="nc" id="L533">        ArrayList&lt;User&gt; listPaging = daouser.getAllPagingUser(1, 5, &quot;&quot;);</span>
+<span class="nc" id="L534">        ArrayList&lt;User&gt; listUser = daouser.getAllUser();</span>
+<span class="nc" id="L535">        int totalPage = listUser.size() / 5;</span>
+<span class="nc bnc" id="L536" title="All 2 branches missed.">        if (listUser.size() != totalPage * 5) {</span>
+<span class="nc" id="L537">            totalPage += 1;</span>
+        }
+<span class="nc" id="L539">        request.setAttribute(&quot;index&quot;, 1);</span>
+<span class="nc" id="L540">        request.setAttribute(&quot;totalPage&quot;, totalPage);</span>
+<span class="nc" id="L541">        request.setAttribute(&quot;listUser&quot;, listPaging);</span>
+<span class="nc" id="L542">        request.setAttribute(&quot;service&quot;, &quot;usermanagement&quot;);</span>
+<span class="nc" id="L543">        sendDispatcher(request, response, &quot;admin/usermanagement.jsp&quot;);</span>
+<span class="nc" id="L544">    }</span>
+
+    public void serviceActiveUser(String service, HttpServletRequest request, HttpServletResponse response) {
+<span class="nc" id="L547">        int id = Integer.parseInt(request.getParameter(&quot;userid&quot;));</span>
+<span class="nc" id="L548">        daouser.changeStatus(id, 1);</span>
+<span class="nc" id="L549">        ArrayList&lt;User&gt; listPaging = daouser.getAllPagingUser(1, 5, &quot;&quot;);</span>
+<span class="nc" id="L550">        ArrayList&lt;User&gt; listUser = daouser.getAllUser();</span>
+<span class="nc" id="L551">        int totalPage = listUser.size() / 5;</span>
+<span class="nc bnc" id="L552" title="All 2 branches missed.">        if (listUser.size() != totalPage * 5) {</span>
+<span class="nc" id="L553">            totalPage += 1;</span>
+        }
+<span class="nc" id="L555">        request.setAttribute(&quot;index&quot;, 1);</span>
+<span class="nc" id="L556">        request.setAttribute(&quot;totalPage&quot;, totalPage);</span>
+<span class="nc" id="L557">        request.setAttribute(&quot;listUser&quot;, listPaging);</span>
+<span class="nc" id="L558">        request.setAttribute(&quot;service&quot;, &quot;usermanagement&quot;);</span>
+<span class="nc" id="L559">        sendDispatcher(request, response, &quot;admin/usermanagement.jsp&quot;);</span>
+<span class="nc" id="L560">    }</span>
+// &lt;/editor-fold&gt;
+
+    // &lt;editor-fold defaultstate=&quot;collapsed&quot; desc=&quot;Product methods. Click on the + sign on the left to edit the code.&quot;&gt;
+    public void serviceProductManagement(String service, HttpServletRequest request, HttpServletResponse response) {
+<span class="nc" id="L565">        ArrayList&lt;Product&gt; listPaging = daoproduct.getAllPagingProduct(1, 5, &quot;&quot;);</span>
+<span class="nc" id="L566">        ArrayList&lt;Product&gt; listProduct = daoproduct.getAllProduct();</span>
+<span class="nc" id="L567">        int totalPage = listProduct.size() / 5;</span>
+<span class="nc bnc" id="L568" title="All 2 branches missed.">        if (listProduct.size() != 5 * totalPage) {</span>
+<span class="nc" id="L569">            totalPage += 1;</span>
+        }
+<span class="nc" id="L571">        request.setAttribute(&quot;index&quot;, 1);</span>
+<span class="nc" id="L572">        request.setAttribute(&quot;totalPage&quot;, totalPage);</span>
+<span class="nc" id="L573">        request.setAttribute(&quot;listProduct&quot;, listPaging);</span>
+<span class="nc" id="L574">        request.setAttribute(&quot;service&quot;, service);</span>
+<span class="nc" id="L575">        sendDispatcher(request, response, &quot;admin/productmanagement.jsp&quot;);</span>
+<span class="nc" id="L576">    }</span>
+
+    public void servicePagingProduct(String service, HttpServletRequest request, HttpServletResponse response) throws IOException {
+<span class="nc" id="L579">        PrintWriter pr = response.getWriter();</span>
+//        SimpleDateFormat dateformat = new SimpleDateFormat(&quot;dd/MM/yyyy&quot;); //never used (fix FindBugs)
+<span class="nc" id="L581">        request.setAttribute(&quot;service&quot;, service);</span>
+<span class="nc" id="L582">        int index = 1, numOfRow = 5;</span>
+<span class="nc" id="L583">        String search = request.getParameter(&quot;search&quot;);</span>
+<span class="nc bnc" id="L584" title="All 2 branches missed.">        if (request.getParameter(&quot;row&quot;) != null) {</span>
+<span class="nc" id="L585">            numOfRow = Integer.parseInt(request.getParameter(&quot;row&quot;));</span>
+        }
+<span class="nc bnc" id="L587" title="All 2 branches missed.">        if (request.getParameter(&quot;index&quot;) != null) {</span>
+<span class="nc" id="L588">            index = Integer.parseInt(request.getParameter(&quot;index&quot;));</span>
+        }
+<span class="nc" id="L590">        ArrayList&lt;Product&gt; listPaging = daoproduct.getAllPagingProduct(index, numOfRow, search);</span>
+<span class="nc" id="L591">        request.setAttribute(&quot;index&quot;, index);</span>
+<span class="nc" id="L592">        request.setAttribute(&quot;listProduct&quot;, listPaging);</span>
+<span class="nc bnc" id="L593" title="All 2 branches missed.">        for (Product product : listPaging) {</span>
+<span class="nc" id="L594">            Seller seller = daoseller.getSellerID(String.valueOf(product.getSeller()));</span>
+<span class="nc" id="L595">            Genre genre = daogenre.getGenreById(Integer.parseInt(daopg.getGenreIdByProductId(product.getProductID())));</span>
+<span class="nc" id="L596">            String category = daocategory.getCategoryById(Integer.parseInt(daopc.getCategoryIdByProductId(product.getProductID())));</span>
+<span class="nc" id="L597">            pr.print(&quot;&lt;tr&gt;&quot;</span>
+<span class="nc" id="L598">                    + &quot;&lt;td&gt;&lt;div&gt;&quot; + product.getProductName() + &quot; &lt;/div&gt;&lt;/td&gt;&quot;</span>
+                    + &quot;&lt;td&gt;&lt;div&gt;&quot; + category + &quot;&lt;/div&gt;&lt;/td&gt;&quot;
+<span class="nc" id="L600">                    + &quot;&lt;td&gt;&lt;div&gt;&quot; + genre.getGenreName() + &quot;&lt;/div&gt;&lt;/td&gt;&quot;</span>
+<span class="nc" id="L601">                    + &quot;&lt;td&gt;&lt;div&gt;&quot; + seller.getSellerShopName() + &quot;&lt;/div&gt;&lt;/td&gt;&quot;</span>
+<span class="nc" id="L602">                    + &quot;&lt;td&gt;&lt;div&gt;&lt;a href=\&quot;AdminControllerMap?service=productdetail&amp;productid=&quot; + product.getProductID() + &quot;\&quot;&gt;&lt;button class=\&quot;btn btn-primary\&quot;&gt;Edit&lt;/button&gt;&lt;/a&gt;&quot;</span>
+                    + &quot;&lt;/div&gt;&lt;/td&gt;&quot;
+                    + &quot;&lt;td&gt;&quot;);
+<span class="nc bnc" id="L605" title="All 2 branches missed.">            if (product.getStatus() == 1) {</span>
+<span class="nc" id="L606">                pr.print(&quot;&lt;a href=\&quot;AdminControllerMap?service=deleteproduct&amp;productid=&quot; + product.getProductID() + &quot;\&quot; onclick=\&quot;return confirm('Are you sure?');\&quot;&gt;&lt;button class=\&quot;btn btn-primary\&quot;&gt;Deactive&lt;/button&gt;&lt;/a&gt;&quot;);</span>
+            } else {
+<span class="nc" id="L608">                pr.print(&quot;&lt;a href=\&quot;AdminControllerMap?service=activeproduct&amp;productid=&quot; + product.getProductID() + &quot;\&quot; onclick=\&quot;return confirm('Are you sure?');\&quot;&gt;&lt;button class=\&quot;btn btn-primary\&quot;&gt;Active&lt;/button&gt;&lt;/a&gt;&quot;);</span>
+            }
+<span class="nc" id="L610">            pr.print(&quot;&lt;/td&gt;&quot;</span>
+                    + &quot;&lt;/tr&gt;&quot;
+            );
+<span class="nc" id="L613">        }</span>
+<span class="nc bnc" id="L614" title="All 2 branches missed.">        if (request.getParameter(&quot;row&quot;) == null) {</span>
+<span class="nc" id="L615">            sendDispatcher(request, response, &quot;admin/productmanagement.jsp&quot;);</span>
+        }
+<span class="nc" id="L617">    }</span>
+
+    public void serviceShowPageProduct(HttpServletRequest request, HttpServletResponse response) throws IOException {
+<span class="nc" id="L620">        PrintWriter pr = response.getWriter();</span>
+<span class="nc" id="L621">        int index = 1, numOfRow = 5;</span>
+<span class="nc" id="L622">        String search = request.getParameter(&quot;search&quot;);</span>
+<span class="nc bnc" id="L623" title="All 2 branches missed.">        if (request.getParameter(&quot;index&quot;) != null) {</span>
+<span class="nc" id="L624">            index = Integer.parseInt(request.getParameter(&quot;index&quot;));</span>
+        }
+<span class="nc bnc" id="L626" title="All 2 branches missed.">        if (request.getParameter(&quot;row&quot;) != null) {</span>
+<span class="nc" id="L627">            numOfRow = Integer.parseInt(request.getParameter(&quot;row&quot;));</span>
+        }
+//        ArrayList&lt;Product&gt; listPaging = daoproduct.getAllPagingProduct(index, numOfRow, search); //never used (fix FindBugs)
+<span class="nc" id="L630">        int totalResult = daoproduct.getPageNumber(search);</span>
+<span class="nc" id="L631">        int totalPage = totalResult / numOfRow;</span>
+<span class="nc bnc" id="L632" title="All 2 branches missed.">        if (totalResult != numOfRow * totalPage) {</span>
+<span class="nc" id="L633">            totalPage += 1;</span>
+        }
+<span class="nc bnc" id="L635" title="All 2 branches missed.">        int prev = index == 1 ? 1 : index - 1;</span>
+<span class="nc bnc" id="L636" title="All 2 branches missed.">        int next = index == totalPage ? totalPage : index + 1;</span>
+<span class="nc bnc" id="L637" title="All 2 branches missed.">        if (totalResult &gt; numOfRow) {</span>
+<span class="nc" id="L638">            pr.print(&quot;&lt;li data-repair=\&quot;1\&quot; class=\&quot;page-item\&quot;&gt;&quot;);</span>
+<span class="nc" id="L639">            pr.print(&quot;&lt;a class=\&quot;page-link\&quot; aria-label=\&quot;First\&quot;&gt;&quot;);</span>
+<span class="nc" id="L640">            pr.print(&quot;&lt;span aria-hidden=\&quot;true\&quot;&gt;&lt;i class=\&quot;fas fa-backward\&quot;&gt;&lt;/i&gt;&quot;);</span>
+<span class="nc" id="L641">            pr.print(&quot;&lt;span class=\&quot;sr-only\&quot;&gt;(current)&lt;/span&gt; &quot;);</span>
+<span class="nc" id="L642">            pr.print(&quot;&lt;/span&gt;&quot;);</span>
+<span class="nc" id="L643">            pr.print(&quot;&lt;/a&gt;&quot;);</span>
+<span class="nc" id="L644">            pr.print(&quot;&lt;/li&gt;&quot;);</span>
+<span class="nc" id="L645">            pr.print(&quot;&lt;li data-repair=\&quot;&quot; + prev + &quot;\&quot; class=\&quot;page-item\&quot;&gt;&quot;);</span>
+<span class="nc" id="L646">            pr.print(&quot;&lt;a class=\&quot;page-link\&quot; aria-label=\&quot;Previous\&quot;&gt;&quot;);</span>
+<span class="nc" id="L647">            pr.print(&quot;&lt;span aria-hidden=\&quot;true\&quot;&gt;&lt;i class=\&quot;fas fa-arrow-left\&quot;&gt;&lt;/i&gt;&quot;);</span>
+<span class="nc" id="L648">            pr.print(&quot;&lt;span class=\&quot;sr-only\&quot;&gt;(current)&lt;/span&gt; &quot;);</span>
+<span class="nc" id="L649">            pr.print(&quot;&lt;/span&gt;&quot;);</span>
+<span class="nc" id="L650">            pr.print(&quot;&lt;/a&gt;&quot;);</span>
+<span class="nc" id="L651">            pr.print(&quot;&lt;/li&gt;&quot;);</span>
+<span class="nc bnc" id="L652" title="All 2 branches missed.">            for (int i = 1; i &lt;= totalPage; i++) {</span>
+<span class="nc bnc" id="L653" title="All 2 branches missed.">                if (i &lt; index - 2) {</span>
+<span class="nc" id="L654">                    continue;</span>
+                }
+<span class="nc bnc" id="L656" title="All 2 branches missed.">                if (index &lt; 3) {</span>
+<span class="nc bnc" id="L657" title="All 2 branches missed.">                    if (i &gt; 5) {</span>
+<span class="nc" id="L658">                        break;</span>
+                    }
+                } else {
+<span class="nc bnc" id="L661" title="All 2 branches missed.">                    if (i &gt; index + 2) {</span>
+<span class="nc" id="L662">                        break;</span>
+                    }
+                }
+<span class="nc bnc" id="L665" title="All 2 branches missed.">                if (index == i) {</span>
+<span class="nc" id="L666">                    pr.print(&quot;&lt;li  class=\&quot;page-item active\&quot; data-repair=\&quot;&quot; + i + &quot;\&quot;&gt;&quot;);</span>
+                } else {
+<span class="nc" id="L668">                    pr.print(&quot;&lt;li  class=\&quot;page-item\&quot; data-repair=\&quot;&quot; + i + &quot;\&quot;&gt;&quot;);</span>
+                }
+<span class="nc" id="L670">                pr.print(&quot;&lt;a class=\&quot;page-link\&quot;&gt;&quot;);</span>
+<span class="nc" id="L671">                pr.print(&quot;&lt;div class=\&quot;index\&quot;&gt;&quot; + i + &quot;&lt;/div&gt;&quot;);</span>
+<span class="nc" id="L672">                pr.print(&quot;&lt;span class=\&quot;sr-only\&quot;&gt;(current)&lt;/span&gt;&quot;);</span>
+<span class="nc" id="L673">                pr.print(&quot;&lt;/a&gt;&quot;);</span>
+<span class="nc" id="L674">                pr.print(&quot;&lt;/li&gt;&quot;);</span>
+            }
+<span class="nc" id="L676">            pr.print(&quot;&lt;li data-repair=\&quot;&quot; + next + &quot;\&quot; class=\&quot;page-item\&quot;&gt;&quot;);</span>
+<span class="nc" id="L677">            pr.print(&quot;&lt;a class=\&quot;page-link\&quot; aria-label=\&quot;Next\&quot;&gt;&quot;);</span>
+<span class="nc" id="L678">            pr.print(&quot;&lt;span aria-hidden=\&quot;true\&quot;&gt;&lt;i class=\&quot;fas fa-arrow-right\&quot;&gt;&lt;/i&gt;&quot;);</span>
+<span class="nc" id="L679">            pr.print(&quot;&lt;span class=\&quot;sr-only\&quot;&gt;(current)&lt;/span&gt; &quot;);</span>
+<span class="nc" id="L680">            pr.print(&quot;&lt;/span&gt;&quot;);</span>
+<span class="nc" id="L681">            pr.print(&quot;&lt;/a&gt;&quot;);</span>
+<span class="nc" id="L682">            pr.print(&quot;&lt;/li&gt;&quot;);</span>
+<span class="nc" id="L683">            pr.print(&quot;&lt;li data-repair=\&quot;&quot; + totalPage + &quot;\&quot; class=\&quot;page-item\&quot;&gt;&quot;);</span>
+<span class="nc" id="L684">            pr.print(&quot;&lt;a class=\&quot;page-link\&quot; aria-label=\&quot;Last\&quot;&gt;&quot;);</span>
+<span class="nc" id="L685">            pr.print(&quot;&lt;span aria-hidden=\&quot;true\&quot;&gt;&lt;i class=\&quot;fas fa-forward\&quot;&gt;&lt;/i&gt;&quot;);</span>
+<span class="nc" id="L686">            pr.print(&quot;&lt;span class=\&quot;sr-only\&quot;&gt;(current)&lt;/span&gt; &quot;);</span>
+<span class="nc" id="L687">            pr.print(&quot;&lt;/span&gt;&quot;);</span>
+<span class="nc" id="L688">            pr.print(&quot;&lt;/a&gt;&quot;);</span>
+<span class="nc" id="L689">            pr.print(&quot;&lt;/li&gt;&quot;);</span>
+        }
+<span class="nc bnc" id="L691" title="All 2 branches missed.">        if (request.getParameter(&quot;row&quot;) == null) {</span>
+<span class="nc" id="L692">            sendDispatcher(request, response, &quot;admin/productmanagement.jsp&quot;);</span>
+        }
+<span class="nc" id="L694">    }</span>
+
+    public void serviceProductDetail(String service, HttpServletRequest request, HttpServletResponse response) {
+<span class="nc" id="L697">        request.setAttribute(&quot;service&quot;, service);</span>
+<span class="nc bnc" id="L698" title="All 2 branches missed.">        if (service.equalsIgnoreCase(&quot;addproductdetail&quot;)) {</span>
+<span class="nc" id="L699">            sendDispatcher(request, response, &quot;admin/productdetail.jsp&quot;);</span>
+<span class="nc" id="L700">            return;</span>
+        }
+<span class="nc" id="L702">        String id = request.getParameter(&quot;productid&quot;);</span>
+<span class="nc" id="L703">        Product product = daoproduct.getProductByID(Integer.parseInt(id));</span>
+<span class="nc" id="L704">        String genreid = daopg.getGenreIdByProductId(product.getProductID());</span>
+<span class="nc" id="L705">        Genre genre = daogenre.getGenreById(Integer.parseInt(genreid));</span>
+<span class="nc" id="L706">        String categoryId = daopc.getCategoryIdByProductId(product.getProductID());</span>
+<span class="nc" id="L707">        Category category = daocategory.getCategoryByCateId(categoryId);</span>
+<span class="nc" id="L708">        ArrayList&lt;Genre&gt; listGenre = daogenre.getGenresByCategoryId(Integer.parseInt(categoryId));</span>
+<span class="nc" id="L709">        request.setAttribute(&quot;listGenre&quot;, listGenre);</span>
+<span class="nc" id="L710">        request.setAttribute(&quot;category&quot;, category);</span>
+<span class="nc" id="L711">        request.setAttribute(&quot;genre&quot;, genre);</span>
+<span class="nc" id="L712">        request.setAttribute(&quot;product&quot;, product);</span>
+<span class="nc" id="L713">        sendDispatcher(request, response, &quot;admin/productdetail.jsp&quot;);</span>
+<span class="nc" id="L714">    }</span>
+
+    public void serviceAddProduct(String service, HttpServletRequest request, HttpServletResponse response) {
+<span class="nc" id="L717">        request.setAttribute(&quot;service&quot;, service);</span>
+<span class="nc" id="L718">        String productname = request.getParameter(&quot;productname&quot;);</span>
+<span class="nc" id="L719">        String color = request.getParameter(&quot;color&quot;);</span>
+<span class="nc" id="L720">        String size = request.getParameter(&quot;size&quot;);</span>
+<span class="nc" id="L721">        String price = request.getParameter(&quot;price&quot;);</span>
+<span class="nc" id="L722">        String date = request.getParameter(&quot;date&quot;);</span>
+<span class="nc" id="L723">        Product product = new Product();</span>
+<span class="nc" id="L724">        product.setProductName(productname);</span>
+<span class="nc" id="L725">        product.setReleaseDate(Date.valueOf(date));</span>
+<span class="nc" id="L726">        ProductType producttype = new ProductType();</span>
+<span class="nc" id="L727">        daoproduct.addProduct(product);</span>
+<span class="nc" id="L728">        List&lt;ProductType&gt; listProductType = daoproducttype.getProductByProductID(product.getProductID());</span>
+<span class="nc" id="L729">        String producttypeid = &quot;Pr&quot; + product.getProductID() + &quot;Ty&quot; + (listProductType.size() + 1);</span>
+<span class="nc" id="L730">        producttype.setProductTypeId(producttypeid);</span>
+<span class="nc" id="L731">        producttype.setColor(color);</span>
+<span class="nc" id="L732">        producttype.setPrice(price);</span>
+<span class="nc" id="L733">        producttype.setSize(size);</span>
+<span class="nc" id="L734">        daoproducttype.addProductType(producttype);</span>
+<span class="nc" id="L735">        ArrayList&lt;Product&gt; listProduct = daoproduct.getAllProduct();</span>
+<span class="nc" id="L736">        request.setAttribute(&quot;listProduct&quot;, listProduct);</span>
+<span class="nc" id="L737">        sendDispatcher(request, response, &quot;admin/productmanagement.jsp&quot;);</span>
+<span class="nc" id="L738">    }</span>
+
+    public void serviceDeleteProduct(String service, HttpServletRequest request, HttpServletResponse response) {
+<span class="nc" id="L741">        request.setAttribute(&quot;service&quot;, service);</span>
+<span class="nc" id="L742">        String id = request.getParameter(&quot;productid&quot;);</span>
+<span class="nc" id="L743">        daoproduct.changeStatus(Integer.parseInt(id), 0);</span>
+<span class="nc" id="L744">        ArrayList&lt;Product&gt; listPaging = daoproduct.getAllPagingProduct(1, 5, &quot;&quot;);</span>
+<span class="nc" id="L745">        ArrayList&lt;Product&gt; listProduct = daoproduct.getAllProduct();</span>
+<span class="nc" id="L746">        int totalPage = listProduct.size() / 5;</span>
+<span class="nc bnc" id="L747" title="All 2 branches missed.">        if (listProduct.size() != 5 * totalPage) {</span>
+<span class="nc" id="L748">            totalPage += 1;</span>
+        }
+<span class="nc" id="L750">        request.setAttribute(&quot;index&quot;, 1);</span>
+<span class="nc" id="L751">        request.setAttribute(&quot;totalPage&quot;, totalPage);</span>
+<span class="nc" id="L752">        request.setAttribute(&quot;listProduct&quot;, listPaging);</span>
+<span class="nc" id="L753">        request.setAttribute(&quot;service&quot;, &quot;updateproductdetail&quot;);</span>
+<span class="nc" id="L754">        sendDispatcher(request, response, &quot;admin/productmanagement.jsp&quot;);</span>
+<span class="nc" id="L755">    }</span>
+
+    public void serviceActiveProduct(String service, HttpServletRequest request, HttpServletResponse response) {
+<span class="nc" id="L758">        request.setAttribute(&quot;service&quot;, service);</span>
+<span class="nc" id="L759">        String id = request.getParameter(&quot;productid&quot;);</span>
+<span class="nc" id="L760">        daoproduct.changeStatus(Integer.parseInt(id), 1);</span>
+<span class="nc" id="L761">        ArrayList&lt;Product&gt; listPaging = daoproduct.getAllPagingProduct(1, 5, &quot;&quot;);</span>
+<span class="nc" id="L762">        ArrayList&lt;Product&gt; listProduct = daoproduct.getAllProduct();</span>
+<span class="nc" id="L763">        int totalPage = listProduct.size() / 5;</span>
+<span class="nc bnc" id="L764" title="All 2 branches missed.">        if (listProduct.size() != 5 * totalPage) {</span>
+<span class="nc" id="L765">            totalPage += 1;</span>
+        }
+<span class="nc" id="L767">        request.setAttribute(&quot;index&quot;, 1);</span>
+<span class="nc" id="L768">        request.setAttribute(&quot;totalPage&quot;, totalPage);</span>
+<span class="nc" id="L769">        request.setAttribute(&quot;listProduct&quot;, listPaging);</span>
+<span class="nc" id="L770">        request.setAttribute(&quot;service&quot;, &quot;updateproductdetail&quot;);</span>
+<span class="nc" id="L771">        sendDispatcher(request, response, &quot;admin/productmanagement.jsp&quot;);</span>
+<span class="nc" id="L772">    }</span>
+
+    public void serviceDeleteProductType(String service, HttpServletRequest request, HttpServletResponse response) {
+
+<span class="nc" id="L776">        String id = request.getParameter(&quot;producttypeid&quot;);</span>
+<span class="nc" id="L777">        daoproducttype.changeStatus(id, 0);</span>
+<span class="nc" id="L778">        int pid = daoproducttype.getProductIdByProductTypeId(id);</span>
+<span class="nc" id="L779">        Product product = daoproduct.getProductByID(pid);</span>
+<span class="nc" id="L780">        String genreid = daopg.getGenreIdByProductId(pid);</span>
+<span class="nc" id="L781">        Genre genre = daogenre.getGenreById(Integer.parseInt(genreid));</span>
+<span class="nc" id="L782">        String categoryId = daopc.getCategoryIdByProductId(pid);</span>
+<span class="nc" id="L783">        Category category = daocategory.getCategoryByCateId(categoryId);</span>
+<span class="nc" id="L784">        ArrayList&lt;Genre&gt; listGenre = daogenre.getGenresByCategoryId(Integer.parseInt(categoryId));</span>
+<span class="nc" id="L785">        request.setAttribute(&quot;listGenre&quot;, listGenre);</span>
+<span class="nc" id="L786">        request.setAttribute(&quot;category&quot;, category);</span>
+<span class="nc" id="L787">        request.setAttribute(&quot;genre&quot;, genre);</span>
+<span class="nc" id="L788">        request.setAttribute(&quot;product&quot;, product);</span>
+<span class="nc" id="L789">        request.setAttribute(&quot;service&quot;, &quot;updateproductdetail&quot;);</span>
+<span class="nc" id="L790">        sendDispatcher(request, response, &quot;admin/productdetail.jsp&quot;);</span>
+<span class="nc" id="L791">    }</span>
+
+    public void serviceActiveProductType(String service, HttpServletRequest request, HttpServletResponse response) {
+
+<span class="nc" id="L795">        String id = request.getParameter(&quot;producttypeid&quot;);</span>
+<span class="nc" id="L796">        daoproducttype.changeStatus(id, 1);</span>
+<span class="nc" id="L797">        int pid = daoproducttype.getProductIdByProductTypeId(id);</span>
+<span class="nc" id="L798">        Product product = daoproduct.getProductByID(pid);</span>
+<span class="nc" id="L799">        String genreid = daopg.getGenreIdByProductId(pid);</span>
+<span class="nc" id="L800">        Genre genre = daogenre.getGenreById(Integer.parseInt(genreid));</span>
+<span class="nc" id="L801">        String categoryId = daopc.getCategoryIdByProductId(pid);</span>
+<span class="nc" id="L802">        Category category = daocategory.getCategoryByCateId(categoryId);</span>
+<span class="nc" id="L803">        ArrayList&lt;Genre&gt; listGenre = daogenre.getGenresByCategoryId(Integer.parseInt(categoryId));</span>
+<span class="nc" id="L804">        request.setAttribute(&quot;listGenre&quot;, listGenre);</span>
+<span class="nc" id="L805">        request.setAttribute(&quot;category&quot;, category);</span>
+<span class="nc" id="L806">        request.setAttribute(&quot;genre&quot;, genre);</span>
+<span class="nc" id="L807">        request.setAttribute(&quot;product&quot;, product);</span>
+<span class="nc" id="L808">        request.setAttribute(&quot;service&quot;, &quot;updateproductdetail&quot;);</span>
+<span class="nc" id="L809">        sendDispatcher(request, response, &quot;admin/productdetail.jsp&quot;);</span>
+<span class="nc" id="L810">    }</span>
+
+    public void serviceUpdateProduct(String service, HttpServletRequest request, HttpServletResponse response) throws ParseException {
+<span class="nc" id="L813">        request.setAttribute(&quot;service&quot;, service);</span>
+<span class="nc" id="L814">        boolean isExist = false;</span>
+        //Get information about product
+<span class="nc" id="L816">        String pid = request.getParameter(&quot;pid&quot;);</span>
+<span class="nc" id="L817">        String productname = request.getParameter(&quot;productname&quot;);</span>
+<span class="nc" id="L818">        String cat = request.getParameter(&quot;category&quot;);</span>
+<span class="nc" id="L819">        String gen = request.getParameter(&quot;genre&quot;);</span>
+<span class="nc" id="L820">        String sellerId = request.getParameter(&quot;seller&quot;);</span>
+<span class="nc" id="L821">        String date = request.getParameter(&quot;date&quot;);</span>
+<span class="nc" id="L822">        Date sqlDate = Date.valueOf(date);</span>
+        //Update product
+<span class="nc" id="L824">        ProductCategory pc = daopc.getProductCateByProductID(Integer.parseInt(pid));</span>
+<span class="nc" id="L825">        ProductGenre pg = daopg.getProductGenreByProduct(pid);</span>
+<span class="nc" id="L826">        Product product = daoproduct.getProductByID(Integer.parseInt(pid));</span>
+<span class="nc" id="L827">        product.setProductName(productname);</span>
+<span class="nc" id="L828">        product.setReleaseDate(sqlDate);</span>
+<span class="nc" id="L829">        product.setSeller(Integer.parseInt(sellerId));</span>
+<span class="nc" id="L830">        daoproduct.updateProduct(product);</span>
+<span class="nc" id="L831">        pc.setCategoryID(Integer.parseInt(cat));</span>
+<span class="nc" id="L832">        daopc.updateProductCategory(pc);</span>
+<span class="nc" id="L833">        pg.setGenreID(Integer.parseInt(gen));</span>
+<span class="nc" id="L834">        daopg.updateProductGenre(pg);</span>
+        //Get information about product type
+
+<span class="nc" id="L837">        String[] typeids = request.getParameterValues(&quot;ptid&quot;);</span>
+<span class="nc" id="L838">        String[] colors = request.getParameterValues(&quot;color&quot;);</span>
+<span class="nc" id="L839">        String[] sizes = request.getParameterValues(&quot;size&quot;);</span>
+<span class="nc" id="L840">        String[] prices = request.getParameterValues(&quot;price&quot;);</span>
+<span class="nc" id="L841">        String[] quantities = request.getParameterValues(&quot;quantity&quot;);</span>
+
+        //Check information
+<span class="nc bnc" id="L844" title="All 2 branches missed.">        for (int i = 0; i &lt; typeids.length; i++) {</span>
+<span class="nc" id="L845">            ProductType pt = daoproducttype.getProductTypeByPTypeID(typeids[i]);</span>
+<span class="nc bnc" id="L846" title="All 6 branches missed.">            if (daoproducttype.checkExistSizeAndColor(sizes[i], colors[i], Integer.parseInt(pid)) &amp;&amp; !colors[i].equalsIgnoreCase(pt.getColor()) &amp;&amp; !sizes[i].equalsIgnoreCase(pt.getSize())) {</span>
+<span class="nc" id="L847">                isExist = true;</span>
+            }
+        }
+        //Case check fail
+<span class="nc bnc" id="L851" title="All 2 branches missed.">        if (isExist == true) {</span>
+<span class="nc" id="L852">            String state = &quot;fail&quot;;</span>
+<span class="nc" id="L853">            String mess = &quot;Update fail because product type exists.&quot;;</span>
+<span class="nc" id="L854">            String genreid = daopg.getGenreIdByProductId(product.getProductID());</span>
+<span class="nc" id="L855">            Genre genre = daogenre.getGenreById(Integer.parseInt(genreid));</span>
+<span class="nc" id="L856">            String categoryId = daopc.getCategoryIdByProductId(product.getProductID());</span>
+<span class="nc" id="L857">            Category category = daocategory.getCategoryByCateId(categoryId);</span>
+<span class="nc" id="L858">            ArrayList&lt;Genre&gt; listGenre = daogenre.getGenresByCategoryId(Integer.parseInt(categoryId));</span>
+
+            //Set attribute
+<span class="nc" id="L861">            request.setAttribute(&quot;listGenre&quot;, listGenre);</span>
+<span class="nc" id="L862">            request.setAttribute(&quot;category&quot;, category);</span>
+<span class="nc" id="L863">            request.setAttribute(&quot;genre&quot;, genre);</span>
+<span class="nc" id="L864">            request.setAttribute(&quot;state&quot;, state);</span>
+<span class="nc" id="L865">            request.setAttribute(&quot;product&quot;, product);</span>
+<span class="nc" id="L866">            request.setAttribute(&quot;mess&quot;, mess);</span>
+<span class="nc" id="L867">            request.setAttribute(&quot;service&quot;, &quot;updateproductdetail&quot;);</span>
+<span class="nc" id="L868">            sendDispatcher(request, response, &quot;admin/productdetail.jsp&quot;);</span>
+        }
+        //Case check success
+        //Update product type
+<span class="nc bnc" id="L872" title="All 2 branches missed.">        for (int i = 0; i &lt; typeids.length; i++) {</span>
+<span class="nc" id="L873">            ProductType pt = daoproducttype.getProductTypeByPTypeID(typeids[i]);</span>
+<span class="nc" id="L874">            pt.setColor(colors[i]);</span>
+<span class="nc" id="L875">            pt.setSize(sizes[i]);</span>
+<span class="nc" id="L876">            pt.setPrice(prices[i]);</span>
+<span class="nc" id="L877">            NumberFormat format = NumberFormat.getInstance(Locale.US);</span>
+<span class="nc" id="L878">            Number nQuantity = 0;</span>
+            try {
+<span class="nc" id="L880">                nQuantity = format.parse(quantities[i]);</span>
+<span class="nc" id="L881">            } catch (ParseException ex) {</span>
+<span class="nc" id="L882">                Logger.getLogger(AdminController.class.getName()).log(Level.SEVERE, null, ex);</span>
+<span class="nc" id="L883">            }</span>
+<span class="nc" id="L884">            pt.setQuantity(nQuantity.intValue());</span>
+<span class="nc" id="L885">            daoproducttype.editProduct(pt);</span>
+        }
+        //Success
+<span class="nc" id="L888">        String state = &quot;success&quot;;</span>
+<span class="nc" id="L889">        String mess = &quot;Update successfully&quot;;</span>
+<span class="nc" id="L890">        String genreid = daopg.getGenreIdByProductId(product.getProductID());</span>
+<span class="nc" id="L891">        Genre genre = daogenre.getGenreById(Integer.parseInt(genreid));</span>
+<span class="nc" id="L892">        String categoryId = daopc.getCategoryIdByProductId(product.getProductID());</span>
+<span class="nc" id="L893">        Category category = daocategory.getCategoryByCateId(categoryId);</span>
+<span class="nc" id="L894">        ArrayList&lt;Genre&gt; listGenre = daogenre.getGenresByCategoryId(Integer.parseInt(categoryId));</span>
+
+        //Set attribute
+<span class="nc" id="L897">        request.setAttribute(&quot;listGenre&quot;, listGenre);</span>
+<span class="nc" id="L898">        request.setAttribute(&quot;category&quot;, category);</span>
+<span class="nc" id="L899">        request.setAttribute(&quot;genre&quot;, genre);</span>
+<span class="nc" id="L900">        request.setAttribute(&quot;state&quot;, state);</span>
+<span class="nc" id="L901">        request.setAttribute(&quot;product&quot;, product);</span>
+<span class="nc" id="L902">        request.setAttribute(&quot;mess&quot;, mess);</span>
+<span class="nc" id="L903">        request.setAttribute(&quot;service&quot;, &quot;updateproductdetail&quot;);</span>
+<span class="nc" id="L904">        sendDispatcher(request, response, &quot;admin/productdetail.jsp&quot;);</span>
+<span class="nc" id="L905">    }//&lt;/editor-fold&gt;</span>
+
+    // &lt;editor-fold defaultstate=&quot;collapsed&quot; desc=&quot;Company methods. Click on the + sign on the left to edit the code.&quot;&gt;
+    public void serviceCompanyManagement(String service, HttpServletRequest request, HttpServletResponse response) {
+<span class="nc" id="L909">        List&lt;ShipCompany&gt; listPaging = daocompany.getAllPagingShipCompany(1, 5, &quot;&quot;);</span>
+<span class="nc" id="L910">        List&lt;ShipCompany&gt; listCompany = daocompany.getAllShipCompany();</span>
+<span class="nc" id="L911">        int totalPage = listCompany.size() / 5;</span>
+<span class="nc bnc" id="L912" title="All 2 branches missed.">        if (listCompany.size() &gt; 5) {</span>
+<span class="nc" id="L913">            totalPage += 1;</span>
+        }
+<span class="nc" id="L915">        request.setAttribute(&quot;index&quot;, 1);</span>
+<span class="nc" id="L916">        request.setAttribute(&quot;totalPage&quot;, totalPage);</span>
+<span class="nc" id="L917">        request.setAttribute(&quot;listCompany&quot;, listPaging);</span>
+<span class="nc" id="L918">        request.setAttribute(&quot;service&quot;, service);</span>
+<span class="nc" id="L919">        sendDispatcher(request, response, &quot;admin/companymanagement.jsp&quot;);</span>
+<span class="nc" id="L920">    }</span>
+
+    public void servicePagingCompany(String service, HttpServletRequest request, HttpServletResponse response) throws IOException {
+<span class="nc" id="L923">        PrintWriter pr = response.getWriter();</span>
+<span class="nc" id="L924">        request.setAttribute(&quot;service&quot;, service);</span>
+<span class="nc" id="L925">        int index = 1, numOfRow = 5;</span>
+<span class="nc" id="L926">        String search = request.getParameter(&quot;search&quot;);</span>
+<span class="nc bnc" id="L927" title="All 2 branches missed.">        if (request.getParameter(&quot;index&quot;) != null) {</span>
+<span class="nc" id="L928">            index = Integer.parseInt(request.getParameter(&quot;index&quot;));</span>
+        }
+<span class="nc bnc" id="L930" title="All 2 branches missed.">        if (request.getParameter(&quot;row&quot;) != null) {</span>
+<span class="nc" id="L931">            numOfRow = Integer.parseInt(request.getParameter(&quot;row&quot;));</span>
+        }
+<span class="nc" id="L933">        List&lt;ShipCompany&gt; listPaging = daocompany.getAllPagingShipCompany(index, numOfRow, search);</span>
+<span class="nc" id="L934">        request.setAttribute(&quot;index&quot;, index);</span>
+<span class="nc" id="L935">        request.setAttribute(&quot;listCompany&quot;, listPaging);</span>
+<span class="nc bnc" id="L936" title="All 2 branches missed.">        for (ShipCompany company : listPaging) {</span>
+<span class="nc" id="L937">            DecimalFormat nf = new DecimalFormat(&quot;###,###,###&quot;);</span>
+<span class="nc" id="L938">            pr.print(&quot;&lt;tr&gt;&quot;</span>
+<span class="nc" id="L939">                    + &quot;&lt;td&gt;&lt;div&gt;&quot; + company.getCompanyName() + &quot; &lt;/div&gt;&lt;/td&gt;&quot;</span>
+<span class="nc" id="L940">                    + &quot;&lt;td&gt;&lt;div&gt;&quot; + company.getCommitDate() + &quot;&lt;/div&gt;&lt;/td&gt;&quot;</span>
+<span class="nc" id="L941">                    + &quot;&lt;td&gt;&lt;div&gt;&quot; + nf.format(company.getUnitCost()) + &quot;&lt;/div&gt;&lt;/td&gt;&quot;</span>
+<span class="nc" id="L942">                    + &quot;&lt;td&gt;&lt;div&gt;&lt;a href=\&quot;AdminControllerMap?service=updatecompanydetail&amp;companyid=&quot; + company.getCompanyID() + &quot;\&quot;&gt;&lt;button class=\&quot;btn btn-primary\&quot;&gt;Edit&lt;/button&gt;&lt;/a&gt;&quot;</span>
+                    + &quot;&lt;/div&gt;&lt;/td&gt;&quot;
+                    + &quot;&lt;td&gt;&quot;);
+<span class="nc bnc" id="L945" title="All 2 branches missed.">            if (company.getStatus() == 1) {</span>
+<span class="nc" id="L946">                pr.print(&quot;&lt;a href=\&quot;AdminControllerMap?service=deletecompany&amp;companyid=&quot; + company.getCompanyID() + &quot;\&quot; onclick=\&quot;return confirm('Are you sure?');\&quot;&gt;&lt;button class=\&quot;btn btn-primary\&quot;&gt;Deactive&lt;/button&gt;&lt;/a&gt;&quot;);</span>
+            } else {
+<span class="nc" id="L948">                pr.print(&quot;&lt;a href=\&quot;AdminControllerMap?service=activecompany&amp;companyid=&quot; + company.getCompanyID() + &quot;\&quot; onclick=\&quot;return confirm('Are you sure?');\&quot;&gt;&lt;button class=\&quot;btn btn-primary\&quot;&gt;Active&lt;/button&gt;&lt;/a&gt;&quot;);</span>
+            }
+<span class="nc" id="L950">            pr.print(&quot;&lt;/td&gt;&quot;</span>
+                    + &quot;&lt;/tr&gt;&quot;
+            );
+<span class="nc" id="L953">        }</span>
+<span class="nc bnc" id="L954" title="All 2 branches missed.">        if (request.getParameter(&quot;row&quot;) == null) {</span>
+<span class="nc" id="L955">            sendDispatcher(request, response, &quot;admin/companymanagement.jsp&quot;);</span>
+        }
+<span class="nc" id="L957">    }</span>
+
+    public void serviceShowPageCompany(HttpServletRequest request, HttpServletResponse response) throws IOException {
+<span class="nc" id="L960">        PrintWriter pr = response.getWriter();</span>
+<span class="nc" id="L961">        int index = 1, numOfRow = 5;</span>
+<span class="nc" id="L962">        String search = request.getParameter(&quot;search&quot;);</span>
+<span class="nc bnc" id="L963" title="All 2 branches missed.">        if (request.getParameter(&quot;index&quot;) != null) {</span>
+<span class="nc" id="L964">            index = Integer.parseInt(request.getParameter(&quot;index&quot;));</span>
+        }
+<span class="nc bnc" id="L966" title="All 2 branches missed.">        if (request.getParameter(&quot;row&quot;) != null) {</span>
+<span class="nc" id="L967">            numOfRow = Integer.parseInt(request.getParameter(&quot;row&quot;));</span>
+        }
+<span class="nc" id="L969">        int totalResult = daocompany.getPageNumber(search);</span>
+<span class="nc" id="L970">        int totalPage = totalResult / numOfRow;</span>
+<span class="nc bnc" id="L971" title="All 2 branches missed.">        if (totalResult != totalPage * numOfRow) {</span>
+<span class="nc" id="L972">            totalPage += 1;</span>
+        }
+<span class="nc bnc" id="L974" title="All 2 branches missed.">        int prev = index == 1 ? 1 : index - 1;</span>
+<span class="nc bnc" id="L975" title="All 2 branches missed.">        int next = index == totalPage ? totalPage : index + 1;</span>
+<span class="nc bnc" id="L976" title="All 2 branches missed.">        if (totalResult &gt; numOfRow) {</span>
+<span class="nc" id="L977">            pr.print(&quot;&lt;li data-repair=\&quot;1\&quot; class=\&quot;page-item\&quot;&gt;&quot;);</span>
+<span class="nc" id="L978">            pr.print(&quot;&lt;a class=\&quot;page-link\&quot; aria-label=\&quot;First\&quot;&gt;&quot;);</span>
+<span class="nc" id="L979">            pr.print(&quot;&lt;span aria-hidden=\&quot;true\&quot;&gt;&lt;i class=\&quot;fas fa-backward\&quot;&gt;&lt;/i&gt;&quot;);</span>
+<span class="nc" id="L980">            pr.print(&quot;&lt;span class=\&quot;sr-only\&quot;&gt;(current)&lt;/span&gt; &quot;);</span>
+<span class="nc" id="L981">            pr.print(&quot;&lt;/span&gt;&quot;);</span>
+<span class="nc" id="L982">            pr.print(&quot;&lt;/a&gt;&quot;);</span>
+<span class="nc" id="L983">            pr.print(&quot;&lt;/li&gt;&quot;);</span>
+<span class="nc" id="L984">            pr.print(&quot;&lt;li data-repair=\&quot;&quot; + prev + &quot;\&quot; class=\&quot;page-item\&quot;&gt;&quot;);</span>
+<span class="nc" id="L985">            pr.print(&quot;&lt;a class=\&quot;page-link\&quot; aria-label=\&quot;Previous\&quot;&gt;&quot;);</span>
+<span class="nc" id="L986">            pr.print(&quot;&lt;span aria-hidden=\&quot;true\&quot;&gt;&lt;i class=\&quot;fas fa-arrow-left\&quot;&gt;&lt;/i&gt;&quot;);</span>
+<span class="nc" id="L987">            pr.print(&quot;&lt;span class=\&quot;sr-only\&quot;&gt;(current)&lt;/span&gt; &quot;);</span>
+<span class="nc" id="L988">            pr.print(&quot;&lt;/span&gt;&quot;);</span>
+<span class="nc" id="L989">            pr.print(&quot;&lt;/a&gt;&quot;);</span>
+<span class="nc" id="L990">            pr.print(&quot;&lt;/li&gt;&quot;);</span>
+<span class="nc bnc" id="L991" title="All 2 branches missed.">            for (int i = 1; i &lt;= totalPage; i++) {</span>
+<span class="nc bnc" id="L992" title="All 2 branches missed.">                if (i &lt; index - 2) {</span>
+<span class="nc" id="L993">                    continue;</span>
+                }
+<span class="nc bnc" id="L995" title="All 2 branches missed.">                if (index &lt; 3) {</span>
+<span class="nc bnc" id="L996" title="All 2 branches missed.">                    if (i &gt; 5) {</span>
+<span class="nc" id="L997">                        break;</span>
+                    }
+                } else {
+<span class="nc bnc" id="L1000" title="All 2 branches missed.">                    if (i &gt; index + 2) {</span>
+<span class="nc" id="L1001">                        break;</span>
+                    }
+                }
+<span class="nc bnc" id="L1004" title="All 2 branches missed.">                if (index == i) {</span>
+<span class="nc" id="L1005">                    pr.print(&quot;&lt;li  class=\&quot;page-item active\&quot; data-repair=\&quot;&quot; + i + &quot;\&quot;&gt;&quot;);</span>
+                } else {
+<span class="nc" id="L1007">                    pr.print(&quot;&lt;li  class=\&quot;page-item\&quot; data-repair=\&quot;&quot; + i + &quot;\&quot;&gt;&quot;);</span>
+                }
+<span class="nc" id="L1009">                pr.print(&quot;&lt;a class=\&quot;page-link\&quot;&gt;&quot;);</span>
+<span class="nc" id="L1010">                pr.print(&quot;&lt;div class=\&quot;index\&quot;&gt;&quot; + i + &quot;&lt;/div&gt;&quot;);</span>
+<span class="nc" id="L1011">                pr.print(&quot;&lt;span class=\&quot;sr-only\&quot;&gt;(current)&lt;/span&gt;&quot;);</span>
+<span class="nc" id="L1012">                pr.print(&quot;&lt;/a&gt;&quot;);</span>
+<span class="nc" id="L1013">                pr.print(&quot;&lt;/li&gt;&quot;);</span>
+            }
+<span class="nc" id="L1015">            pr.print(&quot;&lt;li data-repair=\&quot;&quot; + next + &quot;\&quot; class=\&quot;page-item\&quot;&gt;&quot;);</span>
+<span class="nc" id="L1016">            pr.print(&quot;&lt;a class=\&quot;page-link\&quot; aria-label=\&quot;Next\&quot;&gt;&quot;);</span>
+<span class="nc" id="L1017">            pr.print(&quot;&lt;span aria-hidden=\&quot;true\&quot;&gt;&lt;i class=\&quot;fas fa-arrow-right\&quot;&gt;&lt;/i&gt;&quot;);</span>
+<span class="nc" id="L1018">            pr.print(&quot;&lt;span class=\&quot;sr-only\&quot;&gt;(current)&lt;/span&gt; &quot;);</span>
+<span class="nc" id="L1019">            pr.print(&quot;&lt;/span&gt;&quot;);</span>
+<span class="nc" id="L1020">            pr.print(&quot;&lt;/a&gt;&quot;);</span>
+<span class="nc" id="L1021">            pr.print(&quot;&lt;/li&gt;&quot;);</span>
+<span class="nc" id="L1022">            pr.print(&quot;&lt;li data-repair=\&quot;&quot; + totalPage + &quot;\&quot; class=\&quot;page-item\&quot;&gt;&quot;);</span>
+<span class="nc" id="L1023">            pr.print(&quot;&lt;a class=\&quot;page-link\&quot; aria-label=\&quot;Last\&quot;&gt;&quot;);</span>
+<span class="nc" id="L1024">            pr.print(&quot;&lt;span aria-hidden=\&quot;true\&quot;&gt;&lt;i class=\&quot;fas fa-forward\&quot;&gt;&lt;/i&gt;&quot;);</span>
+<span class="nc" id="L1025">            pr.print(&quot;&lt;span class=\&quot;sr-only\&quot;&gt;(current)&lt;/span&gt; &quot;);</span>
+<span class="nc" id="L1026">            pr.print(&quot;&lt;/span&gt;&quot;);</span>
+<span class="nc" id="L1027">            pr.print(&quot;&lt;/a&gt;&quot;);</span>
+<span class="nc" id="L1028">            pr.print(&quot;&lt;/li&gt;&quot;);</span>
+        }
+<span class="nc bnc" id="L1030" title="All 2 branches missed.">        if (request.getParameter(&quot;row&quot;) == null) {</span>
+<span class="nc" id="L1031">            sendDispatcher(request, response, &quot;admin/companymanagement.jsp&quot;);</span>
+        }
+<span class="nc" id="L1033">    }</span>
+
+    public void serviceCompanyDetail(String service, HttpServletRequest request, HttpServletResponse response) {
+<span class="nc" id="L1036">        request.setAttribute(&quot;service&quot;, service);</span>
+<span class="nc bnc" id="L1037" title="All 2 branches missed.">        if (service.equalsIgnoreCase(&quot;addcompanydetail&quot;)) {</span>
+<span class="nc" id="L1038">            sendDispatcher(request, response, &quot;admin/companydetail.jsp&quot;);</span>
+<span class="nc" id="L1039">            return;</span>
+        }
+<span class="nc" id="L1041">        int id = Integer.parseInt(request.getParameter(&quot;companyid&quot;));</span>
+<span class="nc" id="L1042">        ShipCompany company = daocompany.getShipCompanyById(id);</span>
+<span class="nc" id="L1043">        request.setAttribute(&quot;company&quot;, company);</span>
+<span class="nc" id="L1044">        sendDispatcher(request, response, &quot;admin/companydetail.jsp&quot;);</span>
+<span class="nc" id="L1045">    }</span>
+
+    public void serviceDeleteCompany(String service, HttpServletRequest request, HttpServletResponse response) {
+<span class="nc" id="L1048">        String id = request.getParameter(&quot;companyid&quot;);</span>
+<span class="nc" id="L1049">        daocompany.changeStatus(Integer.parseInt(id), 0);</span>
+<span class="nc" id="L1050">        sendDispatcher(request, response, &quot;admin/companymanagement.jsp&quot;);</span>
+<span class="nc" id="L1051">        List&lt;ShipCompany&gt; listPaging = daocompany.getAllPagingShipCompany(1, 5, &quot;&quot;);</span>
+<span class="nc" id="L1052">        List&lt;ShipCompany&gt; listCompany = daocompany.getAllShipCompany();</span>
+<span class="nc" id="L1053">        int totalPage = listCompany.size() / 5;</span>
+<span class="nc bnc" id="L1054" title="All 2 branches missed.">        if (listCompany.size() &gt; 5) {</span>
+<span class="nc" id="L1055">            totalPage += 1;</span>
+        }
+<span class="nc" id="L1057">        request.setAttribute(&quot;index&quot;, 1);</span>
+<span class="nc" id="L1058">        request.setAttribute(&quot;totalPage&quot;, totalPage);</span>
+<span class="nc" id="L1059">        request.setAttribute(&quot;listCompany&quot;, listPaging);</span>
+<span class="nc" id="L1060">        request.setAttribute(&quot;service&quot;, &quot;companymanagement&quot;);</span>
+<span class="nc" id="L1061">        sendDispatcher(request, response, &quot;admin/companymanagement.jsp&quot;);</span>
+<span class="nc" id="L1062">    }</span>
+
+    public void serviceActiveCompany(String service, HttpServletRequest request, HttpServletResponse response) {
+<span class="nc" id="L1065">        String id = request.getParameter(&quot;companyid&quot;);</span>
+<span class="nc" id="L1066">        daocompany.changeStatus(Integer.parseInt(id), 1);</span>
+<span class="nc" id="L1067">        sendDispatcher(request, response, &quot;admin/companymanagement.jsp&quot;);</span>
+<span class="nc" id="L1068">        List&lt;ShipCompany&gt; listPaging = daocompany.getAllPagingShipCompany(1, 5, &quot;&quot;);</span>
+<span class="nc" id="L1069">        List&lt;ShipCompany&gt; listCompany = daocompany.getAllShipCompany();</span>
+<span class="nc" id="L1070">        int totalPage = listCompany.size() / 5;</span>
+<span class="nc bnc" id="L1071" title="All 2 branches missed.">        if (listCompany.size() &gt; 5) {</span>
+<span class="nc" id="L1072">            totalPage += 1;</span>
+        }
+<span class="nc" id="L1074">        request.setAttribute(&quot;index&quot;, 1);</span>
+<span class="nc" id="L1075">        request.setAttribute(&quot;totalPage&quot;, totalPage);</span>
+<span class="nc" id="L1076">        request.setAttribute(&quot;listCompany&quot;, listPaging);</span>
+<span class="nc" id="L1077">        request.setAttribute(&quot;service&quot;, &quot;companymanagement&quot;);</span>
+<span class="nc" id="L1078">        sendDispatcher(request, response, &quot;admin/companymanagement.jsp&quot;);</span>
+<span class="nc" id="L1079">    }</span>
+
+    public void serviceAddCompany(String service, HttpServletRequest request, HttpServletResponse response) {
+<span class="nc" id="L1082">        request.setAttribute(&quot;service&quot;, service);</span>
+<span class="nc" id="L1083">        String companyname = request.getParameter(&quot;companyname&quot;);</span>
+<span class="nc" id="L1084">        String unitcost = request.getParameter(&quot;unitcost&quot;);</span>
+<span class="nc" id="L1085">        String commitdate = request.getParameter(&quot;commitdate&quot;);</span>
+<span class="nc" id="L1086">        boolean isExist = false;</span>
+<span class="nc bnc" id="L1087" title="All 2 branches missed.">        if (daocompany.checkExistCompanyName(companyname)) {</span>
+<span class="nc" id="L1088">            isExist = true;</span>
+        }
+<span class="nc bnc" id="L1090" title="All 2 branches missed.">        if (isExist == true) {</span>
+<span class="nc" id="L1091">            request.setAttribute(&quot;companyname&quot;, companyname);</span>
+<span class="nc" id="L1092">            request.setAttribute(&quot;unitcost&quot;, unitcost);</span>
+<span class="nc" id="L1093">            request.setAttribute(&quot;commitdate&quot;, commitdate);</span>
+<span class="nc" id="L1094">            String state = &quot;fail&quot;;</span>
+<span class="nc" id="L1095">            request.setAttribute(&quot;state&quot;, state);</span>
+<span class="nc" id="L1096">            String mess = &quot;Add fail because duplicate information&quot;;</span>
+<span class="nc" id="L1097">            request.setAttribute(&quot;mess&quot;, mess);</span>
+<span class="nc" id="L1098">            request.setAttribute(&quot;service&quot;, &quot;addcompanydetail&quot;);</span>
+<span class="nc" id="L1099">            sendDispatcher(request, response, &quot;admin/companydetail.jsp&quot;);</span>
+        }
+<span class="nc bnc" id="L1101" title="All 2 branches missed.">        if (isExist == false) {</span>
+<span class="nc" id="L1102">            ShipCompany company = new ShipCompany();</span>
+<span class="nc" id="L1103">            NumberFormat format = NumberFormat.getInstance(Locale.US);</span>
+<span class="nc" id="L1104">            Number cost = 0, date = 0;</span>
+            try {
+<span class="nc" id="L1106">                cost = format.parse(unitcost);</span>
+<span class="nc" id="L1107">                date = format.parse(commitdate);</span>
+<span class="nc" id="L1108">            } catch (ParseException e) {</span>
+<span class="nc" id="L1109">                e.printStackTrace();</span>
+<span class="nc" id="L1110">            }</span>
+<span class="nc" id="L1111">            String unitCostTemp = String.valueOf(cost);</span>
+<span class="nc" id="L1112">            company.setCommitDate(date.intValue());</span>
+<span class="nc" id="L1113">            company.setCompanyName(companyname);</span>
+<span class="nc" id="L1114">            company.setUnitCost(Double.parseDouble(unitCostTemp));</span>
+<span class="nc" id="L1115">            company.setStatus(1);</span>
+<span class="nc" id="L1116">            daocompany.addShipCompany(company);</span>
+<span class="nc" id="L1117">            List&lt;ShipCompany&gt; listCompany = daocompany.getAllPagingShipCompany(1, 5, &quot;&quot;);</span>
+<span class="nc" id="L1118">            String state = &quot;success&quot;;</span>
+<span class="nc" id="L1119">            request.setAttribute(&quot;state&quot;, state);</span>
+<span class="nc" id="L1120">            request.setAttribute(&quot;listCompany&quot;, listCompany);</span>
+<span class="nc" id="L1121">            String mess = &quot;Add successfully&quot;;</span>
+<span class="nc" id="L1122">            request.setAttribute(&quot;mess&quot;, mess);</span>
+<span class="nc" id="L1123">            request.setAttribute(&quot;service&quot;, &quot;addcompanydetail&quot;);</span>
+<span class="nc" id="L1124">            sendDispatcher(request, response, &quot;admin/companydetail.jsp&quot;);</span>
+        }
+<span class="nc" id="L1126">    }</span>
+
+    public void serviceUpdateCompany(String service, HttpServletRequest request, HttpServletResponse response) {
+<span class="nc" id="L1129">        request.setAttribute(&quot;service&quot;, service);</span>
+<span class="nc" id="L1130">        String id = request.getParameter(&quot;id&quot;);</span>
+<span class="nc" id="L1131">        ShipCompany company = daocompany.getShipCompanyById(Integer.parseInt(id));</span>
+<span class="nc" id="L1132">        String companyname = request.getParameter(&quot;companyname&quot;);</span>
+<span class="nc" id="L1133">        String unitcost = request.getParameter(&quot;unitcost&quot;);</span>
+<span class="nc" id="L1134">        String commitdate = request.getParameter(&quot;commitdate&quot;);</span>
+<span class="nc" id="L1135">        boolean isExist = false;</span>
+<span class="nc bnc" id="L1136" title="All 4 branches missed.">        if (daocompany.checkExistCompanyName(companyname) &amp;&amp; !companyname.equalsIgnoreCase(company.getCompanyName())) {</span>
+<span class="nc" id="L1137">            isExist = true;</span>
+        }
+<span class="nc bnc" id="L1139" title="All 2 branches missed.">        if (isExist == true) {</span>
+<span class="nc" id="L1140">            request.setAttribute(&quot;service&quot;, &quot;updatecompanydetail&quot;);</span>
+<span class="nc" id="L1141">            request.setAttribute(&quot;company&quot;, company);</span>
+<span class="nc" id="L1142">            String mess = &quot;Update fail because duplicate information&quot;;</span>
+<span class="nc" id="L1143">            String state = &quot;fail&quot;;</span>
+<span class="nc" id="L1144">            request.setAttribute(&quot;state&quot;, state);</span>
+<span class="nc" id="L1145">            request.setAttribute(&quot;mess&quot;, mess);</span>
+<span class="nc" id="L1146">            sendDispatcher(request, response, &quot;admin/companydetail.jsp&quot;);</span>
+        }
+<span class="nc bnc" id="L1148" title="All 2 branches missed.">        if (isExist == false) {</span>
+<span class="nc" id="L1149">            NumberFormat format = NumberFormat.getInstance(Locale.US);</span>
+<span class="nc" id="L1150">            Number cost = 0, date = 0;</span>
+            try {
+<span class="nc" id="L1152">                cost = format.parse(unitcost);</span>
+<span class="nc" id="L1153">                date = format.parse(commitdate);</span>
+<span class="nc" id="L1154">            } catch (ParseException e) {</span>
+<span class="nc" id="L1155">                e.printStackTrace();</span>
+<span class="nc" id="L1156">            }</span>
+<span class="nc" id="L1157">            String unitCostTemp = String.valueOf(cost);</span>
+<span class="nc" id="L1158">            company.setCommitDate(date.intValue());</span>
+<span class="nc" id="L1159">            company.setCompanyName(companyname);</span>
+<span class="nc" id="L1160">            company.setUnitCost(Double.parseDouble(unitCostTemp));</span>
+<span class="nc" id="L1161">            daocompany.editShipCompany(company);</span>
+<span class="nc" id="L1162">            String state = &quot;success&quot;;</span>
+<span class="nc" id="L1163">            request.setAttribute(&quot;state&quot;, state);</span>
+<span class="nc" id="L1164">            List&lt;ShipCompany&gt; listCompany = daocompany.getAllPagingShipCompany(1, 5, &quot;&quot;);</span>
+<span class="nc" id="L1165">            request.setAttribute(&quot;listCompany&quot;, listCompany);</span>
+<span class="nc" id="L1166">            request.setAttribute(&quot;company&quot;, company);</span>
+<span class="nc" id="L1167">            String mess = &quot;Update successfully&quot;;</span>
+<span class="nc" id="L1168">            request.setAttribute(&quot;mess&quot;, mess);</span>
+<span class="nc" id="L1169">            request.setAttribute(&quot;service&quot;, &quot;updatecompanydetail&quot;);</span>
+<span class="nc" id="L1170">            sendDispatcher(request, response, &quot;admin/companydetail.jsp&quot;);</span>
+        }
+<span class="nc" id="L1172">    }//&lt;/editor-fold&gt;</span>
+
+    // &lt;editor-fold defaultstate=&quot;collapsed&quot; desc=&quot;Gallery methods. Click on the + sign on the left to edit the code.&quot;&gt;
+    public void serviceGalleryManagement(String service, HttpServletRequest request, HttpServletResponse response) {
+<span class="nc" id="L1176">        List&lt;Gallery&gt; listPaging = daogallery.getAllPagingGallery(1, 5, &quot;&quot;);</span>
+<span class="nc" id="L1177">        List&lt;Gallery&gt; listGallery = daogallery.getAllGallery();</span>
+<span class="nc" id="L1178">        int totalPage = listGallery.size() / 5;</span>
+<span class="nc bnc" id="L1179" title="All 2 branches missed.">        if (listGallery.size() &gt; 5) {</span>
+<span class="nc" id="L1180">            totalPage += 1;</span>
+        }
+<span class="nc" id="L1182">        request.setAttribute(&quot;index&quot;, 1);</span>
+<span class="nc" id="L1183">        request.setAttribute(&quot;totalPage&quot;, totalPage);</span>
+<span class="nc" id="L1184">        request.setAttribute(&quot;listGallery&quot;, listPaging);</span>
+<span class="nc" id="L1185">        request.setAttribute(&quot;service&quot;, service);</span>
+<span class="nc" id="L1186">        sendDispatcher(request, response, &quot;admin/gallerymanagement.jsp&quot;);</span>
+<span class="nc" id="L1187">    }</span>
+
+    public void servicePagingGallery(String service, HttpServletRequest request, HttpServletResponse response) throws IOException {
+<span class="nc" id="L1190">        PrintWriter pr = response.getWriter();</span>
+<span class="nc" id="L1191">        request.setAttribute(&quot;service&quot;, service);</span>
+<span class="nc" id="L1192">        int index = 1, numOfRow = 5;</span>
+<span class="nc" id="L1193">        String search = request.getParameter(&quot;search&quot;);</span>
+<span class="nc bnc" id="L1194" title="All 2 branches missed.">        if (request.getParameter(&quot;index&quot;) != null) {</span>
+<span class="nc" id="L1195">            index = Integer.parseInt(request.getParameter(&quot;index&quot;));</span>
+        }
+<span class="nc bnc" id="L1197" title="All 2 branches missed.">        if (request.getParameter(&quot;row&quot;) != null) {</span>
+<span class="nc" id="L1198">            numOfRow = Integer.parseInt(request.getParameter(&quot;row&quot;));</span>
+        }
+<span class="nc" id="L1200">        List&lt;Gallery&gt; listPaging = daogallery.getAllPagingGallery(index, numOfRow, search);</span>
+<span class="nc" id="L1201">        request.setAttribute(&quot;index&quot;, index);</span>
+<span class="nc" id="L1202">        request.setAttribute(&quot;listCompany&quot;, listPaging);</span>
+<span class="nc bnc" id="L1203" title="All 2 branches missed.">        for (Gallery gallery : listPaging) {</span>
+<span class="nc" id="L1204">            Product product = daoproduct.getProductByID(gallery.getProductID());</span>
+<span class="nc" id="L1205">            ProductType pt = daoproducttype.getProductTypeByPTypeID(gallery.getProductTypeID());</span>
+<span class="nc" id="L1206">            Seller seller = daoseller.getSellerByProductId(product.getProductID());</span>
+<span class="nc" id="L1207">            String img = &quot;images/&quot; + gallery.getLink();</span>
+<span class="nc" id="L1208">            pr.print(&quot;&lt;tr&gt;&quot;</span>
+<span class="nc" id="L1209">                    + &quot;&lt;td&gt;&quot; + product.getProductName() + &quot; &lt;/td&gt;&quot;</span>
+<span class="nc" id="L1210">                    + &quot;&lt;td&gt;&quot; + pt.getColor() + &quot;&lt;/td&gt;&quot;</span>
+<span class="nc" id="L1211">                    + &quot;&lt;td&gt;&quot; + pt.getSize() + &quot;&lt;/td&gt;&quot;</span>
+                    + &quot;&lt;td&gt;&lt;img src=\&quot;&quot; + img + &quot;\&quot; width=\&quot;100px\&quot; height=\&quot;100px\&quot;&gt;&lt;/td&gt;&quot;
+<span class="nc" id="L1213">                    + &quot;&lt;td&gt;&quot; + seller.getSellerShopName() + &quot;&lt;/td&gt;&quot;</span>
+<span class="nc" id="L1214">                    + &quot;&lt;td&gt;&lt;div&gt;&lt;a href=\&quot;AdminControllerMap?service=gallerydetail&amp;galleryid=&quot; + gallery.getGalleryID() + &quot;\&quot;&gt;&lt;button class=\&quot;btn btn-primary\&quot;&gt;Edit&lt;/button&gt;&lt;/a&gt;&quot;</span>
+                    + &quot;&lt;/div&gt;&lt;/td&gt;&quot;
+                    + &quot;&lt;td&gt;&quot;);
+<span class="nc bnc" id="L1217" title="All 2 branches missed.">            if (gallery.getStatus() == 1) {</span>
+<span class="nc" id="L1218">                pr.print(&quot;&lt;a href=\&quot;AdminControllerMap?service=deletegallery&amp;galleryid=&quot; + gallery.getGalleryID() + &quot;\&quot; onclick=\&quot;return confirm('Are you sure?');\&quot;&gt;&lt;button class=\&quot;btn btn-primary\&quot;&gt;Deactive&lt;/button&gt;&lt;/a&gt;&quot;);</span>
+            } else {
+<span class="nc" id="L1220">                pr.print(&quot;&lt;a href=\&quot;AdminControllerMap?service=activegallery&amp;galleryid=&quot; + gallery.getGalleryID() + &quot;\&quot; onclick=\&quot;return confirm('Are you sure?');\&quot;&gt;&lt;button class=\&quot;btn btn-primary\&quot;&gt;Active&lt;/button&gt;&lt;/a&gt;&quot;);</span>
+            }
+<span class="nc" id="L1222">            pr.print(&quot;&lt;/td&gt;&quot;</span>
+                    + &quot;&lt;/tr&gt;&quot;
+            );
+<span class="nc" id="L1225">        }</span>
+<span class="nc bnc" id="L1226" title="All 2 branches missed.">        if (request.getParameter(&quot;row&quot;) == null) {</span>
+<span class="nc" id="L1227">            sendDispatcher(request, response, &quot;admin/gallerymanagement.jsp&quot;);</span>
+        }
+<span class="nc" id="L1229">    }</span>
+
+    public void serviceShowPageGallery(HttpServletRequest request, HttpServletResponse response) throws IOException {
+<span class="nc" id="L1232">        PrintWriter pr = response.getWriter();</span>
+<span class="nc" id="L1233">        int index = 1, numOfRow = 5;</span>
+<span class="nc" id="L1234">        String search = request.getParameter(&quot;search&quot;);</span>
+<span class="nc bnc" id="L1235" title="All 2 branches missed.">        if (request.getParameter(&quot;index&quot;) != null) {</span>
+<span class="nc" id="L1236">            index = Integer.parseInt(request.getParameter(&quot;index&quot;));</span>
+        }
+<span class="nc bnc" id="L1238" title="All 2 branches missed.">        if (request.getParameter(&quot;row&quot;) != null) {</span>
+<span class="nc" id="L1239">            numOfRow = Integer.parseInt(request.getParameter(&quot;row&quot;));</span>
+        }
+<span class="nc" id="L1241">        int totalResult = daogallery.getPageNumber(search);</span>
+<span class="nc" id="L1242">        int totalPage = totalResult / numOfRow;</span>
+<span class="nc bnc" id="L1243" title="All 2 branches missed.">        if (totalResult != totalPage * numOfRow) {</span>
+<span class="nc" id="L1244">            totalPage += 1;</span>
+        }
+<span class="nc bnc" id="L1246" title="All 2 branches missed.">        int prev = index == 1 ? 1 : index - 1;</span>
+<span class="nc bnc" id="L1247" title="All 2 branches missed.">        int next = index == totalPage ? totalPage : index + 1;</span>
+<span class="nc bnc" id="L1248" title="All 2 branches missed.">        if (totalResult &gt; numOfRow) {</span>
+<span class="nc" id="L1249">            pr.print(&quot;&lt;li data-repair=\&quot;1\&quot; class=\&quot;page-item\&quot;&gt;&quot;);</span>
+<span class="nc" id="L1250">            pr.print(&quot;&lt;a class=\&quot;page-link\&quot; aria-label=\&quot;First\&quot;&gt;&quot;);</span>
+<span class="nc" id="L1251">            pr.print(&quot;&lt;span aria-hidden=\&quot;true\&quot;&gt;&lt;i class=\&quot;fas fa-backward\&quot;&gt;&lt;/i&gt;&quot;);</span>
+<span class="nc" id="L1252">            pr.print(&quot;&lt;span class=\&quot;sr-only\&quot;&gt;(current)&lt;/span&gt; &quot;);</span>
+<span class="nc" id="L1253">            pr.print(&quot;&lt;/span&gt;&quot;);</span>
+<span class="nc" id="L1254">            pr.print(&quot;&lt;/a&gt;&quot;);</span>
+<span class="nc" id="L1255">            pr.print(&quot;&lt;/li&gt;&quot;);</span>
+<span class="nc" id="L1256">            pr.print(&quot;&lt;li data-repair=\&quot;&quot; + prev + &quot;\&quot; class=\&quot;page-item\&quot;&gt;&quot;);</span>
+<span class="nc" id="L1257">            pr.print(&quot;&lt;a class=\&quot;page-link\&quot; aria-label=\&quot;Previous\&quot;&gt;&quot;);</span>
+<span class="nc" id="L1258">            pr.print(&quot;&lt;span aria-hidden=\&quot;true\&quot;&gt;&lt;i class=\&quot;fas fa-arrow-left\&quot;&gt;&lt;/i&gt;&quot;);</span>
+<span class="nc" id="L1259">            pr.print(&quot;&lt;span class=\&quot;sr-only\&quot;&gt;(current)&lt;/span&gt; &quot;);</span>
+<span class="nc" id="L1260">            pr.print(&quot;&lt;/span&gt;&quot;);</span>
+<span class="nc" id="L1261">            pr.print(&quot;&lt;/a&gt;&quot;);</span>
+<span class="nc" id="L1262">            pr.print(&quot;&lt;/li&gt;&quot;);</span>
+<span class="nc bnc" id="L1263" title="All 2 branches missed.">            for (int i = 1; i &lt;= totalPage; i++) {</span>
+<span class="nc bnc" id="L1264" title="All 2 branches missed.">                if (i &lt; index - 2) {</span>
+<span class="nc" id="L1265">                    continue;</span>
+                }
+<span class="nc bnc" id="L1267" title="All 2 branches missed.">                if (index &lt; 3) {</span>
+<span class="nc bnc" id="L1268" title="All 2 branches missed.">                    if (i &gt; 5) {</span>
+<span class="nc" id="L1269">                        break;</span>
+                    }
+                } else {
+<span class="nc bnc" id="L1272" title="All 2 branches missed.">                    if (i &gt; index + 2) {</span>
+<span class="nc" id="L1273">                        break;</span>
+                    }
+                }
+<span class="nc bnc" id="L1276" title="All 2 branches missed.">                if (index == i) {</span>
+<span class="nc" id="L1277">                    pr.print(&quot;&lt;li  class=\&quot;page-item active\&quot; data-repair=\&quot;&quot; + i + &quot;\&quot;&gt;&quot;);</span>
+                } else {
+<span class="nc" id="L1279">                    pr.print(&quot;&lt;li  class=\&quot;page-item\&quot; data-repair=\&quot;&quot; + i + &quot;\&quot;&gt;&quot;);</span>
+                }
+<span class="nc" id="L1281">                pr.print(&quot;&lt;a class=\&quot;page-link\&quot;&gt;&quot;);</span>
+<span class="nc" id="L1282">                pr.print(&quot;&lt;div class=\&quot;index\&quot;&gt;&quot; + i + &quot;&lt;/div&gt;&quot;);</span>
+<span class="nc" id="L1283">                pr.print(&quot;&lt;span class=\&quot;sr-only\&quot;&gt;(current)&lt;/span&gt;&quot;);</span>
+<span class="nc" id="L1284">                pr.print(&quot;&lt;/a&gt;&quot;);</span>
+<span class="nc" id="L1285">                pr.print(&quot;&lt;/li&gt;&quot;);</span>
+            }
+<span class="nc" id="L1287">            pr.print(&quot;&lt;li data-repair=\&quot;&quot; + next + &quot;\&quot; class=\&quot;page-item\&quot;&gt;&quot;);</span>
+<span class="nc" id="L1288">            pr.print(&quot;&lt;a class=\&quot;page-link\&quot; aria-label=\&quot;Next\&quot;&gt;&quot;);</span>
+<span class="nc" id="L1289">            pr.print(&quot;&lt;span aria-hidden=\&quot;true\&quot;&gt;&lt;i class=\&quot;fas fa-arrow-right\&quot;&gt;&lt;/i&gt;&quot;);</span>
+<span class="nc" id="L1290">            pr.print(&quot;&lt;span class=\&quot;sr-only\&quot;&gt;(current)&lt;/span&gt; &quot;);</span>
+<span class="nc" id="L1291">            pr.print(&quot;&lt;/span&gt;&quot;);</span>
+<span class="nc" id="L1292">            pr.print(&quot;&lt;/a&gt;&quot;);</span>
+<span class="nc" id="L1293">            pr.print(&quot;&lt;/li&gt;&quot;);</span>
+<span class="nc" id="L1294">            pr.print(&quot;&lt;li data-repair=\&quot;&quot; + totalPage + &quot;\&quot; class=\&quot;page-item\&quot;&gt;&quot;);</span>
+<span class="nc" id="L1295">            pr.print(&quot;&lt;a class=\&quot;page-link\&quot; aria-label=\&quot;Last\&quot;&gt;&quot;);</span>
+<span class="nc" id="L1296">            pr.print(&quot;&lt;span aria-hidden=\&quot;true\&quot;&gt;&lt;i class=\&quot;fas fa-forward\&quot;&gt;&lt;/i&gt;&quot;);</span>
+<span class="nc" id="L1297">            pr.print(&quot;&lt;span class=\&quot;sr-only\&quot;&gt;(current)&lt;/span&gt; &quot;);</span>
+<span class="nc" id="L1298">            pr.print(&quot;&lt;/span&gt;&quot;);</span>
+<span class="nc" id="L1299">            pr.print(&quot;&lt;/a&gt;&quot;);</span>
+<span class="nc" id="L1300">            pr.print(&quot;&lt;/li&gt;&quot;);</span>
+        }
+<span class="nc bnc" id="L1302" title="All 2 branches missed.">        if (request.getParameter(&quot;row&quot;) == null) {</span>
+<span class="nc" id="L1303">            sendDispatcher(request, response, &quot;admin/gallerymanagement.jsp&quot;);</span>
+        }
+<span class="nc" id="L1305">    }</span>
+
+    public void serviceGalleryDetail(String service, HttpServletRequest request, HttpServletResponse response) {
+<span class="nc" id="L1308">        request.setAttribute(&quot;service&quot;, service);</span>
+<span class="nc bnc" id="L1309" title="All 2 branches missed.">        if (service.equalsIgnoreCase(&quot;addgallerydetail&quot;)) {</span>
+<span class="nc" id="L1310">            sendDispatcher(request, response, &quot;admin/gallerydetail.jsp&quot;);</span>
+<span class="nc" id="L1311">            return;</span>
+        }
+<span class="nc" id="L1313">        int id = Integer.parseInt(request.getParameter(&quot;galleryid&quot;));</span>
+<span class="nc" id="L1314">        Gallery gallery = daogallery.getGalleryById(id);</span>
+<span class="nc" id="L1315">        Product product = daoproduct.getProductByID(gallery.getProductID());</span>
+<span class="nc" id="L1316">        ProductType producttype = daoproducttype.getProductTypeByPTypeID(gallery.getProductTypeID());</span>
+<span class="nc" id="L1317">        Seller seller = daoseller.getSellerByProductId(product.getProductID());</span>
+<span class="nc" id="L1318">        request.setAttribute(service, service);</span>
+<span class="nc" id="L1319">        request.setAttribute(&quot;seller&quot;, seller);</span>
+<span class="nc" id="L1320">        request.setAttribute(&quot;product&quot;, product);</span>
+<span class="nc" id="L1321">        request.setAttribute(&quot;producttype&quot;, producttype);</span>
+<span class="nc" id="L1322">        request.setAttribute(&quot;gallery&quot;, gallery);</span>
+<span class="nc" id="L1323">        sendDispatcher(request, response, &quot;admin/gallerydetail.jsp&quot;);</span>
+<span class="nc" id="L1324">    }</span>
+
+    public void serviceAddGallery(String service, HttpServletRequest request, HttpServletResponse response) {
+<span class="nc" id="L1327">        throw new UnsupportedOperationException(&quot;Not supported yet.&quot;); //To change body of generated methods, choose Tools | Templates.</span>
+    }
+
+    public void serviceActiveGallery(String service, HttpServletRequest request, HttpServletResponse response) {
+<span class="nc" id="L1331">        request.setAttribute(&quot;service&quot;, service);</span>
+<span class="nc" id="L1332">        String id = request.getParameter(&quot;galleryid&quot;);</span>
+<span class="nc" id="L1333">        daogallery.changeStatus(Integer.parseInt(id), 1);</span>
+<span class="nc" id="L1334">        List&lt;Gallery&gt; listPaging = daogallery.getAllPagingGallery(1, 5, &quot;&quot;);</span>
+<span class="nc" id="L1335">        List&lt;Gallery&gt; listGallery = daogallery.getAllGallery();</span>
+<span class="nc" id="L1336">        int totalPage = listGallery.size() / 5;</span>
+<span class="nc bnc" id="L1337" title="All 2 branches missed.">        if (listGallery.size() &gt; 5) {</span>
+<span class="nc" id="L1338">            totalPage += 1;</span>
+        }
+<span class="nc" id="L1340">        request.setAttribute(&quot;index&quot;, 1);</span>
+<span class="nc" id="L1341">        request.setAttribute(&quot;totalPage&quot;, totalPage);</span>
+<span class="nc" id="L1342">        request.setAttribute(&quot;listGallery&quot;, listPaging);</span>
+<span class="nc" id="L1343">        request.setAttribute(&quot;service&quot;, &quot;gallerymanagement&quot;);</span>
+<span class="nc" id="L1344">        sendDispatcher(request, response, &quot;admin/gallerymanagement.jsp&quot;);</span>
+<span class="nc" id="L1345">    }</span>
+
+    public void serviceDeleteGallery(String service, HttpServletRequest request, HttpServletResponse response) {
+<span class="nc" id="L1348">        request.setAttribute(&quot;service&quot;, service);</span>
+<span class="nc" id="L1349">        String id = request.getParameter(&quot;galleryid&quot;);</span>
+<span class="nc" id="L1350">        daogallery.changeStatus(Integer.parseInt(id), 0);</span>
+<span class="nc" id="L1351">        List&lt;Gallery&gt; listPaging = daogallery.getAllPagingGallery(1, 5, &quot;&quot;);</span>
+<span class="nc" id="L1352">        List&lt;Gallery&gt; listGallery = daogallery.getAllGallery();</span>
+<span class="nc" id="L1353">        int totalPage = listGallery.size() / 5;</span>
+<span class="nc bnc" id="L1354" title="All 2 branches missed.">        if (listGallery.size() &gt; 5) {</span>
+<span class="nc" id="L1355">            totalPage += 1;</span>
+        }
+<span class="nc" id="L1357">        request.setAttribute(&quot;index&quot;, 1);</span>
+<span class="nc" id="L1358">        request.setAttribute(&quot;totalPage&quot;, totalPage);</span>
+<span class="nc" id="L1359">        request.setAttribute(&quot;listGallery&quot;, listPaging);</span>
+<span class="nc" id="L1360">        request.setAttribute(&quot;service&quot;, &quot;gallerymanagement&quot;);</span>
+<span class="nc" id="L1361">        sendDispatcher(request, response, &quot;admin/gallerymanagement.jsp&quot;);</span>
+<span class="nc" id="L1362">    }</span>
+
+    public void serviceUpdateGallery(String service, HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException, FileUploadException {
+<span class="nc" id="L1365">        String filename = null;</span>
+        // Create a factory for disk-based file items
+        try {
+<span class="nc" id="L1368">            DiskFileItemFactory factory = new DiskFileItemFactory();</span>
+<span class="nc" id="L1369">            ServletContext servletContext = this.getServletConfig().getServletContext();</span>
+<span class="nc" id="L1370">            File repository = (File) servletContext.getAttribute(&quot;javax.servlet.context.tempdir&quot;);</span>
+<span class="nc" id="L1371">            factory.setRepository(repository);</span>
+<span class="nc" id="L1372">            ServletFileUpload upload = new ServletFileUpload(factory);</span>
+<span class="nc" id="L1373">            List&lt;FileItem&gt; items = upload.parseRequest(request);</span>
+            // Process the uploaded items
+<span class="nc" id="L1375">            Iterator&lt;FileItem&gt; iter = items.iterator();</span>
+<span class="nc" id="L1376">            HashMap&lt;String, String&gt; fields = new HashMap&lt;&gt;();</span>
+<span class="nc bnc" id="L1377" title="All 2 branches missed.">            while (iter.hasNext()) {</span>
+<span class="nc" id="L1378">                FileItem item = iter.next();</span>
+<span class="nc bnc" id="L1379" title="All 2 branches missed.">                if (item.isFormField()) {</span>
+<span class="nc" id="L1380">                    fields.put(item.getFieldName(), item.getString());</span>
+<span class="nc" id="L1381">                    String name = item.getFieldName();</span>
+<span class="nc" id="L1382">                    String value = item.getString();</span>
+<span class="nc" id="L1383">                    System.out.println(name + &quot; &quot; + value);</span>
+<span class="nc" id="L1384">                } else {</span>
+<span class="nc" id="L1385">                    filename = item.getName();</span>
+<span class="nc bnc" id="L1386" title="All 4 branches missed.">                    if (filename == null || filename.equals(&quot;&quot;)) {</span>
+<span class="nc" id="L1387">                        break;</span>
+                    } else {
+<span class="nc" id="L1389">                        Path path = Paths.get(filename);</span>
+<span class="nc" id="L1390">                        String storePath = servletContext.getRealPath(&quot;/images&quot;);</span>
+<span class="nc" id="L1391">                        File uploadFile = new File(storePath + &quot;/&quot; + path.getFileName());</span>
+<span class="nc" id="L1392">                        item.write(uploadFile);</span>
+                    }
+                }
+<span class="nc" id="L1395">            }</span>
+<span class="nc" id="L1396">        } catch (Exception ex) {</span>
+<span class="nc" id="L1397">            Logger.getLogger(UserController.class.getName()).log(Level.SEVERE, null, ex);</span>
+<span class="nc" id="L1398">        }</span>
+<span class="nc" id="L1399">        String id = request.getParameter(&quot;galleryid&quot;);</span>
+<span class="nc" id="L1400">        Gallery gallery = daogallery.getGalleryById(Integer.parseInt(id));</span>
+<span class="nc" id="L1401">        gallery.setLink(filename);</span>
+<span class="nc" id="L1402">        daogallery.editGallery(gallery);</span>
+<span class="nc" id="L1403">        Product product = daoproduct.getProductByID(gallery.getProductID());</span>
+<span class="nc" id="L1404">        ProductType producttype = daoproducttype.getProductTypeByPTypeID(gallery.getProductTypeID());</span>
+<span class="nc" id="L1405">        Seller seller = daoseller.getSellerByProductId(product.getProductID());</span>
+<span class="nc" id="L1406">        request.setAttribute(&quot;filen&quot;, filename);</span>
+<span class="nc" id="L1407">        request.setAttribute(&quot;service&quot;, &quot;gallerymanagement&quot;);</span>
+<span class="nc" id="L1408">        request.setAttribute(&quot;seller&quot;, seller);</span>
+<span class="nc" id="L1409">        request.setAttribute(&quot;product&quot;, product);</span>
+<span class="nc" id="L1410">        request.setAttribute(&quot;producttype&quot;, producttype);</span>
+<span class="nc" id="L1411">        request.setAttribute(&quot;gallery&quot;, gallery);</span>
+<span class="nc" id="L1412">        request.setAttribute(&quot;service&quot;, &quot;gallerymanagement&quot;);</span>
+<span class="nc" id="L1413">        sendDispatcher(request, response, &quot;admin/gallerydetail.jsp&quot;);</span>
+<span class="nc" id="L1414">    }//&lt;/editor-fold&gt;</span>
+
+    public void serviceUserAuthorization(String service, HttpServletRequest request, HttpServletResponse response) {
+<span class="nc" id="L1417">        request.setAttribute(&quot;service&quot;, service);</span>
+<span class="nc" id="L1418">        HashMap&lt;User, Role&gt; listUser = daouser.getAllAuthorizationUser();</span>
+<span class="nc" id="L1419">        request.setAttribute(&quot;listUser&quot;, listUser);</span>
+<span class="nc" id="L1420">        sendDispatcher(request, response, &quot;admin/authorization/userAuthorization.jsp&quot;);</span>
+<span class="nc" id="L1421">    }</span>
+    
+    public void serviceDeleteUserAuthor(String service, HttpServletRequest request, HttpServletResponse response) {
+<span class="nc" id="L1424">        int userid = Integer.parseInt(request.getParameter(&quot;userid&quot;));</span>
+<span class="nc" id="L1425">        daouser.changeStatus(userid, 0);</span>
+<span class="nc" id="L1426">        HashMap&lt;User, Role&gt; listPaging = daouser.getAllPagingUserHashMap(1, 5, &quot;&quot;);</span>
+<span class="nc" id="L1427">        HashMap&lt;User, Role&gt; listUser = daouser.getAllAuthorizationUser();</span>
+<span class="nc" id="L1428">        int totalPage = listUser.size() / 5;</span>
+<span class="nc bnc" id="L1429" title="All 2 branches missed.">        if (listUser.size() != totalPage * 5) {</span>
+<span class="nc" id="L1430">            totalPage += 1;</span>
+        }
+<span class="nc" id="L1432">        request.setAttribute(&quot;index&quot;, 1);</span>
+<span class="nc" id="L1433">        request.setAttribute(&quot;totalPage&quot;, totalPage);</span>
+<span class="nc" id="L1434">        request.setAttribute(&quot;listUser&quot;, listPaging);</span>
+<span class="nc" id="L1435">        request.setAttribute(&quot;service&quot;, &quot;userAuthorization&quot;);</span>
+<span class="nc" id="L1436">        sendDispatcher(request, response, &quot;admin/authorization/userAuthorization.jsp&quot;);</span>
+<span class="nc" id="L1437">    }</span>
+
+    public void serviceActiveUserAuthor(String service, HttpServletRequest request, HttpServletResponse response) {
+<span class="nc" id="L1440">        int id = Integer.parseInt(request.getParameter(&quot;userid&quot;));</span>
+<span class="nc" id="L1441">        daouser.changeStatus(id, 1);</span>
+<span class="nc" id="L1442">        HashMap&lt;User, Role&gt; listPaging = daouser.getAllPagingUserHashMap(1, 5, &quot;&quot;);</span>
+<span class="nc" id="L1443">        HashMap&lt;User, Role&gt; listUser = daouser.getAllAuthorizationUser();</span>
+<span class="nc" id="L1444">        int totalPage = listUser.size() / 5;</span>
+<span class="nc bnc" id="L1445" title="All 2 branches missed.">        if (listUser.size() != totalPage * 5) {</span>
+<span class="nc" id="L1446">            totalPage += 1;</span>
+        }
+<span class="nc" id="L1448">        request.setAttribute(&quot;index&quot;, 1);</span>
+<span class="nc" id="L1449">        request.setAttribute(&quot;totalPage&quot;, totalPage);</span>
+<span class="nc" id="L1450">        request.setAttribute(&quot;listUser&quot;, listPaging);</span>
+<span class="nc" id="L1451">        request.setAttribute(&quot;service&quot;, &quot;userAuthorization&quot;);</span>
+<span class="nc" id="L1452">        sendDispatcher(request, response, &quot;admin/authorization/userAuthorization.jsp&quot;);</span>
+<span class="nc" id="L1453">    }</span>
+    
+    // &lt;editor-fold defaultstate=&quot;collapsed&quot; desc=&quot;Seller Response Method. Click on the + sign on the left to edit the code.&quot;&gt;
+    public void serviceSellerResponse(String service, HttpServletRequest request, HttpServletResponse response) {
+<span class="nc" id="L1457">        request.setAttribute(&quot;service&quot;, service);</span>
+<span class="nc" id="L1458">        List&lt;Seller&gt; listSellerRequest = daoseller.getSellerBySellerRequest();</span>
+<span class="nc" id="L1459">        request.setAttribute(&quot;listSellerRequest&quot;, listSellerRequest);</span>
+<span class="nc" id="L1460">        List&lt;Seller&gt; listAllSeller = daoseller.getAllSeller();</span>
+<span class="nc" id="L1461">        request.setAttribute(&quot;listAllSeller&quot;, listAllSeller);</span>
+<span class="nc" id="L1462">        sendDispatcher(request, response, &quot;admin/authorization/sellerResponse.jsp&quot;);</span>
+<span class="nc" id="L1463">    }</span>
+
+    private void serviceAcceptSellerRequest(String service, HttpServletRequest request, HttpServletResponse response) {
+<span class="nc" id="L1466">        request.setAttribute(&quot;service&quot;, service);</span>
+        //change seller status
+<span class="nc" id="L1468">        int sellerID = Integer.parseInt(request.getParameter(&quot;sellerID&quot;));</span>
+<span class="nc" id="L1469">        daoseller.acceptSellerRequest(sellerID);</span>
+<span class="nc" id="L1470">        String strSellerID = request.getParameter(&quot;sellerID&quot;);</span>
+        //change user status
+<span class="nc" id="L1472">        Seller s = daoseller.getSellerID(strSellerID);</span>
+<span class="nc" id="L1473">        User u = daouser.getUserBySellerId(s);</span>
+<span class="nc" id="L1474">        u.setSell(1);</span>
+<span class="nc" id="L1475">        u.setSystemRole(2);</span>
+        //add parameter to jsp
+<span class="nc" id="L1477">        List&lt;Seller&gt; listAllSeller = daoseller.getAllSeller();</span>
+<span class="nc" id="L1478">        request.setAttribute(&quot;listAllSeller&quot;, listAllSeller);</span>
+<span class="nc" id="L1479">        List&lt;Seller&gt; listSellerRequest = daoseller.getSellerBySellerRequest();</span>
+<span class="nc" id="L1480">        request.setAttribute(&quot;listSellerRequest&quot;, listSellerRequest);</span>
+<span class="nc" id="L1481">        sendDispatcher(request, response, &quot;admin/authorization/sellerResponse.jsp&quot;);</span>
+<span class="nc" id="L1482">    }</span>
+
+    private void serviceDenySellerRequest(String service, HttpServletRequest request, HttpServletResponse response) {
+<span class="nc" id="L1485">        request.setAttribute(&quot;service&quot;, service);</span>
+<span class="nc" id="L1486">        int sellerID = Integer.parseInt(request.getParameter(&quot;sellerID&quot;));</span>
+<span class="nc" id="L1487">        daoseller.denySellerRequest(sellerID);</span>
+<span class="nc" id="L1488">        List&lt;Seller&gt; listAllSeller = daoseller.getAllSeller();</span>
+<span class="nc" id="L1489">        request.setAttribute(&quot;listAllSeller&quot;, listAllSeller);</span>
+<span class="nc" id="L1490">        List&lt;Seller&gt; listSellerRequest = daoseller.getSellerBySellerRequest();</span>
+<span class="nc" id="L1491">        request.setAttribute(&quot;listSellerRequest&quot;, listSellerRequest);</span>
+<span class="nc" id="L1492">        sendDispatcher(request, response, &quot;admin/authorization/sellerResponse.jsp&quot;);</span>
+<span class="nc" id="L1493">    }</span>
+    // &lt;/editor-fold&gt;
+    
+    // &lt;editor-fold defaultstate=&quot;collapsed&quot; desc=&quot;Role methods. Click on the + sign on the left to edit the code.&quot;&gt;
+    public void serviceRoleManagement(String service, HttpServletRequest request, HttpServletResponse response) {
+<span class="nc" id="L1498">        request.setAttribute(&quot;service&quot;, service);</span>
+<span class="nc" id="L1499">        List&lt;Role&gt; role = daorole.getAllRole();</span>
+<span class="nc" id="L1500">        request.setAttribute(&quot;role&quot;, role);</span>
+<span class="nc" id="L1501">        sendDispatcher(request, response, &quot;admin/authorization/roleAuthorization.jsp&quot;);</span>
+<span class="nc" id="L1502">    }</span>
+
+    public void serviceRoleDetail(String service, HttpServletRequest request, HttpServletResponse response) {
+<span class="nc" id="L1505">        request.setAttribute(&quot;service&quot;, service);</span>
+<span class="nc bnc" id="L1506" title="All 2 branches missed.">        if (service.equalsIgnoreCase(&quot;addRoleDetail&quot;)) {</span>
+<span class="nc" id="L1507">            sendDispatcher(request, response, &quot;admin/authorization/editRole.jsp&quot;);</span>
+<span class="nc" id="L1508">            return;</span>
+        }
+<span class="nc" id="L1510">        int id = Integer.parseInt(request.getParameter(&quot;roleID&quot;));</span>
+<span class="nc" id="L1511">        Role roleDetail = daorole.getRoleById(id);</span>
+<span class="nc" id="L1512">        request.setAttribute(&quot;roleDetail&quot;, roleDetail);</span>
+<span class="nc" id="L1513">        sendDispatcher(request, response, &quot;admin/authorization/editRole.jsp&quot;);</span>
+<span class="nc" id="L1514">    }</span>
+
+    public void serviceAddRole(String service, HttpServletRequest request, HttpServletResponse response) {
+<span class="nc" id="L1517">        request.setAttribute(&quot;service&quot;, service);</span>
+<span class="nc" id="L1518">        int roleID = Integer.parseInt(request.getParameter(&quot;roleID&quot;));</span>
+<span class="nc" id="L1519">        String roleName = request.getParameter(&quot;roleName&quot;);</span>
+<span class="nc" id="L1520">        int adminPermission = Integer.parseInt(request.getParameter(&quot;adminPermission&quot;));</span>
+<span class="nc" id="L1521">        int sellerPermission = Integer.parseInt(request.getParameter(&quot;sellerPermission&quot;));</span>
+<span class="nc" id="L1522">        int customerPermission = Integer.parseInt(request.getParameter(&quot;customerPermission&quot;));</span>
+<span class="nc" id="L1523">        boolean isExist = false;</span>
+
+<span class="nc bnc" id="L1525" title="All 4 branches missed.">        if (daorole.checkExistRoleName(roleName) || daorole.checkExistRoleId(roleID)) {</span>
+<span class="nc" id="L1526">            isExist = true;</span>
+        }
+
+<span class="nc bnc" id="L1529" title="All 2 branches missed.">        if (isExist == true) {</span>
+<span class="nc" id="L1530">            request.setAttribute(&quot;adminPermission&quot;, adminPermission);</span>
+<span class="nc" id="L1531">            request.setAttribute(&quot;sellerPermission&quot;, sellerPermission);</span>
+<span class="nc" id="L1532">            request.setAttribute(&quot;customerPermission&quot;, customerPermission);</span>
+<span class="nc" id="L1533">            String state = &quot;fail&quot;;</span>
+<span class="nc" id="L1534">            request.setAttribute(&quot;state&quot;, state);</span>
+<span class="nc" id="L1535">            String mess = &quot;Add fail because duplicate information&quot;;</span>
+<span class="nc" id="L1536">            request.setAttribute(&quot;mess&quot;, mess);</span>
+<span class="nc" id="L1537">            request.setAttribute(&quot;service&quot;, &quot;addRoleDetail&quot;);</span>
+<span class="nc" id="L1538">            sendDispatcher(request, response, &quot;admin/authorization/editRole.jsp&quot;);</span>
+        }
+
+<span class="nc bnc" id="L1541" title="All 2 branches missed.">        if (isExist == false) {</span>
+<span class="nc" id="L1542">            Role newRole = new Role();</span>
+<span class="nc" id="L1543">            newRole.setRoleID(roleID);</span>
+<span class="nc" id="L1544">            newRole.setRoleName(roleName);</span>
+<span class="nc" id="L1545">            newRole.setAdminPermission(adminPermission);</span>
+<span class="nc" id="L1546">            newRole.setSellerPermission(sellerPermission);</span>
+<span class="nc" id="L1547">            newRole.setCustomerPermission(customerPermission);</span>
+<span class="nc" id="L1548">            daorole.addRole(newRole);</span>
+<span class="nc" id="L1549">            String state = &quot;success&quot;;</span>
+<span class="nc" id="L1550">            request.setAttribute(&quot;state&quot;, state);</span>
+<span class="nc" id="L1551">            List&lt;Role&gt; listRole = daorole.getAllRole();</span>
+<span class="nc" id="L1552">            String mess = &quot;Add successfully&quot;;</span>
+<span class="nc" id="L1553">            request.setAttribute(&quot;mess&quot;, mess);</span>
+<span class="nc" id="L1554">            request.setAttribute(&quot;role&quot;, listRole);</span>
+<span class="nc" id="L1555">            sendDispatcher(request, response, &quot;admin/authorization/roleAuthorization.jsp&quot;);</span>
+        }
+<span class="nc" id="L1557">    }</span>
+
+    public void serviceUpdateRole(String service, HttpServletRequest request, HttpServletResponse response) {
+<span class="nc" id="L1560">        request.setAttribute(&quot;service&quot;, service);</span>
+<span class="nc" id="L1561">        int roleID = Integer.parseInt(request.getParameter(&quot;roleID&quot;));</span>
+<span class="nc" id="L1562">        Role role = daorole.getRoleId(roleID);</span>
+<span class="nc" id="L1563">        String roleName = request.getParameter(&quot;roleName&quot;);</span>
+<span class="nc" id="L1564">        int adminPermission = Integer.parseInt(request.getParameter(&quot;adminPermission&quot;));</span>
+<span class="nc" id="L1565">        int sellerPermission = Integer.parseInt(request.getParameter(&quot;sellerPermission&quot;));</span>
+<span class="nc" id="L1566">        int customerPermission = Integer.parseInt(request.getParameter(&quot;customerPermission&quot;));</span>
+<span class="nc" id="L1567">        boolean isExist = false;</span>
+<span class="nc bnc" id="L1568" title="All 4 branches missed.">        if (daorole.checkExistRoleName(roleName) &amp;&amp; !roleName.equals(role.getRoleName())) {</span>
+<span class="nc" id="L1569">            isExist = true;</span>
+        }
+<span class="nc bnc" id="L1571" title="All 4 branches missed.">        if (daorole.checkExistRoleId(roleID) &amp;&amp; roleID != role.getRoleID()) {</span>
+<span class="nc" id="L1572">            isExist = true;</span>
+        }
+<span class="nc bnc" id="L1574" title="All 2 branches missed.">        if (isExist == true) {</span>
+<span class="nc" id="L1575">            request.setAttribute(&quot;service&quot;, &quot;updateRoleDetail&quot;);</span>
+<span class="nc" id="L1576">            request.setAttribute(&quot;roleDetail&quot;, role);</span>
+<span class="nc" id="L1577">            String mess = &quot;Update fail because duplicate information&quot;;</span>
+<span class="nc" id="L1578">            String state = &quot;fail&quot;;</span>
+<span class="nc" id="L1579">            request.setAttribute(&quot;state&quot;, state);</span>
+<span class="nc" id="L1580">            request.setAttribute(&quot;mess&quot;, mess);</span>
+<span class="nc" id="L1581">            sendDispatcher(request, response, &quot;admin/authorization/editRole.jsp&quot;);</span>
+        }
+<span class="nc bnc" id="L1583" title="All 2 branches missed.">        if (isExist == false) {</span>
+<span class="nc" id="L1584">            role.setRoleID(roleID);</span>
+<span class="nc" id="L1585">            role.setRoleName(roleName);</span>
+<span class="nc" id="L1586">            role.setAdminPermission(adminPermission);</span>
+<span class="nc" id="L1587">            role.setSellerPermission(sellerPermission);</span>
+<span class="nc" id="L1588">            role.setCustomerPermission(customerPermission);</span>
+<span class="nc" id="L1589">            daorole.editRole(role);</span>
+<span class="nc" id="L1590">            String state = &quot;success&quot;;</span>
+<span class="nc" id="L1591">            request.setAttribute(&quot;state&quot;, state);</span>
+<span class="nc" id="L1592">            List&lt;Role&gt; listRole = daorole.getAllRole();</span>
+<span class="nc" id="L1593">            request.setAttribute(&quot;role&quot;, listRole);</span>
+<span class="nc" id="L1594">            request.setAttribute(&quot;roleDetail&quot;, role);</span>
+<span class="nc" id="L1595">            String mess = &quot;Update successfully&quot;;</span>
+<span class="nc" id="L1596">            request.setAttribute(&quot;mess&quot;, mess);</span>
+<span class="nc" id="L1597">            request.setAttribute(&quot;service&quot;, &quot;updateRoleDetail&quot;);</span>
+<span class="nc" id="L1598">            sendDispatcher(request, response, &quot;admin/authorization/editRole.jsp&quot;);</span>
+        }
+<span class="nc" id="L1600">    }</span>
+
+    public void serviceDeleteRole(String service, HttpServletRequest request, HttpServletResponse response) {
+<span class="nc" id="L1603">        request.setAttribute(&quot;service&quot;, service);</span>
+<span class="nc" id="L1604">        int id = Integer.parseInt(request.getParameter(&quot;roleID&quot;));</span>
+<span class="nc" id="L1605">        daorole.deleteRole(id);</span>
+<span class="nc" id="L1606">        List&lt;Role&gt; listRole = daorole.getAllRole();</span>
+<span class="nc" id="L1607">        request.setAttribute(&quot;role&quot;, listRole);</span>
+<span class="nc" id="L1608">        sendDispatcher(request, response, &quot;admin/authorization/roleAuthorization.jsp&quot;);</span>
+<span class="nc" id="L1609">    }</span>
+
+    public void serviceSearchRole(String service, HttpServletRequest request, HttpServletResponse response) throws IOException {
+<span class="nc" id="L1612">        PrintWriter pr = response.getWriter();</span>
+<span class="nc" id="L1613">        request.setAttribute(&quot;service&quot;, service);</span>
+<span class="nc" id="L1614">        String search = request.getParameter(&quot;search&quot;);</span>
+<span class="nc" id="L1615">        List&lt;Role&gt; listRole = daorole.searchRole(search);</span>
+<span class="nc bnc" id="L1616" title="All 2 branches missed.">        for (Role role : listRole) {</span>
+<span class="nc" id="L1617">            pr.print(&quot;&lt;tr&gt;&quot;</span>
+<span class="nc" id="L1618">                    + &quot;&lt;td&gt;&lt;div&gt;&quot; + role.getRoleID() + &quot; &lt;/div&gt;&lt;/td&gt;&quot;</span>
+<span class="nc" id="L1619">                    + &quot;&lt;td&gt;&lt;div&gt;&quot; + role.getRoleName() + &quot;&lt;/div&gt;&lt;/td&gt;&quot;</span>
+<span class="nc" id="L1620">                    + &quot;&lt;td&gt;&lt;div&gt;&quot; + role.getAdminPermission() + &quot;&lt;/div&gt;&lt;/td&gt;&quot;</span>
+<span class="nc" id="L1621">                    + &quot;&lt;td&gt;&lt;div&gt;&quot; + role.getSellerPermission() + &quot;&lt;/div&gt;&lt;/td&gt;&quot;</span>
+<span class="nc" id="L1622">                    + &quot;&lt;td&gt;&lt;div&gt;&quot; + role.getCustomerPermission() + &quot;&lt;/div&gt;&lt;/td&gt;&quot;</span>
+<span class="nc" id="L1623">                    + &quot;&lt;td&gt;&lt;div&gt;&quot; + role.getStatus() + &quot;&lt;/div&gt;&lt;/td&gt;&quot;</span>
+<span class="nc" id="L1624">                    + &quot;&lt;td&gt;&lt;div&gt;&lt;a href=\&quot;AdminControllerMap?service=updateRole&amp;roleID=&quot; + role.getRoleID() + &quot;\&quot;&gt;&lt;span class=\&quot;fas fa-edit\&quot;&gt;&lt;/span&gt;&lt;/a&gt;&quot;</span>
+                    + &quot;&lt;/div&gt;&lt;/td&gt;&quot;
+<span class="nc" id="L1626">                    + &quot;&lt;td&gt;&lt;div&gt;&lt;a href=\&quot;AdminControllerMap?service=deleteRole&amp;roleID=&quot; + role.getRoleID() + &quot;\&quot; onclick=\&quot;return confirm('Are you sure you want to Remove?');\&quot;&gt;&lt;span class=\&quot;fas fa-trash-alt\&quot;&gt;&lt;/span&gt;&lt;/a&gt;&lt;/div&gt;&lt;/td&gt;&quot; + &quot;&lt;/tr&gt;&quot;</span>
+            );
+<span class="nc" id="L1628">        }</span>
+<span class="nc" id="L1629">    }//&lt;/editor-fold&gt;</span>
+
+    public void sendDispatcher(HttpServletRequest request, HttpServletResponse response, String path) {
+        try {
+<span class="nc" id="L1633">            RequestDispatcher rd = request.getRequestDispatcher(path);</span>
+<span class="nc" id="L1634">            rd.forward(request, response);</span>
+
+<span class="nc" id="L1636">        } catch (ServletException | IOException ex) {</span>
+<span class="nc" id="L1637">            Logger.getLogger(AdminController.class.getName()).log(Level.SEVERE, null, ex);</span>
+<span class="nc" id="L1638">        }</span>
+<span class="nc" id="L1639">    }</span>
+
+    private void writeObject(ObjectOutputStream stream)
+            throws IOException {
+<span class="nc" id="L1643">        stream.defaultWriteObject();</span>
+<span class="nc" id="L1644">    }</span>
+
+    private void readObject(ObjectInputStream stream)
+            throws IOException, ClassNotFoundException {
+<span class="nc" id="L1648">        stream.defaultReadObject();</span>
+<span class="nc" id="L1649">    }</span>
+
+// &lt;editor-fold defaultstate=&quot;collapsed&quot; desc=&quot;HttpServlet methods. Click on the + sign on the left to edit the code.&quot;&gt;
+    /**
+     * Handles the HTTP &lt;code&gt;GET&lt;/code&gt; method.
+     *
+     * @param request servlet request
+     * @param response servlet response
+     * @throws ServletException if a servlet-specific error occurs
+     * @throws IOException if an I/O error occurs
+     */
+    @Override
+    protected void doGet(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException {
+        try {
+<span class="nc" id="L1664">            processRequest(request, response);</span>
+<span class="nc" id="L1665">        } catch (ParseException ex) {</span>
+<span class="nc" id="L1666">            Logger.getLogger(AdminController.class.getName()).log(Level.SEVERE, null, ex);</span>
+<span class="nc" id="L1667">        } catch (FileUploadException ex) {</span>
+<span class="nc" id="L1668">            Logger.getLogger(AdminController.class.getName()).log(Level.SEVERE, null, ex);</span>
+<span class="nc" id="L1669">        }</span>
+<span class="nc" id="L1670">    }</span>
+
+    /**
+     * Handles the HTTP &lt;code&gt;POST&lt;/code&gt; method.
+     *
+     * @param request servlet request
+     * @param response servlet response
+     * @throws ServletException if a servlet-specific error occurs
+     * @throws IOException if an I/O error occurs
+     */
+    @Override
+    protected void doPost(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException {
+        try {
+<span class="nc" id="L1684">            processRequest(request, response);</span>
+<span class="nc" id="L1685">        } catch (ParseException ex) {</span>
+<span class="nc" id="L1686">            Logger.getLogger(AdminController.class.getName()).log(Level.SEVERE, null, ex);</span>
+<span class="nc" id="L1687">        } catch (FileUploadException ex) {</span>
+<span class="nc" id="L1688">            Logger.getLogger(AdminController.class.getName()).log(Level.SEVERE, null, ex);</span>
+<span class="nc" id="L1689">        }</span>
+<span class="nc" id="L1690">    }</span>
+
+    /**
+     * Returns a short description of the servlet.
+     *
+     * @return a String containing servlet description
+     */
+    @Override
+    public String getServletInfo() {
+<span class="nc" id="L1699">        return &quot;Short description&quot;;</span>
+    }// &lt;/editor-fold&gt;
+
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.eclemma.org/jacoco">JaCoCo</a> 0.7.5.201505241946</span></div></body></html>

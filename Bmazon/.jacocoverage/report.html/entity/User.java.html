@@ -1,0 +1,310 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../.resources/report.css" type="text/css"/><link rel="shortcut icon" href="../.resources/report.gif" type="image/gif"/><title>User.java</title><link rel="stylesheet" href="../.resources/prettify.css" type="text/css"/><script type="text/javascript" src="../.resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../.sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">JaCoCoverage analysis of project &quot;Bmazon&quot; (powered by JaCoCo from EclEmma)</a> &gt; <a href="index.source.html" class="el_package">entity</a> &gt; <span class="el_source">User.java</span></div><h1>User.java</h1><pre class="source lang-java linenums">/*
+ * To change this license header, choose License Headers in Project Properties.
+ * To change this template file, choose Tools | Templates
+ * and open the template in the editor.
+ */
+package entity;
+
+import java.io.Serializable;
+import java.sql.Date;
+
+/**
+ *
+ * @author Admin
+ */
+public class User implements Serializable{
+    private static final long serialVersionUID = 1;
+
+    //private profile
+    private String userId;
+    private String username;
+    private String password;
+    private String email;
+    private String phoneNumber;
+    private int sell;
+    //wallet
+    private double wallet;
+    //public profile
+    private String fullname;
+    private String publicName;
+    private String address;
+    private String profileImage;
+    private String backgroundImage;
+    private String occupation;
+    private int gender;
+    private Date DOB;
+    private String bio;
+    //social link
+    private String facebook;
+    private String instagram;
+    private String twitter;
+    private String youtube;
+    //admin management information
+    private int activityPoint;
+    private int systemRole;
+    private int status;
+
+<span class="nc" id="L47">    public User() {</span>
+<span class="nc" id="L48">    }</span>
+    
+<span class="nc" id="L50">    public User(String userId, String username, String password, String address, String bio, String facebook, String instagram, String twitter, String youtube) {</span>
+<span class="nc" id="L51">        this.userId = userId;</span>
+<span class="nc" id="L52">        this.username = username;</span>
+<span class="nc" id="L53">        this.password = password;</span>
+<span class="nc" id="L54">        this.address = address;</span>
+<span class="nc" id="L55">        this.bio = bio;</span>
+<span class="nc" id="L56">        this.facebook = facebook;</span>
+<span class="nc" id="L57">        this.instagram = instagram;</span>
+<span class="nc" id="L58">        this.twitter = twitter;</span>
+<span class="nc" id="L59">        this.youtube = youtube;</span>
+<span class="nc" id="L60">    }</span>
+
+<span class="fc" id="L62">    public User(String userId, String username, String password, String email, String phoneNumber, int sell, double wallet, String fullname, String publicName, String address, String profileImage, String backgroundImage, String occupation, int gender, Date DOB, String bio, String facebook, String instagram, String twitter, String youtube, int activityPoint, int systemRole, int status) {</span>
+<span class="fc" id="L63">        this.userId = userId;</span>
+<span class="fc" id="L64">        this.username = username;</span>
+<span class="fc" id="L65">        this.password = password;</span>
+<span class="fc" id="L66">        this.email = email;</span>
+<span class="fc" id="L67">        this.phoneNumber = phoneNumber;</span>
+<span class="fc" id="L68">        this.sell = sell;</span>
+<span class="fc" id="L69">        this.wallet = wallet;</span>
+<span class="fc" id="L70">        this.fullname = fullname;</span>
+<span class="fc" id="L71">        this.publicName = publicName;</span>
+<span class="fc" id="L72">        this.address = address;</span>
+<span class="fc" id="L73">        this.profileImage = profileImage;</span>
+<span class="fc" id="L74">        this.backgroundImage = backgroundImage;</span>
+<span class="fc" id="L75">        this.occupation = occupation;</span>
+<span class="fc" id="L76">        this.gender = gender;</span>
+<span class="fc" id="L77">        this.DOB = new Date(DOB.getTime());</span>
+<span class="fc" id="L78">        this.bio = bio;</span>
+<span class="fc" id="L79">        this.facebook = facebook;</span>
+<span class="fc" id="L80">        this.instagram = instagram;</span>
+<span class="fc" id="L81">        this.twitter = twitter;</span>
+<span class="fc" id="L82">        this.youtube = youtube;</span>
+<span class="fc" id="L83">        this.activityPoint = activityPoint;</span>
+<span class="fc" id="L84">        this.systemRole = systemRole;</span>
+<span class="fc" id="L85">        this.status = status;</span>
+<span class="fc" id="L86">    }</span>
+
+<span class="fc" id="L88">    public User(String username, String password, String email, String phoneNumber, int sell, double wallet, String fullname, String publicName, String address, String profileImage, String backgroundImage, String occupation, int gender, String bio, String facebook, String instagram, String twitter, String youtube, int activityPoint, int systemRole, int status) {</span>
+<span class="fc" id="L89">        this.username = username;</span>
+<span class="fc" id="L90">        this.password = password;</span>
+<span class="fc" id="L91">        this.email = email;</span>
+<span class="fc" id="L92">        this.phoneNumber = phoneNumber;</span>
+<span class="fc" id="L93">        this.sell = sell;</span>
+<span class="fc" id="L94">        this.wallet = wallet;</span>
+<span class="fc" id="L95">        this.fullname = fullname;</span>
+<span class="fc" id="L96">        this.publicName = publicName;</span>
+<span class="fc" id="L97">        this.address = address;</span>
+<span class="fc" id="L98">        this.profileImage = profileImage;</span>
+<span class="fc" id="L99">        this.backgroundImage = backgroundImage;</span>
+<span class="fc" id="L100">        this.occupation = occupation;</span>
+<span class="fc" id="L101">        this.gender = gender;</span>
+<span class="fc" id="L102">        this.bio = bio;</span>
+<span class="fc" id="L103">        this.facebook = facebook;</span>
+<span class="fc" id="L104">        this.instagram = instagram;</span>
+<span class="fc" id="L105">        this.twitter = twitter;</span>
+<span class="fc" id="L106">        this.youtube = youtube;</span>
+<span class="fc" id="L107">        this.activityPoint = activityPoint;</span>
+<span class="fc" id="L108">        this.systemRole = systemRole;</span>
+<span class="fc" id="L109">        this.status = status;</span>
+<span class="fc" id="L110">    }</span>
+
+<span class="nc" id="L112">    public User(String username, String password, String email, int sell, String fullname,String publicName, int systemRole, int status) {</span>
+<span class="nc" id="L113">        this.username = username;</span>
+<span class="nc" id="L114">        this.password = password;</span>
+<span class="nc" id="L115">        this.email = email;</span>
+<span class="nc" id="L116">        this.sell = sell;</span>
+<span class="nc" id="L117">        this.fullname = fullname;</span>
+<span class="nc" id="L118">        this.publicName = publicName;</span>
+<span class="nc" id="L119">        this.systemRole = systemRole;</span>
+<span class="nc" id="L120">        this.status = status;</span>
+<span class="nc" id="L121">    }</span>
+    
+    
+
+    public String getUserId() {
+<span class="nc" id="L126">        return userId;</span>
+    }
+
+    public void setUserId(String userId) {
+<span class="nc" id="L130">        this.userId = userId;</span>
+<span class="nc" id="L131">    }</span>
+
+    public String getUsername() {
+<span class="fc" id="L134">        return username;</span>
+    }
+
+    public void setUsername(String username) {
+<span class="nc" id="L138">        this.username = username;</span>
+<span class="nc" id="L139">    }</span>
+
+    public String getPassword() {
+<span class="fc" id="L142">        return password;</span>
+    }
+
+    public void setPassword(String password) {
+<span class="nc" id="L146">        this.password = password;</span>
+<span class="nc" id="L147">    }</span>
+
+    public String getEmail() {
+<span class="fc" id="L150">        return email;</span>
+    }
+
+    public void setEmail(String email) {
+<span class="nc" id="L154">        this.email = email;</span>
+<span class="nc" id="L155">    }</span>
+
+    public String getPhoneNumber() {
+<span class="fc" id="L158">        return phoneNumber;</span>
+    }
+
+    public void setPhoneNumber(String phoneNumber) {
+<span class="nc" id="L162">        this.phoneNumber = phoneNumber;</span>
+<span class="nc" id="L163">    }</span>
+
+    public int getGender() {
+<span class="fc" id="L166">        return gender;</span>
+    }
+
+    public void setGender(int gender) {
+<span class="nc" id="L170">        this.gender = gender;</span>
+<span class="nc" id="L171">    }</span>
+
+    public Date getDOB() {
+<span class="nc" id="L174">        return new Date(DOB.getTime());</span>
+    }
+
+    public void setDOB(Date DOB) {
+<span class="nc" id="L178">        this.DOB = new Date(DOB.getTime());</span>
+<span class="nc" id="L179">    }</span>
+
+    public int getSell() {
+<span class="fc" id="L182">        return sell;</span>
+    }
+
+    public void setSell(int sell) {
+<span class="nc" id="L186">        this.sell = sell;</span>
+<span class="nc" id="L187">    }</span>
+
+    public double getWallet() {
+<span class="fc" id="L190">        return wallet;</span>
+    }
+
+    public void setWallet(double wallet) {
+<span class="nc" id="L194">        this.wallet = wallet;</span>
+<span class="nc" id="L195">    }</span>
+
+    public String getFullname() {
+<span class="fc" id="L198">        return fullname;</span>
+    }
+
+    public void setFullname(String fullname) {
+<span class="nc" id="L202">        this.fullname = fullname;</span>
+<span class="nc" id="L203">    }</span>
+
+    public String getPublicName() {
+<span class="fc" id="L206">        return publicName;</span>
+    }
+
+    public void setPublicName(String publicName) {
+<span class="nc" id="L210">        this.publicName = publicName;</span>
+<span class="nc" id="L211">    }</span>
+
+    public String getAddress() {
+<span class="fc" id="L214">        return address;</span>
+    }
+
+    public void setAddress(String address) {
+<span class="nc" id="L218">        this.address = address;</span>
+<span class="nc" id="L219">    }</span>
+
+    public String getProfileImage() {
+<span class="fc" id="L222">        return profileImage;</span>
+    }
+
+    public void setProfileImage(String profileImage) {
+<span class="nc" id="L226">        this.profileImage = profileImage;</span>
+<span class="nc" id="L227">    }</span>
+
+    public String getBackgroundImage() {
+<span class="fc" id="L230">        return backgroundImage;</span>
+    }
+
+    public void setBackgroundImage(String backgroundImage) {
+<span class="nc" id="L234">        this.backgroundImage = backgroundImage;</span>
+<span class="nc" id="L235">    }</span>
+
+    public String getOccupation() {
+<span class="fc" id="L238">        return occupation;</span>
+    }
+
+    public void setOccupation(String occupation) {
+<span class="nc" id="L242">        this.occupation = occupation;</span>
+<span class="nc" id="L243">    }</span>
+
+    public String getBio() {
+<span class="fc" id="L246">        return bio;</span>
+    }
+
+    public void setBio(String bio) {
+<span class="nc" id="L250">        this.bio = bio;</span>
+<span class="nc" id="L251">    }</span>
+
+    public String getFacebook() {
+<span class="fc" id="L254">        return facebook;</span>
+    }
+
+    public void setFacebook(String facebook) {
+<span class="nc" id="L258">        this.facebook = facebook;</span>
+<span class="nc" id="L259">    }</span>
+
+    public String getInstagram() {
+<span class="fc" id="L262">        return instagram;</span>
+    }
+
+    public void setInstagram(String instagram) {
+<span class="nc" id="L266">        this.instagram = instagram;</span>
+<span class="nc" id="L267">    }</span>
+
+    public String getTwitter() {
+<span class="fc" id="L270">        return twitter;</span>
+    }
+
+    public void setTwitter(String twitter) {
+<span class="nc" id="L274">        this.twitter = twitter;</span>
+<span class="nc" id="L275">    }</span>
+
+    public String getYoutube() {
+<span class="fc" id="L278">        return youtube;</span>
+    }
+
+    public void setYoutube(String youtube) {
+<span class="nc" id="L282">        this.youtube = youtube;</span>
+<span class="nc" id="L283">    }</span>
+
+    public int getActivityPoint() {
+<span class="fc" id="L286">        return activityPoint;</span>
+    }
+
+    public void setActivityPoint(int activityPoint) {
+<span class="nc" id="L290">        this.activityPoint = activityPoint;</span>
+<span class="nc" id="L291">    }</span>
+
+    public int getSystemRole() {
+<span class="fc" id="L294">        return systemRole;</span>
+    }
+
+    public void setSystemRole(int systemRole) {
+<span class="nc" id="L298">        this.systemRole = systemRole;</span>
+<span class="nc" id="L299">    }</span>
+
+    public int getStatus() {
+<span class="fc" id="L302">        return status;</span>
+    }
+
+    public void setStatus(int status) {
+<span class="nc" id="L306">        this.status = status;</span>
+<span class="nc" id="L307">    }</span>
+
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.eclemma.org/jacoco">JaCoCo</a> 0.7.5.201505241946</span></div></body></html>

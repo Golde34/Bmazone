@@ -1,0 +1,270 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../.resources/report.css" type="text/css"/><link rel="shortcut icon" href="../.resources/report.gif" type="image/gif"/><title>GalleryDAO.java</title><link rel="stylesheet" href="../.resources/prettify.css" type="text/css"/><script type="text/javascript" src="../.resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../.sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">JaCoCoverage analysis of project &quot;Bmazon&quot; (powered by JaCoCo from EclEmma)</a> &gt; <a href="index.source.html" class="el_package">model</a> &gt; <span class="el_source">GalleryDAO.java</span></div><h1>GalleryDAO.java</h1><pre class="source lang-java linenums">/*
+ * To change this license header, choose License Headers in Project Properties.
+ * To change this template file, choose Tools | Templates
+ * and open the template in the editor.
+ */
+package model;
+
+import entity.Gallery;
+import entity.Product;
+import entity.ProductType;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
+/**
+ *
+ * @author DELL
+ */
+<span class="fc" id="L24">public class GalleryDAO extends BaseDAO {</span>
+
+<span class="fc" id="L26">    BaseDAO dbConn = new BaseDAO();</span>
+
+    public void deleteGallery(int id) {
+<span class="nc" id="L29">        String sql = &quot;delete from Gallery where galleryID = ?&quot;;</span>
+        try {
+<span class="nc" id="L31">            pre = conn.prepareStatement(sql);</span>
+<span class="nc" id="L32">            pre.setInt(1, id);</span>
+<span class="nc" id="L33">            pre.executeUpdate();</span>
+<span class="nc" id="L34">        } catch (Exception ex) {</span>
+<span class="nc" id="L35">            Logger.getLogger(UserDAO.class.getName()).log(Level.SEVERE, null, ex);</span>
+<span class="nc" id="L36">        }</span>
+<span class="nc" id="L37">    }</span>
+
+    public void addGallery(Gallery g) {
+<span class="nc" id="L40">        String xSql = &quot;INSERT INTO Gallery ([galleryID],[productID],[productTypeID],[link],[status])\n&quot;</span>
+                + &quot;     VALUES (?,?,?,?,?)&quot;;
+        try {
+<span class="nc" id="L43">            pre = conn.prepareStatement(xSql);</span>
+<span class="nc" id="L44">            pre.setInt(1, g.getGalleryID());</span>
+<span class="nc" id="L45">            pre.setInt(2, g.getProductID());</span>
+<span class="nc" id="L46">            pre.setString(3, g.getProductTypeID());</span>
+<span class="nc" id="L47">            pre.setString(4, g.getLink());</span>
+<span class="nc" id="L48">            pre.setDouble(5, g.getStatus());</span>
+<span class="nc" id="L49">            pre.executeUpdate();</span>
+<span class="nc" id="L50">        } catch (Exception ex) {</span>
+<span class="nc" id="L51">            Logger.getLogger(UserDAO.class.getName()).log(Level.SEVERE, null, ex);</span>
+<span class="nc" id="L52">        }</span>
+<span class="nc" id="L53">    }</span>
+    
+    public int editGallery(Gallery g) {
+<span class="nc" id="L56">        int n = 0;</span>
+<span class="nc" id="L57">        String xSql = &quot;update Gallery set productID = ?, productTypeID = ?, link =?, status = ? where galleryID = ?&quot;;</span>
+        try {
+<span class="nc" id="L59">            pre = conn.prepareStatement(xSql);</span>
+<span class="nc" id="L60">            pre.setInt(1, g.getProductID());</span>
+<span class="nc" id="L61">            pre.setString(2, g.getProductTypeID());</span>
+<span class="nc" id="L62">            pre.setString(3, g.getLink());</span>
+<span class="nc" id="L63">            pre.setDouble(4, g.getStatus());</span>
+<span class="nc" id="L64">            pre.setInt(5, g.getGalleryID());</span>
+<span class="nc" id="L65">            pre.executeUpdate();</span>
+<span class="nc" id="L66">        } catch (Exception ex) {</span>
+<span class="nc" id="L67">            Logger.getLogger(UserDAO.class.getName()).log(Level.SEVERE, null, ex);</span>
+<span class="nc" id="L68">        }</span>
+<span class="nc" id="L69">        return n;</span>
+    }
+
+    public int getPageNumber(String search) {
+<span class="nc" id="L73">        int num = 0;</span>
+<span class="nc" id="L74">        String xSql = &quot;SELECT COUNT(*) from Gallery g join ProductType pt on g.productTypeID=pt.productTypeId join Product p on pt.productID=p.productID join [User] u on p.sellerID=u.userID\n&quot;</span>
+                + &quot;   where p.productName like '%&quot; + search + &quot;%' or pt.size like '%&quot; + search + &quot;%' or pt.color like '%&quot; + search + &quot;%' or u.fullname like '%&quot; + search + &quot;%'&quot;;
+<span class="nc" id="L76">        ResultSet rs = dbConn.getData(xSql);</span>
+        try {
+<span class="nc bnc" id="L78" title="All 2 branches missed.">            if (rs.next()) {</span>
+<span class="nc" id="L79">                num = rs.getInt(1);</span>
+            }
+<span class="nc" id="L81">        } catch (SQLException ex) {</span>
+<span class="nc" id="L82">            Logger.getLogger(UserDAO.class.getName()).log(Level.SEVERE, null, ex);</span>
+<span class="nc" id="L83">        }</span>
+<span class="nc" id="L84">        return num;</span>
+    }
+
+    public Gallery getGalleryById(int id) {
+<span class="nc" id="L88">        Gallery gallery = new Gallery();</span>
+<span class="nc" id="L89">        String sql = &quot;SELECT * FROM [Bmazon].[dbo].[Gallery] where galleryID=&quot; + id;</span>
+        try {
+<span class="nc" id="L91">            pre = conn.prepareStatement(sql);</span>
+<span class="nc" id="L92">            rs = pre.executeQuery();</span>
+<span class="nc bnc" id="L93" title="All 2 branches missed.">            if (rs.next()) {</span>
+<span class="nc" id="L94">                gallery.setGalleryID(id);</span>
+<span class="nc" id="L95">                gallery.setLink(rs.getString(&quot;link&quot;));</span>
+<span class="nc" id="L96">                gallery.setProductID(rs.getInt(&quot;productID&quot;));</span>
+<span class="nc" id="L97">                gallery.setProductTypeID(rs.getString(&quot;productTypeID&quot;));</span>
+<span class="nc" id="L98">                gallery.setStatus(rs.getInt(&quot;status&quot;));</span>
+            }
+<span class="nc" id="L100">            rs.close();</span>
+<span class="nc" id="L101">            pre.close();</span>
+<span class="nc" id="L102">        } catch (SQLException e) {</span>
+<span class="nc" id="L103">            Logger.getLogger(ProductDAO.class.getName()).log(Level.SEVERE, null, e);</span>
+<span class="nc" id="L104">        }</span>
+<span class="nc" id="L105">        return gallery;</span>
+    }
+
+    public int changeStatus(int id, int status) {
+<span class="nc" id="L109">        int n = 0;</span>
+<span class="nc" id="L110">        String sql = &quot;UPDATE [Gallery] SET status = ? WHERE galleryID = ? &quot;;</span>
+        try {
+<span class="nc" id="L112">            pre = conn.prepareStatement(sql);</span>
+<span class="nc bnc" id="L113" title="All 2 branches missed.">            pre.setInt(1, (status == 1 ? 1 : 0));</span>
+<span class="nc" id="L114">            pre.setInt(2, id);</span>
+<span class="nc" id="L115">            n = pre.executeUpdate();</span>
+<span class="nc" id="L116">        } catch (SQLException ex) {</span>
+<span class="nc" id="L117">            Logger.getLogger(UserDAO.class.getName()).log(Level.SEVERE, null, ex);</span>
+<span class="nc" id="L118">        }</span>
+<span class="nc" id="L119">        return n;</span>
+    }
+
+    public List&lt;Gallery&gt; getAllGallery() {
+<span class="nc" id="L123">        List&lt;Gallery&gt; list = new ArrayList&lt;&gt;();</span>
+<span class="nc" id="L124">        String xSql = &quot;select * from [Gallery] order by productID asc&quot;;</span>
+        try {
+<span class="nc" id="L126">            pre = conn.prepareStatement(xSql);</span>
+<span class="nc" id="L127">            rs = pre.executeQuery();</span>
+<span class="nc bnc" id="L128" title="All 2 branches missed.">            while (rs.next()) {</span>
+<span class="nc" id="L129">                list.add(new Gallery(</span>
+<span class="nc" id="L130">                        rs.getInt(1),</span>
+<span class="nc" id="L131">                        rs.getInt(2),</span>
+<span class="nc" id="L132">                        rs.getString(3),</span>
+<span class="nc" id="L133">                        rs.getString(4),</span>
+<span class="nc" id="L134">                        rs.getInt(5)));</span>
+            }
+<span class="nc" id="L136">        } catch (Exception ex) {</span>
+<span class="nc" id="L137">            Logger.getLogger(UserDAO.class.getName()).log(Level.SEVERE, null, ex);</span>
+<span class="nc" id="L138">        }</span>
+<span class="nc" id="L139">        return list;</span>
+    }
+
+    public List&lt;Gallery&gt; getAllPagingGallery(int index, int numOfRow, String search) {
+<span class="nc" id="L143">        List&lt;Gallery&gt; list = new ArrayList&lt;&gt;();</span>
+<span class="nc" id="L144">        String xSql = &quot;declare @PageNo INT =&quot;+index+&quot;\n&quot;</span>
+                + &quot;declare @PageSize INT=&quot;+numOfRow+&quot;\n&quot;
+                + &quot;SELECT * from(\n&quot;
+                + &quot;SELECT g.*,\n&quot;
+                + &quot;ROW_NUMBER() over (order by g.galleryID) as RowNum\n&quot;
+                + &quot;  FROM Gallery g join ProductType pt on g.productTypeID=pt.productTypeId join Product p on pt.productID=p.productID join Seller s on p.sellerID=s.sellerID\n&quot;
+                + &quot;   where p.productName like '%&quot;+search+&quot;%' or pt.size like '%&quot;+search+&quot;%' or pt.color like '%&quot;+search+&quot;%' or s.sellerShopName like '%&quot;+search+&quot;%')T\n&quot;
+                + &quot;where T.RowNum between ((@PageNo-1)*@PageSize)+1 and (@PageNo*@PageSize)&quot;;
+        try {
+<span class="nc" id="L153">            pre = conn.prepareStatement(xSql);</span>
+<span class="nc" id="L154">            rs = pre.executeQuery();</span>
+<span class="nc bnc" id="L155" title="All 2 branches missed.">            while (rs.next()) {</span>
+<span class="nc" id="L156">                Gallery gallery = new Gallery();</span>
+<span class="nc" id="L157">                gallery.setGalleryID(rs.getInt(&quot;galleryID&quot;));</span>
+<span class="nc" id="L158">                gallery.setLink(rs.getString(&quot;link&quot;));</span>
+<span class="nc" id="L159">                gallery.setProductID(rs.getInt(&quot;productID&quot;));</span>
+<span class="nc" id="L160">                gallery.setProductTypeID(rs.getString(&quot;productTypeId&quot;));</span>
+<span class="nc" id="L161">                gallery.setStatus(rs.getInt(&quot;status&quot;));</span>
+<span class="nc" id="L162">                list.add(gallery);</span>
+<span class="nc" id="L163">            }</span>
+<span class="nc" id="L164">            rs.close();</span>
+<span class="nc" id="L165">            pre.close();</span>
+<span class="nc" id="L166">        } catch (SQLException e) {</span>
+<span class="nc" id="L167">            Logger.getLogger(ProductDAO.class.getName()).log(Level.SEVERE, null, e);</span>
+<span class="nc" id="L168">        }</span>
+<span class="nc" id="L169">        return list;</span>
+    }
+
+    public List&lt;Gallery&gt; getAllGalleryOfProduct(int pid) {
+<span class="nc" id="L173">        List&lt;Gallery&gt; list = new ArrayList&lt;&gt;();</span>
+<span class="nc" id="L174">        String xSql = &quot;select * from [Gallery] where productID =&quot; + pid + &quot;&quot;;</span>
+        try {
+<span class="nc" id="L176">            pre = conn.prepareStatement(xSql);</span>
+<span class="nc" id="L177">            rs = pre.executeQuery();</span>
+<span class="nc bnc" id="L178" title="All 2 branches missed.">            while (rs.next()) {</span>
+<span class="nc" id="L179">                list.add(new Gallery(</span>
+<span class="nc" id="L180">                        rs.getInt(1),</span>
+<span class="nc" id="L181">                        rs.getInt(2),</span>
+<span class="nc" id="L182">                        rs.getString(3),</span>
+<span class="nc" id="L183">                        rs.getString(4),</span>
+<span class="nc" id="L184">                        rs.getInt(5)));</span>
+            }
+<span class="nc" id="L186">        } catch (Exception ex) {</span>
+<span class="nc" id="L187">            Logger.getLogger(UserDAO.class.getName()).log(Level.SEVERE, null, ex);</span>
+<span class="nc" id="L188">        }</span>
+<span class="nc" id="L189">        return list;</span>
+    }
+
+    public String getSampleOfProduct(int pid) {
+<span class="nc" id="L193">        String s = null;</span>
+<span class="nc" id="L194">        String xSql = &quot;select top 1 link from [Gallery] WHERE productID =?&quot;;</span>
+        try {
+<span class="nc" id="L196">            pre = conn.prepareStatement(xSql);</span>
+<span class="nc" id="L197">            pre.setInt(1, pid);</span>
+<span class="nc" id="L198">            rs = pre.executeQuery();</span>
+<span class="nc bnc" id="L199" title="All 2 branches missed.">            while (rs.next()) {</span>
+<span class="nc" id="L200">                s = rs.getString(&quot;link&quot;);</span>
+            }
+<span class="nc" id="L202">        } catch (Exception ex) {</span>
+<span class="nc" id="L203">            Logger.getLogger(UserDAO.class.getName()).log(Level.SEVERE, null, ex);</span>
+<span class="nc" id="L204">        }</span>
+<span class="nc" id="L205">        return s;</span>
+    }
+
+    public String getImageByProductTypeID(String ps) {
+<span class="nc" id="L209">        String s = null;</span>
+<span class="nc" id="L210">        String xSql = &quot;select top 1 link from [Gallery] WHERE productTypeID = ?&quot;;</span>
+        try {
+<span class="nc" id="L212">            pre = conn.prepareStatement(xSql);</span>
+<span class="nc" id="L213">            pre.setString(1, ps);</span>
+<span class="nc" id="L214">            rs = pre.executeQuery();</span>
+<span class="nc bnc" id="L215" title="All 2 branches missed.">            while (rs.next()) {</span>
+<span class="nc" id="L216">                s = rs.getString(&quot;link&quot;);</span>
+            }
+<span class="nc" id="L218">        } catch (Exception ex) {</span>
+<span class="nc" id="L219">            Logger.getLogger(UserDAO.class.getName()).log(Level.SEVERE, null, ex);</span>
+<span class="nc" id="L220">        }</span>
+<span class="nc" id="L221">        return s;</span>
+    }
+    
+    public List&lt;Gallery&gt; getAllImageByProductTypeID(String ptypeID) {
+<span class="nc" id="L225">        List&lt;Gallery&gt; list = new ArrayList&lt;&gt;();</span>
+<span class="nc" id="L226">        String xSql = &quot;select * from [Gallery] WHERE productTypeID = ?&quot;;</span>
+        try {
+<span class="nc" id="L228">            pre = conn.prepareStatement(xSql);</span>
+<span class="nc" id="L229">            rs = pre.executeQuery();</span>
+<span class="nc bnc" id="L230" title="All 2 branches missed.">            while (rs.next()) {</span>
+<span class="nc" id="L231">                list.add(new Gallery(</span>
+<span class="nc" id="L232">                        rs.getInt(1),</span>
+<span class="nc" id="L233">                        rs.getInt(2),</span>
+<span class="nc" id="L234">                        rs.getString(3),</span>
+<span class="nc" id="L235">                        rs.getString(4),</span>
+<span class="nc" id="L236">                        rs.getInt(5)));</span>
+            }
+<span class="nc" id="L238">        } catch (Exception ex) {</span>
+<span class="nc" id="L239">            Logger.getLogger(UserDAO.class.getName()).log(Level.SEVERE, null, ex);</span>
+<span class="nc" id="L240">        }</span>
+<span class="nc" id="L241">        return list;</span>
+    }
+
+//    public List&lt;Gallery&gt; getGalleryBySizeAndColor(ProductType p) {
+//        List&lt;Gallery&gt; list = new ArrayList&lt;&gt;();
+//        xSql = &quot;select from &quot;;
+//        try {
+//            ps = conn.prepareStatement(xSql);
+//            ps.setString(1, p.getProductTypeId());
+//            rs = ps.executeQuery();
+//            while (rs.next()) {
+//                list.add(new Gallery(
+//                        rs.getInt(1),
+//                        rs.getInt(2),
+//                        rs.getString(3),
+//                        rs.getString(4),
+//                        rs.getInt(5)));
+//            }
+//        } catch (Exception e) {
+//        }
+//        return list;
+//    }
+    public static void main(String[] args) {
+<span class="nc" id="L264">        GalleryDAO g = new GalleryDAO();</span>
+<span class="nc" id="L265">        Gallery ga = g.getGalleryById(1);</span>
+<span class="nc" id="L266">        ga.setLink(&quot;Pr1Ty1Ga1.jpg&quot;);</span>
+<span class="nc" id="L267">        g.editGallery(ga);</span>
+<span class="nc" id="L268">    }</span>
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.eclemma.org/jacoco">JaCoCo</a> 0.7.5.201505241946</span></div></body></html>
