@@ -5003,9 +5003,9 @@ fieldset:disabled .btn {
   padding-left: 0;
 }
 
-.navbar-nav .dropdown-menu {
+/*.navbar-nav .dropdown-menu {
   position: static;
-}
+}*/
 
 .navbar-text {
   padding-top: 0.5rem;
@@ -19553,7 +19553,7 @@ fieldset:disabled .btn {
   margin-bottom: 24px;
 }
 
-@media (min-width: 992px) {
+
 
   .dropdown .dropdown-menu,
   .dropup .dropdown-menu,
@@ -19647,9 +19647,9 @@ fieldset:disabled .btn {
   .dropdown-item {
     transition: background-color 0.3s ease, color 0.3s ease;
   }
-}
 
-@media (max-width: 991.98px) {
+
+/*@media (max-width: 991.98px) {
   .dropdown:not(.nav-item) .dropdown-menu {
     display: block;
     opacity: 0;
@@ -19709,7 +19709,7 @@ fieldset:disabled .btn {
     height: 250px;
     opacity: 1;
   }
-}
+}*/
 
 .dropdown-menu li {
   position: relative;
