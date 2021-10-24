@@ -88,7 +88,7 @@ public class CategoryDAO extends BaseDAO {
 
     public Category getCategoryByCateId(String id) {
         String xSql = "select * from Category where categoryID= ?";
-        Category cat = null;
+        Category cat = new Category();
         try {
             pre = conn.prepareStatement(xSql);
             pre.setString(1, id);

@@ -84,10 +84,8 @@
                                                     <td><%=seller.getSellerMainProduct()%></td>
                                                     <td><%=seller.getSellerVerification()%></td>
                                                     <td>
-                                                        <button class="btn btn-success">
-                                                            <a style=" background-color: #F56565; border-radius:10px; padding:5px; color: white; " href="AdminControllerMap?service=acceptSeller&sellerID=<%=seller.getSellerID()%>">
+                                                        <a style=" background-color: #F56565; border-radius:10px; padding:5px; color: white; " href="AdminControllerMap?service=acceptSeller&sellerID=<%=seller.getSellerID()%>">
                                                             <i class="fas fa-check"></i>   Accept </a>
-                                                        </button>
                                                     </td>
                                                     <td><a style=" background-color: #CB0C9F ; border-radius:10px; padding:5px; color: white;" href="AdminControllerMap?service=denySeller&sellerID=<%=seller.getSellerID()%>" onclick="return confirm('Are you sure you want to Deny this seller?');">
                                                             <i class="fas fa-times"></i>   Deny </a>
@@ -166,25 +164,25 @@
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
         <script src="${contextPath}/js/tablepagination.js"></script>
         <script>
-                                                            function searchByName(param) {
-                                                                var txtSearch = param.value;
-                                                                $.ajax({
-                                                                    url: "/Bmazon/AdminControllerMap",
-                                                                    type: "get",
-                                                                    data: {
-                                                                        search: txtSearch,
-                                                                        service: "searchRole"
-                                                                    },
-                                                                    success: function (respone) {
-                                                                        var text = document.getElementById("role");
-                                                                        text.innerHTML = respone;
-                                                                        getPagination('#dataTable');
-                                                                    },
-                                                                    error: function (xhr) {
-                                                                        //Do Something to handle error
-                                                                    }
-                                                                });
-                                                            }
+                                                        function searchByName(param) {
+                                                            var txtSearch = param.value;
+                                                            $.ajax({
+                                                                url: "/Bmazon/AdminControllerMap",
+                                                                type: "get",
+                                                                data: {
+                                                                    search: txtSearch,
+                                                                    service: "searchRole"
+                                                                },
+                                                                success: function (respone) {
+                                                                    var text = document.getElementById("role");
+                                                                    text.innerHTML = respone;
+                                                                    getPagination('#dataTable');
+                                                                },
+                                                                error: function (xhr) {
+                                                                    //Do Something to handle error
+                                                                }
+                                                            });
+                                                        }
         </script>
         <!-- Github buttons -->
         <script async defer src="https://buttons.github.io/buttons.js"></script>
