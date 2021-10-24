@@ -83,7 +83,7 @@
                     background-size: cover;
                     background-repeat: no-repeat;
                     background-position:center; 
-                    height: 230px;
+                    height: 15rem;
                     position: relative;
                     width: 100%;
                     margin-left: auto;
@@ -102,14 +102,15 @@
         <body >
             <jsp:include page="../header.jsp"/>
             <!--Background image-->
-
-            <div class="row" style="margin-top: 20px;">
+            <div class="row cover"></div>
+            <br>
+            <div class="row" style="margin-top: 20px; background-color: #f6fafb; border-radius: 15px;">
                 <div class="col-md-4" style="border-top: 2px solid white; border-radius: 15px; border-bottom: 2px solid white; text-align: center; background-color: #222222;">
-                    <%String img = "images/" + user.getBackgroundImage();%> 
+                    <%String img = "upload/" + user.getProfileImage();%> 
                     <img style="border-radius: 100%; border: 5px solid #AAAAAA; margin-top: 10px; height: 100px; width: 100px;" src="<%=img%>">
                     <h1 style="text-align: center; margin-top: 8px; margin-bottom: 8px; font-size: 25px;  text-align: center; color: white; background-color: grey; border-radius: 15px;"><%=seller.getSellerShopName()%></h1>
                 </div>
-                <div class="col-md-4" style="border: 2px solid white; padding-left: 80px;">
+                <div class="col-md-4" style="border: 2px solid white; padding-left: 80px; font-family: sans-serif;">
                     <div class="col-md-12" style="font-size: 16px; margin-top: 18px;">
                         <span class="glyphicon glyphicon-home" style="margin-right: 10px;"></span><span>Address: <%=user.getAddress()%></span>
                     </div>
@@ -120,7 +121,7 @@
                         <span class="glyphicon glyphicon-pencil" style="margin-right: 10px;"></span><span><%=seller.getDescription()%></span>
                     </div>
                 </div>
-                <div class="col-md-4" style="border: 2px solid white">
+                <div class="col-md-4" style="border: 2px solid white; font-family: sans-serif">
                     <div class="col-md-12" style="font-size: 16px; margin-top: 18px;">
                         <i class="fa fa-facebook-square" style="margin-right: 10px;"></i><span>FB: <%=user.getFacebook()%></span>
                     </div>
@@ -131,10 +132,7 @@
                         <span class="glyphicon glyphicon-envelope" style="margin-right: 10px;"></span><span>Email: <%=user.getEmail()%></span>
                     </div>
                 </div>
-            </div>
-
-            <br>
-            <div class="row cover"></div>
+            </div> 
 
             <section class="section sec_dien_thoai" id="section_1788051855">
                 <section class="section sec_dien_thoai" id="section_1788051855">
@@ -142,9 +140,10 @@
                         <div class="gap-element" style="display:block; height:auto; padding-top:30px" class="clearfix"></div>
                         <br><br>
                         <div class="row row-collapse align-equal"  id="row-1706731289">
+                            <hr>
                             <div class="text">
                                 <div class="col-inner text-center" >
-                                    <h1>New Arrival</h1>
+                                    <h1><strong>New Arrival</strong></h1>
                                 </div>
                             </div>              
                             <br>
@@ -182,7 +181,8 @@
                                         <% }
                                         %>
                                     </div>
-                                </div>
+                                    <br><br><hr>
+                                </div>     
                             </div>
                             <%--Arrival LEFT PIC --%>          
                             <style scope="scope">
@@ -200,72 +200,68 @@
                     </style>
                 </section>
             </section>
-            <br><br>
+            <br>
 
             <div id="wrapper">
-                <br><br><br>
-                <main id="main" class="">
-                    <div class="col large-12">              
-                        <div class="shop-container">
+                <div class="col large-12">              
+                    <div class="shop-container">
+                        <h1 style="text-align: center;"><strong>List All Product</strong></h1>
 
-                            <div class="products row row-small large-columns-5 medium-columns-3 small-columns-2 has-shadow row-box-shadow-1" id="1">
-                                <% for (Product pro : listProduct) {
-                                        String str = "images/" + daoGallery.getSampleOfProduct(pro.getProductID());
-                                        double price = Double.parseDouble(daoProductType.getProductPrice(pro.getProductID()));
+                        <div class="products row row-small large-columns-5 medium-columns-3 small-columns-2 has-shadow row-box-shadow-1" id="1">
+                            <% for (Product pro : listProduct) {
+                                    String str = "images/" + daoGallery.getSampleOfProduct(pro.getProductID());
+                                    double price = Double.parseDouble(daoProductType.getProductPrice(pro.getProductID()));
 
-                                %>
-                                <div class="product-small col has-hover post-1178 product type-product status-publish has-post-thumbnail product_cat-bach-hoa-online product_cat-do-hop-dong-goi first instock shipping-taxable purchasable product-type-simple" style="margin-top: 20px;">
-                                    <div class="col-inner">
+                            %>
+                            <div class="product-small col has-hover post-1178 product type-product status-publish has-post-thumbnail product_cat-bach-hoa-online product_cat-do-hop-dong-goi first instock shipping-taxable purchasable product-type-simple" style="margin-top: 20px;">
+                                <div class="col-inner">
 
-                                        <div class="product-small box has-hover box-normal box-text-bottom">
-                                            <div class="box-image" style="width:150px; height:150px ">
-                                                <div class="" >
-                                                    <a href="ProductDetailControllerMap?service=getProductDetail&pid=<%=pro.getProductID()%>">
+                                    <div class="product-small box has-hover box-normal box-text-bottom">
+                                        <div class="box-image" style="width:150px; height:150px ">
+                                            <div class="" >
+                                                <a href="ProductDetailControllerMap?service=getProductDetail&pid=<%=pro.getProductID()%>">
 
-                                                        <img src="<%=str%>"></a>
-                                                </div>
-                                                <div class="image-tools z-top top right show-on-hover">
-                                                </div>
-                                                <div class="image-tools grid-tools text-center hide-for-small bottom hover-slide-in show-on-hover">
-                                                </div>
-                                            </div><!-- box-image -->
+                                                    <img src="<%=str%>"></a>
+                                            </div>
+                                            <div class="image-tools z-top top right show-on-hover">
+                                            </div>
+                                            <div class="image-tools grid-tools text-center hide-for-small bottom hover-slide-in show-on-hover">
+                                            </div>
+                                        </div><!-- box-image -->
 
-                                            <div class="box-text text-center" style="background-color:rgb(255, 255, 255);">
-                                                <div class="title-wrapper" >		
-                                                    <p class="category uppercase is-smaller no-text-overflow product-cat op-7">   </p> <%--category--%>
-                                                    <p class="name product-title"><a href="ProductDetailControllerMap?service=getProductDetail&pid=<%=pro.getProductID()%>"> <%=pro.getProductName()%> </a></p>
-                                                </div> 
-                                                <div class="price-wrapper" 
-                                                     <span class="price"><del><span class="woocommerce-Price-amount amount"><%=nf.format(price * 1.05)%>&nbsp; <span class="woocommerce-Price-currencySymbol">&#8363;</span></span></del> 
-                                                        <ins><span class="woocommerce-Price-amount amount"><%=nf.format(price)%>&nbsp; <span class="woocommerce-Price-currencySymbol">&#8363;</span></span></ins></span>
-                                                </div>			
-                                            </div><!-- box-text -->
-                                        </div><!-- box -->
-                                    </div><!-- .col-inner -->
-                                </div><!-- col -->
-                                <%    }
-                                %>
-                            </div>
-                        </div>
-
-
-                        <div class="container" style="margin-top: 35px;">
-                            <nav class="woocommerce-pagination">
-                                <ul class="page-numbers nav-pagination links text-center">
-                                    ${previous}
-                                    <c:forEach  begin="${begin}" end="${end}" var="i">
-
-                                        <li><a class=" ${page==i?"active":""}" href="HomePageControllerMap?service=shopPage&sid=${sid}&page=${i}">${i}</a></li>
-                                        </c:forEach>
-                                        ${next}
-                                </ul>
-                            </nav>
+                                        <div class="box-text text-center" style="background-color:rgb(255, 255, 255);">
+                                            <div class="title-wrapper" >		
+                                                <p class="category uppercase is-smaller no-text-overflow product-cat op-7">   </p> <%--category--%>
+                                                <p class="name product-title"><a href="ProductDetailControllerMap?service=getProductDetail&pid=<%=pro.getProductID()%>"> <%=pro.getProductName()%> </a></p>
+                                            </div> 
+                                            <div class="price-wrapper" 
+                                                 <span class="price"><del><span class="woocommerce-Price-amount amount"><%=nf.format(price * 1.05)%>&nbsp; <span class="woocommerce-Price-currencySymbol">&#8363;</span></span></del> 
+                                                    <ins><span class="woocommerce-Price-amount amount"><%=nf.format(price)%>&nbsp; <span class="woocommerce-Price-currencySymbol">&#8363;</span></span></ins></span>
+                                            </div>			
+                                        </div><!-- box-text -->
+                                    </div><!-- box -->
+                                </div><!-- .col-inner -->
+                            </div><!-- col -->
+                            <%    }
+                            %>
                         </div>
                     </div>
 
-                </main><!-- #main -->
-            </div>
 
+                    <div class="container" style="margin-top: 35px;">
+                        <nav class="woocommerce-pagination">
+                            <ul class="page-numbers nav-pagination links text-center">
+                                ${previous}
+                                <c:forEach  begin="${begin}" end="${end}" var="i">
+
+                                    <li><a class=" ${page==i?"active":""}" href="HomePageControllerMap?service=shopPage&sid=${sid}&page=${i}">${i}</a></li>
+                                    </c:forEach>
+                                    ${next}
+                            </ul>
+                        </nav>
+                    </div>
+                </div>
+            </div>
 
             <jsp:include page="../footer.jsp"/>
         </body>
