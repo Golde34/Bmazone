@@ -6,7 +6,6 @@
 <%@page import="java.text.DecimalFormat"%>
 <%@page import="entity.CartItem"%>
 <%@page import="java.util.ArrayList"%>
-
 <%@page import="java.util.ArrayList"%>
 <%@page import="entity.Product"%>
 
@@ -22,8 +21,12 @@
     <body>
 
         <div class="wrap">
-            <jsp:include page="header.jsp"/>
+            <jsp:include page="../header.jsp"/>
+            <%  ArrayList<CartItem> ShoppingCart = (ArrayList<CartItem>) request.getAttribute("CheckOutList");
 
+
+            %>
+            
             <main id="main" class="">
                 <div id="content" class="content-area page-wrapper" role="main">
                     <div class="row row-main">
@@ -101,6 +104,7 @@
 
                                             </div><!-- large-7 -->
 
+
                                             <div class="large-5 col">
                                                 <div class="col-inner has-border">
                                                     <div class="checkout-sidebar sm-touch-scroll">
@@ -116,18 +120,22 @@
                                                                 </thead>
                                                                 <tbody>
                                                                     <%-- Cart order --%>
+                                                                    <%      for (CartItem item : ShoppingCart) {
+
+                                                                    %>
                                                                     <tr class="cart_item">
                                                                         <td class="product-name">
-                                                                            Áo sơ mi caro kèm belt&nbsp;							 <strong class="product-quantity">&times; 1</strong>													</td>
+                                                                            <%=item.getName() + "(" + item.getSize() + ")" + "(" + item.getColor() + ")" + " x" + item.getQuantity()%> 							 <strong class="product-quantity">&times; 1</strong>													</td>
                                                                         <td class="product-total">
-                                                                            <span class="woocommerce-Price-amount amount">145,000&nbsp;<span class="woocommerce-Price-currencySymbol">&#8363;</span></span>						</td>
+                                                                            <span class="woocommerce-Price-amount amount"><%=nf.format(item.getTotalCost())%><span class="woocommerce-Price-currencySymbol">&#8363;</span></span>						</td>
                                                                     </tr>
+                                                                    <% }%>
                                                                 </tbody>
                                                                 <tfoot>
 
                                                                     <tr class="cart-subtotal">
                                                                         <th>Tổng cộng</th>
-                                                                        <td><span class="woocommerce-Price-amount amount">145,000&nbsp;<span class="woocommerce-Price-currencySymbol">&#8363;</span></span></td>
+                                                                        <td><span class="woocommerce-Price-amount amount"><%=nf.format(0)%><span class="woocommerce-Price-currencySymbol">&#8363;</span></span></td>
                                                                     </tr>
 
 
@@ -196,7 +204,7 @@
 
             </main>
 
-            <jsp:include page="footer.jsp"/>
+            <jsp:include page="../footer.jsp"/>
         </div>
     </body>
 
