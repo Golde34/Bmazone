@@ -67,10 +67,10 @@ import java.util.logging.Logger;
 <span class="fc" id="L67">            pre.setString(2, username);</span>
 <span class="fc" id="L68">            int n = pre.executeUpdate();</span>
 <span class="fc" id="L69">            return n;</span>
-<span class="nc" id="L70">        } catch (SQLException ex) {</span>
-<span class="nc" id="L71">            Logger.getLogger(UserDAO.class.getName()).log(Level.SEVERE, null, ex);</span>
+<span class="fc" id="L70">        } catch (SQLException ex) {</span>
+<span class="fc" id="L71">            Logger.getLogger(UserDAO.class.getName()).log(Level.SEVERE, null, ex);</span>
         }
-<span class="nc" id="L73">        return 0;</span>
+<span class="fc" id="L73">        return 0;</span>
     }
 
     public int changeStatus(String username, int status) {
@@ -105,8 +105,8 @@ import java.util.logging.Logger;
 <span class="fc" id="L105">        String sql = &quot;SELECT * FROM [User] WHERE username = '&quot; + username + &quot;'&quot;;</span>
 <span class="fc" id="L106">        ResultSet rs = dbConn.getData(sql);</span>
         try {
-<span class="pc bpc" id="L108" title="1 of 2 branches missed.">            if (rs.next()) {</span>
-<span class="nc" id="L109">                return true;</span>
+<span class="fc bfc" id="L108" title="All 2 branches covered.">            if (rs.next()) {</span>
+<span class="fc" id="L109">                return true;</span>
             }
 <span class="nc" id="L111">        } catch (SQLException ex) {</span>
 <span class="nc" id="L112">            Logger.getLogger(UserDAO.class.getName()).log(Level.SEVERE, null, ex);</span>
@@ -144,8 +144,8 @@ import java.util.logging.Logger;
 <span class="fc" id="L144">        String sql = &quot;SELECT * FROM [User] WHERE username = '&quot; + username + &quot;' and email = '&quot; + mail + &quot;' and status = 1&quot;;</span>
 <span class="fc" id="L145">        ResultSet rs = dbConn.getData(sql);</span>
         try {
-<span class="pc bpc" id="L147" title="1 of 2 branches missed.">            if (rs.next()) {</span>
-<span class="nc" id="L148">                return true;</span>
+<span class="fc bfc" id="L147" title="All 2 branches covered.">            if (rs.next()) {</span>
+<span class="fc" id="L148">                return true;</span>
             }
 <span class="nc" id="L150">        } catch (SQLException ex) {</span>
 <span class="nc" id="L151">            Logger.getLogger(UserDAO.class.getName()).log(Level.SEVERE, null, ex);</span>
@@ -569,19 +569,19 @@ import java.util.logging.Logger;
 <span class="fc" id="L569">            pre.setString(1, username);</span>
 <span class="fc" id="L570">            pre.setString(2, password);</span>
 <span class="fc" id="L571">            ResultSet rs = pre.executeQuery();</span>
-<span class="pc bpc" id="L572" title="1 of 2 branches missed.">            if (rs.next()) {</span>
-<span class="nc" id="L573">                User user = new User(rs.getString(&quot;userID&quot;), rs.getString(&quot;username&quot;),</span>
-<span class="nc" id="L574">                        rs.getString(&quot;password&quot;), rs.getString(&quot;email&quot;),</span>
-<span class="nc" id="L575">                        rs.getString(&quot;phoneNumber&quot;), rs.getInt(&quot;sell&quot;),</span>
-<span class="nc" id="L576">                        rs.getDouble(&quot;wallet&quot;), rs.getString(&quot;fullname&quot;),</span>
-<span class="nc" id="L577">                        rs.getString(&quot;publicName&quot;), rs.getString(&quot;address&quot;), rs.getString(&quot;profileImage&quot;),</span>
-<span class="nc" id="L578">                        rs.getString(&quot;backgroundImage&quot;), rs.getString(&quot;occupation&quot;),</span>
-<span class="nc" id="L579">                        rs.getInt(&quot;gender&quot;), rs.getDate(&quot;DOB&quot;), rs.getString(&quot;bio&quot;),</span>
-<span class="nc" id="L580">                        rs.getString(&quot;Facebook&quot;), rs.getString(&quot;Instagram&quot;),</span>
-<span class="nc" id="L581">                        rs.getString(&quot;Twitter&quot;), rs.getString(&quot;Youtube&quot;),</span>
-<span class="nc" id="L582">                        rs.getInt(&quot;activityPoint&quot;), rs.getInt(&quot;systemRole&quot;),</span>
-<span class="nc" id="L583">                        rs.getInt(&quot;status&quot;));</span>
-<span class="nc" id="L584">                return user;</span>
+<span class="fc bfc" id="L572" title="All 2 branches covered.">            if (rs.next()) {</span>
+<span class="fc" id="L573">                User user = new User(rs.getString(&quot;userID&quot;), rs.getString(&quot;username&quot;),</span>
+<span class="fc" id="L574">                        rs.getString(&quot;password&quot;), rs.getString(&quot;email&quot;),</span>
+<span class="fc" id="L575">                        rs.getString(&quot;phoneNumber&quot;), rs.getInt(&quot;sell&quot;),</span>
+<span class="fc" id="L576">                        rs.getDouble(&quot;wallet&quot;), rs.getString(&quot;fullname&quot;),</span>
+<span class="fc" id="L577">                        rs.getString(&quot;publicName&quot;), rs.getString(&quot;address&quot;), rs.getString(&quot;profileImage&quot;),</span>
+<span class="fc" id="L578">                        rs.getString(&quot;backgroundImage&quot;), rs.getString(&quot;occupation&quot;),</span>
+<span class="fc" id="L579">                        rs.getInt(&quot;gender&quot;), rs.getDate(&quot;DOB&quot;), rs.getString(&quot;bio&quot;),</span>
+<span class="fc" id="L580">                        rs.getString(&quot;Facebook&quot;), rs.getString(&quot;Instagram&quot;),</span>
+<span class="fc" id="L581">                        rs.getString(&quot;Twitter&quot;), rs.getString(&quot;Youtube&quot;),</span>
+<span class="fc" id="L582">                        rs.getInt(&quot;activityPoint&quot;), rs.getInt(&quot;systemRole&quot;),</span>
+<span class="fc" id="L583">                        rs.getInt(&quot;status&quot;));</span>
+<span class="fc" id="L584">                return user;</span>
             }
 <span class="nc" id="L586">        } catch (SQLException ex) {</span>
 <span class="nc" id="L587">            Logger.getLogger(UserDAO.class.getName()).log(Level.SEVERE, null, ex);</span>
