@@ -52,10 +52,7 @@ public class ProductGenreDAO extends BaseDAO {
         }
         return pg;
     }
-    public static void main(String[] args) {
-        ProductGenreDAO dao = new ProductGenreDAO();
-        System.out.println(dao.getProductGenreByProduct("1").getProductID());
-    }
+
     public ArrayList<ProductGenre> getAllProductGenre() {
         ArrayList<ProductGenre> list = new ArrayList<>();
         String sql = "SELECT * FROM [Bmazon].[dbo].[ProductGenre] where status=1";

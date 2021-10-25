@@ -22,14 +22,6 @@ public class SellerDAO extends BaseDAO {
 
     BaseDAO dbConn = new BaseDAO();
 
-    public static void main(String[] args) {
-        SellerDAO sel = new SellerDAO();
-        List<Seller> list = sel.getAllSeller();
-        for (Seller sele : list) {
-            System.out.println(sele.getSellerShopName() + " " + sele.getEvidence());
-        }
-    }
-
     public int addSeler(Seller s) {
         int n = 0;
         String xSql= "INSERT INTO [Bmazon].[dbo].[Seller] ([userID], [sellerShopName], [sellerPhone], [evidence], [sellerMainProduct], [description], [sellerVerification], [status])"
@@ -184,20 +176,16 @@ public class SellerDAO extends BaseDAO {
             pre = conn.prepareStatement(xSql);
             rs = pre.executeQuery();
             while (rs.next()) {
-                list.add(new Seller(
-                        rs.getInt(1),
-                        rs.getInt(2),
-                        rs.getString(3),
-                        rs.getString(4),
-                        rs.getString(5),
-                        rs.getInt(6),
-                        rs.getString(7),
-                        rs.getInt(8),
-                        rs.getInt(9)));
+                list.add(new Seller(rs.getInt("sellerID"), rs.getInt("userID"),
+                        rs.getString("sellerShopName"), rs.getString("sellerPhone"),
+                        rs.getString("evidence"), rs.getInt("sellerMainProduct"),
+                        rs.getString("description"), rs.getInt("sellerVerification"),
+                        rs.getInt("status")));
             }
+            return list;
         } catch (SQLException e) {
         }
-        return list;
+        return null;
     }
 
     public Seller getSellerByUserID(int userID) {
@@ -266,7 +254,7 @@ public class SellerDAO extends BaseDAO {
 
     public List<Seller> searchSeller(String text) {
         List<Seller> list = new ArrayList<>();
-        String xSql= "SELECT * FROM [Bmazon].[dbo].[Role] where roleName like '%" + text + "%'";
+        String xSql= "SELECT * FROM [Bmazon].[dbo].[Seller] where sellerShopName like '%" + text + "%'";
         try {
             pre = conn.prepareStatement(xSql);
             rs = pre.executeQuery();

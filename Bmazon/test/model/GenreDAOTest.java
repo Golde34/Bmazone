@@ -49,20 +49,29 @@ public class GenreDAOTest {
         GenreDAO instance = new GenreDAO();
         ArrayList<Genre> expResult = null;
         ArrayList<Genre> result = instance.getAllGenres();
-        assertEquals(expResult, result);
+        assertEquals(20, result.size());
     }
 
     /**
      * Test of getGenresByCategoryId method, of class GenreDAO.
      */
     @Test
-    public void testGetGenresByCategoryId() {
+    public void testGetGenresByFalseCategoryId() {
         System.out.println("getGenresByCategoryId");
         int categoryId = 0;
         GenreDAO instance = new GenreDAO();
-        ArrayList<Genre> expResult = null;
+        ArrayList<Genre> expResult = new ArrayList<>();
         ArrayList<Genre> result = instance.getGenresByCategoryId(categoryId);
         assertEquals(expResult, result);
+    }
+    @Test
+    public void testGetGenresByTrueCategoryId() {
+        System.out.println("getGenresByCategoryId");
+        int categoryId = 1;
+        GenreDAO instance = new GenreDAO();
+        ArrayList<Genre> expResult = null;
+        ArrayList<Genre> result = instance.getGenresByCategoryId(categoryId);
+        assertEquals(1, result.size());
     }
 
     /**
@@ -74,7 +83,7 @@ public class GenreDAOTest {
         GenreDAO instance = new GenreDAO();
         ArrayList<Genre> expResult = null;
         ArrayList<Genre> result = instance.getTrueGenres();
-        assertEquals(expResult, result);
+        assertEquals(20, result.size());
     }
 
     /**
@@ -86,36 +95,65 @@ public class GenreDAOTest {
         GenreDAO instance = new GenreDAO();
         ArrayList<Genre> expResult = null;
         ArrayList<Genre> result = instance.getHomeGenre();
-        assertEquals(expResult, result);
+        assertEquals(16, result.size());
     }
 
     /**
      * Test of insertGenre method, of class GenreDAO.
      */
     @Test
-    public void testInsertGenre() {
+    public void testInsertFalseGenre() {
         System.out.println("insertGenre");
-        Genre gen = null;
+        Genre gen = new Genre();
+        gen.setCategoryID(-1);
+        gen.setGenreName("test");
+        gen.setStatus(1);
         GenreDAO instance = new GenreDAO();
-        instance.insertGenre(gen);
+        assertEquals(0, instance.insertGenre(gen));
+    }
+    
+    @Test
+    public void testInsertTrueGenre() {
+        System.out.println("insertGenre");
+        Genre gen = new Genre();
+        gen.setCategoryID(1);
+        gen.setGenreName("test");
+        gen.setStatus(1);
+        GenreDAO instance = new GenreDAO();
+        assertEquals(1, instance.insertGenre(gen));
     }
 
     /**
      * Test of updateGenre method, of class GenreDAO.
      */
     @Test
-    public void testUpdateGenre() {
+    public void testUpdateFalseGenre() {
         System.out.println("updateGenre");
-        Genre gen = null;
+        Genre gen = new Genre();
+        gen.setGenreID(1);
+        gen.setCategoryID(-1);
+        gen.setGenreName("test");
+        gen.setStatus(1);
         GenreDAO instance = new GenreDAO();
-        instance.updateGenre(gen);
+        assertEquals(0, instance.updateGenre(gen));
+    }
+    
+    public void testUpdateTrueGenre() {
+        System.out.println("updateGenre");
+        Genre gen = new Genre();
+        gen.setGenreID(1);
+        gen.setCategoryID(1);
+        gen.setGenreName("test");
+        gen.setStatus(1);
+        GenreDAO instance = new GenreDAO();
+        assertEquals(1, instance.updateGenre(gen));
     }
 
     /**
      * Test of getGenreById method, of class GenreDAO.
      */
     @Test
-    public void testGetGenreById() {
+    public void testGetGenreByFalseId() {
         System.out.println("getGenreById");
         int gId = 0;
         GenreDAO instance = new GenreDAO();
@@ -123,17 +161,37 @@ public class GenreDAOTest {
         Genre result = instance.getGenreById(gId);
         assertEquals(expResult, result);
     }
+    
+    @Test
+    public void testGetGenreByTrueId() {
+        System.out.println("getGenreById");
+        int gId = 1;
+        GenreDAO instance = new GenreDAO();
+        Genre result = instance.getGenreById(gId);
+        assertNotNull(result);
+    }
 
     /**
      * Test of changeStatus method, of class GenreDAO.
      */
     @Test
-    public void testChangeStatus() {
+    public void testChangeStatusFalseGenre() {
         System.out.println("changeStatus");
         int id = 0;
         int status = 0;
         GenreDAO instance = new GenreDAO();
         int expResult = 0;
+        int result = instance.changeStatus(id, status);
+        assertEquals(expResult, result);
+    }
+    
+    @Test
+    public void testChangeStatusTrueGenre() {
+        System.out.println("changeStatus");
+        int id = 1;
+        int status = 0;
+        GenreDAO instance = new GenreDAO();
+        int expResult = 1;
         int result = instance.changeStatus(id, status);
         assertEquals(expResult, result);
     }
@@ -157,7 +215,17 @@ public class GenreDAOTest {
     @Test
     public void testCheckExistGenreName() {
         System.out.println("checkExistGenreName");
-        String genreName = "";
+        String genreName = "IOS";
+        GenreDAO instance = new GenreDAO();
+        boolean expResult = true;
+        boolean result = instance.checkExistGenreName(genreName);
+        assertEquals(expResult, result);
+    }
+    
+    @Test
+    public void testCheckNotExistGenreName() {
+        System.out.println("checkExistGenreName");
+        String genreName = "hihi";
         GenreDAO instance = new GenreDAO();
         boolean expResult = false;
         boolean result = instance.checkExistGenreName(genreName);

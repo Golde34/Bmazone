@@ -15,7 +15,7 @@ public class Comment implements Serializable {
     private static final long serialVersionUID = 1;
     private int commentID;
     private int productID;
-    private String userID;
+    private int userID;
     private String content;
     private double rating;
     private int status;
@@ -23,7 +23,7 @@ public class Comment implements Serializable {
     public Comment() {
     }
 
-    public Comment(int commentID, int productID, String userID, String content, double rating, int status) {
+    public Comment(int commentID, int productID, int userID, String content, double rating, int status) {
         this.commentID = commentID;
         this.productID = productID;
         this.userID = userID;
@@ -48,11 +48,11 @@ public class Comment implements Serializable {
         this.productID = productID;
     }
 
-    public String getUserID() {
+    public int getUserID() {
         return userID;
     }
 
-    public void setUserID(String userID) {
+    public void setUserID(int userID) {
         this.userID = userID;
     }
 

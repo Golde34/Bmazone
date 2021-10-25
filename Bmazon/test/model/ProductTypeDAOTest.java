@@ -378,4 +378,26 @@ public class ProductTypeDAOTest {
         List<ProductType> result = instance.getAllPagingProductType(1, 10, "Black", "13");
         assertNotEquals(100, result.size());
     }
+    
+    /**
+     * Test of searchProduct method, of class ProductTypeDAO.
+     */
+    @Test
+    public void testSearchProduct() {
+        System.out.println("searchProduct");
+        ProductTypeDAO instance = new ProductTypeDAO();
+        List<ProductType> result = instance.searchProduct("laptop");
+        assertEquals(0, result.size());
+    }
+    
+    /**
+     * Test of getProductPrice method, of class ProductTypeDAO.
+     */
+    @Test
+    public void testGetProductPrice() {
+        System.out.println("getProductPrice");
+        ProductTypeDAO instance = new ProductTypeDAO();
+        String result = instance.getProductPrice(0);
+        assertEquals(null, result);
+    }
 }
