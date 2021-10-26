@@ -114,12 +114,10 @@
                                 </div>
                                 <div class="product-releasedate"><span>Release Date: <%=product.getReleaseDate()%></span></div>
                                 <%
-                                            Seller sel = daoSeller.getSellerByProductId(product.getProductID());
-                                            User seller = daoUser.getUserBySellerId(sel);%>
+                                            Seller sel = daoSeller.getSellerByProductId(product.getProductID());%>
                                 <div class="product-seller">
                                     <a href="HomePageControllerMap?service=shopPage&sid=<%=daoSeller.getSellerByProductId(product.getProductID()).getSellerID()%>">
-                                        <span>Seller: <%=seller.getPublicName()%></span><br>
-                                        <span>Shop Name: <%=sel.getSellerShopName()%></span>
+                                        <span>Shop: <%=sel.getSellerShopName()%></span>
                                     </a>
                                 </div>
                             </div>

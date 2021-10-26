@@ -85,7 +85,7 @@ public class HomePageController extends HttpServlet {
             if (service.equalsIgnoreCase("check")) {
                 serviceFilter(request, response);
             }
-            if(service.equalsIgnoreCase("shopPageProduct")){
+            if (service.equalsIgnoreCase("shopPageProduct")) {
                 serviceShopPageProduct(request, response);
             }
         }
@@ -219,31 +219,27 @@ public class HomePageController extends HttpServlet {
     public void serviceShopPage(HttpServletRequest request, HttpServletResponse response) {
 
         String id = request.getParameter("sid");
-        int count = proDAO.totalProductSeller(id);
 
-        User user = userDAO.getUserById(id);
-        Seller seller = sellerDAO.getSellerByUserID(Integer.parseInt(id));
+        Seller seller = sellerDAO.getSellerID(id);
+        User user = userDAO.getUserBySellerId(seller);
         request.setAttribute("seller", seller);
         request.setAttribute("user", user);
 
-        List<Product> listProduct = proDAO.getTop10ProductBySeller(id);
+        List<Product> listProduct = proDAO.getProductBySeller(id);
         List<Product> listNewArrival = proDAO.getNewProductSeller(id);
 
         request.setAttribute("listProduct", listProduct);
         request.setAttribute("listNewArrival", listNewArrival);
-        request.setAttribute("sid", id);
-        request.setAttribute("count", count);
 
         sendDispatcher(request, response, "seller/shopPage.jsp");
     }
-    
+
     public void serviceShopPageProduct(HttpServletRequest request, HttpServletResponse response) {
 
         String id = request.getParameter("sid");
         int count = proDAO.totalProductSeller(id);
-
-        User user = userDAO.getUserById(id);
-        Seller seller = sellerDAO.getSellerByUserID(Integer.parseInt(id));
+        Seller seller = sellerDAO.getSellerID(id);
+        User user = userDAO.getUserBySellerId(seller);
         request.setAttribute("seller", seller);
         request.setAttribute("user", user);
 
@@ -269,7 +265,7 @@ public class HomePageController extends HttpServlet {
             end = page + 2;
         } else {
             end = total;
-            begin = total - 1 /* ban dau la total - 2*/;
+            begin = total - 1;
         }
         if (page == 1) {
             request.setAttribute("next", next);

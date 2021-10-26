@@ -359,7 +359,6 @@ public class ProductDAO extends BaseDAO {
                 + " ROW_NUMBER() over (order by productID) as RowNum\n  "
                 + "   FROM [Bmazon].[dbo].[Product] p  where sellerID = ?) as T \n "
                 + " where T.RowNum between ((@PageNo-1)*@PageSize)+1 and (@PageNo*@PageSize)  ";
-        //String sql = "SELECT * FROM Product where seller = '" + seller + "'";
         try {
             pre = conn.prepareStatement(sql);
             pre.setInt(1, index);
