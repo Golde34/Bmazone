@@ -111,6 +111,7 @@ public class ShipCompanyDAO extends BaseDAO {
         }
         return company;
     }
+    
 
     public int getPageNumber(String search) {
         int num = 0;

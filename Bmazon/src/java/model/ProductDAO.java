@@ -566,11 +566,7 @@ public class ProductDAO extends BaseDAO {
         return list;
     }
 
-    public static void main(String[] args) {
-        ProductDAO pDAO = new ProductDAO();
-        System.out.println(pDAO.getRelatedProductByProductIDPaging(1, 1).size());
-    }
-
+   
     public ArrayList<Product> getProductByFilter(int index, String name, String s) {
         ArrayList<Product> list = new ArrayList<>();
         String sql = " declare @PageNo INT = " + index + " \n"

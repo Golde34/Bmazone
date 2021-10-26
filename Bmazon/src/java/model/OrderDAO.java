@@ -68,6 +68,7 @@ public class OrderDAO extends BaseDAO {
                 o.setShipMoney(rs.getDouble("shipmoney"));
                 o.setPaymentMethod(rs.getString("paymentmethod"));
                 o.setTotal(rs.getDouble("total"));
+                o.setState(rs.getInt("state"));
                 o.setStatus(rs.getInt("status"));
                 list.add(o);
             }
@@ -76,26 +77,30 @@ public class OrderDAO extends BaseDAO {
         }
         return list;
     }
+    public static void main(String[] args) {
+        Order o= new Order("1", "thinh", "thinh", "thinh","thinh", 0, 10000, 1,"COD", 0);
+        OrderDAO odao= new OrderDAO();
+        odao.insertOrder(o);
+    }
 
     public int insertOrder(Order obj) {
         int n = 0;
         String sql = "INSERT INTO [Order]"
                 + "           ([userID],[orderDate],[requiredDate],[shippedDate],[shipName],[shipAddress],[shipCity]\n"
-                + "           ,[shipPhone],[companyID],[shipMoney],[paymentMethod],[total],[status])"
-                + "     VALUES (?,GETDATE(),?,?,?,?,?,?,?,?,?,?,?,1)";
+                + "           ,[shipPhone],[companyID],[shipMoney],[paymentMethod],[total],[state],[status])"
+                + "     VALUES (?,GETDATE(),GETDATE(),GETDATE(),?,?,?,?,?,?,?,?,?,1)";
         try {
             pre = conn.prepareStatement(sql);
             pre.setString(1, obj.getUserID());
-            pre.setDate(2, obj.getRequiredDate());
-            pre.setDate(3, obj.getShippedDate());
-            pre.setString(4, obj.getShipName());
-            pre.setString(5, obj.getShipAddress());
-            pre.setString(6, obj.getShipCity());
-            pre.setString(7, obj.getShipPhone());
-            pre.setInt(8, obj.getCompanyID());
-            pre.setDouble(9, obj.getShipMoney());
-            pre.setString(10, obj.getPaymentMethod());
-            pre.setDouble(11, obj.getTotal());
+            pre.setString(2, obj.getShipName());
+            pre.setString(3, obj.getShipAddress());
+            pre.setString(4, obj.getShipCity());
+            pre.setString(5, obj.getShipPhone());
+            pre.setInt(6, obj.getCompanyID());
+            pre.setDouble(7, obj.getShipMoney());
+            pre.setString(8, obj.getPaymentMethod());
+            pre.setDouble(9, obj.getTotal());
+            pre.setInt(10, obj.getState());
             n = pre.executeUpdate();
         } catch (SQLException ex) {
             Logger.getLogger(OrderDAO.class.getName()).log(Level.SEVERE, null, ex);
@@ -120,7 +125,7 @@ public class OrderDAO extends BaseDAO {
     public int updateOrder(Order obj) {
         int n = 0;
         String sql = "update [Order] set[orderDate]=? ,[requiredDate]=?,[shippedDate]=?,[shipName]=?,[shipAddress]=?,[shipCity]=?,"
-                + "           [shipPhone]=?,[companyID]=?,[shipMoney]=?,[paymentMethod]=? ,[total]=? ,[status]=1 where orderID=?";
+                + "           [shipPhone]=?,[companyID]=?,[shipMoney]=?,[paymentMethod]=? ,[total]=? ,[state]=?,[status]=1 where orderID=?";
         try {
             pre = conn.prepareStatement(sql);
             pre.setDate(1, obj.getOrderDate());
@@ -134,7 +139,8 @@ public class OrderDAO extends BaseDAO {
             pre.setDouble(9, obj.getShipMoney());
             pre.setString(10, obj.getPaymentMethod());
             pre.setDouble(11, obj.getTotal());
-            pre.setInt(12, obj.getOrderID());
+            pre.setInt(12, obj.getState());
+            pre.setInt(13, obj.getOrderID());
             n = pre.executeUpdate();
         } catch (SQLException ex) {
             Logger.getLogger(OrderDAO.class.getName()).log(Level.SEVERE, null, ex);
@@ -176,6 +182,7 @@ public class OrderDAO extends BaseDAO {
                 o.setShipMoney(rs.getDouble("shipmoney"));
                 o.setPaymentMethod(rs.getString("paymentmethod"));
                 o.setTotal(rs.getDouble("total"));
+                o.setState(rs.getInt("state"));
                 o.setStatus(rs.getInt("status"));
                 list.add(o);
             }
@@ -205,6 +212,7 @@ public class OrderDAO extends BaseDAO {
                 o.setShipMoney(rs.getDouble("shipmoney"));
                 o.setPaymentMethod(rs.getString("paymentmethod"));
                 o.setTotal(rs.getDouble("total"));
+                o.setState(rs.getInt("state"));
                 o.setStatus(rs.getInt("status"));
                 list.add(o);
             }

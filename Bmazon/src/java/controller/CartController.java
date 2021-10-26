@@ -76,7 +76,7 @@ public class CartController extends HttpServlet {
                 serviceBillingPage(out, request, response);
             }
 
-            if (service.equalsIgnoreCase("Checkout")) {
+            if (service.equalsIgnoreCase("Check Out")) {
                 serviceCheckOut(request, response);
             }
         }
@@ -193,27 +193,25 @@ public class CartController extends HttpServlet {
         request.setAttribute("CheckOutList", CheckOutList);
         request.setAttribute("mess", mess);
         request.setAttribute("total", nf.format(total));
+        request.setAttribute("hello", total);
         sendDispatcher(request, response, "cart/checkout.jsp");
     }
 
     public void serviceCheckOut(HttpServletRequest request, HttpServletResponse response) throws IOException {
         String fullname = request.getParameter("fullname");
-        String shipCompany = request.getParameter("shipCompany");
+        int shipCompany = Integer.parseInt(request.getParameter("shipCompany"));
         String address = request.getParameter("address");
         String city = request.getParameter("city");
         String phone = request.getParameter("phone");
-        String email = request.getParameter("email");
-        String wallet = request.getParameter("wallet");
+
+        String payment = request.getParameter("payment");
 
         User x = (User) request.getSession().getAttribute("currUser");
-        x.setAddress(address);
-        x.setFullname(fullname);
-        x.setPhoneNumber(phone);
-        x.setEmail(email);
-        uDao.updateInfoUserByAdmin(x);
-        Order o = new Order();
+        String totalString= request.getParameter("ordertotal");
+        String id = x.getUserId();
+        Order o = new Order(id, fullname, address, city, phone, 0,Double.parseDouble(totalString), shipCompany, payment, 0);
         oDao.insertOrder(o);
-        
+
         sendDispatcher(request, response, "cart/orderShip.jsp");
     }
 
