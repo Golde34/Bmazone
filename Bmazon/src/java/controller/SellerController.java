@@ -6,23 +6,34 @@
 package controller;
 
 import entity.*;
+import java.io.File;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.io.PrintWriter;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.sql.Date;
 import java.text.DecimalFormat;
+import java.text.NumberFormat;
 import java.text.ParseException;
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
+import java.util.Locale;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.servlet.RequestDispatcher;
+import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import model.*;
+import org.apache.commons.fileupload.FileItem;
+import org.apache.commons.fileupload.disk.DiskFileItemFactory;
+import org.apache.commons.fileupload.servlet.ServletFileUpload;
 
 /**
  *
@@ -347,8 +358,10 @@ public class SellerController extends HttpServlet {
                     List<Gallery> listGallery = galleryDAO.getAllImageByProductTypeID(ptype.getProductTypeId());
                         for (Gallery gallery : listGallery) {
             pr.print(
-                    "<img id=\"img\" src=\"images/" + gallery.getLink() + "\" width=\"250px\" height=\"200px\"><br>                    \n" +
-                    "<input required accept=\"image/*\" onchange=\"loadFile(event)\" id=\"file\" type=\"file\" name=\"photo\">\n" +
+                    "<label class=\"imgho\" for=\"file\">\n" +
+                    "<img id=\"img\" src=\"images/"+ gallery.getLink()+"\">\n" +
+                    "</label>\n" +
+                    "<input required accept=\"image/*\" onchange=\"loadFile(event)\" id=\"file\" type=\"file\" name=\"photo\" style=\"display: none;\">" +
                     "</td>\n" );
                     }
             pr.print(
@@ -459,6 +472,7 @@ public class SellerController extends HttpServlet {
 //        pg.setGenreID(Integer.parseInt(genre));
         pgDAO.addProductGenre(productToken.getProductID(), genre);
 
+        
         ArrayList<Product> listProduct = pDAO.getAllProduct();
         request.setAttribute("listProduct", listProduct);
         sendDispatcher(request, response, "SellerControllerMap?service=productmanagement");
@@ -484,6 +498,50 @@ public class SellerController extends HttpServlet {
         pt.setQuantity(quantity);
         pt.setWareHouseID(warehouse);
         ptDAO.addProductType(pt);
+        
+        
+//        String filename = null;
+//        // Create a factory for disk-based file items
+//        try {
+//            DiskFileItemFactory factory = new DiskFileItemFactory();
+//            ServletContext servletContext = this.getServletConfig().getServletContext();
+//            File repository = (File) servletContext.getAttribute("javax.servlet.context.tempdir");
+//            factory.setRepository(repository);
+//            ServletFileUpload upload = new ServletFileUpload(factory);
+//            List<FileItem> items = upload.parseRequest(request);
+//            // Process the uploaded items
+//            Iterator<FileItem> iter = items.iterator();
+//            HashMap<String, String> fields = new HashMap<>();
+//            while (iter.hasNext()) {
+//                FileItem item = iter.next();
+//                if (item.isFormField()) {
+//                    fields.put(item.getFieldName(), item.getString());
+//                    String name = item.getFieldName();
+//                    String value = item.getString();
+//                    System.out.println(name + " " + value);
+//                } else {
+//                    filename = item.getName();
+//                    if (filename == null || filename.equals("")) {
+//                        break;
+//                    } else {
+//                        Path path = Paths.get(filename);
+//                        String storePath = servletContext.getRealPath("/images");
+//                        File uploadFile = new File(storePath + "/" + path.getFileName());
+//                        item.write(uploadFile);
+//                    }
+//                }
+//            }
+//        } catch (Exception ex) {
+//            Logger.getLogger(UserController.class.getName()).log(Level.SEVERE, null, ex);
+//        }
+//        
+//        Gallery gallery = new Gallery();
+//        gallery.setLink(filename);
+//        gallery.setProductID(pid);
+//        gallery.setProductTypeID(ptypeID);
+//        gallery.setStatus(1);
+//        galleryDAO.addGallery(gallery);
+        
         sendDispatcher(request, response, "SellerControllerMap?service=productdetail&productid=" + pid + "");
     }
 
@@ -552,7 +610,14 @@ public class SellerController extends HttpServlet {
             pt.setColor(colors[i]);
             pt.setSize(sizes[i]);
             pt.setPrice(prices[i]);
-            pt.setQuantity(Integer.parseInt(quantities[i]));
+            NumberFormat format = NumberFormat.getInstance(Locale.US);
+            Number nQuantity = 0;
+            try {
+                nQuantity = format.parse(quantities[i]);
+            } catch (ParseException ex) {
+                Logger.getLogger(AdminController.class.getName()).log(Level.SEVERE, null, ex);
+            }
+            pt.setQuantity(nQuantity.intValue());
             ptDAO.editProduct(pt);
         }
         //Success
@@ -563,6 +628,16 @@ public class SellerController extends HttpServlet {
         String categoryId = pcDAO.getCategoryIdByProductId(product.getProductID());
         Category category = cateDAO.getCategoryByCateId(categoryId);
         ArrayList<Genre> listGenre = gDAO.getGenresByCategoryId(Integer.parseInt(categoryId));
+        
+        List<ProductType> listProductType = ptDAO.getProductByProductID(Integer.parseInt(pid));
+        ArrayList<ProductType> listPaging = ptDAO.getAllPagingProductType(1, 1, "",pid);
+        int totalPage = listProductType.size() / 1;
+        if (listProductType.size() != totalPage * 1) {
+            totalPage += 1;
+        }
+        request.setAttribute("index", 1);
+        request.setAttribute("totalPage", totalPage);
+        request.setAttribute("listProductType", listPaging);
 
         //Set request
         request.setAttribute("listGenre", listGenre);

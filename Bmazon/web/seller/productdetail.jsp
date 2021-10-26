@@ -81,6 +81,14 @@
             .modal form label {
                 font-weight: normal;
             }
+            .imgho{
+                width: 250px; 
+                height: 150px; 
+            }
+            .imgho:hover{
+                opacity: 0.7;
+                cursor: pointer;
+            }
         </style>
     </head>
 
@@ -261,17 +269,17 @@
                                                             <%Double price = Double.parseDouble(ptype.getPrice());%>
 
                                                         <td><label>Price</label></td>
-                                                        <td><input required style="width: 100px;" type="text" name="price" class="form-control price" value="<%=nf.format(price)%>"></td>
+                                                        <td><input required style="width: 100px;" type="text" name="price" pattern="[0-9]+" title="please enter number only" class="form-control price" value="<%=nf.format(price)%>"></td>
 
                                                         <td><label>Quantity</label></td>
-                                                        <td><input required style="width: 100px;"  type="text" name="quantity" class="form-control" value="<%=ptype.getQuantity()%>"></td>
+                                                        <td><input required style="width: 100px;"  type="text" name="quantity" pattern="[0-9]+" title="please enter number only" class="form-control" value="<%=ptype.getQuantity()%>"></td>
                                                         <td>
                                                             <%if (ptype.getStatus() == 1) {%>
-                                                            <a class="btn btn-danger" href="SellerControllerMap?service=deactiveproducttype&producttypeid=<%=ptype.getProductTypeId()%>&productid=<%= product.getProductID()%>" onclick="return confirm('Are you sure you want to Remove?');">Deactive
+                                                            <a class="btn btn-danger" href="SellerControllerMap?service=deactiveproducttype&producttypeid=<%=ptype.getProductTypeId()%>&productid=<%= product.getProductID()%>" onclick="return confirm('Are you sure?');">Deactive
                                                                 <!--<span class="fas fa-trash-alt mt-3 ml-3 delete"></span>-->
                                                             </a>
                                                             <%} else {%>
-                                                            <a class="btn btn-success" href="SellerControllerMap?service=activeproducttype&producttypeid=<%=ptype.getProductTypeId()%>&productid=<%= product.getProductID()%>" onclick="return confirm('Are you sure you want to Remove?');">Active
+                                                            <a class="btn btn-success" href="SellerControllerMap?service=activeproducttype&producttypeid=<%=ptype.getProductTypeId()%>&productid=<%= product.getProductID()%>" onclick="return confirm('Are you sure?');">Active
                                                                 <!--<span class="fas fa-link mt-3 ml-3 delete"></span>-->
                                                             </a><%}%>
                                                         </td>
@@ -283,8 +291,10 @@
                                                                 List<Gallery> listGallery = gallerydao.getAllImageByProductTypeID(ptype.getProductTypeId());
                                                                 for (Gallery gallery : listGallery) {
                                                             %>
-                                                            <img id="img" src="images/<%=gallery.getLink()%>" width="250px" height="200px"><br>                    
-                                                            <input required accept="image/*" onchange="loadFile(event)" id="file" type="file" name="photo">
+                                                            <label class="imgho" for="file">
+                                                            <img id="img" src="images/<%=gallery.getLink()%>">
+                                                            </label>
+                                                            <input required accept="image/*" onchange="loadFile(event)" id="file" type="file" name="photo" style="display: none;">
                                                         </td>
                                                         <% } %>
                                                     </tr>
@@ -376,11 +386,11 @@
                         </div>
                         <div class="form-group">
                             <label>Price</label>
-                            <input name="price" type="text" class="form-control" required>
+                            <input name="price" type="text" pattern="[0-9]+" title="please enter number only" class="form-control" required>
                         </div>
                         <div class="form-group">
                             <label>Quantity</label>
-                            <textarea name="quantity" class="form-control" required></textarea>
+                            <input name="quantity" type="text" pattern="[0-9]+" title="please enter number only" class="form-control" required>
                         </div>
                         <div class="form-group">
                             <label>Warehouse</label> <br>
@@ -391,6 +401,18 @@
                                 </option>
                                 <% }%>
                             </select>
+                        </div>
+                            
+                        <div class="form-group">
+                            <div class="wrapper">
+                            <div class="image">
+                                <img src="">
+                            </div>
+                            <div class="file-name">
+                                File name here
+                            </div>
+                        </div>
+                        <input id="default-btn" type="file" hidden class="form-control" name="photo" placeholder="Enter photo">
                         </div>
 
 
@@ -494,20 +516,6 @@
         $(this).val(n.toLocaleString());
         $(".noti").hide();
         });
-        (function () {
-        'use strict'
-                var forms = document.querySelectorAll('.needs-validation')
-                Array.prototype.slice.call(forms)
-                .forEach(function (form) {
-                form.addEventListener('submit', function (event) {
-                if (!form.checkValidity()) {
-                event.preventDefault()
-                        event.stopPropagation()
-                }
-                form.classList.add('was-validated')
-                }, false)
-                })
-        })()
                 var today = new Date();
         var dd = today.getDate();
         var mm = today.getMonth() + 1; //January is 0!
