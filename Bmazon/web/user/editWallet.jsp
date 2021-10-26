@@ -129,12 +129,10 @@
                     </div>
                 </div>
             </div>
+            <div class="col-lg-3"></div>
         </div>
-    </div>
-    <div class="col-lg-3"></div>
-</div>
-<br><br><br>
-<jsp:include page="../footer.jsp"/>
-<%--JS--%>
-</body>
+        <br><br><br>
+        <jsp:include page="../footer.jsp"/>
+        <%--JS--%>
+    </body>
 </html>
