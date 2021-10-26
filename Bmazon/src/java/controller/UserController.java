@@ -410,7 +410,7 @@ public class UserController extends HttpServlet {
         String verifyCode = request.getParameter("verifyCode");
         String mess = "";
 
-        User x = (User) request.getSession().getAttribute("currUser");
+        User x = (User) session.getAttribute("currUser");
 
         //get code generated
         String authCode = (String) session.getAttribute("authcode");
@@ -418,7 +418,7 @@ public class UserController extends HttpServlet {
         
         if (verifyCode.equals(authCode)) {
             daoUser.depositWalletUser(x, amount);
-            request.getSession().setAttribute("currUser", daoUser.getUserById(x.getUserId()));
+            session.setAttribute("currUser", daoUser.getUserById(x.getUserId()));
             mess = "Deposit Successfully!";
             request.setAttribute("mess", mess);
             sendDispatcher(request, response, "UserControllerMap?service=editWallet");
@@ -460,10 +460,9 @@ public class UserController extends HttpServlet {
         HttpSession session = request.getSession();
         String mess = "";
         double amount = Double.parseDouble(request.getParameter("amount"));
-        User x = (User) request.getSession().getAttribute("currUser");
-        request.setAttribute("currUser", x);
-        if (amount == 0) {
-            mess = "Please input amount more than 0.";
+        User x = (User) session.getAttribute("currUser");
+        if (amount == 0 || amount > 100000000) {
+            mess = "Please input amount more than 0 and less than 100000000.";
             request.setAttribute("mess", mess);
             sendDispatcher(request, response, "user/editWallet.jsp");
         } else {
@@ -481,8 +480,7 @@ public class UserController extends HttpServlet {
         HttpSession session = request.getSession();
         String mess = "";
         double amount = Double.parseDouble(request.getParameter("amount"));
-        User x = (User) request.getSession().getAttribute("currUser");
-        request.setAttribute("currUser", x);
+        User x = (User) session.getAttribute("currUser");
         if (amount == 0) {
             mess = "Please input amount more than 0.";
             request.setAttribute("mess", mess);

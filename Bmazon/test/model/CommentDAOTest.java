@@ -49,8 +49,20 @@ public class CommentDAOTest {
         String search = "";
         CommentDAO instance = new CommentDAO();
         int expResult = 0;
-        int result = instance.getPageNumber(search,1);
+        int pid = 1;
+        int result = instance.getPageNumber(search,pid);
         assertNotSame(expResult, result);
+    }
+    
+    @Test
+    public void testGetPageNumberIdNotExist() {
+        System.out.println("getPageNumber");
+        String search = "";
+        CommentDAO instance = new CommentDAO();
+        int expResult = 0;
+        int pid = -5;
+        int result = instance.getPageNumber(search,pid);
+        assertSame(expResult, result);
     }
 
     /**
@@ -74,9 +86,20 @@ public class CommentDAOTest {
     public void testChangeStatus() {
         System.out.println("testChangeStatusWithCommentID");
         CommentDAO instance = new CommentDAO();
-        assertEquals(1, instance.changeStatus(1, 1));
+        int cid = 1;
+        int expected = 1;
+        assertEquals(expected, instance.changeStatus(cid, 1));
     }
 
+    @Test
+    public void testChangeStatusNotExistComment() {
+        System.out.println("testChangeStatusWithCommentID");
+        CommentDAO instance = new CommentDAO();
+        int cid = -99;
+        int expected = 0;
+        assertEquals(expected, instance.changeStatus(cid, 1));
+    }
+    
     /**
      * Test of insertComment method, of class CommentDAO.
      */
@@ -90,9 +113,23 @@ public class CommentDAOTest {
         c.setRating(4.3);
         c.setStatus(1);
         CommentDAO instance = new CommentDAO();
-        assertEquals(1, instance.insertComment(c));
+        int expected = 1;
+        assertEquals(expected, instance.insertComment(c));
     }
 
+    @Test
+    public void testInsertCommentNullValue() {
+        System.out.println("addComment");
+        Comment c = new Comment();
+//        c.setProductID(1);
+//        c.setUserID(1);
+//        c.setContent(null);
+//        c.setRating(4.3);
+//        c.setStatus(1);
+        CommentDAO instance = new CommentDAO();
+        int expected = 0;
+        assertEquals(expected, instance.insertComment(c));
+    }
     /**
      * Test of getCommentsByProductId method, of class CommentDAO.
      */
@@ -100,8 +137,19 @@ public class CommentDAOTest {
     public void testGetCommentsByProductId() {
         System.out.println("getComment");
         CommentDAO instance = new CommentDAO();
-        List<Comment> result = instance.getCommentsByProductId(1);
+        int pid = 1;
+        List<Comment> result = instance.getCommentsByProductId(pid);
         assertNotNull(result);
+    }
+    
+    @Test
+    public void testGetCommentsByProductIdNotExist() {
+        System.out.println("getComment");
+        CommentDAO instance = new CommentDAO();
+        int pid = -5;
+        List<Comment> result = instance.getCommentsByProductId(pid);
+        int expected = 0;
+        assertEquals(expected, result.size());
     }
 
     /**
@@ -111,8 +159,17 @@ public class CommentDAOTest {
     public void testCheckExistComment() {
         System.out.println("checkExistComment");
         CommentDAO instance = new CommentDAO();
-        boolean result = instance.checkExistComment(1);
+        int cid = 1;
+        boolean result = instance.checkExistComment(cid);
         assertEquals(true, result);
+    }
+    @Test
+    public void testCheckExistCommentWithNotExistID() {
+        System.out.println("checkExistComment");
+        CommentDAO instance = new CommentDAO();
+        int cid = -5;
+        boolean result = instance.checkExistComment(cid);
+        assertEquals(false, result);
     }
     
 }
