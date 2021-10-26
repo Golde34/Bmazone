@@ -88,17 +88,17 @@ import java.util.logging.Logger;
     }
 
     public Gallery getGalleryById(int id) {
-<span class="fc" id="L91">        Gallery gallery = null;</span>
+<span class="fc" id="L91">        Gallery gallery = new Gallery();</span>
 <span class="fc" id="L92">        String sql = &quot;SELECT * FROM [Bmazon].[dbo].[Gallery] where galleryID=&quot; + id;</span>
         try {
 <span class="fc" id="L94">            pre = conn.prepareStatement(sql);</span>
 <span class="fc" id="L95">            rs = pre.executeQuery();</span>
-<span class="pc bpc" id="L96" title="1 of 2 branches missed.">            if (rs.next()) {</span>
-<span class="nc" id="L97">                gallery.setGalleryID(id);</span>
-<span class="nc" id="L98">                gallery.setLink(rs.getString(&quot;link&quot;));</span>
-<span class="nc" id="L99">                gallery.setProductID(rs.getInt(&quot;productID&quot;));</span>
-<span class="nc" id="L100">                gallery.setProductTypeID(rs.getString(&quot;productTypeID&quot;));</span>
-<span class="nc" id="L101">                gallery.setStatus(rs.getInt(&quot;status&quot;));</span>
+<span class="fc bfc" id="L96" title="All 2 branches covered.">            if (rs.next()) {</span>
+<span class="fc" id="L97">                gallery.setGalleryID(id);</span>
+<span class="fc" id="L98">                gallery.setLink(rs.getString(&quot;link&quot;));</span>
+<span class="fc" id="L99">                gallery.setProductID(rs.getInt(&quot;productID&quot;));</span>
+<span class="fc" id="L100">                gallery.setProductTypeID(rs.getString(&quot;productTypeID&quot;));</span>
+<span class="fc" id="L101">                gallery.setStatus(rs.getInt(&quot;status&quot;));</span>
             }
 <span class="fc" id="L103">            rs.close();</span>
 <span class="fc" id="L104">            pre.close();</span>
@@ -155,15 +155,15 @@ import java.util.logging.Logger;
         try {
 <span class="fc" id="L156">            pre = conn.prepareStatement(xSql);</span>
 <span class="fc" id="L157">            rs = pre.executeQuery();</span>
-<span class="pc bpc" id="L158" title="1 of 2 branches missed.">            while (rs.next()) {</span>
-<span class="nc" id="L159">                Gallery gallery = new Gallery();</span>
-<span class="nc" id="L160">                gallery.setGalleryID(rs.getInt(&quot;galleryID&quot;));</span>
-<span class="nc" id="L161">                gallery.setLink(rs.getString(&quot;link&quot;));</span>
-<span class="nc" id="L162">                gallery.setProductID(rs.getInt(&quot;productID&quot;));</span>
-<span class="nc" id="L163">                gallery.setProductTypeID(rs.getString(&quot;productTypeId&quot;));</span>
-<span class="nc" id="L164">                gallery.setStatus(rs.getInt(&quot;status&quot;));</span>
-<span class="nc" id="L165">                list.add(gallery);</span>
-<span class="nc" id="L166">            }</span>
+<span class="fc bfc" id="L158" title="All 2 branches covered.">            while (rs.next()) {</span>
+<span class="fc" id="L159">                Gallery gallery = new Gallery();</span>
+<span class="fc" id="L160">                gallery.setGalleryID(rs.getInt(&quot;galleryID&quot;));</span>
+<span class="fc" id="L161">                gallery.setLink(rs.getString(&quot;link&quot;));</span>
+<span class="fc" id="L162">                gallery.setProductID(rs.getInt(&quot;productID&quot;));</span>
+<span class="fc" id="L163">                gallery.setProductTypeID(rs.getString(&quot;productTypeId&quot;));</span>
+<span class="fc" id="L164">                gallery.setStatus(rs.getInt(&quot;status&quot;));</span>
+<span class="fc" id="L165">                list.add(gallery);</span>
+<span class="fc" id="L166">            }</span>
 <span class="fc" id="L167">            rs.close();</span>
 <span class="fc" id="L168">            pre.close();</span>
 <span class="nc" id="L169">        } catch (SQLException e) {</span>
@@ -215,7 +215,7 @@ import java.util.logging.Logger;
 <span class="fc" id="L215">            pre = conn.prepareStatement(xSql);</span>
 <span class="fc" id="L216">            pre.setString(1, ps);</span>
 <span class="fc" id="L217">            rs = pre.executeQuery();</span>
-<span class="pc bpc" id="L218" title="1 of 2 branches missed.">            while (rs.next()) {</span>
+<span class="pc bpc" id="L218" title="1 of 2 branches missed.">            if (rs.next()) {</span>
 <span class="nc" id="L219">                s = rs.getString(&quot;link&quot;);</span>
             }
 <span class="nc" id="L221">        } catch (Exception ex) {</span>

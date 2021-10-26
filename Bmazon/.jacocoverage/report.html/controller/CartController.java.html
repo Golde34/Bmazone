@@ -51,123 +51,139 @@ import model.GalleryDAO;
 <span class="nc" id="L51">        try (PrintWriter out = response.getWriter()) {</span>
 
 <span class="nc" id="L53">            String service = request.getParameter(&quot;service&quot;);</span>
-<span class="nc bnc" id="L54" title="All 2 branches missed.">             if (service.equalsIgnoreCase(&quot;Cart&quot;)){           </span>
+<span class="nc bnc" id="L54" title="All 2 branches missed.">            if (service.equalsIgnoreCase(&quot;Cart&quot;)) {</span>
 <span class="nc" id="L55">                serviceCart(request, response);</span>
             }
-<span class="nc bnc" id="L57" title="All 2 branches missed.">            if (service.equalsIgnoreCase(&quot;AddToCart&quot;)){           </span>
+<span class="nc bnc" id="L57" title="All 2 branches missed.">            if (service.equalsIgnoreCase(&quot;AddToCart&quot;)) {</span>
 <span class="nc" id="L58">                serviceAddToCart(request, response);</span>
             }
-<span class="nc bnc" id="L60" title="All 2 branches missed.">            if (service.equalsIgnoreCase(&quot;Delete&quot;)){           </span>
+<span class="nc bnc" id="L60" title="All 2 branches missed.">            if (service.equalsIgnoreCase(&quot;Delete&quot;)) {</span>
 <span class="nc" id="L61">                serviceDelete(request, response);</span>
             }
-<span class="nc bnc" id="L63" title="All 2 branches missed.">            if (service.equalsIgnoreCase(&quot;Update&quot;)){           </span>
+<span class="nc bnc" id="L63" title="All 2 branches missed.">            if (service.equalsIgnoreCase(&quot;Update&quot;)) {</span>
 <span class="nc" id="L64">                serviceUpdate(request, response);</span>
             }
-            
-<span class="nc bnc" id="L67" title="All 8 branches missed.">        }</span>
-        
-<span class="nc" id="L69">    }</span>
-     public void serviceCart(HttpServletRequest request, HttpServletResponse response) {
-<span class="nc" id="L71">        ArrayList&lt;CartItem&gt; ShoppingCart = (ArrayList&lt;CartItem&gt;) request.getSession().getAttribute(&quot;ShoppingCart&quot;);</span>
+<span class="nc bnc" id="L66" title="All 2 branches missed.">            if (service.equalsIgnoreCase(&quot;Check Out&quot;)) {</span>
+<span class="nc" id="L67">                serviceCheckOut(request, response);</span>
+            }
+
+<span class="nc bnc" id="L70" title="All 8 branches missed.">        }</span>
+
+<span class="nc" id="L72">    }</span>
+
+    public void serviceCart(HttpServletRequest request, HttpServletResponse response) {
+<span class="nc" id="L75">        ArrayList&lt;CartItem&gt; ShoppingCart = (ArrayList&lt;CartItem&gt;) request.getSession().getAttribute(&quot;ShoppingCart&quot;);</span>
 //         if (ShoppingCart.isEmpty()) {
 //             
 //         }
-<span class="nc" id="L75">         request.getSession().setAttribute(&quot;ShoppingCart&quot;, ShoppingCart);</span>
-<span class="nc" id="L76">        sendDispatcher(request, response, &quot;cart.jsp&quot;);</span>
-<span class="nc" id="L77">    }</span>
+<span class="nc" id="L79">        request.getSession().setAttribute(&quot;ShoppingCart&quot;, ShoppingCart);</span>
+<span class="nc" id="L80">        sendDispatcher(request, response, &quot;cart/cart.jsp&quot;);</span>
+<span class="nc" id="L81">    }</span>
 
     public void serviceAddToCart(HttpServletRequest request, HttpServletResponse response) throws IOException {
-<span class="nc" id="L80">        User x = (User) request.getSession().getAttribute(&quot;currUser&quot;);</span>
-<span class="nc bnc" id="L81" title="All 2 branches missed.">        if(x==null){</span>
-<span class="nc" id="L82">            sendDispatcher(request, response,&quot;loginAndSecurity/login.jsp&quot;);</span>
+<span class="nc" id="L84">        User x = (User) request.getSession().getAttribute(&quot;currUser&quot;);</span>
+<span class="nc bnc" id="L85" title="All 2 branches missed.">        if (x == null) {</span>
+<span class="nc" id="L86">            sendDispatcher(request, response, &quot;loginAndSecurity/login.jsp&quot;);</span>
         }
-<span class="nc" id="L84">        ArrayList&lt;CartItem&gt; ShoppingCart = (ArrayList&lt;CartItem&gt;) request.getSession().getAttribute(&quot;ShoppingCart&quot;);</span>
-<span class="nc" id="L85">        String pid = request.getParameter(&quot;pid&quot;);</span>
-<span class="nc" id="L86">        String size = request.getParameter(&quot;size&quot;);</span>
-<span class="nc" id="L87">        String color = request.getParameter(&quot;color&quot;);</span>
-<span class="nc" id="L88">        String name = request.getParameter(&quot;name&quot;);</span>
-<span class="nc" id="L89">        String quantitys = request.getParameter(&quot;quantity&quot;);</span>
-<span class="nc" id="L90">        int quantity = Integer.parseInt(quantitys);</span>
+<span class="nc" id="L88">        ArrayList&lt;CartItem&gt; ShoppingCart = (ArrayList&lt;CartItem&gt;) request.getSession().getAttribute(&quot;ShoppingCart&quot;);</span>
+<span class="nc" id="L89">        String pid = request.getParameter(&quot;pid&quot;);</span>
+<span class="nc" id="L90">        String size = request.getParameter(&quot;size&quot;);</span>
+<span class="nc" id="L91">        String color = request.getParameter(&quot;color&quot;);</span>
+<span class="nc" id="L92">        String name = request.getParameter(&quot;name&quot;);</span>
+<span class="nc" id="L93">        String quantitys = request.getParameter(&quot;quantity&quot;);</span>
+<span class="nc" id="L94">        int quantity = Integer.parseInt(quantitys);</span>
 //        PrintWriter out = response.getWriter(); // ( fix Findbugs)
-<span class="nc" id="L92">        ProductType pt = ptd.getProductTypeByColorAndSize(color,size,pid);</span>
-<span class="nc" id="L93">        String image = galdao.getImageByProductTypeID(pt.getProductTypeId());</span>
-<span class="nc" id="L94">        double total = quantity * Double.parseDouble(pt.getPrice());</span>
-<span class="nc" id="L95">        int pid1=Integer.parseInt(pid);</span>
-<span class="nc" id="L96">        boolean check = true;</span>
-<span class="nc bnc" id="L97" title="All 2 branches missed.">        for (int i = 0; i &lt; ShoppingCart.size(); i++) {</span>
-<span class="nc bnc" id="L98" title="All 2 branches missed.">            if (ShoppingCart.get(i).getProductID() == pid1</span>
-<span class="nc bnc" id="L99" title="All 2 branches missed.">                    &amp;&amp; ShoppingCart.get(i).getColor().equals(color)</span>
-<span class="nc bnc" id="L100" title="All 2 branches missed.">                    &amp;&amp; ShoppingCart.get(i).getSize().equals(size)) {</span>
-<span class="nc" id="L101">                ShoppingCart.get(i).setQuantity(ShoppingCart.get(i).getQuantity() + quantity);</span>
-<span class="nc" id="L102">                ShoppingCart.get(i).setTotalCost(ShoppingCart.get(i).getQuantity()*Double.parseDouble(pt.getPrice()));</span>
-<span class="nc" id="L103">                check = false;</span>
+<span class="nc" id="L96">        ProductType pt = ptd.getProductTypeByColorAndSize(color, size, pid);</span>
+<span class="nc" id="L97">        String image = galdao.getImageByProductTypeID(pt.getProductTypeId());</span>
+<span class="nc" id="L98">        double total = quantity * Double.parseDouble(pt.getPrice());</span>
+<span class="nc" id="L99">        int pid1 = Integer.parseInt(pid);</span>
+<span class="nc" id="L100">        boolean check = true;</span>
+<span class="nc bnc" id="L101" title="All 2 branches missed.">        for (int i = 0; i &lt; ShoppingCart.size(); i++) {</span>
+<span class="nc bnc" id="L102" title="All 2 branches missed.">            if (ShoppingCart.get(i).getProductID() == pid1</span>
+<span class="nc bnc" id="L103" title="All 2 branches missed.">                    &amp;&amp; ShoppingCart.get(i).getColor().equals(color)</span>
+<span class="nc bnc" id="L104" title="All 2 branches missed.">                    &amp;&amp; ShoppingCart.get(i).getSize().equals(size)) {</span>
+<span class="nc" id="L105">                ShoppingCart.get(i).setQuantity(ShoppingCart.get(i).getQuantity() + quantity);</span>
+<span class="nc" id="L106">                ShoppingCart.get(i).setTotalCost(ShoppingCart.get(i).getQuantity() * Double.parseDouble(pt.getPrice()));</span>
+<span class="nc" id="L107">                check = false;</span>
             }
         }
-<span class="nc bnc" id="L106" title="All 2 branches missed.">        if (check == true) {</span>
-<span class="nc" id="L107">            CartItem cartitem = new CartItem(ShoppingCart.size()+1,pt.getProductID(), name, pt.getSize(), pt.getColor(), image, Double.parseDouble(pt.getPrice()), quantity, total);          </span>
-<span class="nc" id="L108">            ShoppingCart.add(cartitem);</span>
-        }         
-<span class="nc" id="L110">        request.getSession().setAttribute(&quot;ShoppingCart&quot;, ShoppingCart);</span>
-<span class="nc" id="L111">        sendDispatcher(request, response,&quot;ProductDetailControllerMap?service=getProductDetail&amp;pid=&quot;+pid);</span>
-        
-           
-<span class="nc" id="L114">    }</span>
-     public void serviceUpdate(HttpServletRequest request, HttpServletResponse response) {
-<span class="nc" id="L116">        ArrayList&lt;CartItem&gt; ShoppingCart = (ArrayList&lt;CartItem&gt;) request.getSession().getAttribute(&quot;ShoppingCart&quot;);</span>
-<span class="nc" id="L117">        String[] idString = request.getParameterValues(&quot;cartID&quot;);</span>
-<span class="nc" id="L118">        String[] quantityString = request.getParameterValues(&quot;quantity&quot;);</span>
-        
-        
-<span class="nc bnc" id="L121" title="All 2 branches missed.">        for (int i = 0; i &lt; ShoppingCart.size(); i++) {</span>
-<span class="nc bnc" id="L122" title="All 2 branches missed.">            if (ShoppingCart.get(i).getCartID()==Integer.parseInt(idString[i])) {</span>
-<span class="nc" id="L123">                ShoppingCart.get(i).setQuantity(Integer.parseInt(quantityString[i]));</span>
-<span class="nc" id="L124">                ShoppingCart.get(i).setTotalCost(Integer.parseInt(quantityString[i])*(ShoppingCart.get(i).getPrice()));</span>
-                
+<span class="nc bnc" id="L110" title="All 2 branches missed.">        if (check == true) {</span>
+<span class="nc" id="L111">            CartItem cartitem = new CartItem(ShoppingCart.size() + 1, pt.getProductID(), name, pt.getSize(), pt.getColor(), image, Double.parseDouble(pt.getPrice()), quantity, total);</span>
+<span class="nc" id="L112">            ShoppingCart.add(cartitem);</span>
+        }
+<span class="nc" id="L114">        request.getSession().setAttribute(&quot;ShoppingCart&quot;, ShoppingCart);</span>
+<span class="nc" id="L115">        sendDispatcher(request, response, &quot;ProductDetailControllerMap?service=getProductDetail&amp;pid=&quot; + pid);</span>
+
+<span class="nc" id="L117">    }</span>
+
+    public void serviceUpdate(HttpServletRequest request, HttpServletResponse response) {
+<span class="nc" id="L120">        ArrayList&lt;CartItem&gt; ShoppingCart = (ArrayList&lt;CartItem&gt;) request.getSession().getAttribute(&quot;ShoppingCart&quot;);</span>
+<span class="nc" id="L121">        String[] idString = request.getParameterValues(&quot;cartID&quot;);</span>
+<span class="nc" id="L122">        String[] quantityString = request.getParameterValues(&quot;quantity&quot;);</span>
+
+<span class="nc bnc" id="L124" title="All 2 branches missed.">        for (int i = 0; i &lt; ShoppingCart.size(); i++) {</span>
+<span class="nc bnc" id="L125" title="All 2 branches missed.">            if (ShoppingCart.get(i).getCartID() == Integer.parseInt(idString[i])) {</span>
+<span class="nc" id="L126">                ShoppingCart.get(i).setQuantity(Integer.parseInt(quantityString[i]));</span>
+<span class="nc" id="L127">                ShoppingCart.get(i).setTotalCost(Integer.parseInt(quantityString[i]) * (ShoppingCart.get(i).getPrice()));</span>
             }
         }
-<span class="nc" id="L128">          request.getSession().setAttribute(&quot;ShoppingCart&quot;, ShoppingCart);</span>
-<span class="nc" id="L129">        sendDispatcher(request, response, &quot;cart.jsp&quot;);</span>
-<span class="nc" id="L130">    }</span>
+<span class="nc" id="L130">        request.getSession().setAttribute(&quot;ShoppingCart&quot;, ShoppingCart);</span>
+<span class="nc" id="L131">        sendDispatcher(request, response, &quot;cart/cart.jsp&quot;);</span>
+<span class="nc" id="L132">    }</span>
 
     public void serviceDelete(HttpServletRequest request, HttpServletResponse response) {
-<span class="nc" id="L133">        ArrayList&lt;CartItem&gt; ShoppingCart = (ArrayList&lt;CartItem&gt;) request.getSession().getAttribute(&quot;ShoppingCart&quot;);</span>
-<span class="nc" id="L134">        String ID = request.getParameter(&quot;cartID&quot;);</span>
-<span class="nc" id="L135">        int cartID= Integer.parseInt(ID);</span>
-<span class="nc bnc" id="L136" title="All 2 branches missed.">          for (int i = 0; i &lt; ShoppingCart.size(); i++) {</span>
-<span class="nc bnc" id="L137" title="All 2 branches missed.">            if (ShoppingCart.get(i).getCartID()==cartID) {</span>
-<span class="nc" id="L138">                ShoppingCart.remove(i);</span>
-                             
+<span class="nc" id="L135">        ArrayList&lt;CartItem&gt; ShoppingCart = (ArrayList&lt;CartItem&gt;) request.getSession().getAttribute(&quot;ShoppingCart&quot;);</span>
+<span class="nc" id="L136">        String ID = request.getParameter(&quot;cartID&quot;);</span>
+<span class="nc" id="L137">        int cartID = Integer.parseInt(ID);</span>
+<span class="nc bnc" id="L138" title="All 2 branches missed.">        for (int i = 0; i &lt; ShoppingCart.size(); i++) {</span>
+<span class="nc bnc" id="L139" title="All 2 branches missed.">            if (ShoppingCart.get(i).getCartID() == cartID) {</span>
+<span class="nc" id="L140">                ShoppingCart.remove(i);</span>
+//
             }
         }
-<span class="nc bnc" id="L142" title="All 2 branches missed.">          for (int i = 0; i &lt; ShoppingCart.size(); i++) {</span>
-<span class="nc" id="L143">             ShoppingCart.get(i).setCartID(i+1);</span>
-                             
-            }
-        
-<span class="nc" id="L147">          request.getSession().setAttribute(&quot;ShoppingCart&quot;, ShoppingCart);</span>
-<span class="nc" id="L148">        sendDispatcher(request, response, &quot;cart.jsp&quot;);</span>
-<span class="nc" id="L149">    }</span>
+<span class="nc bnc" id="L144" title="All 2 branches missed.">        for (int i = 0; i &lt; ShoppingCart.size(); i++) {</span>
+<span class="nc" id="L145">            ShoppingCart.get(i).setCartID(i + 1);</span>
 
+        }
+
+<span class="nc" id="L149">        request.getSession().setAttribute(&quot;ShoppingCart&quot;, ShoppingCart);</span>
+<span class="nc" id="L150">        sendDispatcher(request, response, &quot;cart/cart.jsp&quot;);</span>
+<span class="nc" id="L151">    }</span>
+
+    public void serviceCheckOut(HttpServletRequest request, HttpServletResponse response) {
+<span class="nc" id="L154">        ArrayList&lt;CartItem&gt; ShoppingCart = (ArrayList&lt;CartItem&gt;) request.getSession().getAttribute(&quot;ShoppingCart&quot;);</span>
+<span class="nc" id="L155">        ArrayList&lt;CartItem&gt; CheckOutList = new ArrayList&lt;&gt;();</span>
+<span class="nc" id="L156">        String[] choose = request.getParameterValues(&quot;checkitem&quot;);</span>
+<span class="nc bnc" id="L157" title="All 2 branches missed.">        for (int i = 0; i &lt; ShoppingCart.size(); i++) {</span>
+<span class="nc bnc" id="L158" title="All 2 branches missed.">            if (ShoppingCart.get(i).getCartID()!=0) {</span>
+<span class="nc" id="L159">                CheckOutList.add(ShoppingCart.get(i));</span>
+            }
+        }
+//        double total = 0;
+
+<span class="nc" id="L164">        request.setAttribute(&quot;CheckOutList&quot;, CheckOutList);</span>
+       // request.setAttribute(&quot;total&quot;, total);
+<span class="nc" id="L166">        sendDispatcher(request, response, &quot;cart/checkout.jsp&quot;);</span>
+<span class="nc" id="L167">    }</span>
 
     public void sendDispatcher(HttpServletRequest request, HttpServletResponse response, String path) {
         try {
-<span class="nc" id="L154">            RequestDispatcher rd = request.getRequestDispatcher(path);</span>
-<span class="nc" id="L155">            rd.forward(request, response);</span>
-<span class="nc" id="L156">        } catch (ServletException | IOException ex) {</span>
-<span class="nc" id="L157">            Logger.getLogger(HomePageController.class.getName()).log(Level.SEVERE, null, ex);</span>
-<span class="nc" id="L158">        }</span>
-<span class="nc" id="L159">    }</span>
-    
+<span class="nc" id="L171">            RequestDispatcher rd = request.getRequestDispatcher(path);</span>
+<span class="nc" id="L172">            rd.forward(request, response);</span>
+<span class="nc" id="L173">        } catch (ServletException | IOException ex) {</span>
+<span class="nc" id="L174">            Logger.getLogger(HomePageController.class.getName()).log(Level.SEVERE, null, ex);</span>
+<span class="nc" id="L175">        }</span>
+<span class="nc" id="L176">    }</span>
 
     private void writeObject(ObjectOutputStream stream)
             throws IOException {
-<span class="nc" id="L164">        stream.defaultWriteObject();</span>
-<span class="nc" id="L165">    }</span>
+<span class="nc" id="L180">        stream.defaultWriteObject();</span>
+<span class="nc" id="L181">    }</span>
 
     private void readObject(ObjectInputStream stream)
             throws IOException, ClassNotFoundException {
-<span class="nc" id="L169">        stream.defaultReadObject();</span>
-<span class="nc" id="L170">    }</span>
+<span class="nc" id="L185">        stream.defaultReadObject();</span>
+<span class="nc" id="L186">    }</span>
 
 // &lt;editor-fold defaultstate=&quot;collapsed&quot; desc=&quot;HttpServlet methods. Click on the + sign on the left to edit the code.&quot;&gt;
     /**
@@ -181,8 +197,8 @@ import model.GalleryDAO;
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-<span class="nc" id="L184">        processRequest(request, response);</span>
-<span class="nc" id="L185">    }</span>
+<span class="nc" id="L200">        processRequest(request, response);</span>
+<span class="nc" id="L201">    }</span>
 
     /**
      * Handles the HTTP &lt;code&gt;POST&lt;/code&gt; method.
@@ -195,8 +211,8 @@ import model.GalleryDAO;
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-<span class="nc" id="L198">        processRequest(request, response);</span>
-<span class="nc" id="L199">    }</span>
+<span class="nc" id="L214">        processRequest(request, response);</span>
+<span class="nc" id="L215">    }</span>
 
     /**
      * Returns a short description of the servlet.
@@ -205,11 +221,8 @@ import model.GalleryDAO;
      */
     @Override
     public String getServletInfo() {
-<span class="nc" id="L208">        return &quot;Short description&quot;;</span>
+<span class="nc" id="L224">        return &quot;Short description&quot;;</span>
     }// &lt;/editor-fold&gt;
 
-   
-
-   
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.eclemma.org/jacoco">JaCoCo</a> 0.7.5.201505241946</span></div></body></html>

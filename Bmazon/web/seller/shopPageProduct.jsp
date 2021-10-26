@@ -134,75 +134,9 @@
                 </div>
             </div> 
 
-            <section class="section sec_dien_thoai" id="section_1788051855">
-                <section class="section sec_dien_thoai" id="section_1788051855">
-                    <div class="section-content relative">
-                        <div class="gap-element" style="display:block; height:auto; padding-top:30px" class="clearfix"></div>
-                        <br><br>
-                        <div class="row row-collapse align-equal"  id="row-1706731289">
-                            <hr>
-                            <div class="text">
-                                <div class="col-inner text-center" >
-                                    <h1><strong>New Arrival</strong></h1>
-                                </div>
-                            </div>              
-                            <br>
-                            <br>
-                            <br>
-                            <div class="col medium-12 small-12 large-12" >
-                                <div class="col-inner"  >
-                                    <div class="row large-columns-5 medium-columns- small-columns-2 row-collapse has-shadow row-box-shadow-1 slider row-slider slider-nav-reveal slider-nav-push"  data-flickity-options='{"imagesLoaded": true, "groupCells": "100%", "dragThreshold" : 5, "cellAlign": "left","wrapAround": true,"prevNextButtons": true,"percentPosition": true,"pageDots": false, "rightToLeft": false, "autoPlay" : 3000}'>
-                                        <% for (Product pr : listNewArrival) {
-                                                String str2 = "images/" + daoGallery.getSampleOfProduct(pr.getProductID());
-                                                double price2 = Double.parseDouble(daoProductType.getProductPrice(pr.getProductID()));
-                                        %>
-                                        <div class="col" >
-                                            <div class="col-inner">
-                                                <div class="product-small box has-hover box-normal box-text-bottom">
-                                                    <div class="box-image" style="width:150px; height:150px ">
-                                                        <div class="" >
-                                                            <a href="ProductDetailControllerMap?service=getProductDetail&pid=<%=pr.getProductID()%>">
-                                                                <img src="<%=str2%>"></a>
-                                                        </div>
-                                                    </div><!-- box-image -->
-                                                    <div class="box-text text-center" style="background-color:rgb(255, 255, 255);">
-                                                        <div class="title-wrapper" >		
-                                                            <p class="category uppercase is-smaller no-text-overflow product-cat op-7">   </p> <%--category--%>
-                                                            <p class="name product-title"><a href=""> <%=pr.getProductName()%> </a></p>
-                                                        </div> 
-                                                        <div class="price-wrapper" 
-                                                             <span class="price"><del><span class="woocommerce-Price-amount amount"><%=nf.format(price2 * 1.05)%>&nbsp; <span class="woocommerce-Price-currencySymbol">&#8363;</span></span></del> 
-                                                                <ins><span class="woocommerce-Price-amount amount"><%=nf.format(price2)%>&nbsp; <span class="woocommerce-Price-currencySymbol">&#8363;</span></span></ins></span>
-                                                        </div>							
-                                                    </div><!-- box-text -->
-                                                </div><!-- box -->
-                                            </div><!-- .col-inner -->
-                                        </div><!-- col -->
-                                        <% }
-                                        %>
-                                    </div>
-                                    <br><br><hr>
-                                </div>     
-                            </div>
-                            <%--Arrival LEFT PIC --%>          
-                            <style scope="scope">
-                                #row-1706731289 > .col > .col-inner {
-                                    background-color: rgb(255, 255, 255);
-                                }
-                            </style>
-                        </div>
-                    </div>
-                    <style scope="scope">
-                        #section_1788051855 {
-                            padding-top: 0px;
-                            padding-bottom: 0px;
-                        }
-                    </style>
-                </section>
-            </section>
-            <br>
+            <button class="button" onclick="window.location.href = 'HomePageControllerMap?service=shopPage&sid=<%=seller.getSellerID()%>'" style=" border-radius: 5px;margin-top: 50px;margin-left: 200px;">Shop Page</button>
 
-            <div id="wrapper">
+            <div id="wrapper" style="margin-top: 30px;">
                 <div class="col large-12">              
                     <div class="shop-container">
                         <h1 style="text-align: center;"><strong>List All Product</strong></h1>
@@ -248,8 +182,17 @@
                     </div>
 
 
-                    <button class="button" onclick="window.location.href = 'HomePageControllerMap?service=shopPageProduct&sid=<%=seller.getSellerID()%>'" style=" border-radius: 5px;margin-left: 700px;">View All</button>
-
+                    <div class="container" style="margin-top: 35px;">
+                        <nav class="woocommerce-pagination">
+                            <ul class="page-numbers nav-pagination links text-center">
+                                ${previous}
+                                <c:forEach  begin="${begin}" end="${end}" var="i">
+                                    <li><a class=" ${page==i?"active":""}" href="HomePageControllerMap?service=shopPageProduct&sid=${sid}&page=${i}">${i}</a></li>
+                                    </c:forEach>
+                                    ${next}
+                            </ul>
+                        </nav>
+                    </div>
                 </div>
             </div>
 

@@ -148,7 +148,7 @@
 
                                 <div class="col medium-12 small-12 large-12"  >
                                     <div class="col-inner"  >
-                                        <div class="row large-columns-5 medium-columns-5 small-columns-5 row-collapse has-shadow row-box-shadow-1 slider row-slider slider-nav-reveal slider-nav-push"  data-flickity-options='{"imagesLoaded": true, "groupCells": "100%", "dragThreshold" : 5, "cellAlign": "left","wrapAround": true,"prevNextButtons": true,"percentPosition": true,"pageDots": false, "rightToLeft": false, "autoPlay" : false}'>
+                                        <div class="row large-columns-5 medium-columns-3 small-columns-2 row-collapse has-shadow row-box-shadow-1 slider row-slider slider-nav-reveal slider-nav-push"  data-flickity-options='{"imagesLoaded": true, "groupCells": "100%", "dragThreshold" : 5, "cellAlign": "left","wrapAround": true,"prevNextButtons": true,"percentPosition": true,"pageDots": false, "rightToLeft": false, "autoPlay" : false}'>
                                             <% for (Product p : ListNew) {
                                                     String str = "images/" + gallDAO.getSampleOfProduct(p.getProductID());
                                                     double price = Double.parseDouble(ptDAO.getProductPrice(p.getProductID()));

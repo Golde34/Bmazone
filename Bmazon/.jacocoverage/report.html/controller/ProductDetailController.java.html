@@ -196,7 +196,7 @@ import model.ProductTypeDAO;
 <span class="nc" id="L196">        daoProduct.updateProduct(update);</span>
 <span class="nc" id="L197">        Comment newCom = new Comment();</span>
 <span class="nc" id="L198">        newCom.setProductID(id);</span>
-<span class="nc" id="L199">        newCom.setUserID(user.getUserId());</span>
+<span class="nc" id="L199">        newCom.setUserID(Integer.parseInt(user.getUserId()));</span>
 <span class="nc" id="L200">        newCom.setRating(rating);</span>
 <span class="nc" id="L201">        newCom.setContent(content);</span>
 <span class="nc" id="L202">        daoComment.insertComment(newCom);</span>

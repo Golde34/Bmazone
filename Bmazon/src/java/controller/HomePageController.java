@@ -85,6 +85,9 @@ public class HomePageController extends HttpServlet {
             if (service.equalsIgnoreCase("check")) {
                 serviceFilter(request, response);
             }
+            if(service.equalsIgnoreCase("shopPageProduct")){
+                serviceShopPageProduct(request, response);
+            }
         }
     }
 
@@ -223,6 +226,27 @@ public class HomePageController extends HttpServlet {
         request.setAttribute("seller", seller);
         request.setAttribute("user", user);
 
+        List<Product> listProduct = proDAO.getTop10ProductBySeller(id);
+        List<Product> listNewArrival = proDAO.getNewProductSeller(id);
+
+        request.setAttribute("listProduct", listProduct);
+        request.setAttribute("listNewArrival", listNewArrival);
+        request.setAttribute("sid", id);
+        request.setAttribute("count", count);
+
+        sendDispatcher(request, response, "seller/shopPage.jsp");
+    }
+    
+    public void serviceShopPageProduct(HttpServletRequest request, HttpServletResponse response) {
+
+        String id = request.getParameter("sid");
+        int count = proDAO.totalProductSeller(id);
+
+        User user = userDAO.getUserById(id);
+        Seller seller = sellerDAO.getSellerByUserID(Integer.parseInt(id));
+        request.setAttribute("seller", seller);
+        request.setAttribute("user", user);
+
         int size = 10;
         int total = count / size;
         int page, end;
@@ -235,8 +259,8 @@ public class HomePageController extends HttpServlet {
             page = Integer.parseInt(page1);
         }
         int begin = page;
-        String previous = "  <li><a class='' href=" + "HomePageControllerMap?service=shopPage&sid=" + id + "&page=" + (page - 1) + ">P</a></li>";
-        String next = "  <li><a class='' href=" + "HomePageControllerMap?service=shopPage&sid=" + id + "&page=" + (page + 1) + ">N</a></li>";
+        String previous = "  <li><a class='' href=" + "HomePageControllerMap?service=shopPageProduct&sid=" + id + "&page=" + (page - 1) + ">P</a></li>";
+        String next = "  <li><a class='' href=" + "HomePageControllerMap?service=shopPageProduct&sid=" + id + "&page=" + (page + 1) + ">N</a></li>";
 
         if (count % size != 0) {
             total += 1;
@@ -257,16 +281,14 @@ public class HomePageController extends HttpServlet {
         }
 
         List<Product> listProduct = proDAO.getProductBySellerPaging(page, id);
-        List<Product> listNewArrival = proDAO.getNewProductSeller(id);
 
         request.setAttribute("end", end);
         request.setAttribute("begin", begin);
         request.setAttribute("listProduct", listProduct);
-        request.setAttribute("listNewArrival", listNewArrival);
         request.setAttribute("sid", id);
         request.setAttribute("count", count);
 
-        sendDispatcher(request, response, "seller/shopPage.jsp");
+        sendDispatcher(request, response, "seller/shopPageProduct.jsp");
     }
 
     public void serviceFilter(HttpServletRequest request, HttpServletResponse response) throws IOException {
@@ -304,24 +326,24 @@ public class HomePageController extends HttpServlet {
             request.setAttribute("next", next);
             request.setAttribute("previous", previous);
         }
-        String s="And (";
-        int j=0;
-        String [] catef=new String[7];
+        String s = "And (";
+        int j = 0;
+        String[] catef = new String[7];
         for (int i = 0; i < idcate.length; i++) {
-            if (idcate[i]!=null) {
-                catef[j]=idcate[i];
+            if (idcate[i] != null) {
+                catef[j] = idcate[i];
                 j++;
             }
         }
         for (int i = 0; i < j; i++) {
-            if (i<j-1) {
-               s+="pc.categoryId="+catef[i]+" OR "; 
-            }else {
-                s+="pc.categoryID="+catef[i]+" "; 
+            if (i < j - 1) {
+                s += "pc.categoryId=" + catef[i] + " OR ";
+            } else {
+                s += "pc.categoryID=" + catef[i] + " ";
             }
-            
+
         }
-        s+=")";
+        s += ")";
         List<Product> ListP = proDAO.getProductByFilter(page, "", s);
         address = "<a>" + " Results for " + str + "  </a> <span class=" + "divider" + ">&#47;</span>";
         request.setAttribute("address", s);
@@ -331,7 +353,7 @@ public class HomePageController extends HttpServlet {
         request.setAttribute("search", str);
         request.setAttribute("count", count);
         request.setAttribute("idcate", idcate);
-        request.setAttribute("href", ("&search="+""+"&s="+s));
+        request.setAttribute("href", ("&search=" + "" + "&s=" + s));
         sendDispatcher(request, response, "productList/list.jsp");
 
     }

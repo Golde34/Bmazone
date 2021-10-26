@@ -15,15 +15,15 @@ public class Comment implements Serializable {
     private static final long serialVersionUID = 1;
     private int commentID;
     private int productID;
-    private String userID;
+    private int userID;
     private String content;
     private double rating;
     private int status;
 
-<span class="nc" id="L23">    public Comment() {</span>
-<span class="nc" id="L24">    }</span>
+<span class="fc" id="L23">    public Comment() {</span>
+<span class="fc" id="L24">    }</span>
 
-<span class="nc" id="L26">    public Comment(int commentID, int productID, String userID, String content, double rating, int status) {</span>
+<span class="nc" id="L26">    public Comment(int commentID, int productID, int userID, String content, double rating, int status) {</span>
 <span class="nc" id="L27">        this.commentID = commentID;</span>
 <span class="nc" id="L28">        this.productID = productID;</span>
 <span class="nc" id="L29">        this.userID = userID;</span>
@@ -37,48 +37,48 @@ public class Comment implements Serializable {
     }
 
     public void setCommentID(int commentID) {
-<span class="nc" id="L40">        this.commentID = commentID;</span>
-<span class="nc" id="L41">    }</span>
+<span class="fc" id="L40">        this.commentID = commentID;</span>
+<span class="fc" id="L41">    }</span>
 
     public int getProductID() {
-<span class="nc" id="L44">        return productID;</span>
+<span class="fc" id="L44">        return productID;</span>
     }
 
     public void setProductID(int productID) {
-<span class="nc" id="L48">        this.productID = productID;</span>
-<span class="nc" id="L49">    }</span>
+<span class="fc" id="L48">        this.productID = productID;</span>
+<span class="fc" id="L49">    }</span>
 
-    public String getUserID() {
-<span class="nc" id="L52">        return userID;</span>
+    public int getUserID() {
+<span class="fc" id="L52">        return userID;</span>
     }
 
-    public void setUserID(String userID) {
-<span class="nc" id="L56">        this.userID = userID;</span>
-<span class="nc" id="L57">    }</span>
+    public void setUserID(int userID) {
+<span class="fc" id="L56">        this.userID = userID;</span>
+<span class="fc" id="L57">    }</span>
 
     public String getContent() {
-<span class="nc" id="L60">        return content;</span>
+<span class="fc" id="L60">        return content;</span>
     }
 
     public void setContent(String content) {
-<span class="nc" id="L64">        this.content = content;</span>
-<span class="nc" id="L65">    }</span>
+<span class="fc" id="L64">        this.content = content;</span>
+<span class="fc" id="L65">    }</span>
 
     public double getRating() {
-<span class="nc" id="L68">        return rating;</span>
+<span class="fc" id="L68">        return rating;</span>
     }
 
     public void setRating(double rating) {
-<span class="nc" id="L72">        this.rating = rating;</span>
-<span class="nc" id="L73">    }</span>
+<span class="fc" id="L72">        this.rating = rating;</span>
+<span class="fc" id="L73">    }</span>
 
     public int getStatus() {
 <span class="nc" id="L76">        return status;</span>
     }
 
     public void setStatus(int status) {
-<span class="nc" id="L80">        this.status = status;</span>
-<span class="nc" id="L81">    }</span>
+<span class="fc" id="L80">        this.status = status;</span>
+<span class="fc" id="L81">    }</span>
     
     
 }
