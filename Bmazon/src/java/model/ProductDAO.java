@@ -409,6 +409,32 @@ public class ProductDAO extends BaseDAO {
         }
         return list;
     }
+    
+    public ArrayList<Product> getTop10ProductBySeller(String seller) {
+        ArrayList<Product> list = new ArrayList<>();
+        String sql = "SELECT TOP 10 * FROM Product where sellerID = ?";
+        try {
+            pre = conn.prepareStatement(sql);
+            pre.setInt(1, Integer.parseInt(seller));
+            rs = pre.executeQuery();
+            while (rs.next()) {
+                Product pro = new Product();
+                pro.setProductID(rs.getInt("productID"));
+                pro.setProductName(rs.getString("productName"));
+                pro.setDescription(rs.getString("description"));
+                pro.setRating(rs.getInt("rating"));
+                pro.setReleaseDate(rs.getDate("releaseDate"));
+                pro.setSeller(rs.getInt("sellerID"));
+                pro.setStatus(rs.getInt("status"));
+                list.add(pro);
+            }
+            rs.close();
+            pre.close();
+        } catch (SQLException e) {
+            Logger.getLogger(ProductDAO.class.getName()).log(Level.SEVERE, null, e);
+        }
+        return list;
+    }
 
     public ArrayList<Product> getProductSuggest() {
 

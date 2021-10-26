@@ -15,16 +15,18 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import entity.CartItem;
+import entity.Order;
 import entity.ProductType;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
-import java.text.Normalizer;
+import java.text.DecimalFormat;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import javafx.scene.control.Alert;
 import javax.servlet.RequestDispatcher;
 import model.ProductTypeDAO;
 import model.GalleryDAO;
+import model.OrderDAO;
+import model.UserDAO;
 
 /**
  *
@@ -43,7 +45,10 @@ public class CartController extends HttpServlet {
      */
     ProductTypeDAO ptd = new ProductTypeDAO();
     GalleryDAO galdao = new GalleryDAO();
+    UserDAO uDao = new UserDAO();
+    OrderDAO oDao = new OrderDAO();
     private static final long serialVersionUID = 1;
+    DecimalFormat nf = new DecimalFormat("###,###,###");
 
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
@@ -54,24 +59,33 @@ public class CartController extends HttpServlet {
             if (service.equalsIgnoreCase("Cart")) {
                 serviceCart(request, response);
             }
+
             if (service.equalsIgnoreCase("AddToCart")) {
                 serviceAddToCart(request, response);
             }
+
             if (service.equalsIgnoreCase("Delete")) {
                 serviceDelete(request, response);
             }
+
             if (service.equalsIgnoreCase("Update")) {
                 serviceUpdate(request, response);
             }
-            if (service.equalsIgnoreCase("Check Out")) {
-                serviceCheckOut(request, response);
+
+            if (service.equalsIgnoreCase("BillingPage")) {
+                serviceBillingPage(out, request, response);
             }
 
+            if (service.equalsIgnoreCase("Checkout")) {
+                serviceCheckOut(request, response);
+            }
         }
 
     }
 
     public void serviceCart(HttpServletRequest request, HttpServletResponse response) {
+        User x = (User) request.getSession().getAttribute("currUser");
+        request.setAttribute("currUser", x);
         ArrayList<CartItem> ShoppingCart = (ArrayList<CartItem>) request.getSession().getAttribute("ShoppingCart");
 //         if (ShoppingCart.isEmpty()) {
 //             
@@ -150,20 +164,57 @@ public class CartController extends HttpServlet {
         sendDispatcher(request, response, "cart/cart.jsp");
     }
 
-    public void serviceCheckOut(HttpServletRequest request, HttpServletResponse response) {
+    public void serviceBillingPage(PrintWriter out, HttpServletRequest request, HttpServletResponse response) throws IOException {
+        String mess = "";
         ArrayList<CartItem> ShoppingCart = (ArrayList<CartItem>) request.getSession().getAttribute("ShoppingCart");
         ArrayList<CartItem> CheckOutList = new ArrayList<>();
         String[] choose = request.getParameterValues("checkitem");
-        for (int i = 0; i < ShoppingCart.size(); i++) {
-            if (ShoppingCart.get(i).getCartID()!=0) {
-                CheckOutList.add(ShoppingCart.get(i));
+        double total = 0;
+        if (choose != null) {
+            for (int i = 0; i < ShoppingCart.size(); i++) {
+                for (int j = 0; j < choose.length; j++) {
+                    if (ShoppingCart.get(i).getCartID() == Integer.parseInt(choose[j])) {
+                        CheckOutList.add(ShoppingCart.get(i));
+                    }
+                }
             }
+            for (CartItem item : CheckOutList) {
+                total += item.getPrice();
+            }
+        } else {
+            mess = "You must select at least item!";
+            request.setAttribute("mess", mess);
+            request.setAttribute("ShoppingCart", ShoppingCart);
+            sendDispatcher(request, response, "cart/cart.jsp");
+            return;
         }
-//        double total = 0;
-
+        User x = (User) request.getSession().getAttribute("currUser");
+        request.setAttribute("currUser", x);
         request.setAttribute("CheckOutList", CheckOutList);
-       // request.setAttribute("total", total);
+        request.setAttribute("mess", mess);
+        request.setAttribute("total", nf.format(total));
         sendDispatcher(request, response, "cart/checkout.jsp");
+    }
+
+    public void serviceCheckOut(HttpServletRequest request, HttpServletResponse response) throws IOException {
+        String fullname = request.getParameter("fullname");
+        String shipCompany = request.getParameter("shipCompany");
+        String address = request.getParameter("address");
+        String city = request.getParameter("city");
+        String phone = request.getParameter("phone");
+        String email = request.getParameter("email");
+        String wallet = request.getParameter("wallet");
+
+        User x = (User) request.getSession().getAttribute("currUser");
+        x.setAddress(address);
+        x.setFullname(fullname);
+        x.setPhoneNumber(phone);
+        x.setEmail(email);
+        uDao.updateInfoUserByAdmin(x);
+        Order o = new Order();
+        oDao.insertOrder(o);
+        
+        sendDispatcher(request, response, "cart/orderShip.jsp");
     }
 
     public void sendDispatcher(HttpServletRequest request, HttpServletResponse response, String path) {

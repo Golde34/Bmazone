@@ -25,7 +25,6 @@
             <jsp:include page="../header.jsp"/>
             <%  ArrayList<CartItem> ShoppingCart = (ArrayList<CartItem>) session.getAttribute("ShoppingCart");
 
-
             %>
 
 
@@ -113,8 +112,8 @@
                                                                         Continue Shopping    </a>
                                                                 </div>
 
-                                                                <input type="submit" class="button primary mt-0 pull-left small" name="service" value="Update" />
-
+                                                                <%-- <input type="submit" class="button primary mt-0 pull-left small" name="service" value="Update" />
+                                                                --%>
 
                                                             </td>
                                                         </tr>
@@ -151,11 +150,9 @@
                                                         </table>
 
                                                         <div class="wc-proceed-to-checkout">
-                                                            <input type="submit" class="button primary mt-0 pull-left small" name="service" value="Check Out" />
-
-
+                                                            <input type="submit" class="button primary mt-0 pull-left small" name="service" value="BillingPage" />
                                                         </div>
-
+                                                        <p style="color: red; font-size: 18px;">${mess}</p>
 
                                                     </div>
 
