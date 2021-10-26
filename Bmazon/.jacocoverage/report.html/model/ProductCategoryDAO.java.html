@@ -95,21 +95,21 @@ import java.util.logging.Logger;
     }
     
     public int addProductCategory(int productID, int categoryID) {
-<span class="nc" id="L98">        int n = 0;</span>
-<span class="nc" id="L99">        String sql = &quot;INSERT INTO [Bmazon].[dbo].[ProductCategory]\n&quot;</span>
+<span class="fc" id="L98">        int n = 0;</span>
+<span class="fc" id="L99">        String sql = &quot;INSERT INTO [Bmazon].[dbo].[ProductCategory]\n&quot;</span>
                 + &quot;           ([productID]\n&quot;
                 + &quot;           ,[categoryId]\n&quot;
                 + &quot;           ,[status]) VALUES(?,?,1)&quot;;
         try {
-<span class="nc" id="L104">            pre = conn.prepareStatement(sql);</span>
-<span class="nc" id="L105">            pre.setInt(1, productID);</span>
-<span class="nc" id="L106">            pre.setInt(2, categoryID);</span>
+<span class="fc" id="L104">            pre = conn.prepareStatement(sql);</span>
+<span class="fc" id="L105">            pre.setInt(1, productID);</span>
+<span class="fc" id="L106">            pre.setInt(2, categoryID);</span>
 <span class="nc" id="L107">            n = pre.executeUpdate();</span>
 <span class="nc" id="L108">            pre.close();</span>
-<span class="nc" id="L109">        } catch (SQLException e) {</span>
-<span class="nc" id="L110">            Logger.getLogger(ProductCategoryDAO.class.getName()).log(Level.SEVERE, null, e);</span>
+<span class="fc" id="L109">        } catch (SQLException e) {</span>
+<span class="fc" id="L110">            Logger.getLogger(ProductCategoryDAO.class.getName()).log(Level.SEVERE, null, e);</span>
 <span class="nc" id="L111">        }</span>
-<span class="nc" id="L112">        return n;</span>
+<span class="fc" id="L112">        return n;</span>
     }
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.eclemma.org/jacoco">JaCoCo</a> 0.7.5.201505241946</span></div></body></html>

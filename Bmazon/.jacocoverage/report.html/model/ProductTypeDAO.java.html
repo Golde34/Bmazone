@@ -329,17 +329,17 @@ import java.util.logging.Logger;
 //        return false;
 //    }
     public String getProductPrice(int pid) {
-<span class="nc" id="L332">        String price = null;</span>
-<span class="nc" id="L333">        String xSql = &quot;SELECT price FROM ProductType WHERE productID = &quot; + pid + &quot; Order by price&quot;;</span>
+<span class="fc" id="L332">        String price = null;</span>
+<span class="fc" id="L333">        String xSql = &quot;SELECT price FROM ProductType WHERE productID = &quot; + pid + &quot; Order by price&quot;;</span>
         try {
-<span class="nc" id="L335">            pre = conn.prepareStatement(xSql);</span>
-<span class="nc" id="L336">            rs = pre.executeQuery();</span>
-<span class="nc bnc" id="L337" title="All 2 branches missed.">            while (rs.next()) {</span>
+<span class="fc" id="L335">            pre = conn.prepareStatement(xSql);</span>
+<span class="fc" id="L336">            rs = pre.executeQuery();</span>
+<span class="pc bpc" id="L337" title="1 of 2 branches missed.">            while (rs.next()) {</span>
 <span class="nc" id="L338">                price = rs.getString(&quot;price&quot;);</span>
             }
 <span class="nc" id="L340">        } catch (SQLException e) {</span>
-<span class="nc" id="L341">        }</span>
-<span class="nc" id="L342">        return price;</span>
+<span class="fc" id="L341">        }</span>
+<span class="fc" id="L342">        return price;</span>
     }
 
     public int changeStatus(String id, int status) {
@@ -357,10 +357,10 @@ import java.util.logging.Logger;
     }
 
     public List&lt;ProductType&gt; searchProduct(String text) {
-<span class="nc" id="L360">        List&lt;ProductType&gt; list = new ArrayList&lt;&gt;();</span>
-<span class="nc" id="L361">        String xSql = &quot;SELECT distinct *FROM [Bmazon].[dbo].[ProductType] where productTypeId like '%&quot; + text + &quot;%' or productID like '%&quot; + text + &quot;%' or size like '%&quot; + text + &quot;%' or color like '%&quot; + text + &quot;%' or price like '%&quot; + text + &quot;%' or wareHouseID like '%&quot; + text + &quot;%' or quantity like '%&quot; + text + &quot;%'&quot;;</span>
+<span class="fc" id="L360">        List&lt;ProductType&gt; list = new ArrayList&lt;&gt;();</span>
+<span class="fc" id="L361">        String xSql = &quot;SELECT distinct *FROM [Bmazon].[dbo].[ProductType] where productTypeId like '%&quot; + text + &quot;%' or productID like '%&quot; + text + &quot;%' or size like '%&quot; + text + &quot;%' or color like '%&quot; + text + &quot;%' or price like '%&quot; + text + &quot;%' or wareHouseID like '%&quot; + text + &quot;%' or quantity like '%&quot; + text + &quot;%'&quot;;</span>
         try {
-<span class="nc" id="L363">            pre = conn.prepareStatement(xSql);</span>
+<span class="fc" id="L363">            pre = conn.prepareStatement(xSql);</span>
 <span class="nc" id="L364">            pre.setString(1, text);</span>
 <span class="nc" id="L365">            rs = pre.executeQuery();</span>
 <span class="nc bnc" id="L366" title="All 2 branches missed.">            while (rs.next()) {</span>
@@ -374,9 +374,9 @@ import java.util.logging.Logger;
 <span class="nc" id="L374">                        rs.getInt(7),</span>
 <span class="nc" id="L375">                        rs.getInt(8)));</span>
             }
-<span class="nc" id="L377">        } catch (SQLException e) {</span>
+<span class="fc" id="L377">        } catch (SQLException e) {</span>
 <span class="nc" id="L378">        }</span>
-<span class="nc" id="L379">        return list;</span>
+<span class="fc" id="L379">        return list;</span>
     }
 
     public boolean checkExistColor(String color) {

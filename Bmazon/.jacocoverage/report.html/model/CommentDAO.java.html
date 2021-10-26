@@ -10,6 +10,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -17,45 +18,108 @@ import java.util.logging.Logger;
  *
  * @author AD
  */
-<span class="fc" id="L20">public class CommentDAO extends BaseDAO {</span>
+<span class="fc" id="L21">public class CommentDAO extends BaseDAO {</span>
 
-    public int insertComment(Comment obj) {
-<span class="nc" id="L23">        int n = 0;</span>
-<span class="nc" id="L24">        String sql = &quot;insert into Comment(productID,userId,content,rating,status) values (?,?,?,?,1)&quot;;</span>
+    
+<span class="fc" id="L24">    BaseDAO dbConn = new BaseDAO();</span>
+    
+    public int getPageNumber(String search, int pid) {
+<span class="fc" id="L27">        int num = 0;</span>
+<span class="fc" id="L28">        String xSql= &quot;SELECT COUNT(*) FROM [Bmazon].[dbo].[Comment] where productID = &quot;+ pid +&quot; and content like '%&quot; + search + &quot;%'&quot;;</span>
+<span class="fc" id="L29">        ResultSet rs = dbConn.getData(xSql);</span>
         try {
-<span class="nc" id="L26">            pre = conn.prepareStatement(sql);</span>
-<span class="nc" id="L27">            pre.setInt(1, obj.getProductID());</span>
-<span class="nc" id="L28">            pre.setString(2, obj.getUserID());</span>
-<span class="nc" id="L29">            pre.setString(3, obj.getContent());</span>
-<span class="nc" id="L30">            pre.setDouble(4, obj.getRating());</span>
-<span class="nc" id="L31">            n = pre.executeUpdate();</span>
-<span class="nc" id="L32">        } catch (SQLException ex) {</span>
-<span class="nc" id="L33">            Logger.getLogger(CommentDAO.class.getName()).log(Level.SEVERE, null, ex);</span>
-<span class="nc" id="L34">        }</span>
-<span class="nc" id="L35">        return n;</span>
+<span class="pc bpc" id="L31" title="1 of 2 branches missed.">            if (rs.next()) {</span>
+<span class="fc" id="L32">                num = rs.getInt(1);</span>
+            }
+<span class="nc" id="L34">        } catch (SQLException ex) {</span>
+<span class="nc" id="L35">            Logger.getLogger(UserDAO.class.getName()).log(Level.SEVERE, null, ex);</span>
+<span class="fc" id="L36">        }</span>
+<span class="fc" id="L37">        return num;</span>
+    }
+    
+    public List&lt;Comment&gt; getAllPagingComment(int index, int numOfRow, String search) {
+<span class="fc" id="L41">        List&lt;Comment&gt; list = new ArrayList&lt;&gt;();</span>
+<span class="fc" id="L42">        String xSql= &quot;declare @PageNo INT = ? \n&quot;</span>
+                + &quot;declare @PageSize INT= ? \n&quot;
+                + &quot;SELECT * from(\n&quot;
+                + &quot;SELECT *,\n&quot;
+                + &quot;ROW_NUMBER() over (order by commentID) as RowNum\n&quot;
+                + &quot;  FROM [Bmazon].[dbo].[Comment] where wareHouseAddress like '%&quot; + search + &quot;%')T\n&quot;
+                + &quot;where T.RowNum between ((@PageNo-1)*@PageSize)+1 and (@PageNo*@PageSize)&quot;;
+        try {
+<span class="fc" id="L50">            pre = conn.prepareStatement(xSql);</span>
+<span class="fc" id="L51">            pre.setInt(1, index);</span>
+<span class="fc" id="L52">            pre.setInt(2, numOfRow);</span>
+//            pre.setString(3, search);
+//            pre.setString(4, search);
+//            pre.setString(5, search);
+<span class="nc" id="L56">            rs = pre.executeQuery();</span>
+<span class="nc bnc" id="L57" title="All 2 branches missed.">            while (rs.next()) {</span>
+<span class="nc" id="L58">                list.add(new Comment(</span>
+<span class="nc" id="L59">                        rs.getInt(1),</span>
+<span class="nc" id="L60">                        rs.getInt(2),</span>
+<span class="nc" id="L61">                        rs.getInt(3),</span>
+<span class="nc" id="L62">                        rs.getString(4),</span>
+<span class="nc" id="L63">                        rs.getDouble(5),</span>
+<span class="nc" id="L64">                        rs.getInt(6)));</span>
+            }
+<span class="fc" id="L66">        } catch (SQLException ex) {</span>
+<span class="fc" id="L67">            Logger.getLogger(UserDAO.class.getName()).log(Level.SEVERE, null, ex);</span>
+<span class="nc" id="L68">        }</span>
+<span class="fc" id="L69">        return list;</span>
+    }
+
+    public int changeStatus(int id, int status) {
+<span class="fc" id="L73">        int n = 0;</span>
+<span class="fc" id="L74">        String sql = &quot;update [Comment] set status = ? where [commentID] = ?&quot;;</span>
+        try {
+<span class="fc" id="L76">            pre = conn.prepareStatement(sql);</span>
+<span class="pc bpc" id="L77" title="1 of 2 branches missed.">            pre.setInt(1, status == 1 ? 1 : 0);</span>
+<span class="fc" id="L78">            pre.setInt(2, id);</span>
+<span class="fc" id="L79">            n = pre.executeUpdate();</span>
+<span class="nc" id="L80">        } catch (SQLException ex) {</span>
+<span class="nc" id="L81">            Logger.getLogger(ProductDAO.class.getName()).log(Level.SEVERE, null, ex);</span>
+<span class="fc" id="L82">        }</span>
+<span class="fc" id="L83">        return n;</span>
+    }
+    
+    public int insertComment(Comment obj) {
+<span class="fc" id="L87">        int n = 0;</span>
+<span class="fc" id="L88">        String sql = &quot;insert into Comment(productID,userId,content,rating,status) values (?,?,?,?,1)&quot;;</span>
+        try {
+<span class="fc" id="L90">            pre = conn.prepareStatement(sql);</span>
+<span class="fc" id="L91">            pre.setInt(1, obj.getProductID());</span>
+<span class="fc" id="L92">            pre.setInt(2, obj.getUserID());</span>
+<span class="fc" id="L93">            pre.setString(3, obj.getContent());</span>
+<span class="fc" id="L94">            pre.setDouble(4, obj.getRating());</span>
+<span class="fc" id="L95">            n = pre.executeUpdate();</span>
+<span class="nc" id="L96">        } catch (SQLException ex) {</span>
+<span class="nc" id="L97">            Logger.getLogger(CommentDAO.class.getName()).log(Level.SEVERE, null, ex);</span>
+<span class="fc" id="L98">        }</span>
+<span class="fc" id="L99">        return n;</span>
     }
 
     public ArrayList&lt;Comment&gt; getCommentsByProductId(int pid) {
-<span class="nc" id="L39">        ArrayList&lt;Comment&gt; comments = new ArrayList&lt;&gt;();</span>
-<span class="nc" id="L40">        String sql = &quot;select * from Comment where productID  = ? order by commentID desc&quot;;</span>
+<span class="fc" id="L103">        ArrayList&lt;Comment&gt; comments = new ArrayList&lt;&gt;();</span>
+<span class="fc" id="L104">        String sql = &quot;select * from Comment where productID  = ? order by commentID desc&quot;;</span>
         try {
-<span class="nc" id="L42">            pre = conn.prepareStatement(sql);</span>
-<span class="nc" id="L43">            pre.setInt(1, pid);</span>
-<span class="nc" id="L44">            rs= pre.executeQuery();</span>
-<span class="nc bnc" id="L45" title="All 2 branches missed.">            while (rs.next()) {</span>
-<span class="nc" id="L46">                Comment x = new Comment();</span>
-<span class="nc" id="L47">                x.setCommentID(rs.getInt(&quot;commentID&quot;));</span>
-<span class="nc" id="L48">                x.setProductID(rs.getInt(&quot;productID&quot;));</span>
-<span class="nc" id="L49">                x.setUserID(rs.getString(&quot;userId&quot;));</span>
-<span class="nc" id="L50">                x.setContent(rs.getString(&quot;content&quot;));</span>
-<span class="nc" id="L51">                x.setRating(rs.getInt(&quot;rating&quot;));</span>
-<span class="nc" id="L52">                x.setStatus(rs.getInt(&quot;status&quot;));</span>
-<span class="nc" id="L53">                comments.add(x);</span>
-<span class="nc" id="L54">            }</span>
-<span class="nc" id="L55">        } catch (SQLException ex) {</span>
-<span class="nc" id="L56">            Logger.getLogger(CommentDAO.class.getName()).log(Level.SEVERE, null, ex);</span>
-<span class="nc" id="L57">        }</span>
-<span class="nc" id="L58">        return comments;</span>
+<span class="fc" id="L106">            pre = conn.prepareStatement(sql);</span>
+<span class="fc" id="L107">            pre.setInt(1, pid);</span>
+<span class="fc" id="L108">            rs= pre.executeQuery();</span>
+<span class="fc bfc" id="L109" title="All 2 branches covered.">            while (rs.next()) {</span>
+<span class="fc" id="L110">                Comment x = new Comment();</span>
+<span class="fc" id="L111">                x.setCommentID(rs.getInt(&quot;commentID&quot;));</span>
+<span class="fc" id="L112">                x.setProductID(rs.getInt(&quot;productID&quot;));</span>
+<span class="fc" id="L113">                x.setUserID(rs.getInt(&quot;userId&quot;));</span>
+<span class="fc" id="L114">                x.setContent(rs.getString(&quot;content&quot;));</span>
+<span class="fc" id="L115">                x.setRating(rs.getInt(&quot;rating&quot;));</span>
+<span class="fc" id="L116">                x.setStatus(rs.getInt(&quot;status&quot;));</span>
+<span class="fc" id="L117">                comments.add(x);</span>
+<span class="fc" id="L118">            }</span>
+<span class="nc" id="L119">        } catch (SQLException ex) {</span>
+<span class="nc" id="L120">            Logger.getLogger(CommentDAO.class.getName()).log(Level.SEVERE, null, ex);</span>
+<span class="fc" id="L121">        }</span>
+<span class="fc" id="L122">        return comments;</span>
     }
     
 //    public int countAllCommentsByProductId(int pid){
@@ -71,22 +135,21 @@ import java.util.logging.Logger;
 //        return n;
 //    }
 
-    public boolean checkExistComment(int pid, int uid) {
+    public boolean checkExistComment(int cid) {
         
-<span class="nc" id="L76">        boolean check = false;</span>
-<span class="nc" id="L77">        String sql = &quot;select * from Comment where productID  = ? and userId = ? order by commentID desc&quot;;</span>
+<span class="fc" id="L140">        boolean check = false;</span>
+<span class="fc" id="L141">        String sql = &quot;select * from Comment where commentID = ? order by commentID desc&quot;;</span>
         try {
-<span class="nc" id="L79">            pre = conn.prepareStatement(sql);</span>
-<span class="nc" id="L80">            pre.setInt(1, pid);</span>
-<span class="nc" id="L81">            pre.setInt(2, uid);</span>
-<span class="nc" id="L82">            rs = pre.executeQuery();</span>
-<span class="nc bnc" id="L83" title="All 2 branches missed.">            while (rs.next()) {</span>
-<span class="nc" id="L84">                check = true;</span>
+<span class="fc" id="L143">            pre = conn.prepareStatement(sql);</span>
+<span class="fc" id="L144">            pre.setInt(1, cid);</span>
+<span class="fc" id="L145">            rs = pre.executeQuery();</span>
+<span class="fc bfc" id="L146" title="All 2 branches covered.">            while (rs.next()) {</span>
+<span class="fc" id="L147">                check = true;</span>
             }
-<span class="nc" id="L86">        } catch (SQLException ex) {</span>
-<span class="nc" id="L87">            Logger.getLogger(CommentDAO.class.getName()).log(Level.SEVERE, null, ex);</span>
-<span class="nc" id="L88">        }</span>
-<span class="nc" id="L89">        return check;</span>
+<span class="nc" id="L149">        } catch (SQLException ex) {</span>
+<span class="nc" id="L150">            Logger.getLogger(CommentDAO.class.getName()).log(Level.SEVERE, null, ex);</span>
+<span class="fc" id="L151">        }</span>
+<span class="fc" id="L152">        return check;</span>
     }
 
 }

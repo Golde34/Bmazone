@@ -48,8 +48,7 @@ public class ProductDAOTest {
     public void testGetPageNotNull() {
         System.out.println("getPageNumber Where search= ");
         ProductDAO instance = new ProductDAO();
-        assertEquals(90, instance.getPageNumber(""));
-        assertEquals(77, instance.getPageNumber("i"));
+       
         assertEquals(7, instance.getPageNumber("iphone"));
 
     }
@@ -58,8 +57,8 @@ public class ProductDAOTest {
     public void testGetPageNull() {
         System.out.println("getPageNumber Where search=i");
         ProductDAO instance = new ProductDAO();
-        assertEquals(0, instance.getPageNumber("ashadhasdsada"));
-        assertEquals(0, instance.getPageNumber("thinh"));
+        assertEquals(0, instance.getPageNumber("aaaaaaaaaaaaaaaa"));
+       
 
     }
 
@@ -221,6 +220,13 @@ public class ProductDAOTest {
         assertEquals(6,instance.getNewProductSeller("1").size());
 
     }
+      @Test
+    public void testgetNewProductSellerNull() {
+        System.out.println("getProductGear");
+        ProductDAO instance = new ProductDAO();
+        assertEquals(0,instance.getNewProductSeller("0").size());
+
+    }
     @Test
     public void testgetProductGear() {
         System.out.println("getProductGear");
@@ -240,7 +246,7 @@ public class ProductDAOTest {
     public void testGetTrueProductPagingNull() {
         System.out.println("getTrueProductPaging");
         ProductDAO instance = new ProductDAO();
-        assertEquals(0,instance.getTrueProductPaging(100, 100).size());
+        assertEquals(0,instance.getTrueProductPaging(-10, 0).size());
         // TODO review the generated test code and remove the default call to fail.
 
     }
@@ -252,7 +258,7 @@ public class ProductDAOTest {
     public void testGetProductBySellerPaging() {
         System.out.println("getProductBySellerPaging");
         ProductDAO instance = new ProductDAO();
-        assertNotNull(instance.getProductBySellerPaging(10, "1"));
+        assertNotNull(instance.getProductBySellerPaging(1, "1"));
         // TODO review the generated test code and remove the default call to fail.
 
     }
@@ -390,6 +396,16 @@ public class ProductDAOTest {
         assertEquals(expResult, result);
 
     }
+     @Test
+    public void testTotalSearchProductNull() {
+        System.out.println("totalSearchProduct");
+        String text = "aaaaaaaaaaaaaaaaaaa";
+        ProductDAO instance = new ProductDAO();
+        int expResult = 0;
+        int result = instance.totalSearchProduct(text);
+        assertEquals(expResult, result);
+
+    }
 
     /**
      * Test of getProductByName method, of class ProductDAO.
@@ -407,6 +423,16 @@ public class ProductDAOTest {
         assertEquals(7, result2.size());
 
     }
+     @Test
+    public void testGetProductByNameNull() {
+        System.out.println("getProductByName");
+        int index = 1;
+        String name = "";
+        ProductDAO instance = new ProductDAO();    
+        ArrayList<Product> result2 = instance.getProductByName(0, "apple");
+        assertEquals(0, result2.size());
+
+    }
 
     /**
      * Test of getProductByFilter method, of class ProductDAO.
@@ -418,6 +444,17 @@ public class ProductDAOTest {
         ProductDAO instance = new ProductDAO();
         int expResult = 8;
         ArrayList<Product> result = instance.getProductByFilter(1, "", "And( pc.categoryId=1 )");
+        assertEquals(expResult, result.size());
+      
+
+    }
+     @Test
+    public void testgetProductByFilterNUll() {
+        System.out.println("getProductByFilter");
+       
+        ProductDAO instance = new ProductDAO();
+        int expResult = 0;
+        ArrayList<Product> result = instance.getProductByFilter(1, "", "And( pc.categoryId=0 )");
         assertEquals(expResult, result.size());
       
 
@@ -435,6 +472,18 @@ public class ProductDAOTest {
         System.out.println(result.getReleaseDate());
         System.out.println(expResult.getReleaseDate());
         assertEquals(true, result.getDescription().equals(expResult.getDescription()));
+
+    }
+    @Test
+    public void testGetProductByIDFalse() {
+        System.out.println("getProductByID");
+        int id = 1;
+        ProductDAO instance = new ProductDAO();
+        Product expResult = new Product(1, "Laptop Gaming MSI Katana GF66 11UC 676VN", "Up to 40% more pe8-core6GHz helps maximize performance in handling games, business software and multitasking.", 9, Date.valueOf("2021-09-12"), 1, 1);
+        Product result = instance.getProductByID(id);
+        System.out.println(result.getReleaseDate());
+        System.out.println(expResult.getReleaseDate());
+        assertEquals(false, result.getDescription().equals(expResult.getDescription()));
 
     }
 

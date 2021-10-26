@@ -91,11 +91,11 @@ import java.util.logging.Logger;
 <span class="fc" id="L91">            pre.setInt(3, r.getAdminPermission());</span>
 <span class="fc" id="L92">            pre.setInt(4, r.getSellerPermission());</span>
 <span class="fc" id="L93">            pre.setInt(5, r.getCustomerPermission());</span>
-<span class="fc" id="L94">            n = pre.executeUpdate();</span>
-<span class="fc" id="L95">            pre.close();</span>
-<span class="nc" id="L96">        } catch (Exception e) {</span>
-<span class="nc" id="L97">            Logger.getLogger(RoleDAO.class.getName()).log(Level.SEVERE, null, e);</span>
-<span class="fc" id="L98">        }</span>
+<span class="nc" id="L94">            n = pre.executeUpdate();</span>
+<span class="nc" id="L95">            pre.close();</span>
+<span class="fc" id="L96">        } catch (Exception e) {</span>
+<span class="fc" id="L97">            Logger.getLogger(RoleDAO.class.getName()).log(Level.SEVERE, null, e);</span>
+<span class="nc" id="L98">        }</span>
 <span class="fc" id="L99">        return n;</span>
     }
 

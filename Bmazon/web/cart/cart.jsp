@@ -34,11 +34,11 @@
                     <div class="row row-main">
                         <div class="large-12 col">
                             <div class="col-inner">
-                                  <form action="CartControllerMap" method="POST" class="woocommerce-cart-form">
-                                <div class="woocommerce">
-                                    <div class="woocommerce row row-large row-divided">
-                                        <div class="col large-7 pb-0 ">
-                                          
+                                <form action="CartControllerMap" method="POST" class="woocommerce-cart-form">
+                                    <div class="woocommerce">
+                                        <div class="woocommerce row row-large row-divided">
+                                            <div class="col large-7 pb-0 ">
+
                                                 <div class="cart-wrapper sm-touch-scroll">
                                                     <table class="shop_table shop_table_responsive cart woocommerce-cart-form__contents" cellspacing="0">
                                                         <thead>
@@ -113,8 +113,8 @@
                                                                         Continue Shopping    </a>
                                                                 </div>
 
-                                                               <%-- <input type="submit" class="button primary mt-0 pull-left small" name="service" value="Update" />
-                                                               --%>
+                                                                <input type="submit" class="button primary mt-0 pull-left small" name="service" value="Update" />
+
 
                                                             </td>
                                                         </tr>
@@ -123,49 +123,49 @@
                                                     </table>
                                                 </div>
 
-                                        </div>
+                                            </div>
 
-                                        <div class="cart-collaterals large-5 col pb-0">
-                                            <div class="cart-sidebar col-inner ">
-                                                <div class="cart_totals ">
+                                            <div class="cart-collaterals large-5 col pb-0">
+                                                <div class="cart-sidebar col-inner ">
+                                                    <div class="cart_totals ">
 
-                                                    <table cellspacing="0">
-                                                        <thead>
-                                                            <tr>
-                                                                <th class="product-name" colspan="2" style="border-width:3px;">Total</th>
+                                                        <table cellspacing="0">
+                                                            <thead>
+                                                                <tr>
+                                                                    <th class="product-name" colspan="2" style="border-width:3px;">Total</th>
+                                                                </tr>
+                                                            </thead>
+                                                        </table>
+
+                                                        <h2>Total</h2>
+
+                                                        <table cellspacing="0" class="shop_table shop_table_responsive">
+
+
+                                                            <tr class="order-total">
+                                                                <th>Total</th>
+                                                                <td data-title="Tổng cộng"><strong><span class="woocommerce-Price-amount amount"><p id="sum">0&nbsp;</p><span class="woocommerce-Price-currencySymbol">&#8363;</span></span></strong> </td>
                                                             </tr>
-                                                        </thead>
-                                                    </table>
-
-                                                    <h2>Total</h2>
-
-                                                    <table cellspacing="0" class="shop_table shop_table_responsive">
 
 
-                                                        <tr class="order-total">
-                                                            <th>Total</th>
-                                                            <td data-title="Tổng cộng"><strong><span class="woocommerce-Price-amount amount"><p id="sum">0&nbsp;</p><span class="woocommerce-Price-currencySymbol">&#8363;</span></span></strong> </td>
-                                                        </tr>
+                                                        </table>
+
+                                                        <div class="wc-proceed-to-checkout">
+                                                            <input type="submit" class="button primary mt-0 pull-left small" name="service" value="Check Out" />
 
 
-                                                    </table>
+                                                        </div>
 
-                                                    <div class="wc-proceed-to-checkout">
-                                                        <input type="submit" class="button primary mt-0 pull-left small" name="service" value="Check Out" />
-                                                       
-                                                           
+
                                                     </div>
 
 
-                                                </div>
-
-
-                                                <div class="cart-sidebar-content relative"></div>	</div>
+                                                    <div class="cart-sidebar-content relative"></div>	</div>
+                                            </div>
                                         </div>
+
+
                                     </div>
-                                                   
-                                        
-                                </div>
 
                                 </form>
                             </div><!-- .col-inner -->

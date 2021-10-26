@@ -396,34 +396,34 @@ import java.util.logging.Logger;
                 + &quot; where userID=?&quot;;
         try {
 <span class="fc" id="L398">            pre = conn.prepareStatement(sql);</span>
-<span class="nc" id="L399">            pre.setString(1, obj.getUsername());</span>
-<span class="nc" id="L400">            pre.setString(2, obj.getPassword());</span>
-<span class="nc" id="L401">            pre.setString(3, obj.getEmail());</span>
-<span class="nc" id="L402">            pre.setString(4, obj.getPhoneNumber());</span>
-<span class="nc" id="L403">            pre.setInt(5, obj.getSell());</span>
-<span class="nc" id="L404">            pre.setDouble(6, obj.getWallet());</span>
-<span class="nc" id="L405">            pre.setString(7, obj.getFullname());</span>
-<span class="nc" id="L406">            pre.setString(8, obj.getPublicName());</span>
-<span class="nc" id="L407">            pre.setString(9, obj.getAddress());</span>
-<span class="nc" id="L408">            pre.setString(10, obj.getProfileImage());</span>
-<span class="nc" id="L409">            pre.setString(11, obj.getBackgroundImage());</span>
-<span class="nc" id="L410">            pre.setString(12, obj.getOccupation());</span>
-<span class="nc" id="L411">            pre.setInt(13, obj.getGender());</span>
-<span class="nc" id="L412">            pre.setDate(14, obj.getDOB());</span>
-<span class="nc" id="L413">            pre.setString(15, obj.getBio());</span>
-<span class="nc" id="L414">            pre.setString(16, obj.getFacebook());</span>
-<span class="nc" id="L415">            pre.setString(17, obj.getInstagram());</span>
-<span class="nc" id="L416">            pre.setString(18, obj.getTwitter());</span>
-<span class="nc" id="L417">            pre.setString(19, obj.getYoutube());</span>
-<span class="nc" id="L418">            pre.setInt(20, obj.getActivityPoint());</span>
-<span class="nc" id="L419">            pre.setInt(21, obj.getSystemRole());</span>
-<span class="nc" id="L420">            pre.setInt(22, obj.getStatus());</span>
-<span class="nc" id="L421">            pre.setString(23, obj.getUserId());</span>
-<span class="nc" id="L422">            n = pre.executeUpdate();</span>
+<span class="fc" id="L399">            pre.setString(1, obj.getUsername());</span>
+<span class="fc" id="L400">            pre.setString(2, obj.getPassword());</span>
+<span class="fc" id="L401">            pre.setString(3, obj.getEmail());</span>
+<span class="fc" id="L402">            pre.setString(4, obj.getPhoneNumber());</span>
+<span class="fc" id="L403">            pre.setInt(5, obj.getSell());</span>
+<span class="fc" id="L404">            pre.setDouble(6, obj.getWallet());</span>
+<span class="fc" id="L405">            pre.setString(7, obj.getFullname());</span>
+<span class="fc" id="L406">            pre.setString(8, obj.getPublicName());</span>
+<span class="fc" id="L407">            pre.setString(9, obj.getAddress());</span>
+<span class="fc" id="L408">            pre.setString(10, obj.getProfileImage());</span>
+<span class="fc" id="L409">            pre.setString(11, obj.getBackgroundImage());</span>
+<span class="fc" id="L410">            pre.setString(12, obj.getOccupation());</span>
+<span class="fc" id="L411">            pre.setInt(13, obj.getGender());</span>
+<span class="fc" id="L412">            pre.setDate(14, obj.getDOB());</span>
+<span class="fc" id="L413">            pre.setString(15, obj.getBio());</span>
+<span class="fc" id="L414">            pre.setString(16, obj.getFacebook());</span>
+<span class="fc" id="L415">            pre.setString(17, obj.getInstagram());</span>
+<span class="fc" id="L416">            pre.setString(18, obj.getTwitter());</span>
+<span class="fc" id="L417">            pre.setString(19, obj.getYoutube());</span>
+<span class="fc" id="L418">            pre.setInt(20, obj.getActivityPoint());</span>
+<span class="fc" id="L419">            pre.setInt(21, obj.getSystemRole());</span>
+<span class="fc" id="L420">            pre.setInt(22, obj.getStatus());</span>
+<span class="fc" id="L421">            pre.setString(23, obj.getUserId());</span>
+<span class="fc" id="L422">            n = pre.executeUpdate();</span>
 <span class="nc" id="L423">        } catch (SQLException ex) {</span>
 <span class="nc" id="L424">            Logger.getLogger(UserDAO.class.getName()).log(Level.SEVERE, null, ex);</span>
-<span class="nc" id="L425">        }</span>
-<span class="nc" id="L426">        return n;</span>
+<span class="fc" id="L425">        }</span>
+<span class="fc" id="L426">        return n;</span>
     }
 
     public int depositWalletUser(User obj, double amount) {
@@ -431,13 +431,13 @@ import java.util.logging.Logger;
 <span class="fc" id="L431">        String sql = &quot;UPDATE [User] SET wallet=? where userID=?&quot;;</span>
         try {
 <span class="fc" id="L433">            pre = conn.prepareStatement(sql);</span>
-<span class="nc" id="L434">            pre.setDouble(1, obj.getWallet() + amount);</span>
-<span class="nc" id="L435">            pre.setString(2, obj.getUserId());</span>
-<span class="nc" id="L436">            n = pre.executeUpdate();</span>
+<span class="fc" id="L434">            pre.setDouble(1, obj.getWallet() + amount);</span>
+<span class="fc" id="L435">            pre.setString(2, obj.getUserId());</span>
+<span class="fc" id="L436">            n = pre.executeUpdate();</span>
 <span class="nc" id="L437">        } catch (SQLException ex) {</span>
 <span class="nc" id="L438">            Logger.getLogger(UserDAO.class.getName()).log(Level.SEVERE, null, ex);</span>
-<span class="nc" id="L439">        }</span>
-<span class="nc" id="L440">        return n;</span>
+<span class="fc" id="L439">        }</span>
+<span class="fc" id="L440">        return n;</span>
     }
 
     public int withdrawalWalletUser(User obj, double amount) {
@@ -445,54 +445,54 @@ import java.util.logging.Logger;
 <span class="fc" id="L445">        String sql = &quot;UPDATE [User] SET wallet=? where userID=?&quot;;</span>
         try {
 <span class="fc" id="L447">            pre = conn.prepareStatement(sql);</span>
-<span class="nc" id="L448">            pre.setDouble(1, obj.getWallet() - amount);</span>
-<span class="nc" id="L449">            pre.setString(2, obj.getUserId());</span>
-<span class="nc" id="L450">            n = pre.executeUpdate();</span>
+<span class="fc" id="L448">            pre.setDouble(1, obj.getWallet() - amount);</span>
+<span class="fc" id="L449">            pre.setString(2, obj.getUserId());</span>
+<span class="fc" id="L450">            n = pre.executeUpdate();</span>
 <span class="nc" id="L451">        } catch (SQLException ex) {</span>
 <span class="nc" id="L452">            Logger.getLogger(UserDAO.class.getName()).log(Level.SEVERE, null, ex);</span>
-<span class="nc" id="L453">        }</span>
-<span class="nc" id="L454">        return n;</span>
+<span class="fc" id="L453">        }</span>
+<span class="fc" id="L454">        return n;</span>
     }
 
     public int updatePublicInfo(User obj) {
-<span class="nc" id="L458">        int n =0;</span>
-<span class="nc" id="L459">        String sql = &quot;UPDATE [User] SET  username=?, [address]=?,&quot;</span>
+<span class="fc" id="L458">        int n =0;</span>
+<span class="fc" id="L459">        String sql = &quot;UPDATE [User] SET  username=?, [address]=?,&quot;</span>
                 + &quot; bio=?, Facebook=?, Instagram=?, Twitter=?, Youtube=? , [password]=?&quot;
                 + &quot; where userID=?&quot;;
         try {
-<span class="nc" id="L463">            pre = conn.prepareStatement(sql);</span>
-<span class="nc" id="L464">            pre.setString(1, obj.getUsername());</span>
-<span class="nc" id="L465">            pre.setString(2, obj.getAddress());</span>
-<span class="nc" id="L466">            pre.setString(3, obj.getBio());</span>
-<span class="nc" id="L467">            pre.setString(4, obj.getFacebook());</span>
-<span class="nc" id="L468">            pre.setString(5, obj.getInstagram());</span>
-<span class="nc" id="L469">            pre.setString(6, obj.getTwitter());</span>
-<span class="nc" id="L470">            pre.setString(7, obj.getYoutube());</span>
-<span class="nc" id="L471">            pre.setString(8, obj.getPassword());</span>
-<span class="nc" id="L472">            pre.setString(9, obj.getUserId());</span>
-<span class="nc" id="L473">            n = pre.executeUpdate();</span>
+<span class="fc" id="L463">            pre = conn.prepareStatement(sql);</span>
+<span class="fc" id="L464">            pre.setString(1, obj.getUsername());</span>
+<span class="fc" id="L465">            pre.setString(2, obj.getAddress());</span>
+<span class="fc" id="L466">            pre.setString(3, obj.getBio());</span>
+<span class="fc" id="L467">            pre.setString(4, obj.getFacebook());</span>
+<span class="fc" id="L468">            pre.setString(5, obj.getInstagram());</span>
+<span class="fc" id="L469">            pre.setString(6, obj.getTwitter());</span>
+<span class="fc" id="L470">            pre.setString(7, obj.getYoutube());</span>
+<span class="fc" id="L471">            pre.setString(8, obj.getPassword());</span>
+<span class="fc" id="L472">            pre.setString(9, obj.getUserId());</span>
+<span class="fc" id="L473">            n = pre.executeUpdate();</span>
 <span class="nc" id="L474">        } catch (SQLException ex) {</span>
 <span class="nc" id="L475">            Logger.getLogger(UserDAO.class.getName()).log(Level.SEVERE, null, ex);</span>
-<span class="nc" id="L476">        }</span>
-<span class="nc" id="L477">        return n;</span>
+<span class="fc" id="L476">        }</span>
+<span class="fc" id="L477">        return n;</span>
     }
 
     public int updatePrivateInfo(User obj) {
-<span class="nc" id="L481">        int n = 0;</span>
-<span class="nc" id="L482">        String sql = &quot;UPDATE [User] SET  fullname=?, email=?, phoneNumber=?, [password]=?&quot;</span>
+<span class="fc" id="L481">        int n = 0;</span>
+<span class="fc" id="L482">        String sql = &quot;UPDATE [User] SET  fullname=?, email=?, phoneNumber=?, [password]=?&quot;</span>
                 + &quot; where userID=?&quot;;
         try {
-<span class="nc" id="L485">            pre = conn.prepareStatement(sql);</span>
-<span class="nc" id="L486">            pre.setString(1, obj.getFullname());</span>
-<span class="nc" id="L487">            pre.setString(2, obj.getEmail());</span>
-<span class="nc" id="L488">            pre.setString(3, obj.getPhoneNumber());</span>
-<span class="nc" id="L489">            pre.setString(4, obj.getPassword());</span>
-<span class="nc" id="L490">            pre.setString(5, obj.getUserId());</span>
-<span class="nc" id="L491">            n = pre.executeUpdate();</span>
-<span class="nc" id="L492">        } catch (SQLException ex) {</span>
-<span class="nc" id="L493">            Logger.getLogger(UserDAO.class.getName()).log(Level.SEVERE, null, ex);</span>
-<span class="nc" id="L494">        }</span>
-<span class="nc" id="L495">        return n;</span>
+<span class="fc" id="L485">            pre = conn.prepareStatement(sql);</span>
+<span class="fc" id="L486">            pre.setString(1, obj.getFullname());</span>
+<span class="fc" id="L487">            pre.setString(2, obj.getEmail());</span>
+<span class="fc" id="L488">            pre.setString(3, obj.getPhoneNumber());</span>
+<span class="fc" id="L489">            pre.setString(4, obj.getPassword());</span>
+<span class="fc" id="L490">            pre.setString(5, obj.getUserId());</span>
+<span class="fc" id="L491">            n = pre.executeUpdate();</span>
+<span class="fc" id="L492">        } catch (SQLException ex) {</span>
+<span class="fc" id="L493">            Logger.getLogger(UserDAO.class.getName()).log(Level.SEVERE, null, ex);</span>
+<span class="fc" id="L494">        }</span>
+<span class="fc" id="L495">        return n;</span>
     }
 
     public int updateActivityPoint(User obj, int activityPoint) {
@@ -501,12 +501,12 @@ import java.util.logging.Logger;
         try {
 <span class="fc" id="L502">            pre = conn.prepareStatement(sql);</span>
 <span class="fc" id="L503">            pre.setInt(1, activityPoint);</span>
-<span class="nc" id="L504">            pre.setString(2, obj.getUserId());</span>
-<span class="nc" id="L505">            n = pre.executeUpdate();</span>
+<span class="fc" id="L504">            pre.setString(2, obj.getUserId());</span>
+<span class="fc" id="L505">            n = pre.executeUpdate();</span>
 <span class="nc" id="L506">        } catch (SQLException ex) {</span>
 <span class="nc" id="L507">            Logger.getLogger(UserDAO.class.getName()).log(Level.SEVERE, null, ex);</span>
-<span class="nc" id="L508">        }</span>
-<span class="nc" id="L509">        return n;</span>
+<span class="fc" id="L508">        }</span>
+<span class="fc" id="L509">        return n;</span>
     }
 
     public int uploadprofileImage(User obj, String uploadImg) {
@@ -515,12 +515,12 @@ import java.util.logging.Logger;
         try {
 <span class="fc" id="L516">            pre = conn.prepareStatement(sql);</span>
 <span class="fc" id="L517">            pre.setString(1, uploadImg);</span>
-<span class="nc" id="L518">            pre.setString(2, obj.getUserId());</span>
-<span class="nc" id="L519">            n = pre.executeUpdate();</span>
+<span class="fc" id="L518">            pre.setString(2, obj.getUserId());</span>
+<span class="fc" id="L519">            n = pre.executeUpdate();</span>
 <span class="nc" id="L520">        } catch (SQLException ex) {</span>
 <span class="nc" id="L521">            Logger.getLogger(UserDAO.class.getName()).log(Level.SEVERE, null, ex);</span>
-<span class="nc" id="L522">        }</span>
-<span class="nc" id="L523">        return n;</span>
+<span class="fc" id="L522">        }</span>
+<span class="fc" id="L523">        return n;</span>
     }
 
     public int uploadBackgroundImage(User obj, String uploadImg) {
@@ -529,91 +529,67 @@ import java.util.logging.Logger;
         try {
 <span class="fc" id="L530">            pre = conn.prepareStatement(sql);</span>
 <span class="fc" id="L531">            pre.setString(1, uploadImg);</span>
-<span class="nc" id="L532">            pre.setString(2, obj.getUserId());</span>
-<span class="nc" id="L533">            n = pre.executeUpdate();</span>
+<span class="fc" id="L532">            pre.setString(2, obj.getUserId());</span>
+<span class="fc" id="L533">            n = pre.executeUpdate();</span>
 <span class="nc" id="L534">        } catch (SQLException ex) {</span>
 <span class="nc" id="L535">            Logger.getLogger(UserDAO.class.getName()).log(Level.SEVERE, null, ex);</span>
-<span class="nc" id="L536">        }</span>
-<span class="nc" id="L537">        return n;</span>
+<span class="fc" id="L536">        }</span>
+<span class="fc" id="L537">        return n;</span>
     }
-    
-//    public HashMap&lt;User, Role&gt; getAllPagingUserHashMap(int index, int numOfRow, String search) {
-//        HashMap&lt;User, Role&gt; map = new HashMap&lt;&gt;();
-//        UserDAO uDao = new UserDAO();
-//        RoleDAO rDao = new RoleDAO();
-//        String xSql = &quot;declare @PageNo INT =&quot; + index + &quot;\n&quot;
-//                + &quot;declare @PageSize INT=&quot; + numOfRow + &quot;\n&quot;
-//                + &quot;SELECT * from(\n&quot;
-//                + &quot;SELECT u.userID, r.roleID,\n&quot;
-//                + &quot;ROW_NUMBER() over (order by userID) as RowNum\n&quot;
-//                + &quot;  FROM [Bmazon].[dbo].[User] u INNER JOIN [Role] r ON u.systemRole = r.roleID where u.fullname like '%&quot; + search + &quot;%' or r.roleName like '%&quot; + search + &quot;%')T\n&quot;
-//                + &quot;where T.RowNum between ((@PageNo-1)*@PageSize)+1 and (@PageNo*@PageSize)&quot;;
-//        ResultSet rs = dbConn.getData(xSql);
-//        try {
-//            while (rs.next()) {
-//                User u = uDao.getUserById(rs.getString(&quot;userID&quot;));
-//                Role r = rDao.getRoleId(rs.getInt(&quot;roleID&quot;));
-//                map.put(u, r);
-//            }
-//        } catch (SQLException ex) {
-//            Logger.getLogger(UserDAO.class.getName()).log(Level.SEVERE, null, ex);
-//        }
-//        return map;
-//    }
     
     // &lt;editor-fold defaultstate=&quot;collapsed&quot; desc=&quot;Didn't use. Click on the + sign on the left to edit the code.&quot;&gt;
     public User getUserLogin(String username, String password) {
-<span class="fc" id="L566">        String sql = &quot;SELECT * FROM [User] WHERE username = ? and password = ? and status = 1&quot;;</span>
+<span class="fc" id="L542">        String sql = &quot;SELECT * FROM [User] WHERE username = ? and password = ?&quot;;</span>
         try {
-<span class="fc" id="L568">            pre = conn.prepareStatement(sql);</span>
-<span class="fc" id="L569">            pre.setString(1, username);</span>
-<span class="fc" id="L570">            pre.setString(2, password);</span>
-<span class="fc" id="L571">            ResultSet rs = pre.executeQuery();</span>
-<span class="fc bfc" id="L572" title="All 2 branches covered.">            if (rs.next()) {</span>
-<span class="fc" id="L573">                User user = new User(rs.getString(&quot;userID&quot;), rs.getString(&quot;username&quot;),</span>
-<span class="fc" id="L574">                        rs.getString(&quot;password&quot;), rs.getString(&quot;email&quot;),</span>
-<span class="fc" id="L575">                        rs.getString(&quot;phoneNumber&quot;), rs.getInt(&quot;sell&quot;),</span>
-<span class="fc" id="L576">                        rs.getDouble(&quot;wallet&quot;), rs.getString(&quot;fullname&quot;),</span>
-<span class="fc" id="L577">                        rs.getString(&quot;publicName&quot;), rs.getString(&quot;address&quot;), rs.getString(&quot;profileImage&quot;),</span>
-<span class="fc" id="L578">                        rs.getString(&quot;backgroundImage&quot;), rs.getString(&quot;occupation&quot;),</span>
-<span class="fc" id="L579">                        rs.getInt(&quot;gender&quot;), rs.getDate(&quot;DOB&quot;), rs.getString(&quot;bio&quot;),</span>
-<span class="fc" id="L580">                        rs.getString(&quot;Facebook&quot;), rs.getString(&quot;Instagram&quot;),</span>
-<span class="fc" id="L581">                        rs.getString(&quot;Twitter&quot;), rs.getString(&quot;Youtube&quot;),</span>
-<span class="fc" id="L582">                        rs.getInt(&quot;activityPoint&quot;), rs.getInt(&quot;systemRole&quot;),</span>
-<span class="fc" id="L583">                        rs.getInt(&quot;status&quot;));</span>
-<span class="fc" id="L584">                return user;</span>
+<span class="fc" id="L544">            pre = conn.prepareStatement(sql);</span>
+<span class="fc" id="L545">            pre.setString(1, username);</span>
+<span class="fc" id="L546">            pre.setString(2, password);</span>
+<span class="fc" id="L547">            ResultSet rs = pre.executeQuery();</span>
+<span class="fc bfc" id="L548" title="All 2 branches covered.">            if (rs.next()) {</span>
+<span class="fc" id="L549">                User user = new User(rs.getString(&quot;userID&quot;), rs.getString(&quot;username&quot;),</span>
+<span class="fc" id="L550">                        rs.getString(&quot;password&quot;), rs.getString(&quot;email&quot;),</span>
+<span class="fc" id="L551">                        rs.getString(&quot;phoneNumber&quot;), rs.getInt(&quot;sell&quot;),</span>
+<span class="fc" id="L552">                        rs.getDouble(&quot;wallet&quot;), rs.getString(&quot;fullname&quot;),</span>
+<span class="fc" id="L553">                        rs.getString(&quot;publicName&quot;), rs.getString(&quot;address&quot;), rs.getString(&quot;profileImage&quot;),</span>
+<span class="fc" id="L554">                        rs.getString(&quot;backgroundImage&quot;), rs.getString(&quot;occupation&quot;),</span>
+<span class="fc" id="L555">                        rs.getInt(&quot;gender&quot;), rs.getDate(&quot;DOB&quot;), rs.getString(&quot;bio&quot;),</span>
+<span class="fc" id="L556">                        rs.getString(&quot;Facebook&quot;), rs.getString(&quot;Instagram&quot;),</span>
+<span class="fc" id="L557">                        rs.getString(&quot;Twitter&quot;), rs.getString(&quot;Youtube&quot;),</span>
+<span class="fc" id="L558">                        rs.getInt(&quot;activityPoint&quot;), rs.getInt(&quot;systemRole&quot;),</span>
+<span class="fc" id="L559">                        rs.getInt(&quot;status&quot;));</span>
+<span class="fc" id="L560">                return user;</span>
             }
-<span class="nc" id="L586">        } catch (SQLException ex) {</span>
-<span class="nc" id="L587">            Logger.getLogger(UserDAO.class.getName()).log(Level.SEVERE, null, ex);</span>
-<span class="fc" id="L588">        }</span>
-<span class="fc" id="L589">        return null;</span>
+<span class="nc" id="L562">        } catch (SQLException ex) {</span>
+<span class="nc" id="L563">            Logger.getLogger(UserDAO.class.getName()).log(Level.SEVERE, null, ex);</span>
+<span class="fc" id="L564">        }</span>
+<span class="fc" id="L565">        return null;</span>
     }
 
     public User getEmailLogin(String email, String password) {
-<span class="fc" id="L593">        String sql = &quot;SELECT * FROM [User] WHERE email = ? and password = ? and status = 1&quot;;</span>
+<span class="fc" id="L569">        String sql = &quot;SELECT * FROM [User] WHERE email = ? and password = ? and status = 1&quot;;</span>
         try {
-<span class="fc" id="L595">            pre = conn.prepareStatement(sql);</span>
-<span class="fc" id="L596">            pre.setString(1, email);</span>
-<span class="fc" id="L597">            pre.setString(2, password);</span>
-<span class="fc" id="L598">            ResultSet rs = pre.executeQuery();</span>
-<span class="fc bfc" id="L599" title="All 2 branches covered.">            if (rs.next()) {</span>
-<span class="fc" id="L600">                User user = new User(rs.getString(&quot;userID&quot;), rs.getString(&quot;username&quot;),</span>
-<span class="fc" id="L601">                        rs.getString(&quot;password&quot;), rs.getString(&quot;email&quot;),</span>
-<span class="fc" id="L602">                        rs.getString(&quot;phoneNumber&quot;), rs.getInt(&quot;sell&quot;),</span>
-<span class="fc" id="L603">                        rs.getDouble(&quot;wallet&quot;), rs.getString(&quot;fullname&quot;),</span>
-<span class="fc" id="L604">                        rs.getString(&quot;publicName&quot;), rs.getString(&quot;address&quot;), rs.getString(&quot;profileImage&quot;),</span>
-<span class="fc" id="L605">                        rs.getString(&quot;backgroundImage&quot;), rs.getString(&quot;occupation&quot;),</span>
-<span class="fc" id="L606">                        rs.getInt(&quot;gender&quot;), rs.getDate(&quot;DOB&quot;), rs.getString(&quot;bio&quot;),</span>
-<span class="fc" id="L607">                        rs.getString(&quot;Facebook&quot;), rs.getString(&quot;Instagram&quot;),</span>
-<span class="fc" id="L608">                        rs.getString(&quot;Twitter&quot;), rs.getString(&quot;Youtube&quot;),</span>
-<span class="fc" id="L609">                        rs.getInt(&quot;activityPoint&quot;), rs.getInt(&quot;systemRole&quot;),</span>
-<span class="fc" id="L610">                        rs.getInt(&quot;status&quot;));</span>
-<span class="fc" id="L611">                return user;</span>
+<span class="fc" id="L571">            pre = conn.prepareStatement(sql);</span>
+<span class="fc" id="L572">            pre.setString(1, email);</span>
+<span class="fc" id="L573">            pre.setString(2, password);</span>
+<span class="fc" id="L574">            ResultSet rs = pre.executeQuery();</span>
+<span class="fc bfc" id="L575" title="All 2 branches covered.">            if (rs.next()) {</span>
+<span class="fc" id="L576">                User user = new User(rs.getString(&quot;userID&quot;), rs.getString(&quot;username&quot;),</span>
+<span class="fc" id="L577">                        rs.getString(&quot;password&quot;), rs.getString(&quot;email&quot;),</span>
+<span class="fc" id="L578">                        rs.getString(&quot;phoneNumber&quot;), rs.getInt(&quot;sell&quot;),</span>
+<span class="fc" id="L579">                        rs.getDouble(&quot;wallet&quot;), rs.getString(&quot;fullname&quot;),</span>
+<span class="fc" id="L580">                        rs.getString(&quot;publicName&quot;), rs.getString(&quot;address&quot;), rs.getString(&quot;profileImage&quot;),</span>
+<span class="fc" id="L581">                        rs.getString(&quot;backgroundImage&quot;), rs.getString(&quot;occupation&quot;),</span>
+<span class="fc" id="L582">                        rs.getInt(&quot;gender&quot;), rs.getDate(&quot;DOB&quot;), rs.getString(&quot;bio&quot;),</span>
+<span class="fc" id="L583">                        rs.getString(&quot;Facebook&quot;), rs.getString(&quot;Instagram&quot;),</span>
+<span class="fc" id="L584">                        rs.getString(&quot;Twitter&quot;), rs.getString(&quot;Youtube&quot;),</span>
+<span class="fc" id="L585">                        rs.getInt(&quot;activityPoint&quot;), rs.getInt(&quot;systemRole&quot;),</span>
+<span class="fc" id="L586">                        rs.getInt(&quot;status&quot;));</span>
+<span class="fc" id="L587">                return user;</span>
             }
-<span class="nc" id="L613">        } catch (SQLException ex) {</span>
-<span class="nc" id="L614">            Logger.getLogger(UserDAO.class.getName()).log(Level.SEVERE, null, ex);</span>
-<span class="fc" id="L615">        }</span>
-<span class="fc" id="L616">        return null;</span>
+<span class="nc" id="L589">        } catch (SQLException ex) {</span>
+<span class="nc" id="L590">            Logger.getLogger(UserDAO.class.getName()).log(Level.SEVERE, null, ex);</span>
+<span class="fc" id="L591">        }</span>
+<span class="fc" id="L592">        return null;</span>
     }
 // &lt;/editor-fold&gt;
 }

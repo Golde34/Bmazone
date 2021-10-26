@@ -182,23 +182,23 @@
                                         has-dropdown" style="margin-left: 10px">
                                         <% if (x == null) {%>
                                         <a href="${contextPath}/loginAndSecurity/login.jsp" title="Giỏ hàng" class="header-cart-link is-small">
-                                        <i class="fa fa-shopping-cart"
-                                           data-icon-label="0">
-                                            <%-- so luong item in cart--%>
-                                        </i>
+                                            <i class="fa fa-shopping-cart"
+                                               data-icon-label="0">
+                                                <%-- so luong item in cart--%>
+                                            </i>
                                         </a>
-                                        
+
                                         <% } %>
 
                                         <% if (x != null) {%>
                                         <%  ArrayList<CartItem> ShoppingCart = (ArrayList<CartItem>) session.getAttribute("ShoppingCart");
 
                                         %>
-                                         <a href="CartControllerMap?service=Cart" title="Giỏ hàng" class="header-cart-link is-small">
-                                        <i class="fa fa-shopping-cart"
-                                           data-icon-label="<%=ShoppingCart.size()%>">
-                                            <%-- so luong item in cart--%>
-                                        </i>
+                                        <a href="CartControllerMap?service=Cart" title="Giỏ hàng" class="header-cart-link is-small">
+                                            <i class="fa fa-shopping-cart"
+                                               data-icon-label="<%=ShoppingCart.size()%>">
+                                                <%-- so luong item in cart--%>
+                                            </i>
                                         </a>
                                         <ul class="nav-dropdown nav-dropdown-simple">
                                             <li class="html widget_shopping_cart">
@@ -250,39 +250,41 @@
                             <div class="flex-col show-for-medium flex-right" style="margin-right:20px ">
                                 <ul class="mobile-nav nav nav-right ">
                                     <li class="cart-item has-icon">
-
-
-                                        <a href="http://mauweb.monamedia.net/lazada/gio-hang/" class="header-cart-link off-canvas-toggle nav-top-link is-small" data-open="#cart-popup" data-class="off-canvas-cart" title="Giỏ hàng" data-pos="right">
-
+                                        <% if (x == null) {%>
+                                        <a href="${contextPath}/loginAndSecurity/login.jsp" title="Giỏ hàng" class="header-cart-link is-small">
                                             <i class="fa fa-shopping-cart"
-                                               data-icon-label="1">
+                                               data-icon-label="0">
+                                                <%-- so luong item in cart--%>
                                             </i>
                                         </a>
 
+                                        <% } %>
+
+                                        <% if (x != null) {%>
+                                        <%  ArrayList<CartItem> ShoppingCart = (ArrayList<CartItem>) session.getAttribute("ShoppingCart");
+
+                                        %>
+                                        <a href="CartControllerMap?service=Cart" title="Giỏ hàng" class="header-cart-link is-small">
+                                            <i class="fa fa-shopping-cart"
+                                               data-icon-label="<%=ShoppingCart.size()%>">
+                                                <%-- so luong item in cart--%>
+                                            </i>
+                                        </a>
+                                              <% } %>
 
                                         <!-- Cart Sidebar Popup -->
                                         <div id="cart-popup" class="mfp-hide widget_shopping_cart">
                                             <div class="cart-popup-inner inner-padding">
                                                 <div class="cart-popup-title text-center">
-                                                    <h4 class="uppercase">Giỏ hàng</h4>
+                                                    <h4 class="uppercase">Cart</h4>
                                                     <div class="is-divider"></div>
                                                 </div>
                                                 <div class="widget_shopping_cart_content">
 
 
-                                                    <ul class="woocommerce-mini-cart cart_list product_list_widget ">
-                                                        <li class="woocommerce-mini-cart-item mini_cart_item">
-                                                            <a href="http://mauweb.monamedia.net/lazada/gio-hang/?remove_item=e46de7e1bcaaced9a54f1e9d0d2f800d&#038;_wpnonce=ebda79b9a7" class="remove remove_from_cart_button" aria-label="Xóa sản phẩm này" data-product_id="397" data-cart_item_key="e46de7e1bcaaced9a54f1e9d0d2f800d" data-product_sku="">&times;</a>													<a href="http://mauweb.monamedia.net/lazada/san-pham/balo-nho-thoi-trang-chu-thap-xinhstore/">
-                                                                <img width="180" height="180" src="//mauweb.monamedia.net/lazada/wp-content/uploads/2017/10/Balo-01-180x180.jpg" class="attachment-shop_thumbnail size-shop_thumbnail wp-post-image" alt="" srcset="//mauweb.monamedia.net/lazada/wp-content/uploads/2017/10/Balo-01-180x180.jpg 180w, //mauweb.monamedia.net/lazada/wp-content/uploads/2017/10/Balo-01-150x150.jpg 150w, //mauweb.monamedia.net/lazada/wp-content/uploads/2017/10/Balo-01-300x300.jpg 300w, //mauweb.monamedia.net/lazada/wp-content/uploads/2017/10/Balo-01-600x600.jpg 600w, //mauweb.monamedia.net/lazada/wp-content/uploads/2017/10/Balo-01-24x24.jpg 24w, //mauweb.monamedia.net/lazada/wp-content/uploads/2017/10/Balo-01-36x36.jpg 36w, //mauweb.monamedia.net/lazada/wp-content/uploads/2017/10/Balo-01-48x48.jpg 48w, //mauweb.monamedia.net/lazada/wp-content/uploads/2017/10/Balo-01.jpg 741w" sizes="(max-width: 180px) 100vw, 180px" />Balo Nhỏ Thời Trang Chử Thập XinhStore&nbsp;							</a>
+                                                 
 
-                                                            <span class="quantity">1 &times; <span class="woocommerce-Price-amount amount">69,000&nbsp;<span class="woocommerce-Price-currencySymbol">&#8363;</span></span></span>					</li>
-                                                    </ul>
-
-                                                    <p class="woocommerce-mini-cart__total total"><strong>Tổng cộng:</strong> <span class="woocommerce-Price-amount amount">69,000&nbsp;<span class="woocommerce-Price-currencySymbol">&#8363;</span></span></p>
-
-
-                                                    <p class="woocommerce-mini-cart__buttons buttons"><a href="http://mauweb.monamedia.net/lazada/gio-hang/" class="button wc-forward">Xem giỏ hàng</a><a href="http://mauweb.monamedia.net/lazada/thanh-toan/" class="button checkout wc-forward">Thanh toán</a></p>
-
+                                               
 
                                                 </div>
                                                 <div class="cart-sidebar-content relative"></div>  </div>

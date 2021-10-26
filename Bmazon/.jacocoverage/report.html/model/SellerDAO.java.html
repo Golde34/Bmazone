@@ -22,270 +22,258 @@ import sun.nio.ch.SelChImpl;
 
 <span class="fc" id="L23">    BaseDAO dbConn = new BaseDAO();</span>
 
-    public static void main(String[] args) {
-<span class="nc" id="L26">        SellerDAO sel = new SellerDAO();</span>
-<span class="nc" id="L27">        List&lt;Seller&gt; list = sel.getAllSeller();</span>
-<span class="nc bnc" id="L28" title="All 2 branches missed.">        for (Seller sele : list) {</span>
-<span class="nc" id="L29">            System.out.println(sele.getSellerShopName() + &quot; &quot; + sele.getEvidence());</span>
-<span class="nc" id="L30">        }</span>
-<span class="nc" id="L31">    }</span>
-
     public int addSeler(Seller s) {
-<span class="nc" id="L34">        int n = 0;</span>
-<span class="nc" id="L35">        String xSql= &quot;INSERT INTO [Bmazon].[dbo].[Seller] ([userID], [sellerShopName], [sellerPhone], [evidence], [sellerMainProduct], [description], [sellerVerification], [status])&quot;</span>
+<span class="fc" id="L26">        int n = 0;</span>
+<span class="fc" id="L27">        String xSql= &quot;INSERT INTO [Bmazon].[dbo].[Seller] ([userID], [sellerShopName], [sellerPhone], [evidence], [sellerMainProduct], [description], [sellerVerification], [status])&quot;</span>
                 + &quot;     VALUES (?,?,?,?,?,?,?,1)&quot;;
         try {
-<span class="nc" id="L38">            pre = conn.prepareStatement(xSql);</span>
-<span class="nc" id="L39">            pre.setInt(1, s.getUserID());</span>
-<span class="nc" id="L40">            pre.setString(2, s.getSellerShopName());</span>
-<span class="nc" id="L41">            pre.setString(3, s.getSellerPhone());</span>
-<span class="nc" id="L42">            pre.setString(4, s.getEvidence());</span>
-<span class="nc" id="L43">            pre.setInt(5, s.getSellerMainProduct());</span>
-<span class="nc" id="L44">            pre.setString(6, s.getDescription());</span>
-<span class="nc" id="L45">            pre.setInt(7, s.getSellerVerification());</span>
-<span class="nc" id="L46">            n = pre.executeUpdate();</span>
-<span class="nc" id="L47">            pre.close();</span>
-<span class="nc" id="L48">        } catch (Exception e) {</span>
-<span class="nc" id="L49">            Logger.getLogger(RoleDAO.class.getName()).log(Level.SEVERE, null, e);</span>
-<span class="nc" id="L50">        }</span>
-<span class="nc" id="L51">        return n;</span>
+<span class="fc" id="L30">            pre = conn.prepareStatement(xSql);</span>
+<span class="fc" id="L31">            pre.setInt(1, s.getUserID());</span>
+<span class="fc" id="L32">            pre.setString(2, s.getSellerShopName());</span>
+<span class="fc" id="L33">            pre.setString(3, s.getSellerPhone());</span>
+<span class="fc" id="L34">            pre.setString(4, s.getEvidence());</span>
+<span class="fc" id="L35">            pre.setInt(5, s.getSellerMainProduct());</span>
+<span class="fc" id="L36">            pre.setString(6, s.getDescription());</span>
+<span class="fc" id="L37">            pre.setInt(7, s.getSellerVerification());</span>
+<span class="fc" id="L38">            n = pre.executeUpdate();</span>
+<span class="fc" id="L39">            pre.close();</span>
+<span class="nc" id="L40">        } catch (Exception e) {</span>
+<span class="nc" id="L41">            Logger.getLogger(RoleDAO.class.getName()).log(Level.SEVERE, null, e);</span>
+<span class="fc" id="L42">        }</span>
+<span class="fc" id="L43">        return n;</span>
     }
 
     public int editSeller(Seller s) {
-<span class="fc" id="L55">        int n = 0;</span>
-<span class="fc" id="L56">        String xSql = &quot;update [Bmazon].[dbo].[Seller] set [userID] = ? ,[sellerShopName] = ?, [sellerPhone] = ?, [evidence] = ?,&quot;</span>
+<span class="fc" id="L47">        int n = 0;</span>
+<span class="fc" id="L48">        String xSql = &quot;update [Bmazon].[dbo].[Seller] set [userID] = ? ,[sellerShopName] = ?, [sellerPhone] = ?, [evidence] = ?,&quot;</span>
                 + &quot;[sellerMainProduct] = ?, [description] = ?, [sellerVerification] = ?, [status] = ? where [sellerID] = ?&quot;;
         try {
-<span class="fc" id="L59">            pre = conn.prepareStatement(xSql);</span>
-<span class="fc" id="L60">            pre.setInt(1, s.getUserID());</span>
-<span class="fc" id="L61">            pre.setString(2, s.getSellerShopName());</span>
-<span class="fc" id="L62">            pre.setString(3, s.getSellerPhone());</span>
-<span class="fc" id="L63">            pre.setString(4, s.getEvidence());</span>
-<span class="fc" id="L64">            pre.setInt(5, s.getSellerMainProduct());</span>
-<span class="fc" id="L65">            pre.setString(6, s.getDescription());</span>
-<span class="fc" id="L66">            pre.setInt(7, s.getSellerVerification());</span>
-<span class="fc" id="L67">            pre.setInt(8, s.getStatus());</span>
-<span class="fc" id="L68">            pre.setInt(9, s.getSellerID());</span>
-<span class="fc" id="L69">            n = pre.executeUpdate();</span>
-<span class="nc" id="L70">        } catch (SQLException e) {</span>
-<span class="fc" id="L71">        }</span>
-<span class="fc" id="L72">        return n;</span>
+<span class="fc" id="L51">            pre = conn.prepareStatement(xSql);</span>
+<span class="fc" id="L52">            pre.setInt(1, s.getUserID());</span>
+<span class="fc" id="L53">            pre.setString(2, s.getSellerShopName());</span>
+<span class="fc" id="L54">            pre.setString(3, s.getSellerPhone());</span>
+<span class="fc" id="L55">            pre.setString(4, s.getEvidence());</span>
+<span class="fc" id="L56">            pre.setInt(5, s.getSellerMainProduct());</span>
+<span class="fc" id="L57">            pre.setString(6, s.getDescription());</span>
+<span class="fc" id="L58">            pre.setInt(7, s.getSellerVerification());</span>
+<span class="fc" id="L59">            pre.setInt(8, s.getStatus());</span>
+<span class="fc" id="L60">            pre.setInt(9, s.getSellerID());</span>
+<span class="fc" id="L61">            n = pre.executeUpdate();</span>
+<span class="nc" id="L62">        } catch (SQLException e) {</span>
+<span class="fc" id="L63">        }</span>
+<span class="fc" id="L64">        return n;</span>
     }
 
     public int deleteSeller(int sellerID) {
-<span class="nc" id="L76">        int n = 0;</span>
-<span class="nc" id="L77">        String sql = &quot;delete from Seller where [sellerID] = ?&quot;;</span>
+<span class="nc" id="L68">        int n = 0;</span>
+<span class="nc" id="L69">        String sql = &quot;delete from Seller where [sellerID] = ?&quot;;</span>
         try {
-<span class="nc" id="L79">            pre = conn.prepareStatement(sql);</span>
-<span class="nc" id="L80">            pre.setInt(1, sellerID);</span>
-<span class="nc" id="L81">            n = pre.executeUpdate();</span>
-<span class="nc" id="L82">        } catch (SQLException e) {</span>
-<span class="nc" id="L83">        }</span>
-<span class="nc" id="L84">        return n;</span>
+<span class="nc" id="L71">            pre = conn.prepareStatement(sql);</span>
+<span class="nc" id="L72">            pre.setInt(1, sellerID);</span>
+<span class="nc" id="L73">            n = pre.executeUpdate();</span>
+<span class="nc" id="L74">        } catch (SQLException e) {</span>
+<span class="nc" id="L75">        }</span>
+<span class="nc" id="L76">        return n;</span>
     }
 
     public boolean checkExistPhone(String phone) {
-<span class="fc" id="L88">        String sql = &quot;SELECT * FROM [Seller] WHERE sellerPhone = '&quot; + phone + &quot;' and status = 1&quot;;</span>
-<span class="fc" id="L89">        rs = dbConn.getData(sql);</span>
+<span class="fc" id="L80">        String sql = &quot;SELECT * FROM [Seller] WHERE sellerPhone = '&quot; + phone + &quot;' and status = 1&quot;;</span>
+<span class="fc" id="L81">        rs = dbConn.getData(sql);</span>
         try {
-<span class="fc bfc" id="L91" title="All 2 branches covered.">            if (rs.next()) {</span>
-<span class="fc" id="L92">                return true;</span>
+<span class="fc bfc" id="L83" title="All 2 branches covered.">            if (rs.next()) {</span>
+<span class="fc" id="L84">                return true;</span>
             }
-<span class="nc" id="L94">        } catch (SQLException ex) {</span>
-<span class="nc" id="L95">            Logger.getLogger(UserDAO.class.getName()).log(Level.SEVERE, null, ex);</span>
-<span class="fc" id="L96">        }</span>
-<span class="fc" id="L97">        return false;</span>
+<span class="nc" id="L86">        } catch (SQLException ex) {</span>
+<span class="nc" id="L87">            Logger.getLogger(UserDAO.class.getName()).log(Level.SEVERE, null, ex);</span>
+<span class="fc" id="L88">        }</span>
+<span class="fc" id="L89">        return false;</span>
     }
 
     public boolean checkExistUserID(int id) {
-<span class="fc" id="L101">        String sql = &quot;SELECT * FROM [Seller] WHERE userID = &quot; + id + &quot; and status = 1&quot;;</span>
-<span class="fc" id="L102">        rs = dbConn.getData(sql);</span>
+<span class="fc" id="L93">        String sql = &quot;SELECT * FROM [Seller] WHERE userID = &quot; + id + &quot; and status = 1&quot;;</span>
+<span class="fc" id="L94">        rs = dbConn.getData(sql);</span>
         try {
-<span class="fc bfc" id="L104" title="All 2 branches covered.">            if (rs.next()) {</span>
-<span class="fc" id="L105">                return true;</span>
+<span class="fc bfc" id="L96" title="All 2 branches covered.">            if (rs.next()) {</span>
+<span class="fc" id="L97">                return true;</span>
             }
-<span class="nc" id="L107">        } catch (SQLException ex) {</span>
-<span class="nc" id="L108">            Logger.getLogger(UserDAO.class.getName()).log(Level.SEVERE, null, ex);</span>
-<span class="fc" id="L109">        }</span>
-<span class="fc" id="L110">        return false;</span>
+<span class="nc" id="L99">        } catch (SQLException ex) {</span>
+<span class="nc" id="L100">            Logger.getLogger(UserDAO.class.getName()).log(Level.SEVERE, null, ex);</span>
+<span class="fc" id="L101">        }</span>
+<span class="fc" id="L102">        return false;</span>
     }
 
     public boolean checkExistSellerShopName(String sellerShopName) {
-<span class="fc" id="L114">        String xSql= &quot;SELECT * FROM [Bmazon].[dbo].[Seller] where sellerShopName like '&quot; + sellerShopName + &quot;'&quot;;</span>
+<span class="fc" id="L106">        String xSql= &quot;SELECT * FROM [Bmazon].[dbo].[Seller] where sellerShopName like '&quot; + sellerShopName + &quot;'&quot;;</span>
         try {
-<span class="fc" id="L116">            rs = dbConn.getData(xSql);</span>
-<span class="fc bfc" id="L117" title="All 2 branches covered.">            if (rs.next()) {</span>
-<span class="fc" id="L118">                return true;</span>
+<span class="fc" id="L108">            rs = dbConn.getData(xSql);</span>
+<span class="fc bfc" id="L109" title="All 2 branches covered.">            if (rs.next()) {</span>
+<span class="fc" id="L110">                return true;</span>
             }
-<span class="nc" id="L120">        } catch (SQLException ex) {</span>
-<span class="nc" id="L121">            Logger.getLogger(UserDAO.class.getName()).log(Level.SEVERE, null, ex);</span>
-<span class="fc" id="L122">        }</span>
-<span class="fc" id="L123">        return false;</span>
+<span class="nc" id="L112">        } catch (SQLException ex) {</span>
+<span class="nc" id="L113">            Logger.getLogger(UserDAO.class.getName()).log(Level.SEVERE, null, ex);</span>
+<span class="fc" id="L114">        }</span>
+<span class="fc" id="L115">        return false;</span>
     }
 
     public boolean checkExistSellerId(int id) {
-<span class="fc" id="L127">        String xSql= &quot;SELECT * FROM [Bmazon].[dbo].[Seller] where sellerID = &quot; + id;</span>
+<span class="fc" id="L119">        String xSql= &quot;SELECT * FROM [Bmazon].[dbo].[Seller] where sellerID = &quot; + id;</span>
         try {
-<span class="fc" id="L129">            pre = conn.prepareStatement(xSql);</span>
-<span class="fc" id="L130">            rs = pre.executeQuery();</span>
-<span class="fc bfc" id="L131" title="All 2 branches covered.">            if (rs.next()) {</span>
-<span class="fc" id="L132">                return true;</span>
+<span class="fc" id="L121">            pre = conn.prepareStatement(xSql);</span>
+<span class="fc" id="L122">            rs = pre.executeQuery();</span>
+<span class="fc bfc" id="L123" title="All 2 branches covered.">            if (rs.next()) {</span>
+<span class="fc" id="L124">                return true;</span>
             }
-<span class="nc" id="L134">        } catch (SQLException ex) {</span>
-<span class="nc" id="L135">            Logger.getLogger(UserDAO.class.getName()).log(Level.SEVERE, null, ex);</span>
-<span class="fc" id="L136">        }</span>
-<span class="fc" id="L137">        return false;</span>
+<span class="nc" id="L126">        } catch (SQLException ex) {</span>
+<span class="nc" id="L127">            Logger.getLogger(UserDAO.class.getName()).log(Level.SEVERE, null, ex);</span>
+<span class="fc" id="L128">        }</span>
+<span class="fc" id="L129">        return false;</span>
     }
 
     public Seller getSellerID(String id) {
-<span class="fc" id="L141">        String xSql= &quot;select * from Seller where sellerID = &quot; + id;</span>
+<span class="fc" id="L133">        String xSql= &quot;select * from Seller where sellerID = &quot; + id;</span>
         try {
-<span class="fc" id="L143">            rs = dbConn.getData(xSql);</span>
-<span class="fc bfc" id="L144" title="All 2 branches covered.">            if (rs.next()) {</span>
-<span class="fc" id="L145">                Seller seller = new Seller(rs.getInt(&quot;sellerID&quot;), rs.getInt(&quot;userID&quot;),</span>
-<span class="fc" id="L146">                        rs.getString(&quot;sellerShopName&quot;), rs.getString(&quot;sellerPhone&quot;),</span>
-<span class="fc" id="L147">                        rs.getString(&quot;evidence&quot;), rs.getInt(&quot;sellerMainProduct&quot;),</span>
-<span class="fc" id="L148">                        rs.getString(&quot;description&quot;), rs.getInt(&quot;sellerVerification&quot;),</span>
-<span class="fc" id="L149">                        rs.getInt(&quot;status&quot;));</span>
-<span class="fc" id="L150">                return seller;</span>
+<span class="fc" id="L135">            rs = dbConn.getData(xSql);</span>
+<span class="fc bfc" id="L136" title="All 2 branches covered.">            if (rs.next()) {</span>
+<span class="fc" id="L137">                Seller seller = new Seller(rs.getInt(&quot;sellerID&quot;), rs.getInt(&quot;userID&quot;),</span>
+<span class="fc" id="L138">                        rs.getString(&quot;sellerShopName&quot;), rs.getString(&quot;sellerPhone&quot;),</span>
+<span class="fc" id="L139">                        rs.getString(&quot;evidence&quot;), rs.getInt(&quot;sellerMainProduct&quot;),</span>
+<span class="fc" id="L140">                        rs.getString(&quot;description&quot;), rs.getInt(&quot;sellerVerification&quot;),</span>
+<span class="fc" id="L141">                        rs.getInt(&quot;status&quot;));</span>
+<span class="fc" id="L142">                return seller;</span>
             }
-<span class="nc" id="L152">        } catch (SQLException e) {</span>
-<span class="fc" id="L153">        }</span>
-<span class="fc" id="L154">        return null;</span>
+<span class="nc" id="L144">        } catch (SQLException e) {</span>
+<span class="fc" id="L145">        }</span>
+<span class="fc" id="L146">        return null;</span>
     }
 
     public List&lt;Seller&gt; getAllSeller() {
-<span class="fc" id="L158">        List&lt;Seller&gt; list = new ArrayList&lt;&gt;();</span>
-<span class="fc" id="L159">        String xSql= &quot;select * from Seller where [status] = 1 and [sellerVerification] = 1&quot;;</span>
+<span class="fc" id="L150">        List&lt;Seller&gt; list = new ArrayList&lt;&gt;();</span>
+<span class="fc" id="L151">        String xSql= &quot;select * from Seller where [status] = 1 and [sellerVerification] = 1&quot;;</span>
         try {
-<span class="fc" id="L161">            pre = conn.prepareStatement(xSql);</span>
-<span class="fc" id="L162">            rs = pre.executeQuery();</span>
-<span class="fc bfc" id="L163" title="All 2 branches covered.">            while (rs.next()) {</span>
-<span class="fc" id="L164">                list.add(new Seller(</span>
-<span class="fc" id="L165">                        rs.getInt(1),</span>
-<span class="fc" id="L166">                        rs.getInt(2),</span>
-<span class="fc" id="L167">                        rs.getString(3),</span>
-<span class="fc" id="L168">                        rs.getString(4),</span>
-<span class="fc" id="L169">                        rs.getString(5),</span>
-<span class="fc" id="L170">                        rs.getInt(6),</span>
-<span class="fc" id="L171">                        rs.getString(7),</span>
-<span class="fc" id="L172">                        rs.getInt(8),</span>
-<span class="fc" id="L173">                        rs.getInt(9)));</span>
+<span class="fc" id="L153">            pre = conn.prepareStatement(xSql);</span>
+<span class="fc" id="L154">            rs = pre.executeQuery();</span>
+<span class="fc bfc" id="L155" title="All 2 branches covered.">            while (rs.next()) {</span>
+<span class="fc" id="L156">                list.add(new Seller(</span>
+<span class="fc" id="L157">                        rs.getInt(1),</span>
+<span class="fc" id="L158">                        rs.getInt(2),</span>
+<span class="fc" id="L159">                        rs.getString(3),</span>
+<span class="fc" id="L160">                        rs.getString(4),</span>
+<span class="fc" id="L161">                        rs.getString(5),</span>
+<span class="fc" id="L162">                        rs.getInt(6),</span>
+<span class="fc" id="L163">                        rs.getString(7),</span>
+<span class="fc" id="L164">                        rs.getInt(8),</span>
+<span class="fc" id="L165">                        rs.getInt(9)));</span>
             }
-<span class="nc" id="L175">        } catch (SQLException e) {</span>
-<span class="fc" id="L176">        }</span>
-<span class="fc" id="L177">        return list;</span>
+<span class="nc" id="L167">        } catch (SQLException e) {</span>
+<span class="fc" id="L168">        }</span>
+<span class="fc" id="L169">        return list;</span>
     }
 
     public List&lt;Seller&gt; getSellerBySellerRequest() {
-<span class="fc" id="L181">        List&lt;Seller&gt; list = new ArrayList&lt;&gt;();</span>
-<span class="fc" id="L182">        String xSql= &quot;select * from Seller where [status] = 1 and [sellerVerification] = 0&quot;;</span>
+<span class="fc" id="L173">        List&lt;Seller&gt; list = new ArrayList&lt;&gt;();</span>
+<span class="fc" id="L174">        String xSql= &quot;select * from Seller where [status] = 1 and [sellerVerification] = 0&quot;;</span>
         try {
-<span class="fc" id="L184">            pre = conn.prepareStatement(xSql);</span>
-<span class="fc" id="L185">            rs = pre.executeQuery();</span>
-<span class="pc bpc" id="L186" title="1 of 2 branches missed.">            while (rs.next()) {</span>
-<span class="nc" id="L187">                list.add(new Seller(</span>
-<span class="nc" id="L188">                        rs.getInt(1),</span>
-<span class="nc" id="L189">                        rs.getInt(2),</span>
-<span class="nc" id="L190">                        rs.getString(3),</span>
-<span class="nc" id="L191">                        rs.getString(4),</span>
-<span class="nc" id="L192">                        rs.getString(5),</span>
-<span class="nc" id="L193">                        rs.getInt(6),</span>
-<span class="nc" id="L194">                        rs.getString(7),</span>
-<span class="nc" id="L195">                        rs.getInt(8),</span>
-<span class="nc" id="L196">                        rs.getInt(9)));</span>
+<span class="fc" id="L176">            pre = conn.prepareStatement(xSql);</span>
+<span class="fc" id="L177">            rs = pre.executeQuery();</span>
+<span class="pc bpc" id="L178" title="1 of 2 branches missed.">            while (rs.next()) {</span>
+<span class="nc" id="L179">                list.add(new Seller(rs.getInt(&quot;sellerID&quot;), rs.getInt(&quot;userID&quot;),</span>
+<span class="nc" id="L180">                        rs.getString(&quot;sellerShopName&quot;), rs.getString(&quot;sellerPhone&quot;),</span>
+<span class="nc" id="L181">                        rs.getString(&quot;evidence&quot;), rs.getInt(&quot;sellerMainProduct&quot;),</span>
+<span class="nc" id="L182">                        rs.getString(&quot;description&quot;), rs.getInt(&quot;sellerVerification&quot;),</span>
+<span class="nc" id="L183">                        rs.getInt(&quot;status&quot;)));</span>
             }
-<span class="nc" id="L198">        } catch (SQLException e) {</span>
-<span class="fc" id="L199">        }</span>
-<span class="fc" id="L200">        return list;</span>
+<span class="fc" id="L185">            return list;</span>
+<span class="nc" id="L186">        } catch (SQLException e) {</span>
+        }
+<span class="nc" id="L188">        return null;</span>
     }
 
     public Seller getSellerByUserID(int userID) {
-<span class="fc" id="L204">        String xSql= &quot;select * from [Bmazon].[dbo].[Seller] where userID = &quot; + userID;</span>
-<span class="fc" id="L205">        rs = dbConn.getData(xSql);</span>
+<span class="fc" id="L192">        String xSql= &quot;select * from [Bmazon].[dbo].[Seller] where userID = &quot; + userID;</span>
+<span class="fc" id="L193">        rs = dbConn.getData(xSql);</span>
         try {
-<span class="fc bfc" id="L207" title="All 2 branches covered.">            if (rs.next()) {</span>
-<span class="fc" id="L208">                Seller seller = new Seller(rs.getInt(&quot;sellerID&quot;), rs.getInt(&quot;userID&quot;),</span>
-<span class="fc" id="L209">                        rs.getString(&quot;sellerShopName&quot;), rs.getString(&quot;sellerPhone&quot;),</span>
-<span class="fc" id="L210">                        rs.getString(&quot;evidence&quot;), rs.getInt(&quot;sellerMainProduct&quot;),</span>
-<span class="fc" id="L211">                        rs.getString(&quot;description&quot;), rs.getInt(&quot;sellerVerification&quot;),</span>
-<span class="fc" id="L212">                        rs.getInt(&quot;status&quot;));</span>
-<span class="fc" id="L213">                return seller;</span>
+<span class="fc bfc" id="L195" title="All 2 branches covered.">            if (rs.next()) {</span>
+<span class="fc" id="L196">                Seller seller = new Seller(rs.getInt(&quot;sellerID&quot;), rs.getInt(&quot;userID&quot;),</span>
+<span class="fc" id="L197">                        rs.getString(&quot;sellerShopName&quot;), rs.getString(&quot;sellerPhone&quot;),</span>
+<span class="fc" id="L198">                        rs.getString(&quot;evidence&quot;), rs.getInt(&quot;sellerMainProduct&quot;),</span>
+<span class="fc" id="L199">                        rs.getString(&quot;description&quot;), rs.getInt(&quot;sellerVerification&quot;),</span>
+<span class="fc" id="L200">                        rs.getInt(&quot;status&quot;));</span>
+<span class="fc" id="L201">                return seller;</span>
             }
-<span class="nc" id="L215">        } catch (SQLException e) {</span>
-<span class="nc" id="L216">            Logger.getLogger(SellerDAO.class.getName()).log(Level.SEVERE, null, e);</span>
-<span class="fc" id="L217">        }</span>
-<span class="fc" id="L218">        return null;</span>
+<span class="nc" id="L203">        } catch (SQLException e) {</span>
+<span class="nc" id="L204">            Logger.getLogger(SellerDAO.class.getName()).log(Level.SEVERE, null, e);</span>
+<span class="fc" id="L205">        }</span>
+<span class="fc" id="L206">        return null;</span>
     }
 
     public Seller getSellerByProductId(int productID) {
-<span class="fc" id="L222">        String xSql= &quot;select * from [Bmazon].[dbo].[Seller] s INNER JOIN Product p \n&quot;</span>
+<span class="fc" id="L210">        String xSql= &quot;select * from [Bmazon].[dbo].[Seller] s INNER JOIN Product p \n&quot;</span>
                 + &quot;ON s.sellerID = p.sellerID\n&quot;
                 + &quot;where p.productID=&quot; + productID;
-<span class="fc" id="L225">        rs = dbConn.getData(xSql);</span>
+<span class="fc" id="L213">        rs = dbConn.getData(xSql);</span>
         try {
-<span class="fc bfc" id="L227" title="All 2 branches covered.">            if (rs.next()) {</span>
-<span class="fc" id="L228">                Seller seller = new Seller(rs.getInt(&quot;sellerID&quot;), rs.getInt(&quot;userID&quot;),</span>
-<span class="fc" id="L229">                        rs.getString(&quot;sellerShopName&quot;), rs.getString(&quot;sellerPhone&quot;),</span>
-<span class="fc" id="L230">                        rs.getString(&quot;evidence&quot;), rs.getInt(&quot;sellerMainProduct&quot;),</span>
-<span class="fc" id="L231">                        rs.getString(&quot;description&quot;), rs.getInt(&quot;sellerVerification&quot;),</span>
-<span class="fc" id="L232">                        rs.getInt(&quot;status&quot;));</span>
-<span class="fc" id="L233">                return seller;</span>
+<span class="fc bfc" id="L215" title="All 2 branches covered.">            if (rs.next()) {</span>
+<span class="fc" id="L216">                Seller seller = new Seller(rs.getInt(&quot;sellerID&quot;), rs.getInt(&quot;userID&quot;),</span>
+<span class="fc" id="L217">                        rs.getString(&quot;sellerShopName&quot;), rs.getString(&quot;sellerPhone&quot;),</span>
+<span class="fc" id="L218">                        rs.getString(&quot;evidence&quot;), rs.getInt(&quot;sellerMainProduct&quot;),</span>
+<span class="fc" id="L219">                        rs.getString(&quot;description&quot;), rs.getInt(&quot;sellerVerification&quot;),</span>
+<span class="fc" id="L220">                        rs.getInt(&quot;status&quot;));</span>
+<span class="fc" id="L221">                return seller;</span>
             }
-<span class="nc" id="L235">        } catch (Exception e) {</span>
-<span class="nc" id="L236">            Logger.getLogger(SellerDAO.class.getName()).log(Level.SEVERE, null, e);</span>
-<span class="fc" id="L237">        }</span>
-<span class="fc" id="L238">        return null;</span>
+<span class="nc" id="L223">        } catch (Exception e) {</span>
+<span class="nc" id="L224">            Logger.getLogger(SellerDAO.class.getName()).log(Level.SEVERE, null, e);</span>
+<span class="fc" id="L225">        }</span>
+<span class="fc" id="L226">        return null;</span>
     }
 
     public int acceptSellerRequest(int sellerID) {
-<span class="fc" id="L242">        int n = 0;</span>
-<span class="fc" id="L243">        String xSql= &quot;update [Bmazon].[dbo].[Seller] set [sellerVerification] = 1 where [sellerID] = ?&quot;;</span>
+<span class="fc" id="L230">        int n = 0;</span>
+<span class="fc" id="L231">        String xSql= &quot;update [Bmazon].[dbo].[Seller] set [sellerVerification] = 1 where [sellerID] = ?&quot;;</span>
         try {
-<span class="fc" id="L245">            pre = conn.prepareStatement(xSql);</span>
-<span class="fc" id="L246">            pre.setInt(1, sellerID);</span>
-<span class="fc" id="L247">            n = pre.executeUpdate();</span>
-<span class="nc" id="L248">        } catch (SQLException e) {</span>
-<span class="nc" id="L249">             Logger.getLogger(SellerDAO.class.getName()).log(Level.SEVERE, null, e);</span>
-<span class="fc" id="L250">        }</span>
-<span class="fc" id="L251">        return n;</span>
+<span class="fc" id="L233">            pre = conn.prepareStatement(xSql);</span>
+<span class="fc" id="L234">            pre.setInt(1, sellerID);</span>
+<span class="fc" id="L235">            n = pre.executeUpdate();</span>
+<span class="nc" id="L236">        } catch (SQLException e) {</span>
+<span class="nc" id="L237">             Logger.getLogger(SellerDAO.class.getName()).log(Level.SEVERE, null, e);</span>
+<span class="fc" id="L238">        }</span>
+<span class="fc" id="L239">        return n;</span>
     }
 
     public int denySellerRequest(int sellerID) {
-<span class="fc" id="L255">        int n = 0;</span>
-<span class="fc" id="L256">        String xSql= &quot;update [Bmazon].[dbo].[Seller] set [sellerVerification] = 2 where [sellerID] = ?&quot;;</span>
+<span class="fc" id="L243">        int n = 0;</span>
+<span class="fc" id="L244">        String xSql= &quot;update [Bmazon].[dbo].[Seller] set [sellerVerification] = 2 where [sellerID] = ?&quot;;</span>
         try {
-<span class="fc" id="L258">            pre = conn.prepareStatement(xSql);</span>
-<span class="fc" id="L259">            pre.setInt(1, sellerID);</span>
-<span class="fc" id="L260">            n = pre.executeUpdate();</span>
-<span class="nc" id="L261">        } catch (SQLException e) {</span>
-<span class="nc" id="L262">             Logger.getLogger(SellerDAO.class.getName()).log(Level.SEVERE, null, e);</span>
-<span class="fc" id="L263">        }</span>
-<span class="fc" id="L264">        return n;</span>
+<span class="fc" id="L246">            pre = conn.prepareStatement(xSql);</span>
+<span class="fc" id="L247">            pre.setInt(1, sellerID);</span>
+<span class="fc" id="L248">            n = pre.executeUpdate();</span>
+<span class="nc" id="L249">        } catch (SQLException e) {</span>
+<span class="nc" id="L250">             Logger.getLogger(SellerDAO.class.getName()).log(Level.SEVERE, null, e);</span>
+<span class="fc" id="L251">        }</span>
+<span class="fc" id="L252">        return n;</span>
     }
 
     public List&lt;Seller&gt; searchSeller(String text) {
-<span class="nc" id="L268">        List&lt;Seller&gt; list = new ArrayList&lt;&gt;();</span>
-<span class="nc" id="L269">        String xSql= &quot;SELECT * FROM [Bmazon].[dbo].[Role] where roleName like '%&quot; + text + &quot;%'&quot;;</span>
+<span class="fc" id="L256">        List&lt;Seller&gt; list = new ArrayList&lt;&gt;();</span>
+<span class="fc" id="L257">        String xSql= &quot;SELECT * FROM [Bmazon].[dbo].[Seller] where sellerShopName like '%&quot; + text + &quot;%'&quot;;</span>
         try {
-<span class="nc" id="L271">            pre = conn.prepareStatement(xSql);</span>
-<span class="nc" id="L272">            rs = pre.executeQuery();</span>
-<span class="nc bnc" id="L273" title="All 2 branches missed.">            while (rs.next()) {</span>
-<span class="nc" id="L274">                list.add(new Seller(</span>
-<span class="nc" id="L275">                        rs.getInt(1),</span>
-<span class="nc" id="L276">                        rs.getInt(2),</span>
-<span class="nc" id="L277">                        rs.getString(3),</span>
-<span class="nc" id="L278">                        rs.getString(4),</span>
-<span class="nc" id="L279">                        rs.getString(5),</span>
-<span class="nc" id="L280">                        rs.getInt(6),</span>
-<span class="nc" id="L281">                        rs.getString(7),</span>
-<span class="nc" id="L282">                        rs.getInt(8),</span>
-<span class="nc" id="L283">                        rs.getInt(9)));</span>
+<span class="fc" id="L259">            pre = conn.prepareStatement(xSql);</span>
+<span class="fc" id="L260">            rs = pre.executeQuery();</span>
+<span class="fc bfc" id="L261" title="All 2 branches covered.">            while (rs.next()) {</span>
+<span class="fc" id="L262">                list.add(new Seller(</span>
+<span class="fc" id="L263">                        rs.getInt(1),</span>
+<span class="fc" id="L264">                        rs.getInt(2),</span>
+<span class="fc" id="L265">                        rs.getString(3),</span>
+<span class="fc" id="L266">                        rs.getString(4),</span>
+<span class="fc" id="L267">                        rs.getString(5),</span>
+<span class="fc" id="L268">                        rs.getInt(6),</span>
+<span class="fc" id="L269">                        rs.getString(7),</span>
+<span class="fc" id="L270">                        rs.getInt(8),</span>
+<span class="fc" id="L271">                        rs.getInt(9)));</span>
             }
-<span class="nc" id="L285">        } catch (Exception e) {</span>
-<span class="nc" id="L286">             Logger.getLogger(SellerDAO.class.getName()).log(Level.SEVERE, null, e);</span>
-<span class="nc" id="L287">        }</span>
-<span class="nc" id="L288">        return list;</span>
+<span class="nc" id="L273">        } catch (Exception e) {</span>
+<span class="nc" id="L274">             Logger.getLogger(SellerDAO.class.getName()).log(Level.SEVERE, null, e);</span>
+<span class="fc" id="L275">        }</span>
+<span class="fc" id="L276">        return list;</span>
     }
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.eclemma.org/jacoco">JaCoCo</a> 0.7.5.201505241946</span></div></body></html>
