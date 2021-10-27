@@ -112,8 +112,8 @@
                                                                         Continue Shopping    </a>
                                                                 </div>
 
-                                                                <%-- <input type="submit" class="button primary mt-0 pull-left small" name="service" value="Update" />
-                                                                --%>
+                                                                <input type="submit" class="button primary mt-0 pull-left small" name="service" value="Update" />
+                                                                
 
                                                             </td>
                                                         </tr>

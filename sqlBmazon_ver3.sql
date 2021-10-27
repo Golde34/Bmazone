@@ -161,6 +161,7 @@ CREATE TABLE [Order](
     shipMoney money,
     paymentMethod nvarchar(50),
     total money NOT NULL CHECK (total>=0),
+	[state] int,
 	[status] bit,
     FOREIGN KEY (userID) references [User](userID),
     FOREIGN KEY (companyID) references [ShipCompany](companyID),

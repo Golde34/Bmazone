@@ -27,9 +27,7 @@
 <% DecimalFormat nf = new DecimalFormat("###,###,###");%>
 <%
     ProductTypeDAO daoProductType = new ProductTypeDAO();
-    UserDAO daoUser = new UserDAO();
     GalleryDAO daoGallery = new GalleryDAO();
-    Product product = (Product) request.getAttribute("product");
     List<Product> listProduct = (List<Product>) request.getAttribute("listProduct");
     List<Product> listNewArrival = (List<Product>) request.getAttribute("listNewArrival");
     User user = (User) request.getAttribute("user");
@@ -208,10 +206,12 @@
                         <h1 style="text-align: center;"><strong>List All Product</strong></h1>
 
                         <div class="products row row-small large-columns-5 medium-columns-3 small-columns-2 has-shadow row-box-shadow-1" id="1">
-                            <% for (Product pro : listProduct) {
-                                    String str = "images/" + daoGallery.getSampleOfProduct(pro.getProductID());
-                                    double price = Double.parseDouble(daoProductType.getProductPrice(pro.getProductID()));
-
+                            <% for (int i = 0; i <= listProduct.size(); i++ ) {
+                                if(i == 10) break;
+                                else{
+                                    String str = "images/" + daoGallery.getSampleOfProduct(listProduct.get(i).getProductID());
+                                    double price = Double.parseDouble(daoProductType.getProductPrice(listProduct.get(i).getProductID()));
+                                
                             %>
                             <div class="product-small col has-hover post-1178 product type-product status-publish has-post-thumbnail product_cat-bach-hoa-online product_cat-do-hop-dong-goi first instock shipping-taxable purchasable product-type-simple" style="margin-top: 20px;">
                                 <div class="col-inner">
@@ -219,7 +219,7 @@
                                     <div class="product-small box has-hover box-normal box-text-bottom">
                                         <div class="box-image" style="width:150px; height:150px ">
                                             <div class="" >
-                                                <a href="ProductDetailControllerMap?service=getProductDetail&pid=<%=pro.getProductID()%>">
+                                                <a href="ProductDetailControllerMap?service=getProductDetail&pid=<%=listProduct.get(i).getProductID()%>">
 
                                                     <img src="<%=str%>"></a>
                                             </div>
@@ -232,7 +232,7 @@
                                         <div class="box-text text-center" style="background-color:rgb(255, 255, 255);">
                                             <div class="title-wrapper" >		
                                                 <p class="category uppercase is-smaller no-text-overflow product-cat op-7">   </p> <%--category--%>
-                                                <p class="name product-title"><a href="ProductDetailControllerMap?service=getProductDetail&pid=<%=pro.getProductID()%>"> <%=pro.getProductName()%> </a></p>
+                                                <p class="name product-title"><a href="ProductDetailControllerMap?service=getProductDetail&pid=<%=listProduct.get(i).getProductID()%>"> <%=listProduct.get(i).getProductName()%> </a></p>
                                             </div> 
                                             <div class="price-wrapper" 
                                                  <span class="price"><del><span class="woocommerce-Price-amount amount"><%=nf.format(price * 1.05)%>&nbsp; <span class="woocommerce-Price-currencySymbol">&#8363;</span></span></del> 
@@ -242,7 +242,7 @@
                                     </div><!-- box -->
                                 </div><!-- .col-inner -->
                             </div><!-- col -->
-                            <%    }
+                            <%   } }
                             %>
                         </div>
                     </div>

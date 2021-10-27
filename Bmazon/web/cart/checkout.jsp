@@ -76,8 +76,8 @@
                                     </div>
                                     <%}%>
 
-                                    <form action="CartControllerMap" method="POST" class="checkout woocommerce-checkout" action="" enctype="multipart/form-data" >
-                                        <input type="hidden" name ="service" value="changeinfo">
+                                    <form action="CartControllerMap" method="POST" class="checkout woocommerce-checkout" >
+                                        
                                         <div class="row pt-0 ">
                                             <div class="large-7 col  ">
                                                 <div id="customer_details">
@@ -99,7 +99,7 @@
                                                                     <label for="billing_company" class="">Ship Company </label>
                                                                     <select name="shipCompany" id="billing_company" class="country_to_state country_select " autocomplete="company">
                                                                         <% for (ShipCompany company : listCompany) {%> 
-                                                                        <option value="<%=company.getCompanyName()%>" ><%=company.getCompanyName()%></option> 
+                                                                        <option value="<%=company.getCompanyID()%>" ><%=company.getCompanyName()%></option> 
                                                                         <%}%>
                                                                     </select>  
                                                                 </P>
@@ -115,7 +115,7 @@
                                                                     <label for="billing_city" class="">Your city</label>
                                                                     <input pattern="^[^\s]+(\s+[^\s]+)*$" type="text" class="input-text" 
                                                                            name="city" id="billing_city" placeholder="Your City"  
-                                                                           value="" />
+                                                                           value="HA Noi" />
                                                                 </p>
                                                                 <!--Phone number-->
                                                                 <p class="form-row form-row-first validate-required validate-phone" id="billing_phone_field" data-priority="100">
@@ -124,42 +124,23 @@
                                                                            name="phone" id="billing_phone" placeholder=""  
                                                                            value="<%=x.getPhoneNumber()%>" autocomplete="tel" />
                                                                 </p>
-                                                                <!--Email-->
-                                                                <p class="form-row form-row-last validate-required validate-email" id="billing_email_field" data-priority="110">
-                                                                    <label for="billing_email" class="">Email</label>
-                                                                    <input pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{1,4}$" type="email" class="input-text " 
-                                                                           name="email" id="billing_email" placeholder=""  
-                                                                           value="<%=x.getEmail()%>" autocomplete="email username" />
-                                                                </p>	
-                                                                <p class="form-row form-row-wide">
-                                                                    If you change these information in the delivery invoice section, the system will automatically change your information in the
-                                                                    <a href="UserControllerMap?service=info">User Profile.</a>
-                                                                </p>
-                                                                <!--Wallet-->
-                                                                <p class="form-row form-row-first" id="billing_wallet_field" data-priority="10">
-                                                                    <label for="billing_wallet" class=""> Your Wallet </label>
-                                                                    <input type="text" class="input-text " name="wallet" value="<%=x.getWallet()%>" id="billing_wallet" 
-                                                                           placeholder="" autocomplete="given-name" autofocus="autofocus" />
-                                                                </p>
-                                                                <p class="form-row form-row-last validate-required" data-priority="0">
-                                                                    <label>Recharged more money</label>
-                                                                    <a class="topup" href="UserControllerMap?service=editWallet">Top up</a>
-                                                                </p> 
+                                                            
+                                                                   <p class="form-row form-row-last validate-required validate-email" id="billing_country_field" data-priority="30">
+                                                                    <label for="payment" class="">Payment </label>
+                                                                    <select name="payment" id="billing_company" class="country_to_state country_select " >
+                                                                       
+                                                                        <option value="COD" >COD</option> 
+                                                                        <option value="Wallet" >Wallet</option> 
+                                                                       
+                                                                    </select>  
+                                                                </P>
+                                                               
 
                                                                 
                                                             </div>
                                                         </div>
 
-                                                        <%if (x == null) {%>
-                                                        <div class="woocommerce-account-fields">
-
-                                                            <p class="form-row form-row-wide create-account">
-                                                                <label class="woocommerce-form__label woocommerce-form__label-for-checkbox checkbox">
-                                                                    <input class="woocommerce-form__input woocommerce-form__input-checkbox input-checkbox" id="createaccount"  type="checkbox" name="createaccount" value="1" /> <span>Tạo tài khoản mới?</span>
-                                                                </label>
-                                                            </p>
-                                                        </div>
-                                                        <%}%>
+                                                       
 
                                                     </div>                                               
                                                 </div>
@@ -185,7 +166,7 @@
                                                                     <%      for (CartItem item : ShoppingCart) {%>
                                                                     <tr class="cart_item">
                                                                         <td class="product-name">
-                                                                            <%=item.getName() + "(" + item.getSize() + ")" + "(" + item.getColor() + ")" + " x" + item.getQuantity()%> 							 <strong class="product-quantity">&times; 1</strong>													</td>
+                                                                            <%=item.getName() + "(" + item.getSize() + ")" + "(" + item.getColor() + ")" + " x" + item.getQuantity()%> 							 <strong class="product-quantity"></strong>													</td>
                                                                         <td class="product-total">
                                                                             <span class="woocommerce-Price-amount amount"><%=nf.format(item.getTotalCost())%><span class="woocommerce-Price-currencySymbol">&#8363;</span></span>						</td>
                                                                     </tr>
@@ -205,7 +186,7 @@
 
                                                                     <tr class="order-total">
                                                                         <th>Total</th>
-                                                                        <td><strong><span class="woocommerce-Price-amount amount"><%=total%><span class="woocommerce-Price-currencySymbol">&#8363;</span></span></strong> </td>
+                                                                        <td><strong><span class="woocommerce-Price-amount amount"><input type="hidden" name="ordertotal" value="${hello}"/><%=total%><span class="woocommerce-Price-currencySymbol">&#8363;</span></span></strong> </td>
                                                                     </tr>
 
 
@@ -213,7 +194,8 @@
                                                             </table>
                                                             <div id="payment" class="woocommerce-checkout-payment">
                                                                 <div class="form-row place-order">
-                                                                    <input type="submit" class="button alt" name="woocommerce_checkout_place_order" id="place_order" value="Order" data-value="Order" />
+                                                                    <input type="hidden" name="service" value="Check Out"/>
+                                                                    <input type="submit" class="button alt" value="Order"/>
                                                                 </div>
                                                             </div>
                                                         </div>

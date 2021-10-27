@@ -3,6 +3,7 @@
     Created on : Sep 19, 2021, 10:51:53 AM
     Author     : Admin
 --%>
+<%@page import="java.text.DecimalFormat"%>
 <%@page import="entity.User"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
@@ -48,6 +49,7 @@
         </style>
     </head>
     <body>
+        <% DecimalFormat nf = new DecimalFormat("###,###,###");%>
         <%
             User x = (User) request.getSession().getAttribute("currUser");
 
@@ -102,7 +104,7 @@
                                 <span class="input-group-addon">
                                     <span class="glyphicon glyphicon-usd"></span></span>
                                 <input id="mobile" type="text" class="form-control" name="wallet" 
-                                       placeholder="Your Phone" value="<%=x.getWallet()%>" readonly="">
+                                       placeholder="Your Phone" value="<%=nf.format(x.getWallet())%>" readonly="">
                                 <span id='message1'></span>
                             </div>
 

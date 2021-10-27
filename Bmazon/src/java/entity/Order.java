@@ -27,6 +27,7 @@ public class Order implements Serializable {
     private double total;
     private int companyID;
     private String paymentMethod;
+    private int state;
     private int status;
 
     private static final long serialVersionUID = 1;
@@ -34,12 +35,9 @@ public class Order implements Serializable {
     public Order() {
     }
 
-    public Order(int orderID, String userID, Date orderDate, Date requiredDate, Date shippedDate, String shipName, String shipAddress, String shipCity, String shipPhone, double shipMoney, double total, int companyID, String paymentMethod) {
-        this.orderID = orderID;
+    public Order(String userID, String shipName, String shipAddress, String shipCity, String shipPhone, double shipMoney, double total, int companyID, String paymentMethod, int state) {
+
         this.userID = userID;
-        this.orderDate = new Date(orderDate.getTime());
-        this.requiredDate = new Date(requiredDate.getTime());
-        this.shippedDate = new Date(shippedDate.getTime());
         this.shipName = shipName;
         this.shipAddress = shipAddress;
         this.shipCity = shipCity;
@@ -48,9 +46,10 @@ public class Order implements Serializable {
         this.total = total;
         this.companyID = companyID;
         this.paymentMethod = paymentMethod;
+        this.state = state;
     }
 
-    public Order(int orderID, String userID, Date orderDate, Date requiredDate, Date shippedDate, String shipName, String shipAddress, String shipCity, String shipPhone, double shipMoney, double total, int companyID, String paymentMethod, int status) {
+    public Order(int orderID, String userID, Date orderDate, Date requiredDate, Date shippedDate, String shipName, String shipAddress, String shipCity, String shipPhone, double shipMoney, double total, int companyID, String paymentMethod, int state,int status) {
         this.orderID = orderID;
         this.userID = userID;
         this.orderDate = new Date(orderDate.getTime());
@@ -64,22 +63,11 @@ public class Order implements Serializable {
         this.total = total;
         this.companyID = companyID;
         this.paymentMethod = paymentMethod;
+        this.state = state;
         this.status = status;
     }
-    
-    public Order(String userID,Date requiredDate, Date shippedDate, String shipName, String shipAddress, String shipCity, String shipPhone, double shipMoney, double total, int companyID, String paymentMethod) {
-        this.userID = userID;
-        this.requiredDate = new Date(requiredDate.getTime());
-        this.shippedDate = new Date(shippedDate.getTime());
-        this.shipName = shipName;
-        this.shipAddress = shipAddress;
-        this.shipCity = shipCity;
-        this.shipPhone = shipPhone;
-        this.shipMoney = shipMoney;
-        this.total = total;
-        this.companyID = companyID;
-        this.paymentMethod = paymentMethod;
-    }
+
+  
 
     public int getOrderID() {
         return orderID;
@@ -192,4 +180,13 @@ public class Order implements Serializable {
     public void setStatus(int status) {
         this.status = status;
     }
+
+    public int getState() {
+        return state;
+    }
+
+    public void setState(int state) {
+        this.state = state;
+    }
+    
 }
