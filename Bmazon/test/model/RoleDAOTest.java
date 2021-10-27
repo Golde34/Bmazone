@@ -90,7 +90,7 @@ public class RoleDAOTest {
     public void testChangeStatus() {
         System.out.println("testChangeStatusWithRoleID");
         RoleDAO instance = new RoleDAO();
-        assertEquals(1, instance.changeStatus(98, 0));
+        assertEquals(1, instance.changeStatus(1, 1));
     }
 
     /**

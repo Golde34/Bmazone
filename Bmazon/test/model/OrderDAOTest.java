@@ -68,6 +68,17 @@ public class OrderDAOTest {
         assertNotNull(result);
     }
 
+    @Test
+    public void testGetAllPagingOrderNull() {
+        System.out.println("getAllPagingOrder");
+        int index = -5;
+        int numOfRow = -5;
+        String search = "";
+        OrderDAO instance = new OrderDAO();
+        List<Order> result = instance.getAllPagingOrder(index, numOfRow, search);
+        assertEquals(0, result.size());
+    }
+    
     /**
      * Test of insertOrder method, of class OrderDAO.
      */
@@ -83,6 +94,14 @@ public class OrderDAOTest {
         o.setTotal(500000);
         o.setStatus(1);
         OrderDAO instance = new OrderDAO();
+        assertEquals(1, instance.insertOrder(o));
+    }
+    
+    @Test
+    public void testInsertOrderNull() {
+        System.out.println("insertOrder");
+        Order o = new Order();
+        OrderDAO instance = new OrderDAO();
         assertEquals(0, instance.insertOrder(o));
     }
 
@@ -93,7 +112,18 @@ public class OrderDAOTest {
     public void testChangeStatus() {
         System.out.println("testChangeStatusWithOrderID");
         OrderDAO instance = new OrderDAO();
-        assertEquals(1, instance.changeStatus(1, 0));
+        int cid = 1;
+        int expected = 1;
+        assertEquals(expected, instance.changeStatus(cid, 0));
+    }
+    
+    @Test
+    public void testChangeStatusIdNotExist() {
+        System.out.println("testChangeStatusWithOrderID");
+        OrderDAO instance = new OrderDAO();
+        int cid = -99;
+        int expected = 0;
+        assertEquals(expected, instance.changeStatus(cid, 0));
     }
 
     /**
@@ -112,9 +142,17 @@ public class OrderDAOTest {
         o.setTotal(500000);
         o.setStatus(1);
         OrderDAO instance = new OrderDAO();
-        assertEquals(0, instance.updateOrder(o));
+        assertEquals(1, instance.updateOrder(o));
     }
 
+    @Test
+    public void testUpdateOrderNull() {
+        System.out.println("editOrder");
+        Order o = new Order();
+        OrderDAO instance = new OrderDAO();
+        assertEquals(0, instance.updateOrder(o));
+    }
+    
     /**
      * Test of getAllOrder method, of class OrderDAO.
      */
@@ -138,4 +176,12 @@ public class OrderDAOTest {
         assertEquals(false, result.isEmpty());
     }
     
+    @Test
+    public void testGetOrderBySellerNotExist() {
+        System.out.println("getOrderBySeller");
+        int userID = -99;
+        OrderDAO instance = new OrderDAO();
+        List<Order> result = instance.getOrderByUser(userID);
+        assertEquals(true, result.isEmpty());
+    }
 }
