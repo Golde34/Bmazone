@@ -133,7 +133,6 @@ public class SellerController extends HttpServlet {
                 serviceOrderManagement(request, response);
             }
 //
-
             //Edit Seller Information
             if (service.equalsIgnoreCase("editSellerInformation")) {
                 serviceEditSellerInformation(request, response);
@@ -675,7 +674,7 @@ public class SellerController extends HttpServlet {
         seller.setSellerShopName(shopName);
         seller.setSellerPhone(sellerPhone);
         seller.setSellerMainProduct(sellerMainProduct);
-
+        seller.setStatus(0);
         sellerDAO.editSeller(seller);
         mess = "Update successfully!";
         request.setAttribute("mess", mess);

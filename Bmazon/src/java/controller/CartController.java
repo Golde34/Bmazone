@@ -76,7 +76,7 @@ public class CartController extends HttpServlet {
                 serviceUpdate(request, response);
             }
 
-            if (service.equalsIgnoreCase("BillingPage")) {
+            if (service.equalsIgnoreCase("Billing Page")) {
                 serviceBillingPage(out, request, response);
             }
 
