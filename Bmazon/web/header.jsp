@@ -37,6 +37,7 @@
                 html.className = html.className.replace(/\bno-js\b/, 'js')
             })(document.documentElement);</script>
         <title>BMAZON</title>
+        
         <link rel="stylesheet" href="${contextPath}/css/1.css">
         <link rel='stylesheet' id='contact-form-7-css'  href='http://mauweb.monamedia.net/lazada/wp-content/plugins/contact-form-7/includes/css/styles.css?ver=4.9.1' type='text/css' media='all' />
         <link rel='stylesheet' id='menu-image-css'  href='http://mauweb.monamedia.net/lazada/wp-content/plugins/menu-image/menu-image.css?ver=1.1' type='text/css' media='all' />
@@ -89,7 +90,7 @@
                                 <ul class="nav top-bar-nav nav-right nav-small  nav-">
                                     <li class="html custom html_topbar_right"><p class="topbarlink"><a href="" style="color:#37cfdd">Be one of us</a></p></li>
                                     <li class="html custom html_top_right_text"><p class="topbarlink"><a href="#">Customer Service</a></p></li>
-                                    <li class="html custom html_nav_position_text_top"><p class="topbarlink"><a href="#">Check Order</a></p></li>
+                                    <li class="html custom html_nav_position_text_top"><p class="topbarlink"><a href="CartControllerMap?service=MyOrder">Check Order</a></p></li>
                                         <%User x = (User) request.getSession().getAttribute("currUser");%>
                                         <%if (x == null) {%>
                                     <li class="account-item has-icon ">

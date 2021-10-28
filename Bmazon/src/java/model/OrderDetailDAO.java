@@ -16,11 +16,11 @@ import java.util.logging.Logger;
  * @author Admin
  */
 public class OrderDetailDAO extends BaseDAO {
+     BaseDAO dbConn = new BaseDAO();
 
     public static void main(String[] args) {
         OrderDetailDAO dao = new OrderDetailDAO();
-        OrderDetail obj = new OrderDetail(3, "Pr3Ty1", "Laptop Acer Nitro 5", 18790000, 1);
-        dao.insertOrderDetail(obj);
+        System.out.println(dao.getAllOrderDetail(10));
     }
     
     public int insertOrderDetail(OrderDetail obj) {
@@ -73,6 +73,7 @@ public class OrderDetailDAO extends BaseDAO {
     public ArrayList<OrderDetail> getAllOrderDetail(int oid) {
         ArrayList<OrderDetail> list = new ArrayList<>();
         String sql = "select * from [OrderDetail] where orderID = "+ oid +" and status = 1  order by orderID desc";
+        ResultSet rs = dbConn.getData(sql);
         try {
             while (rs.next()) {
                 OrderDetail o = new OrderDetail();
