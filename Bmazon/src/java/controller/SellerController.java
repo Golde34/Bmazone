@@ -118,7 +118,6 @@ public class SellerController extends HttpServlet {
                 serviceShowPageProduct(request, response);
             }
 
-            
             //Paging Product Type
             if (service.equalsIgnoreCase("pagingproducttype")) {
                 servicePagingProductType(request, response);
@@ -127,12 +126,16 @@ public class SellerController extends HttpServlet {
             if (service.equalsIgnoreCase("showpageproducttype")) {
                 serviceShowPageProductType(request, response);
             }
-            
+
             //Order Management
             if (service.equalsIgnoreCase("ordermanagement")) {
                 serviceOrderManagement(request, response);
             }
-//
+
+            //Order Detail
+            if (service.equalsIgnoreCase("orderdetail")) {
+                serviceOrderDetail(request, response);
+            }
 
             //Edit Seller Information
             if (service.equalsIgnoreCase("editSellerInformation")) {
@@ -300,9 +303,9 @@ public class SellerController extends HttpServlet {
         String categoryId = pcDAO.getCategoryIdByProductId(product.getProductID());
         Category category = cateDAO.getCategoryByCateId(categoryId);
         ArrayList<Genre> listGenre = gDAO.getGenresByCategoryId(Integer.parseInt(categoryId));
-        
+
         List<ProductType> listProductType = ptDAO.getProductByProductID(Integer.parseInt(id));
-        ArrayList<ProductType> listPaging = ptDAO.getAllPagingProductType(1, 1, "",id);
+        ArrayList<ProductType> listPaging = ptDAO.getAllPagingProductType(1, 1, "", id);
         int totalPage = listProductType.size() / 1;
         if (listProductType.size() != totalPage * 1) {
             totalPage += 1;
@@ -338,12 +341,12 @@ public class SellerController extends HttpServlet {
                     + "<input required style=\"width: 100px;\" type=\"text\" name=\"color\" class=\"form-control\" value=\"" + ptype.getColor() + "\">\n"
                     + "<input type=\"hidden\" name=\"ptid\" value=\"" + ptype.getProductTypeId() + "\">\n"
                     + "</td>"
-                    + "<td><label>Size</label></td>\n" +
-"                                                        <td><input required style=\"width: 100px;\" type=\"text\" name=\"size\" class=\"form-control\" value=\"" + ptype.getSize() + "\"></td>"
-                    + "<td><label>Price</label></td>\n" +
-"                                                        <td><input required style=\"width: 100px;\" type=\"text\" name=\"price\" class=\"form-control price\" value=\"" + nf.format(price) + "\"></td>"
-                    + "<td><label>Quantity</label></td>\n" +
-"                                                        <td><input required style=\"width: 100px;\"  type=\"text\" name=\"quantity\" class=\"form-control\" value=\"" + ptype.getQuantity() + "\"></td>"
+                    + "<td><label>Size</label></td>\n"
+                    + "                                                        <td><input required style=\"width: 100px;\" type=\"text\" name=\"size\" class=\"form-control\" value=\"" + ptype.getSize() + "\"></td>"
+                    + "<td><label>Price</label></td>\n"
+                    + "                                                        <td><input required style=\"width: 100px;\" type=\"text\" name=\"price\" class=\"form-control price\" value=\"" + nf.format(price) + "\"></td>"
+                    + "<td><label>Quantity</label></td>\n"
+                    + "                                                        <td><input required style=\"width: 100px;\"  type=\"text\" name=\"quantity\" class=\"form-control\" value=\"" + ptype.getQuantity() + "\"></td>"
                     + "<td>");
             if (ptype.getStatus() == 1) {
                 pr.print("<a href=\"SellerControllerMap?service=deactiveproducttype&producttypeid=" + ptype.getProductTypeId() + "\" onclick=\"return confirm('Are you sure?');\"><button class=\"btn btn-danger\">Deactive</button></a>");
@@ -355,15 +358,15 @@ public class SellerController extends HttpServlet {
                     + "<tr>\n"
                     + "<td><label>Image</label></td>\n"
                     + "<td>\n");
-                    List<Gallery> listGallery = galleryDAO.getAllImageByProductTypeID(ptype.getProductTypeId());
-                        for (Gallery gallery : listGallery) {
-            pr.print(
-                    "<label class=\"imgho\" for=\"file\">\n" +
-                    "<img id=\"img\" src=\"images/"+ gallery.getLink()+"\">\n" +
-                    "</label>\n" +
-                    "<input required accept=\"image/*\" onchange=\"loadFile(event)\" id=\"file\" type=\"file\" name=\"photo\" style=\"display: none;\">" +
-                    "</td>\n" );
-                    }
+            List<Gallery> listGallery = galleryDAO.getAllImageByProductTypeID(ptype.getProductTypeId());
+            for (Gallery gallery : listGallery) {
+                pr.print(
+                        "<label class=\"imgho\" for=\"file\">\n"
+                        + "<img id=\"img\" src=\"images/" + gallery.getLink() + "\">\n"
+                        + "</label>\n"
+                        + "<input required accept=\"image/*\" onchange=\"loadFile(event)\" id=\"file\" type=\"file\" name=\"photo\" style=\"display: none;\">"
+                        + "</td>\n");
+            }
             pr.print(
                     "</tr>"
             );
@@ -371,7 +374,7 @@ public class SellerController extends HttpServlet {
     }
 
     public void serviceShowPageProductType(HttpServletRequest request, HttpServletResponse response) throws IOException {
-        
+
         PrintWriter pr = response.getWriter();
         int index = 1, numOfRow = 1;
         String pid = request.getParameter("productid");
@@ -472,7 +475,6 @@ public class SellerController extends HttpServlet {
 //        pg.setGenreID(Integer.parseInt(genre));
         pgDAO.addProductGenre(productToken.getProductID(), genre);
 
-        
         ArrayList<Product> listProduct = pDAO.getAllProduct();
         request.setAttribute("listProduct", listProduct);
         sendDispatcher(request, response, "SellerControllerMap?service=productmanagement");
@@ -498,8 +500,7 @@ public class SellerController extends HttpServlet {
         pt.setQuantity(quantity);
         pt.setWareHouseID(warehouse);
         ptDAO.addProductType(pt);
-        
-        
+
 //        String filename = null;
 //        // Create a factory for disk-based file items
 //        try {
@@ -541,7 +542,6 @@ public class SellerController extends HttpServlet {
 //        gallery.setProductTypeID(ptypeID);
 //        gallery.setStatus(1);
 //        galleryDAO.addGallery(gallery);
-        
         sendDispatcher(request, response, "SellerControllerMap?service=productdetail&productid=" + pid + "");
     }
 
@@ -628,9 +628,9 @@ public class SellerController extends HttpServlet {
         String categoryId = pcDAO.getCategoryIdByProductId(product.getProductID());
         Category category = cateDAO.getCategoryByCateId(categoryId);
         ArrayList<Genre> listGenre = gDAO.getGenresByCategoryId(Integer.parseInt(categoryId));
-        
+
         List<ProductType> listProductType = ptDAO.getProductByProductID(Integer.parseInt(pid));
-        ArrayList<ProductType> listPaging = ptDAO.getAllPagingProductType(1, 1, "",pid);
+        ArrayList<ProductType> listPaging = ptDAO.getAllPagingProductType(1, 1, "", pid);
         int totalPage = listProductType.size() / 1;
         if (listProductType.size() != totalPage * 1) {
             totalPage += 1;
@@ -653,10 +653,37 @@ public class SellerController extends HttpServlet {
     // <editor-fold defaultstate="collapsed" desc="Order methods. Click on the + sign on the left to edit the code.">
     public void serviceOrderManagement(HttpServletRequest request, HttpServletResponse response) {
         User account = (User) request.getSession().getAttribute("currUser");
-        String seller = account.getUserId();
-        List<Product> listProduct = pDAO.getProductBySeller(seller);
-        request.setAttribute("listP", listProduct);
+        String userID = account.getUserId();
+        Seller seller = sellerDAO.getSellerByUserID(Integer.parseInt(userID));
+        String sellerID = Integer.toString(seller.getSellerID());
+        ArrayList<Product> listProduct = pDAO.getProductBySeller(sellerID);
+        ArrayList<Product> listPaging = pDAO.getAllPagingProductBySeller(1, 5, "", sellerID);
+        int totalPage = listProduct.size() / 5;
+        if (listProduct.size() != totalPage * 5) {
+            totalPage += 1;
+        }
+        request.setAttribute("index", 1);
+        request.setAttribute("totalPage", totalPage);
+        request.setAttribute("listProduct", listPaging);
         sendDispatcher(request, response, "seller/orderSeller.jsp");
+    }
+
+    public void serviceOrderDetail(HttpServletRequest request, HttpServletResponse response) {
+        String id = request.getParameter("productid");
+        Product product = pDAO.getProductByID(Integer.parseInt(id));
+        
+        String genreid = pgDAO.getGenreIdByProductId(product.getProductID());
+        Genre genre = gDAO.getGenreById(Integer.parseInt(genreid));
+        
+        String categoryId = pcDAO.getCategoryIdByProductId(product.getProductID());
+        Category category = cateDAO.getCategoryByCateId(categoryId);
+
+        List<ProductType> listProductType = ptDAO.getProductByProductID(Integer.parseInt(id));
+        request.setAttribute("listProductType", listProductType);
+        request.setAttribute("category", category);
+        request.setAttribute("genre", genre);
+        request.setAttribute("product", product);
+        sendDispatcher(request, response, "seller/orderdetail.jsp");
     }
     //</editor-fold>
 

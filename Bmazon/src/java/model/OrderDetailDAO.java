@@ -19,8 +19,7 @@ public class OrderDetailDAO extends BaseDAO {
 
     public static void main(String[] args) {
         OrderDetailDAO dao = new OrderDetailDAO();
-        OrderDetail obj = new OrderDetail(3, "Pr3Ty1", "Laptop Acer Nitro 5", 18790000, 1);
-        dao.insertOrderDetail(obj);
+        System.out.println(dao.sumSoldProductTypeByPtypeID("Pr25Ty1"));
     }
     
     public int insertOrderDetail(OrderDetail obj) {
@@ -90,4 +89,20 @@ public class OrderDetailDAO extends BaseDAO {
         return list;
     }
 
+    
+    public int sumSoldProductTypeByPtypeID(String ptID){
+        int result = 0;
+        String sql = "SELECT sum(quantity) FROM [Bmazon].[dbo].[OrderDetail] where productTypeID = ?";
+        try {
+            pre = conn.prepareStatement(sql);
+            pre.setString(1, ptID);
+            rs = pre.executeQuery();
+            if(rs.next()){
+                result = rs.getInt(1);
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(OrderDetailDAO.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return result;
+    }
 }

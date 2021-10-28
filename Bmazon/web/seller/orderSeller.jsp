@@ -4,6 +4,13 @@
     Author     : DELL
 --%>
 
+<%@page import="entity.Genre"%>
+<%@page import="entity.Category"%>
+<%@page import="model.GenreDAO"%>
+<%@page import="model.ProductGenreDAO"%>
+<%@page import="model.CategoryDAO"%>
+<%@page import="model.ProductCategoryDAO"%>
+<%@page import="java.text.DecimalFormat"%>
 <%@page import="java.util.List"%>
 <%@page import="entity.ProductType"%>
 <%@page import="entity.Product"%>
@@ -34,7 +41,7 @@
         <link href='http://fonts.googleapis.com/css?family=Lato' rel='stylesheet' type='text/css'>
         <link href="${contextPath}/css/seller/style.css" rel="stylesheet" type="text/css" />
         <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.0.7/css/all.css"> 
-    <script src="https://kit.fontawesome.com/42d5adcbca.js" crossorigin="anonymous"></script>
+        <script src="https://kit.fontawesome.com/42d5adcbca.js" crossorigin="anonymous"></script>
 
         <style type="text/css">
 
@@ -49,13 +56,23 @@
     <!--% } else { %-->
 
     <%
-        User curUser = (User) request.getSession().getAttribute("currUser");
-        ArrayList<Product> listP = (ArrayList<Product>) request.getAttribute("listP");
-        if (curUser.getSell() != 1) {
-    %>
 
-    <h2>You must be seller to access this</h2>
-    <% } else {%>
+        DecimalFormat nf = new DecimalFormat("###,###,###");
+        ProductTypeDAO ptDAO = new ProductTypeDAO();
+        ProductCategoryDAO pcDAO = new ProductCategoryDAO();
+        CategoryDAO cateDAO = new CategoryDAO();
+        ProductGenreDAO pgdao = new ProductGenreDAO();
+        GenreDAO genreDAO = new GenreDAO();
+
+        ArrayList<Category> listCategory = cateDAO.getAllCategories();
+        ArrayList<Genre> listGenre = genreDAO.getAllGenres();
+        int index = (Integer) request.getAttribute("index");
+        int totalPage = (Integer) request.getAttribute("totalPage");
+        int prev = index == 1 ? 1 : index - 1;
+        int next = index == totalPage ? totalPage : index + 1;
+        User curUser = (User) request.getSession().getAttribute("currUser");
+        ArrayList<Product> listP = (ArrayList<Product>) request.getAttribute("listProduct");
+    %>
 
     <body class="skin-black">
         <jsp:include page="headerSeller.jsp"/>
@@ -126,32 +143,105 @@
                     <div class="row" id="Order" name="tabcontent" style="display: block;">
                         <div class="col-md-8">
                             <section class="panel">
-                                <header class="panel-heading">
-                                    Order completed
-                                </header>
+                                <!--                            <header class="panel-heading">
+                                                                Product in shop
+                                                            </header>-->
+                                <div class="table_head py-3" style="display: flex;
+                                     justify-content: space-between;">
+                                    <div class="rowNum">
+                                        <h6 style="display: inline">Select number of Rows</h6>
+                                        <div class="form-group" style="display: inline;">
+                                            <select onchange="pagination()" name="state" id="maxRows" class="form-control" style="width:80px;display:inline;">
+                                                <option value="5">5</option>
+                                                <option value="10">10</option>
+                                                <option value="20">20</option>
+                                                <option value="5000">Show All</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="tb_search">
+                                        <input id="search" style="width: 100%;" type="text" oninput="pagination()" placeholder="Search.." class="form-control">
+                                    </div>
+                                </div>
                                 <div class="panel-body table-responsive">
-                                    <table class="table table-hover">
+                                    <table class="table table-hover" id="dataTable">
                                         <thead>
                                             <tr>
-                                                <th>Order ID</th>
-                                                <th>Customer</th>
-                                                <th>Required date</th>
-                                                <th>Total cost</th>
-                                                <th>Status</th>
-                                                <th>Progress</th>
+                                                <th style="width: 30%;height: 50px;">Product Name</th>
+                                                <th style="width: 10%;height: 50px;">Rating</th>
+                                                <th style="width: 10%;height: 50px;">Type</th>
+                                                <th style="width: 10%;height: 50px;">Genre</th>
+                                                <th style="width: 10%;height: 50px;">Action</th>
+                                                <th style="width: 10%;height: 50px;">Sold</th>
                                             </tr>
                                         </thead>
-                                        <tbody>
+                                        <tbody id="product">
+                                            <% for (Product product : listP) {
+                                                    int proID = product.getProductID();
+                                                    String genreid = pgdao.getGenreIdByProductId(product.getProductID());
+                                                    Genre genre = genreDAO.getGenreById(Integer.parseInt(genreid));
+                                            %>
                                             <tr>
-                                                <td>1</td>
-                                                <td>Nam</td>
-                                                <td>13/11/2001</td>
-                                                <td>300$</td>
-                                                <td><span class="label label-success">success</span></td>
-                                                <td><span class="badge badge-success">100%</span></td>
-                                            </tr>
+                                                <td><div><%= product.getProductName()%></div></td>
+                                                <td><div><%= product.getRating() %>/10</div></td>
+                                                <td><div><%= cateDAO.getCategoryById(pcDAO.getProductCateByProductID(proID).getCategoryID())%></div></td>
+                                                <td><div><%= genre.getGenreName()%></div></td>
+                                                <td><div><a href="SellerControllerMap?service=orderdetail&productid=<%= product.getProductID()%>"><button class="btn btn-primary">Detail</button></a>
+                                                    </div></td>
+                                                <td>
+                                                    <div>10 sold</div>
+                                                </td></tr>
+                                                <% } %>
                                         </tbody>
                                     </table>
+                                </div>
+                                <div class="pagination-container mt-4" style="display: flex;
+                                     justify-content: space-around;cursor: pointer;">
+                                    <nav>
+                                        <%if (totalPage > 1) {%>
+                                        <ul class="pagination" id="showpage">
+                                            <li data-repair="1" class="page-item">
+                                                <a class="page-link" aria-label="First">
+                                                    <span aria-hidden="true"><i class="fas fa-backward"></i>
+                                                        <span class="sr-only">(current)</span> 
+                                                    </span>
+                                                </a>
+                                            </li>
+                                            <li data-repair="<%=prev%>" class="page-item">
+                                                <a class="page-link" aria-label="Previous">
+                                                    <span aria-hidden="true"><i class="fas fa-arrow-left"></i>
+                                                        <span class="sr-only">(current)</span> 
+                                                    </span>
+                                                </a>
+                                            </li>
+                                            <%int limit = totalPage > 5 ? 5 : totalPage;%>
+                                            <%for (int i = 1; i <= limit; i++) {%>
+                                            <%if (index == i) {%>
+                                            <li  class="page-item active" data-repair="<%=i%>">
+                                            <%} else {%><li  class="page-item" data-repair="<%=i%>"> <%}%>
+                                                <a class="page-link">
+                                                    <div class="index"><%=i%></div>
+                                                    <span class="sr-only">(current)</span>
+                                                </a>
+                                            </li>
+                                            <%}%>
+                                            <li data-repair="<%=next%>" class="page-item">
+                                                <a class="page-link" aria-label="Next">
+                                                    <span aria-hidden="true"><i class="fas fa-arrow-right"></i>
+                                                        <span class="sr-only">(current)</span> 
+                                                    </span>
+                                                </a>
+                                            </li>
+                                            <li data-repair="<%=totalPage%>" class="page-item">
+                                                <a class="page-link" aria-label="Last">
+                                                    <span aria-hidden="true"><i class="fas fa-forward"></i>
+                                                        <span class="sr-only">(current)</span> 
+                                                    </span>
+                                                </a>
+                                            </li>
+                                        </ul>
+                                        <%}%>
+                                    </nav>
                                 </div>
                             </section>
 
@@ -178,6 +268,118 @@
         </div><!-- ./wrapper -->
 
     </body>
-    <% }%>
+    <script src="https://kit.fontawesome.com/42d5adcbca.js" crossorigin="anonymous"></script>
+    <script src="${contextPath}/js/core/popper.min.js"></script>
+    <script src="${contextPath}/js/core/bootstrap.min.js"></script>
+    <script src="${contextPath}/js/plugins/perfect-scrollbar.min.js"></script>
+    <script src="${contextPath}/js/plugins/smooth-scrollbar.min.js"></script>
+    <script src="${contextPath}/js/plugins/chartjs.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <script>
+                                                $("textarea").on('keyup', function () {
+                                                    $(".noti").hide();
+                                                });
+                                                $(document).ready(function () {
+                                                $("#category").change(function () {
+                                                var val = $(this).val();
+                                                        $(".noti").hide();
+        <% for (Category cate : listCategory) {%>
+                                                if (val == "<%=cate.getCategoryID()%>"){
+                                                console.log("<%=cate.getCategoryName()%>");
+                                                        $("#genre").html(
+        <% ArrayList<Genre> list = genreDAO.getGenresByCategoryId(cate.getCategoryID());
+                for (int i = 0; i < list    .size(); i++) {
+                        if (list.size() == 1 || i == list.size() - 1) {%>"<option value='<%=list.get(i).getGenreID()%>'><%=list.get(i).getGenreName()%></option>"
+        <%} else {%>"<option value='<%=list.get(i).getGenreID()%>'><%=list.get(i).getGenreName()%></option>" +
+        <%}
+                        }%>);
+                                                }
+        <%}%>
+                                                });
+                                                });
+                                                        $(".number").on('keyup', function () {
+                                                var n = parseInt($(this).val().replace(/\D/g, ''), 10);
+                                                        $(this).val(n.toLocaleString());
+                                                        $(".noti").hide();
+                                                });
+                                                        (function () {
+                                                        'use strict'
+                                                                var forms = document.querySelectorAll('.needs-validation')
+                                                                Array.prototype.slice.call(forms)
+                                                                .forEach(function (form) {
+                                                                form.addEventListener('submit', function (event) {
+                                                                if (!form.checkValidity()) {
+                                                                event.preventDefault()
+                                                                        event.stopPropagation()
+                                                                }
+                                                                form.classList.add('was-validated')
+                                                                }, false)
+                                                                })
+                                                        })()
 
+                                                        var today = new Date();
+                                                        var dd = today.getDate();
+                                                        var mm = today.getMonth() + 1; //January is 0!
+                                                        var yyyy = today.getFullYear();
+                                                        if (dd < 10){
+                                                dd = '0' + dd
+                                                }
+                                                if (mm < 10){
+                                                mm = '0' + mm
+                                                }
+                                                today = yyyy + '-' + mm + '-' + dd;
+                                                        document.getElementById("inputDate").setAttribute("max", today);
+    </script>
+    <script>
+                var pageNum;
+                $(document).on('click', '.pagination li', function () {
+        pageNum = $(this).data('repair');
+                pagination();
+        });
+                function pagination() {
+                var row = document.getElementById("maxRows").value;
+                        var search = document.getElementById("search").value;
+                        console.log(row);
+                        console.log(search);
+                        console.log(pageNum);
+                        $.ajax({
+                        url: "/Bmazon/SellerControllerMap",
+                                type: "get",
+                                data: {
+                                search: search,
+                                        row: row,
+                                        index: pageNum,
+                                        service: "pagingorder"
+                                },
+                                success: function (respone) {
+                                var text = document.getElementById("product");
+                                        text.innerHTML = respone;
+                                        showpage();
+                                },
+                                error: function (xhr) {
+                                //Do Something to handle error
+                                }
+                        });
+                }
+        function showpage() {
+        var row = document.getElementById("maxRows").value;
+                var search = document.getElementById("search").value;
+                $.ajax({
+                url: "/Bmazon/SellerControllerMap",
+                        type: "get",
+                        data: {
+                        search: search,
+                                row: row,
+                                index: pageNum,
+                                service: "showpageorder"
+                        },
+                        success: function (respone) {
+                        var text = document.getElementById("showpage");
+                                text.innerHTML = respone;
+                        },
+                        error: function (xhr) {
+                        //Do Something to handle error
+                        } });
+        }
+    </script>
 </html>
