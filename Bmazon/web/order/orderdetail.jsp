@@ -68,7 +68,7 @@
                             <div class="card-body row">
                                 <div class="col"> <strong>Estimated Delivery time:</strong> <br><%=order.getRequiredDate()%> </div>
                                 <div class="col"> <strong>Shipping BY:</strong><%=order.getCompanyID()%> <br>  | <i class="fa fa-phone"></i><%=order.getShipPhone()%> </div>
-                                <div class="col"> <strong>Status:</strong> <br> <%=state()%></div>
+                                <div class="col"> <strong>Status:</strong> <br> <%=state%></div>
                                 <div class="col"> <strong>Payment Method:</strong> <br> <%=order.getPaymentMethod()%><br> <%=nf.format(order.getTotal())%> </div>
                             </div>
                         </article>
