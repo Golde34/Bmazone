@@ -149,18 +149,21 @@
                                 <div class="product-count">
                                     <label for="quantity">Quantity</label>
                                     <%  ProductType pt = daoProductType.getProductTypeByColorAndSize(color, size, String.valueOf(product.getProductID()));
-                                        int quantity = daoProductType.getProductQuantity(pt.getProductTypeId(), size, color);%>
-                                    <%if (quantity > 0) {%>
-                                    <div class="qtyminus">-</div>
-                                    <input type="text" name="quantity" max="<%=quantity%>" class="qty" placeholder="<%=quantity%>">
-                                    <div class="qtyplus">+</div>
+                                    %>
+                                    <%if (pt.getQuantity() > 0) {%>
+                                    <div class="quantity buttons_added">
+
+                                        <input type="button" value="-" class="minus button is-form">		<label class="screen-reader-text" for="quantity_6167ef4cc82d1">Số lượng</label>
+                                        <input type="number" class="input-text qty text" step="1" min="1" max="<%=pt.getQuantity()%>" name="quantity" value="1" title="SL" size="4" pattern="[0-9]*" inputmode="numeric" />
+                                        <input type="button" value="+" class="plus button is-form">	</div>
 
                                     <%} else {%>
                                     <p>This product is out of stock</P>
-                                    <%}%>
+                                        <%}%>
 
-                                    <button type="submit"class="round-black-btn" name="service" value="AddToCart">Add to Cart</button>
+
                                 </div>
+                                <button type="submit"class="round-black-btn" name="service" value="AddToCart">Add to Cart</button>
                             </form>
 
                         </div>

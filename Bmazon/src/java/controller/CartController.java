@@ -108,12 +108,10 @@ public class CartController extends HttpServlet {
         String color = request.getParameter("color");
         String name = request.getParameter("name");
         int quantity = Integer.parseInt(request.getParameter("quantity"));
-        int maxQuantity = ptd.getProductQuantity(pid, size, color);
+
         ProductType pt = ptd.getProductTypeByColorAndSize(color, size, pid);
         String image = galdao.getImageByProductTypeID(pt.getProductTypeId());
-        if (quantity > maxQuantity) {
-            quantity = maxQuantity;
-        }
+
         double total = quantity * Double.parseDouble(pt.getPrice());
         int pid1 = Integer.parseInt(pid);
         boolean check = true;
@@ -122,9 +120,12 @@ public class CartController extends HttpServlet {
                     && ShoppingCart.get(i).getColor().equals(color)
                     && ShoppingCart.get(i).getSize().equals(size)) {
                 ShoppingCart.get(i).setQuantity(ShoppingCart.get(i).getQuantity() + quantity);
+                if (ShoppingCart.get(i).getQuantity() > pt.getQuantity()) {
+                    ShoppingCart.get(i).setQuantity(pt.getQuantity());
+                }
                 ShoppingCart.get(i).setTotalCost(ShoppingCart.get(i).getQuantity() * Double.parseDouble(pt.getPrice()));
                 check = false;
-            }
+           }
         }
         if (check == true) {
             CartItem cartitem = new CartItem(ShoppingCart.size() + 1, pt.getProductID(), name, pt.getSize(), pt.getColor(), image, Double.parseDouble(pt.getPrice()), quantity, total);

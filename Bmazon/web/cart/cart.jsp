@@ -9,10 +9,14 @@
 
 <%@page import="java.util.ArrayList"%>
 <%@page import="entity.Product"%>
+<%@page import="entity.ProductType"%>
+<%@page import="model.ProductTypeDAO"%>
 
 <%@ page contentType="text/html;charset=UTF-8" language="java" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
-<% DecimalFormat nf = new DecimalFormat("###,###,###");%>
+<% DecimalFormat nf = new DecimalFormat("###,###,###");
+ProductTypeDAO ptd= new ProductTypeDAO();
+%>
 
 <html>
     <head>
@@ -54,6 +58,8 @@
                                                         <tbody>
                                                             <%      for (CartItem item : ShoppingCart) {
                                                                     String image = "images/" + item.getImage();
+                                                                    String id=""+ item.getProductID();
+                                                                    ProductType pt = ptd.getProductTypeByColorAndSize(item.getColor(),item.getSize(), id);
                                                             %>
                                                             <tr class="woocommerce-cart-form__cart-item cart_item1">
                                                         <input type="hidden" value="<%=item.getCartID()%>" name="cartID">
@@ -81,7 +87,7 @@
                                                             <div class="quantity buttons_added">
 
                                                                 <input type="button" value="-" class="minus button is-form">		<label class="screen-reader-text" for="quantity_6167ef4cc82d1">Số lượng</label>
-                                                                <input type="number" class="input-text qty text" step="1" min="1" max="9999" name="quantity" value="<%=item.getQuantity()%>" title="SL" size="4" pattern="[0-9]*" inputmode="numeric" />
+                                                                <input type="number" class="input-text qty text" step="1" min="1" max="<%=pt.getQuantity()%>" name="quantity" value="<%=item.getQuantity()%>" title="SL" size="4" pattern="[0-9]*" inputmode="numeric" />
                                                                 <input type="button" value="+" class="plus button is-form">	</div>
                                                         </td>
 
