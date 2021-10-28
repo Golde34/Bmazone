@@ -121,6 +121,22 @@
                             <span class="nav-link-text ms-1">Gallery Management</span>
                         </a>
                 </li>
+                <li class="nav-item">
+                    <%if (service.equalsIgnoreCase("categorymanagement") || service.equalsIgnoreCase("updatecategorydetail") || service.equalsIgnoreCase("addcategorydetail")) {%>
+                    <a class="nav-link active" href="AdminControllerMap?service=categorymanagement">
+                        <%} else {%>
+                        <a class="nav-link" href="AdminControllerMap?service=categorymanagement">
+                            <%}%>
+                            <div class="icon icon-shape icon-sm shadow border-radius-md bg-white text-center me-2 d-flex align-items-center justify-content-center">
+                                <%if (service.equalsIgnoreCase("categorymanagement") || service.equalsIgnoreCase("updatecategorydetail") || service.equalsIgnoreCase("addcategorydetail")) {%>
+                                <i class="far fa-building"></i>
+                                <%} else {%>
+                                <i class="far fa-building" style="color: black"></i>
+                                <%}%>
+                            </div>
+                            <span class="nav-link-text ms-1">Category Management</span>
+                        </a>
+                </li>
             </ul>
             <hr>
             <ul class="navbar-nav">
@@ -141,15 +157,15 @@
                         </a>
                 </li>
                 <li class="nav-item">
-                    <%if (service.equalsIgnoreCase("roleDisplay") || service.equalsIgnoreCase("updateRoleDetail") 
-                            || service.equalsIgnoreCase("addRoleDetail")) {%>
+                    <%if (service.equalsIgnoreCase("roleDisplay") || service.equalsIgnoreCase("updateRoleDetail")
+                                || service.equalsIgnoreCase("addRoleDetail")) {%>
                     <a class="nav-link active" href="AdminControllerMap?service=roleDisplay">
                         <%} else {%>
                         <a class="nav-link" href="AdminControllerMap?service=roleDisplay">
                             <%}%>
                             <div class="icon icon-shape icon-sm shadow border-radius-md bg-white text-center me-2 d-flex align-items-center justify-content-center">
-                                <%if ( service.equalsIgnoreCase("roleDisplay") || service.equalsIgnoreCase("updateRoleDetail") 
-                                        || service.equalsIgnoreCase("addRoleDetail")) {%>
+                                <%if (service.equalsIgnoreCase("roleDisplay") || service.equalsIgnoreCase("updateRoleDetail")
+                                            || service.equalsIgnoreCase("addRoleDetail")) {%>
                                 <i class="fas fa-bookmark"></i>
                                 <%} else {%>
                                 <i class="fas fa-bookmark" style="color: black"></i>
@@ -159,15 +175,15 @@
                         </a>
                 </li>
                 <li class="nav-item">
-                    <%if (service.equalsIgnoreCase("sellerResponse") || service.equalsIgnoreCase("acceptSeller") 
-                            || service.equalsIgnoreCase("denySeller")) {%>
+                    <%if (service.equalsIgnoreCase("sellerResponse") || service.equalsIgnoreCase("acceptSeller")
+                                || service.equalsIgnoreCase("denySeller")) {%>
                     <a class="nav-link active" href="AdminControllerMap?service=sellerResponse">
                         <%} else {%>
                         <a class="nav-link" href="AdminControllerMap?service=sellerResponse">
                             <%}%>
                             <div class="icon icon-shape icon-sm shadow border-radius-md bg-white text-center me-2 d-flex align-items-center justify-content-center">
-                                <%if (service.equalsIgnoreCase("sellerResponse") || service.equalsIgnoreCase("acceptSeller") || 
-                                        service.equalsIgnoreCase("denySeller")) {%>
+                                <%if (service.equalsIgnoreCase("sellerResponse") || service.equalsIgnoreCase("acceptSeller")
+                                            || service.equalsIgnoreCase("denySeller")) {%>
                                 <i class="fas fa-reply"></i>
                                 <%} else {%>
                                 <i class="fas fa-reply" style="color: black"></i>

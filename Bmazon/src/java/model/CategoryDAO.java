@@ -1,6 +1,7 @@
 package model;
 
 import entity.Category;
+import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
@@ -161,6 +162,41 @@ public class CategoryDAO extends BaseDAO {
             Logger.getLogger(CategoryDAO.class.getName()).log(Level.SEVERE, null, ex);
         }
         return false;
+    }
+    
+    public int getPageNumber(String search) {
+        int num = 0;
+        String xSql = "SELECT COUNT(*) FROM [Bmazon].[dbo].[Category] where categoryName like '%" + search + "%'";
+        ResultSet rs = dbConn.getData(xSql);
+        try {
+            if (rs.next()) {
+                num = rs.getInt(1);
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(UserDAO.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return num;
+    }
+    
+    public ArrayList<Category> getAllPagingCategory(int index, int numOfRow, String search) {
+        ArrayList<Category> list = new ArrayList<>();
+        String xSql = "declare @PageNo INT =" + index + "\n"
+                + "declare @PageSize INT=" + numOfRow + "\n"
+                + "SELECT * from(\n"
+                + "SELECT *,\n"
+                + "ROW_NUMBER() over (order by categoryID) as RowNum\n"
+                + "  FROM [Bmazon].[dbo].[Category] where categoryName like '%" + search + "%')T\n"
+                + "where T.RowNum between ((@PageNo-1)*@PageSize)+1 and (@PageNo*@PageSize)";
+        ResultSet rs = dbConn.getData(xSql);
+        try {
+            while (rs.next()) {
+                Category category = new Category(rs.getInt("categoryID"), rs.getString("categoryName"), rs.getInt("status"));
+                list.add(category);
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(UserDAO.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return list;
     }
 
 }

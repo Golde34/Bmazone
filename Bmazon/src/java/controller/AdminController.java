@@ -228,6 +228,42 @@ public class AdminController extends HttpServlet {
                 serviceActiveGallery(service, request, response);
             }
             //</editor-fold>
+            
+            // <editor-fold defaultstate="collapsed" desc="Category service. Click on the + sign on the left to edit the code.">
+            //Category Management
+            if(service.equalsIgnoreCase("categoryManagement")){
+                serviceCategoryManagement(service, request, response);
+            }
+            
+            //Category detail to add and update
+            if (service.equalsIgnoreCase("updatecategorydetail") || service.equalsIgnoreCase("addcategorydetail")) {
+                serviceCategoryDetail(service, request, response);
+            }
+            //Paging Category
+            if (service.equalsIgnoreCase("pagingcategory")) {
+                servicePagingCategory(service, request, response);
+            }
+            //Show Page Category
+            if (service.equalsIgnoreCase("showpagecategory")) {
+                serviceShowPageCategory(request, response);
+            }
+            //Add Category
+            if (service.equalsIgnoreCase("addcategory")) {
+                serviceAddCategory(service, request, response);
+            }
+            //Update Category 
+            if (service.equalsIgnoreCase("updatecategory")) {
+                serviceUpdateCategory(service, request, response);
+            }
+            //Delete Category
+            if (service.equalsIgnoreCase("deletecategory")) {
+                serviceDeleteCategory(service, request, response);
+            }
+            //Active Category
+            if (service.equalsIgnoreCase("activecategory")) {
+                serviceActiveCategory(service, request, response);
+            }
+            //</editor-fold>
 
             //User Authorization
             if (service.equalsIgnoreCase("userAuthorization")) {
@@ -1411,6 +1447,240 @@ public class AdminController extends HttpServlet {
         request.setAttribute("gallery", gallery);
         request.setAttribute("service", "gallerymanagement");
         sendDispatcher(request, response, "admin/gallerydetail.jsp");
+    }//</editor-fold>
+    
+    // <editor-fold defaultstate="collapsed" desc="Category methods. Click on the + sign on the left to edit the code.">
+    public void serviceCategoryManagement(String service, HttpServletRequest request, HttpServletResponse response){
+        ArrayList<Category> listPaging = daocategory.getAllPagingCategory(1, 5, "");
+        ArrayList<Category> listCategory = daocategory.getTrueCategories();
+        int totalPage = listCategory.size() / 5;
+        if (listCategory.size() != totalPage * 5) {
+            totalPage += 1;
+        }
+        request.setAttribute("index", 1);
+        request.setAttribute("totalPage", totalPage);
+        request.setAttribute("listCategory", listPaging);
+        request.setAttribute("service", service);
+        sendDispatcher(request, response, "admin/categorymanagement.jsp");
+    }
+    
+    public void serviceCategoryDetail(String service, HttpServletRequest request, HttpServletResponse response) {
+        request.setAttribute("service", service);
+        if (service.equalsIgnoreCase("addcategorydetail")) {
+            sendDispatcher(request, response, "admin/categorydetail.jsp");
+            return;
+        }
+        String id = request.getParameter("cateid");
+        Category category = daocategory.getCategoryByCateId(id);
+        request.setAttribute("category", category);
+        request.setAttribute("service", service);
+        sendDispatcher(request, response, "admin/categorydetail.jsp");
+    }
+
+    public void servicePagingCategory(String service, HttpServletRequest request, HttpServletResponse response) throws IOException {
+        PrintWriter pr = response.getWriter();
+        request.setAttribute("service", service);
+        int index = 1, numOfRow = 5;
+        String search = request.getParameter("search");
+        if (request.getParameter("row") != null) {
+            numOfRow = Integer.parseInt(request.getParameter("row"));
+        }
+        if (request.getParameter("index") != null) {
+            index = Integer.parseInt(request.getParameter("index"));
+        }
+        ArrayList<Category> listPaging = daocategory.getAllPagingCategory(index, numOfRow, search);
+        request.setAttribute("index", index);
+        request.setAttribute("listCategory", listPaging);
+        for (Category category : listPaging) {
+            pr.print("<tr>"
+                    + "<td>" + category.getCategoryName()+ " </td>"
+                    + "<td>" + category.getStatus()+ "</td>"
+                    + "<td><a href=\"AdminControllerMap?service=updateuserdetail&userid=" + category.getCategoryID()+ "\"><button class=\"btn btn-primary\">Edit</button></a>"
+                    + "</td>"
+                    + "<td>");
+            if (category.getStatus() == 1) {
+                pr.print("<a href=\"AdminControllerMap?service=deleteuser&userid=" + category.getCategoryID()+ "\" onclick=\"return confirm('Are you sure?');\"><button class=\"btn btn-primary\">Deactive</button></a>");
+            } else {
+                pr.print("<a href=\"AdminControllerMap?service=activeuser&userid=" + category.getCategoryID()+ "\" onclick=\"return confirm('Are you sure?');\"><button class=\"btn btn-primary\">Active</button></a>");
+            }
+            pr.print("</td>"
+                    + "</tr>"
+            );
+        }
+        if (request.getParameter("row") == null) {
+            sendDispatcher(request, response, "admin/categorymanagement.jsp");
+        }
+    }
+
+    public void serviceShowPageCategory(HttpServletRequest request, HttpServletResponse response) throws IOException {
+        PrintWriter pr = response.getWriter();
+        int index = 1, numOfRow = 5;
+        String search = request.getParameter("search");
+        if (request.getParameter("index") != null) {
+            index = Integer.parseInt(request.getParameter("index"));
+        }
+        if (request.getParameter("row") != null) {
+            numOfRow = Integer.parseInt(request.getParameter("row"));
+        }
+        int totalResult = daocategory.getPageNumber(search);
+        int totalPage = totalResult / numOfRow;
+        if (totalResult != numOfRow * totalPage) {
+            totalPage += 1;
+        }
+        int prev = index == 1 ? 1 : index - 1;
+        int next = index == totalPage ? totalPage : index + 1;
+        if (totalResult > numOfRow) {
+            pr.print("<li data-repair=\"1\" class=\"page-item\">");
+            pr.print("<a class=\"page-link\" aria-label=\"First\">");
+            pr.print("<span aria-hidden=\"true\"><i class=\"fas fa-backward\"></i>");
+            pr.print("<span class=\"sr-only\">(current)</span> ");
+            pr.print("</span>");
+            pr.print("</a>");
+            pr.print("</li>");
+            pr.print("<li data-repair=\"" + prev + "\" class=\"page-item\">");
+            pr.print("<a class=\"page-link\" aria-label=\"Previous\">");
+            pr.print("<span aria-hidden=\"true\"><i class=\"fas fa-arrow-left\"></i>");
+            pr.print("<span class=\"sr-only\">(current)</span> ");
+            pr.print("</span>");
+            pr.print("</a>");
+            pr.print("</li>");
+            for (int i = 1; i <= totalPage; i++) {
+                if (i < index - 2) {
+                    continue;
+                }
+                if (index < 3) {
+                    if (i > 5) {
+                        break;
+                    }
+                } else {
+                    if (i > index + 2) {
+                        break;
+                    }
+                }
+                if (index == i) {
+                    pr.print("<li  class=\"page-item active\" data-repair=\"" + i + "\">");
+                } else {
+                    pr.print("<li  class=\"page-item\" data-repair=\"" + i + "\">");
+                }
+                pr.print("<a class=\"page-link\">");
+                pr.print("<div class=\"index\">" + i + "</div>");
+                pr.print("<span class=\"sr-only\">(current)</span>");
+                pr.print("</a>");
+                pr.print("</li>");
+            }
+            pr.print("<li data-repair=\"" + next + "\" class=\"page-item\">");
+            pr.print("<a class=\"page-link\" aria-label=\"Next\">");
+            pr.print("<span aria-hidden=\"true\"><i class=\"fas fa-arrow-right\"></i>");
+            pr.print("<span class=\"sr-only\">(current)</span> ");
+            pr.print("</span>");
+            pr.print("</a>");
+            pr.print("</li>");
+            pr.print("<li data-repair=\"" + totalPage + "\" class=\"page-item\">");
+            pr.print("<a class=\"page-link\" aria-label=\"Last\">");
+            pr.print("<span aria-hidden=\"true\"><i class=\"fas fa-forward\"></i>");
+            pr.print("<span class=\"sr-only\">(current)</span> ");
+            pr.print("</span>");
+            pr.print("</a>");
+            pr.print("</li>");
+        }
+        if (request.getParameter("row") == null) {
+            sendDispatcher(request, response, "admin/categorymanagement.jsp");
+        }
+    }
+
+    public void serviceAddCategory(String service, HttpServletRequest request, HttpServletResponse response) {
+        request.setAttribute("service", service);
+        String categoryname = request.getParameter("categoryname");
+        boolean isExist = false;
+        if (daocategory.checkExistCategoryName(categoryname) == true) {
+            isExist = true;
+        }
+        if (isExist == true) {
+            request.setAttribute("categoryname", categoryname);
+            String mess = "Add fail because duplicate information";
+            request.setAttribute("mess", mess);
+            String state = "fail";
+            request.setAttribute("state", state);
+            request.setAttribute("service", "addcategorydetail");
+            sendDispatcher(request, response, "admin/categorydetail.jsp");
+        }
+        if (isExist == false) {
+            Category category = new Category(categoryname, 1);
+            daocategory.insertCategory(category);
+            ArrayList<Category> listPaging = daocategory.getAllPagingCategory(1, 5, "");
+            String state = "success";
+            request.setAttribute("state", state);
+            request.setAttribute("listCategory", listPaging);
+            String mess = "Add successfully";
+            request.setAttribute("mess", mess);
+            request.setAttribute("service", "addcategorydetail");
+            sendDispatcher(request, response, "admin/categorydetail.jsp");
+        }
+    }
+
+    public void serviceUpdateCategory(String service, HttpServletRequest request, HttpServletResponse response) {
+        request.setAttribute("service", service);
+        String id = request.getParameter("id");
+        Category category = daocategory.getCategoryByCateId(id);
+        String categoryname = request.getParameter("categoryname");
+        boolean isExist = false;
+        if ((daouser.checkExistMail(categoryname) && !categoryname.equalsIgnoreCase(category.getCategoryName()))) {
+            isExist = true;
+        }
+        if (isExist == true) {
+            String state = "fail";
+            request.setAttribute("state", state);
+            String mess = "Update fail because duplicate information";
+            request.setAttribute("mess", mess);
+            request.setAttribute("category", category);
+            request.setAttribute("service", "updatecategorydetail");
+            sendDispatcher(request, response, "admin/categorydetail.jsp");
+        }
+        if (isExist == false) {
+            category.setCategoryName(categoryname);
+            daocategory.updateCategory(category);
+            String state = "success";
+            request.setAttribute("state", state);
+            ArrayList<Category> listPaging = daocategory.getAllPagingCategory(1, 5, "");
+            request.setAttribute("listCategory", listPaging);
+            request.setAttribute("category", category);
+            request.setAttribute("service", "updatecategorydetail");
+            String mess = "Update successfully";
+            request.setAttribute("mess", mess);
+            sendDispatcher(request, response, "admin/categorydetail.jsp");
+        }
+    }
+
+    public void serviceDeleteCategory(String service, HttpServletRequest request, HttpServletResponse response) {
+        int id = Integer.parseInt(request.getParameter("cateid"));
+        daocategory.changeStatus(id, 0);
+        ArrayList<Category> listPaging = daocategory.getAllPagingCategory(1, 5, "");
+        ArrayList<Category> listCategory = daocategory.getTrueCategories();
+        int totalPage = listCategory.size() / 5;
+        if (listCategory.size() != totalPage * 5) {
+            totalPage += 1;
+        }
+        request.setAttribute("index", 1);
+        request.setAttribute("totalPage", totalPage);
+        request.setAttribute("listCategory", listPaging);
+        request.setAttribute("service", "categorymanagement");
+        sendDispatcher(request, response, "admin/categorymanagement.jsp");
+    }
+
+    public void serviceActiveCategory(String service, HttpServletRequest request, HttpServletResponse response) {
+        int id = Integer.parseInt(request.getParameter("userid"));
+        daouser.changeStatus(id, 1);
+        ArrayList<Category> listPaging = daocategory.getAllPagingCategory(1, 5, "");
+        ArrayList<Category> listCategory = daocategory.getTrueCategories();
+        int totalPage = listCategory.size() / 5;
+        if (listCategory.size() != totalPage * 5) {
+            totalPage += 1;
+        }
+        request.setAttribute("index", 1);
+        request.setAttribute("totalPage", totalPage);
+        request.setAttribute("listCategory", listPaging);
+        request.setAttribute("service", "categorymanagement");
+        sendDispatcher(request, response, "admin/categorymanagement.jsp");
     }//</editor-fold>
 
     public void serviceUserAuthorization(String service, HttpServletRequest request, HttpServletResponse response) {

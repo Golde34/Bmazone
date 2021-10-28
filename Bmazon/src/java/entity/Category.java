@@ -12,6 +12,7 @@ import java.io.Serializable;
  * @author Admin
  */
 public class Category implements Serializable {
+
     private static final long serialVersionUID = 1;
     private int categoryID;
     private String categoryName;
@@ -20,17 +21,22 @@ public class Category implements Serializable {
     public Category() {
     }
 
+    public Category(String categoryName, int status) {
+        this.categoryName = categoryName;
+        this.status = status;
+    }
+
     public Category(int categoryID, String categoryName, int status) {
         this.categoryID = categoryID;
         this.categoryName = categoryName;
         this.status = status;
     }
-    
+
     public Category(int categoryID, String categoryName) {
         this.categoryID = categoryID;
         this.categoryName = categoryName;
     }
-    
+
     public int getCategoryID() {
         return categoryID;
     }
@@ -54,6 +60,5 @@ public class Category implements Serializable {
     public void setStatus(int status) {
         this.status = status;
     }
-    
 
 }
