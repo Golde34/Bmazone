@@ -16,6 +16,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import entity.CartItem;
 import entity.Order;
+import entity.OrderDetail;
 import entity.ProductType;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
@@ -26,6 +27,7 @@ import javax.servlet.RequestDispatcher;
 import model.ProductTypeDAO;
 import model.GalleryDAO;
 import model.OrderDAO;
+import model.OrderDetailDAO;
 import model.UserDAO;
 
 /**
@@ -47,6 +49,7 @@ public class CartController extends HttpServlet {
     GalleryDAO galdao = new GalleryDAO();
     UserDAO uDao = new UserDAO();
     OrderDAO oDao = new OrderDAO();
+    OrderDetailDAO odDao = new OrderDetailDAO();
     private static final long serialVersionUID = 1;
     DecimalFormat nf = new DecimalFormat("###,###,###");
 
@@ -76,7 +79,7 @@ public class CartController extends HttpServlet {
                 serviceBillingPage(out, request, response);
             }
 
-            if (service.equalsIgnoreCase("Check Out")) {
+            if (service.equalsIgnoreCase("CheckOut")) {
                 serviceCheckOut(request, response);
             }
         }
@@ -104,11 +107,13 @@ public class CartController extends HttpServlet {
         String size = request.getParameter("size");
         String color = request.getParameter("color");
         String name = request.getParameter("name");
-        String quantitys = request.getParameter("quantity");
-        int quantity = Integer.parseInt(quantitys);
-//        PrintWriter out = response.getWriter(); // ( fix Findbugs)
+        int quantity = Integer.parseInt(request.getParameter("quantity"));
+        int maxQuantity = ptd.getProductQuantity(pid, size, color);
         ProductType pt = ptd.getProductTypeByColorAndSize(color, size, pid);
         String image = galdao.getImageByProductTypeID(pt.getProductTypeId());
+        if (quantity > maxQuantity) {
+            quantity = maxQuantity;
+        }
         double total = quantity * Double.parseDouble(pt.getPrice());
         int pid1 = Integer.parseInt(pid);
         boolean check = true;
@@ -189,8 +194,8 @@ public class CartController extends HttpServlet {
             return;
         }
         User x = (User) request.getSession().getAttribute("currUser");
-        request.setAttribute("currUser", x);
-        request.setAttribute("CheckOutList", CheckOutList);
+        request.getSession().setAttribute("currUser", x);
+        request.getSession().setAttribute("CheckOutList", CheckOutList);
         request.setAttribute("mess", mess);
         request.setAttribute("total", nf.format(total));
         request.setAttribute("hello", total);
@@ -198,21 +203,64 @@ public class CartController extends HttpServlet {
     }
 
     public void serviceCheckOut(HttpServletRequest request, HttpServletResponse response) throws IOException {
-        String fullname = request.getParameter("fullname");
+        //Order
+        String shipName = request.getParameter("fullname");
         int shipCompany = Integer.parseInt(request.getParameter("shipCompany"));
-        String address = request.getParameter("address");
-        String city = request.getParameter("city");
-        String phone = request.getParameter("phone");
-
+        String shipAddress = request.getParameter("address");
+        String shipCity = request.getParameter("city");
+        String shipPhone = request.getParameter("phone");
         String payment = request.getParameter("payment");
-
         User x = (User) request.getSession().getAttribute("currUser");
-        String totalString= request.getParameter("ordertotal");
+        String totalString = request.getParameter("ordertotal");
         String id = x.getUserId();
-        Order o = new Order(id, fullname, address, city, phone, 0,Double.parseDouble(totalString), shipCompany, payment, 0);
-        oDao.insertOrder(o);
+        double wallet = x.getWallet();
+        ArrayList<CartItem> ShoppingCart = (ArrayList<CartItem>) request.getSession().getAttribute("ShoppingCart");
+        if ("COD".equals(payment)) {
+            Order o = new Order(id, shipName, shipAddress, shipCity, shipPhone, 0, Double.parseDouble(totalString), shipCompany, payment, 0);
+            oDao.insertOrder(o);
+            Order thisOrder = oDao.getLatestOrder(x.getUserId());
+//                insertOrderDetail
+            for (CartItem cartItem : ShoppingCart) {
+                ProductType productTy = ptd.getExactProductTypeByProductId(cartItem.getProductID(), cartItem.getPrice(), cartItem.getSize(), cartItem.getColor());
+                OrderDetail od = new OrderDetail(thisOrder.getOrderID(), productTy.getProductTypeId(), cartItem.getName(), cartItem.getPrice(), cartItem.getQuantity(), 0);
+                odDao.insertOrderDetail(od);
+            }
+//                update session & db
+            ShoppingCart.removeAll(ShoppingCart);
+            request.getSession().setAttribute("ShoppingCart", ShoppingCart);
+            request.getSession().setAttribute("currUser", x);
+            request.setAttribute("mess", "Your order had been added!");
+            sendDispatcher(request, response, "cart/orderShip.jsp");
 
-        sendDispatcher(request, response, "cart/orderShip.jsp");
+        } else if ("Wallet".equals(payment)) {
+            if (wallet >= Double.parseDouble(totalString)) {
+                Order o = new Order(id, shipName, shipAddress, shipCity, shipPhone, 0, Double.parseDouble(totalString), shipCompany, payment, 0);
+                oDao.insertOrder(o);
+                Order thisOrder = oDao.getLatestOrder(x.getUserId());
+//                insertOrderDetail
+                for (CartItem cartItem : ShoppingCart) {
+                    ProductType productTy = ptd.getExactProductTypeByProductId(cartItem.getProductID(), cartItem.getPrice(), cartItem.getSize(), cartItem.getColor());
+                    OrderDetail od = new OrderDetail(thisOrder.getOrderID(), productTy.getProductTypeId(), cartItem.getName(), cartItem.getPrice(), cartItem.getQuantity(), 0);
+                    odDao.insertOrderDetail(od);
+                }
+//                update session & db
+                ShoppingCart.removeAll(ShoppingCart);
+                x.setWallet(wallet - Double.parseDouble(totalString));
+                uDao.updateInfoUserByAdmin(x);
+                request.getSession().setAttribute("ShoppingCart", ShoppingCart);
+                request.getSession().setAttribute("currUser", x);
+                request.setAttribute("mess", "Your order had been added!");
+//                sendDispatcher(request, response, "cart/cart.jsp");
+                sendDispatcher(request, response, "cart/orderShip.jsp");
+            } else {
+                request.getSession().setAttribute("ShoppingCart", ShoppingCart);
+                request.getSession().setAttribute("currUser", x);
+                request.setAttribute("total", nf.format(Double.parseDouble(totalString)));
+                request.setAttribute("hello", Double.parseDouble(totalString));
+                request.setAttribute("mess", "Your balance is not enough");
+                sendDispatcher(request, response, "cart/checkout.jsp");
+            }
+        }
     }
 
     public void sendDispatcher(HttpServletRequest request, HttpServletResponse response, String path) {

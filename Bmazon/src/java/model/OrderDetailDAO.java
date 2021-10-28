@@ -17,9 +17,15 @@ import java.util.logging.Logger;
  */
 public class OrderDetailDAO extends BaseDAO {
 
+    public static void main(String[] args) {
+        OrderDetailDAO dao = new OrderDetailDAO();
+        OrderDetail obj = new OrderDetail(3, "Pr3Ty1", "Laptop Acer Nitro 5", 18790000, 1);
+        dao.insertOrderDetail(obj);
+    }
+    
     public int insertOrderDetail(OrderDetail obj) {
         int n = 0;
-        String sql = "Insert into OrderDetail(orderID, productTypeID,productName, price,quantity, status)"
+        String sql = "Insert into OrderDetail(orderID, productTypeID, productName, price, quantity, status)"
                 + " values (?,?,?,?,?,1)";
         try {
             pre = conn.prepareStatement(sql);
@@ -28,7 +34,6 @@ public class OrderDetailDAO extends BaseDAO {
             pre.setString(3, obj.getProductName());
             pre.setDouble(4, obj.getPrice());
             pre.setInt(5, obj.getQuantity());
-            pre.setInt(6, obj.getStatus());
             n = pre.executeUpdate();
         } catch (SQLException ex) {
             Logger.getLogger(OrderDetailDAO.class.getName()).log(Level.SEVERE, null, ex);

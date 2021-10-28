@@ -55,7 +55,7 @@
 
         <div class="wrap">
             <jsp:include page="../header.jsp"/>
-            <%  ArrayList<CartItem> ShoppingCart = (ArrayList<CartItem>) request.getAttribute("CheckOutList");
+            <%  ArrayList<CartItem> ShoppingCart = (ArrayList<CartItem>) request.getSession().getAttribute("CheckOutList");
                 User x = (User) request.getSession().getAttribute("currUser");
                 ShipCompanyDAO sComDAO = new ShipCompanyDAO();
                 ArrayList<ShipCompany> listCompany = (ArrayList<ShipCompany>) sComDAO.getAllShipCompany();
@@ -77,7 +77,7 @@
                                     <%}%>
 
                                     <form action="CartControllerMap" method="POST" class="checkout woocommerce-checkout" >
-                                        
+
                                         <div class="row pt-0 ">
                                             <div class="large-7 col  ">
                                                 <div id="customer_details">
@@ -115,7 +115,7 @@
                                                                     <label for="billing_city" class="">Your city</label>
                                                                     <input pattern="^[^\s]+(\s+[^\s]+)*$" type="text" class="input-text" 
                                                                            name="city" id="billing_city" placeholder="Your City"  
-                                                                           value="HA Noi" />
+                                                                           value="Ha Noi" />
                                                                 </p>
                                                                 <!--Phone number-->
                                                                 <p class="form-row form-row-first validate-required validate-phone" id="billing_phone_field" data-priority="100">
@@ -124,27 +124,31 @@
                                                                            name="phone" id="billing_phone" placeholder=""  
                                                                            value="<%=x.getPhoneNumber()%>" autocomplete="tel" />
                                                                 </p>
-                                                            
-                                                                   <p class="form-row form-row-last validate-required validate-email" id="billing_country_field" data-priority="30">
-                                                                    <label for="payment" class="">Payment </label>
-                                                                    <select name="payment" id="billing_company" class="country_to_state country_select " >
-                                                                       
+
+                                                                <p class="form-row form-row-last validate-required validate-email" id="billing_country_field" data-priority="30">
+                                                                    <label for="billing_payment" class="">Payment </label>
+                                                                    <select onclick="checkWallet();" name="payment" id="billing_payment" class="country_to_state country_select " >
+                                                                        <option value="Wallet" >Wallet</option>
                                                                         <option value="COD" >COD</option> 
-                                                                        <option value="Wallet" >Wallet</option> 
-                                                                       
                                                                     </select>  
                                                                 </P>
-                                                               
 
-                                                                
+                                                                <!--Wallet-->
+                                                                <div id="wallet">
+                                                                    <p class="form-row form-row-first" id="billing_wallet_field" data-priority="10">
+                                                                        <label for="billing_wallet" class=""> Your Wallet </label>
+                                                                        <input type="text" class="input-text " name="wallet" value="<%=x.getWallet()%>" id="billing_wallet" 
+                                                                               placeholder="" autocomplete="given-name" autofocus="autofocus" />
+                                                                    </p>
+                                                                    <p class="form-row form-row-last validate-required" data-priority="0">
+                                                                        <label>Recharged more money</label>
+                                                                        <a class="topup" href="UserControllerMap?service=editWallet">Top up</a>
+                                                                    </p> 
+                                                                </div>
                                                             </div>
                                                         </div>
-
-                                                       
-
                                                     </div>                                               
                                                 </div>
-
                                             </div><!-- large-7 -->
 
 
@@ -152,7 +156,6 @@
                                                 <div class="col-inner has-border">
                                                     <div class="checkout-sidebar sm-touch-scroll">
                                                         <h3 id="order_review_heading">Your Orders</h3>
-
                                                         <div id="order_review" class="woocommerce-checkout-review-order">
                                                             <table class="shop_table woocommerce-checkout-review-order-table">
                                                                 <thead>
@@ -166,7 +169,7 @@
                                                                     <%      for (CartItem item : ShoppingCart) {%>
                                                                     <tr class="cart_item">
                                                                         <td class="product-name">
-                                                                            <%=item.getName() + "(" + item.getSize() + ")" + "(" + item.getColor() + ")" + " x" + item.getQuantity()%> 							 <strong class="product-quantity"></strong>													</td>
+                                                                            <%=item.getName() + "(" + item.getSize() + ")" + "(" + item.getColor() + ")" + " x" + item.getQuantity()%><strong class="product-quantity"></strong>													</td>
                                                                         <td class="product-total">
                                                                             <span class="woocommerce-Price-amount amount"><%=nf.format(item.getTotalCost())%><span class="woocommerce-Price-currencySymbol">&#8363;</span></span>						</td>
                                                                     </tr>
@@ -178,26 +181,24 @@
                                                                         <th>Products Price</th>
                                                                         <td><span class="woocommerce-Price-amount amount"><%=total%><span class="woocommerce-Price-currencySymbol">&#8363;</span></span></td>
                                                                     </tr>
-
                                                                     <tr class="shipping">
                                                                         <th>Shipping Fee</th>
                                                                         <td>Free ship <input type="hidden"data-index="0" id="shipping_method_0" class="shipping_method" /> </td>
                                                                     </tr>
-
                                                                     <tr class="order-total">
                                                                         <th>Total</th>
                                                                         <td><strong><span class="woocommerce-Price-amount amount"><input type="hidden" name="ordertotal" value="${hello}"/><%=total%><span class="woocommerce-Price-currencySymbol">&#8363;</span></span></strong> </td>
                                                                     </tr>
 
-
                                                                 </tfoot>
                                                             </table>
                                                             <div id="payment" class="woocommerce-checkout-payment">
                                                                 <div class="form-row place-order">
-                                                                    <input type="hidden" name="service" value="Check Out"/>
+                                                                    <input type="hidden" name="service" value="CheckOut"/>
                                                                     <input type="submit" class="button alt" value="Order"/>
                                                                 </div>
                                                             </div>
+                                                            <p style="color: red; font-size: 18px;">${mess}</p>
                                                         </div>
                                                         <div class="html-checkout-sidebar pt-half"></div>  			
                                                     </div>
@@ -206,22 +207,27 @@
 
                                         </div><!-- row -->
                                     </form>
-
                                 </div>
-
-
                             </div><!-- .col-inner -->
                         </div><!-- .large-12 -->
                     </div><!-- .row -->
                 </div>
-
-
             </main>
-
             <jsp:include page="../footer.jsp"/>
         </div>
     </body>
-
+    <script>
+        function checkWallet() {
+            var payment = document.getElementById("billing_payment");
+            var elementPayment = payment.options[payment.selectedIndex].text;
+            var wallet = document.getElementById("wallet");
+            if (elementPayment === "COD") {
+                wallet.style.display = "none";
+            } else if (elementPayment === "Wallet") {
+                wallet.style.display = "block";
+            }
+        }
+    </script>
 </html>
 <!--        47                            <div class="woocommerce-info message-wrapper">
                                         <div class="message-container container medium-text-center">

@@ -77,6 +77,7 @@ public class OrderDAO extends BaseDAO {
         }
         return list;
     }
+    
     public static void main(String[] args) {
         Order o= new Order("1", "thinh", "thinh", "thinh","thinh", 0, 10000, 1,"COD", 0);
         OrderDAO odao= new OrderDAO();
@@ -219,5 +220,27 @@ public class OrderDAO extends BaseDAO {
         } catch (SQLException e) {
         }
         return list;
+    }
+    
+    public Order getLatestOrder(String userID) {
+        String sql = "SELECT TOP 1 * FROM [Order] WHERE userID = '" + userID + "' ORDER BY OrderID desc";
+        ResultSet rs = dbConn.getData(sql);
+        try {
+            if (rs.next()) {
+                Order order = new Order(rs.getInt("orderID"), rs.getString("userID"),
+                        rs.getDate("orderDate"), rs.getDate("requiredDate"),
+                        rs.getDate("shippedDate"), rs.getString("shipName"),
+                        rs.getString("shipAddress"), rs.getString("shipCity"),
+                        rs.getString("shipPhone"),  rs.getDouble("shipMoney"), 
+                        rs.getDouble("total"), rs.getInt("companyID"),
+                        rs.getString("paymentMethod"), 
+                        rs.getInt("state"), rs.getInt("status")
+                );
+                return order;
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(UserDAO.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return null;
     }
 }

@@ -180,7 +180,6 @@
             let priceText = document.getElementsByClassName("price");
             let check = document.getElementsByClassName("check");
             let sum = document.getElementById("sum");
-            //            let price = priceText.split(',').join('')
             var item = Object.entries(priceText);
             var cartLength = priceText.length;
             var arrayCheck = [];

@@ -47,7 +47,7 @@
     <body>
         <%
             String service = request.getParameter("service");
-            User x = (User) request.getAttribute("currUser");
+            User x = (User) request.getSession().getAttribute("currUser");
         %>
 
         <jsp:include page="../header.jsp"/>
@@ -55,6 +55,7 @@
         <div class="container">
             <br>
             <h1 >Order State</h1>
+            <p>${mess}</p>
             <br>
             <ul class="nav nav-tabs">
                 <li class="active" style="font-size: 18px;"><a data-toggle="tab" href="#seller-confirmation">Wait for confirmation</a></li>

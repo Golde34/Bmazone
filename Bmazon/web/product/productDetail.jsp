@@ -33,6 +33,8 @@
     ArrayList<Product> listRelated = (ArrayList<Product>) request.getAttribute("listRelated");
     ArrayList<String> listSize = (ArrayList<String>) request.getAttribute("listSize");
     ArrayList<String> listColor = (ArrayList<String>) request.getAttribute("listColor");
+    String size = "";
+    String color = "";
 %>
 <!DOCTYPE html>
 <html>
@@ -114,7 +116,7 @@
                                 </div>
                                 <div class="product-releasedate"><span>Release Date: <%=product.getReleaseDate()%></span></div>
                                 <%
-                                            Seller sel = daoSeller.getSellerByProductId(product.getProductID());%>
+                                    Seller sel = daoSeller.getSellerByProductId(product.getProductID());%>
                                 <div class="product-seller">
                                     <a href="HomePageControllerMap?service=shopPage&sid=<%=daoSeller.getSellerByProductId(product.getProductID()).getSellerID()%>">
                                         <span>Shop: <%=sel.getSellerShopName()%></span>
@@ -130,6 +132,7 @@
                                         <select id="size" onchange="getPrice()" name="size" class="form-control">
                                             <%for (String productType : listSize) {%>
                                             <option><%=productType%></option>
+                                            <% size = productType;%>
                                             <%}%>
                                         </select>
                                     </div>
@@ -138,18 +141,23 @@
                                         <select id="color" onchange="getPrice()" name="color" class="form-control">
                                             <%for (String productType : listColor) {%>
                                             <option><%=productType%></option>
+                                            <% color = productType;%>
                                             <%}%>
                                         </select>
                                     </div>
                                 </div>
                                 <div class="product-count">
                                     <label for="quantity">Quantity</label>
-
+                                    <%  ProductType pt = daoProductType.getProductTypeByColorAndSize(color, size, String.valueOf(product.getProductID()));
+                                        int quantity = daoProductType.getProductQuantity(pt.getProductTypeId(), size, color);%>
+                                    <%if (quantity > 0) {%>
                                     <div class="qtyminus">-</div>
-                                    <input type="text" name="quantity" value="1" class="qty">
+                                    <input type="text" name="quantity" max="<%=quantity%>" class="qty" placeholder="<%=quantity%>">
                                     <div class="qtyplus">+</div>
 
-
+                                    <%} else {%>
+                                    <p>This product is out of stock</P>
+                                    <%}%>
 
                                     <button type="submit"class="round-black-btn" name="service" value="AddToCart">Add to Cart</button>
                                 </div>
@@ -324,277 +332,277 @@
         }
     </script>
     <style>
-            .pd-wrap {
-                padding: 40px 0;
-                font-family: 'Poppins', sans-serif;
-            }
-            .heading-section {
-                text-align: center;
-                margin-bottom: 20px;
-            }
-            .sub-heading {
-                font-family: 'Poppins', sans-serif;
-                font-size: 12px;
-                display: block;
-                font-weight: 600;
-                color: #2e9ca1;
-                text-transform: uppercase;
-                letter-spacing: 2px;
-            }
-            .heading-section h2 {
-                font-size: 32px;
-                font-weight: 500;
-                padding-top: 10px;
-                padding-bottom: 15px;
-                font-family: 'Poppins', sans-serif;
-            }
-            .user-img {
-                width: 80px;
-                height: 80px;
-                border-radius: 50%;
-                position: relative;
-                min-width: 80px;
-                background-size: 100%;
-            }
-            .carousel-testimonial .item {
-                padding: 30px 10px;
-            }
-            .quote {
-                position: absolute;
-                top: -23px;
-                color: #2e9da1;
-                font-size: 27px;
-            }
-            .name {
-                margin-bottom: 0;
-                line-height: 14px;
-                font-size: 17px;
-                font-weight: 500;
-            }
-            .position {
-                color: #adadad;
-                font-size: 14px;
-            }
-            .owl-nav button {
-                position: absolute;
-                top: 50%;
-                transform: translate(0, -50%);
-                outline: none;
-                height: 25px;
-            }
-            .owl-nav button svg {
-                width: 25px;
-                height: 25px;
-            }
-            .owl-nav button.owl-prev {
-                left: 25px;
-            }
-            .owl-nav button.owl-next {
-                right: 25px;
-            }
-            .owl-nav button span {
-                font-size: 45px;
-            }
-            .owl-item active current{
-                width: 150px;
-            }
-            .owl-item active{
-                width: 150px;
-            }
-            .product-thumb .item img {
-                height: 100px;
-            }
-            .product-name {
-                font-size: 24px;
-                font-weight: 500;
-                line-height: 30px;
-                margin-bottom: 8px;
-            }
-            .product-seller{
-                margin-bottom: 12px;
-            }
-            .product-price-discount {
-                font-size: 22px;
-                font-weight: 400;
-                padding: 10px 0;
-                clear: both;
-            }
-            .product-price-discount span.line-through {
-                text-decoration: line-through;
-                margin-left: 10px;
-                font-size: 14px;
-                vertical-align: middle;
-                color: #a5a5a5;
-            }
-            .display-flex {
-                display: flex;
-            }
-            .align-center {
-                align-items: center;
-            }
-            .product-info {
-                width: 100%;
-            }
-            .reviews-counter {
-                font-size: 13px;
-            }
-            .reviews-counter span {
-                vertical-align: -2px;
-            }
-            .rate {
-                float: left;
-                padding: 0 10px 0 0;
-            }
-            .rate:not(:checked) > input {
-                position:absolute;
-                top:-9999px;
-            }
-            .rate:not(:checked) > label {
-                float: right;
-                width: 15px;
-                overflow: hidden;
-                white-space: nowrap;
-                cursor: pointer;
-                font-size: 21px;
-                color:#ccc;
-                margin-bottom: 0;
-                line-height: 21px;
-            }
-            .rate:not(:checked) > label:before {
-                content: '\2605';
-            }
-            .rate > input:checked ~ label {
-                color: #ffc700;    
-            }
-            .rate:not(:checked) > label:hover,
-            .rate:not(:checked) > label:hover ~ label {
-                color: #deb217;  
-            }
-            .rate > input:checked + label:hover,
-            .rate > input:checked + label:hover ~ label,
-            .rate > input:checked ~ label:hover,
-            .rate > input:checked ~ label:hover ~ label,
-            .rate > label:hover ~ input:checked ~ label {
-                color: #c59b08;
-            }
-            .product-dtl p {
-                font-size: 14px;
-                line-height: 24px;
-                color: #7a7a7a;
-            }
-            .product-dtl .form-control {
-                font-size: 15px;
-            }
-            .product-dtl label {
-                line-height: 16px;
-                font-size: 15px;
-            }
-            .form-control:focus {
-                outline: none;
-                box-shadow: none;
-            }
-            .product-count {
-                margin-top: 15px; 
-            }
-            .product-count .qtyminus,
-            .product-count .qtyplus {
-                width: 34px;
-                height: 34px;
-                background: #212529;
-                text-align: center;
-                font-size: 19px;
-                line-height: 36px;
-                color: #fff;
-                cursor: pointer;
-            }
-            .product-count .qtyminus {
-                border-radius: 3px 0 0 3px; 
-            }
-            .product-count .qtyplus {
-                border-radius: 0 3px 3px 0; 
-            }
-            .product-count .qty {
-                width: 60px;
-                text-align: center;
-            }
-            .round-black-btn {
-                border-radius: 4px;
-                background: #212529;
-                color: #fff;
-                padding: 7px 45px;
-                display: inline-block;
-                margin-top: 20px;
-                border: solid 2px #212529; 
-                transition: all 0.5s ease-in-out 0s;
-            }
-            .round-black-btn:hover,
-            .round-black-btn:focus {
-                background: transparent;
-                color: #212529;
-                text-decoration: none;
-            }
+        .pd-wrap {
+            padding: 40px 0;
+            font-family: 'Poppins', sans-serif;
+        }
+        .heading-section {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+        .sub-heading {
+            font-family: 'Poppins', sans-serif;
+            font-size: 12px;
+            display: block;
+            font-weight: 600;
+            color: #2e9ca1;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+        }
+        .heading-section h2 {
+            font-size: 32px;
+            font-weight: 500;
+            padding-top: 10px;
+            padding-bottom: 15px;
+            font-family: 'Poppins', sans-serif;
+        }
+        .user-img {
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+            position: relative;
+            min-width: 80px;
+            background-size: 100%;
+        }
+        .carousel-testimonial .item {
+            padding: 30px 10px;
+        }
+        .quote {
+            position: absolute;
+            top: -23px;
+            color: #2e9da1;
+            font-size: 27px;
+        }
+        .name {
+            margin-bottom: 0;
+            line-height: 14px;
+            font-size: 17px;
+            font-weight: 500;
+        }
+        .position {
+            color: #adadad;
+            font-size: 14px;
+        }
+        .owl-nav button {
+            position: absolute;
+            top: 50%;
+            transform: translate(0, -50%);
+            outline: none;
+            height: 25px;
+        }
+        .owl-nav button svg {
+            width: 25px;
+            height: 25px;
+        }
+        .owl-nav button.owl-prev {
+            left: 25px;
+        }
+        .owl-nav button.owl-next {
+            right: 25px;
+        }
+        .owl-nav button span {
+            font-size: 45px;
+        }
+        .owl-item active current{
+            width: 150px;
+        }
+        .owl-item active{
+            width: 150px;
+        }
+        .product-thumb .item img {
+            height: 100px;
+        }
+        .product-name {
+            font-size: 24px;
+            font-weight: 500;
+            line-height: 30px;
+            margin-bottom: 8px;
+        }
+        .product-seller{
+            margin-bottom: 12px;
+        }
+        .product-price-discount {
+            font-size: 22px;
+            font-weight: 400;
+            padding: 10px 0;
+            clear: both;
+        }
+        .product-price-discount span.line-through {
+            text-decoration: line-through;
+            margin-left: 10px;
+            font-size: 14px;
+            vertical-align: middle;
+            color: #a5a5a5;
+        }
+        .display-flex {
+            display: flex;
+        }
+        .align-center {
+            align-items: center;
+        }
+        .product-info {
+            width: 100%;
+        }
+        .reviews-counter {
+            font-size: 13px;
+        }
+        .reviews-counter span {
+            vertical-align: -2px;
+        }
+        .rate {
+            float: left;
+            padding: 0 10px 0 0;
+        }
+        .rate:not(:checked) > input {
+            position:absolute;
+            top:-9999px;
+        }
+        .rate:not(:checked) > label {
+            float: right;
+            width: 15px;
+            overflow: hidden;
+            white-space: nowrap;
+            cursor: pointer;
+            font-size: 21px;
+            color:#ccc;
+            margin-bottom: 0;
+            line-height: 21px;
+        }
+        .rate:not(:checked) > label:before {
+            content: '\2605';
+        }
+        .rate > input:checked ~ label {
+            color: #ffc700;    
+        }
+        .rate:not(:checked) > label:hover,
+        .rate:not(:checked) > label:hover ~ label {
+            color: #deb217;  
+        }
+        .rate > input:checked + label:hover,
+        .rate > input:checked + label:hover ~ label,
+        .rate > input:checked ~ label:hover,
+        .rate > input:checked ~ label:hover ~ label,
+        .rate > label:hover ~ input:checked ~ label {
+            color: #c59b08;
+        }
+        .product-dtl p {
+            font-size: 14px;
+            line-height: 24px;
+            color: #7a7a7a;
+        }
+        .product-dtl .form-control {
+            font-size: 15px;
+        }
+        .product-dtl label {
+            line-height: 16px;
+            font-size: 15px;
+        }
+        .form-control:focus {
+            outline: none;
+            box-shadow: none;
+        }
+        .product-count {
+            margin-top: 15px; 
+        }
+        .product-count .qtyminus,
+        .product-count .qtyplus {
+            width: 34px;
+            height: 34px;
+            background: #212529;
+            text-align: center;
+            font-size: 19px;
+            line-height: 36px;
+            color: #fff;
+            cursor: pointer;
+        }
+        .product-count .qtyminus {
+            border-radius: 3px 0 0 3px; 
+        }
+        .product-count .qtyplus {
+            border-radius: 0 3px 3px 0; 
+        }
+        .product-count .qty {
+            width: 60px;
+            text-align: center;
+        }
+        .round-black-btn {
+            border-radius: 4px;
+            background: #212529;
+            color: #fff;
+            padding: 7px 45px;
+            display: inline-block;
+            margin-top: 20px;
+            border: solid 2px #212529; 
+            transition: all 0.5s ease-in-out 0s;
+        }
+        .round-black-btn:hover,
+        .round-black-btn:focus {
+            background: transparent;
+            color: #212529;
+            text-decoration: none;
+        }
 
-            .product-info-tabs {
-                margin-top: 25px; 
-            }
-            .product-info-tabs .nav-tabs {
-                border-bottom: 2px solid #d8d8d8;
-            }
-            .product-info-tabs .nav-tabs .nav-item {
-                margin-bottom: 0;
-            }
-            .product-info-tabs .nav-tabs .nav-link {
-                border: none; 
-                border-bottom: 2px solid transparent;
-                color: #323232;
-            }
-            .product-info-tabs .nav-tabs .nav-item .nav-link:hover {
-                border: none; 
-            }
-            .product-info-tabs .nav-tabs .nav-item.show .nav-link, 
-            .product-info-tabs .nav-tabs .nav-link.active, 
-            .product-info-tabs .nav-tabs .nav-link.active:hover {
-                border: none; 
-                border-bottom: 2px solid #d8d8d8;
-                font-weight: bold;
-            }
-            .product-info-tabs .tab-content .tab-pane {
-                padding: 30px 20px;
-                font-size: 15px;
-                line-height: 24px;
-                color: #7a7a7a;
-            }
-            .review-form .form-group {
-                clear: both;
-            }
-            .mb-20 {
-                margin-bottom: 20px;
-            }
+        .product-info-tabs {
+            margin-top: 25px; 
+        }
+        .product-info-tabs .nav-tabs {
+            border-bottom: 2px solid #d8d8d8;
+        }
+        .product-info-tabs .nav-tabs .nav-item {
+            margin-bottom: 0;
+        }
+        .product-info-tabs .nav-tabs .nav-link {
+            border: none; 
+            border-bottom: 2px solid transparent;
+            color: #323232;
+        }
+        .product-info-tabs .nav-tabs .nav-item .nav-link:hover {
+            border: none; 
+        }
+        .product-info-tabs .nav-tabs .nav-item.show .nav-link, 
+        .product-info-tabs .nav-tabs .nav-link.active, 
+        .product-info-tabs .nav-tabs .nav-link.active:hover {
+            border: none; 
+            border-bottom: 2px solid #d8d8d8;
+            font-weight: bold;
+        }
+        .product-info-tabs .tab-content .tab-pane {
+            padding: 30px 20px;
+            font-size: 15px;
+            line-height: 24px;
+            color: #7a7a7a;
+        }
+        .review-form .form-group {
+            clear: both;
+        }
+        .mb-20 {
+            margin-bottom: 20px;
+        }
 
-            .review-form .rate {
-                float: none;
-                display: inline-block;
-            }
-            .review-heading {
-                font-size: 24px;
-                font-weight: 600;
-                line-height: 24px;
-                margin-bottom: 6px;
-                text-transform: uppercase;
-                color: #000;
-            }
-            .review-form .form-control {
-                font-size: 14px;
-            }
-            .review-form input.form-control {
-                height: 40px;
-            }
-            .review-form textarea.form-control {
-                resize: none;
-            }
-            .review-form .round-black-btn {
-                text-transform: uppercase;
-                cursor: pointer;
-            }
-        </style>
+        .review-form .rate {
+            float: none;
+            display: inline-block;
+        }
+        .review-heading {
+            font-size: 24px;
+            font-weight: 600;
+            line-height: 24px;
+            margin-bottom: 6px;
+            text-transform: uppercase;
+            color: #000;
+        }
+        .review-form .form-control {
+            font-size: 14px;
+        }
+        .review-form input.form-control {
+            height: 40px;
+        }
+        .review-form textarea.form-control {
+            resize: none;
+        }
+        .review-form .round-black-btn {
+            text-transform: uppercase;
+            cursor: pointer;
+        }
+    </style>
 </html>
