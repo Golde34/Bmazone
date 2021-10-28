@@ -158,11 +158,12 @@
                                         <input type="button" value="+" class="plus button is-form">	</div>
 
                                     <%} else {%>
-                                    <p>This product is out of stock</P>
+                                    <p>This product is out of stock</p>
                                         <%}%>
 
 
-                                </div>
+                                </div><br>
+                                        <p style="color: red">${mess}</p>
                                 <button type="submit"class="round-black-btn" name="service" value="AddToCart">Add to Cart</button>
                             </form>
 
