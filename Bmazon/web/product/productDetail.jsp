@@ -1,14 +1,13 @@
-
-<%@page import="entity.User"%>
-<%@page import="entity.Seller"%>
-<%@page import="model.SellerDAO"%>
 <%-- 
     Document   : product_detail
     Created on : Sep 21, 2021, 9:50:48 AM
     Author     : AD
 --%>
-
-
+<%@page import="model.CommentDAO"%>
+<%@page import="entity.Comment"%>
+<%@page import="entity.User"%>
+<%@page import="entity.Seller"%>
+<%@page import="model.SellerDAO"%>
 <%@page import="model.ProductDAO"%>
 <%@page import="java.text.DecimalFormat"%>
 <%@page import="model.ProductTypeDAO"%>
@@ -27,6 +26,7 @@
     SellerDAO daoSeller = new SellerDAO();
     GalleryDAO daoGallery = new GalleryDAO();
     ProductDAO daoProduct = new ProductDAO();
+    CommentDAO daoComment = new CommentDAO();
     Product product = (Product) request.getAttribute("product");
     List<Gallery> listGallery = (List<Gallery>) request.getAttribute("listGallery");
     List<ProductType> listProductType = (List<ProductType>) request.getAttribute("listProductType");
@@ -35,6 +35,8 @@
     ArrayList<String> listColor = (ArrayList<String>) request.getAttribute("listColor");
     String size = "";
     String color = "";
+    ArrayList<Comment> comments = (ArrayList<Comment>) request.getAttribute("comments");
+    User x = (User) request.getSession().getAttribute("currUser");
 %>
 <!DOCTYPE html>
 <html>
@@ -87,7 +89,7 @@
                             <div class="product-info">
                                 <div class="product-name"><%=product.getProductName()%></div>
                                 <div class="reviews-counter">
-                                    <div class="rate">
+                                    <div class="rate1">
                                         <input type="radio" id="star5" name="rate" value="5" checked />
                                         <label for="star5" title="text">5 stars</label>
                                         <input type="radio" id="star4" name="rate" value="4" checked />
@@ -159,11 +161,11 @@
 
                                     <%} else {%>
                                     <p>This product is out of stock</p>
-                                        <%}%>
+                                    <%}%>
 
 
                                 </div><br>
-                                        <p style="color: red">${mess}</p>
+                                <p style="color: red">${mess}</p>
                                 <button type="submit"class="round-black-btn" name="service" value="AddToCart">Add to Cart</button>
                             </form>
 
@@ -186,9 +188,26 @@
                         </div>
                         <div class="tab-pane fade" id="review" role="tabpanel" aria-labelledby="review-tab">
                             <div class="review-heading">REVIEWS</div>
+                            <%if (!comments.isEmpty() && comments != null) {%>
+                            <%
+                                for (Comment elem : comments) {
+                            %>                   
+                            <div class="comment_box">
+                                <div class="col-md-6"><p class="comment_content">From: <%=daoUser.getUserById(String.valueOf(elem.getUserID())).getFullname()%></p> </div>
+                                <div class="col-md-1"> </div>
+                                <div class="col-md-5"><p class="comment_content">Rating:<%=elem.getRating()%>/100</p> </div>
+                                <div class="col-md-12"> 
+                                    <div style="border: 1px solid black; border-radius: 5px;padding: 10px;">
+                                        <p class="comment_content " > <%=elem.getContent()%></p> 
+                                    </div> 
+                                </div>
+                            </div>
+                            <% }
+                            } else {%> 
                             <p class="mb-20">There are no reviews yet.</p>
-
-
+                            <%}%>
+                            <%
+                                if (x != null && !daoComment.checkExistComment(product.getProductID(), Integer.parseInt(x.getUserId()))) {%>
                             <form action="ProductDetailControllerMap" class="review-form">
                                 <div class="form-group">
                                     <label>Your rating</label>
@@ -205,16 +224,17 @@
                                             <input type="radio" id="star1" name="rate" value="1" />
                                             <label for="star1" title="text">1 star</label>
                                         </div>
-                                        <div class="form-group">
-                                            <label>Your message</label>
-                                            <textarea name="content" class="form-control" rows="10"></textarea>
-                                            <input type="hidden" name ="service" value="comment" >
-                                            <input type="hidden" name ="pid" value="<%=product.getProductID()%>" >
-                                        </div>
-                                        <button class="round-black-btn" type="submit">Submit Review</button>
                                     </div>
+                                    <div class="form-group">
+                                        <label>Your message</label>
+                                        <textarea name="content" class="form-control" rows="10"></textarea>
+                                        <input type="hidden" name ="service" value="comment" >
+                                        <input type="hidden" name ="pid" value="<%=product.getProductID()%>" >
+                                    </div>
+                                    <button class="round-black-btn" type="submit">Submit Review</button>
                                 </div>
                             </form>
+                            <%}%>
                         </div>
                     </div>
                 </div>

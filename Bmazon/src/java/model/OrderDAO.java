@@ -78,11 +78,6 @@ public class OrderDAO extends BaseDAO {
         return list;
     }
     
-    public static void main(String[] args) {
-        Order o= new Order("1", "thinh", "thinh", "thinh","thinh", 0, 10000, 1,"COD", 0);
-        OrderDAO odao= new OrderDAO();
-        odao.insertOrder(o);
-    }
 
     public int insertOrder(Order obj) {
         int n = 0;
@@ -166,7 +161,7 @@ public class OrderDAO extends BaseDAO {
     public ArrayList<Order> getAllOrder() {
         ArrayList<Order> list = new ArrayList<>();
         String sql = "select * from [Order] where status = 1  order by orderID desc";
-        ResultSet rs = dbConn.getData(sql);
+        
         try {
             while (rs.next()) {
                 Order o = new Order();
@@ -191,6 +186,44 @@ public class OrderDAO extends BaseDAO {
             Logger.getLogger(OrderDAO.class.getName()).log(Level.SEVERE, null, ex);
         }
         return list;
+    }
+        public static void main(String[] args) {
+        
+        OrderDAO odao= new OrderDAO();
+        Order obj= odao.getOrderByOrderID(10);
+        System.out.println(obj);
+                
+    }
+
+     public Order getOrderByOrderID(int orderid) {
+        ArrayList<Order> list = new ArrayList<>();
+        String sql = "select * from [Order] where orderID = "+orderid;
+        ResultSet rs = dbConn.getData(sql);
+        Order o= null;
+        try {
+            while (rs.next()) {
+                o = new Order();
+                o.setOrderID(rs.getInt("orderID"));
+                o.setUserID(rs.getString("userID"));
+                o.setOrderDate(rs.getDate("orderDate"));
+                o.setRequiredDate(rs.getDate("requiredDate"));
+                o.setShippedDate(rs.getDate("shippedDate"));
+                o.setShipName(rs.getString("shipname"));
+                o.setShipAddress(rs.getString("shipaddress"));
+                o.setShipCity(rs.getString("shipcity"));
+                o.setShipPhone(rs.getString("shipphone"));
+                o.setCompanyID(rs.getInt("companyID"));
+                o.setShipMoney(rs.getDouble("shipmoney"));
+                o.setPaymentMethod(rs.getString("paymentmethod"));
+                o.setTotal(rs.getDouble("total"));
+                o.setState(rs.getInt("state"));
+                o.setStatus(rs.getInt("status"));
+                
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(OrderDAO.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return o;
     }
 
     public List<Order> getOrderByUser(int userID) {

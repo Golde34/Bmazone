@@ -135,13 +135,13 @@ public class CommentDAO extends BaseDAO {
 //        return n;
 //    }
 
-    public boolean checkExistComment(int cid) {
-        
+    public boolean checkExistComment(int pID, int uId) {
         boolean check = false;
-        String sql = "select * from Comment where commentID = ? order by commentID desc";
+        String sql = "select * from Comment where productID = ? and userId = ? order by commentID desc";
         try {
             pre = conn.prepareStatement(sql);
-            pre.setInt(1, cid);
+            pre.setInt(1, pID);
+            pre.setInt(2, uId);
             rs = pre.executeQuery();
             while (rs.next()) {
                 check = true;

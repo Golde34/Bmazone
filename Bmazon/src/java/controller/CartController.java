@@ -21,6 +21,7 @@ import entity.ProductType;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.text.DecimalFormat;
+import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javafx.scene.control.Alert;
@@ -76,12 +77,18 @@ public class CartController extends HttpServlet {
                 serviceUpdate(request, response);
             }
 
-            if (service.equalsIgnoreCase("BillingPage")) {
+            if (service.equalsIgnoreCase("Billing Page")) {
                 serviceBillingPage(out, request, response);
             }
 
             if (service.equalsIgnoreCase("CheckOut")) {
                 serviceCheckOut(request, response);
+            }
+            if (service.equalsIgnoreCase("MyOrder")) {
+                serviceMyOrder(request, response);
+            }
+              if (service.equalsIgnoreCase("OrderDetail")) {
+                serviceOrderDetail(request, response);
             }
         }
 
@@ -124,11 +131,11 @@ public class CartController extends HttpServlet {
                 if (ShoppingCart.get(i).getQuantity() > pt.getQuantity()) {
                     ShoppingCart.get(i).setQuantity(pt.getQuantity());
                     String mess = "You already buy all product!";
-                    request.setAttribute("mess", mess);                  
+                    request.setAttribute("mess", mess);
                 }
                 ShoppingCart.get(i).setTotalCost(ShoppingCart.get(i).getQuantity() * Double.parseDouble(pt.getPrice()));
                 check = false;
-           }
+            }
         }
         if (check == true) {
             CartItem cartitem = new CartItem(ShoppingCart.size() + 1, pt.getProductID(), name, pt.getSize(), pt.getColor(), image, Double.parseDouble(pt.getPrice()), quantity, total);
@@ -188,7 +195,7 @@ public class CartController extends HttpServlet {
                 }
             }
             for (CartItem item : CheckOutList) {
-                total += item.getPrice();
+                total += item.getTotalCost();
             }
         } else {
             mess = "You must select at least item!";
@@ -267,6 +274,32 @@ public class CartController extends HttpServlet {
         }
     }
 
+    public void serviceMyOrder(HttpServletRequest request, HttpServletResponse response) {
+        User x = (User) request.getSession().getAttribute("currUser");
+        if (x == null) {
+            sendDispatcher(request, response, "loginAndSecurity/login.jsp");
+        }
+        int id = Integer.parseInt(x.getUserId());
+        List<Order> list = oDao.getOrderByUser(id);
+        request.setAttribute("ListOrder",list);
+        sendDispatcher(request, response, "order/myorder.jsp");
+    }
+     private void serviceOrderDetail(HttpServletRequest request, HttpServletResponse response) {
+        String orderidString= request.getParameter("orderID");
+        int orderid= Integer.parseInt(orderidString);
+        Order o= oDao.getOrderByOrderID(orderid);
+        ArrayList<OrderDetail> OrderDetailList= odDao.getAllOrderDetail(orderid);
+        request.setAttribute("Order",o);
+        int state= o.getState();
+         for (int i = 0; i <= state; i++) {
+             request.setAttribute("active"+i,"active");
+         }
+        
+        request.setAttribute("OrderDetailList",OrderDetailList);      
+        sendDispatcher(request, response, "order/orderdetail.jsp");
+    }
+
+
     public void sendDispatcher(HttpServletRequest request, HttpServletResponse response, String path) {
         try {
             RequestDispatcher rd = request.getRequestDispatcher(path);
@@ -325,4 +358,5 @@ public class CartController extends HttpServlet {
         return "Short description";
     }// </editor-fold>
 
+   
 }

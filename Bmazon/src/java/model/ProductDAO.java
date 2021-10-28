@@ -8,12 +8,9 @@ package model;
 import entity.*;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.sql.Statement;
 import java.util.ArrayList;
-import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import java.util.*;
 
 /**
  *
@@ -276,30 +273,6 @@ public class ProductDAO extends BaseDAO {
         return list;
     }
 
-    public Product getProductLatest(int sellerID) {
-        Product pro = new Product();
-        String sql = "SELECT TOP 1 * FROM Product where sellerID = ? order by productID desc";
-        try {
-            pre = conn.prepareStatement(sql);
-            pre.setInt(1, sellerID);
-            rs = pre.executeQuery();
-            if (rs.next()) {
-                pro.setProductID(rs.getInt("productID"));
-                pro.setProductName(rs.getString("productName"));
-                pro.setDescription(rs.getString("description"));
-                pro.setRating(rs.getInt("rating"));
-                pro.setReleaseDate(rs.getDate("releaseDate"));
-                pro.setSeller(rs.getInt("sellerID"));
-                pro.setStatus(rs.getInt("status"));
-            }
-            rs.close();
-            pre.close();
-        } catch (SQLException e) {
-            Logger.getLogger(ProductDAO.class.getName()).log(Level.SEVERE, null, e);
-        }
-        return pro;
-    }
-
     public ArrayList<Product> getProductApple() {
         ArrayList<Product> list = new ArrayList<>();
         String sql = "SELECT TOP 8 * FROM Product where description like '%apple%'";
@@ -461,7 +434,53 @@ public class ProductDAO extends BaseDAO {
         return list;
     }
 
-
+    public Product getProductByID(int id) {
+        Product pro = new Product();
+        String sql = "SELECT * FROM [Bmazon].[dbo].[Product] where productID=" + id;
+        try {
+            pre = conn.prepareStatement(sql);
+            rs = pre.executeQuery();
+            if (rs.next()) {
+                pro.setProductID(rs.getInt("productID"));
+                pro.setProductName(rs.getString("productName"));
+                pro.setDescription(rs.getString("description"));
+                pro.setRating(rs.getInt("rating"));
+                pro.setReleaseDate(rs.getDate("releaseDate"));
+                pro.setSeller(rs.getInt("sellerID"));
+                pro.setStatus(rs.getInt("status"));
+            }
+            rs.close();
+            pre.close();
+        } catch (SQLException e) {
+            Logger.getLogger(ProductDAO.class.getName()).log(Level.SEVERE, null, e);
+        }
+        return pro;
+    }
+    
+    public Product getProductLatest(int sellerID) {
+        Product pro = new Product();
+        String sql = "SELECT TOP 1 * FROM Product where sellerID = ? order by productID desc";
+        try {
+            pre = conn.prepareStatement(sql);
+            pre.setInt(1, sellerID);
+            rs = pre.executeQuery();
+            if (rs.next()) {
+                pro.setProductID(rs.getInt("productID"));
+                pro.setProductName(rs.getString("productName"));
+                pro.setDescription(rs.getString("description"));
+                pro.setRating(rs.getInt("rating"));
+                pro.setReleaseDate(rs.getDate("releaseDate"));
+                pro.setSeller(rs.getInt("sellerID"));
+                pro.setStatus(rs.getInt("status"));
+            }
+            rs.close();
+            pre.close();
+        } catch (SQLException e) {
+            Logger.getLogger(ProductDAO.class.getName()).log(Level.SEVERE, null, e);
+        }
+        return pro;
+    }
+    
     public int totalProductSeller(String sid) {
         int count = 0;
 
@@ -565,7 +584,6 @@ public class ProductDAO extends BaseDAO {
         return list;
     }
 
-   
     public ArrayList<Product> getProductByFilter(int index, String name, String s) {
         ArrayList<Product> list = new ArrayList<>();
         String sql = " declare @PageNo INT = " + index + " \n"
@@ -595,29 +613,6 @@ public class ProductDAO extends BaseDAO {
             Logger.getLogger(ProductDAO.class.getName()).log(Level.SEVERE, null, e);
         }
         return list;
-    }
-
-    public Product getProductByID(int id) {
-        Product pro = new Product();
-        String sql = "SELECT * FROM [Bmazon].[dbo].[Product] where productID=" + id;
-        try {
-            pre = conn.prepareStatement(sql);
-            rs = pre.executeQuery();
-            if (rs.next()) {
-                pro.setProductID(rs.getInt("productID"));
-                pro.setProductName(rs.getString("productName"));
-                pro.setDescription(rs.getString("description"));
-                pro.setRating(rs.getInt("rating"));
-                pro.setReleaseDate(rs.getDate("releaseDate"));
-                pro.setSeller(rs.getInt("sellerID"));
-                pro.setStatus(rs.getInt("status"));
-            }
-            rs.close();
-            pre.close();
-        } catch (SQLException e) {
-            Logger.getLogger(ProductDAO.class.getName()).log(Level.SEVERE, null, e);
-        }
-        return pro;
     }
 
     public ArrayList<Product> getProductByCategory(int categoryID) {

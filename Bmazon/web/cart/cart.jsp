@@ -30,8 +30,6 @@ ProductTypeDAO ptd= new ProductTypeDAO();
             <%  ArrayList<CartItem> ShoppingCart = (ArrayList<CartItem>) session.getAttribute("ShoppingCart");
 
             %>
-
-
             <main id="main" class="">
                 <div id="content" class="content-area page-wrapper" role="main">
                     <div class="row row-main">
@@ -152,11 +150,10 @@ ProductTypeDAO ptd= new ProductTypeDAO();
                                                                 <td data-title="Tổng cộng"><strong><span class="woocommerce-Price-amount amount"><p id="sum">0&nbsp;</p><span class="woocommerce-Price-currencySymbol">&#8363;</span></span></strong> </td>
                                                             </tr>
 
-
                                                         </table>
 
                                                         <div class="wc-proceed-to-checkout">
-                                                            <input type="submit" class="button primary mt-0 pull-left small" name="service" value="BillingPage" />
+                                                            <input type="submit" class="button primary mt-0 pull-left small" name="service" value="Billing Page" />
                                                         </div>
                                                         <p style="color: red; font-size: 18px;">${mess}</p>
 

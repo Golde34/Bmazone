@@ -16,6 +16,7 @@ import java.util.logging.Logger;
  * @author Admin
  */
 public class OrderDetailDAO extends BaseDAO {
+     BaseDAO dbConn = new BaseDAO();
 
     public static void main(String[] args) {
         OrderDetailDAO dao = new OrderDetailDAO();
@@ -72,6 +73,7 @@ public class OrderDetailDAO extends BaseDAO {
     public ArrayList<OrderDetail> getAllOrderDetail(int oid) {
         ArrayList<OrderDetail> list = new ArrayList<>();
         String sql = "select * from [OrderDetail] where orderID = "+ oid +" and status = 1  order by orderID desc";
+        ResultSet rs = dbConn.getData(sql);
         try {
             while (rs.next()) {
                 OrderDetail o = new OrderDetail();
