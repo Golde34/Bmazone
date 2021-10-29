@@ -190,8 +190,10 @@ public class OrderDAO extends BaseDAO {
         public static void main(String[] args) {
         
         OrderDAO odao= new OrderDAO();
-        Order obj= odao.getOrderByOrderID(10);
-        System.out.println(obj);
+        List<Order> listOrder = odao.getAllPagingOrder(1, 5, "");
+            for (Order order : listOrder) {
+                System.out.println(order.getShipCity());
+            }
                 
     }
 
@@ -228,7 +230,7 @@ public class OrderDAO extends BaseDAO {
 
     public List<Order> getOrderByUser(int userID) {
         List<Order> list = new ArrayList<>();
-        String sql = "select * from [Order] where userID = " + userID + "and status = 1";
+        String sql = "select * from [Order] where userID = " + userID + "order by orderDate desc ";
         ResultSet rs = dbConn.getData(sql);
         try {
             while (rs.next()) {

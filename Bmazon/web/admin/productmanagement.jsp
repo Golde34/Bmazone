@@ -18,6 +18,7 @@
     int next = index == totalPage ? totalPage : index + 1;
     User curUser = (User) request.getSession().getAttribute("currUser");
     List<Product> listProduct = (List<Product>) request.getAttribute("listProduct");
+    ArrayList<Category> listCategory = catdao.getAllCategories();
     SimpleDateFormat dateformat = new SimpleDateFormat("dd/MM/yyyy");
 %>
 
@@ -40,7 +41,7 @@
         th,td{
             padding: 12px 15px;
         }
-        tbody tr:nth-child(odd){
+        table tr:nth-child(even){
             background-color: #f2f2f2;
         }
     </style>
@@ -54,7 +55,7 @@
                 <!-- End Navbar -->
                 <div class="container-fluid py-4">
                     <div class="row my-4">
-                        <div class="col-lg-12 col-md-12 mb-md-0 mb-4">
+                        <div class="col-lg-10 col-md-10 mb-md-0 mb-4">
                             <div class="card">
                                 <div class="card-body px-0 pb-2">
                                     <div class="card-header py-3" 
@@ -76,20 +77,17 @@
                                                     </select>
                                                 </div>
                                             </div>
-                                            <div class="tb_search">
-                                                <input id="search" style="width: 100%;" type="text" oninput="pagination()" placeholder="Search.." class="form-control">
-                                            </div>
+
                                         </div>
                                         <div class="table-responsive-md">
-                                            <table style="width: 100%" class="table-bordered text-center">
-                                                <thead>
+                                            <table style="width: 100%" class="text-center">
+                                                <thead class="text-uppercase bg-gray-200">
                                                     <tr>
-                                                        <th style="width: 30%;">Product Name</th>
+                                                        <th style="width: 30%;padding: 20px;">Product Name</th>
                                                         <th style="width: 20%;">Category</th>
                                                         <th style="width: 20%;">Genre</th>
                                                         <th style="width: 20%;">Seller</th>
-                                                        <th style="width: 5%;"></th>
-                                                        <th style="width: 5%;"></th>
+                                                        <th style="width: 10%;">Action</th>
                                                     </tr>
                                                 </thead>
                                                 <tbody id="product">
@@ -108,11 +106,11 @@
                                                     <td><div><a href="AdminControllerMap?service=productdetail&productid=<%=product.getProductID()%>"><button class="btn btn-primary">Edit</button></a>
                                                         </div></td>
                                                     <td>
-                                                        <% if(product.getStatus()==1){%>
-                                                    <a href="AdminControllerMap?service=deleteproduct&productid=<%=product.getProductID()%>" onclick="return confirm('Are you sure?');"><button class="btn btn-primary">Deactive</button></a>
-                                                    <%}else{%>
-                                                    <a href="AdminControllerMap?service=activeproduct&productid=<%=product.getProductID()%>" onclick="return confirm('Are you sure?');"><button class="btn btn-primary">Active</button></a>
-                                                    <%}%>
+                                                        <% if (product.getStatus() == 1) {%>
+                                                        <a href="AdminControllerMap?service=deleteproduct&productid=<%=product.getProductID()%>" onclick="return confirm('Are you sure?');"><button class="btn btn-primary">Deactive</button></a>
+                                                        <%} else {%>
+                                                        <a href="AdminControllerMap?service=activeproduct&productid=<%=product.getProductID()%>" onclick="return confirm('Are you sure?');"><button class="btn btn-primary">Active</button></a>
+                                                        <%}%>
                                                     </td>
                                                 </tr>
 
@@ -171,8 +169,26 @@
                             </div>
                         </div>
                     </div>
+                    <div class="col-lg-2 col-md-2 mb-md-0 mb-4">
+                        <div class="card">
+                            <div class="px-0">
+                                <div class="px-4 pt-2">
+                                    <h5 class="m-0 font-weight-bold text-primary">Product Filter</h5>
+                                </div>
+                                <div class="card-body">
+                                    <input id="search" style="width: 100%;" type="text" oninput="pagination()" placeholder="Search" class="form-control mx-2">
+                                    <span class="m-0 font-weight-bold text-primary">Category</span>
+                                    <%for (Category cate : listCategory) {%>
+                                    <div>
+                                        <input type="checkbox" id="<%=cate.getCategoryID()%>" name="cid" value="<%=cate.getCategoryID()%>">
+                                        <label for="<%=cate.getCategoryID()%>"><%=cate.getCategoryName()%></label>
+                                    </div>
+                                    <%}%>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
-            </div>
         </main>
 
         <!--   Core JS Files   -->
@@ -180,57 +196,57 @@
         <script src="${contextPath}/js/core/bootstrap.min.js"></script>
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
         <script>
-                                                        var pageNum;
-                                                        $(document).on('click', '.pagination li', function () {
-                                                            pageNum = $(this).data('repair');
-                                                            pagination();
-                                                        });
-                                                        function pagination() {
-                                                            var row = document.getElementById("maxRows").value;
-                                                            var search = document.getElementById("search").value;
-                                                            console.log(row);
-                                                            console.log(search);
-                                                            console.log(pageNum);
-                                                            $.ajax({
-                                                                url: "/Bmazon/AdminControllerMap",
-                                                                type: "get",
-                                                                data: {
-                                                                    search: search,
-                                                                    row: row,
-                                                                    index: pageNum,
-                                                                    service: "pagingproduct"
-                                                                },
-                                                                success: function (respone) {
-                                                                    var text = document.getElementById("product");
-                                                                    text.innerHTML = respone;
-                                                                    showpage();
-                                                                },
-                                                                error: function (xhr) {
-                                                                    //Do Something to handle error
-                                                                }
+                                                            var pageNum;
+                                                            $(document).on('click', '.pagination li', function () {
+                                                                pageNum = $(this).data('repair');
+                                                                pagination();
                                                             });
-                                                        }
-                                                        function showpage() {
-                                                            var row = document.getElementById("maxRows").value;
-                                                            var search = document.getElementById("search").value;
-                                                            $.ajax({
-                                                                url: "/Bmazon/AdminControllerMap",
-                                                                type: "get",
-                                                                data: {
-                                                                    search: search,
-                                                                    row: row,
-                                                                    index: pageNum,
-                                                                    service: "showpageproduct"
-                                                                },
-                                                                success: function (respone) {
-                                                                    var text = document.getElementById("showpage");
-                                                                    text.innerHTML = respone;
-                                                                },
-                                                                error: function (xhr) {
-                                                                    //Do Something to handle error
-                                                                }
-                                                            });
-                                                        }
+                                                            function pagination() {
+                                                                var row = document.getElementById("maxRows").value;
+                                                                var search = document.getElementById("search").value;
+                                                                console.log(row);
+                                                                console.log(search);
+                                                                console.log(pageNum);
+                                                                $.ajax({
+                                                                    url: "/Bmazon/AdminControllerMap",
+                                                                    type: "get",
+                                                                    data: {
+                                                                        search: search,
+                                                                        row: row,
+                                                                        index: pageNum,
+                                                                        service: "pagingproduct"
+                                                                    },
+                                                                    success: function (respone) {
+                                                                        var text = document.getElementById("product");
+                                                                        text.innerHTML = respone;
+                                                                        showpage();
+                                                                    },
+                                                                    error: function (xhr) {
+                                                                        //Do Something to handle error
+                                                                    }
+                                                                });
+                                                            }
+                                                            function showpage() {
+                                                                var row = document.getElementById("maxRows").value;
+                                                                var search = document.getElementById("search").value;
+                                                                $.ajax({
+                                                                    url: "/Bmazon/AdminControllerMap",
+                                                                    type: "get",
+                                                                    data: {
+                                                                        search: search,
+                                                                        row: row,
+                                                                        index: pageNum,
+                                                                        service: "showpageproduct"
+                                                                    },
+                                                                    success: function (respone) {
+                                                                        var text = document.getElementById("showpage");
+                                                                        text.innerHTML = respone;
+                                                                    },
+                                                                    error: function (xhr) {
+                                                                        //Do Something to handle error
+                                                                    }
+                                                                });
+                                                            }
         </script>
     </body>
 

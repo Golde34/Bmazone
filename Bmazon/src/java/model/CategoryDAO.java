@@ -98,10 +98,11 @@ public class CategoryDAO extends BaseDAO {
                 cat.setCategoryID(rs.getInt("categoryID"));
                 cat.setCategoryName(rs.getString("categoryName"));
                 cat.setStatus(rs.getInt("status"));
+                return cat;
             }
         } catch (SQLException ex) {
         }
-        return cat;
+        return null;
     }
 
     public String getCategoryById(int fcaId) {

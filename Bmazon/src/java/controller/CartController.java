@@ -90,6 +90,9 @@ public class CartController extends HttpServlet {
             if (service.equalsIgnoreCase("OrderDetail")) {
                 serviceOrderDetail(request, response);
             }
+            if (service.equalsIgnoreCase("Deactice")) {
+                serviceDeactive(request, response);
+            }
         }
 
     }
@@ -284,7 +287,34 @@ public class CartController extends HttpServlet {
             sendDispatcher(request, response, "loginAndSecurity/login.jsp");
         }
         int id = Integer.parseInt(x.getUserId());
+        String stateString = request.getParameter("state");
+        String statusString = request.getParameter("status");
+
         List<Order> list = oDao.getOrderByUser(id);
+        List<Order> listby = new ArrayList<Order>();
+        if (stateString != null) {
+            int state = Integer.parseInt(stateString);
+            for (Order order : list) {
+                if (order.getState() == state) {
+                    listby.add(order);
+                }
+            }
+            request.setAttribute("active" + state, "active");
+            request.setAttribute("ListOrder", listby);
+            sendDispatcher(request, response, "order/myorder.jsp");
+        }
+        if (statusString != null) {
+            int status = Integer.parseInt(statusString);
+            for (Order order : list) {
+                if (order.getStatus() == status) {
+                    listby.add(order);
+                }
+            }
+            request.setAttribute("active4", "active");
+            request.setAttribute("ListOrder", listby);
+            sendDispatcher(request, response, "order/myorder.jsp");
+        }
+        request.setAttribute("active5", "active");
         request.setAttribute("ListOrder", list);
         sendDispatcher(request, response, "order/myorder.jsp");
     }
@@ -302,6 +332,15 @@ public class CartController extends HttpServlet {
 
         request.setAttribute("OrderDetailList", OrderDetailList);
         sendDispatcher(request, response, "order/orderdetail.jsp");
+    }
+
+    public void serviceDeactive(HttpServletRequest request, HttpServletResponse response)  {
+        String orderidString = request.getParameter("orderID");
+        int orderid = Integer.parseInt(orderidString);
+        String statusString = request.getParameter("status");
+        int status = Integer.parseInt(statusString);    
+        oDao.changeStatus(orderid, status);
+        sendDispatcher(request, response, "CartControllerMap?service=MyOrder");
     }
 
     public void sendDispatcher(HttpServletRequest request, HttpServletResponse response, String path) {

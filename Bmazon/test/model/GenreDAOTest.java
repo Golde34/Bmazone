@@ -200,11 +200,20 @@ public class GenreDAOTest {
      * Test of removeGenre method, of class GenreDAO.
      */
     @Test
-    public void testRemoveGenre() {
+    public void testRemoveFalseGenre() {
         System.out.println("removeGenre");
         int id = 0;
         GenreDAO instance = new GenreDAO();
         int expResult = 0;
+        int result = instance.removeGenre(id);
+        assertEquals(expResult, result);
+    }
+    @Test
+    public void testRemoveTrueGenre() {
+        System.out.println("removeGenre");
+        int id = 1;
+        GenreDAO instance = new GenreDAO();
+        int expResult = 1;
         int result = instance.removeGenre(id);
         assertEquals(expResult, result);
     }

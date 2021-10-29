@@ -66,10 +66,19 @@ public class CategoryDAOTest {
      * Test of insertCategory method, of class CategoryDAO.
      */
     @Test
-    public void testInsertCategory() {
+    public void testInsertFalseCategory() {
         System.out.println("insertCategory");
         Category cate = new Category();
         cate.setCategoryName("test");
+        cate.setStatus(-2);
+        CategoryDAO instance = new CategoryDAO();
+        assertEquals(0, instance.insertCategory(cate));
+    }
+    @Test
+    public void testInsertTrueCategory() {
+        System.out.println("insertCategory");
+        Category cate = new Category();
+        cate.setCategoryName("Keyboard");
         cate.setStatus(1);
         CategoryDAO instance = new CategoryDAO();
         assertEquals(1, instance.insertCategory(cate));
@@ -139,7 +148,7 @@ public class CategoryDAOTest {
         System.out.println("getCategoryById");
         int fcaId = 1;
         CategoryDAO instance = new CategoryDAO();
-        String expResult = "Book";
+        String expResult = "test";
         String result = instance.getCategoryById(fcaId);
         assertEquals(expResult, result);
     }
@@ -172,7 +181,17 @@ public class CategoryDAOTest {
      * Test of removeCategory method, of class CategoryDAO.
      */
     @Test
-    public void testRemoveCategory() {
+    public void testRemoveTrueCategory() {
+        System.out.println("removeCategory");
+        int id = 7;
+        CategoryDAO instance = new CategoryDAO();
+        int expResult = 1;
+        int result = instance.removeCategory(id);
+        assertEquals(expResult, result);
+    }
+    
+    @Test
+    public void testRemoveFalseCategory() {
         System.out.println("removeCategory");
         int id = 0;
         CategoryDAO instance = new CategoryDAO();
@@ -187,7 +206,7 @@ public class CategoryDAOTest {
     @Test
     public void testCheckExistCategoryName() {
         System.out.println("checkExistCategoryName");
-        String categoryName = "Book";
+        String categoryName = "Laptop";
         CategoryDAO instance = new CategoryDAO();
         boolean expResult = true;
         boolean result = instance.checkExistCategoryName(categoryName);
