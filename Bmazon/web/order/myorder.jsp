@@ -27,6 +27,7 @@
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.min.js" integrity="sha384-cVKIPhGWiC2Al4u+LWgxfKTRIcfu0JTxR+EQDz/bgldoEyl4H0zUF0QKbrJ0EcQF" crossorigin="anonymous"></script>
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
         <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+        <script src="https://kit.fontawesome.com/42d5adcbca.js" crossorigin="anonymous"></script>
         <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
         <style>
             body {
@@ -65,17 +66,16 @@
 
             <br>
             <ul class="nav nav-tabs">
-                <li class="active" style="font-size: 18px;"><a data-toggle="tab" href="">My Order</a></li>
-                <li style="font-size: 18px;"><a data-toggle="tab" href="">Waiting Accept</a></li>
-                <li style="font-size: 18px;"><a data-toggle="tab" href="">Delivering</a></li>
-                <li style="font-size: 18px;"><a data-toggle="tab" href="">Delivered</a></li>
+                <li class="active" style="font-size: 18px;"><a data-toggle="tab" href="#myOrder">My Order</a></li>
+                <li style="font-size: 18px;"><a data-toggle="tab" href="#watingAccept">Waiting Accept</a></li>
+                <li style="font-size: 18px;"><a data-toggle="tab" href="#delivering">Delivering</a></li>
+                <li style="font-size: 18px;"><a data-toggle="tab" href="#delivered">Delivered</a></li>
             </ul>
 
             <br><br>
             <div class="tab-content">
-
-                <!--Edit public profile-->
-                <div class="tab-pane fade in active">  
+                <div id="myOrder" class="tab-pane fade in active">  
+                    <h3><i class="fa fa-envelope-open-text"></i>     Your Order</h3>
                     <%for (Order order : list) {
                             String state = "";
                             if (order.getState() == 0) {
@@ -103,14 +103,91 @@
                                 <div class="col"> <strong>Payment Method:</strong> <br> <%=order.getPaymentMethod()%><br> <%=nf.format(order.getTotal())%> </div>
                             </div>
                         </article>
-                    </a>
-
-
-                    <br>
+                    </a> <br>
                     <% }%>
                 </div>
 
-               
+                <!--waiting for the goods -->
+                <div id="watingAccept" class="tab-pane fade">
+                    <h3><i class="fa fa-truck-loading"></i>      Waiting for the goods</h3>
+                    <%boolean bool0 = false;%>
+                    <%for (Order order : list) {
+                            if (order.getState() == 0) {
+                                bool0 = true;%>
+                    <a href="CartControllerMap?service=OrderDetail&orderID=<%=order.getOrderID()%>">
+                        <h6>Order ID: <%=order.getOrderID()%></h6> </a>
+                    <a href="CartControllerMap?service=OrderDetail&orderID=<%=order.getOrderID()%>">
+                        <article class="card">
+                            <div class="card-body row">
+                                <div class="col"> <strong>Estimated Delivery time:</strong> <br><%=order.getRequiredDate()%> </div>
+                                <div class="col"> <strong>Shipping By :</strong><%=order.getCompanyID()%> <br>  | <i class="fa fa-phone"></i><%=order.getShipPhone()%> </div>
+                                <div class="col"> <strong>Payment Method:</strong> <br> <%=order.getPaymentMethod()%><br> <%=nf.format(order.getTotal())%> </div>
+                            </div>
+                        </article>
+                    </a> <br>
+                    <% } else {
+                                bool0 = false;
+                            }
+                        }%>
+                    <%if (bool0 == false) {%>
+                    <p>No products.</p>
+                    <%}%>
+                </div>
+
+                <!--Delivering -->
+                <div id="delivering" class="tab-pane fade">
+                    <h3><i class="fas fa-truck"></i>    Delivering</h3>
+                    <%boolean bool1 = false;%>
+                    <%for (Order order : list) {
+                            if (order.getState() == 1) {
+                                bool0 = true;%>
+                    <a href="CartControllerMap?service=OrderDetail&orderID=<%=order.getOrderID()%>">
+                        <h6>Order ID: <%=order.getOrderID()%></h6> </a>
+                    <a href="CartControllerMap?service=OrderDetail&orderID=<%=order.getOrderID()%>">
+                        <article class="card">
+                            <div class="card-body row">
+                                <div class="col"> <strong>Estimated Delivery time:</strong> <br><%=order.getRequiredDate()%> </div>
+                                <div class="col"> <strong>Shipping By :</strong><%=order.getCompanyID()%> <br>  | <i class="fa fa-phone"></i><%=order.getShipPhone()%> </div>
+                                <div class="col"> <strong>Payment Method:</strong> <br> <%=order.getPaymentMethod()%><br> <%=nf.format(order.getTotal())%> </div>
+                            </div>
+                        </article>
+                    </a> <br>
+                    <% } else {
+                                bool1 = false;
+                            }
+                        }%>
+                    <%if (bool1 == false) {%>
+                    <p>No products.</p>
+                    <%}%>
+                </div>
+
+                <!--Delivered -->
+                <div id="delivered" class="tab-pane fade">
+                    <h3><i class="fas fa-check-circle"></i>       Delivered</h3>
+                    <%boolean bool2 = false;%>
+                    <%for (Order order : list) {
+                            if (order.getState() == 2) {
+                                bool0 = true;%>
+                    <a href="CartControllerMap?service=OrderDetail&orderID=<%=order.getOrderID()%>">
+                        <h6>Order ID: <%=order.getOrderID()%></h6> </a>
+                    <a href="CartControllerMap?service=OrderDetail&orderID=<%=order.getOrderID()%>">
+                        <article class="card">
+                            <div class="card-body row">
+                                <div class="col"> <strong>Estimated Delivery time:</strong> <br><%=order.getRequiredDate()%> </div>
+                                <div class="col"> <strong>Shipping By :</strong><%=order.getCompanyID()%> <br>  | <i class="fa fa-phone"></i><%=order.getShipPhone()%> </div>
+                                <div class="col"> <strong>Payment Method:</strong> <br> <%=order.getPaymentMethod()%><br> <%=nf.format(order.getTotal())%> </div>
+                            </div>
+                        </article>
+                    </a> <br>
+                    <% } else {
+                                bool2 = false;
+                            }
+                        }%>
+                    <%if (bool2 == false) {%>
+                    <p>No products.</p>
+                    <%}%>
+                </div>
+
             </div>
         </div>
         <br><br><br>

@@ -45,19 +45,19 @@
             <br>
             <%                Order order = (Order) request.getAttribute("Order");
                 ArrayList<OrderDetail> list = (ArrayList<OrderDetail>) request.getAttribute("OrderDetailList");
-                 String state = "";
-                            if (order.getState() == 0) {
-                                state = "Waiting for acccept";
-                            }
-                            if (order.getState() == 1) {
-                                state = "Order confirmed";
-                            }
-                            if (order.getState() == 2) {
-                                state = "On The Way";
-                            }
-                            if (order.getState() == 3) {
-                                state = "Ready To pickup";
-                            }
+                String state = "";
+                if (order.getState() == 0) {
+                    state = "Waiting for acccept";
+                }
+                if (order.getState() == 1) {
+                    state = "Order confirmed";
+                }
+                if (order.getState() == 2) {
+                    state = "On The Way";
+                }
+                if (order.getState() == 3) {
+                    state = "Ready To pickup";
+                }
             %>
             <div class="container">
                 <article class="card">
@@ -65,7 +65,7 @@
                     <div class="card-body">
                         <h6>Order ID: <%=order.getOrderID()%></h6>
                         <article class="card">
-                            <div class="card-body row">
+                            <div class="card-body row" style="padding: 10px;">
                                 <div class="col"> <strong>Estimated Delivery time:</strong> <br><%=order.getRequiredDate()%> </div>
                                 <div class="col"> <strong>Shipping BY:</strong><%=order.getCompanyID()%> <br>  | <i class="fa fa-phone"></i><%=order.getShipPhone()%> </div>
                                 <div class="col"> <strong>Status:</strong> <br> <%=state%></div>
@@ -91,6 +91,7 @@
                                     <div class="aside"><img src="<%=image%>" class="img-sm border"></div>
                                     <figcaption class="info align-self-center">
                                         <p class="title"><%=p.getProductName()%> <br> <%=pt.getColor() + " " + pt.getSize()%></p> <span class="text-muted"> <%=pt.getPrice()%> </span>
+                                        <br><strong>Quantity: </strong><span><%=od.getQuantity()%></span>
                                     </figcaption>
                                 </figure>
                             </li>

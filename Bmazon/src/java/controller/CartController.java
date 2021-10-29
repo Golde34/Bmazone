@@ -87,7 +87,7 @@ public class CartController extends HttpServlet {
             if (service.equalsIgnoreCase("MyOrder")) {
                 serviceMyOrder(request, response);
             }
-              if (service.equalsIgnoreCase("OrderDetail")) {
+            if (service.equalsIgnoreCase("OrderDetail")) {
                 serviceOrderDetail(request, response);
             }
         }
@@ -240,8 +240,10 @@ public class CartController extends HttpServlet {
             ShoppingCart.removeAll(ShoppingCart);
             request.getSession().setAttribute("ShoppingCart", ShoppingCart);
             request.getSession().setAttribute("currUser", x);
+            List<Order> list = oDao.getOrderByUser(Integer.parseInt(x.getUserId()));
+            request.setAttribute("ListOrder", list);
             request.setAttribute("mess", "Your order had been added!");
-            sendDispatcher(request, response, "cart/orderShip.jsp");
+            sendDispatcher(request, response, "order/myorder.jsp");
 
         } else if ("Wallet".equals(payment)) {
             if (wallet >= Double.parseDouble(totalString)) {
@@ -260,9 +262,11 @@ public class CartController extends HttpServlet {
                 uDao.updateInfoUserByAdmin(x);
                 request.getSession().setAttribute("ShoppingCart", ShoppingCart);
                 request.getSession().setAttribute("currUser", x);
+                List<Order> list = oDao.getOrderByUser(Integer.parseInt(x.getUserId()));
+                request.setAttribute("ListOrder", list);
                 request.setAttribute("mess", "Your order had been added!");
 //                sendDispatcher(request, response, "cart/cart.jsp");
-                sendDispatcher(request, response, "cart/orderShip.jsp");
+                sendDispatcher(request, response, "order/myorder.jsp");
             } else {
                 request.getSession().setAttribute("ShoppingCart", ShoppingCart);
                 request.getSession().setAttribute("currUser", x);
@@ -281,24 +285,24 @@ public class CartController extends HttpServlet {
         }
         int id = Integer.parseInt(x.getUserId());
         List<Order> list = oDao.getOrderByUser(id);
-        request.setAttribute("ListOrder",list);
+        request.setAttribute("ListOrder", list);
         sendDispatcher(request, response, "order/myorder.jsp");
     }
-     private void serviceOrderDetail(HttpServletRequest request, HttpServletResponse response) {
-        String orderidString= request.getParameter("orderID");
-        int orderid= Integer.parseInt(orderidString);
-        Order o= oDao.getOrderByOrderID(orderid);
-        ArrayList<OrderDetail> OrderDetailList= odDao.getAllOrderDetail(orderid);
-        request.setAttribute("Order",o);
-        int state= o.getState();
-         for (int i = 0; i <= state; i++) {
-             request.setAttribute("active"+i,"active");
-         }
-        
-        request.setAttribute("OrderDetailList",OrderDetailList);      
+
+    private void serviceOrderDetail(HttpServletRequest request, HttpServletResponse response) {
+        String orderidString = request.getParameter("orderID");
+        int orderid = Integer.parseInt(orderidString);
+        Order o = oDao.getOrderByOrderID(orderid);
+        ArrayList<OrderDetail> OrderDetailList = odDao.getAllOrderDetail(orderid);
+        request.setAttribute("Order", o);
+        int state = o.getState();
+        for (int i = 0; i <= state; i++) {
+            request.setAttribute("active" + i, "active");
+        }
+
+        request.setAttribute("OrderDetailList", OrderDetailList);
         sendDispatcher(request, response, "order/orderdetail.jsp");
     }
-
 
     public void sendDispatcher(HttpServletRequest request, HttpServletResponse response, String path) {
         try {
@@ -358,5 +362,4 @@ public class CartController extends HttpServlet {
         return "Short description";
     }// </editor-fold>
 
-   
 }
