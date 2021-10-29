@@ -40,7 +40,7 @@ public class GalleryDAO extends BaseDAO {
 
     public int addGallery(Gallery g) {
         int n = 0;
-        String xSql = "INSERT INTO [Bmazon].[dbo].[Gallery]([productID] ,[productTypeID] ,[link],[status])\n"
+        String xSql = "INSERT INTO Gallery(productID ,productTypeID ,link,status)\n"
                 + "VALUES (?, ?,? ,?)";
         try {
             pre = conn.prepareStatement(xSql);
@@ -89,7 +89,7 @@ public class GalleryDAO extends BaseDAO {
 
     public Gallery getGalleryById(int id) {
         Gallery gallery = new Gallery();
-        String sql = "SELECT * FROM [Bmazon].[dbo].[Gallery] where galleryID=" + id;
+        String sql = "SELECT * FROM Gallery where galleryID=" + id;
         try {
             pre = conn.prepareStatement(sql);
             rs = pre.executeQuery();
@@ -110,7 +110,7 @@ public class GalleryDAO extends BaseDAO {
 
     public int changeStatus(int id, int status) {
         int n = 0;
-        String sql = "UPDATE [Gallery] SET status = ? WHERE galleryID = ? ";
+        String sql = "UPDATE Gallery SET status = ? WHERE galleryID = ? ";
         try {
             pre = conn.prepareStatement(sql);
             pre.setInt(1, (status == 1 ? 1 : 0));
@@ -124,7 +124,7 @@ public class GalleryDAO extends BaseDAO {
 
     public List<Gallery> getAllGallery() {
         List<Gallery> list = new ArrayList<>();
-        String xSql = "select * from [Gallery] order by productID asc";
+        String xSql = "select * from Gallery order by productID asc";
         try {
             pre = conn.prepareStatement(xSql);
             rs = pre.executeQuery();
@@ -174,7 +174,7 @@ public class GalleryDAO extends BaseDAO {
 
     public List<Gallery> getAllGalleryOfProduct(int pid) {
         List<Gallery> list = new ArrayList<>();
-        String xSql = "select * from [Gallery] where productID =" + pid + "";
+        String xSql = "select * from Gallery where productID =" + pid + "";
         try {
             pre = conn.prepareStatement(xSql);
             rs = pre.executeQuery();
@@ -194,7 +194,7 @@ public class GalleryDAO extends BaseDAO {
 
     public String getSampleOfProduct(int pid) {
         String s = null;
-        String xSql = "select top 1 link from [Gallery] WHERE productID =?";
+        String xSql = "select top 1 link from Gallery WHERE productID =?";
         try {
             pre = conn.prepareStatement(xSql);
             pre.setInt(1, pid);
@@ -210,7 +210,7 @@ public class GalleryDAO extends BaseDAO {
 
     public String getImageByProductTypeID(String ps) {
         String s = null;
-        String xSql = "select top 1 link from [Gallery] WHERE productTypeID = ?";
+        String xSql = "select top 1 link from Gallery WHERE productTypeID = ?";
         try {
             pre = conn.prepareStatement(xSql);
             pre.setString(1, ps);
@@ -226,7 +226,7 @@ public class GalleryDAO extends BaseDAO {
 
     public List<Gallery> getAllImageByProductTypeID(String ptypeID) {
         List<Gallery> list = new ArrayList<>();
-        String xSql = "select * from [Gallery] WHERE productTypeID = ?";
+        String xSql = "select * from Gallery WHERE productTypeID = ?";
         try {
             pre = conn.prepareStatement(xSql);
             pre.setString(1, ptypeID);
