@@ -51,6 +51,7 @@ public class AdminController extends HttpServlet {
      * @throws ServletException if a servlet-specific error occurs
      * @throws IOException if an I/O error occurs
      */
+    OrderDAO daoorder =  new OrderDAO();
     ProductCategoryDAO daopc = new ProductCategoryDAO();
     ProductGenreDAO daopg = new ProductGenreDAO();
     SellerDAO daoseller = new SellerDAO();
@@ -277,6 +278,25 @@ public class AdminController extends HttpServlet {
             if (service.equalsIgnoreCase("activeuserAuthor")) {
                 serviceActiveUserAuthor(service, request, response);
             }
+            
+            // <editor-fold defaultstate="collapsed" desc="Order Response service. Click on the + sign on the left to edit the code.">
+            //OrderResponse
+            if (service.equalsIgnoreCase("orderResponse")) {
+                serviceOrderResponse(service, request, response);
+            }
+            //PagingOrderRespone
+            if (service.equalsIgnoreCase("pagingSellerResponse")) {
+                serviceSellerResponse(service, request, response);
+            }
+            //Accept Seller Request
+            if (service.equalsIgnoreCase("acceptSeller")) {
+                serviceAcceptSellerRequest(service, request, response);
+            }
+            //Deny Seller Request
+            if (service.equalsIgnoreCase("denySeller")) {
+                serviceDenySellerRequest(service, request, response);
+            }
+            //</editor-fold>
 
             // <editor-fold defaultstate="collapsed" desc="Seller Response. Click on the + sign on the left to edit the code.">
             //SellerResposne
@@ -292,7 +312,7 @@ public class AdminController extends HttpServlet {
                 serviceDenySellerRequest(service, request, response);
             }
             //</editor-fold>
-            
+
             // <editor-fold defaultstate="collapsed" desc="Role serive. Click on the + sign on the left to edit the code.">
             //Role Display
             if (service.equalsIgnoreCase("roleDisplay")) {
@@ -1683,13 +1703,14 @@ public class AdminController extends HttpServlet {
         sendDispatcher(request, response, "admin/categorymanagement.jsp");
     }//</editor-fold>
 
+    // <editor-fold defaultstate="collapsed" desc="User Authorization Method. Click on the + sign on the left to edit the code.">
     public void serviceUserAuthorization(String service, HttpServletRequest request, HttpServletResponse response) {
         request.setAttribute("service", service);
         HashMap<User, Role> listUser = daouser.getAllAuthorizationUser();
         request.setAttribute("listUser", listUser);
         sendDispatcher(request, response, "admin/authorization/userAuthorization.jsp");
     }
-    
+
     public void serviceDeleteUserAuthor(String service, HttpServletRequest request, HttpServletResponse response) {
         int userid = Integer.parseInt(request.getParameter("userid"));
         daouser.changeStatus(userid, 0);
@@ -1721,7 +1742,25 @@ public class AdminController extends HttpServlet {
         request.setAttribute("service", "userAuthorization");
         sendDispatcher(request, response, "admin/authorization/userAuthorization.jsp");
     }
+    // </editor-fold>
     
+    // <editor-fold defaultstate="collapsed" desc="Order Response Method. Click on the + sign on the left to edit the code.">
+    public void serviceOrderResponse(String service, HttpServletRequest request, HttpServletResponse response){
+        List<Order> listOrderPaging = daoorder.getAllPagingOrder(1, 5, "");
+        List<Order> listRequestOrder = daoorder.getAllOrder();
+        int totalPage = listRequestOrder.size() / 5;
+        if (listRequestOrder.size() > 5) {
+            totalPage += 1;
+        }
+        request.setAttribute("index", 1);
+        request.setAttribute("totalPage", totalPage);
+        request.setAttribute("listOrder", listOrderPaging);
+        request.setAttribute("service", service);
+        sendDispatcher(request, response, "admin/orderRespone.jsp");
+        
+    }
+    // </editor-fold>
+
     // <editor-fold defaultstate="collapsed" desc="Seller Response Method. Click on the + sign on the left to edit the code.">
     public void serviceSellerResponse(String service, HttpServletRequest request, HttpServletResponse response) {
         request.setAttribute("service", service);
@@ -1762,7 +1801,7 @@ public class AdminController extends HttpServlet {
         sendDispatcher(request, response, "admin/authorization/sellerResponse.jsp");
     }
     // </editor-fold>
-    
+
     // <editor-fold defaultstate="collapsed" desc="Role methods. Click on the + sign on the left to edit the code.">
     public void serviceRoleManagement(String service, HttpServletRequest request, HttpServletResponse response) {
         request.setAttribute("service", service);
@@ -1968,5 +2007,7 @@ public class AdminController extends HttpServlet {
     public String getServletInfo() {
         return "Short description";
     }// </editor-fold>
+
+    
 
 }

@@ -190,8 +190,10 @@ public class OrderDAO extends BaseDAO {
         public static void main(String[] args) {
         
         OrderDAO odao= new OrderDAO();
-        Order obj= odao.getOrderByOrderID(10);
-        System.out.println(obj);
+        List<Order> listOrder = odao.getAllPagingOrder(1, 5, "");
+            for (Order order : listOrder) {
+                System.out.println(order.getShipCity());
+            }
                 
     }
 

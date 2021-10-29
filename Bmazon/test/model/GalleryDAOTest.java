@@ -175,10 +175,10 @@ public class GalleryDAOTest {
     @Test
     public void testChangeStatusGivenStatusEqual0Return1() {
         System.out.println("changeStatus");
-        int id = 0;
+        int id = 1;
         int status = 0;
         GalleryDAO instance = new GalleryDAO();
-        int expResult = 0;
+        int expResult = 1;
         int result = instance.changeStatus(id, status);
         assertEquals(expResult, result);
     }
@@ -186,10 +186,10 @@ public class GalleryDAOTest {
     @Test
     public void testChangeStatusGivenStatusEqual1Return1() {
         System.out.println("changeStatus");
-        int id = 0;
+        int id = 1;
         int status = 1;
         GalleryDAO instance = new GalleryDAO();
-        int expResult = 0;
+        int expResult = 1;
         int result = instance.changeStatus(id, status);
         assertEquals(expResult, result);
     }
@@ -202,7 +202,7 @@ public class GalleryDAOTest {
         System.out.println("getAllGallery");
         GalleryDAO instance = new GalleryDAO();
         List<Gallery> result = instance.getAllGallery();
-        assertNotNull(result);
+        assertEquals(288, result.size());
     }
 
     /**
@@ -330,7 +330,7 @@ public class GalleryDAOTest {
         GalleryDAO instance = new GalleryDAO();
         List<Gallery> expResult = new ArrayList<>();
         List<Gallery> result = instance.getAllImageByProductTypeID(ptypeID);
-        assertEquals(expResult, result);
+        assertEquals(0, result.size());
     }
 
     @Test
