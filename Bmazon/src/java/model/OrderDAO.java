@@ -228,7 +228,7 @@ public class OrderDAO extends BaseDAO {
 
     public List<Order> getOrderByUser(int userID) {
         List<Order> list = new ArrayList<>();
-        String sql = "select * from [Order] where userID = " + userID + "and status = 1";
+        String sql = "select * from [Order] where userID = " + userID + "order by orderDate desc ";
         ResultSet rs = dbConn.getData(sql);
         try {
             while (rs.next()) {

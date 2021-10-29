@@ -3,6 +3,7 @@
     Created on : Sep 12, 2021, 3:07:53 PM
     Author     : Admin
 --%>
+<%@page import="model.ShipCompanyDAO"%>
 <%@page import="model.GalleryDAO"%>
 <%@page import="model.ProductDAO"%>
 <%@page import="entity.OrderDetail"%>
@@ -22,6 +23,7 @@
     ProductTypeDAO ptd = new ProductTypeDAO();
     ProductDAO pdao = new ProductDAO();
     GalleryDAO gDao = new GalleryDAO();
+     ShipCompanyDAO scdao= new ShipCompanyDAO();
 
 %>
 
@@ -66,19 +68,29 @@
                         <h6>Order ID: <%=order.getOrderID()%></h6>
                         <article class="card">
                             <div class="card-body row" style="padding: 10px;">
-                                <div class="col"> <strong>Estimated Delivery time:</strong> <br><%=order.getRequiredDate()%> </div>
-                                <div class="col"> <strong>Shipping BY:</strong><%=order.getCompanyID()%> <br>  | <i class="fa fa-phone"></i><%=order.getShipPhone()%> </div>
+                                <div class="col"> 
+                                    <strong>Ship Name :</strong> <%=order.getShipName()%> <br>
+                                    <strong>Ship Address :</strong><%=order.getShipAddress()%><br>
+                                    <strong>Ship City :</strong><%=order.getShipCity()%><br>
+
+                                </div>
+                                <div class="col"> 
+                                    <strong>Shipping BY:</strong><%=scdao.getShipCompanyById(order.getCompanyID()).getCompanyName() %> <br> 
+                                    <strong><i class="fa fa-phone"></i></strong> <%=order.getShipPhone()%> <br>
+                                </div>
                                 <div class="col"> <strong>Status:</strong> <br> <%=state%></div>
-                                <div class="col"> <strong>Payment Method:</strong> <br> <%=order.getPaymentMethod()%><br> <%=nf.format(order.getTotal())%> </div>
+                                <div class="col"> <strong>Payment Method:</strong> <%=order.getPaymentMethod()%><br>
+                                    <strong>Order Value:</strong> <%=nf.format(order.getTotal())%>
+                                </div>
                             </div>
                         </article>
                         <div class="track">
-                            <div class="step ${active0}"> <span class="icon"> <i class="fa fa-check"></i> </span> <span class="text">Waiting for accept</span> </div>
-                            <div class="step ${active1}"> <span class="icon"> <i class="fa fa-user"></i> </span> <span class="text"> Order confirmed</span> </div>
-                            <div class="step ${active2}"> <span class="icon"> <i class="fa fa-truck"></i> </span> <span class="text"> On the way </span> </div>
-                            <div class="step ${active3}"> <span class="icon"> <i class="fas fa-box"></i> </span> <span class="text">Ready for pickup</span> </div>
+                            <div class="step ${active0}"> <span class="icon"> <i class="fa fa-check"></i> </span> <span class="text">Waiting for accept </span> </div>
+                            <div class="step ${active1}"> <span class="icon"> <i class="fa fa-user"></i> </span> <span class="text"> Order confirmed <br><%=order.getOrderDate() %></span> </div>
+                            <div class="step ${active2}"> <span class="icon"> <i class="fa fa-truck"></i> </span> <span class="text"> On the way <br><%=order.getRequiredDate() %> </span> </div>
+                            <div class="step ${active3}"> <span class="icon"> <i class="fas fa-box"></i> </span> <span class="text">Ready for pickup <br><%=order.getShippedDate() %></span> </div>
                         </div>
-                        <hr>
+                        <br>
                         <ul class="row">
                             <%for (OrderDetail od : list) {
                                     ProductType pt = ptd.getProductTypeByPTypeID(od.getProductTypeId());
@@ -86,12 +98,15 @@
                                     String image = "images/" + gDao.getImageByProductTypeID(pt.getProductTypeId());
 
                             %>
-                            <li class="col-md-4">
+                            <li class="col-md-12">
                                 <figure class="itemside mb-3">
                                     <div class="aside"><img src="<%=image%>" class="img-sm border"></div>
                                     <figcaption class="info align-self-center">
-                                        <p class="title"><%=p.getProductName()%> <br> <%=pt.getColor() + " " + pt.getSize()%></p> <span class="text-muted"> <%=pt.getPrice()%> </span>
+                                        <p class="title"><%=p.getProductName()%> <br> <%=pt.getColor() + " " + pt.getSize()%></p> 
+                                        <div>
+                                        <span class="text-muted"><strong>Unit Price: </strong> <%=nf.format(Double.parseDouble(pt.getPrice()))%> </span>
                                         <br><strong>Quantity: </strong><span><%=od.getQuantity()%></span>
+                                        </div>
                                     </figcaption>
                                 </figure>
                             </li>
