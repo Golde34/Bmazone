@@ -20,8 +20,37 @@ import java.util.logging.Logger;
  */
 public class CommentDAO extends BaseDAO {
 
-    
     BaseDAO dbConn = new BaseDAO();
+    
+    public int insertComment(Comment obj) {
+        int n = 0;
+        String sql = "insert into Comment(productID,userId,content,rating,status) values (?,?,?,?,1)";
+        try {
+            pre = conn.prepareStatement(sql);
+            pre.setInt(1, obj.getProductID());
+            pre.setInt(2, obj.getUserID());
+            pre.setString(3, obj.getContent());
+            pre.setDouble(4, obj.getRating());
+            n = pre.executeUpdate();
+        } catch (SQLException ex) {
+            Logger.getLogger(CommentDAO.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return n;
+    }
+    
+    public int changeStatus(int id, int status) {
+        int n = 0;
+        String sql = "update [Comment] set status = ? where [commentID] = ?";
+        try {
+            pre = conn.prepareStatement(sql);
+            pre.setInt(1, status == 1 ? 1 : 0);
+            pre.setInt(2, id);
+            n = pre.executeUpdate();
+        } catch (SQLException ex) {
+            Logger.getLogger(ProductDAO.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return n;
+    }
     
     public int getPageNumber(String search, int pid) {
         int num = 0;
@@ -69,42 +98,35 @@ public class CommentDAO extends BaseDAO {
         return list;
     }
 
-    public int changeStatus(int id, int status) {
-        int n = 0;
-        String sql = "update [Comment] set status = ? where [commentID] = ?";
-        try {
-            pre = conn.prepareStatement(sql);
-            pre.setInt(1, status == 1 ? 1 : 0);
-            pre.setInt(2, id);
-            n = pre.executeUpdate();
-        } catch (SQLException ex) {
-            Logger.getLogger(ProductDAO.class.getName()).log(Level.SEVERE, null, ex);
-        }
-        return n;
-    }
-    
-    public int insertComment(Comment obj) {
-        int n = 0;
-        String sql = "insert into Comment(productID,userId,content,rating,status) values (?,?,?,?,1)";
-        try {
-            pre = conn.prepareStatement(sql);
-            pre.setInt(1, obj.getProductID());
-            pre.setInt(2, obj.getUserID());
-            pre.setString(3, obj.getContent());
-            pre.setDouble(4, obj.getRating());
-            n = pre.executeUpdate();
-        } catch (SQLException ex) {
-            Logger.getLogger(CommentDAO.class.getName()).log(Level.SEVERE, null, ex);
-        }
-        return n;
-    }
-
     public ArrayList<Comment> getCommentsByProductId(int pid) {
         ArrayList<Comment> comments = new ArrayList<>();
         String sql = "select * from Comment where productID  = ? order by commentID desc";
         try {
             pre = conn.prepareStatement(sql);
             pre.setInt(1, pid);
+            rs= pre.executeQuery();
+            while (rs.next()) {
+                Comment x = new Comment();
+                x.setCommentID(rs.getInt("commentID"));
+                x.setProductID(rs.getInt("productID"));
+                x.setUserID(rs.getInt("userId"));
+                x.setContent(rs.getString("content"));
+                x.setRating(rs.getInt("rating"));
+                x.setStatus(rs.getInt("status"));
+                comments.add(x);
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(CommentDAO.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return comments;
+    }
+    
+    public ArrayList<Comment> getCommentsByUserId(int uid) {
+        ArrayList<Comment> comments = new ArrayList<>();
+        String sql = "select * from Comment where userId  = ? order by commentID desc";
+        try {
+            pre = conn.prepareStatement(sql);
+            pre.setInt(1, uid);
             rs= pre.executeQuery();
             while (rs.next()) {
                 Comment x = new Comment();

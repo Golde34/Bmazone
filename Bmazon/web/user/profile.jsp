@@ -4,6 +4,9 @@
     Author     : Admin
 --%>
 
+<%@page import="entity.Comment"%>
+<%@page import="java.util.ArrayList"%>
+<%@page import="model.CommentDAO"%>
 <%@page import="model.UserDAO"%>
 <%@page import="model.DBConnection"%>
 <%@page import="entity.User"%>
@@ -15,10 +18,9 @@
     <head>
         <%
             User x = (User) request.getSession().getAttribute("currUser");
-
-            DBConnection dbCon = new DBConnection();
             UserDAO daoUser = new UserDAO();
-//            DAOGalery daoGalery = new DAOGalery(dbCon);
+            CommentDAO daoComment = new CommentDAO();
+            ArrayList<Comment> comments = daoComment.getCommentsByUserId(Integer.parseInt(x.getUserId()));
 
         %>       
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
@@ -152,7 +154,26 @@
                                     <div class="right-component p-4 rounded shadow-sm bg-light">
                                         <h3 class="mb-0"><strong>Activities</strong></h3>
                                         <hr>
+                                        <%if (comments.isEmpty()) {%>
                                         <p class="font-italic mb-0"><%=x.getPublicName()%> has no activities to share.</p>
+                                        <%} else {%>
+                                        <%
+                                            for (Comment elem : comments) {
+                                        %>     
+                                        <div class="comment_box">
+                                            <div class="col-md-6">
+                                                <p class="comment_content">Product: <%=daoUser.getUserById(elem.getUserId()).getFullname()%></p> 
+                                                <p class="comment_content">Rating:<%=elem.getRating()%>/5</p>
+                                            </div>                          
+                                            <div class="col-md-5"> </div>
+                                            <div class="col-md-1"> </div>
+                                            <div class="col-md-12"> 
+                                                <div style="border: 1px solid black; border-radius: 5px;padding: 10px;">
+                                                    <p class="comment_content " > <%=elem.getContent()%></p> 
+                                                </div> 
+                                            </div>
+                                        </div><hr style="color: black;">
+                                        <%} }%>
                                     </div>
                                 </div>
                             </div>

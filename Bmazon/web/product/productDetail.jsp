@@ -89,16 +89,12 @@
                             <div class="product-info">
                                 <div class="product-name"><%=product.getProductName()%></div>
                                 <div class="reviews-counter">
-                                    <div class="rate1">
-                                        <input type="radio" id="star5" name="rate" value="5" checked />
+                                    <div class="rate">
                                         <label for="star5" title="text">5 stars</label>
-                                        <input type="radio" id="star4" name="rate" value="4" checked />
                                         <label for="star4" title="text">4 stars</label>
                                         <input type="radio" id="star3" name="rate" value="3" checked />
                                         <label for="star3" title="text">3 stars</label>
-                                        <input type="radio" id="star2" name="rate" value="2" />
                                         <label for="star2" title="text">2 stars</label>
-                                        <input type="radio" id="star1" name="rate" value="1" />
                                         <label for="star1" title="text">1 star</label>
                                     </div>
                                     <span>3 Reviews</span>
@@ -193,38 +189,32 @@
                                 for (Comment elem : comments) {
                             %>                   
                             <div class="comment_box">
-                                <div class="col-md-6"><p class="comment_content">From: <%=daoUser.getUserById(String.valueOf(elem.getUserID())).getFullname()%></p> </div>
+                                <div class="col-md-6">
+                                    <p class="comment_content">From: <%=daoUser.getUserById(String.valueOf(elem.getUserID())).getFullname()%></p> 
+                                    <p class="comment_content">Rating:<%=elem.getRating()%>/5</p>
+                                </div>                          
+                                <div class="col-md-5"> </div>
                                 <div class="col-md-1"> </div>
-                                <div class="col-md-5"><p class="comment_content">Rating:<%=elem.getRating()%>/100</p> </div>
                                 <div class="col-md-12"> 
                                     <div style="border: 1px solid black; border-radius: 5px;padding: 10px;">
                                         <p class="comment_content " > <%=elem.getContent()%></p> 
                                     </div> 
                                 </div>
-                            </div>
+                            </div><hr style="color: black;">
                             <% }
                             } else {%> 
                             <p class="mb-20">There are no reviews yet.</p>
                             <%}%>
+                            <br>
                             <%
                                 if (x != null && !daoComment.checkExistComment(product.getProductID(), Integer.parseInt(x.getUserId()))) {%>
                             <form action="ProductDetailControllerMap" class="review-form">
                                 <div class="form-group">
-                                    <label>Your rating</label>
-                                    <div class="reviews-counter">
-                                        <div class="rate">
-                                            <input type="radio" id="star5" name="rate" value="5" />
-                                            <label for="star5" title="text">5 stars</label>
-                                            <input type="radio" id="star4" name="rate" value="4" />
-                                            <label for="star4" title="text">4 stars</label>
-                                            <input type="radio" id="star3" name="rate" value="3" />
-                                            <label for="star3" title="text">3 stars</label>
-                                            <input type="radio" id="star2" name="rate" value="2" />
-                                            <label for="star2" title="text">2 stars</label>
-                                            <input type="radio" id="star1" name="rate" value="1" />
-                                            <label for="star1" title="text">1 star</label>
-                                        </div>
-                                    </div>
+                                    
+                                    <p style="color: black; font-size: 18px;">Your rating:    
+                                        <input name="rating" type="number" min="0" max="5" style="width: 60px; height: 40px;"> 
+                                       <i style="color: #ffe793; height: 30px; width: 30px; " class="fas fa-star"></i>
+                                    </p>      
                                     <div class="form-group">
                                         <label>Your message</label>
                                         <textarea name="content" class="form-control" rows="10"></textarea>
@@ -242,15 +232,11 @@
         </div>
 
         <section class="section sec_dien_thoai" id="section_1788051855">
-
             <section class="section sec_dien_thoai" id="section_1788051855">
-
                 <div class="section-content relative">
 
                     <div class="gap-element" style="display:block; height:auto; padding-top:30px" class="clearfix"></div>
-
-                    <br><br>
-
+                    <br>
                     <div class="row row-collapse align-equal"  id="row-1706731289">
                         <div class="text">
                             <div class="col-inner text-center" >
