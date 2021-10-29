@@ -821,16 +821,16 @@ INSERT INTO Gallery(productID,productTypeID,link,status)VALUES (89,'Pr89Ty1','Pr
 INSERT INTO Gallery(productID,productTypeID,link,status)VALUES (90,'Pr90Ty1','Pr90Ty1Ga1.jpg',1);
 
 
---Order
-INSERT INTO Order(userID,orderDate,requiredDate,shippedDate,shipName,shipAddress,shipCity,shipPhone,companyID,shipMoney,paymentMethod,total,state,status)VALUES (1,GETDATE(),GETDATE(),GETDATE(),'Viet','Kim Thanh','Hai Duong',0983586778,1,30000,'COD',20030000, 0, 1);
-INSERT INTO Order(userID,orderDate,requiredDate,shippedDate,shipName,shipAddress,shipCity,shipPhone,companyID,shipMoney,paymentMethod,total,state,status)VALUES (2,GETDATE(),GETDATE(),GETDATE(),'Thinh','Thach That','Ha Noi',0938693856,2,30000,'COD',730000, 0, 1);
+-- Order
+INSERT INTO `Order`(userID,orderDate,requiredDate,shippedDate,shipName,shipAddress,shipCity,shipPhone,companyID,shipMoney,paymentMethod,total,state,status)VALUES (1,GETDATE(),GETDATE(),GETDATE(),'Viet','Kim Thanh','Hai Duong',0983586778,1,30000,'COD',20030000, 0, 1);
+INSERT INTO `Order`(userID,orderDate,requiredDate,shippedDate,shipName,shipAddress,shipCity,shipPhone,companyID,shipMoney,paymentMethod,total,state,status)VALUES (2,GETDATE(),GETDATE(),GETDATE(),'Thinh','Thach That','Ha Noi',0938693856,2,30000,'COD',730000, 0, 1);
 
 
---OrderDetail
+-- OrderDetail
 INSERT INTO OrderDetail(orderID,productTypeID,productName,price,quantity,status)VALUES (1,'Pr1Ty1','Laptop Acer Nitro 5',20000000,1,1);
 INSERT INTO OrderDetail(orderID,productTypeID,productName,price,quantity,status)VALUES (2,'Pr2Ty1','Chuot Logitech M102',700000,1,1);
 
---Comment
+-- Comment
 INSERT INTO Comment(productID,userId,content,rating,status)VALUES(1,1,'tester',4.2,1);
 
 
