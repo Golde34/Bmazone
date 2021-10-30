@@ -92,7 +92,7 @@ public class GenreDAO extends BaseDAO {
     }
 
     public ArrayList<Genre> getHomeGenre() {
-        String sql = "select top 16* from Genre";
+        String sql = "select top 16 * from Genre";
         ArrayList<Genre> list = new ArrayList<>();
         Genre x = null;
         int genreID;

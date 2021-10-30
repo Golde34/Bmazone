@@ -74,8 +74,7 @@ public class GalleryDAO extends BaseDAO {
 
     public int getPageNumber(String search) {
         int num = 0;
-        String xSql = "SELECT COUNT(*) from Gallery g join ProductType pt on g.productTypeID=pt.productTypeId join Product p on pt.productID=p.productID join [User] u on p.sellerID=u.userID\n"
-                + "   where p.productName like '%" + search + "%' or pt.size like '%" + search + "%' or pt.color like '%" + search + "%' or u.fullname like '%" + search + "%'";
+        String xSql = "SELECT COUNT(*) AS NumberOfGallerys FROM gallery,product where gallery.productID=product.productID and product.productName like '%"+search+"%'";
         ResultSet rs = dbConn.getData(xSql);
         try {
             if (rs.next()) {
@@ -143,17 +142,13 @@ public class GalleryDAO extends BaseDAO {
     }
 
     public List<Gallery> getAllPagingGallery(int index, int numOfRow, String search) {
+        int start=(index-1)*numOfRow;
         List<Gallery> list = new ArrayList<>();
-        String xSql = "declare @PageNo INT =" + index + "\n"
-                + "declare @PageSize INT=" + numOfRow + "\n"
-                + "SELECT * from(\n"
-                + "SELECT g.*,\n"
-                + "ROW_NUMBER() over (order by g.galleryID) as RowNum\n"
-                + "  FROM Gallery g join ProductType pt on g.productTypeID=pt.productTypeId join Product p on pt.productID=p.productID join Seller s on p.sellerID=s.sellerID\n"
-                + "   where p.productName like '%" + search + "%' or pt.size like '%" + search + "%' or pt.color like '%" + search + "%' or s.sellerShopName like '%" + search + "%')T\n"
-                + "where T.RowNum between ((@PageNo-1)*@PageSize)+1 and (@PageNo*@PageSize)";
+        String xSql = "SELECT * FROM gallery,product where gallery.productID=product.productID and product.productName like '%iphone%' LIMIT ?,?";
         try {
             pre = conn.prepareStatement(xSql);
+            pre.setInt(1, start);
+            pre.setInt(2, numOfRow);
             rs = pre.executeQuery();
             while (rs.next()) {
                 Gallery gallery = new Gallery();
@@ -244,7 +239,10 @@ public class GalleryDAO extends BaseDAO {
         }
         return list;
     }
-
+    public static void main(String[] args) {
+        GalleryDAO dao = new  GalleryDAO();
+        System.out.println(dao.getPageNumber("iphone"));
+    }
 //    public List<Gallery> getGalleryBySizeAndColor(ProductType p) {
 //        List<Gallery> list = new ArrayList<>();
 //        xSql = "select from ";

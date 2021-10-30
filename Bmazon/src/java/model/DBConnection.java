@@ -18,10 +18,11 @@ import java.util.logging.Logger;
  * @author Admin
  */
 public class DBConnection {
+
     Connection connection = null;
-        
+
     public DBConnection() {
-       try {
+        try {
             Class.forName("com.mysql.cj.jdbc.Driver");
             connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/bmazon", "root", "123456");
             System.out.println("Connect successfully !!");
@@ -31,10 +32,10 @@ public class DBConnection {
             Logger.getLogger(DBConnection.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
-    
-    public DBConnection(String URL, String username, String pass){
+
+    public DBConnection(String URL, String username, String pass) {
         try {
-           Class.forName("com.mysql.cj.jdbc.Driver");
+            Class.forName("com.mysql.cj.jdbc.Driver");
             connection = DriverManager.getConnection(URL, username, pass);
             System.out.println("Connect successfully !!");
         } catch (SQLException ex) {
@@ -43,12 +44,12 @@ public class DBConnection {
             Logger.getLogger(DBConnection.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
-    
-    public Connection getConnection(){
+
+    public Connection getConnection() {
         return connection;
     }
-    
-    public ResultSet getData(String sql){
+
+    public ResultSet getData(String sql) {
         ResultSet rs = null;
         try {
             Statement stm = connection.createStatement(ResultSet.TYPE_SCROLL_SENSITIVE, ResultSet.CONCUR_UPDATABLE);
