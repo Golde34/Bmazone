@@ -21,18 +21,20 @@ public class DBConnection {
     Connection connection = null;
 
     public DBConnection() {
-        try {
-            Class.forName("com.microsoft.sqlserver.jdbc.SQLServerDriver");
-            connection = DriverManager.getConnection("jdbc:sqlserver://localhost:1434;databaseName=Bmazon", "sa", "sa");
+       try {
+            Class.forName("com.mysql.cj.jdbc.Driver");
+            connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/bmazon", "root", "123456");
             System.out.println("Connect successfully !!");
-        } catch (ClassNotFoundException | SQLException ex) {
+        } catch (SQLException ex) {
+            Logger.getLogger(DBConnection.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (ClassNotFoundException ex) {
             Logger.getLogger(DBConnection.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
     
     public DBConnection(String URL, String username, String pass){
         try {
-            Class.forName("com.microsoft.sqlserver.jdbc.SQLServerDriver");
+           Class.forName("com.mysql.cj.jdbc.Driver");
             connection = DriverManager.getConnection(URL, username, pass);
             System.out.println("Connect successfully !!");
         } catch (ClassNotFoundException | SQLException ex) {

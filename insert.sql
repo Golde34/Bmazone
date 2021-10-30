@@ -263,7 +263,7 @@ INSERT INTO ProductCategory(productID,categoryId,status)VALUES (89,4,1);
 INSERT INTO ProductCategory(productID,categoryId,status)VALUES (90,6,1);
 
 
---ProductGenre
+-- ProductGenre
 INSERT INTO ProductGenre(productID,genreID,status)VALUES (1,2,1);
 INSERT INTO ProductGenre(productID,genreID,status)VALUES (2,2,1);
 INSERT INTO ProductGenre(productID,genreID,status)VALUES (3,3,1);
@@ -523,7 +523,7 @@ INSERT INTO ProductType(productTypeId,productID,size,color,price,wareHouseID,qua
 INSERT INTO ProductType(productTypeId,productID,size,color,price,wareHouseID,quantity,status)VALUES ('Pr90Ty1',90,'None','None',400000,6,20,1);
 
 
---ShipCompany
+-- ShipCompany
 INSERT INTO ShipCompany(companyName,unitCost,commitDate,status)VALUES ('J&T Express',1000,10,1);
 INSERT INTO ShipCompany(companyName,unitCost,commitDate,status)VALUES ('GHTK',9000,10,1);
 INSERT INTO ShipCompany(companyName,unitCost,commitDate,status)VALUES ('Viettel Post',9000,10,1);
@@ -531,7 +531,7 @@ INSERT INTO ShipCompany(companyName,unitCost,commitDate,status)VALUES ('giaohang
 INSERT INTO ShipCompany(companyName,unitCost,commitDate,status)VALUES ('SuperShip',9000,10,1);
 
 
---Galery
+-- Galery
 INSERT INTO Gallery(productID,productTypeID,link,status)VALUES (1,'Pr1Ty1','Pr1Ty1Ga1.jpg',1);
 INSERT INTO Gallery(productID,productTypeID,link,status)VALUES (1,'Pr1Ty1','Pr1Ty1Ga2.jpg',1);
 INSERT INTO Gallery(productID,productTypeID,link,status)VALUES (1,'Pr1Ty1','Pr1Ty1Ga3.jpg',1);
@@ -821,16 +821,16 @@ INSERT INTO Gallery(productID,productTypeID,link,status)VALUES (89,'Pr89Ty1','Pr
 INSERT INTO Gallery(productID,productTypeID,link,status)VALUES (90,'Pr90Ty1','Pr90Ty1Ga1.jpg',1);
 
 
---Order
-INSERT INTO Order(userID,orderDate,requiredDate,shippedDate,shipName,shipAddress,shipCity,shipPhone,companyID,shipMoney,paymentMethod,total,state,status)VALUES (1,GETDATE(),GETDATE(),GETDATE(),'Viet','Kim Thanh','Hai Duong',0983586778,1,30000,'COD',20030000, 0, 1);
-INSERT INTO Order(userID,orderDate,requiredDate,shippedDate,shipName,shipAddress,shipCity,shipPhone,companyID,shipMoney,paymentMethod,total,state,status)VALUES (2,GETDATE(),GETDATE(),GETDATE(),'Thinh','Thach That','Ha Noi',0938693856,2,30000,'COD',730000, 0, 1);
+-- Order
+INSERT INTO `Order`(userID,orderDate,requiredDate,shippedDate,shipName,shipAddress,shipCity,shipPhone,companyID,shipMoney,paymentMethod,total,state,status)VALUES (1,CURDATE(),CURDATE(),CURDATE(),'Viet','Kim Thanh','Hai Duong',0983586778,1,30000,'COD',20030000, 0, 1);
+INSERT INTO `Order`(userID,orderDate,requiredDate,shippedDate,shipName,shipAddress,shipCity,shipPhone,companyID,shipMoney,paymentMethod,total,state,status)VALUES (2,CURDATE(),CURDATE(),CURDATE(),'Thinh','Thach That','Ha Noi',0938693856,2,30000,'COD',730000, 0, 1);
 
 
---OrderDetail
+-- OrderDetail
 INSERT INTO OrderDetail(orderID,productTypeID,productName,price,quantity,status)VALUES (1,'Pr1Ty1','Laptop Acer Nitro 5',20000000,1,1);
 INSERT INTO OrderDetail(orderID,productTypeID,productName,price,quantity,status)VALUES (2,'Pr2Ty1','Chuot Logitech M102',700000,1,1);
 
---Comment
+-- Comment
 INSERT INTO Comment(productID,userId,content,rating,status)VALUES(1,1,'tester',4.2,1);
 
 

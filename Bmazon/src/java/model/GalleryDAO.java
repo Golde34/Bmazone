@@ -110,7 +110,7 @@ public class GalleryDAO extends BaseDAO {
 
     public int changeStatus(int id, int status) {
         int n = 0;
-        String sql = "UPDATE [Gallery] SET status = ? WHERE galleryID = ? ";
+        String sql = "UPDATE Gallery SET status = ? WHERE galleryID = ? ";
         try {
             pre = conn.prepareStatement(sql);
             pre.setInt(1, (status == 1 ? 1 : 0));

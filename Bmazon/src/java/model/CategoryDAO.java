@@ -12,6 +12,10 @@ public class CategoryDAO extends BaseDAO {
 
     BaseDAO dbConn = new BaseDAO();
 
+    public static void main(String[] args) {
+       CategoryDAO cd= new CategoryDAO();
+        System.out.println(cd.getAllCategories());
+    }
     public ArrayList<Category> getAllCategories() {
         String sql = "select * from Category WHERE status=1";
         ArrayList<Category> list = new ArrayList<>();

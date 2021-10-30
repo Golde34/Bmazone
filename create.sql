@@ -1,3 +1,5 @@
+create schema bmazon;
+use bmazon;
 CREATE TABLE `Role` (
 	roleID int UNSIGNED PRIMARY KEY NOT NULL,
 	roleName varchar(255),
@@ -77,7 +79,7 @@ CREATE TABLE Warehouse(
 CREATE TABLE Product (
 	productID int NOT NULL PRIMARY KEY AUTO_INCREMENT,
 	productName varchar(255) NOT NULL,
-	description varchar(255),
+	`description` varchar(1000),
 	rating real,
 	releaseDate date NOT NULL ,
 	sellerID int NOT NULL,
@@ -165,7 +167,7 @@ CREATE TABLE OrderDetail(
     FOREIGN KEY (productTypeID) references ProductType(productTypeID)
 );
 
-CREATE TABLE Comment(
+CREATE TABLE `Comment`(
 	commentID int not null PRIMARY KEY AUTO_INCREMENT,
 	productID int not null,
 	userId int not null,
