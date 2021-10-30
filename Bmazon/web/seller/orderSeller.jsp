@@ -4,6 +4,8 @@
     Author     : DELL
 --%>
 
+<%@page import="model.OrderDetailDAO"%>
+<%@page import="model.ProductDAO"%>
 <%@page import="entity.Genre"%>
 <%@page import="entity.Category"%>
 <%@page import="model.GenreDAO"%>
@@ -63,6 +65,8 @@
         CategoryDAO cateDAO = new CategoryDAO();
         ProductGenreDAO pgdao = new ProductGenreDAO();
         GenreDAO genreDAO = new GenreDAO();
+        ProductDAO pDAO = new ProductDAO();
+        OrderDetailDAO odDAO = new OrderDetailDAO();
 
         ArrayList<Category> listCategory = cateDAO.getAllCategories();
         ArrayList<Genre> listGenre = genreDAO.getAllGenres();
@@ -180,6 +184,7 @@
                                                     int proID = product.getProductID();
                                                     String genreid = pgdao.getGenreIdByProductId(product.getProductID());
                                                     Genre genre = genreDAO.getGenreById(Integer.parseInt(genreid));
+                                                    int sold = odDAO.sumSoldProductByProductID(Integer.toString(proID));
                                             %>
                                             <tr>
                                                 <td><div><%= product.getProductName()%></div></td>
@@ -189,7 +194,7 @@
                                                 <td><div><a href="SellerControllerMap?service=orderdetail&productid=<%= product.getProductID()%>"><button class="btn btn-primary">Detail</button></a>
                                                     </div></td>
                                                 <td>
-                                                    <div>10 sold</div>
+                                                    <div><%= sold %></div>
                                                 </td></tr>
                                                 <% } %>
                                         </tbody>

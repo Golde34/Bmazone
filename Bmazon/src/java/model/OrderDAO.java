@@ -76,7 +76,7 @@ public class OrderDAO extends BaseDAO {
         String sql = "INSERT INTO `Order`"
                 + "           (`userID`,`orderDate`,`requiredDate`,`shippedDate`,`shipName`,`shipAddress`,`shipCity`\n"
                 + "           ,`shipPhone`,`companyID`,`shipMoney`,`paymentMethod`,`total`,`state`,`status`)"
-                + "     VALUES (?,GETDATE(),GETDATE(),GETDATE(),?,?,?,?,?,?,?,?,?,1)";
+                + "     VALUES (?,now(),now(),now(),?,?,?,?,?,?,?,?,?,1)";
         try {
             pre = conn.prepareStatement(sql);
             pre.setString(1, obj.getUserID());
@@ -182,9 +182,9 @@ public class OrderDAO extends BaseDAO {
         public static void main(String[] args) {
         
         OrderDAO odao= new OrderDAO();
-        List<Order> listOrder = odao.getAllPagingOrder(1, 5, "");
+        List<Order> listOrder = odao.getOrderByUser(4);
             for (Order order : listOrder) {
-                System.out.println(order.getShipCity());
+                System.out.println(order.getShipName());
             }
                 
     }
@@ -222,7 +222,7 @@ public class OrderDAO extends BaseDAO {
 
     public List<Order> getOrderByUser(int userID) {
         List<Order> list = new ArrayList<>();
-        String sql = "select * from `Order` where userID = " + userID + "order by orderDate desc ";
+        String sql = "select * from `Order` where userID = " + userID + " order by orderDate desc ";
         ResultSet rs = dbConn.getData(sql);
         try {
             while (rs.next()) {
@@ -250,7 +250,7 @@ public class OrderDAO extends BaseDAO {
     }
     
     public Order getLatestOrder(String userID) {
-        String sql = "SELECT TOP 1 * FROM `Order` WHERE userID = '" + userID + "' ORDER BY OrderID desc";
+        String sql = "SELECT * FROM `Order` WHERE userID = '" + userID + "' ORDER BY OrderID desc limit 0,1";
         ResultSet rs = dbConn.getData(sql);
         try {
             if (rs.next()) {

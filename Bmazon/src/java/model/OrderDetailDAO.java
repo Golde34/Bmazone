@@ -107,4 +107,22 @@ public class OrderDetailDAO extends BaseDAO {
         }
         return result;
     }
+    
+    public int sumSoldProductByProductID(String pid){
+        int result = 0;
+        String sql = "select sum(od.quantity), p.productID from OrderDetail od inner join ProductType pt on od.productTypeID=pt.productTypeId inner join Product p on pt.productID=p.productID\n" +
+                                "where p.productID=?\n" +
+                                "group by p.productID";
+        try {
+            pre = conn.prepareStatement(sql);
+            pre.setString(1, pid);
+            rs = pre.executeQuery();
+            if(rs.next()){
+                result = rs.getInt(1);
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(OrderDetailDAO.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return result;
+    }
 }
