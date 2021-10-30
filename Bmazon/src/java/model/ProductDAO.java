@@ -55,17 +55,13 @@ public class ProductDAO extends BaseDAO {
 
 //hieu
     public ArrayList<Product> getAllPagingProduct(int index, int numOfRow, String search) {
+        int start = (index - 1) * numOfRow;
         ArrayList<Product> list = new ArrayList<>();
-        String sql = "declare @PageNo INT =" + index + "\n"
-                + "declare @PageSize INT=" + numOfRow + "\n"
-                + "SELECT * from(\n"
-                + "SELECT p.*,s.sellerShopName,g.genreName,c.categoryName,\n"
-                + "ROW_NUMBER() over (order by p.productID) as RowNum\n"
-                + "  from Product p join Seller s on p.sellerID=s.sellerID join ProductCategory pc on p.productID=pc.productID join Category c on pc.categoryId=c.categoryID join ProductGenre pg on pg.productID=p.productID join Genre g on g.genreID=pg.genreID\n"
-                + "   where p.productName like '%" + search + "%' or c.categoryName like '%" + search + "%' or g.genreName like '%" + search + "%' or s.sellerShopName like '%" + search + "%')T\n"
-                + "where T.RowNum between ((@PageNo-1)*@PageSize)+1 and (@PageNo*@PageSize)";
+        String sql = "select * from product where productName like '%" + search + "%' limit ?,?";
         try {
             pre = conn.prepareStatement(sql);
+            pre.setInt(1, start);
+            pre.setInt(2, numOfRow);
             rs = pre.executeQuery();
             while (rs.next()) {
                 Product pro = new Product();
@@ -174,10 +170,12 @@ public class ProductDAO extends BaseDAO {
         }
         return list;
     }
+
     public static void main(String[] args) {
-        ProductDAO pd= new ProductDAO();
+        ProductDAO pd = new ProductDAO();
         System.out.println(pd.getProductSale().size());
     }
+
     public ArrayList<Product> getProductSale() {
         ArrayList<Product> list = new ArrayList<>();
         String sql = "SELECT * FROM Product limit 0,8";
@@ -533,8 +531,6 @@ public class ProductDAO extends BaseDAO {
         }
         return count;
     }
-
-    
 
     public ArrayList<Product> getProductByName(int index, String name) {
         ArrayList<Product> list = new ArrayList<>();

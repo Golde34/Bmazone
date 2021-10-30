@@ -68,7 +68,7 @@
                                                 <input id="search" style="width: 100%;" type="text" oninput="pagination()" placeholder="Search.." class="form-control">
                                             </div>
                                         </div>
-                                        <table class="table-bordered text-center" style="width: 100%;">
+                                        <table class="text-center" style="width: 100%;">
                                             <thead>
                                                 <tr>
                                                     <th style="width: 25%">Product Name</th>
@@ -76,8 +76,7 @@
                                                     <th style="width: 15%">Size</th>
                                                     <th style="width: 20%">Image</th>
                                                     <th style="width: 15%">Seller</th>
-                                                    <th style="width: 5%"></th>
-                                                    <th style="width: 10%"></th>
+                                                    <th style="width: 15%"></th>
                                                 </tr>
                                             </thead>
                                             <tbody id="gallery">
@@ -88,15 +87,10 @@
                                                 <td><%=order.getShipCity()%></td>
                                                 <td><%=order.getShipName()%></td>
                                                 <td><%=order.getShipPhone()%></td>
-                                                <td>
+                                                <td style='white-space: nowrap'>
                                                     <a href="AdminControllerMap?service=orderDetail&orderId=<%=order.getOrderID()%>"><button class="btn btn-primary">View</button></a>
-                                                </td>
-                                                <td>
-                                                    <% if(order.getStatus()==1){%>
-                                                    <a href="AdminControllerMap?service=acceptOrder&orderId=<%=order.getOrderID()%>" onclick="return confirm('Are you sure?');"><button class="btn btn-primary">Deactive</button></a>
-                                                    <%}else{%>
-                                                    <a href="AdminControllerMap?service=activegallery&galleryid=<%=order.getOrderID()%>" onclick="return confirm('Are you sure?');"><button class="btn btn-primary">Active</button></a>
-                                                    <%}%>
+                                                    <a href="AdminControllerMap?service=handleOrder&action=accept" onclick="return confirm('Are you sure?');"><button class="btn btn-primary">Accept</button></a>
+                                                    <a href="AdminControllerMap?service=handleOrder&orderId=refuse" onclick="return confirm('Are you sure?');"><button class="btn btn-primary">Refuse</button></a>
                                                 </td>
                                             </tr>
                                             <%}%>
@@ -160,9 +154,6 @@
         <!--   Core JS Files   -->
         <script src="${contextPath}/js/core/popper.min.js"></script>
         <script src="${contextPath}/js/core/bootstrap.min.js"></script>
-        <script src="${contextPath}/js/plugins/perfect-scrollbar.min.js"></script>
-        <script src="${contextPath}/js/plugins/smooth-scrollbar.min.js"></script>
-        <script src="${contextPath}/js/plugins/chartjs.min.js"></script>
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
         <script>
             var pageNum;

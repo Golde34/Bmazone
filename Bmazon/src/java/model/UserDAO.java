@@ -22,7 +22,7 @@ import java.util.logging.Logger;
 public class UserDAO extends BaseDAO {
 
     BaseDAO dbConn = new BaseDAO();
-    
+
     public int addUser(User obj) {
         int n = 0;
         String sql = "INSERT INTO `User`(username, password, email, phoneNumber, sell, wallet, fullname, publicName, address,"
@@ -168,17 +168,14 @@ public class UserDAO extends BaseDAO {
     }
 
     public ArrayList<User> getAllPagingUser(int index, int numOfRow, String search) {
+        int start = (index - 1) * numOfRow;
         ArrayList<User> list = new ArrayList<>();
-        String xSql = "declare @PageNo INT =" + index + "\n"
-                + "declare @PageSize INT=" + numOfRow + "\n"
-                + "SELECT * from(\n"
-                + "SELECT *,\n"
-                + "ROW_NUMBER() over (order by userID) as RowNum\n"
-                + "  FROM [Bmazon].[dbo].[User] where fullname like '%" + search + "%' or email like '%" + search + "%' or phoneNumber like '%" + search + "%'\n"
-                + "  or address like '%" + search + "%')T\n"
-                + "where T.RowNum between ((@PageNo-1)*@PageSize)+1 and (@PageNo*@PageSize)";
-        ResultSet rs = dbConn.getData(xSql);
+        String xSql = "select * from user where username like '%" + search + "%' or email like '%" + search + "%' or phoneNumber like '%" + search + "%' limit ?,?";
         try {
+            pre = conn.prepareStatement(xSql);
+            pre.setInt(1, start);
+            pre.setInt(2, numOfRow);
+            rs = pre.executeQuery();
             while (rs.next()) {
                 User user = new User(rs.getString("userID"), rs.getString("username"),
                         rs.getString("password"), rs.getString("email"),
@@ -270,7 +267,7 @@ public class UserDAO extends BaseDAO {
         }
         return null;
     }
-    
+
     public ArrayList<User> getAllUser() {
         ArrayList<User> list = new ArrayList<>();
         String sql = "SELECT * FROM `User`";
@@ -372,7 +369,7 @@ public class UserDAO extends BaseDAO {
         }
         return map;
     }
-    
+
     public int updatePassword(String username, String mail, String password) {
         int n = 0;
         String sql = "UPDATE `User` SET password = ? WHERE username = ? and email = ?";
@@ -455,7 +452,7 @@ public class UserDAO extends BaseDAO {
     }
 
     public int updatePublicInfo(User obj) {
-        int n =0;
+        int n = 0;
         String sql = "UPDATE `User` SET  username=?, [address]=?,"
                 + " bio=?, Facebook=?, Instagram=?, Twitter=?, Youtube=? , [password]=?"
                 + " where userID=?";
@@ -536,7 +533,7 @@ public class UserDAO extends BaseDAO {
         }
         return n;
     }
-    
+
     // <editor-fold defaultstate="collapsed" desc="Didn't use. Click on the + sign on the left to edit the code.">
     public User getUserLogin(String username, String password) {
         String sql = "SELECT * FROM [User] WHERE username = ? and password = ?";

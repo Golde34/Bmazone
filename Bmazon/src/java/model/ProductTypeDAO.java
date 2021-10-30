@@ -419,4 +419,31 @@ public class ProductTypeDAO extends BaseDAO {
 //        }
 //        return false;
 //    }
+
+    public ArrayList<ProductType> getAllPagingProductType(int index, int numOfRow, String search, String pid) {
+        int start=(index-1)*numOfRow;
+        ArrayList<ProductType> list = new ArrayList<>();
+        String xSql= "select * from producttype where productID like'%%' limit ?,?";
+        try {
+            pre=conn.prepareStatement(xSql);
+            pre.setInt(1, start);
+            pre.setInt(2, numOfRow);
+            rs=pre.executeQuery();
+            while(rs.next()){
+                ProductType pt = new ProductType();
+                pt.setProductTypeId(rs.getString("productTypeId"));
+                pt.setQuantity(rs.getInt("productID"));
+                pt.setSize(rs.getString("size"));
+                pt.setColor(rs.getString("color"));
+                pt.setPrice(rs.getString("price"));
+                pt.setWareHouseID(rs.getInt("wareHouseID"));
+                pt.setQuantity(rs.getInt("quantity"));
+                pt.setStatus(rs.getInt("status"));
+                list.add(pt);
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(UserDAO.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return list;
+    }
 }

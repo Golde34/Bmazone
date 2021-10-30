@@ -144,7 +144,7 @@ public class GalleryDAO extends BaseDAO {
     public List<Gallery> getAllPagingGallery(int index, int numOfRow, String search) {
         int start=(index-1)*numOfRow;
         List<Gallery> list = new ArrayList<>();
-        String xSql = "SELECT * FROM gallery,product where gallery.productID=product.productID and product.productName like '%iphone%' LIMIT ?,?";
+        String xSql = "SELECT * FROM gallery,product where gallery.productID=product.productID and product.productName like '%"+search+"%' LIMIT ?,?";
         try {
             pre = conn.prepareStatement(xSql);
             pre.setInt(1, start);

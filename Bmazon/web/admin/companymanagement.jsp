@@ -36,7 +36,7 @@
         th,td{
             padding: 12px 15px;
         }
-        tbody tr:nth-child(odd){
+        tbody tr:nth-child(even){
             background-color: #f2f2f2;
         }
     </style>
@@ -64,8 +64,8 @@
                                     <div class="card-body">
                                         <div class="table_head py-3 d-flex justify-content-between">
                                             <div class="rowNum">
-                                                <h6 style="display: inline">Select number of Rows</h6>
-                                                <div class="form-group" style="display: inline;">
+                                                <h6 class="d-inline">Select number of Rows</h6>
+                                                <div class="form-group d-inline">
                                                     <select onchange="pagination()" name="state" id="maxRows" class="form-control" style="width:80px;display:inline;">
                                                         <option value="5">5</option>
                                                         <option value="10">10</option>
@@ -74,18 +74,17 @@
                                                     </select>
                                                 </div>
                                             </div>
-                                            <div class="tb_search">
+                                            <div>
                                                 <input id="search" style="width: 100%;" type="text" oninput="pagination()" placeholder="Search.." class="form-control">
                                             </div>
                                         </div>
-                                        <table style="width: 100%;" class="table-bordered text-center">
-                                            <thead>
+                                        <table style="width: 100%;" class="text-center ">
+                                            <thead class="text-uppercase bg-gray-200">
                                                 <tr>
-                                                    <th>Company Name</th>
-                                                    <th>Commit Date</th>
-                                                    <th>Unit Cost</th>
-                                                    <th></th>
-                                                    <th></th>
+                                                    <th style="width: 30%">Company Name</th>
+                                                    <th style="width: 25%">Commit Date</th>
+                                                    <th style="width: 25%">Unit Cost</th>
+                                                    <th style="width: 20%">Action</th>
                                                 </tr>
                                             </thead>
                                             <tbody id="company">
@@ -94,10 +93,8 @@
                                                 <td><%=company.getCompanyName()%></td>
                                                 <td><%=company.getCommitDate()%></td>
                                                 <td><%=nf.format(company.getUnitCost())%></td>
-                                                <td>
+                                                <td style='white-space: nowrap'>
                                                     <a href="AdminControllerMap?service=updatecompanydetail&companyid=<%=company.getCompanyID()%>"><button class="btn btn-primary">Edit</button></a>
-                                                </td>
-                                                <td>
                                                     <% if(company.getStatus()==1){%>
                                                     <a href="AdminControllerMap?service=deletecompany&companyid=<%=company.getCompanyID()%>" onclick="return confirm('Are you sure?');"><button class="btn btn-primary">Deactive</button></a>
                                                     <%}else{%>

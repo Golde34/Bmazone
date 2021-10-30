@@ -39,7 +39,7 @@
         th,td{
             padding: 12px 15px;
         }
-        tbody tr:nth-child(odd){
+        tbody tr:nth-child(even){
             background-color: #f2f2f2;
         }
     </style>
@@ -72,20 +72,19 @@
                                                     </select>
                                                 </div>
                                             </div>
-                                            <div class="tb_search">
+                                            <div>
                                                 <input id="search" style="width: 100%;" type="text" oninput="pagination()" placeholder="Search.." class="form-control">
                                             </div>
                                         </div>
-                                        <table class="table-bordered text-center" style="width: 100%;">
-                                            <thead>
+                                        <table class="text-center" style="width: 100%;">
+                                            <thead class="text-uppercase bg-gray-200">
                                                 <tr>
                                                     <th style="width: 25%">Product Name</th>
                                                     <th style="width: 10%">Color</th>
                                                     <th style="width: 15%">Size</th>
                                                     <th style="width: 20%">Image</th>
                                                     <th style="width: 15%">Seller</th>
-                                                    <th style="width: 5%"></th>
-                                                    <th style="width: 10%"></th>
+                                                    <th style="width: 15%">Action</th>
                                                 </tr>
                                             </thead>
                                             <tbody id="gallery">
@@ -101,10 +100,8 @@
                                                 <%String img = "images/" + gallery.getLink();%>
                                                 <td><img src="<%=img%>" width="100px" height="100px"></td>
                                                 <td><%=seller.getSellerShopName()%></td>
-                                                <td>
+                                                <td style='white-space: nowrap'>
                                                     <a href="AdminControllerMap?service=gallerydetail&galleryid=<%=gallery.getGalleryID()%>"><button class="btn btn-primary">Edit</button></a>
-                                                </td>
-                                                <td>
                                                     <% if(gallery.getStatus()==1){%>
                                                     <a href="AdminControllerMap?service=deletegallery&galleryid=<%=gallery.getGalleryID()%>" onclick="return confirm('Are you sure?');"><button class="btn btn-primary">Deactive</button></a>
                                                     <%}else{%>

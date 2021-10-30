@@ -116,6 +116,7 @@
                     <span class="nav-link-text ms-1">Category Management</span>
                 </a>
         </li>
+
         <li class="nav-item">
             <%if (service.equalsIgnoreCase("orderResponse") || service.equalsIgnoreCase("orderDetail")) {%>
             <a class="nav-link active" href="AdminControllerMap?service=orderResponse">
@@ -125,24 +126,6 @@
                     <div class="icon icon-shape icon-sm shadow border-radius-md bg-white text-center me-2 d-flex align-items-center justify-content-center">
                         <%if (service.equalsIgnoreCase("orderResponse") || service.equalsIgnoreCase("orderDetail")) {%>
                         <i class="fas fa-reply"></i>
-                        <a class="nav-link" href="AdminControllerMap?service=categorymanagement">
-                            <%}%>
-                            <div class="icon icon-shape icon-sm shadow border-radius-md bg-white text-center me-2 d-flex align-items-center justify-content-center">
-                                <%if (service.equalsIgnoreCase("categorymanagement") || service.equalsIgnoreCase("updatecategorydetail") || service.equalsIgnoreCase("addcategorydetail")) {%>
-                                <i class="fa fa-archive"></i>
-                                <%} else {%>
-                                <i class="fa fa-archive" style="color: black"></i>
-                                <%}%>
-                            </div>
-                            <span class="nav-link-text ms-1">Order Management</span>
-                        </a>
-                </li>
-            </ul>
-            <hr>
-            <ul class="navbar-nav">
-                <li class="nav-item">
-                    <%if (service.equalsIgnoreCase("userAuthorization")) {%>
-                    <a class="nav-link active" href="AdminControllerMap?service=userAuthorization">
                         <%} else {%>
                         <i class="fas fa-reply" style="color: black"></i>
                         <%}%>

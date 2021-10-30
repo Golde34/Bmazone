@@ -37,21 +37,13 @@ public class OrderDAO extends BaseDAO {
     }
 
     public List<Order> getAllPagingOrder(int index, int numOfRow, String search) {
+        int start = (index-1)*numOfRow;
         List<Order> list = new ArrayList<>();
-        String sql = "declare @PageNo INT = ? \n"
-                + "declare @PageSize INT= ? \n"
-                + "SELECT * from(\n"
-                + "SELECT *,\n"
-                + "ROW_NUMBER() over (order by orderID) as RowNum\n"
-                + "  FROM `Order`)T\n"
-                + "where T.RowNum between ((@PageNo-1)*@PageSize)+1 and (@PageNo*@PageSize)";
+        String sql = "select * from `order` where state=0 limit ?,?";
         try {
             pre = conn.prepareStatement(sql);
-            pre.setInt(1, index);
+            pre.setInt(1, start);
             pre.setInt(2, numOfRow);
-//            pre.setString(3, search);
-//            pre.setString(4, search);
-//            pre.setString(5, search);
             rs = pre.executeQuery();
             while (rs.next()) {
                 Order o = new Order();
@@ -278,4 +270,8 @@ public class OrderDAO extends BaseDAO {
         }
         return null;
     }
+    
+//    public int changeState(int id, int state){
+//        String xSql = ""
+//    }
 }

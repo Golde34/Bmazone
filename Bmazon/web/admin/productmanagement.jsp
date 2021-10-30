@@ -103,9 +103,8 @@
                                                     <td><%=categoryName%></td>
                                                     <td><%=genre.getGenreName()%></td>
                                                     <td><%=seller.getSellerShopName()%></td>
-                                                    <td><div><a href="AdminControllerMap?service=productdetail&productid=<%=product.getProductID()%>"><button class="btn btn-primary">Edit</button></a>
-                                                        </div></td>
-                                                    <td>
+                                                    <td style='white-space: nowrap'>
+                                                        <a href="AdminControllerMap?service=productdetail&productid=<%=product.getProductID()%>"><button class="btn btn-primary">Edit</button></a>
                                                         <% if (product.getStatus() == 1) {%>
                                                         <a href="AdminControllerMap?service=deleteproduct&productid=<%=product.getProductID()%>" onclick="return confirm('Are you sure?');"><button class="btn btn-primary">Deactive</button></a>
                                                         <%} else {%>
