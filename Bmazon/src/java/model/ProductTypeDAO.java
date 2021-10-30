@@ -35,15 +35,9 @@ public class ProductTypeDAO extends BaseDAO {
         return num;
     }
 
-    public ArrayList<ProductType> getAllPagingProductType(int index, int numOfRow, String search, String pid) {
+    public ArrayList<ProductType> getAllPagingProductType(int index, String search, String pid) {
         ArrayList<ProductType> list = new ArrayList<>();
-        String sql = "declare @PageNo INT = " + index + "\n"
-                + "                declare @PageSize INT=" + numOfRow + " \n"
-                + "                SELECT * FROM\n"
-                + "                (SELECT * ,\n"
-                + "                ROW_NUMBER() over (order by productID) as RowNum\n"
-                + "                FROM ProductType where productID = " + pid + " and(color like '%" + search + "%'))T\n"
-                + "                where T.RowNum between ((@PageNo-1)*@PageSize)+1 and (@PageNo*@PageSize)";
+        String sql = "SELECT * FROM ProductType where productID = " + pid + " and color like '%" + search + "%' limit ?,?";
         try {
             pre = conn.prepareStatement(sql);
             rs = pre.executeQuery();
