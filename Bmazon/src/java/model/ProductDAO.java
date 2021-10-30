@@ -673,10 +673,7 @@ public class ProductDAO extends BaseDAO {
         return list;
     }
 //quang
-public static void main(String[] args) {
-        ProductDAO pd = new ProductDAO();
-        System.out.println(pd.getRelatedProductByProductIDPaging(1, 1));
-    }
+
     public ArrayList<Product> getRelatedProductByProductIDPaging(int index, int id) {
         ArrayList<Product> list = new ArrayList<>();
         int start = (index - 1) * 20;
@@ -728,13 +725,13 @@ public static void main(String[] args) {
 
     public int updateProduct(Product obj) {
         int n = 0;
-        String sql = "UPDATE [Bmazon].[dbo].[Product]\n"
-                + "   SET [productName] = ?"
-                + "      ,[description] = ?"
-                + "      ,[rating] = ?"
-                + "      ,[releaseDate] = ?"
-                + "      ,[sellerID] = ?"
-                + "      ,[status] = ?"
+        String sql = "UPDATE Product\n"
+                + "   SET productName = ?"
+                + "      ,`description` = ?"
+                + "      ,rating = ?"
+                + "      ,releaseDate = ?"
+                + "      ,sellerID = ?"
+                + "      ,status = ?"
                 + " WHERE productID=?";
         try {
             pre = conn.prepareStatement(sql);
