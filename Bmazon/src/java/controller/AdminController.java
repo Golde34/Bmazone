@@ -232,10 +232,9 @@ public class AdminController extends HttpServlet {
             
             // <editor-fold defaultstate="collapsed" desc="Category service. Click on the + sign on the left to edit the code.">
             //Category Management
-            if(service.equalsIgnoreCase("categoryManagement")){
+            if(service.equalsIgnoreCase("categorymanagement")){
                 serviceCategoryManagement(service, request, response);
-            }
-            
+            }     
             //Category detail to add and update
             if (service.equalsIgnoreCase("updatecategorydetail") || service.equalsIgnoreCase("addcategorydetail")) {
                 serviceCategoryDetail(service, request, response);
@@ -263,6 +262,14 @@ public class AdminController extends HttpServlet {
             //Active Category
             if (service.equalsIgnoreCase("activecategory")) {
                 serviceActiveCategory(service, request, response);
+            }
+            //Delete Genre
+            if (service.equalsIgnoreCase("deletegenre")) {
+                serviceDeleteGenre(service, request, response);
+            }
+            //Active Genre
+            if (service.equalsIgnoreCase("activegenre")) {
+                serviceActiveGenre(service, request, response);
             }
             //</editor-fold>
 
@@ -1492,7 +1499,9 @@ public class AdminController extends HttpServlet {
         }
         String id = request.getParameter("cateid");
         Category category = daocategory.getCategoryByCateId(id);
+        ArrayList<Genre> listGenre = daogenre.getGenresByCategoryId(Integer.parseInt(id));
         request.setAttribute("category", category);
+        request.setAttribute("listGenre", listGenre);
         request.setAttribute("service", service);
         sendDispatcher(request, response, "admin/categorydetail.jsp");
     }
@@ -1514,14 +1523,13 @@ public class AdminController extends HttpServlet {
         for (Category category : listPaging) {
             pr.print("<tr>"
                     + "<td>" + category.getCategoryName()+ " </td>"
-                    + "<td>" + category.getStatus()+ "</td>"
-                    + "<td><a href=\"AdminControllerMap?service=updateuserdetail&userid=" + category.getCategoryID()+ "\"><button class=\"btn btn-primary\">Edit</button></a>"
+                    + "<td><a href=\"AdminControllerMap?service=updatecategorydetail&cateid=" + category.getCategoryID()+ "\"><button class=\"btn btn-primary\">Edit</button></a>"
                     + "</td>"
                     + "<td>");
             if (category.getStatus() == 1) {
-                pr.print("<a href=\"AdminControllerMap?service=deleteuser&userid=" + category.getCategoryID()+ "\" onclick=\"return confirm('Are you sure?');\"><button class=\"btn btn-primary\">Deactive</button></a>");
+                pr.print("<a href=\"AdminControllerMap?service=deletecategory&cateid=" + category.getCategoryID()+ "\" onclick=\"return confirm('Are you sure?');\"><button class=\"btn btn-primary\">Deactive</button></a>");
             } else {
-                pr.print("<a href=\"AdminControllerMap?service=activeuser&userid=" + category.getCategoryID()+ "\" onclick=\"return confirm('Are you sure?');\"><button class=\"btn btn-primary\">Active</button></a>");
+                pr.print("<a href=\"AdminControllerMap?service=activecategory&cateid=" + category.getCategoryID()+ "\" onclick=\"return confirm('Are you sure?');\"><button class=\"btn btn-primary\">Active</button></a>");
             }
             pr.print("</td>"
                     + "</tr>"
@@ -1643,8 +1651,9 @@ public class AdminController extends HttpServlet {
         String id = request.getParameter("id");
         Category category = daocategory.getCategoryByCateId(id);
         String categoryname = request.getParameter("categoryname");
+        String genrename = request.getParameter("genrename");
         boolean isExist = false;
-        if ((daouser.checkExistMail(categoryname) && !categoryname.equalsIgnoreCase(category.getCategoryName()))) {
+        if ((daocategory.checkExistCategoryName(categoryname) && !categoryname.equalsIgnoreCase(category.getCategoryName()))) {
             isExist = true;
         }
         if (isExist == true) {
@@ -1667,13 +1676,14 @@ public class AdminController extends HttpServlet {
             request.setAttribute("service", "updatecategorydetail");
             String mess = "Update successfully";
             request.setAttribute("mess", mess);
-            sendDispatcher(request, response, "admin/categorydetail.jsp");
+            sendDispatcher(request, response, "AdminControllerMap?service=updatecategorydetail&cateid="+id);
         }
     }
 
     public void serviceDeleteCategory(String service, HttpServletRequest request, HttpServletResponse response) {
         int id = Integer.parseInt(request.getParameter("cateid"));
         daocategory.changeStatus(id, 0);
+        daogenre.changeStatusByCateID(id, 0);
         ArrayList<Category> listPaging = daocategory.getAllPagingCategory(1, 5, "");
         ArrayList<Category> listCategory = daocategory.getTrueCategories();
         int totalPage = listCategory.size() / 5;
@@ -1688,8 +1698,9 @@ public class AdminController extends HttpServlet {
     }
 
     public void serviceActiveCategory(String service, HttpServletRequest request, HttpServletResponse response) {
-        int id = Integer.parseInt(request.getParameter("userid"));
-        daouser.changeStatus(id, 1);
+        int id = Integer.parseInt(request.getParameter("cateid"));
+        daocategory.changeStatus(id, 1);
+        daogenre.changeStatusByCateID(id, 1);
         ArrayList<Category> listPaging = daocategory.getAllPagingCategory(1, 5, "");
         ArrayList<Category> listCategory = daocategory.getTrueCategories();
         int totalPage = listCategory.size() / 5;
@@ -1701,8 +1712,23 @@ public class AdminController extends HttpServlet {
         request.setAttribute("listCategory", listPaging);
         request.setAttribute("service", "categorymanagement");
         sendDispatcher(request, response, "admin/categorymanagement.jsp");
-    }//</editor-fold>
-
+    }
+    
+    public void serviceDeleteGenre(String service, HttpServletRequest request, HttpServletResponse response) {
+        int id = Integer.parseInt(request.getParameter("genid"));
+        daogenre.changeStatus(id, 0);
+        request.setAttribute("service", "categorymanagement");
+        sendDispatcher(request, response, "admin/categorydetail.jsp");
+    }
+    
+    public void serviceActiveGenre(String service, HttpServletRequest request, HttpServletResponse response) {
+        int id = Integer.parseInt(request.getParameter("genid"));
+        daogenre.changeStatus(id, 1);
+        request.setAttribute("service", "categorymanagement");
+        sendDispatcher(request, response, "admin/categorydetail.jsp");
+    }
+    //</editor-fold>
+    
     // <editor-fold defaultstate="collapsed" desc="User Authorization Method. Click on the + sign on the left to edit the code.">
     public void serviceUserAuthorization(String service, HttpServletRequest request, HttpServletResponse response) {
         request.setAttribute("service", service);

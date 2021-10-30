@@ -22,8 +22,8 @@ public class DBConnection {
         
     public DBConnection() {
         try {
-            Class.forName("com.mysql.jdbc.Driver");
-            connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/bmazon", "root", "123456");
+            Class.forName("com.microsoft.sqlserver.jdbc.SQLServerDriver");
+            connection = DriverManager.getConnection("jdbc:sqlserver://localhost:1434;databaseName=Bmazon", "sa", "sa");
             System.out.println("Connect successfully !!");
         } catch (SQLException ex) {
             Logger.getLogger(DBConnection.class.getName()).log(Level.SEVERE, null, ex);
@@ -34,7 +34,7 @@ public class DBConnection {
     
     public DBConnection(String URL, String username, String pass){
         try {
-            Class.forName("com.mysql.jdbc.Driver");
+            Class.forName("com.microsoft.sqlserver.jdbc.SQLServerDriver");
             connection = DriverManager.getConnection(URL, username, pass);
             System.out.println("Connect successfully !!");
         } catch (SQLException ex) {

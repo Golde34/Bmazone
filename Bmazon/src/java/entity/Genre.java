@@ -42,6 +42,11 @@ public class Genre implements Serializable {
         this.images = images;
     }
     
+    public Genre(String genreName, int categoryID, int status) {
+        this.genreName = genreName;
+        this.categoryID = categoryID;
+        this.status = status;
+    }
 
     public int getGenreID() {
         return genreID;
