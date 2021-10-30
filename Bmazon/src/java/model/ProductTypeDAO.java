@@ -18,13 +18,6 @@ import java.util.logging.Logger;
  */
 public class ProductTypeDAO extends BaseDAO {
 
-    public static void main(String[] args) {
-//        ProductTypeDAO dao = new ProductTypeDAO();
-//        List<ProductType> list = new ArrayList<>();
-//        list = dao.getProductByColor("Black");
-//        System.out.println(list.size());
-    }
-
     public int getPageNumber(String search, String productID) {
         int num = 0;
         String xSql = "SELECT COUNT(*)from ProductType\n"
@@ -71,57 +64,6 @@ public class ProductTypeDAO extends BaseDAO {
             Logger.getLogger(ProductDAO.class.getName()).log(Level.SEVERE, null, e);
         }
         return list;
-    }
-
-    public int deleteProductType(String ProTypeId) {
-        int n = 0;
-        String sql = "delete from ProductType where productTypeId = ?";
-        try {
-            pre = conn.prepareStatement(sql);
-            pre.setString(1, ProTypeId);
-            n = pre.executeUpdate();
-        } catch (SQLException e) {
-        }
-        return n;
-    }
-
-    public int addProductType(ProductType p) {
-        int n = 0;
-        String xSql = "INSERT INTO ProductType ([productTypeId],[productID],[size],[color],[price],[wareHouseID],[quantity],[status])\n"
-                + "     VALUES (?,?,?,?,?,?,?,?)";
-        try {
-            pre = conn.prepareStatement(xSql);
-            pre.setString(1, p.getProductTypeId());
-            pre.setInt(2, p.getProductID());
-            pre.setString(3, p.getSize());
-            pre.setString(4, p.getColor());
-            pre.setString(5, p.getPrice());
-            pre.setInt(6, p.getWareHouseID());
-            pre.setInt(7, p.getQuantity());
-            pre.setInt(8, p.getStatus());
-            n = pre.executeUpdate();
-        } catch (SQLException e) {
-        }
-        return n;
-    }
-
-    public int editProduct(ProductType p) {
-        int n = 0;
-        String xSql = "UPDATE [Bmazon].[dbo].[ProductType]SET [productID] = ?,[size] = ? ,[color] = ? ,[price] = ?,[wareHouseID] = ?,[quantity] = ?,[status] = ? WHERE [productTypeId] = ?";
-        try {
-            pre = conn.prepareStatement(xSql);
-            pre.setInt(1, p.getProductID());
-            pre.setString(2, p.getSize());
-            pre.setString(3, p.getColor());
-            pre.setString(4, p.getPrice());
-            pre.setInt(5, p.getWareHouseID());
-            pre.setInt(6, p.getQuantity());
-            pre.setInt(7, p.getStatus());
-            pre.setString(8, p.getProductTypeId());
-            n = pre.executeUpdate();
-        } catch (SQLException e) {
-        }
-        return n;
     }
 
     public int checkoutProductType(String ProTypeId, int quantity) {
@@ -339,21 +281,7 @@ public class ProductTypeDAO extends BaseDAO {
         }
         return list;
     }
-
-//
-//    public boolean checkDupProTypeId(int pid) {
-//        String xSql= "SELECT * FROM product WHERE id = ?";
-//        try {
-//            ps = conn.prepareStatement(xSql);
-//            ps.setInt(1, pid);
-//            ps.executeUpdate();
-//            if (rs.next()) {
-//                return true;
-//            }
-//        } catch (Exception e) {
-//        }
-//        return false;
-//    }
+  
     public String getProductPrice(int pid) {
         String price = null;
         String xSql = "SELECT price FROM ProductType WHERE productID = " + pid + " Order by price";
@@ -368,6 +296,57 @@ public class ProductTypeDAO extends BaseDAO {
         return price;
     }
 
+    public int addProductType(ProductType p) {
+        int n = 0;
+        String xSql = "INSERT INTO ProductType ([productTypeId],[productID],[size],[color],[price],[wareHouseID],[quantity],[status])\n"
+                + "     VALUES (?,?,?,?,?,?,?,?)";
+        try {
+            pre = conn.prepareStatement(xSql);
+            pre.setString(1, p.getProductTypeId());
+            pre.setInt(2, p.getProductID());
+            pre.setString(3, p.getSize());
+            pre.setString(4, p.getColor());
+            pre.setString(5, p.getPrice());
+            pre.setInt(6, p.getWareHouseID());
+            pre.setInt(7, p.getQuantity());
+            pre.setInt(8, p.getStatus());
+            n = pre.executeUpdate();
+        } catch (SQLException e) {
+        }
+        return n;
+    }
+
+    public int editProduct(ProductType p) {
+        int n = 0;
+        String xSql = "UPDATE [Bmazon].[dbo].[ProductType]SET [productID] = ?,[size] = ? ,[color] = ? ,[price] = ?,[wareHouseID] = ?,[quantity] = ?,[status] = ? WHERE [productTypeId] = ?";
+        try {
+            pre = conn.prepareStatement(xSql);
+            pre.setInt(1, p.getProductID());
+            pre.setString(2, p.getSize());
+            pre.setString(3, p.getColor());
+            pre.setString(4, p.getPrice());
+            pre.setInt(5, p.getWareHouseID());
+            pre.setInt(6, p.getQuantity());
+            pre.setInt(7, p.getStatus());
+            pre.setString(8, p.getProductTypeId());
+            n = pre.executeUpdate();
+        } catch (SQLException e) {
+        }
+        return n;
+    }
+    
+    public int deleteProductType(String ProTypeId) {
+        int n = 0;
+        String sql = "delete from ProductType where productTypeId = ?";
+        try {
+            pre = conn.prepareStatement(sql);
+            pre.setString(1, ProTypeId);
+            n = pre.executeUpdate();
+        } catch (SQLException e) {
+        }
+        return n;
+    }
+    
     public int changeStatus(String id, int status) {
         int n = 0;
         String sql = "update [ProductType] set status = ? where productTypeId = ?";
@@ -432,4 +411,18 @@ public class ProductTypeDAO extends BaseDAO {
         }
         return false;
     }
+    
+//    public boolean checkDupProTypeId(int pid) {
+//        String xSql= "SELECT * FROM product WHERE id = ?";
+//        try {
+//            ps = conn.prepareStatement(xSql);
+//            ps.setInt(1, pid);
+//            ps.executeUpdate();
+//            if (rs.next()) {
+//                return true;
+//            }
+//        } catch (Exception e) {
+//        }
+//        return false;
+//    }
 }
