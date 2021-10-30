@@ -37,7 +37,7 @@ public class ProductCategoryDAO extends BaseDAO{
     
     public int updateProductCategory(ProductCategory obj) {
         int n = 0;
-        String sql = "UPDATE [Bmazon].[dbo].[ProductCategory] SET [categoryId] = ? WHERE [productID] = ?";
+        String sql = "UPDATE ProductCategory SET [categoryId] = ? WHERE productID = ?";
         try {
             pre = conn.prepareStatement(sql);
             pre.setInt(1, obj.getCategoryID());
@@ -52,7 +52,7 @@ public class ProductCategoryDAO extends BaseDAO{
     
     public ArrayList<ProductCategory> getAllProductCategory() {
         ArrayList<ProductCategory> list = new ArrayList<>();
-        String sql = "SELECT * FROM [Bmazon].[dbo].[ProductCategory] where status=1";
+        String sql = "SELECT * FROM ProductCategory where status=1";
         try {
             pre = conn.prepareStatement(sql);
             rs = pre.executeQuery();
@@ -72,12 +72,12 @@ public class ProductCategoryDAO extends BaseDAO{
     }
     public static void main(String[] args) {
         ProductCategoryDAO dao = new ProductCategoryDAO();
-        ProductCategory p = dao.getProductCateByProductID(2);
+        ProductCategory p = dao.getProductCateByProductID(50);
         System.out.println(p.getProductID());
     }
     public ProductCategory getProductCateByProductID(int pid){
         ProductCategory proCate = new ProductCategory();
-        String sql = "SELECT * FROM [Bmazon].[dbo].[ProductCategory] where productID = " + pid;
+        String sql = "SELECT * FROM ProductCategory where productID = " + pid;
         try {
             pre = conn.prepareStatement(sql);
             rs = pre.executeQuery();
@@ -96,10 +96,10 @@ public class ProductCategoryDAO extends BaseDAO{
     
     public int addProductCategory(int productID, int categoryID) {
         int n = 0;
-        String sql = "INSERT INTO [Bmazon].[dbo].[ProductCategory]\n"
-                + "           ([productID]\n"
-                + "           ,[categoryId]\n"
-                + "           ,[status]) VALUES(?,?,1)";
+        String sql = "INSERT INTO ProductCategory\n"
+                + "           (productID\n"
+                + "           ,categoryId\n"
+                + "           ,status) VALUES(?,?,1)";
         try {
             pre = conn.prepareStatement(sql);
             pre.setInt(1, productID);
