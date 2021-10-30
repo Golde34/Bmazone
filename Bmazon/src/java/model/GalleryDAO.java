@@ -189,7 +189,7 @@ public class GalleryDAO extends BaseDAO {
 
     public String getSampleOfProduct(int pid) {
         String s = null;
-        String xSql = "select top 1 link from Gallery WHERE productID =?";
+        String xSql = "select link from Gallery WHERE productID =? limit 0,1";
         try {
             pre = conn.prepareStatement(xSql);
             pre.setInt(1, pid);
@@ -205,7 +205,7 @@ public class GalleryDAO extends BaseDAO {
 
     public String getImageByProductTypeID(String ps) {
         String s = null;
-        String xSql = "select top 1 link from Gallery WHERE productTypeID = ?";
+        String xSql = "select link from Gallery WHERE productTypeID = ? limit 0,1";
         try {
             pre = conn.prepareStatement(xSql);
             pre.setString(1, ps);
@@ -241,33 +241,7 @@ public class GalleryDAO extends BaseDAO {
     }
     public static void main(String[] args) {
         GalleryDAO dao = new  GalleryDAO();
-        System.out.println(dao.getPageNumber("iphone"));
+        System.out.println(dao.getSampleOfProduct(1));
     }
-//    public List<Gallery> getGalleryBySizeAndColor(ProductType p) {
-//        List<Gallery> list = new ArrayList<>();
-//        xSql = "select from ";
-//        try {
-//            ps = conn.prepareStatement(xSql);
-//            ps.setString(1, p.getProductTypeId());
-//            rs = ps.executeQuery();
-//            while (rs.next()) {
-//                list.add(new Gallery(
-//                        rs.getInt(1),
-//                        rs.getInt(2),
-//                        rs.getString(3),
-//                        rs.getString(4),
-//                        rs.getInt(5)));
-//            }
-//        } catch (Exception e) {
-//        }
-//        return list;
-//    }
-    
-//    public static void main(String[] args) {
-//        GalleryDAO g = new GalleryDAO();
-//        List<Gallery> list = g.getAllImageByProductTypeID("Pr1Ty1");
-//        for (Gallery gallery : list) {
-//            System.out.println(gallery.getLink());
-//        }
-//    }
+
 }
