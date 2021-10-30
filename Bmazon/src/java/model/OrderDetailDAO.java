@@ -72,7 +72,7 @@ public class OrderDetailDAO extends BaseDAO {
 
     public ArrayList<OrderDetail> getAllOrderDetail(int oid) {
         ArrayList<OrderDetail> list = new ArrayList<>();
-        String sql = "select * from [OrderDetail] where orderID = "+ oid +" and status = 1  order by orderID desc";
+        String sql = "select * from `OrderDetail` where orderID = "+ oid +" and status = 1  order by orderID desc";
         ResultSet rs = dbConn.getData(sql);
         try {
             while (rs.next()) {
@@ -94,7 +94,7 @@ public class OrderDetailDAO extends BaseDAO {
     
     public int sumSoldProductTypeByPtypeID(String ptID){
         int result = 0;
-        String sql = "SELECT sum(quantity) FROM [Bmazon].[dbo].[OrderDetail] where productTypeID = ?";
+        String sql = "SELECT sum(quantity) FROM `OrderDetail` where productTypeID = ?";
         try {
             pre = conn.prepareStatement(sql);
             pre.setString(1, ptID);

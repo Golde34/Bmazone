@@ -23,7 +23,7 @@ public class WareHouseDAO extends BaseDAO{
    
 
 //    public void deleteWareHouse(String wareHouseID) {
-//        String sql = "delete from WareHouse where [wareHouseID] = ?";
+//        String sql = "delete from WareHouse where `wareHouseID` = ?";
 //        try {
 //            pre = conn.prepareStatement(sql);
 //            pre.setString(1, wareHouseID);
@@ -34,7 +34,7 @@ public class WareHouseDAO extends BaseDAO{
     
     public int getPageNumber(String search) {
         int num = 0;
-        String xSql= "SELECT COUNT(*) FROM [Bmazon].[dbo].[WareHouse] where wareHouseAddress like '%" + search + "%'";
+        String xSql= "SELECT COUNT(*) FROM `WareHouse` where wareHouseAddress like '%" + search + "%'";
         ResultSet rs = dbConn.getData(xSql);
         try {
             if (rs.next()) {
@@ -53,7 +53,7 @@ public class WareHouseDAO extends BaseDAO{
                 + "SELECT * from(\n"
                 + "SELECT *,\n"
                 + "ROW_NUMBER() over (order by wareHouseID) as RowNum\n"
-                + "  FROM [Bmazon].[dbo].[WareHouse] where wareHouseAddress like '%" + search + "%')T\n"
+                + "  FROM `WareHouse` where wareHouseAddress like '%" + search + "%')T\n"
                 + "where T.RowNum between ((@PageNo-1)*@PageSize)+1 and (@PageNo*@PageSize)";
         try {
             pre = conn.prepareStatement(xSql);
@@ -77,7 +77,7 @@ public class WareHouseDAO extends BaseDAO{
 
     public int changeStatus(int id, int status) {
         int n = 0;
-        String sql = "update [WareHouse] set status = ? where [wareHouseID] = ?";
+        String sql = "update `WareHouse` set status = ? where `wareHouseID` = ?";
         try {
             pre = conn.prepareStatement(sql);
             pre.setInt(1, status == 1 ? 1 : 0);
@@ -91,7 +91,7 @@ public class WareHouseDAO extends BaseDAO{
     
     public int addWareHouse(WareHouse wh) {
         int n = 0;
-        String xSql= "INSERT INTO WareHouse ([wareHouseAddress],[status]) VALUES (?,1)";
+        String xSql= "INSERT INTO WareHouse (`wareHouseAddress`,`status`) VALUES (?,1)";
         try {
             pre = conn.prepareStatement(xSql);
             pre.setString(1, wh.getWareHouseAddress());
@@ -103,7 +103,7 @@ public class WareHouseDAO extends BaseDAO{
 
     public int editWareHouse(WareHouse wh) {
         int n = 0;
-        String xSql= "update WareHouse set [wareHouseAddress] = ?, [status] =? where [wareHouseID] = ?";
+        String xSql= "update WareHouse set `wareHouseAddress` = ?, `status` =? where `wareHouseID` = ?";
         try {
             pre = conn.prepareStatement(xSql);
             pre.setString(1, wh.getWareHouseAddress());
@@ -116,7 +116,7 @@ public class WareHouseDAO extends BaseDAO{
     }
 
     public boolean checkExistWareHouse(String warehouse) {
-        String xSql= "SELECT * FROM [Bmazon].[dbo].[Warehouse] where wareHouseAddress like ?";
+        String xSql= "SELECT * FROM `Warehouse` where wareHouseAddress like ?";
         try {
             pre = conn.prepareStatement(xSql);
             pre.setString(1, warehouse);
@@ -149,7 +149,7 @@ public class WareHouseDAO extends BaseDAO{
     
     public List<WareHouse> getAllWareHouse() {
         List<WareHouse> list = new ArrayList<>();
-        String xSql= "select * from WareHouse where [status] = 1";
+        String xSql= "select * from WareHouse where `status` = 1";
         try {
             pre = conn.prepareStatement(xSql);
             rs = pre.executeQuery();
