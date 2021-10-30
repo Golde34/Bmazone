@@ -92,7 +92,7 @@ public class GenreDAO extends BaseDAO {
     }
 
     public ArrayList<Genre> getHomeGenre() {
-        String sql = "select top 16 * from Genre";
+        String sql = "select * from Genre limit 0,16";
         ArrayList<Genre> list = new ArrayList<>();
         Genre x = null;
         int genreID;
@@ -228,20 +228,20 @@ public class GenreDAO extends BaseDAO {
     }
 
     public ArrayList<Genre> getAllPagingGenre(int index, int numOfRow, String search) {
+        int start = (index-1)*numOfRow;
         ArrayList<Genre> list = new ArrayList<>();
-        String xSql = "declare @PageNo INT =" + index + "\n"
-                + "declare @PageSize INT=" + numOfRow + "\n"
-                + "SELECT * from(\n"
-                + "SELECT *,\n"
-                + "ROW_NUMBER() over (order by genreID) as RowNum\n"
-                + "  FROM [Bmazon].[dbo].[Genre] where genreName like '%" + search + "%')T\n"
-                + "where T.RowNum between ((@PageNo-1)*@PageSize)+1 and (@PageNo*@PageSize)";
-        ResultSet rs = dbConn.getData(xSql);
+        String xSql = "select * from genre where genreName like '%"+search+"%' limit ?,?";
         try {
+            pre = conn.prepareStatement(xSql);
+            pre.setInt(1, start);
+            pre.setInt(2, numOfRow);
+            rs = pre.executeQuery();
             while (rs.next()) {
                 Genre genre = new Genre(rs.getInt("genreID"), rs.getString("genreName"), rs.getInt("categoryID"), rs.getInt("status"), rs.getString("images"));
                 list.add(genre);
             }
+            rs.close();
+            pre.close();
         } catch (SQLException ex) {
             Logger.getLogger(UserDAO.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -250,7 +250,7 @@ public class GenreDAO extends BaseDAO {
     
     public int getPageNumber(String search) {
         int num = 0;
-        String xSql = "SELECT COUNT(*) FROM [Bmazon].[dbo].[Genre] where genreName like '%" + search + "%'";
+        String xSql = "SELECT COUNT(*) Genre where genreName like '%" + search + "%'";
         ResultSet rs = dbConn.getData(xSql);
         try {
             if (rs.next()) {
