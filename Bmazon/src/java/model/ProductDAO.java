@@ -176,7 +176,7 @@ public class ProductDAO extends BaseDAO {
     }
     public static void main(String[] args) {
         ProductDAO pd= new ProductDAO();
-        System.out.println(pd.getProductNew());
+        System.out.println(pd.getProductSale().size());
     }
     public ArrayList<Product> getProductSale() {
         ArrayList<Product> list = new ArrayList<>();
@@ -440,7 +440,7 @@ public class ProductDAO extends BaseDAO {
 
     public Product getProductLatest(int sellerID) {
         Product pro = new Product();
-        String sql = "SELECT TOP 1 * FROM Product where sellerID = ? order by productID desc";
+        String sql = "SELECT  * FROM Product where sellerID = ? order by productID desc limt 0,1";
         try {
             pre = conn.prepareStatement(sql);
             pre.setInt(1, sellerID);
