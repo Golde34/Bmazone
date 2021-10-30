@@ -25,10 +25,10 @@ public class UserDAO extends BaseDAO {
     
     public int addUser(User obj) {
         int n = 0;
-        String sql = "INSERT INTO [User](username, password, email, phoneNumber, sell, wallet, fullname, publicName, address,"
+        String sql = "INSERT INTO `User`(username, password, email, phoneNumber, sell, wallet, fullname, publicName, address,"
                 + " profileImage, backgroundImage, occupation, gender, DOB, bio, Facebook, Instagram, Twitter, Youtube,"
                 + " activityPoint, systemRole, status)"
-                + " values (?,?,?,?,?,?,?,?,?,?,?,?,?,GETDATE(),?,?,?,?,?,?,?,?)";
+                + " values (?,?,?,?,?,?,?,?,?,?,?,?,?,NOW(),?,?,?,?,?,?,?,?)";
         try {
             pre = conn.prepareStatement(sql);
             pre.setString(1, obj.getUsername());
@@ -61,7 +61,7 @@ public class UserDAO extends BaseDAO {
 
     public int changePassword(String username, String newPass) {
         try {
-            String sqlUpdate = "Update [User] set password = ? where username = ?";
+            String sqlUpdate = "Update `User` set password = ? where username = ?";
             pre = conn.prepareStatement(sqlUpdate);
             pre.setString(1, newPass);
             pre.setString(2, username);
@@ -75,7 +75,7 @@ public class UserDAO extends BaseDAO {
 
     public int changeStatus(String username, int status) {
         int n = 0;
-        String sql = "UPDATE [User] SET status = ? WHERE username = ?";
+        String sql = "UPDATE `User` SET status = ? WHERE username = ?";
         try {
             pre = conn.prepareStatement(sql);
             pre.setInt(1, (status == 1 ? 1 : 0));
@@ -89,7 +89,7 @@ public class UserDAO extends BaseDAO {
 
     public int changeStatus(int id, int status) {
         int n = 0;
-        String sql = "UPDATE [User] SET status = ? WHERE userID = ?";
+        String sql = "UPDATE `User` SET status = ? WHERE userID = ?";
         try {
             pre = conn.prepareStatement(sql);
             pre.setInt(1, (status == 1 ? 1 : 0));
@@ -102,7 +102,7 @@ public class UserDAO extends BaseDAO {
     }
 
     public boolean checkExistUserName(String username) {
-        String sql = "SELECT * FROM [User] WHERE username = '" + username + "'";
+        String sql = "SELECT * FROM `User` WHERE username = '" + username + "'";
         ResultSet rs = dbConn.getData(sql);
         try {
             if (rs.next()) {
@@ -115,7 +115,7 @@ public class UserDAO extends BaseDAO {
     }
 
     public boolean checkExistPhone(String phone) {
-        String sql = "SELECT * FROM [User] WHERE phoneNumber = '" + phone + "'";
+        String sql = "SELECT * FROM `User` WHERE phoneNumber = '" + phone + "'";
         ResultSet rs = dbConn.getData(sql);
         try {
             if (rs.next()) {
@@ -128,7 +128,7 @@ public class UserDAO extends BaseDAO {
     }
 
     public boolean checkExistMail(String mail) {
-        String sql = "SELECT * FROM [User] WHERE email = '" + mail + "'";
+        String sql = "SELECT * FROM `User` WHERE email = '" + mail + "'";
         ResultSet rs = dbConn.getData(sql);
         try {
             if (rs.next()) {
@@ -141,7 +141,7 @@ public class UserDAO extends BaseDAO {
     }
 
     public boolean checkExistUserNameAndMail(String username, String mail) {
-        String sql = "SELECT * FROM [User] WHERE username = '" + username + "' and email = '" + mail + "' and status = 1";
+        String sql = "SELECT * FROM `User` WHERE username = '" + username + "' and email = '" + mail + "' and status = 1";
         ResultSet rs = dbConn.getData(sql);
         try {
             if (rs.next()) {
@@ -155,7 +155,7 @@ public class UserDAO extends BaseDAO {
 
     public int getPageNumber(String search) {
         int num = 0;
-        String xSql = "SELECT COUNT(*) FROM [Bmazon].[dbo].[User] where fullname like '%" + search + "%' or email like '%" + search + "%' or phoneNumber like '%" + search + "%' or address like '%" + search + "%'";
+        String xSql = "SELECT COUNT(*) FROM `User` where fullname like '%" + search + "%' or email like '%" + search + "%' or phoneNumber like '%" + search + "%' or address like '%" + search + "%'";
         ResultSet rs = dbConn.getData(xSql);
         try {
             if (rs.next()) {
@@ -200,7 +200,7 @@ public class UserDAO extends BaseDAO {
     }
 
     public User getUserByUsername(String username) {
-        String sql = "SELECT * FROM [User] WHERE username = '" + username + "' and status=1";
+        String sql = "SELECT * FROM `User` WHERE username = '" + username + "' and status=1";
         ResultSet rs = dbConn.getData(sql);
         try {
             if (rs.next()) {
@@ -224,7 +224,7 @@ public class UserDAO extends BaseDAO {
     }
 
     public User getUserById(String id) {
-        String sql = "SELECT * FROM [User] WHERE userID = '" + id + "'";
+        String sql = "SELECT * FROM `User` WHERE userID = '" + id + "'";
         ResultSet rs = dbConn.getData(sql);
         try {
             if (rs.next()) {
@@ -248,7 +248,7 @@ public class UserDAO extends BaseDAO {
     }
 
     public User getUserBySellerId(Seller s) {
-        String sql = "select * from [User] WHERE userID = " + s.getUserID();
+        String sql = "select * from `User` WHERE userID = " + s.getUserID();
         ResultSet rs = dbConn.getData(sql);
         try {
             if (rs.next()) {
@@ -273,7 +273,7 @@ public class UserDAO extends BaseDAO {
     
     public ArrayList<User> getAllUser() {
         ArrayList<User> list = new ArrayList<>();
-        String sql = "SELECT * FROM [User]";
+        String sql = "SELECT * FROM `User`";
         ResultSet rs = dbConn.getData(sql);
         try {
             while (rs.next()) {
@@ -308,7 +308,7 @@ public class UserDAO extends BaseDAO {
             s2 = " and status = " + status + " ";
         }
 
-        String sql = "SELECT * FROM [User] WHERE status = 1 and username like '%" + uName + "%' " + s1 + " " + s2;
+        String sql = "SELECT * FROM `User` WHERE status = 1 and username like '%" + uName + "%' " + s1 + " " + s2;
         ResultSet rs = dbConn.getData(sql);
         try {
             while (rs.next()) {
@@ -335,7 +335,7 @@ public class UserDAO extends BaseDAO {
         HashMap<User, Role> map = new HashMap<>();
         UserDAO uDao = new UserDAO();
         RoleDAO rDao = new RoleDAO();
-        String sql = "SELECT u.userID, r.roleID FROM [User] u INNER JOIN [Role] r ON u.systemRole = r.roleID  where u.[status]=1";
+        String sql = "SELECT u.userID, r.roleID FROM `User` u INNER JOIN [Role] r ON u.systemRole = r.roleID  where u.[status]=1";
         ResultSet rs = dbConn.getData(sql);
         try {
             while (rs.next()) {
@@ -375,7 +375,7 @@ public class UserDAO extends BaseDAO {
     
     public int updatePassword(String username, String mail, String password) {
         int n = 0;
-        String sql = "UPDATE [User] SET password = ? WHERE username = ? and email = ?";
+        String sql = "UPDATE `User` SET password = ? WHERE username = ? and email = ?";
         try {
             pre = conn.prepareStatement(sql);
             pre.setString(1, password);
@@ -390,7 +390,7 @@ public class UserDAO extends BaseDAO {
 
     public int updateInfoUserByAdmin(User obj) {
         int n = 0;
-        String sql = "UPDATE [User] SET username=?, password=?, email=?, phoneNumber=?, sell=?, wallet=?, fullname=?, publicName=?, address=?,"
+        String sql = "UPDATE `User` SET username=?, password=?, email=?, phoneNumber=?, sell=?, wallet=?, fullname=?, publicName=?, address=?,"
                 + " profileImage=?, backgroundImage=?, occupation=?, gender=?, DOB=?, bio=?, Facebook=?, Instagram=?, Twitter=?, "
                 + "Youtube=?, activityPoint=?, systemRole=?, status=?"
                 + " where userID=?";
@@ -428,7 +428,7 @@ public class UserDAO extends BaseDAO {
 
     public int depositWalletUser(User obj, double amount) {
         int n = 0;
-        String sql = "UPDATE [User] SET wallet=? where userID=?";
+        String sql = "UPDATE `User` SET wallet=? where userID=?";
         try {
             pre = conn.prepareStatement(sql);
             pre.setDouble(1, obj.getWallet() + amount);
@@ -442,7 +442,7 @@ public class UserDAO extends BaseDAO {
 
     public int withdrawalWalletUser(User obj, double amount) {
         int n = 0;
-        String sql = "UPDATE [User] SET wallet=? where userID=?";
+        String sql = "UPDATE `User` SET wallet=? where userID=?";
         try {
             pre = conn.prepareStatement(sql);
             pre.setDouble(1, obj.getWallet() - amount);
@@ -456,7 +456,7 @@ public class UserDAO extends BaseDAO {
 
     public int updatePublicInfo(User obj) {
         int n =0;
-        String sql = "UPDATE [User] SET  username=?, [address]=?,"
+        String sql = "UPDATE `User` SET  username=?, [address]=?,"
                 + " bio=?, Facebook=?, Instagram=?, Twitter=?, Youtube=? , [password]=?"
                 + " where userID=?";
         try {
@@ -479,7 +479,7 @@ public class UserDAO extends BaseDAO {
 
     public int updatePrivateInfo(User obj) {
         int n = 0;
-        String sql = "UPDATE [User] SET  fullname=?, email=?, phoneNumber=?, [password]=?"
+        String sql = "UPDATE `User` SET  fullname=?, email=?, phoneNumber=?, [password]=?"
                 + " where userID=?";
         try {
             pre = conn.prepareStatement(sql);
@@ -497,7 +497,7 @@ public class UserDAO extends BaseDAO {
 
     public int updateActivityPoint(User obj, int activityPoint) {
         int n = 0;
-        String sql = "UPDATE [User] SET activityPoint=? where userID=?";
+        String sql = "UPDATE `User` SET activityPoint=? where userID=?";
         try {
             pre = conn.prepareStatement(sql);
             pre.setInt(1, activityPoint);
@@ -511,7 +511,7 @@ public class UserDAO extends BaseDAO {
 
     public int uploadprofileImage(User obj, String uploadImg) {
         int n = 0;
-        String sql = "UPDATE [User] SET profileImage = ? WHERE userID = ?";
+        String sql = "UPDATE `User` SET profileImage = ? WHERE userID = ?";
         try {
             pre = conn.prepareStatement(sql);
             pre.setString(1, uploadImg);
@@ -525,7 +525,7 @@ public class UserDAO extends BaseDAO {
 
     public int uploadBackgroundImage(User obj, String uploadImg) {
         int n = 0;
-        String sql = "UPDATE [User] SET backgroundImage = ? WHERE userID = ?";
+        String sql = "UPDATE `User` SET backgroundImage = ? WHERE userID = ?";
         try {
             pre = conn.prepareStatement(sql);
             pre.setString(1, uploadImg);
