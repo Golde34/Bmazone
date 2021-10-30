@@ -822,8 +822,10 @@ INSERT INTO Gallery(productID,productTypeID,link,status)VALUES (90,'Pr90Ty1','Pr
 
 
 -- Order
+
 INSERT INTO `Order`(userID,orderDate,requiredDate,shippedDate,shipName,shipAddress,shipCity,shipPhone,companyID,shipMoney,paymentMethod,total,state,status)VALUES (1,CURDATE(),CURDATE(),CURDATE(),'Viet','Kim Thanh','Hai Duong',0983586778,1,30000,'COD',20030000, 0, 1);
 INSERT INTO `Order`(userID,orderDate,requiredDate,shippedDate,shipName,shipAddress,shipCity,shipPhone,companyID,shipMoney,paymentMethod,total,state,status)VALUES (2,CURDATE(),CURDATE(),CURDATE(),'Thinh','Thach That','Ha Noi',0938693856,2,30000,'COD',730000, 0, 1);
+
 
 
 -- OrderDetail

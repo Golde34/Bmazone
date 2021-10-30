@@ -19,7 +19,7 @@ import java.util.logging.Logger;
  */
 public class DBConnection {
     Connection connection = null;
-
+        
     public DBConnection() {
        try {
             Class.forName("com.mysql.cj.jdbc.Driver");
@@ -37,7 +37,9 @@ public class DBConnection {
            Class.forName("com.mysql.cj.jdbc.Driver");
             connection = DriverManager.getConnection(URL, username, pass);
             System.out.println("Connect successfully !!");
-        } catch (ClassNotFoundException | SQLException ex) {
+        } catch (SQLException ex) {
+            Logger.getLogger(DBConnection.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (ClassNotFoundException ex) {
             Logger.getLogger(DBConnection.class.getName()).log(Level.SEVERE, null, ex);
         }
     }

@@ -108,6 +108,22 @@ public class CategoryDAO extends BaseDAO {
         }
         return null;
     }
+    
+        public Category getCategoryByGenreId(int id) {
+        String xSql = "select * from Category c join Genre g on c.categoryID = g.categoryID where genreID =" + id;
+        Category cat = new Category();
+        try {
+            pre = conn.prepareStatement(xSql);
+            rs = pre.executeQuery();
+            if (rs.next()) {
+                cat.setCategoryID(rs.getInt("categoryID"));
+                cat.setCategoryName(rs.getString("categoryName"));
+                cat.setStatus(rs.getInt("status"));
+            }
+        } catch (SQLException ex) {
+        }
+        return cat;
+    }
 
     public String getCategoryById(int fcaId) {
         String sql = "select categoryName from Category where categoryID=" + fcaId;
@@ -133,8 +149,8 @@ public class CategoryDAO extends BaseDAO {
         String sql = "update Category set status = ? where categoryID = ?";
         try {
             pre = conn.prepareStatement(sql);
-            pre.setInt(1, status);
-            pre.setInt(1, id);
+            pre.setInt(1, (status == 1 ? 1 : 0));
+            pre.setInt(2, id);
             n = pre.executeUpdate();
         } catch (SQLException ex) {
             Logger.getLogger(CategoryDAO.class.getName()).log(Level.SEVERE, null, ex);
@@ -203,5 +219,8 @@ public class CategoryDAO extends BaseDAO {
         }
         return list;
     }
-
+    public static void main(String[] args) {
+        CategoryDAO dao = new CategoryDAO();
+        System.out.println(dao.getAllPagingCategory(2,5,""));
+    }
 }

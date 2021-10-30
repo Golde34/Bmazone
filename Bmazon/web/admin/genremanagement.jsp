@@ -1,15 +1,18 @@
+<%@page import="model.CategoryDAO"%>
+<%@page import="model.GenreDAO"%>
 <%@page import="java.util.*"%>
 <%@page import="entity.*"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <c:set var="contextPath" value="${pageContext.request.contextPath}" />
 <%
+    CategoryDAO daocate = new CategoryDAO();
     int index = (Integer) request.getAttribute("index");
     int totalPage = (Integer) request.getAttribute("totalPage");
     int prev = index == 1 ? 1 : index - 1;
     int next = index == totalPage ? totalPage : index + 1;
     User curUser = (User) request.getSession().getAttribute("currUser");
-    ArrayList<Category> listCategory = (ArrayList<Category>) request.getAttribute("listCategory");
+    ArrayList<Genre> listGenre = (ArrayList<Genre>) request.getAttribute("listGenre");
 %>
 
 <!DOCTYPE html>
@@ -47,9 +50,9 @@
                             <div class="card">
                                 <div class="card-body px-0 pb-2">
                                     <div class="card-header py-3 d-flex justify-content-between">
-                                        <h3 class="m-0 font-weight-bold text-primary">Category Management</h3>
-                                        <a href="AdminControllerMap?service=addcategorydetail">
-                                            <button class="btn-primary btn">Add new category</button></a>
+                                        <h3 class="m-0 font-weight-bold text-primary">Genre Management</h3>
+                                        <a href="AdminControllerMap?service=addgenredetail">
+                                            <button class="btn-primary btn">Add new user</button></a>
                                     </div>
                                     <div class="card-body">
                                         <div class="table_head py-3 d-flex justify-content-between">
@@ -72,23 +75,30 @@
                                             <table style="width: 100%;" class="table-bordered text-center">
                                                 <thead>
                                                     <tr>
-                                                        <th>CategoryName</th>
+                                                        <th>Genre Name</th>
+                                                        <th>Category Name</th>
+                                                        <th>Image</th>
+                                                        <th>Status</th>
                                                         <th></th>
                                                         <th></th>
                                                     </tr>
                                                 </thead>
-                                                <tbody id="category">
-                                                <%for (Category category : listCategory) {%>
+                                                <tbody id="genre">
+                                                <%for (Genre genre : listGenre) {%>
                                                 <tr>
-                                                    <td><%=category.getCategoryName()%></td>
+                                                    <td><%=genre.getGenreName()%></td>
+                                                    <td><%=daocate.getCategoryByGenreId(genre.getGenreID()).getCategoryName() %></td>
+                                                    <%String img = "images/Genre/" + genre.getImages();%>
+                                                    <td><img src="<%=img%>" width="100px" height="100px"></td>
+                                                    <td><%=genre.getStatus()%></td>
                                                     <td>
-                                                        <a href="AdminControllerMap?service=updatecategorydetail&cateid=<%=category.getCategoryID()%>"><button class="btn btn-primary">Edit</button></a>
+                                                        <a href="AdminControllerMap?service=updategenredetail&genid=<%=genre.getGenreID()%>"><button class="btn btn-primary">Edit</button></a>
                                                     </td>
                                                     <td>
-                                                        <% if (category.getStatus() == 1) {%>
-                                                        <a href="AdminControllerMap?service=deletecategory&cateid=<%=category.getCategoryID()%>" onclick="return confirm('Are you sure?');"><button class="btn btn-primary">Deactive</button></a>
+                                                        <% if (genre.getStatus() == 1) {%>
+                                                        <a href="AdminControllerMap?service=deletegenre&genreid=<%=genre.getGenreID()%>" onclick="return confirm('Are you sure?');"><button class="btn btn-primary">Deactive</button></a>
                                                         <%} else {%>
-                                                        <a href="AdminControllerMap?service=activecategory&cateid=<%=category.getCategoryID()%>" onclick="return confirm('Are you sure?');"><button class="btn btn-primary">Active</button></a>
+                                                        <a href="AdminControllerMap?service=activegenre&genreid=<%=genre.getGenreID()%>" onclick="return confirm('Are you sure?');"><button class="btn btn-primary">Active</button></a>
                                                         <%}%>
                                                     </td>
                                                 </tr>
@@ -159,59 +169,58 @@
         <script src="${contextPath}/js/plugins/chartjs.min.js"></script>
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
         <script>
-                                                            var pageNum;
-                                                            $(document).on('click', '.pagination li', function () {
-                                                                pageNum = $(this).data('repair');
-                                                                pagination();
+                                                        var pageNum;
+                                                        $(document).on('click', '.pagination li', function () {
+                                                            pageNum = $(this).data('repair');
+                                                            pagination();
+                                                        });
+                                                        function pagination() {
+                                                            var row = document.getElementById("maxRows").value;
+                                                            var search = document.getElementById("search").value;
+                                                            console.log(row);
+                                                            console.log(search);
+                                                            console.log(pageNum);
+                                                            $.ajax({
+                                                                url: "/Bmazon/AdminControllerMap",
+                                                                type: "get",
+                                                                data: {
+                                                                    search: search,
+                                                                    row: row,
+                                                                    index: pageNum,
+                                                                    service: "paginggenre"
+                                                                },
+                                                                success: function (respone) {
+                                                                    var text = document.getElementById("genre");
+                                                                    text.innerHTML = respone;
+                                                                    showpage();
+                                                                },
+                                                                error: function (xhr) {
+                                                                    //Do Something to handle error
+                                                                }
                                                             });
-                                                            function pagination() {
-                                                                var row = document.getElementById("maxRows").value;
-                                                                var search = document.getElementById("search").value;
-                                                                console.log(row);
-                                                                console.log(search);
-                                                                console.log(pageNum);
-                                                                $.ajax({
-                                                                    url: "/Bmazon/AdminControllerMap",
-                                                                    type: "get",
-                                                                    data: {
-                                                                        search: search,
-                                                                        row: row,
-                                                                        index: pageNum,
-                                                                        service: "pagingcategory"
-                                                                    },
-                                                                    success: function (respone) {
-                                                                        var text = document.getElementById("category");
-                                                                        text.innerHTML = respone;
-                                                                        showpage();
-                                                                    },
-                                                                    error: function (xhr) {
-                                                                        //Do Something to handle error
-                                                                    }
-                                                                });
-                                                            }
-                                                            function showpage() {
-                                                                var row = document.getElementById("maxRows").value;
-                                                                var search = document.getElementById("search").value;
-                                                                $.ajax({
-                                                                    url: "/Bmazon/AdminControllerMap",
-                                                                    type: "get",
-                                                                    data: {
-                                                                        search: search,
-                                                                        row: row,
-                                                                        index: pageNum,
-                                                                        service: "showpagecategory"
-                                                                    },
-                                                                    success: function (respone) {
-                                                                        var text = document.getElementById("showpage");
-                                                                        text.innerHTML = respone;
-                                                                    },
-                                                                    error: function (xhr) {
-                                                                        //Do Something to handle error
-                                                                    }
-                                                                });
-                                                            }
+                                                        }
+                                                        function showpage() {
+                                                            var row = document.getElementById("maxRows").value;
+                                                            var search = document.getElementById("search").value;
+                                                            $.ajax({
+                                                                url: "/Bmazon/AdminControllerMap",
+                                                                type: "get",
+                                                                data: {
+                                                                    search: search,
+                                                                    row: row,
+                                                                    index: pageNum,
+                                                                    service: "showpagegenre"
+                                                                },
+                                                                success: function (respone) {
+                                                                    var text = document.getElementById("showpage");
+                                                                    text.innerHTML = respone;
+                                                                },
+                                                                error: function (xhr) {
+                                                                    //Do Something to handle error
+                                                                }
+                                                            });
+                                                        }
         </script>
-
     </body>
 
 </html>

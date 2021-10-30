@@ -4,6 +4,7 @@
     Author     : Admin
 --%>
 
+<%@page import="model.ProductTypeDAO"%>
 <%@page import="entity.Comment"%>
 <%@page import="java.util.ArrayList"%>
 <%@page import="model.CommentDAO"%>
@@ -20,8 +21,8 @@
             User x = (User) request.getSession().getAttribute("currUser");
             UserDAO daoUser = new UserDAO();
             CommentDAO daoComment = new CommentDAO();
+            ProductTypeDAO daoPrType = new ProductTypeDAO();
             ArrayList<Comment> comments = daoComment.getCommentsByUserId(Integer.parseInt(x.getUserId()));
-
         %>       
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         <title>Your public Profile</title>
@@ -49,6 +50,35 @@
                 margin-left: auto;
                 margin-right: auto;
             } 
+
+            .reviews-counter {
+                font-size: 13px;
+            }
+            .reviews-counter span {
+                vertical-align: -2px;
+            }
+            .rate {
+                float: left;
+                padding: 0 10px 0 0;
+            }
+            .rate:not(:checked) > input {
+                position:absolute;
+                top:-9999px;
+            }
+            .rate:not(:checked) > label {
+                float: right;
+                width: 15px;
+                overflow: hidden;
+                white-space: nowrap;
+                cursor: pointer;
+                font-size: 21px;
+                color:#ccc;
+                margin-bottom: 0;
+                line-height: 21px;
+            }
+            .rate:not(:checked) > label:before {
+                content: '\2605';
+            }
         </style>
     </head>
     <body>
@@ -151,30 +181,53 @@
                                 </div>
 
                                 <div class="mb-2 pl-lg-1 col-md-8">
+                                    <%if (comments.isEmpty()) {%>
                                     <div class="right-component p-4 rounded shadow-sm bg-light">
                                         <h3 class="mb-0"><strong>Activities</strong></h3>
                                         <hr>
-                                        <%if (comments.isEmpty()) {%>
                                         <p class="font-italic mb-0"><%=x.getPublicName()%> has no activities to share.</p>
-                                        <%} else {%>
-                                        <%
-                                            for (Comment elem : comments) {
-                                        %>     
+                                    </div>
+                                    <%} else {%> 
+                                    <%
+                                        for (int i = 0; i < comments.size(); i++) {
+                                    %>      
+                                    <div class="right-component p-4 rounded shadow-sm bg-light">
+                                        <%if (i == 0) {%>
+                                        <h3 class="mb-0"><strong>Activities</strong></h3><br><hr>
+                                        <% } else { %>
+                                        <p></p>
+                                        <%}%>
                                         <div class="comment_box">
-                                            <div class="col-md-6">
-                                                <p class="comment_content">Product: <%=daoUser.getUserById(elem.getUserId()).getFullname()%></p> 
-                                                <p class="comment_content">Rating:<%=elem.getRating()%>/5</p>
-                                            </div>                          
-                                            <div class="col-md-5"> </div>
-                                            <div class="col-md-1"> </div>
+                                            <div class="row" style="padding-left: 15px;">
+                                                <object style="border-radius: 50%;" data="upload/<%= x.getProfileImage()%>" width="30" height="30"></object>
+                                                <p style="padding: 7px; color: black; "><%=x.getFullname()%></p> 
+                                                <p style="padding: 7px;">reviewed a product </p>    
+                                            </div>
+                                            <div class="row" style="padding-left: 15px;">
+                                                <div class="reviews-counter">
+                                                    <div class="rate">
+                                                        <% for (int star = 5; star > 0; star--) {%>
+                                                        <%if (star == comments.get(i).getRating()) {%>
+                                                        <label for="star<%=star%>" title="text" style="color: #ffe793;"><%=star%> stars</label>
+                                                        <%} else {%>
+                                                        <label for="star<%=star%>" title="text"><%=star%> stars</label>
+                                                        <%}%>
+                                                        <%}%>
+                                                    </div>
+                                                </div>
+                                                <p class="comment_content">Rating:<%=comments.get(i).getRating()%>/5</p>
+                                                <p class="comment_content">Product: <%=comments.get(i).getProductID()%></p> 
+                                            </div>
                                             <div class="col-md-12"> 
                                                 <div style="border: 1px solid black; border-radius: 5px;padding: 10px;">
-                                                    <p class="comment_content " > <%=elem.getContent()%></p> 
+                                                    <p class="comment_content " > <%=comments.get(i).getContent()%></p> 
                                                 </div> 
                                             </div>
                                         </div><hr style="color: black;">
-                                        <%} }%>
-                                    </div>
+                                    </div><br>
+                                    <%}
+                                        }%>
+
                                 </div>
                             </div>
                         </div>
