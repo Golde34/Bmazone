@@ -36,6 +36,7 @@
     String size = "";
     String color = "";
     ArrayList<Comment> comments = (ArrayList<Comment>) request.getAttribute("comments");
+    int countNumberComment = daoComment.getNumberOfComment(product.getProductID());
     User x = (User) request.getSession().getAttribute("currUser");
 %>
 <!DOCTYPE html>
@@ -175,7 +176,7 @@
                             <a class="nav-link active" id="description-tab" data-toggle="tab" href="#description" role="tab" aria-controls="description" aria-selected="true">Description</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link" id="review-tab" data-toggle="tab" href="#review" role="tab" aria-controls="review" aria-selected="false">Reviews (0)</a>
+                            <a class="nav-link" id="review-tab" data-toggle="tab" href="#review" role="tab" aria-controls="review" aria-selected="false">Reviews (<%=countNumberComment%>)</a>
                         </li>
                     </ul>
                     <div class="tab-content" id="myTabContent">

@@ -52,6 +52,20 @@ public class CommentDAO extends BaseDAO {
         return n;
     }
     
+    public int getNumberOfComment(int pID) {
+        int num = 0;
+        String xSql= "SELECT COUNT(*) FROM [Bmazon].[dbo].[Comment] where productID = "+ pID;
+        ResultSet rs = dbConn.getData(xSql);
+        try {
+            if (rs.next()) {
+                num = rs.getInt(1);
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(UserDAO.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return num;
+    }
+    
     public int getPageNumber(String search, int pid) {
         int num = 0;
         String xSql= "SELECT COUNT(*) FROM [Bmazon].[dbo].[Comment] where productID = "+ pid +" and content like '%" + search + "%'";
