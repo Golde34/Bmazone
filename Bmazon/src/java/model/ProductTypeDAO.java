@@ -169,7 +169,7 @@ public class ProductTypeDAO extends BaseDAO {
 
     public int getProductIdByProductTypeId(String id) {
         int pid = -1;
-        String xSql = "SELECT [productID] FROM [Bmazon].[dbo].[ProductType] where productTypeId =?";
+        String xSql = "SELECT productID FROM ProductType where productTypeId =?";
         try {
             pre = conn.prepareStatement(xSql);
             pre.setString(1, id);
@@ -298,7 +298,7 @@ public class ProductTypeDAO extends BaseDAO {
 
     public int addProductType(ProductType p) {
         int n = 0;
-        String xSql = "INSERT INTO ProductType ([productTypeId],[productID],[size],[color],[price],[wareHouseID],[quantity],[status])\n"
+        String xSql = "INSERT INTO ProductType (productTypeId,productID,size,color,price,wareHouseID,quantity,status)\n"
                 + "     VALUES (?,?,?,?,?,?,?,?)";
         try {
             pre = conn.prepareStatement(xSql);
@@ -318,7 +318,7 @@ public class ProductTypeDAO extends BaseDAO {
 
     public int editProduct(ProductType p) {
         int n = 0;
-        String xSql = "UPDATE [Bmazon].[dbo].[ProductType]SET [productID] = ?,[size] = ? ,[color] = ? ,[price] = ?,[wareHouseID] = ?,[quantity] = ?,[status] = ? WHERE [productTypeId] = ?";
+        String xSql = "UPDATE ProductType SET productID = ?,size = ? ,color = ? ,price = ?,wareHouseID = ?,quantity = ?,status = ? WHERE productTypeId = ?";
         try {
             pre = conn.prepareStatement(xSql);
             pre.setInt(1, p.getProductID());
@@ -349,7 +349,7 @@ public class ProductTypeDAO extends BaseDAO {
     
     public int changeStatus(String id, int status) {
         int n = 0;
-        String sql = "update [ProductType] set status = ? where productTypeId = ?";
+        String sql = "update ProductType set status = ? where productTypeId = ?";
         try {
             pre = conn.prepareStatement(sql);
             pre.setInt(1, (status == 1 ? 1 : 0));
@@ -363,7 +363,7 @@ public class ProductTypeDAO extends BaseDAO {
 
     public List<ProductType> searchProduct(String text) {
         List<ProductType> list = new ArrayList<>();
-        String xSql = "SELECT distinct *FROM [Bmazon].[dbo].[ProductType] where productTypeId like '%" + text + "%' or productID like '%" + text + "%' or size like '%" + text + "%' or color like '%" + text + "%' or price like '%" + text + "%' or wareHouseID like '%" + text + "%' or quantity like '%" + text + "%'";
+        String xSql = "SELECT distinct *FROM ProductType where productTypeId like '%" + text + "%' or productID like '%" + text + "%' or size like '%" + text + "%' or color like '%" + text + "%' or price like '%" + text + "%' or wareHouseID like '%" + text + "%' or quantity like '%" + text + "%'";
         try {
             pre = conn.prepareStatement(xSql);
             pre.setString(1, text);
@@ -385,7 +385,7 @@ public class ProductTypeDAO extends BaseDAO {
     }
 
     public boolean checkExistColor(String color) {
-        String sql = "SELECT * FROM [ProductType] WHERE color = '" + color + "'";
+        String sql = "SELECT * FROM ProductType WHERE color = '" + color + "'";
         try {
             pre = conn.prepareStatement(sql);
             rs = pre.executeQuery();
@@ -399,7 +399,7 @@ public class ProductTypeDAO extends BaseDAO {
     }
 
     public boolean checkExistSizeAndColor(String size, String color, int productId) {
-        String sql = "SELECT * FROM [ProductType] WHERE size = '" + size + "' and color='" + color + "' and productID=" + productId;
+        String sql = "SELECT * FROM ProductType WHERE size = '" + size + "' and color='" + color + "' and productID=" + productId;
         try {
             pre = conn.prepareStatement(sql);
             rs = pre.executeQuery();

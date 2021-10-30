@@ -174,10 +174,13 @@ public class ProductDAO extends BaseDAO {
         }
         return list;
     }
-
+    public static void main(String[] args) {
+        ProductDAO pd= new ProductDAO();
+        System.out.println(pd.getProductSale().size());
+    }
     public ArrayList<Product> getProductSale() {
         ArrayList<Product> list = new ArrayList<>();
-        String sql = "SELECT TOP 8 * FROM Product";
+        String sql = "SELECT * FROM Product limit 0,8";
         try {
             pre = conn.prepareStatement(sql);
             rs = pre.executeQuery();
@@ -202,7 +205,7 @@ public class ProductDAO extends BaseDAO {
 
     public ArrayList<Product> getProductNew() {
         ArrayList<Product> list = new ArrayList<>();
-        String sql = "SELECT TOP 8 * FROM Product order by releaseDate";
+        String sql = "SELECT * FROM Product order by releaseDate limit 0,8";
         try {
             pre = conn.prepareStatement(sql);
             rs = pre.executeQuery();
@@ -227,7 +230,7 @@ public class ProductDAO extends BaseDAO {
 
     public ArrayList<Product> getNewProductSeller(String sid) {
         ArrayList<Product> list = new ArrayList<>();
-        String sql = "SELECT TOP 6 * FROM Product where sellerID = ? order by releaseDate asc";
+        String sql = "SELECT * FROM Product where sellerID = ? order by releaseDate asc limit 0,8";
         try {
             pre = conn.prepareStatement(sql);
             pre.setString(1, sid);
@@ -253,7 +256,7 @@ public class ProductDAO extends BaseDAO {
 
     public ArrayList<Product> getProductApple() {
         ArrayList<Product> list = new ArrayList<>();
-        String sql = "SELECT TOP 8 * FROM Product where description like '%apple%'";
+        String sql = "SELECT * FROM Product where description like '%apple%' limit 0,8";
         try {
             pre = conn.prepareStatement(sql);
             rs = pre.executeQuery();
@@ -278,7 +281,7 @@ public class ProductDAO extends BaseDAO {
 
     public ArrayList<Product> getProductGear() {
         ArrayList<Product> list = new ArrayList<>();
-        String sql = "SELECT top 8* FROM Product p join ProductCategory pc on p.productID=pc.productId where pc.categoryId = 5";
+        String sql = "SELECT * FROM Product p join ProductCategory pc on p.productID=pc.productId where pc.categoryId = 5 limit 0,8";
         try {
             pre = conn.prepareStatement(sql);
             rs = pre.executeQuery();
@@ -362,7 +365,7 @@ public class ProductDAO extends BaseDAO {
 
     public ArrayList<Product> getTop10ProductBySeller(String seller) {
         ArrayList<Product> list = new ArrayList<>();
-        String sql = "SELECT TOP 10 * FROM Product where sellerID = ?";
+        String sql = "SELECT  * FROM Product where sellerID = ? limit 0,10";
         try {
             pre = conn.prepareStatement(sql);
             pre.setInt(1, Integer.parseInt(seller));
@@ -389,7 +392,7 @@ public class ProductDAO extends BaseDAO {
     public ArrayList<Product> getProductSuggest() {
 
         ArrayList<Product> list = new ArrayList<>();
-        String sql = "SELECT TOP 16 * FROM Product order by releaseDate";
+        String sql = "SELECT  * FROM Product order by releaseDate limit 0,16";
         try {
             pre = conn.prepareStatement(sql);
             rs = pre.executeQuery();
@@ -437,7 +440,7 @@ public class ProductDAO extends BaseDAO {
 
     public Product getProductLatest(int sellerID) {
         Product pro = new Product();
-        String sql = "SELECT TOP 1 * FROM Product where sellerID = ? order by productID desc";
+        String sql = "SELECT  * FROM Product where sellerID = ? order by productID desc limt 0,1";
         try {
             pre = conn.prepareStatement(sql);
             pre.setInt(1, sellerID);

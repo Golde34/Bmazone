@@ -35,7 +35,7 @@ public class ProductGenreDAO extends BaseDAO {
     
     public ProductGenre getProductGenreByProduct(String pid){
         ProductGenre pg = new ProductGenre();
-        String xSql ="SELECT * FROM [Bmazon].[dbo].[ProductGenre] where productID=?";
+        String xSql ="SELECT * FROM ProductGenre where productID=?";
         try {
             pre = conn.prepareStatement(xSql);
             pre.setString(1, pid);
@@ -55,7 +55,7 @@ public class ProductGenreDAO extends BaseDAO {
 
     public ArrayList<ProductGenre> getAllProductGenre() {
         ArrayList<ProductGenre> list = new ArrayList<>();
-        String sql = "SELECT * FROM [Bmazon].[dbo].[ProductGenre] where status=1";
+        String sql = "SELECT * FROM ProductGenre where status=1";
         try {
             pre = conn.prepareStatement(sql);
             rs = pre.executeQuery();
@@ -76,7 +76,7 @@ public class ProductGenreDAO extends BaseDAO {
     
     public int updateProductGenre(ProductGenre obj) {
         int n = 0;
-        String sql = "UPDATE [Bmazon].[dbo].[ProductGenre] SET [genreID] = ? WHERE [productID] =?";
+        String sql = "UPDATE ProductGenre SET genreID = ? WHERE productID =?";
         try {
             pre = conn.prepareStatement(sql);
             pre.setInt(1, obj.getGenreID());
@@ -91,10 +91,10 @@ public class ProductGenreDAO extends BaseDAO {
 
     public int addProductGenre(int productID, int genreID) {
         int n = 0;
-        String sql = "INSERT INTO [Bmazon].[dbo].[ProductGenre]\n"
-                + "           ([productID]\n"
-                + "           ,[genreID]\n"
-                + "           ,[status]) VALUES(?,?,1)";
+        String sql = "INSERT INTO ProductGenre\n"
+                + "           (productID\n"
+                + "           ,genreID\n"
+                + "           ,status) VALUES(?,?,1)";
         try {
             pre = conn.prepareStatement(sql);
             pre.setInt(1, productID);
