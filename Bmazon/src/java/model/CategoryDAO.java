@@ -187,7 +187,7 @@ public class CategoryDAO extends BaseDAO {
     
     public int getPageNumber(String search) {
         int num = 0;
-        String xSql = "SELECT COUNT(*) FROM [Bmazon].[dbo].[Category] where categoryName like '%" + search + "%'";
+        String xSql = "SELECT COUNT(*) FROM Category where categoryName like '%" + search + "%'";
         ResultSet rs = dbConn.getData(xSql);
         try {
             if (rs.next()) {
@@ -200,27 +200,23 @@ public class CategoryDAO extends BaseDAO {
     }
     
     public ArrayList<Category> getAllPagingCategory(int index, int numOfRow, String search) {
+        int start=(index-1)*numOfRow;
         ArrayList<Category> list = new ArrayList<>();
-        String xSql = "declare @PageNo INT =" + index + "\n"
-                + "declare @PageSize INT=" + numOfRow + "\n"
-                + "SELECT * from(\n"
-                + "SELECT *,\n"
-                + "ROW_NUMBER() over (order by categoryID) as RowNum\n"
-                + "  FROM [Bmazon].[dbo].[Category] where categoryName like '%" + search + "%')T\n"
-                + "where T.RowNum between ((@PageNo-1)*@PageSize)+1 and (@PageNo*@PageSize)";
-        ResultSet rs = dbConn.getData(xSql);
+        String xSql = "SELECT * FROM category where categoryName like '%"+search+"%' LIMIT ?,?";
         try {
+            pre = conn.prepareStatement(xSql);
+            pre.setInt(1, start);
+            pre.setInt(2, numOfRow);
+            rs = pre.executeQuery();
             while (rs.next()) {
                 Category category = new Category(rs.getInt("categoryID"), rs.getString("categoryName"), rs.getInt("status"));
                 list.add(category);
             }
+            rs.close();
+            pre.close();
         } catch (SQLException ex) {
             Logger.getLogger(UserDAO.class.getName()).log(Level.SEVERE, null, ex);
         }
         return list;
-    }
-    public static void main(String[] args) {
-        CategoryDAO dao = new CategoryDAO();
-        System.out.println(dao.getAllPagingCategory(2,5,""));
     }
 }
