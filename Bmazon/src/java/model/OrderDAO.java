@@ -24,7 +24,7 @@ public class OrderDAO extends BaseDAO {
 
     public int getPageNumber(String search) {
         int num = 0;
-        String Sql = "SELECT COUNT(*) FROM [Bmazon].[dbo].[Order]";
+        String Sql = "SELECT COUNT(*) FROM `Order`";
         ResultSet rs = dbConn.getData(Sql);
         try {
             if (rs.next()) {
@@ -43,7 +43,7 @@ public class OrderDAO extends BaseDAO {
                 + "SELECT * from(\n"
                 + "SELECT *,\n"
                 + "ROW_NUMBER() over (order by orderID) as RowNum\n"
-                + "  FROM [Bmazon].[dbo].[Order])T\n"
+                + "  FROM `Order`)T\n"
                 + "where T.RowNum between ((@PageNo-1)*@PageSize)+1 and (@PageNo*@PageSize)";
         try {
             pre = conn.prepareStatement(sql);
@@ -81,9 +81,9 @@ public class OrderDAO extends BaseDAO {
 
     public int insertOrder(Order obj) {
         int n = 0;
-        String sql = "INSERT INTO [Order]"
-                + "           ([userID],[orderDate],[requiredDate],[shippedDate],[shipName],[shipAddress],[shipCity]\n"
-                + "           ,[shipPhone],[companyID],[shipMoney],[paymentMethod],[total],[state],[status])"
+        String sql = "INSERT INTO `Order`"
+                + "           (`userID`,`orderDate`,`requiredDate`,`shippedDate`,`shipName`,`shipAddress`,`shipCity`\n"
+                + "           ,`shipPhone`,`companyID`,`shipMoney`,`paymentMethod`,`total`,`state`,`status`)"
                 + "     VALUES (?,GETDATE(),GETDATE(),GETDATE(),?,?,?,?,?,?,?,?,?,1)";
         try {
             pre = conn.prepareStatement(sql);
@@ -106,7 +106,7 @@ public class OrderDAO extends BaseDAO {
 
     public int changeStatus(int orderId, int status) {
         int n = 0;
-        String sql = "UPDATE [Order] SET status = ? WHERE orderID = ?";
+        String sql = "UPDATE `Order` SET status = ? WHERE orderID = ?";
         try {
             pre = conn.prepareStatement(sql);
             pre.setInt(1, status);
@@ -120,8 +120,8 @@ public class OrderDAO extends BaseDAO {
 
     public int updateOrder(Order obj) {
         int n = 0;
-        String sql = "update [Order] set[orderDate]=? ,[requiredDate]=?,[shippedDate]=?,[shipName]=?,[shipAddress]=?,[shipCity]=?,"
-                + "           [shipPhone]=?,[companyID]=?,[shipMoney]=?,[paymentMethod]=? ,[total]=? ,[state]=?,[status]=1 where orderID=?";
+        String sql = "update `Order` set`orderDate`=? ,`requiredDate`=?,`shippedDate`=?,`shipName`=?,`shipAddress`=?,`shipCity`=?,"
+                + "           `shipPhone`=?,`companyID`=?,`shipMoney`=?,`paymentMethod`=? ,`total`=? ,`state`=?,`status`=1 where orderID=?";
         try {
             pre = conn.prepareStatement(sql);
             pre.setDate(1, obj.getOrderDate());
@@ -146,7 +146,7 @@ public class OrderDAO extends BaseDAO {
 
 //    public int removeOrder(String orderId) {
 //        int n = 0;
-//        String sql = "Select * from [Order] as a join OrderDetail as b on a.orderID = b.orderID where a.orderID = '" + orderId + "'";
+//        String sql = "Select * from `Order` as a join OrderDetail as b on a.orderID = b.orderID where a.orderID = '" + orderId + "'";
 //        rs = dbConn.getData(sql);
 //        try {
 //            if (rs.next()) {
@@ -160,7 +160,7 @@ public class OrderDAO extends BaseDAO {
 //    }
     public ArrayList<Order> getAllOrder() {
         ArrayList<Order> list = new ArrayList<>();
-        String sql = "select * from [Order] where status = 1  order by orderID desc";
+        String sql = "select * from `Order` where status = 1  order by orderID desc";
         
         try {
             while (rs.next()) {
@@ -199,7 +199,7 @@ public class OrderDAO extends BaseDAO {
 
      public Order getOrderByOrderID(int orderid) {
         ArrayList<Order> list = new ArrayList<>();
-        String sql = "select * from [Order] where orderID = "+orderid;
+        String sql = "select * from `Order` where orderID = "+orderid;
         ResultSet rs = dbConn.getData(sql);
         Order o= null;
         try {
@@ -230,7 +230,7 @@ public class OrderDAO extends BaseDAO {
 
     public List<Order> getOrderByUser(int userID) {
         List<Order> list = new ArrayList<>();
-        String sql = "select * from [Order] where userID = " + userID + "order by orderDate desc ";
+        String sql = "select * from `Order` where userID = " + userID + "order by orderDate desc ";
         ResultSet rs = dbConn.getData(sql);
         try {
             while (rs.next()) {
@@ -258,7 +258,7 @@ public class OrderDAO extends BaseDAO {
     }
     
     public Order getLatestOrder(String userID) {
-        String sql = "SELECT TOP 1 * FROM [Order] WHERE userID = '" + userID + "' ORDER BY OrderID desc";
+        String sql = "SELECT TOP 1 * FROM `Order` WHERE userID = '" + userID + "' ORDER BY OrderID desc";
         ResultSet rs = dbConn.getData(sql);
         try {
             if (rs.next()) {

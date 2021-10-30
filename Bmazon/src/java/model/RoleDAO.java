@@ -22,7 +22,7 @@ public class RoleDAO extends BaseDAO {
 
     public int getPageNumber(String search) {
         int num = 0;
-        String xSql= "SELECT COUNT(*) FROM [Bmazon].[dbo].[Role] where roleName like '%" + search + "%'";
+        String xSql= "SELECT COUNT(*) FROM `Role` where roleName like '%" + search + "%'";
         ResultSet rs = dbConn.getData(xSql);
         try {
             if (rs.next()) {
@@ -41,7 +41,7 @@ public class RoleDAO extends BaseDAO {
                 + "SELECT * from(\n"
                 + "SELECT *,\n"
                 + "ROW_NUMBER() over (order by roleID) as RowNum\n"
-                + "  FROM [Bmazon].[dbo].[Role] where roleName like '%" + search + "%')T\n"
+                + "  FROM `Role` where roleName like '%" + search + "%')T\n"
                 + "where T.RowNum between ((@PageNo-1)*@PageSize)+1 and (@PageNo*@PageSize)";
         try {
             pre = conn.prepareStatement(xSql);
@@ -68,7 +68,7 @@ public class RoleDAO extends BaseDAO {
 
     public int changeStatus(int id, int status) {
         int n = 0;
-        String sql = "update [Role] set status = ? where [roleID] = ?";
+        String sql = "update `Role` set status = ? where `roleID` = ?";
         try {
             pre = conn.prepareStatement(sql);
             pre.setInt(1, status == 1 ? 1 : 0);
@@ -82,7 +82,7 @@ public class RoleDAO extends BaseDAO {
     
     public int addRole(Role r) {
         int n = 0;
-        String xSql= "INSERT INTO [Bmazon].[dbo].[Role] ([roleID], [roleName], [adminPermission], [sellerPermission], [customerPermission], [status])"
+        String xSql= "INSERT INTO `Role` (`roleID`, `roleName`, `adminPermission`, `sellerPermission`, `customerPermission`, `status`)"
                 + "     VALUES (?,?,?,?,?,1)";
         try {
             pre = conn.prepareStatement(xSql);
@@ -101,7 +101,7 @@ public class RoleDAO extends BaseDAO {
 
     public int editRole(Role r) {
         int n = 0;
-        String xSql= "update [Role] set [roleName] = ? ,[adminPermission] = ?, [sellerPermission] = ?,[customerPermission] = ?, [status] = ? where [roleID] = ?";
+        String xSql= "update `Role` set `roleName` = ? ,`adminPermission` = ?, `sellerPermission` = ?,`customerPermission` = ?, `status` = ? where `roleID` = ?";
         try {
             pre = conn.prepareStatement(xSql);
             pre.setString(1, r.getRoleName());
@@ -117,7 +117,7 @@ public class RoleDAO extends BaseDAO {
     }
 
     public void deleteRole(int roleID) {
-        String sql = "delete from Role where [roleID] = ?";
+        String sql = "delete from Role where `roleID` = ?";
         try {
             pre = conn.prepareStatement(sql);
             pre.setInt(1, roleID);
@@ -127,7 +127,7 @@ public class RoleDAO extends BaseDAO {
     }
 
     public boolean checkExistRoleName(String roleName) {
-        String xSql= "SELECT * FROM [Bmazon].[dbo].[Role] where roleName like ?";
+        String xSql= "SELECT * FROM `Role` where roleName like ?";
         try {
             pre = conn.prepareStatement(xSql);
             pre.setString(1, roleName);
@@ -142,7 +142,7 @@ public class RoleDAO extends BaseDAO {
     }
 
     public boolean checkExistRoleId(int id) {
-        String xSql= "SELECT * FROM [Bmazon].[dbo].[Role] where roleID = " + id;
+        String xSql= "SELECT * FROM `Role` where roleID = " + id;
         try {
             pre = conn.prepareStatement(xSql);
             rs = pre.executeQuery();
@@ -176,7 +176,7 @@ public class RoleDAO extends BaseDAO {
 
     public List<Role> getAllRole() {
         List<Role> list = new ArrayList<>();
-        String xSql= "select * from Role where [status] = 1";
+        String xSql= "select * from Role where `status` = 1";
         try {
             pre = conn.prepareStatement(xSql);
             rs = pre.executeQuery();
@@ -196,7 +196,7 @@ public class RoleDAO extends BaseDAO {
 
     public List<Role> searchRole(String text) {
         List<Role> list = new ArrayList<>();
-        String xSql= "SELECT * FROM [Bmazon].[dbo].[Role] where roleName like '%" + text + "%'";
+        String xSql= "SELECT * FROM `Role` where roleName like '%" + text + "%'";
         try {
             pre = conn.prepareStatement(xSql);
             rs = pre.executeQuery();

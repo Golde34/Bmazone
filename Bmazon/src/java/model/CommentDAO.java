@@ -24,7 +24,7 @@ public class CommentDAO extends BaseDAO {
     
     public int insertComment(Comment obj) {
         int n = 0;
-        String sql = "insert into Comment(productID,userId,content,rating,status) values (?,?,?,?,1)";
+        String sql = "insert into `Comment`(productID,userId,content,rating,status) values (?,?,?,?,1)";
         try {
             pre = conn.prepareStatement(sql);
             pre.setInt(1, obj.getProductID());
@@ -40,7 +40,7 @@ public class CommentDAO extends BaseDAO {
     
     public int changeStatus(int id, int status) {
         int n = 0;
-        String sql = "update [Comment] set status = ? where [commentID] = ?";
+        String sql = "update `Comment` set status = ? where `commentID` = ?";
         try {
             pre = conn.prepareStatement(sql);
             pre.setInt(1, status == 1 ? 1 : 0);
@@ -54,7 +54,7 @@ public class CommentDAO extends BaseDAO {
     
     public int getNumberOfComment(int pID) {
         int num = 0;
-        String xSql= "SELECT COUNT(*) FROM [Bmazon].[dbo].[Comment] where productID = "+ pID;
+        String xSql= "SELECT COUNT(*) FROM `Comment` where productID = "+ pID;
         ResultSet rs = dbConn.getData(xSql);
         try {
             if (rs.next()) {
@@ -68,7 +68,7 @@ public class CommentDAO extends BaseDAO {
     
     public int getPageNumber(String search, int pid) {
         int num = 0;
-        String xSql= "SELECT COUNT(*) FROM [Bmazon].[dbo].[Comment] where productID = "+ pid +" and content like '%" + search + "%'";
+        String xSql= "SELECT COUNT(*) FROM `Comment` where productID = "+ pid +" and content like '%" + search + "%'";
         ResultSet rs = dbConn.getData(xSql);
         try {
             if (rs.next()) {
@@ -87,7 +87,7 @@ public class CommentDAO extends BaseDAO {
                 + "SELECT * from(\n"
                 + "SELECT *,\n"
                 + "ROW_NUMBER() over (order by commentID) as RowNum\n"
-                + "  FROM [Bmazon].[dbo].[Comment] where wareHouseAddress like '%" + search + "%')T\n"
+                + "  FROM `Comment` where wareHouseAddress like '%" + search + "%')T\n"
                 + "where T.RowNum between ((@PageNo-1)*@PageSize)+1 and (@PageNo*@PageSize)";
         try {
             pre = conn.prepareStatement(xSql);
@@ -114,7 +114,7 @@ public class CommentDAO extends BaseDAO {
 
     public ArrayList<Comment> getCommentsByProductId(int pid) {
         ArrayList<Comment> comments = new ArrayList<>();
-        String sql = "select * from Comment where productID  = ? order by commentID desc";
+        String sql = "select * from `Comment` where productID  = ? order by commentID desc";
         try {
             pre = conn.prepareStatement(sql);
             pre.setInt(1, pid);
@@ -137,7 +137,7 @@ public class CommentDAO extends BaseDAO {
     
     public ArrayList<Comment> getCommentsByUserId(int uid) {
         ArrayList<Comment> comments = new ArrayList<>();
-        String sql = "select * from Comment where userId  = ? order by commentID desc";
+        String sql = "select * from `Comment` where userId  = ? order by commentID desc";
         try {
             pre = conn.prepareStatement(sql);
             pre.setInt(1, uid);
@@ -173,7 +173,7 @@ public class CommentDAO extends BaseDAO {
 
     public boolean checkExistComment(int pID, int uId) {
         boolean check = false;
-        String sql = "select * from Comment where productID = ? and userId = ? order by commentID desc";
+        String sql = "select * from `Comment` where productID = ? and userId = ? order by commentID desc";
         try {
             pre = conn.prepareStatement(sql);
             pre.setInt(1, pID);

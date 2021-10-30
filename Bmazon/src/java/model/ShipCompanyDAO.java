@@ -23,7 +23,7 @@ public class ShipCompanyDAO extends BaseDAO {
     
     public int changeStatus(int id, int status) {
         int n = 0;
-        String sql = "update [ShipCompany] set status = ? where [companyID] = ?";
+        String sql = "update `ShipCompany` set status = ? where `companyID` = ?";
         try {
             pre = conn.prepareStatement(sql);
             pre.setInt(1, status == 1 ? 1 : 0);
@@ -37,7 +37,7 @@ public class ShipCompanyDAO extends BaseDAO {
     
 //    public int deleteShipCompany(String companyID) {
 //        int n = 0;
-//        String sql = "delete from ShipCompany where [companyID] = ?";
+//        String sql = "delete from ShipCompany where `companyID` = ?";
 //        try {
 //            pre = conn.prepareStatement(sql);
 //            pre.setString(1, companyID);
@@ -48,7 +48,7 @@ public class ShipCompanyDAO extends BaseDAO {
 //    }
 
     public boolean checkExistCompanyName(String companyname) {
-        String xSql= "SELECT * FROM [Bmazon].[dbo].[ShipCompany] where companyName like ?";
+        String xSql= "SELECT * FROM `ShipCompany` where companyName like ?";
         try {
             pre = conn.prepareStatement(xSql);
             pre.setString(1, companyname);
@@ -64,7 +64,7 @@ public class ShipCompanyDAO extends BaseDAO {
 
     public int addShipCompany(ShipCompany sp) {
         int n = 0;
-        String xSql= "INSERT INTO ShipCompany ([companyName],[unitCost],[commitDate],[status])\n"
+        String xSql= "INSERT INTO ShipCompany (`companyName`,`unitCost`,`commitDate`,`status`)\n"
                 + "     VALUES (?,?,?,?)";
         try {
             pre = conn.prepareStatement(xSql);
@@ -80,7 +80,7 @@ public class ShipCompanyDAO extends BaseDAO {
 
     public int editShipCompany(ShipCompany sp) {
         int n = 0;
-        String xSql= "update ShipCompany set [companyName] = ? ,[unitCost] = ? ,[commitDate] = ? ,[status] =? where [companyID] = ?";
+        String xSql= "update ShipCompany set `companyName` = ? ,`unitCost` = ? ,`commitDate` = ? ,`status` =? where `companyID` = ?";
         try {
             pre = conn.prepareStatement(xSql);
             pre.setString(1, sp.getCompanyName());
@@ -115,7 +115,7 @@ public class ShipCompanyDAO extends BaseDAO {
 
     public int getPageNumber(String search) {
         int num = 0;
-        String xSql= "SELECT COUNT(*) FROM [Bmazon].[dbo].[ShipCompany] where companyName like '%" + search + "%' or commitDate like '%" + search + "%' or unitCost like '%" + search + "%'";
+        String xSql= "SELECT COUNT(*) FROM `ShipCompany` where companyName like '%" + search + "%' or commitDate like '%" + search + "%' or unitCost like '%" + search + "%'";
         ResultSet rs = dbConn.getData(xSql);
         try {
             if (rs.next()) {
@@ -126,7 +126,7 @@ public class ShipCompanyDAO extends BaseDAO {
         }
         return num;
     }
-//    public static void main(String[] args) {
+//    public static void main(String`` args) {
 //        ShipCompanyDAO dao = new ShipCompanyDAO();
 //        dao.changeStatus(1, 1);
 //    }
@@ -137,7 +137,7 @@ public class ShipCompanyDAO extends BaseDAO {
                 + "SELECT * from(\n"
                 + "SELECT *,\n"
                 + "ROW_NUMBER() over (order by companyID) as RowNum\n"
-                + "  FROM [Bmazon].[dbo].[ShipCompany] where companyName like '%" + search + "%' or commitDate like '%" + search + "%' or unitCost like '%" + search + "%')T\n"
+                + "  FROM `ShipCompany` where companyName like '%" + search + "%' or commitDate like '%" + search + "%' or unitCost like '%" + search + "%')T\n"
                 + "where T.RowNum between ((@PageNo-1)*@PageSize)+1 and (@PageNo*@PageSize)";
         try {
             pre = conn.prepareStatement(xSql);
