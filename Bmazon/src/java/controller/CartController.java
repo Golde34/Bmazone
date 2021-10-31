@@ -26,6 +26,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import javafx.scene.control.Alert;
 import javax.servlet.RequestDispatcher;
+import javax.servlet.http.Cookie;
 import model.ProductTypeDAO;
 import model.GalleryDAO;
 import model.OrderDAO;
@@ -101,9 +102,7 @@ public class CartController extends HttpServlet {
         User x = (User) request.getSession().getAttribute("currUser");
         request.setAttribute("currUser", x);
         ArrayList<CartItem> ShoppingCart = (ArrayList<CartItem>) request.getSession().getAttribute("ShoppingCart");
-//         if (ShoppingCart.isEmpty()) {
-//             
-//         }
+        
         request.getSession().setAttribute("ShoppingCart", ShoppingCart);
         sendDispatcher(request, response, "cart/cart.jsp");
     }
@@ -113,6 +112,8 @@ public class CartController extends HttpServlet {
         if (x == null) {
             sendDispatcher(request, response, "loginAndSecurity/login.jsp");
         }
+        Cookie cookie = null;
+        Cookie arr[] = request.getCookies();
         ArrayList<CartItem> ShoppingCart = (ArrayList<CartItem>) request.getSession().getAttribute("ShoppingCart");
         String pid = request.getParameter("pid");
         String size = request.getParameter("size");
@@ -126,6 +127,7 @@ public class CartController extends HttpServlet {
         double total = quantity * Double.parseDouble(pt.getPrice());
         int pid1 = Integer.parseInt(pid);
         boolean check = true;
+
         for (int i = 0; i < ShoppingCart.size(); i++) {
             if (ShoppingCart.get(i).getProductID() == pid1
                     && ShoppingCart.get(i).getColor().equals(color)
@@ -139,11 +141,13 @@ public class CartController extends HttpServlet {
                 ShoppingCart.get(i).setTotalCost(ShoppingCart.get(i).getQuantity() * Double.parseDouble(pt.getPrice()));
                 check = false;
             }
+
         }
         if (check == true) {
             CartItem cartitem = new CartItem(ShoppingCart.size() + 1, pt.getProductID(), name, pt.getSize(), pt.getColor(), image, Double.parseDouble(pt.getPrice()), quantity, total);
             ShoppingCart.add(cartitem);
         }
+
         request.getSession().setAttribute("ShoppingCart", ShoppingCart);
         sendDispatcher(request, response, "ProductDetailControllerMap?service=getProductDetail&pid=" + pid);
 
@@ -153,13 +157,20 @@ public class CartController extends HttpServlet {
         ArrayList<CartItem> ShoppingCart = (ArrayList<CartItem>) request.getSession().getAttribute("ShoppingCart");
         String[] idString = request.getParameterValues("cartID");
         String[] quantityString = request.getParameterValues("quantity");
+        String action = request.getParameter("action");
 
         for (int i = 0; i < ShoppingCart.size(); i++) {
-            if (ShoppingCart.get(i).getCartID() == Integer.parseInt(idString[i])) {
+            ProductType pt = ptd.getProductTypeByColorAndSize(ShoppingCart.get(i).getColor(), ShoppingCart.get(i).getSize(), String.valueOf(ShoppingCart.get(i).getProductID()));
+            if (Integer.parseInt(quantityString[i]) < 1 || Integer.parseInt(quantityString[i]) > pt.getQuantity()) {  
+                request.getSession().setAttribute("ShoppingCart", ShoppingCart);
+                sendDispatcher(request, response, "cart/cart.jsp");
+            }
+            else if(ShoppingCart.get(i).getCartID() == Integer.parseInt(idString[i])) {
                 ShoppingCart.get(i).setQuantity(Integer.parseInt(quantityString[i]));
                 ShoppingCart.get(i).setTotalCost(Integer.parseInt(quantityString[i]) * (ShoppingCart.get(i).getPrice()));
             }
         }
+
         request.getSession().setAttribute("ShoppingCart", ShoppingCart);
         sendDispatcher(request, response, "cart/cart.jsp");
     }
@@ -243,7 +254,7 @@ public class CartController extends HttpServlet {
             ShoppingCart.removeAll(ShoppingCart);
             request.getSession().setAttribute("ShoppingCart", ShoppingCart);
             request.getSession().setAttribute("currUser", x);
-           
+
             ArrayList<OrderDetail> DetailList = odDao.getAllOrderDetail(thisOrder.getOrderID());
             request.getSession().setAttribute("ShoppingCart", ShoppingCart);
             request.getSession().setAttribute("currUser", x);
@@ -268,7 +279,7 @@ public class CartController extends HttpServlet {
                 ShoppingCart.removeAll(ShoppingCart);
                 x.setWallet(wallet - Double.parseDouble(totalString));
                 uDao.updateInfoUserByAdmin(x);
-               
+
                 ArrayList<OrderDetail> DetailList = odDao.getAllOrderDetail(thisOrder.getOrderID());
                 request.getSession().setAttribute("ShoppingCart", ShoppingCart);
                 request.getSession().setAttribute("currUser", x);

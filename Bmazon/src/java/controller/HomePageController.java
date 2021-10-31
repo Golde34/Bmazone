@@ -175,7 +175,7 @@ public class HomePageController extends HttpServlet {
         int count = proDAO.totalSearchProduct(str);
         String address;
         int size = 20;
-        int total = count / size;
+        int total = count/size;
         int page, end;
         String pageString = request.getParameter("page");
         if (pageString == null) {
@@ -191,9 +191,12 @@ public class HomePageController extends HttpServlet {
         }
         if (page <= total - 2) {
             end = page + 2;
-        } else {
+        } else if(total > 2){
             end = total;
             begin = total - 2;
+        }else {
+            begin=1;
+            end=2;
         }
         if (page == 1) {
             request.setAttribute("next", next);
