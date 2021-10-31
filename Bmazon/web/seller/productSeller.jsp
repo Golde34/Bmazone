@@ -59,7 +59,6 @@
         ProductGenreDAO pgdao = new ProductGenreDAO();
         GenreDAO genreDAO = new GenreDAO();
 
-        
         ArrayList<Category> listCategory = cateDAO.getAllCategories();
         ArrayList<Genre> listGenre = genreDAO.getAllGenres();
         int index = (Integer) request.getAttribute("index");
@@ -118,6 +117,12 @@
                                 <i class="fa fa-globe"></i> <span>Order Management</span>
                             </a>
                         </li>
+                        <li class="active">
+                            <a href="SellerControllerMap?service=feedback">
+                                <i class="fa fa-empire"></i> <span>Feed Back</span>
+                            </a>
+                        </li>
+
 
 
                     </ul>
@@ -177,19 +182,19 @@
                                             <td><div><%= product.getReleaseDate()%></div></td>
                                             <td><div><%= cateDAO.getCategoryById(pcDAO.getProductCateByProductID(proID).getCategoryID())%></div></td>
                                             <td><div><%= genre.getGenreName()%></div></td>
-                                            <td><div><a href="SellerControllerMap?service=productdetail&productid=<%= product.getProductID() %>"><button class="btn btn-primary">Edit</button></a>
+                                            <td><div><a href="SellerControllerMap?service=productdetail&productid=<%= product.getProductID()%>"><button class="btn btn-primary">Edit</button></a>
                                                 </div></td>
                                             <td>
                                                 <% if (product.getStatus() == 1) {%>
-                                                <a href="SellerControllerMap?service=deactiveproduct&productid=<%= product.getProductID() %>" onclick="return confirm('Are you sure?');"><button class="btn btn-danger">Deactivate</button></a>
+                                                <a href="SellerControllerMap?service=deactiveproduct&productid=<%= product.getProductID()%>" onclick="return confirm('Are you sure?');"><button class="btn btn-danger">Deactivate</button></a>
                                                 <%} else {%>
-                                                <a href="SellerControllerMap?service=activeproduct&productid=<%= product.getProductID() %>" onclick="return confirm('Are you sure?');"><button class="btn btn-success">Activate</button></a>
+                                                <a href="SellerControllerMap?service=activeproduct&productid=<%= product.getProductID()%>" onclick="return confirm('Are you sure?');"><button class="btn btn-success">Activate</button></a>
                                                 <% } %>
                                             </td></tr>
                                             <% } %>
                                     </tbody>
                                 </table>
-                               <a href="#addEmployeeModal" data-toggle="modal"><btn class="btn btn-success">Add</btn></a>
+                                <a href="#addEmployeeModal" data-toggle="modal"><btn class="btn btn-success">Add</btn></a>
                             </div>
                             <div class="pagination-container mt-4" style="display: flex;
                                  justify-content: space-around;cursor: pointer;">
@@ -286,7 +291,7 @@
                             <select required name="category" style="width: 50%;" class="form-select" id="category">
                                 <%for (Category cate : listCategory) {
                                 %>
-                                <option value="<%= cate.getCategoryID() %>"><%= cate.getCategoryName() %>
+                                <option value="<%= cate.getCategoryID()%>"><%= cate.getCategoryName()%>
                                 </option>
                                 <% }%>
                             </select>
@@ -296,7 +301,7 @@
                             <select required name="genre" style="width: 50%;" class="form-select" id="genre">
                                 <%for (Genre genre : listGenre) {
                                 %>
-                                <option value="<%= genre.getGenreID() %>"><%= genre.getGenreName() %>
+                                <option value="<%= genre.getGenreID()%>"><%= genre.getGenreName()%>
                                 </option>
                                 <% }%>
                             </select>
@@ -320,111 +325,111 @@
     <script src="${contextPath}/js/plugins/smooth-scrollbar.min.js"></script>
     <script src="${contextPath}/js/plugins/chartjs.min.js"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
-        <script>
-            $("textarea").on('keyup', function () {
-                $(".noti").hide();
-            });
-            $(document).ready(function () {
-            $("#category").change(function () {
-            var val = $(this).val();
-            $(".noti").hide();
-            <% for (Category cate : listCategory) {%>
-            if (val == "<%=cate.getCategoryID()%>"){
-            console.log("<%=cate.getCategoryName()%>");
-                    $("#genre").html(
-            <% ArrayList<Genre> list = genreDAO.getGenresByCategoryId(cate.getCategoryID());
+    <script>
+                                                    $("textarea").on('keyup', function () {
+                                                        $(".noti").hide();
+                                                    });
+                                                    $(document).ready(function () {
+                                                    $("#category").change(function () {
+                                                    var val = $(this).val();
+                                                            $(".noti").hide();
+        <% for (Category cate : listCategory) {%>
+                                                    if (val == "<%=cate.getCategoryID()%>"){
+                                                    console.log("<%=cate.getCategoryName()%>");
+                                                            $("#genre").html(
+        <% ArrayList<Genre> list = genreDAO.getGenresByCategoryId(cate.getCategoryID());
                 for (int i = 0; i < list.size(); i++) {
                 if (list.size() == 1 || i == list.size() - 1) {%>"<option value='<%=list.get(i).getGenreID()%>'><%=list.get(i).getGenreName()%></option>"
-                <%} else {%>"<option value='<%=list.get(i).getGenreID()%>'><%=list.get(i).getGenreName()%></option>" +
-                <%}
+        <%} else {%>"<option value='<%=list.get(i).getGenreID()%>'><%=list.get(i).getGenreName()%></option>" +
+        <%}
                 }%>);
-            }
-            <%}%>
-            });
-            });
-        $(".number").on('keyup', function () {
-        var n = parseInt($(this).val().replace(/\D/g, ''), 10);
-            $(this).val(n.toLocaleString());
-            $(".noti").hide();
-        });
-        (function () {
-        'use strict'
-                var forms = document.querySelectorAll('.needs-validation')
-                Array.prototype.slice.call(forms)
-                .forEach(function (form) {
-                form.addEventListener('submit', function (event) {
-                if (!form.checkValidity()) {
-                event.preventDefault()
-                        event.stopPropagation()
-                }
-                form.classList.add('was-validated')
-                }, false)
-                })
-        })()
-        
-        var today = new Date();
-        var dd = today.getDate();
-        var mm = today.getMonth()+1; //January is 0!
-        var yyyy = today.getFullYear();
-        if(dd<10){
-        dd='0'+dd
-        } 
-        if(mm<10){
-        mm='0'+mm
-        } 
-        today = yyyy+'-'+mm+'-'+dd;
-        document.getElementById("inputDate").setAttribute("max", today);
-        </script>
+                                                    }
+        <%}%>
+                                                    });
+                                                    });
+                                                            $(".number").on('keyup', function () {
+                                                    var n = parseInt($(this).val().replace(/\D/g, ''), 10);
+                                                            $(this).val(n.toLocaleString());
+                                                            $(".noti").hide();
+                                                    });
+                                                            (function () {
+                                                            'use strict'
+                                                                    var forms = document.querySelectorAll('.needs-validation')
+                                                                    Array.prototype.slice.call(forms)
+                                                                    .forEach(function (form) {
+                                                                    form.addEventListener('submit', function (event) {
+                                                                    if (!form.checkValidity()) {
+                                                                    event.preventDefault()
+                                                                            event.stopPropagation()
+                                                                    }
+                                                                    form.classList.add('was-validated')
+                                                                    }, false)
+                                                                    })
+                                                            })()
+
+                                                            var today = new Date();
+                                                            var dd = today.getDate();
+                                                            var mm = today.getMonth() + 1; //January is 0!
+                                                            var yyyy = today.getFullYear();
+                                                            if (dd < 10){
+                                                    dd = '0' + dd
+                                                    }
+                                                    if (mm < 10){
+                                                    mm = '0' + mm
+                                                    }
+                                                    today = yyyy + '-' + mm + '-' + dd;
+                                                            document.getElementById("inputDate").setAttribute("max", today);
+    </script>
     <script>
-        var pageNum;
-        $(document).on('click', '.pagination li', function () {
-            pageNum = $(this).data('repair');
-            pagination();
+                var pageNum;
+                $(document).on('click', '.pagination li', function () {
+        pageNum = $(this).data('repair');
+                pagination();
         });
-        function pagination() {
-            var row = document.getElementById("maxRows").value;
-            var search = document.getElementById("search").value;
-            console.log(row);
-            console.log(search);
-            console.log(pageNum);
-            $.ajax({
-                url: "/Bmazon/SellerControllerMap",
-                type: "get",
-                data: {
-                    search: search,
-                    row: row,
-                    index: pageNum,
-                    service: "pagingproduct"
-                },
-                success: function (respone) {
-                    var text = document.getElementById("product");
-                    text.innerHTML = respone;
-                    showpage();
-                },
-                error: function (xhr) {
-                    //Do Something to handle error
+                function pagination() {
+                var row = document.getElementById("maxRows").value;
+                        var search = document.getElementById("search").value;
+                        console.log(row);
+                        console.log(search);
+                        console.log(pageNum);
+                        $.ajax({
+                        url: "/Bmazon/SellerControllerMap",
+                                type: "get",
+                                data: {
+                                search: search,
+                                        row: row,
+                                        index: pageNum,
+                                        service: "pagingproduct"
+                                },
+                                success: function (respone) {
+                                var text = document.getElementById("product");
+                                        text.innerHTML = respone;
+                                        showpage();
+                                },
+                                error: function (xhr) {
+                                //Do Something to handle error
+                                }
+                        });
                 }
-            });
-        }
         function showpage() {
-            var row = document.getElementById("maxRows").value;
-            var search = document.getElementById("search").value;
-            $.ajax({
+        var row = document.getElementById("maxRows").value;
+                var search = document.getElementById("search").value;
+                $.ajax({
                 url: "/Bmazon/SellerControllerMap",
-                type: "get",
-                data: {
-                    search: search,
-                    row: row,
-                    index: pageNum,
-                    service: "showpageproduct"
-                },
-                success: function (respone) {
-                    var text = document.getElementById("showpage");
-                    text.innerHTML = respone;
-                },
-                error: function (xhr) {
-                    //Do Something to handle error
-                } });
+                        type: "get",
+                        data: {
+                        search: search,
+                                row: row,
+                                index: pageNum,
+                                service: "showpageproduct"
+                        },
+                        success: function (respone) {
+                        var text = document.getElementById("showpage");
+                                text.innerHTML = respone;
+                        },
+                        error: function (xhr) {
+                        //Do Something to handle error
+                        } });
         }
     </script>
 </html>

@@ -96,6 +96,11 @@
                                 <i class="fa fa-globe"></i> <span>Order Management</span>
                             </a>
                         </li>
+                           <li class="active">
+                            <a href="SellerControllerMap?service=feedback">
+                                <i class="fa fa-empire"></i> <span>Feed Back</span>
+                            </a>
+                        </li>
 
 
                     </ul>
