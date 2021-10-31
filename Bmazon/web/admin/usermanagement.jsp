@@ -155,7 +155,59 @@
                 </div>
             </div>
         </main>
-
+        <script>
+            var pageNum;
+            $(document).on('click', '.pagination li', function () {
+                pageNum = $(this).data('repair');
+                pagination();
+            });
+            function pagination() {
+                var row = document.getElementById("maxRows").value;
+                var search = document.getElementById("search").value;
+                console.log(row);
+                console.log(search);
+                console.log(pageNum);
+                $.ajax({
+                    url: "/Bmazon/AdminControllerMap",
+                    type: "get",
+                    data: {
+                        search: search,
+                        row: row,
+                        index: pageNum,
+                        service: "paginguser"
+                    },
+                    success: function (respone) {
+                        var text = document.getElementById("user");
+                        text.innerHTML = respone;
+                        showpage();
+                    },
+                    error: function (xhr) {
+                        //Do Something to handle error
+                    }
+                });
+            }
+            function showpage() {
+                var row = document.getElementById("maxRows").value;
+                var search = document.getElementById("search").value;
+                $.ajax({
+                    url: "/Bmazon/AdminControllerMap",
+                    type: "get",
+                    data: {
+                        search: search,
+                        row: row,
+                        index: pageNum,
+                        service: "showpageuser"
+                    },
+                    success: function (respone) {
+                        var text = document.getElementById("showpage");
+                        text.innerHTML = respone;
+                    },
+                    error: function (xhr) {
+                        //Do Something to handle error
+                    }
+                });
+            }
+        </script>
         <!--   Core JS Files   -->
         <script src="${contextPath}/js/core/popper.min.js"></script>
         <script src="${contextPath}/js/core/bootstrap.min.js"></script>
@@ -163,59 +215,6 @@
         <script src="${contextPath}/js/plugins/smooth-scrollbar.min.js"></script>
         <script src="${contextPath}/js/plugins/chartjs.min.js"></script>
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
-        <script>
-                                                        var pageNum;
-                                                        $(document).on('click', '.pagination li', function () {
-                                                            pageNum = $(this).data('repair');
-                                                            pagination();
-                                                        });
-                                                        function pagination() {
-                                                            var row = document.getElementById("maxRows").value;
-                                                            var search = document.getElementById("search").value;
-                                                            console.log(row);
-                                                            console.log(search);
-                                                            console.log(pageNum);
-                                                            $.ajax({
-                                                                url: "/Bmazon/AdminControllerMap",
-                                                                type: "get",
-                                                                data: {
-                                                                    search: search,
-                                                                    row: row,
-                                                                    index: pageNum,
-                                                                    service: "paginguser"
-                                                                },
-                                                                success: function (respone) {
-                                                                    var text = document.getElementById("user");
-                                                                    text.innerHTML = respone;
-                                                                    showpage();
-                                                                },
-                                                                error: function (xhr) {
-                                                                    //Do Something to handle error
-                                                                }
-                                                            });
-                                                        }
-                                                        function showpage() {
-                                                            var row = document.getElementById("maxRows").value;
-                                                            var search = document.getElementById("search").value;
-                                                            $.ajax({
-                                                                url: "/Bmazon/AdminControllerMap",
-                                                                type: "get",
-                                                                data: {
-                                                                    search: search,
-                                                                    row: row,
-                                                                    index: pageNum,
-                                                                    service: "showpageuser"
-                                                                },
-                                                                success: function (respone) {
-                                                                    var text = document.getElementById("showpage");
-                                                                    text.innerHTML = respone;
-                                                                },
-                                                                error: function (xhr) {
-                                                                    //Do Something to handle error
-                                                                }
-                                                            });
-                                                        }
-        </script>
     </body>
 
 </html>

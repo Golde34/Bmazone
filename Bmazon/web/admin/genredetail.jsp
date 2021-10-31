@@ -68,7 +68,6 @@
                                 <%}%>
                                 <div class="card-body">
                                     <form class="needs-validation" novalidate action="/Bmazon/AdminControllerMap" method="POST">
-                                        <%if (service.equalsIgnoreCase("addgenredetail")) {%>
                                         <table class="table table-striped">
                                             <tr>
                                                 <td style="width: 30%;">Genre Name</td>
@@ -96,37 +95,6 @@
                                                 </td>
                                             </tr>
                                         </table>
-                                        <%}%>
-                                        <%if (service.equalsIgnoreCase("updategenredetail")) {%>
-                                        <table class="table table-striped">
-                                            <tr>
-                                                <td>Genre Name</td>
-                                                <td>
-                                                    <input pattern="[^' ']+" class="form-control" value="<%=genre.getGenreName()%>" type="text" name="genrename" required>
-                                                    <div class="invalid-feedback">
-                                                        Not blank and no space at beginning or ending
-                                                    </div>
-                                                </td>
-                                            </tr>
-                                            <tr>
-                                                <td>Category Name</td>
-                                                <td>
-                                                    <input pattern="[^' ']+" class="form-control" value="<%=daocate.getCategoryByGenreId(genre.getGenreID()).getCategoryName() %>" type="text" name="categoryid" required>
-                                                    <div class="invalid-feedback">
-                                                        Not blank and no space
-                                                    </div>
-                                                </td>
-                                            </tr>
-                                            <tr>
-                                                <td></td>
-                                                <td>
-                                                    <input type="submit" value="Update Genre" class="btn btn-primary">
-                                                    <input type="hidden" value="updategenre" name="service">
-                                                    <input type="hidden" value="<%=genre.getGenreID()%>" name="id">
-                                                </td>
-                                            </tr>
-                                        </table>
-                                        <%}%>
                                     </form>
                                 </div>
                             </div>

@@ -191,7 +191,11 @@
                             %>                   
                             <div class="comment_box">
                                 <div class="col-md-6">
-                                    <p class="comment_content">From: <%=daoUser.getUserById(String.valueOf(elem.getUserID())).getFullname()%></p> 
+                                    <p class="comment_content">
+                                        From:<a href="UserControllerMap?service=userInteraction&userId=<%=elem.getUserID()%>"> 
+                                            <%=daoUser.getUserById(String.valueOf(elem.getUserID())).getFullname()%>
+                                        </a>
+                                    </p> 
                                     <p class="comment_content">Rating:<%=elem.getRating()%>/5</p>
                                 </div>                          
                                 <div class="col-md-5"> </div>

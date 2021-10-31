@@ -234,22 +234,6 @@ public class ProductDAOTest {
         assertEquals(8,instance.getProductGear().size());
 
     }
-    @Test
-    public void testGetTrueProductPaging() {
-        System.out.println("getTrueProductPaging");
-        ProductDAO instance = new ProductDAO();
-        assertEquals(20,instance.getTrueProductPaging(1, 20).size());
-        // TODO review the generated test code and remove the default call to fail.
-
-    }
-     @Test
-    public void testGetTrueProductPagingNull() {
-        System.out.println("getTrueProductPaging");
-        ProductDAO instance = new ProductDAO();
-        assertEquals(0,instance.getTrueProductPaging(-10, 0).size());
-        // TODO review the generated test code and remove the default call to fail.
-
-    }
 
     /**
      * Test of getProductBySellerPaging method, of class ProductDAO.

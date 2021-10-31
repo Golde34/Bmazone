@@ -106,6 +106,50 @@ public class GalleryDAO extends BaseDAO {
         }
         return gallery;
     }
+    
+    public Gallery getDefaultGalleryByProductTypeId(String id) {
+        Gallery gallery = new Gallery();
+        String sql = "SELECT * FROM Gallery where productTypeID = ? ORDER BY GalleryID asc LIMIT 1 ";
+        try {
+            pre = conn.prepareStatement(sql);
+            pre.setString(1, id);
+            rs = pre.executeQuery();
+            if (rs.next()) {
+                gallery.setGalleryID(rs.getInt("galleryID"));
+                gallery.setLink(rs.getString("link"));
+                gallery.setProductID(rs.getInt("productID"));
+                gallery.setProductTypeID(rs.getString("productTypeID"));
+                gallery.setStatus(rs.getInt("status"));
+            }
+            rs.close();
+            pre.close();
+        } catch (SQLException e) {
+            Logger.getLogger(ProductDAO.class.getName()).log(Level.SEVERE, null, e);
+        }
+        return gallery;
+    }
+    
+    public Gallery getRevertGalleryByProductTypeId(String id) {
+        Gallery gallery = new Gallery();
+        String sql = "SELECT * FROM Gallery where productTypeID = ? ORDER BY GalleryID desc LIMIT 1 ";
+        try {
+            pre = conn.prepareStatement(sql);
+            pre.setString(1, id);
+            rs = pre.executeQuery();
+            if (rs.next()) {
+                gallery.setGalleryID(rs.getInt("galleryID"));
+                gallery.setLink(rs.getString("link"));
+                gallery.setProductID(rs.getInt("productID"));
+                gallery.setProductTypeID(rs.getString("productTypeID"));
+                gallery.setStatus(rs.getInt("status"));
+            }
+            rs.close();
+            pre.close();
+        } catch (SQLException e) {
+            Logger.getLogger(ProductDAO.class.getName()).log(Level.SEVERE, null, e);
+        }
+        return gallery;
+    }
 
     public int changeStatus(int id, int status) {
         int n = 0;

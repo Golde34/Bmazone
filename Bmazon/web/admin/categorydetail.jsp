@@ -78,8 +78,8 @@
                                         <table class="table table-striped">
                                             <tr>
                                                 <td style="width: 30%;">Category Name</td>
-                                                <td style="width: 70%;">
-                                                    <input pattern="[^' ']+" class="form-control" type="text" value="${categoryname}" name="categoryname" required>
+                                                <td style="width: 70%;">                      
+                                                    <input pattern="[^' ']+" class="form-control" type="text"  name="categoryname" required>
                                                     <div class="invalid-feedback">
                                                         Not blank and no space at beginning or ending
                                                     </div>
@@ -99,14 +99,14 @@
                                             <tr>
                                                 <td>Category Name</td>
                                                 <td>
-                                                    <input pattern="[^' ']+" class="form-control" value="<%=category.getCategoryName()%>" type="text" name="categoryname" required>
+                                                    <input pattern="[^' ']+" class="form-control" value="<%=category.getCategoryID()%>" type="text" name="categoryname" required>
                                                     <div class="invalid-feedback">
                                                         Not blank and no space at beginning or ending
                                                     </div>
                                                 </td>
                                             </tr>
                                             <input type="hidden" value="updatecategory" name="service">
-                                            <input type="hidden" value="<%=category.getCategoryID()%>" name="id">
+
                                         </table>
                                     </div>
                                 </div>
@@ -125,27 +125,28 @@
                                                     <tr>
                                                         <th>Genre Name</th>
                                                         <th></th>
-                                                        <th></th>
                                                     </tr>
                                                 </thead>
                                                 <tbody id="genre">
-                                                    <%for (Genre genre : listGenre) {%>
+                                                    <%for (Genre genre : listGenre) {
+                                                    %>
                                                     <tr>
                                                         <td><input required style="width: 100%;" type="text" name="genrename" class="form-control" value="<%=genre.getGenreName()%>"></td>
                                                         <td>
                                                             <% if (genre.getStatus() == 1) {%>
-                                                            <a href="AdminControllerMap?service=deletegenre&genreid=<%=genre.getGenreID()%>" onclick="return confirm('Are you sure?');"><button class="btn btn-primary">Deactive</button></a>
+                                                            <a class="btn btn-primary" href="AdminControllerMap?service=deletegenre&genreid=<%=genre.getGenreID()%>&categoryId=<%=category.getCategoryID()%>" onclick="return confirm('Are you sure?');">Deactive</a>
                                                             <%} else {%>
-                                                            <a href="AdminControllerMap?service=activegenre&genreid=<%=genre.getGenreID()%>" onclick="return confirm('Are you sure?');"><button class="btn btn-primary">Active</button></a>
+                                                            <a class="btn btn-primary" href="AdminControllerMap?service=activegenre&genreid=<%=genre.getGenreID()%>&categoryId=<%=category.getCategoryID()%>" onclick="return confirm('Are you sure?');">Active</a>
                                                             <%}%>
                                                         </td>
                                                     </tr>
-
                                                     <%}%>
                                                 </tbody>
                                             </table>
                                             <br>
-                                            <input type="submit" value="Update" class="btn btn-primary" style="margin-left: 500px;">
+                                            <div class="d-flex justify-content-center">
+                                                <input type="submit" value="Update" class="btn btn-primary mt-3">
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
@@ -163,6 +164,7 @@
         <script src="${contextPath}/js/plugins/perfect-scrollbar.min.js"></script>
         <script src="${contextPath}/js/plugins/smooth-scrollbar.min.js"></script>
         <script src="${contextPath}/js/plugins/chartjs.min.js"></script>
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
         <script>
                                                                 (function () {
                                                                     'use strict'

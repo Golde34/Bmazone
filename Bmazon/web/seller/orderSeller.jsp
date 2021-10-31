@@ -4,6 +4,11 @@
     Author     : DELL
 --%>
 
+<%@page import="model.UserDAO"%>
+<%@page import="model.SellerDAO"%>
+<%@page import="entity.Seller"%>
+<%@page import="entity.Order"%>
+<%@page import="model.OrderDAO"%>
 <%@page import="model.OrderDetailDAO"%>
 <%@page import="model.ProductDAO"%>
 <%@page import="entity.Genre"%>
@@ -67,6 +72,9 @@
         GenreDAO genreDAO = new GenreDAO();
         ProductDAO pDAO = new ProductDAO();
         OrderDetailDAO odDAO = new OrderDetailDAO();
+        OrderDAO oDAO = new OrderDAO();
+        SellerDAO sDAO = new SellerDAO();
+        UserDAO uDAO = new UserDAO();
 
         ArrayList<Category> listCategory = cateDAO.getAllCategories();
         ArrayList<Genre> listGenre = genreDAO.getAllGenres();
@@ -75,7 +83,11 @@
         int prev = index == 1 ? 1 : index - 1;
         int next = index == totalPage ? totalPage : index + 1;
         User curUser = (User) request.getSession().getAttribute("currUser");
-        ArrayList<Product> listP = (ArrayList<Product>) request.getAttribute("listProduct");
+        List<Order> listO = (ArrayList<Order>) request.getAttribute("listOrder");
+
+        String userID = curUser.getUserId();
+        Seller seller = sDAO.getSellerByUserID(Integer.parseInt(userID));
+        int sellerID = seller.getSellerID();
     %>
 
     <body class="skin-black">
@@ -128,7 +140,8 @@
                             </a>
                         </li>
                         
-                       <li class="active">
+                       
+                        <li>
                             <a href="SellerControllerMap?service=feedback">
                                 <i class="fa fa-empire"></i> <span>Feed Back</span>
                             </a>
@@ -154,59 +167,45 @@
                     <div class="row" id="Order" name="tabcontent" style="display: block;">
                         <div class="col-md-8">
                             <section class="panel">
-                                <!--                            <header class="panel-heading">
-                                                                Product in shop
-                                                            </header>-->
-                                <div class="table_head py-3" style="display: flex;
-                                     justify-content: space-between;">
-                                    <div class="rowNum">
-                                        <h6 style="display: inline">Select number of Rows</h6>
-                                        <div class="form-group" style="display: inline;">
-                                            <select onchange="pagination()" name="state" id="maxRows" class="form-control" style="width:80px;display:inline;">
-                                                <option value="5">5</option>
-                                                <option value="10">10</option>
-                                                <option value="20">20</option>
-                                                <option value="5000">Show All</option>
-                                            </select>
-                                        </div>
-                                    </div>
-                                    <div class="tb_search">
-                                        <input id="search" style="width: 100%;" type="text" oninput="pagination()" placeholder="Search.." class="form-control">
-                                    </div>
-                                </div>
+                                <header class="panel-heading">
+                                    Orders
+                                </header>
                                 <div class="panel-body table-responsive">
-                                    <table class="table table-hover" id="dataTable">
+                                    <table class="table table-hover">
                                         <thead>
                                             <tr>
-                                                <th style="width: 30%;height: 50px;">Product Name</th>
-                                                <th style="width: 10%;height: 50px;">Rating</th>
-                                                <th style="width: 10%;height: 50px;">Type</th>
-                                                <th style="width: 10%;height: 50px;">Genre</th>
-                                                <th style="width: 10%;height: 50px;">Action</th>
-                                                <th style="width: 10%;height: 50px;">Sold</th>
+                                                <th>Customer</th>
+                                                <th>Order date</th>
+                                                <th>Status</th>
+                                                <th>Action</th>
                                             </tr>
                                         </thead>
-                                        <tbody id="product">
-                                            <% for (Product product : listP) {
-                                                    int proID = product.getProductID();
-                                                    String genreid = pgdao.getGenreIdByProductId(product.getProductID());
-                                                    Genre genre = genreDAO.getGenreById(Integer.parseInt(genreid));
-                                                    int sold = odDAO.sumSoldProductByProductID(Integer.toString(proID));
+                                        <tbody id="order">
+                                            <%
+                                                for (Order o : listO) {
+                                                  User u = uDAO.getUserById(o.getUserID());
                                             %>
                                             <tr>
-                                                <td><div><%= product.getProductName()%></div></td>
-                                                <td><div><%= product.getRating() %>/10</div></td>
-                                                <td><div><%= cateDAO.getCategoryById(pcDAO.getProductCateByProductID(proID).getCategoryID())%></div></td>
-                                                <td><div><%= genre.getGenreName()%></div></td>
-                                                <td><div><a href="SellerControllerMap?service=orderdetail&productid=<%= product.getProductID()%>"><button class="btn btn-primary">Detail</button></a>
-                                                    </div></td>
-                                                <td>
-                                                    <div><%= sold %></div>
-                                                </td></tr>
+                                                <td><%= u.getUsername() %> </td>
+                                                <td><%= o.getOrderDate() %></td>
+                                                
+                                                <% if (o.getState() == 0) {%>
+                                                <td><span class="label label-danger">Wait for accept</span></td>
+                                                <% } else if (o.getState() == 1) {%>
+                                                <td><span class="label label-primary">Order confirmed</span></td>
+                                                <% } else if (o.getState() == 2) {%>
+                                                <td><span class="label label-warning">On The Way</span></td>
+                                                <% } else { %>
+                                                <td><span class="label label-success">Success</span></td>
                                                 <% } %>
+                                                <td><a href="SellerControllerMap?service=orderdetail&orderid=<%= o.getOrderID() %>"><button class="btn btn-primary">Detail</button></a>
+                                                </td>
+                                            </tr>
+                                            <% } %>
                                         </tbody>
                                     </table>
                                 </div>
+                                        
                                 <div class="pagination-container mt-4" style="display: flex;
                                      justify-content: space-around;cursor: pointer;">
                                     <nav>
@@ -262,11 +261,34 @@
                         <div class="col-md-4">
                             <section class="panel">
                                 <header class="panel-heading">
-                                    Biggest orders
+                                    Big Order
                                 </header>
-                                <div class="panel-body">
+                                    
+                                <div class="panel-body table-responsive">
+                                    <table class="table table-hover">
+                                        <thead>
+                                            <tr>
+                                                <th>Order</th>
+                                                <th>Total spent</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                <% 
+                                   List<Order> listObig = odDAO.most5BigOrder();
+                                   for (Order obig : listObig) {
+                                           
+                                %>
+                                            <tr>
+                                                <td><a href="SellerControllerMap?service=orderdetail&orderid=<%= obig.getOrderID() %>"><%= obig.getOrderID() %></a></td>
+                                                <td><%= nf.format(obig.getTotal()) %> VND</td>
+                                            </tr>
+                                            <% } %>
+                                        </tbody>
+                                    </table>
                                 </div>
+
                             </section>
+
                         </div>
 
                     </div>
@@ -288,59 +310,59 @@
     <script src="${contextPath}/js/plugins/chartjs.min.js"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
     <script>
-                                                $("textarea").on('keyup', function () {
-                                                    $(".noti").hide();
-                                                });
-                                                $(document).ready(function () {
-                                                $("#category").change(function () {
-                                                var val = $(this).val();
-                                                        $(".noti").hide();
+        $("textarea").on('keyup', function () {
+            $(".noti").hide();
+        });
+        $(document).ready(function () {
+        $("#category").change(function () {
+        var val = $(this).val();
+                $(".noti").hide();
         <% for (Category cate : listCategory) {%>
-                                                if (val == "<%=cate.getCategoryID()%>"){
-                                                console.log("<%=cate.getCategoryName()%>");
-                                                        $("#genre").html(
+        if (val == "<%=cate.getCategoryID()%>"){
+        console.log("<%=cate.getCategoryName()%>");
+                $("#genre").html(
         <% ArrayList<Genre> list = genreDAO.getGenresByCategoryId(cate.getCategoryID());
-                for (int i = 0; i < list    .size(); i++) {
-                        if (list.size() == 1 || i == list.size() - 1) {%>"<option value='<%=list.get(i).getGenreID()%>'><%=list.get(i).getGenreName()%></option>"
+            for (int i = 0; i < list.size(); i++) {
+                if (list.size() == 1 || i == list.size() - 1) {%>"<option value='<%=list.get(i).getGenreID()%>'><%=list.get(i).getGenreName()%></option>"
         <%} else {%>"<option value='<%=list.get(i).getGenreID()%>'><%=list.get(i).getGenreName()%></option>" +
         <%}
-                        }%>);
-                                                }
+            }%>);
+        }
         <%}%>
-                                                });
-                                                });
-                                                        $(".number").on('keyup', function () {
-                                                var n = parseInt($(this).val().replace(/\D/g, ''), 10);
-                                                        $(this).val(n.toLocaleString());
-                                                        $(".noti").hide();
-                                                });
-                                                        (function () {
-                                                        'use strict'
-                                                                var forms = document.querySelectorAll('.needs-validation')
-                                                                Array.prototype.slice.call(forms)
-                                                                .forEach(function (form) {
-                                                                form.addEventListener('submit', function (event) {
-                                                                if (!form.checkValidity()) {
-                                                                event.preventDefault()
-                                                                        event.stopPropagation()
-                                                                }
-                                                                form.classList.add('was-validated')
-                                                                }, false)
-                                                                })
-                                                        })()
+        });
+        });
+                $(".number").on('keyup', function () {
+        var n = parseInt($(this).val().replace(/\D/g, ''), 10);
+                $(this).val(n.toLocaleString());
+                $(".noti").hide();
+        });
+                (function () {
+                'use strict'
+                        var forms = document.querySelectorAll('.needs-validation')
+                        Array.prototype.slice.call(forms)
+                        .forEach(function (form) {
+                        form.addEventListener('submit', function (event) {
+                        if (!form.checkValidity()) {
+                        event.preventDefault()
+                                event.stopPropagation()
+                        }
+                        form.classList.add('was-validated')
+                        }, false)
+                        })
+                })()
 
-                                                        var today = new Date();
-                                                        var dd = today.getDate();
-                                                        var mm = today.getMonth() + 1; //January is 0!
-                                                        var yyyy = today.getFullYear();
-                                                        if (dd < 10){
-                                                dd = '0' + dd
-                                                }
-                                                if (mm < 10){
-                                                mm = '0' + mm
-                                                }
-                                                today = yyyy + '-' + mm + '-' + dd;
-                                                        document.getElementById("inputDate").setAttribute("max", today);
+                var today = new Date();
+                var dd = today.getDate();
+                var mm = today.getMonth() + 1; //January is 0!
+                var yyyy = today.getFullYear();
+                if (dd < 10){
+        dd = '0' + dd
+        }
+        if (mm < 10){
+        mm = '0' + mm
+        }
+        today = yyyy + '-' + mm + '-' + dd;
+                document.getElementById("inputDate").setAttribute("max", today);
     </script>
     <script>
                 var pageNum;
@@ -349,22 +371,16 @@
                 pagination();
         });
                 function pagination() {
-                var row = document.getElementById("maxRows").value;
-                        var search = document.getElementById("search").value;
-                        console.log(row);
-                        console.log(search);
                         console.log(pageNum);
                         $.ajax({
                         url: "/Bmazon/SellerControllerMap",
                                 type: "get",
                                 data: {
-                                search: search,
-                                        row: row,
-                                        index: pageNum,
+                                search: index: pageNum,
                                         service: "pagingorder"
                                 },
                                 success: function (respone) {
-                                var text = document.getElementById("product");
+                                var text = document.getElementById("order");
                                         text.innerHTML = respone;
                                         showpage();
                                 },
@@ -374,15 +390,11 @@
                         });
                 }
         function showpage() {
-        var row = document.getElementById("maxRows").value;
-                var search = document.getElementById("search").value;
                 $.ajax({
                 url: "/Bmazon/SellerControllerMap",
                         type: "get",
                         data: {
-                        search: search,
-                                row: row,
-                                index: pageNum,
+                        search: index: pageNum,
                                 service: "showpageorder"
                         },
                         success: function (respone) {
