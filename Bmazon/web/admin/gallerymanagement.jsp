@@ -79,7 +79,7 @@
                                         <table class="text-center" style="width: 100%;">
                                             <thead class="text-uppercase bg-gray-200">
                                                 <tr>
-                                                    <th style="width: 25%">Product Name</th>
+                                                    <th style="width: 25%;padding: 20px;">Product Name</th>
                                                     <th style="width: 10%">Color</th>
                                                     <th style="width: 15%">Size</th>
                                                     <th style="width: 20%">Image</th>

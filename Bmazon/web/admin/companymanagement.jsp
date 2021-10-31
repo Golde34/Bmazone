@@ -81,7 +81,7 @@
                                         <table style="width: 100%;" class="text-center ">
                                             <thead class="text-uppercase bg-gray-200">
                                                 <tr>
-                                                    <th style="width: 30%">Company Name</th>
+                                                    <th style="width: 30%;padding: 20px;">Company Name</th>
                                                     <th style="width: 25%">Commit Date</th>
                                                     <th style="width: 25%">Unit Cost</th>
                                                     <th style="width: 20%">Action</th>
