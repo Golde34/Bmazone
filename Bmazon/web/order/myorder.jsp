@@ -105,7 +105,7 @@
                         <div class="col-md-6">
                     <a href="CartControllerMap?service=OrderDetail&orderID=<%=order.getOrderID()%>">
                         
-                        <h6>Order ID: <%=order.getOrderID()%></h6> </a>
+                        <h6>Order ID: <%=order.getOrderID()%> (<%=order.getOrderDate()%>)</h6> </a>
                         </div>
                          <%if (order.getState()==0&&order.getStatus()==1) {
                                     %>
@@ -115,21 +115,24 @@
                                      
                                 <%  }
                                 %>
-                           <%if (order.getState()==0&&order.getStatus()==0) {
-                                    %>
-                                     <div class="col-md-6">
-                                    <a href="CartControllerMap?service=Deactice&orderID=<%=order.getOrderID()%>&status=1" style="float: right"><button class="button" onclick="return confirm('Are you sure you want to Buy Again?');">Buy Again </button></a>
-                                     </div>
-                                     
-                                <%  }
-                                %>      
+                          
                     </div>
                     <a href="CartControllerMap?service=OrderDetail&orderID=<%=order.getOrderID()%>">
                         <article class="card">
                             <div class="card-body row">
                                 <div class="col"> <strong>Ship Name :</strong> <br><%=order.getShipName()%> </div>
                                 <div class="col"> <strong>Shipping By :</strong><%=scdao.getShipCompanyById(order.getCompanyID()).getCompanyName() %> <br>   <i class="fa fa-phone"></i><%=order.getShipPhone()%> </div>
-                                <div class="col"> <strong>Status:</strong> <br> <%=state%></div>
+                                <div class="col"> 
+                                    <strong>Status:</strong> <br> <%=state%> <%=order.getOrderDate()%>
+                                   <%if (order.getStatus()==0) {
+                                    %>  
+                                    <strong style="color: red">(Deactive)</strong>
+                                             
+                                <%  }
+                                %>
+                          
+                                
+                                </div> 
                                 <div class="col"> <strong>Payment Method:</strong> <br> <%=order.getPaymentMethod()%><br> <%=nf.format(order.getTotal())%> </div>
                                    
                             </div>
@@ -151,4 +154,5 @@
         <jsp:include page="../footer.jsp"/>
 
     </body>
+    
 </html>

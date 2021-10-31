@@ -243,10 +243,15 @@ public class CartController extends HttpServlet {
             ShoppingCart.removeAll(ShoppingCart);
             request.getSession().setAttribute("ShoppingCart", ShoppingCart);
             request.getSession().setAttribute("currUser", x);
-            List<Order> list = oDao.getOrderByUser(Integer.parseInt(x.getUserId()));
-            request.setAttribute("ListOrder", list);
-            request.setAttribute("mess", "Your order had been added!");
-            sendDispatcher(request, response, "order/myorder.jsp");
+           
+            ArrayList<OrderDetail> DetailList = odDao.getAllOrderDetail(thisOrder.getOrderID());
+            request.getSession().setAttribute("ShoppingCart", ShoppingCart);
+            request.getSession().setAttribute("currUser", x);
+            request.setAttribute("order", thisOrder);
+            request.setAttribute("DetailList", DetailList);
+            request.setAttribute("mess", "Order Sucessfully!");
+//                sendDispatcher(request, response, "cart/cart.jsp");
+            sendDispatcher(request, response, "cart/confirmorder.jsp");
 
         } else if ("Wallet".equals(payment)) {
             if (wallet >= Double.parseDouble(totalString)) {
@@ -263,13 +268,15 @@ public class CartController extends HttpServlet {
                 ShoppingCart.removeAll(ShoppingCart);
                 x.setWallet(wallet - Double.parseDouble(totalString));
                 uDao.updateInfoUserByAdmin(x);
+               
+                ArrayList<OrderDetail> DetailList = odDao.getAllOrderDetail(thisOrder.getOrderID());
                 request.getSession().setAttribute("ShoppingCart", ShoppingCart);
                 request.getSession().setAttribute("currUser", x);
-                List<Order> list = oDao.getOrderByUser(Integer.parseInt(x.getUserId()));
-                request.setAttribute("ListOrder", list);
-                request.setAttribute("mess", "Your order had been added!");
+                request.setAttribute("order", thisOrder);
+                request.setAttribute("DetailList", DetailList);
+                request.setAttribute("mess", "Order Sucessfully!");
 //                sendDispatcher(request, response, "cart/cart.jsp");
-                sendDispatcher(request, response, "order/myorder.jsp");
+                sendDispatcher(request, response, "cart/confirmorder.jsp");
             } else {
                 request.getSession().setAttribute("ShoppingCart", ShoppingCart);
                 request.getSession().setAttribute("currUser", x);
@@ -334,11 +341,11 @@ public class CartController extends HttpServlet {
         sendDispatcher(request, response, "order/orderdetail.jsp");
     }
 
-    public void serviceDeactive(HttpServletRequest request, HttpServletResponse response)  {
+    public void serviceDeactive(HttpServletRequest request, HttpServletResponse response) {
         String orderidString = request.getParameter("orderID");
         int orderid = Integer.parseInt(orderidString);
         String statusString = request.getParameter("status");
-        int status = Integer.parseInt(statusString);    
+        int status = Integer.parseInt(statusString);
         oDao.changeStatus(orderid, status);
         sendDispatcher(request, response, "CartControllerMap?service=MyOrder");
     }

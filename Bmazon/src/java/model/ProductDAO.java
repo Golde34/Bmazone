@@ -84,16 +84,14 @@ public class ProductDAO extends BaseDAO {
 // nam
 
     public ArrayList<Product> getAllPagingProductBySeller(int index, int numOfRow, String search, String seller) {
+        int start = (index - 1) * numOfRow;
         ArrayList<Product> list = new ArrayList<>();
-        String sql = "declare @PageNo INT =" + index + "\n"
-                + "declare @PageSize INT=" + numOfRow + "\n"
-                + "SELECT * from(\n"
-                + "SELECT productID,productName,[description],rating,sellerID,User.fullname,releaseDate,Product.[status],\n"
-                + "ROW_NUMBER() over (order by Product.productID) as RowNum\n"
-                + "  FROM Product inner join [User] on Product.sellerID=[User].userID where Product.sellerID = " + seller + " and(productName like '%" + search + "%' ))T\n"
-                + "where T.RowNum between ((@PageNo-1)*@PageSize)+1 and (@PageNo*@PageSize)";
+        String sql = "select * from product where sellerID = ? and productName like '%" + search + "%'  limit ?,?";
         try {
             pre = conn.prepareStatement(sql);
+            pre.setString(1, seller);
+            pre.setInt(2, start);
+            pre.setInt(3, numOfRow);
             rs = pre.executeQuery();
             while (rs.next()) {
                 Product pro = new Product();
@@ -173,7 +171,8 @@ public class ProductDAO extends BaseDAO {
 
     public static void main(String[] args) {
         ProductDAO pd = new ProductDAO();
-        System.out.println(pd.getProductSale().size());
+        ArrayList<Product> listPaging = pd.getAllPagingProductBySeller(1, 5, "", "4");
+        System.out.println(listPaging.size());
     }
 
     public ArrayList<Product> getProductSale() {
@@ -762,5 +761,7 @@ public class ProductDAO extends BaseDAO {
         }
         return n;
     }
+    
+    
 
 }

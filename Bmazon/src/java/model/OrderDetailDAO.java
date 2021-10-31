@@ -16,13 +16,14 @@ import java.util.logging.Logger;
  * @author Admin
  */
 public class OrderDetailDAO extends BaseDAO {
-     BaseDAO dbConn = new BaseDAO();
+
+    BaseDAO dbConn = new BaseDAO();
 
     public static void main(String[] args) {
         OrderDetailDAO dao = new OrderDetailDAO();
         System.out.println(dao.sumSoldProductTypeByPtypeID("Pr25Ty1"));
     }
-    
+
     public int insertOrderDetail(OrderDetail obj) {
         int n = 0;
         String sql = "Insert into OrderDetail(orderID, productTypeID, productName, price, quantity, status)"
@@ -72,7 +73,7 @@ public class OrderDetailDAO extends BaseDAO {
 
     public ArrayList<OrderDetail> getAllOrderDetail(int oid) {
         ArrayList<OrderDetail> list = new ArrayList<>();
-        String sql = "select * from `OrderDetail` where orderID = "+ oid +" and status = 1  order by orderID desc";
+        String sql = "select * from `OrderDetail` where orderID = " + oid + " and status = 1  order by orderID desc";
         ResultSet rs = dbConn.getData(sql);
         try {
             while (rs.next()) {
@@ -91,31 +92,30 @@ public class OrderDetailDAO extends BaseDAO {
         return list;
     }
 
-    
-    public int sumSoldProductTypeByPtypeID(String ptID){
+    public int sumSoldProductTypeByPtypeID(String ptID) {
         int result = 0;
         String sql = "SELECT sum(quantity) FROM `OrderDetail` where productTypeID = ?";
         try {
             pre = conn.prepareStatement(sql);
             pre.setString(1, ptID);
             rs = pre.executeQuery();
-            if(rs.next()){
+            if (rs.next()) {
                 result = rs.getInt(1);
             }
         } catch (SQLException ex) {
-            
+
         }
         return result;
     }
-    
-    public ArrayList<OrderDetail> getOrderDetailByOrderId(int orderId){
+
+    public ArrayList<OrderDetail> getOrderDetailByOrderId(int orderId) {
         ArrayList<OrderDetail> list = new ArrayList<>();
         String xSql = "select * from `orderdetail` where orderID=?";
         try {
-            pre=conn.prepareStatement(xSql);
+            pre = conn.prepareStatement(xSql);
             pre.setInt(1, orderId);
-            rs=pre.executeQuery();
-            while(rs.next()){
+            rs = pre.executeQuery();
+            while (rs.next()) {
                 OrderDetail od = new OrderDetail();
                 od.setOrderID(rs.getInt("orderID"));
                 od.setPrice(rs.getDouble("price"));
@@ -124,10 +124,29 @@ public class OrderDetailDAO extends BaseDAO {
                 od.setQuantity(rs.getInt("quantity"));
                 od.setStatus(rs.getInt("status"));
                 list.add(od);
+                return list;
             }
         } catch (SQLException ex) {
             Logger.getLogger(OrderDetailDAO.class.getName()).log(Level.SEVERE, null, ex);
         }
         return list;
+    }
+
+    public int sumSoldProductByProductID(String pid) {
+        int result = 0;
+        String sql = "select sum(od.quantity), p.productID from OrderDetail od inner join ProductType pt on od.productTypeID=pt.productTypeId inner join Product p on pt.productID=p.productID\n"
+                + "where p.productID=?\n"
+                + "group by p.productID";
+        try {
+            pre = conn.prepareStatement(sql);
+            pre.setString(1, pid);
+            rs = pre.executeQuery();
+            if (rs.next()) {
+                result = rs.getInt(1);
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(OrderDetailDAO.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return result;
     }
 }

@@ -98,17 +98,23 @@
                                 <i class="fa fa-dashboard"></i> <span>Dashboard</span>
                             </a>
                         </li>
-                        <li class="active">
+                        <li>
                             <a href="SellerControllerMap?service=productmanagement">
                                 <i class="fa fa-gavel"></i> <span>Product Management</span>
                             </a>
                         </li>
 
-                        <li>
+                        <li class="active">
                             <a href="SellerControllerMap?service=ordermanagement">
                                 <i class="fa fa-globe"></i> <span>Order Management</span>
                             </a>
                         </li>
+                       <li class="active">
+                            <a href="SellerControllerMap?service=feedback">
+                                <i class="fa fa-empire"></i> <span>Feed Back</span>
+                            </a>
+                        </li>
+
 
 
                     </ul>
