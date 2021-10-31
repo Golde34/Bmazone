@@ -4,6 +4,9 @@
     Author     : Admin
 --%>
 
+<%@page import="model.ShipCompanyDAO"%>
+<%@page import="entity.Order"%>
+<%@page import="entity.OrderDetail"%>
 <%@page import="model.OrderDetailDAO"%>
 <%@page import="entity.Gallery"%>
 <%@page import="model.GalleryDAO"%>
@@ -53,15 +56,12 @@
             WareHouseDAO whdao = new WareHouseDAO();
             GalleryDAO gallerydao = new GalleryDAO();
             OrderDetailDAO oddao = new OrderDetailDAO();
+            ShipCompanyDAO spDAO = new ShipCompanyDAO();
 
-            Category category = (Category) request.getAttribute("category");
-            Genre genre = (Genre) request.getAttribute("genre");
             User curUser = (User) request.getSession().getAttribute("currUser");
-
-            ArrayList<Category> listCategory = daocat.getAllCategories();
-            Product product = (Product) request.getAttribute("product");
             DecimalFormat nf = new DecimalFormat("###,###,###");
-            ArrayList<ProductType> listPT = (ArrayList<ProductType>) request.getAttribute("listProductType");
+            Order order = (Order) request.getAttribute("order");
+            List<OrderDetail> listOD = (List<OrderDetail>) request.getAttribute("listOD");
         %>
         <jsp:include page="headerSeller.jsp"/>
         <div class="wrapper row-offcanvas row-offcanvas-left">
@@ -109,7 +109,7 @@
                                 <i class="fa fa-globe"></i> <span>Order Management</span>
                             </a>
                         </li>
-                       <li class="active">
+                        <li>
                             <a href="SellerControllerMap?service=feedback">
                                 <i class="fa fa-empire"></i> <span>Feed Back</span>
                             </a>
@@ -121,108 +121,162 @@
                 </section>
                 <!-- /.sidebar -->
             </aside>
+            <style>
+                .row {
+                    display: -ms-flexbox; /* IE10 */
+                    display: flex;
+                    -ms-flex-wrap: wrap; /* IE10 */
+                    flex-wrap: wrap;
+                    margin: 0 -16px;
+                }
 
+                .col-25 {
+                    -ms-flex: 25%; /* IE10 */
+                    flex: 25%;
+                }
+
+                .col-50 {
+                    -ms-flex: 50%; /* IE10 */
+                    flex: 50%;
+                }
+
+                .col-75 {
+                    -ms-flex: 75%; /* IE10 */
+                    flex: 75%;
+                }
+
+                .col-25,
+                .col-50,
+                .col-75 {
+                    padding: 0 16px;
+                }
+
+                .container {
+                    background-color: #f2f2f2;
+                    padding: 5px 20px 15px 20px;
+                    border: 1px solid lightgrey;
+                    border-radius: 3px;
+                }
+
+                input[type=text] {
+                    width: 100%;
+                    margin-bottom: 20px;
+                    padding: 12px;
+                    border: 1px solid #ccc;
+                    border-radius: 3px;
+                }
+
+                label {
+                    margin-bottom: 10px;
+                    display: block;
+                }
+
+                .icon-container {
+                    margin-bottom: 20px;
+                    padding: 7px 0;
+                    font-size: 24px;
+                }
+
+                .btn {
+                    background-color: #04AA6D;
+                    color: white;
+                    padding: 12px;
+                    margin: 10px 0;
+                    border: none;
+                    width: 100%;
+                    border-radius: 3px;
+                    cursor: pointer;
+                    font-size: 17px;
+                }
+
+                .btn:hover {
+                    background-color: #45a049;
+                }
+
+                span.price {
+                    float: right;
+                    color: grey;
+                }
+
+                /* Responsive layout - when the screen is less than 800px wide, make the two columns stack on top of each other instead of next to each other (and change the direction - make the "cart" column go on top) */
+                @media (max-width: 800px) {
+                    .row {
+                        flex-direction: column-reverse;
+                    }
+                    .col-25 {
+                        margin-bottom: 20px;
+                    }
+                }
+            </style>
 
             <aside class="right-side">
-                <section class="content">
-                    <!-- Main row -->
-                    <!-- Product management -->
-                    <div class="container-fluid py-4">
-                        <div class="row my-4">
-                            <div class="col-lg-12 col-md-12 mb-md-0 mb-4">
-                                <div class="card">
-                                    <div class="card-header pt-5 d-flex justify-content-between">
-                                        <h3 class="m-0 font-weight-bold text-primary">Product Information</h3>
+                <div class="row">
+                    <div class="col-75">
+                        <div class="container">
+                            <form action="/action_page.php">
+
+                                <div class="row">
+                                    <div class="col-50">
+                                        <h3>Billing Address</h3>
+                                        <label for="fname"><i class="fa fa-user"></i> Customer Name</label>
+                                        <input type="text" id="fname" readonly="" value="<%= order.getShipName()%>">
+                                        <label for="email"><i class="fa fa-envelope"></i> Ship Company</label>
+                                        <input type="text" id="email" readonly="" value="<%= spDAO.getShipCompanyById(order.getCompanyID()).getCompanyName()%>"
+                                               <label for="adr"><i class="fa fa-address-card-o"></i> Order Date</label>
+                                        <input type="text" id="adr" readonly="" value="<%=order.getOrderDate()%>">
+                                        <label for="city"><i class="fa fa-institution"></i> City</label>
+                                        <input type="text" id="city" readonly="" value="<%= order.getShipCity()%>" >
+
+                                        <div class="row">
+                                            <div class="col-50">
+                                                <label for="state">Phone</label>
+                                                <input type="text" id="state" readonly="" value="0<%= order.getShipPhone()%>" >
+                                            </div>
+                                            <div class="col-50">
+                                                <label for="zip">Payment</label>
+                                                <input type="text" id="zip" readonly="" value="<%=order.getPaymentMethod()%>" >
+                                            </div>
+                                        </div>
                                     </div>
-                                    <div class="card-body">
-                                        <table class="table table-striped">
-                                            <tr>
-                                                <td style="width: 200px;">Product Name</td>
-                                                <td><input readonly="" value="<%=product.getProductName()%>"></td>
-                                            </tr>
-                                            <tr>
-                                                <td>Category</td>
-                                                <td><input readonly="" value="<%=category.getCategoryName()%>">
-                                                </td>
-                                            </tr>    
-                                            <tr>
-                                                <td>Genre</td>
-                                                <td><input readonly="" value="<%=genre.getGenreName()%>">
-                                                </td>
-                                            </tr>
-                                            <tr>
-                                                <td>Release Date</td>
-                                                <td><input readonly="" value="<%=product.getReleaseDate()%>"></td>
-                                            </tr>
-                                        </table>
-                                    </div>
-                                </div>
-                                <div class="card mt-3">
-                                    <div class="card-header pt-5 d-flex justify-content-between">
-                                        <h3 class="m-0 font-weight-bold text-primary">Detail Information</h3>
-                                    </div>
-                                    <div class="card-body">
-                                        <table id="dataTable" class="table table-borderless">
-                                            <thead>
-                                                <tr>
-                                                    <th style="width: 50px;"></th>
-                                                    <th style="width: 50px;"></th>
-                                                    <th style="width: 30px;"></th>
-                                                    <th style="width: 100px;"></th>
-                                                    <th style="width: 30px;"></th>
-                                                    <th style="width: 100px;"></th>
-                                                    <th style="width: 30px;"></th>
-                                                    <th style="width: 100px;"></th>
-                                                </tr>
-                                            </thead>
-                                            <tbody id="producttype">
-                                                <% for (ProductType ptype : listPT) {%>
-                                                <tr>
-                                                    <td style="width: 90px;"><label>Color</label></td>
-                                                    <td><%=ptype.getColor()%></td>
 
-                                                    <td><label>Size</label></td>
-                                                    <td><%=ptype.getSize()%></td>
-                                                    <%
-                                                        Double price = Double.parseDouble(ptype.getPrice());
-                                                        int sold = oddao.sumSoldProductTypeByPtypeID(ptype.getProductTypeId());
 
-                                                    %>
-
-                                                    <td><label>Price</label></td>
-                                                    <td><%=nf.format(price)%></td>
-
-                                                    <td><label>Sold</label></td>
-                                                    <td><%= sold%></td>
-                                                    <td>
-                                                    </td>
-                                                </tr>
-                                                <tr>
-                                                    <td><label>Image</label></td>
-                                                    <td>
-                                                        <%
-                                                            List<Gallery> listGallery = gallerydao.getAllImageByProductTypeID(ptype.getProductTypeId());
-                                                            for (Gallery gallery : listGallery) {
-                                                        %>
-
-                                                        <label style="width: 250px;height: 150px;" for="file">
-                                                            <img id="img" src="images/<%=gallery.getLink()%>">
-                                                        </label>
-                                                    </td>
-                                                    <% } %>
-                                                </tr>
-                                                <% }%>
-                                            </tbody>
-                                        </table>
-
-                                        <a href="SellerControllerMap?service=ordermanagement"><btn class="btn btn-default">Back</btn></a>
-                                    </div>
                                 </div>
 
-                            </div>
+                            </form>
                         </div>
                     </div>
-                </section>
+                    <div class="col-25">
+                        <div class="container">
+                            <h3 id="order_review_heading">Order Detail</h3><hr>
+                            <%      double result = 0;
+                                for (OrderDetail item : listOD) {
+                                    ProductType pt = daopt.getProductTypeByPTypeID(item.getProductTypeId());
+                                    double total = (item.getPrice() * item.getQuantity());
+                                    result += total;
+                            %>
+
+                            <p><%=item.getProductName() + "(" + pt.getSize() + ")" + "(" + pt.getColor() + ") " + " x " + item.getQuantity()%><span class="price"><%= nf.format(total)%></span></p>
+                                <% }%>
+                            <hr>
+                            <p><strong>Product price </strong><span class="price" style="color:black"><b><%= nf.format(result)%></b></span></p>
+                            <p><strong>Shipping Fee </strong><span class="price" style="color:black"><b>Free ship</b></span></p>
+                            <hr>
+                            <p><strong>Total </strong><span class="price" style="color:black"><b><%= nf.format(result)%></b></span></p>
+                            <p><strong>Status </strong>
+                                        <% if (order.getState() == 0) {%>
+                            <span class="label label-danger">Wait for accept</span>
+                            <% } else if (order.getState() == 1) {%>
+                            <span class="label label-primary">Order confirmed</span>
+                            <% } else if (order.getState() == 2) {%>
+                            <span class="label label-warning">On The Way</span>
+                            <% } else { %>
+                            <span class="label label-success">Success</span>
+                            <% }%>
+                        </div>
+                    </div>
+                </div>
+
+                <a href="SellerControllerMap?service=ordermanagement"><btn class="btn btn-default">Back</btn></a>
                 </body>
 
                 <script src="https://kit.fontawesome.com/42d5adcbca.js" crossorigin="anonymous"></script>

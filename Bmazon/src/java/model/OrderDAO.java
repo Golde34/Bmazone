@@ -69,7 +69,62 @@ public class OrderDAO extends BaseDAO {
         }
         return list;
     }
+    
+//    public int getPageNumberOrderBySeller(String search) {
+//        int num = 0;
+//        String sql = "select o.orderID,o.userID, o.orderDate,o.requiredDate,o.shippedDate,o.shipName,o.shipAddress,o.shipCity,o.shipPhone,o.companyID,o.shipMoney,o.paymentMethod,o.total,  o.state, o.`status`\n" +
+//                        "from OrderDetail od inner join ProductType pt on od.productTypeID=pt.productTypeId inner join Product p on pt.productID=p.productID inner join `Order` o on od.orderID = o.orderID\n" +
+//                        "where p.sellerID = ? and o.`status` = 1\n" +
+//                        "group by od.orderID";
+//        ResultSet rs = dbConn.getData(sql);
+//        try {
+//            if (rs.next()) {
+//                num = rs.getInt(1);
+//            }
+//        } catch (SQLException ex) {
+//            Logger.getLogger(UserDAO.class.getName()).log(Level.SEVERE, null, ex);
+//        }
+//        return num;
+//    }
 
+    public List<Order> getAllPagingOrderBySeller(int index, int numOfRow, String search, int sellerID) {
+        int start = (index - 1) * numOfRow;
+        List<Order> list = new ArrayList<>();
+        String sql = "select o.orderID,o.userID, o.orderDate,o.requiredDate,o.shippedDate,o.shipName,o.shipAddress,o.shipCity,o.shipPhone,o.companyID,o.shipMoney,o.paymentMethod,o.total,  o.state, o.`status`\n" +
+                        "from OrderDetail od inner join ProductType pt on od.productTypeID=pt.productTypeId inner join Product p on pt.productID=p.productID inner join `Order` o on od.orderID = o.orderID\n" +
+                        "where p.sellerID = ? and o.`status` = 1\n" +
+                        "group by od.orderID limit ?,?";
+        try {
+            pre = conn.prepareStatement(sql);
+            pre.setInt(1, sellerID);
+            pre.setInt(2, start);
+            pre.setInt(3, numOfRow);
+            rs = pre.executeQuery();
+            while (rs.next()) {
+                Order o = new Order();
+                o.setOrderID(rs.getInt("orderID"));
+                o.setUserID(rs.getString("userID"));
+                o.setOrderDate(rs.getDate("orderDate"));
+                o.setRequiredDate(rs.getDate("requiredDate"));
+                o.setShippedDate(rs.getDate("shippedDate"));
+                o.setShipName(rs.getString("shipname"));
+                o.setShipAddress(rs.getString("shipaddress"));
+                o.setShipCity(rs.getString("shipcity"));
+                o.setShipPhone(rs.getString("shipphone"));
+                o.setCompanyID(rs.getInt("companyID"));
+                o.setShipMoney(rs.getDouble("shipmoney"));
+                o.setPaymentMethod(rs.getString("paymentmethod"));
+                o.setTotal(rs.getDouble("total"));
+                o.setState(rs.getInt("state"));
+                o.setStatus(rs.getInt("status"));
+                list.add(o);
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(UserDAO.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return list;
+    }
+    
     public int insertOrder(Order obj) {
         int n = 0;
         String sql = "INSERT INTO `Order`"
@@ -167,7 +222,15 @@ public class OrderDAO extends BaseDAO {
         }
         return list;
     }
-
+        public static void main(String[] args) {
+        
+        OrderDAO odao= new OrderDAO();
+        List<Order> listOrder = odao.getOrderBySellerID(4);
+            for (Order order : listOrder) {
+                System.out.println(order.getOrderID());
+            }
+        }
+        
     public ArrayList<Order> getAllOrder() {
         ArrayList<Order> list = new ArrayList<>();
         String sql = "select * from `Order` where status = 1 order by orderID desc";
@@ -198,15 +261,13 @@ public class OrderDAO extends BaseDAO {
         return list;
     }
 
-    public static void main(String[] args) {
-
-        OrderDAO odao = new OrderDAO();
-        List<Order> listOrder = odao.getAllPagingOrder(1, 5, "");
-        for (Order order : listOrder) {
-            System.out.println(order.getShipCity());
-        }
-
-    }
+//    public static void main(String[] args) {
+//        OrderDAO odao = new OrderDAO();
+//        List<Order> listOrder = odao.getAllPagingOrder(1, 5, "");
+//        for (Order order : listOrder) {
+//            System.out.println(order.getShipCity());
+//        }
+//    }
 
     public Order getOrderByOrderID(int orderid) {
         ArrayList<Order> list = new ArrayList<>();
@@ -337,7 +398,45 @@ public class OrderDAO extends BaseDAO {
         }
         return list;
     }
-
+    
+    public List<Order> getOrderBySellerID(int sellerID) {
+        List<Order> list = new ArrayList<>();
+        String sql = "select o.orderID,o.userID, o.orderDate,o.requiredDate,o.shippedDate,o.shipName,o.shipAddress,o.shipCity,o.shipPhone,o.companyID,o.shipMoney,o.paymentMethod,o.total,  o.state, o.`status`\n" +
+                        "from OrderDetail od inner join ProductType pt on od.productTypeID=pt.productTypeId inner join Product p on pt.productID=p.productID inner join `Order` o on od.orderID = o.orderID\n" +
+                        "where p.sellerID = ? and o.`status` = 1\n" +
+                        "group by od.orderID";
+        try {
+            pre = conn.prepareStatement(sql);
+            pre.setInt(1, sellerID);
+            rs = pre.executeQuery();
+            while (rs.next()) {
+                Order o = new Order();
+                o.setOrderID(rs.getInt("orderID"));
+                o.setUserID(rs.getString("userID"));
+                o.setOrderDate(rs.getDate("orderDate"));
+                o.setRequiredDate(rs.getDate("requiredDate"));
+                o.setShippedDate(rs.getDate("shippedDate"));
+                o.setShipName(rs.getString("shipname"));
+                o.setShipAddress(rs.getString("shipaddress"));
+                o.setShipCity(rs.getString("shipcity"));
+                o.setShipPhone(rs.getString("shipphone"));
+                o.setCompanyID(rs.getInt("companyID"));
+                o.setShipMoney(rs.getDouble("shipmoney"));
+                o.setPaymentMethod(rs.getString("paymentmethod"));
+                o.setTotal(rs.getDouble("total"));
+                o.setState(rs.getInt("state"));
+                o.setStatus(rs.getInt("status"));
+                list.add(o);
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(OrderDAO.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return list;
+    }
+    
+//    public int changeState(int id, int state){
+//        String xSql = ""
+//    }
     public double getSumProfit() {
         double profit = 0;
         String xSql = "select sum(total-shipMoney) as profit from `Order` where status = 1 and state=1";

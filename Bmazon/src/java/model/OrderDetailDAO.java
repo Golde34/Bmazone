@@ -5,9 +5,12 @@
  */
 package model;
 
+import entity.Customer;
+import entity.Order;
 import entity.OrderDetail;
 import java.sql.*;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -21,7 +24,10 @@ public class OrderDetailDAO extends BaseDAO {
 
     public static void main(String[] args) {
         OrderDetailDAO dao = new OrderDetailDAO();
-        System.out.println(dao.sumSoldProductTypeByPtypeID("Pr25Ty1"));
+        for (Order item : dao.most5BigOrder()) {
+
+            System.out.println(item.getTotal());
+        }
     }
 
     public int insertOrderDetail(OrderDetail obj) {
@@ -94,7 +100,9 @@ public class OrderDetailDAO extends BaseDAO {
 
     public int sumSoldProductTypeByPtypeID(String ptID) {
         int result = 0;
-        String sql = "SELECT sum(quantity) FROM `OrderDetail` where productTypeID = ?";
+        String sql = "SELECT sum(od.quantity)\n"
+                + "from OrderDetail od inner join ProductType pt on od.productTypeID=pt.productTypeId inner join Product p on pt.productID=p.productID inner join `Order` o on od.orderID = o.orderID\n"
+                + "where od.productTypeID = ? and o.state = 3";
         try {
             pre = conn.prepareStatement(sql);
             pre.setString(1, ptID);
@@ -134,9 +142,8 @@ public class OrderDetailDAO extends BaseDAO {
 
     public int sumSoldProductByProductID(String pid) {
         int result = 0;
-        String sql = "select sum(od.quantity), p.productID from OrderDetail od inner join ProductType pt on od.productTypeID=pt.productTypeId inner join Product p on pt.productID=p.productID\n"
-                + "where p.productID=?\n"
-                + "group by p.productID";
+        String sql = "select sum(od.quantity), p.productID from OrderDetail od inner join ProductType pt on od.productTypeID=pt.productTypeId inner join Product p on pt.productID=p.productID inner join `Order` o on od.orderID = o.orderID\n"
+                + "where p.productID=? and o.state = 3\n";
         try {
             pre = conn.prepareStatement(sql);
             pre.setString(1, pid);
@@ -148,5 +155,87 @@ public class OrderDetailDAO extends BaseDAO {
             Logger.getLogger(OrderDetailDAO.class.getName()).log(Level.SEVERE, null, ex);
         }
         return result;
+    }
+
+    public List<OrderDetail> getOrderDetailBySellerIdAndOrderId(int sellerID, int oid) {
+        List<OrderDetail> list = new ArrayList<>();
+        String sql = "select od.orderID, od.productTypeID, od.ProductName, od.price,od.quantity,od.`status` from OrderDetail od inner join ProductType pt on od.productTypeID=pt.productTypeId inner join Product p on pt.productID=p.productID inner join `Order` o on od.orderID = o.orderID\n"
+                + "   where p.sellerID=? and od.orderID = ?";
+        try {
+            pre = conn.prepareStatement(sql);
+            pre.setInt(1, sellerID);
+            pre.setInt(2, oid);
+            rs = pre.executeQuery();
+            while (rs.next()) {
+                OrderDetail od = new OrderDetail();
+                od.setOrderID(rs.getInt("orderID"));
+                od.setProductTypeId(rs.getString("productTypeID"));
+                od.setProductName(rs.getString("productName"));
+                od.setPrice(rs.getDouble("price"));
+                od.setQuantity(rs.getInt("quantity"));
+                od.setStatus(rs.getInt("status"));
+                list.add(od);
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(OrderDAO.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return list;
+    }
+
+    public double totalBenefitBySellerID(int sellerID) {
+        double result = 0;
+        String sql = "select sum(od.price*od.quantity) from OrderDetail od inner join ProductType pt on od.productTypeID=pt.productTypeId inner join Product p on pt.productID=p.productID inner join `Order` o on od.orderID = o.orderID\n"
+                + "where p.sellerID=? and o.state = 3";
+        try {
+            pre = conn.prepareStatement(sql);
+            pre.setDouble(1, sellerID);
+            rs = pre.executeQuery();
+            if (rs.next()) {
+                result = rs.getDouble(1);
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(OrderDetailDAO.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return result;
+    }
+
+    public List<Customer> most5SpentCustomer() {
+        List<Customer> list = new ArrayList<>();
+        String sql = "select o.userID,sum(od.price*od.quantity) as Spent from OrderDetail od inner join ProductType pt on od.productTypeID=pt.productTypeId inner join Product p on pt.productID=p.productID inner join `Order` o on od.orderID = o.orderID\n"
+                + "   where o.state =3 order by Spent desc limit 0,5";
+        try {
+            pre = conn.prepareStatement(sql);
+            rs = pre.executeQuery();
+            while (rs.next()) {
+                Customer customer = new Customer();
+                customer.setUserID(rs.getInt(1));
+                customer.setSpent(rs.getDouble(2));
+                list.add(customer);
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(OrderDAO.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return list;
+
+    }
+
+    public List<Order> most5BigOrder() {
+
+        List<Order> list = new ArrayList<>();
+        String sql = "select o.orderID,sum(od.price*od.quantity) as Spent from OrderDetail od inner join ProductType pt on od.productTypeID=pt.productTypeId inner join Product p on pt.productID=p.productID inner join `Order` o on od.orderID = o.orderID\n"
+                + "   where o.state =3 group by o.orderID order by Spent desc limit 0,5";
+        try {
+            pre = conn.prepareStatement(sql);
+            rs = pre.executeQuery();
+            while (rs.next()) {
+                Order order = new Order();
+                order.setOrderID(rs.getInt(1));
+                order.setTotal(rs.getDouble(2));
+                list.add(order);
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(OrderDAO.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return list;
     }
 }
