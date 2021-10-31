@@ -37,9 +37,9 @@ public class OrderDAO extends BaseDAO {
     }
 
     public List<Order> getAllPagingOrder(int index, int numOfRow, String search) {
-        int start = (index-1)*numOfRow;
+        int start = (index - 1) * numOfRow;
         List<Order> list = new ArrayList<>();
-        String sql = "select * from `order` where state=0 limit ?,?";
+        String sql = "select * from `order` where state=0 and status=1 limit ?,?";
         try {
             pre = conn.prepareStatement(sql);
             pre.setInt(1, start);
@@ -69,7 +69,6 @@ public class OrderDAO extends BaseDAO {
         }
         return list;
     }
-    
 
     public int insertOrder(Order obj) {
         int n = 0;
@@ -136,24 +135,43 @@ public class OrderDAO extends BaseDAO {
         return n;
     }
 
-//    public int removeOrder(String orderId) {
-//        int n = 0;
-//        String sql = "Select * from `Order` as a join OrderDetail as b on a.orderID = b.orderID where a.orderID = '" + orderId + "'";
-//        rs = dbConn.getData(sql);
-//        try {
-//            if (rs.next()) {
-//                String s = rs.getString("orderID");
-//                return s == null ? 0 : Integer.parseInt(s);
-//            }
-//        } catch (SQLException ex) {
-//            Logger.getLogger(OrderDAO.class.getName()).log(Level.SEVERE, null, ex);
-//        }
-//        return n;
-//    }
+    public ArrayList<Order> getAllActiveOrder() {
+        ArrayList<Order> list = new ArrayList<>();
+        String sql = "select * from `Order` where status = 1 and state=1";
+        try {
+            pre = conn.prepareStatement(sql);
+            rs = pre.executeQuery();
+            while (rs.next()) {
+                Order o = new Order();
+                o.setOrderID(rs.getInt("orderID"));
+                o.setUserID(rs.getString("userID"));
+                o.setOrderDate(rs.getDate("orderDate"));
+                o.setRequiredDate(rs.getDate("requiredDate"));
+                o.setShippedDate(rs.getDate("shippedDate"));
+                o.setShipName(rs.getString("shipname"));
+                o.setShipAddress(rs.getString("shipaddress"));
+                o.setShipCity(rs.getString("shipcity"));
+                o.setShipPhone(rs.getString("shipphone"));
+                o.setCompanyID(rs.getInt("companyID"));
+                o.setShipMoney(rs.getDouble("shipmoney"));
+                o.setPaymentMethod(rs.getString("paymentmethod"));
+                o.setTotal(rs.getDouble("total"));
+                o.setState(rs.getInt("state"));
+                o.setStatus(rs.getInt("status"));
+                list.add(o);
+            }
+            rs.close();
+            pre.close();
+        } catch (SQLException ex) {
+            Logger.getLogger(OrderDAO.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return list;
+    }
+
     public ArrayList<Order> getAllOrder() {
         ArrayList<Order> list = new ArrayList<>();
-        String sql = "select * from `Order` where status = 1  order by orderID desc";
-        
+        String sql = "select * from `Order` where status = 1 order by orderID desc";
+
         try {
             while (rs.next()) {
                 Order o = new Order();
@@ -179,21 +197,22 @@ public class OrderDAO extends BaseDAO {
         }
         return list;
     }
-        public static void main(String[] args) {
-        
-        OrderDAO odao= new OrderDAO();
+
+    public static void main(String[] args) {
+
+        OrderDAO odao = new OrderDAO();
         List<Order> listOrder = odao.getAllPagingOrder(1, 5, "");
-            for (Order order : listOrder) {
-                System.out.println(order.getShipCity());
-            }
-                
+        for (Order order : listOrder) {
+            System.out.println(order.getShipCity());
+        }
+
     }
 
-     public Order getOrderByOrderID(int orderid) {
+    public Order getOrderByOrderID(int orderid) {
         ArrayList<Order> list = new ArrayList<>();
-        String sql = "select * from `Order` where orderID = "+orderid;
+        String sql = "select * from `Order` where orderID = " + orderid;
         ResultSet rs = dbConn.getData(sql);
-        Order o= null;
+        Order o = null;
         try {
             while (rs.next()) {
                 o = new Order();
@@ -212,7 +231,7 @@ public class OrderDAO extends BaseDAO {
                 o.setTotal(rs.getDouble("total"));
                 o.setState(rs.getInt("state"));
                 o.setStatus(rs.getInt("status"));
-                
+
             }
         } catch (SQLException ex) {
             Logger.getLogger(OrderDAO.class.getName()).log(Level.SEVERE, null, ex);
@@ -248,7 +267,7 @@ public class OrderDAO extends BaseDAO {
         }
         return list;
     }
-    
+
     public Order getLatestOrder(String userID) {
         String sql = "SELECT * FROM `Order` WHERE userID = '" + userID + "' ORDER BY OrderID desc limit 0,1";
         ResultSet rs = dbConn.getData(sql);
@@ -258,9 +277,9 @@ public class OrderDAO extends BaseDAO {
                         rs.getDate("orderDate"), rs.getDate("requiredDate"),
                         rs.getDate("shippedDate"), rs.getString("shipName"),
                         rs.getString("shipAddress"), rs.getString("shipCity"),
-                        rs.getString("shipPhone"),  rs.getDouble("shipMoney"), 
+                        rs.getString("shipPhone"), rs.getDouble("shipMoney"),
                         rs.getDouble("total"), rs.getInt("companyID"),
-                        rs.getString("paymentMethod"), 
+                        rs.getString("paymentMethod"),
                         rs.getInt("state"), rs.getInt("status")
                 );
                 return order;
@@ -270,8 +289,87 @@ public class OrderDAO extends BaseDAO {
         }
         return null;
     }
-    
-//    public int changeState(int id, int state){
-//        String xSql = ""
-//    }
+
+    public int changeState(int id, int state) {
+        int n = 0;
+        String xSql = "UPDATE `bmazon`.`order` SET `state` = ? WHERE `orderID` = ?";
+        try {
+            pre = conn.prepareStatement(xSql);
+            pre.setInt(1, state);
+            pre.setInt(2, id);
+            n = pre.executeUpdate();
+        } catch (SQLException ex) {
+            Logger.getLogger(UserDAO.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return n;
+    }
+
+    public ArrayList<Order> getOrderByMonth(int month) {
+        ArrayList<Order> list = new ArrayList<>();
+        String xSql = "select * from `Order` where status = 1 and state=1 and month(orderdate) = ?";
+        try {
+            pre = conn.prepareStatement(xSql);
+            pre.setInt(1, month);
+            rs = pre.executeQuery();
+            while (rs.next()) {
+                Order o = new Order();
+                o.setOrderID(rs.getInt("orderID"));
+                o.setUserID(rs.getString("userID"));
+                o.setOrderDate(rs.getDate("orderDate"));
+                o.setRequiredDate(rs.getDate("requiredDate"));
+                o.setShippedDate(rs.getDate("shippedDate"));
+                o.setShipName(rs.getString("shipname"));
+                o.setShipAddress(rs.getString("shipaddress"));
+                o.setShipCity(rs.getString("shipcity"));
+                o.setShipPhone(rs.getString("shipphone"));
+                o.setCompanyID(rs.getInt("companyID"));
+                o.setShipMoney(rs.getDouble("shipmoney"));
+                o.setPaymentMethod(rs.getString("paymentmethod"));
+                o.setTotal(rs.getDouble("total"));
+                o.setState(rs.getInt("state"));
+                o.setStatus(rs.getInt("status"));
+                list.add(o);
+            }
+            rs.close();
+            pre.close();
+        } catch (SQLException ex) {
+            Logger.getLogger(UserDAO.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return list;
+    }
+
+    public double getSumProfit() {
+        double profit = 0;
+        String xSql = "select sum(total-shipMoney) as profit from `Order` where status = 1 and state=1";
+        try {
+            pre = conn.prepareStatement(xSql);
+            rs = pre.executeQuery();
+            if (rs.next()) {
+                profit = rs.getDouble("profit");
+            }
+            rs.close();
+            pre.close();
+        } catch (SQLException ex) {
+            Logger.getLogger(UserDAO.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return profit;
+    }
+
+    public double getProfitOfMonth(int month) {
+        double profit = 0;
+        String xSql = "select sum(total-shipMoney) as profit from `Order` where status = 1 and state=1 and month(orderdate) = ?";
+        try {
+            pre = conn.prepareStatement(xSql);
+            pre.setInt(1, month);
+            rs = pre.executeQuery();
+            if (rs.next()) {
+                profit = rs.getDouble("profit");
+            }
+            rs.close();
+            pre.close();
+        } catch (SQLException ex) {
+            Logger.getLogger(UserDAO.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return profit;
+    }
 }
