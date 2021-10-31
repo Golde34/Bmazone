@@ -99,14 +99,14 @@
                                             <tr>
                                                 <td>Category Name</td>
                                                 <td>
-                                                    <input pattern="[^' ']+" class="form-control" value="<%=category.getCategoryID()%>" type="text" name="categoryname" required>
+                                                    <input pattern="[^' ']+" class="form-control" value="<%=category.getCategoryName()%>" type="text" name="categoryname" required>
                                                     <div class="invalid-feedback">
                                                         Not blank and no space at beginning or ending
                                                     </div>
                                                 </td>
                                             </tr>
                                             <input type="hidden" value="updatecategory" name="service">
-
+                                            <input type="hidden" value="<%=category.getCategoryID()%>" name="id">
                                         </table>
                                     </div>
                                 </div>
@@ -132,6 +132,7 @@
                                                     %>
                                                     <tr>
                                                         <td><input required style="width: 100%;" type="text" name="genrename" class="form-control" value="<%=genre.getGenreName()%>"></td>
+                                                        <input type="hidden" name="genid" value="<%=genre.getGenreID()%>">
                                                         <td>
                                                             <% if (genre.getStatus() == 1) {%>
                                                             <a class="btn btn-primary" href="AdminControllerMap?service=deletegenre&genreid=<%=genre.getGenreID()%>&categoryId=<%=category.getCategoryID()%>" onclick="return confirm('Are you sure?');">Deactive</a>
