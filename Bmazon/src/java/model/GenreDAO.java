@@ -119,13 +119,12 @@ public class GenreDAO extends BaseDAO {
 
     public int insertGenre(Genre gen) {
         int n = 0;
-        String sql = "Insert into Genre(genreName,categoryID,images,status) values (?,?,?,?)";
+        String sql = "Insert into Genre(genreName,categoryID,status) values (?,?,?)";
         try {
             pre = conn.prepareStatement(sql);
             pre.setString(1, gen.getGenreName());
             pre.setInt(2, gen.getCategoryID());
-            pre.setString(3, gen.getImages());
-            pre.setInt(4, gen.getStatus());
+            pre.setInt(3, gen.getStatus());
             n = pre.executeUpdate();
         } catch (SQLException ex) {
             Logger.getLogger(CategoryDAO.class.getName()).log(Level.SEVERE, null, ex);
@@ -135,19 +134,34 @@ public class GenreDAO extends BaseDAO {
 
     public int updateGenre(Genre gen) {
         int n = 0;
-        String sql = "update Genre set genreName=?, categoryID=?, images=?, status=? where genreID=?";
+        String sql = "update Genre set genreName=?, categoryID=?, status=? where genreID=?";
         try {
             pre = conn.prepareStatement(sql);
             pre.setString(1, gen.getGenreName());
             pre.setInt(2, gen.getCategoryID());
-            pre.setString(3, gen.getImages());
-            pre.setInt(4, gen.getStatus());
-            pre.setInt(5, gen.getGenreID());
+            pre.setInt(3, gen.getStatus());
+            pre.setInt(4, gen.getGenreID());
             n = pre.executeUpdate();
         } catch (SQLException ex) {
             Logger.getLogger(CategoryDAO.class.getName()).log(Level.SEVERE, null, ex);
         }
         return n;
+    }
+    
+    public int getCategoryIdByGenreId(String id) {
+        int cid = -1;
+        String Sql = "SELECT categoryID FROM Genre where genreID =?";
+        try {
+            pre = conn.prepareStatement(Sql);
+            pre.setString(1, id);
+            rs = pre.executeQuery();
+            if (rs.next()) {
+                cid = rs.getInt("categoryID");
+            }
+        } catch (SQLException e) {
+
+        }
+        return cid;
     }
 
     public Genre getGenreById(int gId) {
