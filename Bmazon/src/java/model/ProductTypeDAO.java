@@ -144,6 +144,29 @@ public class ProductTypeDAO extends BaseDAO {
         return ptype;
     }
 
+    public ProductType getDefaultProductTypeByProductId(int productID) {
+        ProductType ptype = new ProductType();
+        String xSql = "select * from ProductType where productID = ? LIMIT 1";
+        try {
+            pre = conn.prepareStatement(xSql);
+            pre.setInt(1, productID);
+            rs = pre.executeQuery();
+            while (rs.next()) {
+                ptype = new ProductType(
+                        rs.getString(1),
+                        rs.getInt(2),
+                        rs.getString(3),
+                        rs.getString(4),
+                        rs.getString(5),
+                        rs.getInt(6),
+                        rs.getInt(7),
+                        rs.getInt(8));
+            }
+        } catch (SQLException e) {
+        }
+        return ptype;
+    }
+    
     public int getProductQuantity(String pid, String size, String color) {
         int quantity = 0;
         String xSql = "SELECT quantity FROM ProductType WHERE productTypeID = ? and size = ? and color = ?";

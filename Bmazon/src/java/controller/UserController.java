@@ -140,7 +140,7 @@ public class UserController extends HttpServlet {
             if (service.equalsIgnoreCase("verifyWalletDeposit")) {
                 serviceVerifyWalletDeposit(request, response);
             }
-            
+
             //verify wallet withdrawal
             if (service.equalsIgnoreCase("verifyWalletWithdrawal")) {
                 serviceVerifyWalletWithdrawal(request, response);
@@ -167,6 +167,11 @@ public class UserController extends HttpServlet {
             //Denied request
             if (service.equalsIgnoreCase("editDeniedSellerInformation")) {
                 serviceEditDenied(request, response);
+            }
+
+            //user interation
+            if (service.equalsIgnoreCase("userInteraction")) {
+                serviceUserInteraction(request, response);
             }
         }
     }
@@ -415,7 +420,7 @@ public class UserController extends HttpServlet {
         //get code generated
         String authCode = (String) session.getAttribute("authcode");
         double amount = (double) session.getAttribute("amount");
-        
+
         if (verifyCode.equals(authCode)) {
             daoUser.depositWalletUser(x, amount);
             session.setAttribute("currUser", daoUser.getUserById(x.getUserId()));
@@ -429,7 +434,7 @@ public class UserController extends HttpServlet {
             sendDispatcher(request, response, "user/verifyWalletDeposit.jsp");
         }
     }
-    
+
     private void serviceVerifyWalletWithdrawal(HttpServletRequest request, HttpServletResponse response) {
         // get code user submit
         HttpSession session = request.getSession();
@@ -441,7 +446,7 @@ public class UserController extends HttpServlet {
         //get code generated
         String authCode = (String) session.getAttribute("authcode");
         double amount = (double) session.getAttribute("amount");
-        
+
         if (verifyCode.equals(authCode)) {
             daoUser.withdrawalWalletUser(x, amount);
             request.getSession().setAttribute("currUser", daoUser.getUserById(x.getUserId()));
@@ -574,6 +579,20 @@ public class UserController extends HttpServlet {
             mess = "Update successfully!";
             request.setAttribute("mess", mess);
             sendDispatcher(request, response, "UserControllerMap?service=turnOnSalesFeature");
+        }
+    }
+
+    private void serviceUserInteraction(HttpServletRequest request, HttpServletResponse response) {
+        User x = (User) request.getSession().getAttribute("currUser");
+        String userId = request.getParameter("userId");
+        User u = daoUser.getUserById(userId);
+        if (u.getUserId().equals(x.getUserId())) {
+            request.setAttribute("currUser", x);
+            sendDispatcher(request, response, "user/profile.jsp");
+        } else {
+            request.setAttribute("currUser", x);
+            request.setAttribute("otherUser", u);
+            sendDispatcher(request, response, "user/otherUser.jsp");
         }
     }
 

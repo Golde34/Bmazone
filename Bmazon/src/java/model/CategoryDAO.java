@@ -19,7 +19,6 @@ public class CategoryDAO extends BaseDAO {
     public ArrayList<Category> getAllCategories() {
         String sql = "select * from Category WHERE status=1";
         ArrayList<Category> list = new ArrayList<>();
-        Category x = null;
         int categoryID;
         String categoryName;
         int status;
@@ -30,7 +29,7 @@ public class CategoryDAO extends BaseDAO {
                 categoryID = rs.getInt("categoryID");
                 categoryName = rs.getString("categoryName");
                 status = rs.getInt("status");
-                x = new Category(categoryID, categoryName, status);
+                Category x = new Category(categoryID, categoryName, status);
                 list.add(x);
             }
         } catch (SQLException ex) {
@@ -42,7 +41,6 @@ public class CategoryDAO extends BaseDAO {
     public ArrayList<Category> getTrueCategories() {
         String sql = "select * from Category";
         ArrayList<Category> list = new ArrayList<>();
-        Category x = null;
         int categoryID;
         String categoryName;
         int status;
@@ -53,7 +51,7 @@ public class CategoryDAO extends BaseDAO {
                 categoryID = rs.getInt("categoryID");
                 categoryName = rs.getString("categoryName");
                 status = rs.getInt("status");
-                x = new Category(categoryID, categoryName, status);
+                Category x = new Category(categoryID, categoryName, status);
                 list.add(x);
             }
         } catch (SQLException ex) {
