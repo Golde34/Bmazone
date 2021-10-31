@@ -109,7 +109,7 @@
                                 <i class="fa fa-globe"></i> <span>Order Management</span>
                             </a>
                         </li>
-                       <li class="active">
+                        <li>
                             <a href="SellerControllerMap?service=feedback">
                                 <i class="fa fa-empire"></i> <span>Feed Back</span>
                             </a>
@@ -247,7 +247,7 @@
                     </div>
                     <div class="col-25">
                         <div class="container">
-                            <h3 id="order_review_heading">Order Detail</h3>
+                            <h3 id="order_review_heading">Order Detail</h3><hr>
                             <%      double result = 0;
                                 for (OrderDetail item : listOD) {
                                     ProductType pt = daopt.getProductTypeByPTypeID(item.getProductTypeId());
@@ -257,21 +257,20 @@
 
                             <p><%=item.getProductName() + "(" + pt.getSize() + ")" + "(" + pt.getColor() + ") " + " x " + item.getQuantity()%><span class="price"><%= nf.format(total)%></span></p>
                                 <% }%>
+                            <hr>
                             <p><strong>Product price </strong><span class="price" style="color:black"><b><%= nf.format(result)%></b></span></p>
                             <p><strong>Shipping Fee </strong><span class="price" style="color:black"><b>Free ship</b></span></p>
                             <hr>
                             <p><strong>Total </strong><span class="price" style="color:black"><b><%= nf.format(result)%></b></span></p>
+                            <p><strong>Status </strong>
                                         <% if (order.getState() == 0) {%>
                             <span class="label label-danger">Wait for accept</span>
-                            <span class="badge badge-danger">0%</span>
+                            <% } else if (order.getState() == 1) {%>
                             <span class="label label-primary">Order confirmed</span>
-                            <span class="badge badge-primary">25%</span>
                             <% } else if (order.getState() == 2) {%>
                             <span class="label label-warning">On The Way</span>
-                            <span class="badge badge-warning">50%</span>
                             <% } else { %>
                             <span class="label label-success">Success</span>
-                            <span class="badge badge-success">100%</span>
                             <% }%>
                         </div>
                     </div>

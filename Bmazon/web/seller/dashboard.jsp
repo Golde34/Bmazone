@@ -129,7 +129,7 @@
                                 <i class="fa fa-globe"></i> <span>Order Management</span>
                             </a>
                         </li>
-                           <li class="active">
+                        <li>
                             <a href="SellerControllerMap?service=feedback">
                                 <i class="fa fa-empire"></i> <span>Feed Back</span>
                             </a>
@@ -265,7 +265,7 @@
                                 <header class="panel-heading">
                                     Most spent customers
                                 </header>
-                                    
+
                                 <div class="panel-body table-responsive">
                                     <table class="table table-hover">
                                         <thead>
@@ -275,16 +275,16 @@
                                             </tr>
                                         </thead>
                                         <tbody>
-                                <% 
-                                   List<Customer> listCus = odDAO.most5SpentCustomer();
-                                   for (Customer cus : listCus) {
-                                           
-                                %>
+                                            <%
+                                                List<Customer> listCus = odDAO.most5SpentCustomer();
+                                                for (Customer cus : listCus) {
+
+                                            %>
                                             <tr>
-                                                <td><%= uDAO.getUserById(Integer.toString(cus.getUserID())).getUsername() %> </td>
-                                                <td><%= nf.format(cus.getSpent()) %> VND</td>
+                                                <td><%= uDAO.getUserById(Integer.toString(cus.getUserID())).getUsername()%> </td>
+                                                <td><%= nf.format(cus.getSpent())%> VND</td>
                                             </tr>
-                                            <% } %>
+                                            <% }%>
                                         </tbody>
                                     </table>
                                 </div>
@@ -351,7 +351,7 @@
                 },
                 error: function (xhr) {
                     //Do Something to handle error
-                } });
+                }});
         }
     </script>
 </html>

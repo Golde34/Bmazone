@@ -83,7 +83,7 @@
         int prev = index == 1 ? 1 : index - 1;
         int next = index == totalPage ? totalPage : index + 1;
         User curUser = (User) request.getSession().getAttribute("currUser");
-        ArrayList<Product> listP = (ArrayList<Product>) request.getAttribute("listProduct");
+        List<Order> listO = (ArrayList<Order>) request.getAttribute("listOrder");
 
         String userID = curUser.getUserId();
         Seller seller = sDAO.getSellerByUserID(Integer.parseInt(userID));
@@ -140,7 +140,8 @@
                             </a>
                         </li>
                         
-                       <li class="active">
+                       
+                        <li>
                             <a href="SellerControllerMap?service=feedback">
                                 <i class="fa fa-empire"></i> <span>Feed Back</span>
                             </a>
@@ -176,16 +177,13 @@
                                                 <th>Customer</th>
                                                 <th>Order date</th>
                                                 <th>Status</th>
-                                                <th>Progress</th>
                                                 <th>Action</th>
                                             </tr>
                                         </thead>
-                                        <tbody>
+                                        <tbody id="order">
                                             <%
-                                                List<Order> listOrder = oDAO.getOrderBySellerID(sellerID);
-                                                for (Order o : listOrder) {
+                                                for (Order o : listO) {
                                                   User u = uDAO.getUserById(o.getUserID());
-                                                    
                                             %>
                                             <tr>
                                                 <td><%= u.getUsername() %> </td>
@@ -193,16 +191,12 @@
                                                 
                                                 <% if (o.getState() == 0) {%>
                                                 <td><span class="label label-danger">Wait for accept</span></td>
-                                                <td><span class="badge badge-danger">0%</span></td>
                                                 <% } else if (o.getState() == 1) {%>
                                                 <td><span class="label label-primary">Order confirmed</span></td>
-                                                <td><span class="badge badge-primary">25%</span></td>
                                                 <% } else if (o.getState() == 2) {%>
                                                 <td><span class="label label-warning">On The Way</span></td>
-                                                <td><span class="badge badge-warning">50%</span></td>
                                                 <% } else { %>
                                                 <td><span class="label label-success">Success</span></td>
-                                                <td><span class="badge badge-success">100%</span></td>
                                                 <% } %>
                                                 <td><a href="SellerControllerMap?service=orderdetail&orderid=<%= o.getOrderID() %>"><button class="btn btn-primary">Detail</button></a>
                                                 </td>
@@ -210,6 +204,55 @@
                                             <% } %>
                                         </tbody>
                                     </table>
+                                </div>
+                                        
+                                <div class="pagination-container mt-4" style="display: flex;
+                                     justify-content: space-around;cursor: pointer;">
+                                    <nav>
+                                        <%if (totalPage > 1) {%>
+                                        <ul class="pagination" id="showpage">
+                                            <li data-repair="1" class="page-item">
+                                                <a class="page-link" aria-label="First">
+                                                    <span aria-hidden="true"><i class="fas fa-backward"></i>
+                                                        <span class="sr-only">(current)</span> 
+                                                    </span>
+                                                </a>
+                                            </li>
+                                            <li data-repair="<%=prev%>" class="page-item">
+                                                <a class="page-link" aria-label="Previous">
+                                                    <span aria-hidden="true"><i class="fas fa-arrow-left"></i>
+                                                        <span class="sr-only">(current)</span> 
+                                                    </span>
+                                                </a>
+                                            </li>
+                                            <%int limit = totalPage > 5 ? 5 : totalPage;%>
+                                            <%for (int i = 1; i <= limit; i++) {%>
+                                            <%if (index == i) {%>
+                                            <li  class="page-item active" data-repair="<%=i%>">
+                                            <%} else {%><li  class="page-item" data-repair="<%=i%>"> <%}%>
+                                                <a class="page-link">
+                                                    <div class="index"><%=i%></div>
+                                                    <span class="sr-only">(current)</span>
+                                                </a>
+                                            </li>
+                                            <%}%>
+                                            <li data-repair="<%=next%>" class="page-item">
+                                                <a class="page-link" aria-label="Next">
+                                                    <span aria-hidden="true"><i class="fas fa-arrow-right"></i>
+                                                        <span class="sr-only">(current)</span> 
+                                                    </span>
+                                                </a>
+                                            </li>
+                                            <li data-repair="<%=totalPage%>" class="page-item">
+                                                <a class="page-link" aria-label="Last">
+                                                    <span aria-hidden="true"><i class="fas fa-forward"></i>
+                                                        <span class="sr-only">(current)</span> 
+                                                    </span>
+                                                </a>
+                                            </li>
+                                        </ul>
+                                        <%}%>
+                                    </nav>
                                 </div>
                             </section>
 
@@ -231,8 +274,8 @@
                                         </thead>
                                         <tbody>
                                 <% 
-                                   List<Order> listO = odDAO.most5BigOrder();
-                                   for (Order obig : listO) {
+                                   List<Order> listObig = odDAO.most5BigOrder();
+                                   for (Order obig : listObig) {
                                            
                                 %>
                                             <tr>
@@ -328,22 +371,16 @@
                 pagination();
         });
                 function pagination() {
-                var row = document.getElementById("maxRows").value;
-                        var search = document.getElementById("search").value;
-                        console.log(row);
-                        console.log(search);
                         console.log(pageNum);
                         $.ajax({
                         url: "/Bmazon/SellerControllerMap",
                                 type: "get",
                                 data: {
-                                search: search,
-                                        row: row,
-                                        index: pageNum,
+                                search: index: pageNum,
                                         service: "pagingorder"
                                 },
                                 success: function (respone) {
-                                var text = document.getElementById("product");
+                                var text = document.getElementById("order");
                                         text.innerHTML = respone;
                                         showpage();
                                 },
@@ -353,15 +390,11 @@
                         });
                 }
         function showpage() {
-        var row = document.getElementById("maxRows").value;
-                var search = document.getElementById("search").value;
                 $.ajax({
                 url: "/Bmazon/SellerControllerMap",
                         type: "get",
                         data: {
-                        search: search,
-                                row: row,
-                                index: pageNum,
+                        search: index: pageNum,
                                 service: "showpageorder"
                         },
                         success: function (respone) {
