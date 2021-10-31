@@ -142,56 +142,38 @@
                                         <canvas id="chart-bars" class="chart-canvas" height="170"></canvas>
                                     </div>
                                 </div>
-                                <h6 class="ms-2 mt-4 mb-0"> Orders </h6>
+                                <h6 class="ms-2 mt-4 mb-0"> Orders Overview </h6>
                                 <div class="container border-radius-lg">
                                     <div class="row">
-                                        <div class="col-3 py-3 ps-0">
+                                        <div class="col-4 py-3 ps-0">
                                             <div class="d-flex mb-2">
                                                 <div class="icon icon-shape icon-xxs shadow border-radius-sm bg-gradient-primary text-center me-2 d-flex align-items-center justify-content-center">
 
                                                 </div>
-                                                <p class="text-xs mt-1 mb-0 font-weight-bold">Users</p>
+                                                <p class="text-xs mt-1 mb-0 font-weight-bold">Orders</p>
                                             </div>
-                                            <h4 class="font-weight-bolder">36K</h4>
-                                            <div class="progress w-75">
-                                                <div class="progress-bar bg-dark w-60" role="progressbar" aria-valuenow="60" aria-valuemin="0" aria-valuemax="100"></div>
-                                            </div>
+                                            <h4 class="font-weight-bolder"><%=listOrder.size()%></h4>
+                                            
                                         </div>
-                                        <div class="col-3 py-3 ps-0">
+                                        <div class="col-4 py-3 ps-0">
                                             <div class="d-flex mb-2">
                                                 <div class="icon icon-shape icon-xxs shadow border-radius-sm bg-gradient-info text-center me-2 d-flex align-items-center justify-content-center">
 
                                                 </div>
-                                                <p class="text-xs mt-1 mb-0 font-weight-bold">Clicks</p>
+                                                <p class="text-xs mt-1 mb-0 font-weight-bold">Users</p>
                                             </div>
-                                            <h4 class="font-weight-bolder">2m</h4>
-                                            <div class="progress w-75">
-                                                <div class="progress-bar bg-dark w-90" role="progressbar" aria-valuenow="90" aria-valuemin="0" aria-valuemax="100"></div>
-                                            </div>
+                                            <h4 class="font-weight-bolder"><%=daoOrder.countUserOnOrder()%></h4>
+                                            
                                         </div>
-                                        <div class="col-3 py-3 ps-0">
+                                        <div class="col-4 py-3 ps-0">
                                             <div class="d-flex mb-2">
                                                 <div class="icon icon-shape icon-xxs shadow border-radius-sm bg-gradient-warning text-center me-2 d-flex align-items-center justify-content-center">
-
+                                                    
                                                 </div>
-                                                <p class="text-xs mt-1 mb-0 font-weight-bold">Sales</p>
+                                                <p class="text-xs mt-1 mb-0 font-weight-bold">Products</p>
                                             </div>
-                                            <h4 class="font-weight-bolder">435$</h4>
-                                            <div class="progress w-75">
-                                                <div class="progress-bar bg-dark w-30" role="progressbar" aria-valuenow="30" aria-valuemin="0" aria-valuemax="100"></div>
-                                            </div>
-                                        </div>
-                                        <div class="col-3 py-3 ps-0">
-                                            <div class="d-flex mb-2">
-                                                <div class="icon icon-shape icon-xxs shadow border-radius-sm bg-gradient-danger text-center me-2 d-flex align-items-center justify-content-center">
-
-                                                </div>
-                                                <p class="text-xs mt-1 mb-0 font-weight-bold">Items</p>
-                                            </div>
-                                            <h4 class="font-weight-bolder">43</h4>
-                                            <div class="progress w-75">
-                                                <div class="progress-bar bg-dark w-50" role="progressbar" aria-valuenow="50" aria-valuemin="0" aria-valuemax="100"></div>
-                                            </div>
+                                            <h4 class="font-weight-bolder"><%=daoOrder.countProductOnOrder()%></h4>
+                                            
                                         </div>
                                     </div>
                                 </div>

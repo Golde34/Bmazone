@@ -79,7 +79,8 @@
                                             <tr>
                                                 <td style="width: 30%;">Category Name</td>
                                                 <td style="width: 70%;">
-                                                    <input pattern="[^' ']+" class="form-control" type="text" value="${categoryname}" name="categoryname" required>
+                                                    <input type="hidden" name="catid" value="<%=category.getCategoryID()%>">
+                                                    <input pattern="[^' ']+" class="form-control" type="text" value="<%=category.getCategoryName()%>" name="categoryname" required>
                                                     <div class="invalid-feedback">
                                                         Not blank and no space at beginning or ending
                                                     </div>
@@ -125,7 +126,6 @@
                                                     <tr>
                                                         <th>Genre Name</th>
                                                         <th></th>
-                                                        <th></th>
                                                     </tr>
                                                 </thead>
                                                 <tbody id="genre">
@@ -134,18 +134,19 @@
                                                         <td><input required style="width: 100%;" type="text" name="genrename" class="form-control" value="<%=genre.getGenreName()%>"></td>
                                                         <td>
                                                             <% if (genre.getStatus() == 1) {%>
-                                                            <a href="AdminControllerMap?service=deletegenre&genreid=<%=genre.getGenreID()%>" onclick="return confirm('Are you sure?');"><button class="btn btn-primary">Deactive</button></a>
+                                                            <a class="btn btn-primary" href="AdminControllerMap?service=deletegenre&genreid=<%=genre.getGenreID()%>" onclick="return confirm('Are you sure?');">Deactive</a>
                                                             <%} else {%>
-                                                            <a href="AdminControllerMap?service=activegenre&genreid=<%=genre.getGenreID()%>" onclick="return confirm('Are you sure?');"><button class="btn btn-primary">Active</button></a>
+                                                            <a class="btn btn-primary" href="AdminControllerMap?service=activegenre&genreid=<%=genre.getGenreID()%>" onclick="return confirm('Are you sure?');">Active</a>
                                                             <%}%>
                                                         </td>
                                                     </tr>
-
                                                     <%}%>
                                                 </tbody>
                                             </table>
                                             <br>
-                                            <input type="submit" value="Update" class="btn btn-primary" style="margin-left: 500px;">
+                                            <div class="d-flex justify-content-center">
+                                                <input type="submit" value="Update" class="btn btn-primary mt-3">
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
@@ -164,20 +165,20 @@
         <script src="${contextPath}/js/plugins/smooth-scrollbar.min.js"></script>
         <script src="${contextPath}/js/plugins/chartjs.min.js"></script>
         <script>
-                                                                (function () {
-                                                                    'use strict'
-                                                                    var forms = document.querySelectorAll('.needs-validation')
-                                                                    Array.prototype.slice.call(forms)
-                                                                            .forEach(function (form) {
-                                                                                form.addEventListener('submit', function (event) {
-                                                                                    if (!form.checkValidity()) {
-                                                                                        event.preventDefault()
-                                                                                        event.stopPropagation()
-                                                                                    }
-                                                                                    form.classList.add('was-validated')
-                                                                                }, false)
-                                                                            })
-                                                                })()
+            (function () {
+                'use strict'
+                var forms = document.querySelectorAll('.needs-validation')
+                Array.prototype.slice.call(forms)
+                        .forEach(function (form) {
+                            form.addEventListener('submit', function (event) {
+                                if (!form.checkValidity()) {
+                                    event.preventDefault()
+                                    event.stopPropagation()
+                                }
+                                form.classList.add('was-validated')
+                            }, false)
+                        })
+            })()
         </script>
         <!-- Github buttons -->
         <script async defer src="https://buttons.github.io/buttons.js"></script>

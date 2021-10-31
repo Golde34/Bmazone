@@ -1713,16 +1713,26 @@ public class AdminController extends HttpServlet {
     }
 
     public void serviceDeleteGenre(String service, HttpServletRequest request, HttpServletResponse response) {
-        int id = Integer.parseInt(request.getParameter("genid"));
+        int id = Integer.parseInt(request.getParameter("genreid"));
         daogenre.changeStatus(id, 0);
-        request.setAttribute("service", "categorymanagement");
+        String cateid = request.getParameter("catid");
+        Category category = daocategory.getCategoryByCateId(cateid);
+        ArrayList<Genre> listGenre = daogenre.getGenresByCategoryId(Integer.parseInt(cateid));
+        request.setAttribute("category", category);
+        request.setAttribute("listGenre", listGenre);
+        request.setAttribute("service", service);
         sendDispatcher(request, response, "admin/categorydetail.jsp");
     }
 
     public void serviceActiveGenre(String service, HttpServletRequest request, HttpServletResponse response) {
-        int id = Integer.parseInt(request.getParameter("genid"));
+        int id = Integer.parseInt(request.getParameter("genreid"));
         daogenre.changeStatus(id, 1);
-        request.setAttribute("service", "categorymanagement");
+        String cateid = request.getParameter("catid");
+        Category category = daocategory.getCategoryByCateId(cateid);
+        ArrayList<Genre> listGenre = daogenre.getGenresByCategoryId(Integer.parseInt(cateid));
+        request.setAttribute("category", category);
+        request.setAttribute("listGenre", listGenre);
+        request.setAttribute("service", service);
         sendDispatcher(request, response, "admin/categorydetail.jsp");
     }
     //</editor-fold>

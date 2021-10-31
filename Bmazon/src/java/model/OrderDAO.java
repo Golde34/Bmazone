@@ -372,4 +372,34 @@ public class OrderDAO extends BaseDAO {
         }
         return profit;
     }
+    
+    public int countUserOnOrder(){
+        int count=0;
+        String xSql="select count(distinct userid) as NoUser from `order`";
+        try {
+            pre=conn.prepareStatement(xSql);
+            rs=pre.executeQuery();
+            if(rs.next()){
+                count=rs.getInt("NoUser");
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(UserDAO.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return count;
+    }
+    
+    public int countProductOnOrder(){
+        int count=0;
+        String xSql="select count(distinct productTypeID) as NoProduct from `orderdetail`";
+        try {
+            pre=conn.prepareStatement(xSql);
+            rs=pre.executeQuery();
+            if(rs.next()){
+                count=rs.getInt("NoProduct");
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(UserDAO.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return count;
+    }
 }
