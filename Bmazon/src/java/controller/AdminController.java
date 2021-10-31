@@ -1756,12 +1756,12 @@ public class AdminController extends HttpServlet {
 
         int id = Integer.parseInt(request.getParameter("genreid"));
         daogenre.changeStatus(id, 0);
-        String cateid = request.getParameter("catid");
+        String cateid = request.getParameter("categoryId");
         Category category = daocategory.getCategoryByCateId(cateid);
         ArrayList<Genre> listGenre = daogenre.getGenresByCategoryId(Integer.parseInt(cateid));
         request.setAttribute("category", category);
         request.setAttribute("listGenre", listGenre);
-        request.setAttribute("service", service);
+        request.setAttribute("service", "updatecategorydetail");
         sendDispatcher(request, response, "admin/categorydetail.jsp");
     }
 
@@ -1769,12 +1769,12 @@ public class AdminController extends HttpServlet {
 
         int id = Integer.parseInt(request.getParameter("genreid"));
         daogenre.changeStatus(id, 1);
-        String cateid = request.getParameter("catid");
+        String cateid = request.getParameter("categoryId");
         Category category = daocategory.getCategoryByCateId(cateid);
         ArrayList<Genre> listGenre = daogenre.getGenresByCategoryId(Integer.parseInt(cateid));
         request.setAttribute("category", category);
         request.setAttribute("listGenre", listGenre);
-        request.setAttribute("service", service);
+        request.setAttribute("service", "updatecategorydetail");
         sendDispatcher(request, response, "admin/categorydetail.jsp");
     }
     //</editor-fold>

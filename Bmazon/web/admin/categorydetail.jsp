@@ -78,9 +78,8 @@
                                         <table class="table table-striped">
                                             <tr>
                                                 <td style="width: 30%;">Category Name</td>
-                                                <td style="width: 70%;">
-                                                    <input type="hidden" name="catid" value="<%=category.getCategoryID()%>">
-                                                    <input pattern="[^' ']+" class="form-control" type="text" value="<%=category.getCategoryName()%>" name="categoryname" required>
+                                                <td style="width: 70%;">                      
+                                                    <input pattern="[^' ']+" class="form-control" type="text"  name="categoryname" required>
                                                     <div class="invalid-feedback">
                                                         Not blank and no space at beginning or ending
                                                     </div>
@@ -100,14 +99,14 @@
                                             <tr>
                                                 <td>Category Name</td>
                                                 <td>
-                                                    <input pattern="[^' ']+" class="form-control" value="<%=category.getCategoryName()%>" type="text" name="categoryname" required>
+                                                    <input pattern="[^' ']+" class="form-control" value="<%=category.getCategoryID()%>" type="text" name="categoryname" required>
                                                     <div class="invalid-feedback">
                                                         Not blank and no space at beginning or ending
                                                     </div>
                                                 </td>
                                             </tr>
                                             <input type="hidden" value="updatecategory" name="service">
-                                            <input type="hidden" value="<%=category.getCategoryID()%>" name="id">
+
                                         </table>
                                     </div>
                                 </div>
@@ -133,12 +132,11 @@
                                                     %>
                                                     <tr>
                                                         <td><input required style="width: 100%;" type="text" name="genrename" class="form-control" value="<%=genre.getGenreName()%>"></td>
-                                                            <input type="hidden" name="genid" value="<%=genre.getGenreID()%>">
                                                         <td>
                                                             <% if (genre.getStatus() == 1) {%>
-                                                            <a class="btn btn-primary" href="AdminControllerMap?service=deletegenre&genreid=<%=genre.getGenreID()%>" onclick="return confirm('Are you sure?');">Deactive</a>
+                                                            <a class="btn btn-primary" href="AdminControllerMap?service=deletegenre&genreid=<%=genre.getGenreID()%>&categoryId=<%=category.getCategoryID()%>" onclick="return confirm('Are you sure?');">Deactive</a>
                                                             <%} else {%>
-                                                            <a class="btn btn-primary" href="AdminControllerMap?service=activegenre&genreid=<%=genre.getGenreID()%>" onclick="return confirm('Are you sure?');">Active</a>
+                                                            <a class="btn btn-primary" href="AdminControllerMap?service=activegenre&genreid=<%=genre.getGenreID()%>&categoryId=<%=category.getCategoryID()%>" onclick="return confirm('Are you sure?');">Active</a>
                                                             <%}%>
                                                         </td>
                                                     </tr>
@@ -168,20 +166,20 @@
         <script src="${contextPath}/js/plugins/chartjs.min.js"></script>
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
         <script>
-            (function () {
-                'use strict'
-                var forms = document.querySelectorAll('.needs-validation')
-                Array.prototype.slice.call(forms)
-                        .forEach(function (form) {
-                            form.addEventListener('submit', function (event) {
-                                if (!form.checkValidity()) {
-                                    event.preventDefault()
-                                    event.stopPropagation()
-                                }
-                                form.classList.add('was-validated')
-                            }, false)
-                        })
-            })()
+                                                                (function () {
+                                                                    'use strict'
+                                                                    var forms = document.querySelectorAll('.needs-validation')
+                                                                    Array.prototype.slice.call(forms)
+                                                                            .forEach(function (form) {
+                                                                                form.addEventListener('submit', function (event) {
+                                                                                    if (!form.checkValidity()) {
+                                                                                        event.preventDefault()
+                                                                                        event.stopPropagation()
+                                                                                    }
+                                                                                    form.classList.add('was-validated')
+                                                                                }, false)
+                                                                            })
+                                                                })()
         </script>
         <!-- Github buttons -->
         <script async defer src="https://buttons.github.io/buttons.js"></script>
