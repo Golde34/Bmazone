@@ -67,7 +67,7 @@
                                                 </div>
                                             </div>
                                             <div>
-                                                <input id="search" style="width: 100%;" type="text" oninput="pagination()" placeholder="Search.." class="form-control">
+<!--                                                <input id="search" style="width: 100%;" type="text" oninput="pagination()" placeholder="Search.." class="form-control">-->
                                             </div>
                                         </div>
                                         <table class="text-center" style="width: 100%;">

@@ -190,26 +190,12 @@ public class OrderDAO extends BaseDAO {
         return n;
     }
 
-//    public int removeOrder(String orderId) {
-//        int n = 0;
-//        String sql = "Select * from `Order` as a join OrderDetail as b on a.orderID = b.orderID where a.orderID = '" + orderId + "'";
-//        rs = dbConn.getData(sql);
-//        try {
-//            if (rs.next()) {
-//                String s = rs.getString("orderID");
-//                return s == null ? 0 : Integer.parseInt(s);
-//            }
-//        } catch (SQLException ex) {
-//            Logger.getLogger(OrderDAO.class.getName()).log(Level.SEVERE, null, ex);
-//        }
-//        return n;
-//    }
     public ArrayList<Order> getAllActiveOrder() {
         ArrayList<Order> list = new ArrayList<>();
-        String sql = "select * from `Order` where status = 1";
+        String sql = "select * from `Order` where status = 1 and state=1";
         try {
             pre = conn.prepareStatement(sql);
-            rs=pre.executeQuery();
+            rs = pre.executeQuery();
             while (rs.next()) {
                 Order o = new Order();
                 o.setOrderID(rs.getInt("orderID"));
@@ -244,13 +230,12 @@ public class OrderDAO extends BaseDAO {
                 System.out.println(order.getOrderID());
             }
         }
-    
+        
     public ArrayList<Order> getAllOrder() {
         ArrayList<Order> list = new ArrayList<>();
-        String sql = "select * from `Order` where status = 1 and state=0";
+        String sql = "select * from `Order` where status = 1 order by orderID desc";
+
         try {
-            pre = conn.prepareStatement(sql);
-            rs=pre.executeQuery();
             while (rs.next()) {
                 Order o = new Order();
                 o.setOrderID(rs.getInt("orderID"));
@@ -270,14 +255,19 @@ public class OrderDAO extends BaseDAO {
                 o.setStatus(rs.getInt("status"));
                 list.add(o);
             }
-            rs.close();
-            pre.close();
         } catch (SQLException ex) {
             Logger.getLogger(OrderDAO.class.getName()).log(Level.SEVERE, null, ex);
         }
         return list;
     }
 
+//    public static void main(String[] args) {
+//        OrderDAO odao = new OrderDAO();
+//        List<Order> listOrder = odao.getAllPagingOrder(1, 5, "");
+//        for (Order order : listOrder) {
+//            System.out.println(order.getShipCity());
+//        }
+//    }
 
     public Order getOrderByOrderID(int orderid) {
         ArrayList<Order> list = new ArrayList<>();
@@ -447,14 +437,14 @@ public class OrderDAO extends BaseDAO {
 //    public int changeState(int id, int state){
 //        String xSql = ""
 //    }
-    public double getSumProfit(){
-        double profit=0;
+    public double getSumProfit() {
+        double profit = 0;
         String xSql = "select sum(total-shipMoney) as profit from `Order` where status = 1 and state=1";
         try {
             pre = conn.prepareStatement(xSql);
-            rs=pre.executeQuery();
-            if(rs.next()){
-                profit=rs.getDouble("profit");
+            rs = pre.executeQuery();
+            if (rs.next()) {
+                profit = rs.getDouble("profit");
             }
             rs.close();
             pre.close();
@@ -470,9 +460,9 @@ public class OrderDAO extends BaseDAO {
         try {
             pre = conn.prepareStatement(xSql);
             pre.setInt(1, month);
-            rs=pre.executeQuery();
-            if(rs.next()){
-                profit=rs.getDouble("profit");
+            rs = pre.executeQuery();
+            if (rs.next()) {
+                profit = rs.getDouble("profit");
             }
             rs.close();
             pre.close();

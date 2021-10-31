@@ -111,7 +111,7 @@ public class OrderDetailDAO extends BaseDAO {
                 result = rs.getInt(1);
             }
         } catch (SQLException ex) {
-
+            Logger.getLogger(OrderDetailDAO.class.getName()).log(Level.SEVERE, null, ex);
         }
         return result;
     }

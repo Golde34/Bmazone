@@ -129,9 +129,11 @@
                                                     </tr>
                                                 </thead>
                                                 <tbody id="genre">
-                                                    <%for (Genre genre : listGenre) {%>
+                                                    <%for (Genre genre : listGenre) {
+                                                    %>
                                                     <tr>
                                                         <td><input required style="width: 100%;" type="text" name="genrename" class="form-control" value="<%=genre.getGenreName()%>"></td>
+                                                            <input type="hidden" name="genid" value="<%=genre.getGenreID()%>">
                                                         <td>
                                                             <% if (genre.getStatus() == 1) {%>
                                                             <a href="AdminControllerMap?service=deletegenre&genreid=<%=genre.getGenreID()%>" onclick="return confirm('Are you sure?');"><button class="btn btn-primary">Deactive</button></a>
@@ -163,6 +165,7 @@
         <script src="${contextPath}/js/plugins/perfect-scrollbar.min.js"></script>
         <script src="${contextPath}/js/plugins/smooth-scrollbar.min.js"></script>
         <script src="${contextPath}/js/plugins/chartjs.min.js"></script>
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
         <script>
                                                                 (function () {
                                                                     'use strict'

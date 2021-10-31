@@ -674,11 +674,11 @@ public class ProductDAO extends BaseDAO {
 
     public ArrayList<Product> getRelatedProductByProductIDPaging(int index, int id) {
         ArrayList<Product> list = new ArrayList<>();
-        int start = (index - 1) * 20;
+        int start = (index - 1) * 10;
         String sql
                 = " SELECT * \n  "
                 + " FROM Product a join ProductCategory b on a.productID = b.productID where b.categoryId = (SELECT categoryId FROM ProductCategory WHERE productID=" + id + ") \n "
-                + "limit ?,20";
+                + "limit ?,10";
         try {
             pre = conn.prepareStatement(sql);
             pre.setInt(1, start);
