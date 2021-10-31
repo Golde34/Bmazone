@@ -51,7 +51,7 @@ public class AdminController extends HttpServlet {
      * @throws ServletException if a servlet-specific error occurs
      * @throws IOException if an I/O error occurs
      */
-    OrderDAO daoorder = new OrderDAO();
+    OrderDAO daoorder =  new OrderDAO();
     ProductCategoryDAO daopc = new ProductCategoryDAO();
     ProductGenreDAO daopg = new ProductGenreDAO();
     SellerDAO daoseller = new SellerDAO();
@@ -229,12 +229,12 @@ public class AdminController extends HttpServlet {
                 serviceActiveGallery(service, request, response);
             }
             //</editor-fold>
-
+            
             // <editor-fold defaultstate="collapsed" desc="Category service. Click on the + sign on the left to edit the code.">
             //Category Management
-            if (service.equalsIgnoreCase("categorymanagement")) {
+            if(service.equalsIgnoreCase("categorymanagement")){
                 serviceCategoryManagement(service, request, response);
-            }
+            }     
             //Category detail to add and update
             if (service.equalsIgnoreCase("updatecategorydetail") || service.equalsIgnoreCase("addcategorydetail")) {
                 serviceCategoryDetail(service, request, response);
@@ -285,7 +285,7 @@ public class AdminController extends HttpServlet {
             if (service.equalsIgnoreCase("activeuserAuthor")) {
                 serviceActiveUserAuthor(service, request, response);
             }
-
+            
             // <editor-fold defaultstate="collapsed" desc="Order Response service. Click on the + sign on the left to edit the code.">
             //OrderResponse
             if (service.equalsIgnoreCase("orderResponse")) {
@@ -296,12 +296,12 @@ public class AdminController extends HttpServlet {
                 serviceSellerResponse(service, request, response);
             }
             //Accept Seller Request
-            if (service.equalsIgnoreCase("orderDetail")) {
-                serviceOrderDetail(service, request, response);
+            if (service.equalsIgnoreCase("acceptSeller")) {
+                serviceAcceptSellerRequest(service, request, response);
             }
             //Deny Seller Request
-            if (service.equalsIgnoreCase("handleOrder")) {
-                serviceHandleOrder(service, request, response);
+            if (service.equalsIgnoreCase("denySeller")) {
+                serviceDenySellerRequest(service, request, response);
             }
             //</editor-fold>
 
@@ -352,15 +352,9 @@ public class AdminController extends HttpServlet {
     public void serviceAdminDashboard(String service, HttpServletRequest request, HttpServletResponse response) {
         request.setAttribute("service", service);
         ArrayList<Product> listProduct = daoproduct.getAllProduct();
-        ArrayList<User> listUser = daouser.getAllUser();
-        ArrayList<Order> listOrder = daoorder.getAllActiveOrder();
-        List<ShipCompany> listCompany = daocompany.getAllPagingShipCompany(1, 5, "");
-        Double profit = daoorder.getSumProfit();
-        request.setAttribute("profit", profit);
-        request.setAttribute("listUser", listUser);
-        request.setAttribute("listOrder", listOrder);
         request.setAttribute("listProduct", listProduct);
-        request.setAttribute(("listCompany"), listCompany);
+        ArrayList<User> listUser = daouser.getAllUser();
+        request.setAttribute(("listUser"), listUser);
         sendDispatcher(request, response, "admin/admin.jsp");
     }
 
@@ -413,7 +407,9 @@ public class AdminController extends HttpServlet {
                     + "<td>" + user.getFullname() + "</td>"
                     + "<td>" + user.getPhoneNumber() + "</td>"
                     + "<td>" + user.getAddress() + "</td>"
-                    + "<td style='white-space: nowrap'><a href=\"AdminControllerMap?service=updateuserdetail&userid=" + user.getUserId() + "\"><button style='margin-right:4px' class=\"btn btn-primary\">Edit</button></a>");
+                    + "<td><a href=\"AdminControllerMap?service=updateuserdetail&userid=" + user.getUserId() + "\"><button class=\"btn btn-primary\">Edit</button></a>"
+                    + "</td>"
+                    + "<td>");
             if (user.getStatus() == 1) {
                 pr.print("<a href=\"AdminControllerMap?service=deleteuser&userid=" + user.getUserId() + "\" onclick=\"return confirm('Are you sure?');\"><button class=\"btn btn-primary\">Deactive</button></a>");
             } else {
@@ -666,7 +662,9 @@ public class AdminController extends HttpServlet {
                     + "<td><div>" + category + "</div></td>"
                     + "<td><div>" + genre.getGenreName() + "</div></td>"
                     + "<td><div>" + seller.getSellerShopName() + "</div></td>"
-                    + "<td style='white-space: nowrap'><a href=\"AdminControllerMap?service=productdetail&productid=" + product.getProductID() + "\"><button style='margin-right:4px' class=\"btn btn-primary\">Edit</button></a>");
+                    + "<td><div><a href=\"AdminControllerMap?service=productdetail&productid=" + product.getProductID() + "\"><button class=\"btn btn-primary\">Edit</button></a>"
+                    + "</div></td>"
+                    + "<td>");
             if (product.getStatus() == 1) {
                 pr.print("<a href=\"AdminControllerMap?service=deleteproduct&productid=" + product.getProductID() + "\" onclick=\"return confirm('Are you sure?');\"><button class=\"btn btn-primary\">Deactive</button></a>");
             } else {
@@ -1004,14 +1002,17 @@ public class AdminController extends HttpServlet {
                     + "<td><div>" + company.getCompanyName() + " </div></td>"
                     + "<td><div>" + company.getCommitDate() + "</div></td>"
                     + "<td><div>" + nf.format(company.getUnitCost()) + "</div></td>"
-                    + "<td style='white-space: nowrap'><a href=\"AdminControllerMap?service=updatecompanydetail&companyid=" + company.getCompanyID() + "\"><button style='margin-right:4px' class=\"btn btn-primary\">Edit</button></a>");
+                    + "<td><div><a href=\"AdminControllerMap?service=updatecompanydetail&companyid=" + company.getCompanyID() + "\"><button class=\"btn btn-primary\">Edit</button></a>"
+                    + "</div></td>"
+                    + "<td>");
             if (company.getStatus() == 1) {
                 pr.print("<a href=\"AdminControllerMap?service=deletecompany&companyid=" + company.getCompanyID() + "\" onclick=\"return confirm('Are you sure?');\"><button class=\"btn btn-primary\">Deactive</button></a>");
             } else {
                 pr.print("<a href=\"AdminControllerMap?service=activecompany&companyid=" + company.getCompanyID() + "\" onclick=\"return confirm('Are you sure?');\"><button class=\"btn btn-primary\">Active</button></a>");
             }
             pr.print("</td>"
-                    + "</tr>");
+                    + "</tr>"
+            );
         }
         if (request.getParameter("row") == null) {
             sendDispatcher(request, response, "admin/companymanagement.jsp");
@@ -1273,7 +1274,9 @@ public class AdminController extends HttpServlet {
                     + "<td>" + pt.getSize() + "</td>"
                     + "<td><img src=\"" + img + "\" width=\"100px\" height=\"100px\"></td>"
                     + "<td>" + seller.getSellerShopName() + "</td>"
-                    + "<td style='white-space: nowrap'><a href=\"AdminControllerMap?service=gallerydetail&galleryid=" + gallery.getGalleryID() + "\"><button style='margin-right:4px' class=\"btn btn-primary\">Edit</button></a>");
+                    + "<td><div><a href=\"AdminControllerMap?service=gallerydetail&galleryid=" + gallery.getGalleryID() + "\"><button class=\"btn btn-primary\">Edit</button></a>"
+                    + "</div></td>"
+                    + "<td>");
             if (gallery.getStatus() == 1) {
                 pr.print("<a href=\"AdminControllerMap?service=deletegallery&galleryid=" + gallery.getGalleryID() + "\" onclick=\"return confirm('Are you sure?');\"><button class=\"btn btn-primary\">Deactive</button></a>");
             } else {
@@ -1472,9 +1475,9 @@ public class AdminController extends HttpServlet {
         request.setAttribute("service", "gallerymanagement");
         sendDispatcher(request, response, "admin/gallerydetail.jsp");
     }//</editor-fold>
-
+    
     // <editor-fold defaultstate="collapsed" desc="Category methods. Click on the + sign on the left to edit the code.">
-    public void serviceCategoryManagement(String service, HttpServletRequest request, HttpServletResponse response) {
+    public void serviceCategoryManagement(String service, HttpServletRequest request, HttpServletResponse response){
         ArrayList<Category> listPaging = daocategory.getAllPagingCategory(1, 5, "");
         ArrayList<Category> listCategory = daocategory.getTrueCategories();
         int totalPage = listCategory.size() / 5;
@@ -1487,7 +1490,7 @@ public class AdminController extends HttpServlet {
         request.setAttribute("service", service);
         sendDispatcher(request, response, "admin/categorymanagement.jsp");
     }
-
+    
     public void serviceCategoryDetail(String service, HttpServletRequest request, HttpServletResponse response) {
         request.setAttribute("service", service);
         if (service.equalsIgnoreCase("addcategorydetail")) {
@@ -1519,14 +1522,14 @@ public class AdminController extends HttpServlet {
         request.setAttribute("listCategory", listPaging);
         for (Category category : listPaging) {
             pr.print("<tr>"
-                    + "<td>" + category.getCategoryName() + " </td>"
-                    + "<td><a href=\"AdminControllerMap?service=updatecategorydetail&cateid=" + category.getCategoryID() + "\"><button class=\"btn btn-primary\">Edit</button></a>"
+                    + "<td>" + category.getCategoryName()+ " </td>"
+                    + "<td><a href=\"AdminControllerMap?service=updatecategorydetail&cateid=" + category.getCategoryID()+ "\"><button class=\"btn btn-primary\">Edit</button></a>"
                     + "</td>"
                     + "<td>");
             if (category.getStatus() == 1) {
-                pr.print("<a href=\"AdminControllerMap?service=deletecategory&cateid=" + category.getCategoryID() + "\" onclick=\"return confirm('Are you sure?');\"><button class=\"btn btn-primary\">Deactive</button></a>");
+                pr.print("<a href=\"AdminControllerMap?service=deletecategory&cateid=" + category.getCategoryID()+ "\" onclick=\"return confirm('Are you sure?');\"><button class=\"btn btn-primary\">Deactive</button></a>");
             } else {
-                pr.print("<a href=\"AdminControllerMap?service=activecategory&cateid=" + category.getCategoryID() + "\" onclick=\"return confirm('Are you sure?');\"><button class=\"btn btn-primary\">Active</button></a>");
+                pr.print("<a href=\"AdminControllerMap?service=activecategory&cateid=" + category.getCategoryID()+ "\" onclick=\"return confirm('Are you sure?');\"><button class=\"btn btn-primary\">Active</button></a>");
             }
             pr.print("</td>"
                     + "</tr>"
@@ -1673,7 +1676,7 @@ public class AdminController extends HttpServlet {
             request.setAttribute("service", "updatecategorydetail");
             String mess = "Update successfully";
             request.setAttribute("mess", mess);
-            sendDispatcher(request, response, "AdminControllerMap?service=updatecategorydetail&cateid=" + id);
+            sendDispatcher(request, response, "AdminControllerMap?service=updatecategorydetail&cateid="+id);
         }
     }
 
@@ -1710,14 +1713,14 @@ public class AdminController extends HttpServlet {
         request.setAttribute("service", "categorymanagement");
         sendDispatcher(request, response, "admin/categorymanagement.jsp");
     }
-
+    
     public void serviceDeleteGenre(String service, HttpServletRequest request, HttpServletResponse response) {
         int id = Integer.parseInt(request.getParameter("genid"));
         daogenre.changeStatus(id, 0);
         request.setAttribute("service", "categorymanagement");
         sendDispatcher(request, response, "admin/categorydetail.jsp");
     }
-
+    
     public void serviceActiveGenre(String service, HttpServletRequest request, HttpServletResponse response) {
         int id = Integer.parseInt(request.getParameter("genid"));
         daogenre.changeStatus(id, 1);
@@ -1725,7 +1728,7 @@ public class AdminController extends HttpServlet {
         sendDispatcher(request, response, "admin/categorydetail.jsp");
     }
     //</editor-fold>
-
+    
     // <editor-fold defaultstate="collapsed" desc="User Authorization Method. Click on the + sign on the left to edit the code.">
     public void serviceUserAuthorization(String service, HttpServletRequest request, HttpServletResponse response) {
         request.setAttribute("service", service);
@@ -1766,9 +1769,9 @@ public class AdminController extends HttpServlet {
         sendDispatcher(request, response, "admin/authorization/userAuthorization.jsp");
     }
     // </editor-fold>
-
+    
     // <editor-fold defaultstate="collapsed" desc="Order Response Method. Click on the + sign on the left to edit the code.">
-    public void serviceOrderResponse(String service, HttpServletRequest request, HttpServletResponse response) {
+    public void serviceOrderResponse(String service, HttpServletRequest request, HttpServletResponse response){
         List<Order> listOrderPaging = daoorder.getAllPagingOrder(1, 5, "");
         List<Order> listRequestOrder = daoorder.getAllOrder();
         int totalPage = listRequestOrder.size() / 5;
@@ -1780,36 +1783,7 @@ public class AdminController extends HttpServlet {
         request.setAttribute("listOrder", listOrderPaging);
         request.setAttribute("service", service);
         sendDispatcher(request, response, "admin/orderRespone.jsp");
-    }
-    
-    public void serviceOrderDetail(String service, HttpServletRequest request, HttpServletResponse response) {
-        String orderId = request.getParameter("orderId");
-        Order order = daoorder.getOrderByOrderID(Integer.parseInt(orderId));
-        request.setAttribute("order", order);
-        request.setAttribute("service", service);
-        sendDispatcher(request, response, "admin/orderDetail.jsp");
-    }
-    
-    public void serviceHandleOrder(String service, HttpServletRequest request, HttpServletResponse response) {
-        String action = request.getParameter("action");
-        String orderId = request.getParameter("orderId");
-        if(action.equalsIgnoreCase("accept")){
-            daoorder.changeState(Integer.parseInt(orderId), 1);
-        }
-        if(action.equalsIgnoreCase("refuse")){
-            daoorder.changeStatus(Integer.parseInt(orderId), 0);
-        }
-        List<Order> listOrderPaging = daoorder.getAllPagingOrder(1, 5, "");
-        List<Order> listRequestOrder = daoorder.getAllOrder();
-        int totalPage = listRequestOrder.size() / 5;
-        if (listRequestOrder.size() > 5) {
-            totalPage += 1;
-        }
-        request.setAttribute("index", 1);
-        request.setAttribute("totalPage", totalPage);
-        request.setAttribute("listOrder", listOrderPaging);
-        request.setAttribute("service", service);
-        sendDispatcher(request, response, "admin/orderRespone.jsp");
+        
     }
     // </editor-fold>
 
@@ -2059,5 +2033,7 @@ public class AdminController extends HttpServlet {
     public String getServletInfo() {
         return "Short description";
     }// </editor-fold>
+
+    
 
 }

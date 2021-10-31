@@ -1,4 +1,3 @@
-<%@page import="java.text.SimpleDateFormat"%>
 <%@page import="model.*"%>
 <%@page import="java.util.*"%>
 <%@page import="entity.*"%>
@@ -6,7 +5,6 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <c:set var="contextPath" value="${pageContext.request.contextPath}" />
 <%
-    SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy");  
     int index = (Integer) request.getAttribute("index");
     int totalPage = (Integer) request.getAttribute("totalPage");
     int prev = index == 1 ? 1 : index - 1;
@@ -33,7 +31,7 @@
         th,td{
             padding: 12px 15px;
         }
-        tbody tr:nth-child(even){
+        tbody tr:nth-child(odd){
             background-color: #f2f2f2;
         }
     </style>
@@ -71,28 +69,28 @@
                                             </div>
                                         </div>
                                         <table class="text-center" style="width: 100%;">
-                                            <thead class="text-uppercase bg-gray-200">
+                                            <thead>
                                                 <tr>
-                                                    <th style="width: 15%;padding: 20px;">Customer</th>
-                                                    <th style="width: 20%">Order Date</th>
-                                                    <th style="width: 15%">Address</th>
-                                                    <th style="width: 20%">Phone</th>
-                                                    <th style="width: 15%">Payment Method</th>
-                                                    <th style="width: 15%">Action</th>
+                                                    <th style="width: 25%">Product Name</th>
+                                                    <th style="width: 10%">Color</th>
+                                                    <th style="width: 15%">Size</th>
+                                                    <th style="width: 20%">Image</th>
+                                                    <th style="width: 15%">Seller</th>
+                                                    <th style="width: 15%"></th>
                                                 </tr>
                                             </thead>
                                             <tbody id="gallery">
                                             <%for (Order order : listOrder) {%>
                                             <tr>
-                                                <td><%=order.getShipName()%></td>
-                                                <td><%=sdf.format(order.getOrderDate())%></td>
-                                                <td><%=order.getShipAddress()%>-<%=order.getShipCity()%></td>
-                                                <td><%=order.getShipPhone()%></td>
                                                 <td><%=order.getPaymentMethod()%></td>
+                                                <td><%=order.getShipAddress()%></td>
+                                                <td><%=order.getShipCity()%></td>
+                                                <td><%=order.getShipName()%></td>
+                                                <td><%=order.getShipPhone()%></td>
                                                 <td style='white-space: nowrap'>
                                                     <a href="AdminControllerMap?service=orderDetail&orderId=<%=order.getOrderID()%>"><button class="btn btn-primary">View</button></a>
-                                                    <a href="AdminControllerMap?service=handleOrder&action=accept&orderId=<%=order.getOrderID()%>" onclick="return confirm('Are you sure?');"><button class="btn btn-primary">Accept</button></a>
-                                                    <a href="AdminControllerMap?service=handleOrder&action=refuse&orderId=<%=order.getOrderID()%>" onclick="return confirm('Are you sure?');"><button class="btn btn-primary">Refuse</button></a>
+                                                    <a href="AdminControllerMap?service=handleOrder&action=accept" onclick="return confirm('Are you sure?');"><button class="btn btn-primary">Accept</button></a>
+                                                    <a href="AdminControllerMap?service=handleOrder&orderId=refuse" onclick="return confirm('Are you sure?');"><button class="btn btn-primary">Refuse</button></a>
                                                 </td>
                                             </tr>
                                             <%}%>

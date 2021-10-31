@@ -72,7 +72,7 @@
                                             <table style="width: 100%;" class="text-center">
                                                 <thead class="text-uppercase bg-gray-200">
                                                     <tr>
-                                                        <th style="width: 25%;padding: 20px;">Username</th>
+                                                        <th style="width: 25%">Username</th>
                                                         <th style="width: 10%">Email</th>
                                                         <th style="width: 20%">Full Name</th>
                                                         <th style="width: 10%">Phone</th>
@@ -89,7 +89,7 @@
                                                     <td><%=user.getPhoneNumber()%></td>
                                                     <td><%=user.getAddress()%></td>
                                                     <td style='white-space: nowrap'>
-                                                        <a href="AdminControllerMap?service=updateuserdetail&userid=<%=user.getUserId()%>"><button class="btn btn-primary mr-5">Edit</button></a>
+                                                        <a href="AdminControllerMap?service=updateuserdetail&userid=<%=user.getUserId()%>"><button class="btn btn-primary">Edit</button></a>
                                                         <% if (user.getStatus() == 1) {%>
                                                         <a href="AdminControllerMap?service=deleteuser&userid=<%=user.getUserId()%>" onclick="return confirm('Are you sure?');"><button class="btn btn-primary">Deactive</button></a>
                                                         <%} else {%>

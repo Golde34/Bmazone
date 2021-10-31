@@ -103,6 +103,7 @@ public class OrderDetailDAO extends BaseDAO {
                 result = rs.getInt(1);
             }
         } catch (SQLException ex) {
+<<<<<<< HEAD
 
         }
         return result;
@@ -127,9 +128,11 @@ public class OrderDetailDAO extends BaseDAO {
                 return list;
             }
         } catch (SQLException ex) {
+=======
+>>>>>>> parent of 64f903e (done ite 3)
             Logger.getLogger(OrderDetailDAO.class.getName()).log(Level.SEVERE, null, ex);
         }
-        return list;
+        return result;
     }
 
     public int sumSoldProductByProductID(String pid) {
