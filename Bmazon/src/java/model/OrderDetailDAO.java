@@ -111,16 +111,39 @@ public class OrderDetailDAO extends BaseDAO {
                 result = rs.getInt(1);
             }
         } catch (SQLException ex) {
-            Logger.getLogger(OrderDetailDAO.class.getName()).log(Level.SEVERE, null, ex);
+
         }
         return result;
+    }
+
+    public ArrayList<OrderDetail> getOrderDetailByOrderId(int orderId) {
+        ArrayList<OrderDetail> list = new ArrayList<>();
+        String xSql = "select * from `orderdetail` where orderID=?";
+        try {
+            pre = conn.prepareStatement(xSql);
+            pre.setInt(1, orderId);
+            rs = pre.executeQuery();
+            while (rs.next()) {
+                OrderDetail od = new OrderDetail();
+                od.setOrderID(rs.getInt("orderID"));
+                od.setPrice(rs.getDouble("price"));
+                od.setProductName(rs.getString("productName"));
+                od.setProductTypeId(rs.getString("productTypeID"));
+                od.setQuantity(rs.getInt("quantity"));
+                od.setStatus(rs.getInt("status"));
+                list.add(od);
+                return list;
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(OrderDetailDAO.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return list;
     }
 
     public int sumSoldProductByProductID(String pid) {
         int result = 0;
         String sql = "select sum(od.quantity), p.productID from OrderDetail od inner join ProductType pt on od.productTypeID=pt.productTypeId inner join Product p on pt.productID=p.productID inner join `Order` o on od.orderID = o.orderID\n"
-                + "where p.productID=? and o.state = 3\n"
-                + "group by p.productID";
+                + "where p.productID=? and o.state = 3\n";
         try {
             pre = conn.prepareStatement(sql);
             pre.setString(1, pid);
