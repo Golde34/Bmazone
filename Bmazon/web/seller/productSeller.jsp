@@ -160,7 +160,7 @@
                                         <tr>
                                             <th style="width: 30%;height: 50px;">Product Name</th>
                                             <th style="width: 20%;height: 50px;">Release Date</th>
-                                            <th style="width: 20%;height: 50px;">Type</th>
+                                            <th style="width: 20%;height: 50px;">Category</th>
                                             <th style="width: 20%;height: 50px;">Genre</th>
                                             <th style="width: 5%;height: 50px;"></th>
                                             <th style="width: 5%;height: 50px;"></th>

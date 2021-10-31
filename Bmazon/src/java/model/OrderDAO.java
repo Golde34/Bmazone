@@ -182,9 +182,9 @@ public class OrderDAO extends BaseDAO {
         public static void main(String[] args) {
         
         OrderDAO odao= new OrderDAO();
-        List<Order> listOrder = odao.getOrderByUser(4);
+        List<Order> listOrder = odao.getOrderBySellerID(4);
             for (Order order : listOrder) {
-                System.out.println(order.getShipName());
+                System.out.println(order.getOrderID());
             }
                 
     }
@@ -269,6 +269,41 @@ public class OrderDAO extends BaseDAO {
             Logger.getLogger(UserDAO.class.getName()).log(Level.SEVERE, null, ex);
         }
         return null;
+    }
+    
+    public List<Order> getOrderBySellerID(int sellerID) {
+        List<Order> list = new ArrayList<>();
+        String sql = "select o.orderID,o.userID, o.orderDate,o.requiredDate,o.shippedDate,o.shipName,o.shipAddress,o.shipCity,o.shipPhone,o.companyID,o.shipMoney,o.paymentMethod,o.total,  o.state, o.`status`\n" +
+                        "from OrderDetail od inner join ProductType pt on od.productTypeID=pt.productTypeId inner join Product p on pt.productID=p.productID inner join `Order` o on od.orderID = o.orderID\n" +
+                        "where p.sellerID = ?\n" +
+                        "group by od.orderID";
+        try {
+            pre = conn.prepareStatement(sql);
+            pre.setInt(1, sellerID);
+            rs = pre.executeQuery();
+            while (rs.next()) {
+                Order o = new Order();
+                o.setOrderID(rs.getInt("orderID"));
+                o.setUserID(rs.getString("userID"));
+                o.setOrderDate(rs.getDate("orderDate"));
+                o.setRequiredDate(rs.getDate("requiredDate"));
+                o.setShippedDate(rs.getDate("shippedDate"));
+                o.setShipName(rs.getString("shipname"));
+                o.setShipAddress(rs.getString("shipaddress"));
+                o.setShipCity(rs.getString("shipcity"));
+                o.setShipPhone(rs.getString("shipphone"));
+                o.setCompanyID(rs.getInt("companyID"));
+                o.setShipMoney(rs.getDouble("shipmoney"));
+                o.setPaymentMethod(rs.getString("paymentmethod"));
+                o.setTotal(rs.getDouble("total"));
+                o.setState(rs.getInt("state"));
+                o.setStatus(rs.getInt("status"));
+                list.add(o);
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(OrderDAO.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return list;
     }
     
 //    public int changeState(int id, int state){

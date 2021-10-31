@@ -825,12 +825,24 @@ INSERT INTO Gallery(productID,productTypeID,link,status)VALUES (90,'Pr90Ty1','Pr
 
 INSERT INTO `Order`(userID,orderDate,requiredDate,shippedDate,shipName,shipAddress,shipCity,shipPhone,companyID,shipMoney,paymentMethod,total,state,status)VALUES (1,CURDATE(),CURDATE(),CURDATE(),'Viet','Kim Thanh','Hai Duong',0983586778,1,30000,'COD',20030000, 0, 1);
 INSERT INTO `Order`(userID,orderDate,requiredDate,shippedDate,shipName,shipAddress,shipCity,shipPhone,companyID,shipMoney,paymentMethod,total,state,status)VALUES (2,CURDATE(),CURDATE(),CURDATE(),'Thinh','Thach That','Ha Noi',0938693856,2,30000,'COD',730000, 0, 1);
+INSERT INTO `Order`(userID,orderDate,requiredDate,shippedDate,shipName,shipAddress,shipCity,shipPhone,companyID,shipMoney,paymentMethod,total,state,status)VALUES (4,CURDATE(),CURDATE(),CURDATE(),'Nam','HN','Ha Noi',0938693856,2,30000,'COD',730000, 0, 1);
+INSERT INTO `Order`(userID,orderDate,requiredDate,shippedDate,shipName,shipAddress,shipCity,shipPhone,companyID,shipMoney,paymentMethod,total,state,status)VALUES (4,CURDATE(),CURDATE(),CURDATE(),'Nam','HN','Ha Noi',0938693856,2,31000,'COD',730000, 1, 1);
+INSERT INTO `Order`(userID,orderDate,requiredDate,shippedDate,shipName,shipAddress,shipCity,shipPhone,companyID,shipMoney,paymentMethod,total,state,status)VALUES (4,CURDATE(),CURDATE(),CURDATE(),'Nam','HN','Ha Noi',0938693856,2,32000,'COD',730000, 2, 1);
+INSERT INTO `Order`(userID,orderDate,requiredDate,shippedDate,shipName,shipAddress,shipCity,shipPhone,companyID,shipMoney,paymentMethod,total,state,status)VALUES (4,CURDATE(),CURDATE(),CURDATE(),'Nam','HN','Ha Noi',0938693856,2,33000,'COD',730000, 3, 1);
 
 
 
 -- OrderDetail
 INSERT INTO OrderDetail(orderID,productTypeID,productName,price,quantity,status)VALUES (1,'Pr1Ty1','Laptop Acer Nitro 5',20000000,1,1);
 INSERT INTO OrderDetail(orderID,productTypeID,productName,price,quantity,status)VALUES (2,'Pr2Ty1','Chuot Logitech M102',700000,1,1);
+INSERT INTO OrderDetail(orderID,productTypeID,productName,price,quantity,status)VALUES (3,'Pr25Ty1','Oppo x5',7000000,1,1);
+INSERT INTO OrderDetail(orderID,productTypeID,productName,price,quantity,status)VALUES (3,'Pr25Ty2','Oppo x5 2',7000000,2,1);
+INSERT INTO OrderDetail(orderID,productTypeID,productName,price,quantity,status)VALUES (4,'Pr25Ty1','Oppo x5',7000000,1,1);
+INSERT INTO OrderDetail(orderID,productTypeID,productName,price,quantity,status)VALUES (4,'Pr25Ty2','Oppo x5 2',7000000,2,1);
+INSERT INTO OrderDetail(orderID,productTypeID,productName,price,quantity,status)VALUES (5,'Pr25Ty1','Oppo x5',7000000,1,1);
+INSERT INTO OrderDetail(orderID,productTypeID,productName,price,quantity,status)VALUES (5,'Pr25Ty2','Oppo x5 2',7000000,2,1);
+INSERT INTO OrderDetail(orderID,productTypeID,productName,price,quantity,status)VALUES (6,'Pr25Ty1','Oppo x5',7000000,1,1);
+INSERT INTO OrderDetail(orderID,productTypeID,productName,price,quantity,status)VALUES (6,'Pr25Ty2','Oppo x5 2',7000000,2,1);
 
 -- Comment
 INSERT INTO Comment(productID,userId,content,rating,status)VALUES(1,1,'tester',4.2,1);
