@@ -856,6 +856,10 @@ public class SellerController extends HttpServlet {
         PrintWriter pr = response.getWriter();
 
         int index = 1, numOfRow = 5;
+        String search = request.getParameter("search");
+        if (request.getParameter("row") != null) {
+            numOfRow = Integer.parseInt(request.getParameter("row"));
+        }
         if (request.getParameter("index") != null) {
             index = Integer.parseInt(request.getParameter("index"));
         }
@@ -900,6 +904,9 @@ public class SellerController extends HttpServlet {
         String search = request.getParameter("search");
         if (request.getParameter("index") != null) {
             index = Integer.parseInt(request.getParameter("index"));
+        }
+        if (request.getParameter("row") != null) {
+            numOfRow = Integer.parseInt(request.getParameter("row"));
         }
         List<Order> listOder = oDAO.getOrderBySellerID(sellerID);
         int totalResult = listOder.size();

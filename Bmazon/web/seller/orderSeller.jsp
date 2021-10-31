@@ -139,8 +139,8 @@
                                 <i class="fa fa-globe"></i> <span>Order Management</span>
                             </a>
                         </li>
-                        
-                       
+
+
                         <li>
                             <a href="SellerControllerMap?service=feedback">
                                 <i class="fa fa-empire"></i> <span>Feed Back</span>
@@ -170,8 +170,25 @@
                                 <header class="panel-heading">
                                     Orders
                                 </header>
+                                <div class="table_head py-3" style="display: flex;
+                                 justify-content: space-between;">
+                                <div class="rowNum">
+                                    <h6 style="display: inline">Select number of Rows</h6>
+                                    <div class="form-group" style="display: inline;">
+                                        <select onchange="pagination()" name="state" id="maxRows" class="form-control" style="width:80px;display:inline;">
+                                            <option value="5">5</option>
+                                            <option value="10">10</option>
+                                            <option value="20">20</option>
+                                            <option value="5000">Show All</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="tb_search">
+                                    <input id="search" style="width: 100%;" type="text" oninput="pagination()" placeholder="Search.." class="form-control">
+                                </div>
+                            </div>
                                 <div class="panel-body table-responsive">
-                                    <table class="table table-hover">
+                                    <table class="table table-hover" id="dataTable">
                                         <thead>
                                             <tr>
                                                 <th>Customer</th>
@@ -183,12 +200,12 @@
                                         <tbody id="order">
                                             <%
                                                 for (Order o : listO) {
-                                                  User u = uDAO.getUserById(o.getUserID());
+                                                    User u = uDAO.getUserById(o.getUserID());
                                             %>
                                             <tr>
-                                                <td><%= u.getUsername() %> </td>
-                                                <td><%= o.getOrderDate() %></td>
-                                                
+                                                <td><%= u.getUsername()%> </td>
+                                                <td><%= o.getOrderDate()%></td>
+
                                                 <% if (o.getState() == 0) {%>
                                                 <td><span class="label label-danger">Wait for accept</span></td>
                                                 <% } else if (o.getState() == 1) {%>
@@ -197,15 +214,15 @@
                                                 <td><span class="label label-warning">On The Way</span></td>
                                                 <% } else { %>
                                                 <td><span class="label label-success">Success</span></td>
-                                                <% } %>
-                                                <td><a href="SellerControllerMap?service=orderdetail&orderid=<%= o.getOrderID() %>"><button class="btn btn-primary">Detail</button></a>
+                                                <% }%>
+                                                <td><a href="SellerControllerMap?service=orderdetail&orderid=<%= o.getOrderID()%>"><button class="btn btn-primary">Detail</button></a>
                                                 </td>
                                             </tr>
                                             <% } %>
                                         </tbody>
                                     </table>
                                 </div>
-                                        
+
                                 <div class="pagination-container mt-4" style="display: flex;
                                      justify-content: space-around;cursor: pointer;">
                                     <nav>
@@ -263,7 +280,7 @@
                                 <header class="panel-heading">
                                     Big Order
                                 </header>
-                                    
+
                                 <div class="panel-body table-responsive">
                                     <table class="table table-hover">
                                         <thead>
@@ -273,14 +290,14 @@
                                             </tr>
                                         </thead>
                                         <tbody>
-                                <% 
-                                   List<Order> listObig = odDAO.most5BigOrder();
-                                   for (Order obig : listObig) {
-                                           
-                                %>
+                                            <%
+                                                List<Order> listObig = odDAO.most5BigOrder();
+                                                for (Order obig : listObig) {
+
+                                            %>
                                             <tr>
-                                                <td><a href="SellerControllerMap?service=orderdetail&orderid=<%= obig.getOrderID() %>"><%= obig.getOrderID() %></a></td>
-                                                <td><%= nf.format(obig.getTotal()) %> VND</td>
+                                                <td><a href="SellerControllerMap?service=orderdetail&orderid=<%= obig.getOrderID()%>"><%= obig.getOrderID()%></a></td>
+                                                <td><%= nf.format(obig.getTotal())%> VND</td>
                                             </tr>
                                             <% } %>
                                         </tbody>
@@ -310,73 +327,24 @@
     <script src="${contextPath}/js/plugins/chartjs.min.js"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
     <script>
-        $("textarea").on('keyup', function () {
-            $(".noti").hide();
-        });
-        $(document).ready(function () {
-        $("#category").change(function () {
-        var val = $(this).val();
-                $(".noti").hide();
-        <% for (Category cate : listCategory) {%>
-        if (val == "<%=cate.getCategoryID()%>"){
-        console.log("<%=cate.getCategoryName()%>");
-                $("#genre").html(
-        <% ArrayList<Genre> list = genreDAO.getGenresByCategoryId(cate.getCategoryID());
-            for (int i = 0; i < list.size(); i++) {
-                if (list.size() == 1 || i == list.size() - 1) {%>"<option value='<%=list.get(i).getGenreID()%>'><%=list.get(i).getGenreName()%></option>"
-        <%} else {%>"<option value='<%=list.get(i).getGenreID()%>'><%=list.get(i).getGenreName()%></option>" +
-        <%}
-            }%>);
-        }
-        <%}%>
-        });
-        });
-                $(".number").on('keyup', function () {
-        var n = parseInt($(this).val().replace(/\D/g, ''), 10);
-                $(this).val(n.toLocaleString());
-                $(".noti").hide();
-        });
-                (function () {
-                'use strict'
-                        var forms = document.querySelectorAll('.needs-validation')
-                        Array.prototype.slice.call(forms)
-                        .forEach(function (form) {
-                        form.addEventListener('submit', function (event) {
-                        if (!form.checkValidity()) {
-                        event.preventDefault()
-                                event.stopPropagation()
-                        }
-                        form.classList.add('was-validated')
-                        }, false)
-                        })
-                })()
-
-                var today = new Date();
-                var dd = today.getDate();
-                var mm = today.getMonth() + 1; //January is 0!
-                var yyyy = today.getFullYear();
-                if (dd < 10){
-        dd = '0' + dd
-        }
-        if (mm < 10){
-        mm = '0' + mm
-        }
-        today = yyyy + '-' + mm + '-' + dd;
-                document.getElementById("inputDate").setAttribute("max", today);
-    </script>
-    <script>
                 var pageNum;
                 $(document).on('click', '.pagination li', function () {
         pageNum = $(this).data('repair');
                 pagination();
         });
                 function pagination() {
+                var row = document.getElementById("maxRows").value;
+                        var search = document.getElementById("search").value;
+                        console.log(row);
+                        console.log(search);
                         console.log(pageNum);
                         $.ajax({
                         url: "/Bmazon/SellerControllerMap",
                                 type: "get",
                                 data: {
-                                search: index: pageNum,
+                                search: search,
+                                        row: row,
+                                        index: pageNum,
                                         service: "pagingorder"
                                 },
                                 success: function (respone) {
@@ -390,11 +358,15 @@
                         });
                 }
         function showpage() {
+        var row = document.getElementById("maxRows").value;
+                var search = document.getElementById("search").value;
                 $.ajax({
                 url: "/Bmazon/SellerControllerMap",
                         type: "get",
                         data: {
-                        search: index: pageNum,
+                        search: search,
+                                row: row,
+                                index: pageNum,
                                 service: "showpageorder"
                         },
                         success: function (respone) {
