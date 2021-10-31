@@ -23,7 +23,7 @@
     ProductTypeDAO ptd = new ProductTypeDAO();
     ProductDAO pdao = new ProductDAO();
     GalleryDAO gDao = new GalleryDAO();
-     ShipCompanyDAO scdao= new ShipCompanyDAO();
+    ShipCompanyDAO scdao = new ShipCompanyDAO();
 
 %>
 
@@ -75,10 +75,17 @@
 
                                 </div>
                                 <div class="col"> 
-                                    <strong>Shipping BY:</strong><%=scdao.getShipCompanyById(order.getCompanyID()).getCompanyName() %> <br> 
+                                    <strong>Shipping BY:</strong><%=scdao.getShipCompanyById(order.getCompanyID()).getCompanyName()%> <br> 
                                     <strong><i class="fa fa-phone"></i></strong> <%=order.getShipPhone()%> <br>
                                 </div>
-                                <div class="col"> <strong>Status:</strong> <br> <%=state%></div>
+                                <div class="col"> <strong>Status:</strong> <br> <%=state%>
+                                    <%if (order.getStatus() == 0) {
+                                    %>  
+                                    <strong style="color: red">(Deactive)</strong>
+
+                                    <%  }
+                                    %>
+                                </div>
                                 <div class="col"> <strong>Payment Method:</strong> <%=order.getPaymentMethod()%><br>
                                     <strong>Order Value:</strong> <%=nf.format(order.getTotal())%>
                                 </div>
@@ -86,9 +93,9 @@
                         </article>
                         <div class="track">
                             <div class="step ${active0}"> <span class="icon"> <i class="fa fa-check"></i> </span> <span class="text">Waiting for accept </span> </div>
-                            <div class="step ${active1}"> <span class="icon"> <i class="fa fa-user"></i> </span> <span class="text"> Order confirmed <br><%=order.getOrderDate() %></span> </div>
-                            <div class="step ${active2}"> <span class="icon"> <i class="fa fa-truck"></i> </span> <span class="text"> On the way <br><%=order.getRequiredDate() %> </span> </div>
-                            <div class="step ${active3}"> <span class="icon"> <i class="fas fa-box"></i> </span> <span class="text">Ready for pickup <br><%=order.getShippedDate() %></span> </div>
+                            <div class="step ${active1}"> <span class="icon"> <i class="fa fa-user"></i> </span> <span class="text"> Order confirmed <br><%=order.getOrderDate()%></span> </div>
+                            <div class="step ${active2}"> <span class="icon"> <i class="fa fa-truck"></i> </span> <span class="text"> On the way <br><%=order.getRequiredDate()%> </span> </div>
+                            <div class="step ${active3}"> <span class="icon"> <i class="fas fa-box"></i> </span> <span class="text">Ready for pickup <br><%=order.getShippedDate()%></span> </div>
                         </div>
                         <br>
                         <ul class="row">
@@ -104,8 +111,8 @@
                                     <figcaption class="info align-self-center">
                                         <p class="title"><%=p.getProductName()%> <br> <%=pt.getColor() + " " + pt.getSize()%></p> 
                                         <div>
-                                        <span class="text-muted"><strong>Unit Price: </strong> <%=nf.format(Double.parseDouble(pt.getPrice()))%> </span>
-                                        <br><strong>Quantity: </strong><span><%=od.getQuantity()%></span>
+                                            <span class="text-muted"><strong>Unit Price: </strong> <%=nf.format(Double.parseDouble(pt.getPrice()))%> </span>
+                                            <br><strong>Quantity: </strong><span><%=od.getQuantity()%></span>
                                         </div>
                                     </figcaption>
                                 </figure>
@@ -113,11 +120,63 @@
                             <% }%>
 
                         </ul>
-                        <hr> <a href="CartControllerMap?service=MyOrder" class="btn btn-warning" data-abc="true"> <i class="fa fa-chevron-left"></i> Back to orders</a>
+                        <br>
+                        <div class="row">
+                            <div class="col-md-6">
+                                <a href="CartControllerMap?service=MyOrder" class="btn btn-warning" data-abc="true"> <i class="fa fa-chevron-left"></i> Back to orders</a>
+                            </div>
+                            <div class="col-md-6">
+
+                                <a href="CartControllerMap?service=MyOrder" data-toggle="modal"><btn class="btn btn-success">Add</btn></a>
+                            </div>
+                        </div>
                     </div>
                 </article>
             </div>
             <br>
+            
+            <style type="text/css">
+            .modal .modal-dialog {
+                max-width: 400px;
+            }
+            .modal .modal-header, .modal .modal-body, .modal .modal-footer {
+                padding: 20px 30px;
+            }
+            .modal .modal-content {
+                border-radius: 3px;
+            }
+            .modal .modal-footer {
+                background: #ecf0f1;
+                border-radius: 0 0 3px 3px;
+            }
+            .modal .modal-title {
+                display: inline-block;
+            }
+            .modal .form-control {
+                border-radius: 2px;
+                box-shadow: none;
+                border-color: #dddddd;
+            }
+            .modal textarea.form-control {
+                resize: vertical;
+            }
+            .modal .btn {
+                border-radius: 2px;
+                min-width: 100px;
+            }	
+            .modal form label {
+                font-weight: normal;
+            }
+            .imgho{
+                width: 250px; 
+                height: 150px; 
+            }
+            .imgho:hover{
+                opacity: 0.7;
+                cursor: pointer;
+            }
+        </style>
+
             <style>
                 @import url('https://fonts.googleapis.com/css?family=Open+Sans&display=swap');
 

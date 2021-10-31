@@ -4,6 +4,8 @@
     Author     : DELL
 --%>
 
+<%@page import="model.UserDAO"%>
+<%@page import="entity.Comment"%>
 <%@page import="model.OrderDetailDAO"%>
 <%@page import="model.ProductDAO"%>
 <%@page import="entity.Genre"%>
@@ -58,24 +60,15 @@
     <!--% } else { %-->
 
     <%
-
-        DecimalFormat nf = new DecimalFormat("###,###,###");
-        ProductTypeDAO ptDAO = new ProductTypeDAO();
-        ProductCategoryDAO pcDAO = new ProductCategoryDAO();
-        CategoryDAO cateDAO = new CategoryDAO();
-        ProductGenreDAO pgdao = new ProductGenreDAO();
-        GenreDAO genreDAO = new GenreDAO();
         ProductDAO pDAO = new ProductDAO();
-        OrderDetailDAO odDAO = new OrderDetailDAO();
-
-        ArrayList<Category> listCategory = cateDAO.getAllCategories();
-        ArrayList<Genre> listGenre = genreDAO.getAllGenres();
+        UserDAO uDAO= new UserDAO();
+        DecimalFormat nf = new DecimalFormat("###,###,###");
         int index = (Integer) request.getAttribute("index");
         int totalPage = (Integer) request.getAttribute("totalPage");
         int prev = index == 1 ? 1 : index - 1;
         int next = index == totalPage ? totalPage : index + 1;
         User curUser = (User) request.getSession().getAttribute("currUser");
-        ArrayList<Product> listP = (ArrayList<Product>) request.getAttribute("listProduct");
+        ArrayList<Comment> listP = (ArrayList<Comment>) request.getAttribute("listProduct");
     %>
 
     <body class="skin-black">
@@ -127,13 +120,12 @@
                                 <i class="fa fa-globe"></i> <span>Order Management</span>
                             </a>
                         </li>
-                        
-                       <li class="active">
+
+                        <li class="active">
                             <a href="SellerControllerMap?service=feedback">
                                 <i class="fa fa-empire"></i> <span>Feed Back</span>
                             </a>
                         </li>
-
 
 
                     </ul>
@@ -178,32 +170,26 @@
                                     <table class="table table-hover" id="dataTable">
                                         <thead>
                                             <tr>
-                                                <th style="width: 30%;height: 50px;">Product Name</th>
-                                                <th style="width: 10%;height: 50px;">Rating</th>
-                                                <th style="width: 10%;height: 50px;">Type</th>
-                                                <th style="width: 10%;height: 50px;">Genre</th>
-                                                <th style="width: 10%;height: 50px;">Action</th>
-                                                <th style="width: 10%;height: 50px;">Sold</th>
+                                                <th style="width: 30%;height: 50px;">Content</th>
+                                                <th style="width: 10%;height: 50px;">Rating</th>                                                
+                                                <th style="width: 10%;height: 50px;">User</th>
+                                                <th style="width: 10%;height: 50px;">Product</th>
+
                                             </tr>
                                         </thead>
                                         <tbody id="product">
-                                            <% for (Product product : listP) {
-                                                    int proID = product.getProductID();
-                                                    String genreid = pgdao.getGenreIdByProductId(product.getProductID());
-                                                    Genre genre = genreDAO.getGenreById(Integer.parseInt(genreid));
-                                                    int sold = odDAO.sumSoldProductByProductID(Integer.toString(proID));
+                                            <% for (Comment c : listP) {
+                                                    String id = "" + c.getUserID();
+                                                    User u = uDAO.getUserById(id);
+
                                             %>
                                             <tr>
-                                                <td><div><%= product.getProductName()%></div></td>
-                                                <td><div><%= product.getRating() %>/10</div></td>
-                                                <td><div><%= cateDAO.getCategoryById(pcDAO.getProductCateByProductID(proID).getCategoryID())%></div></td>
-                                                <td><div><%= genre.getGenreName()%></div></td>
-                                                <td><div><a href="SellerControllerMap?service=orderdetail&productid=<%= product.getProductID()%>"><button class="btn btn-primary">Detail</button></a>
-                                                    </div></td>
-                                                <td>
-                                                    <div><%= sold %></div>
-                                                </td></tr>
-                                                <% } %>
+                                                <td><div><%=c.getContent()%></div></td>
+                                                <td><div><%= c.getRating()%> /5</div></td>
+                                                <td><div><%= u.getPublicName() %></div></td>
+                                                <td><div><%=  pDAO.getProductByID(c.getProductID()).getProductName()%></div></td>
+                                            </tr>
+                                            <% } %>
                                         </tbody>
                                     </table>
                                 </div>
@@ -259,15 +245,7 @@
 
 
                         </div><!--end col-6 -->
-                        <div class="col-md-4">
-                            <section class="panel">
-                                <header class="panel-heading">
-                                    Biggest orders
-                                </header>
-                                <div class="panel-body">
-                                </div>
-                            </section>
-                        </div>
+
 
                     </div>
                     <!-- row end -->
@@ -287,111 +265,57 @@
     <script src="${contextPath}/js/plugins/smooth-scrollbar.min.js"></script>
     <script src="${contextPath}/js/plugins/chartjs.min.js"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
-    <script>
-                                                $("textarea").on('keyup', function () {
-                                                    $(".noti").hide();
-                                                });
-                                                $(document).ready(function () {
-                                                $("#category").change(function () {
-                                                var val = $(this).val();
-                                                        $(".noti").hide();
-        <% for (Category cate : listCategory) {%>
-                                                if (val == "<%=cate.getCategoryID()%>"){
-                                                console.log("<%=cate.getCategoryName()%>");
-                                                        $("#genre").html(
-        <% ArrayList<Genre> list = genreDAO.getGenresByCategoryId(cate.getCategoryID());
-                for (int i = 0; i < list    .size(); i++) {
-                        if (list.size() == 1 || i == list.size() - 1) {%>"<option value='<%=list.get(i).getGenreID()%>'><%=list.get(i).getGenreName()%></option>"
-        <%} else {%>"<option value='<%=list.get(i).getGenreID()%>'><%=list.get(i).getGenreName()%></option>" +
-        <%}
-                        }%>);
-                                                }
-        <%}%>
-                                                });
-                                                });
-                                                        $(".number").on('keyup', function () {
-                                                var n = parseInt($(this).val().replace(/\D/g, ''), 10);
-                                                        $(this).val(n.toLocaleString());
-                                                        $(".noti").hide();
-                                                });
-                                                        (function () {
-                                                        'use strict'
-                                                                var forms = document.querySelectorAll('.needs-validation')
-                                                                Array.prototype.slice.call(forms)
-                                                                .forEach(function (form) {
-                                                                form.addEventListener('submit', function (event) {
-                                                                if (!form.checkValidity()) {
-                                                                event.preventDefault()
-                                                                        event.stopPropagation()
-                                                                }
-                                                                form.classList.add('was-validated')
-                                                                }, false)
-                                                                })
-                                                        })()
 
-                                                        var today = new Date();
-                                                        var dd = today.getDate();
-                                                        var mm = today.getMonth() + 1; //January is 0!
-                                                        var yyyy = today.getFullYear();
-                                                        if (dd < 10){
-                                                dd = '0' + dd
-                                                }
-                                                if (mm < 10){
-                                                mm = '0' + mm
-                                                }
-                                                today = yyyy + '-' + mm + '-' + dd;
-                                                        document.getElementById("inputDate").setAttribute("max", today);
-    </script>
     <script>
-                var pageNum;
-                $(document).on('click', '.pagination li', function () {
-        pageNum = $(this).data('repair');
-                pagination();
-        });
-                function pagination() {
-                var row = document.getElementById("maxRows").value;
-                        var search = document.getElementById("search").value;
-                        console.log(row);
-                        console.log(search);
-                        console.log(pageNum);
-                        $.ajax({
-                        url: "/Bmazon/SellerControllerMap",
-                                type: "get",
-                                data: {
-                                search: search,
-                                        row: row,
-                                        index: pageNum,
-                                        service: "pagingorder"
-                                },
-                                success: function (respone) {
-                                var text = document.getElementById("product");
-                                        text.innerHTML = respone;
-                                        showpage();
-                                },
-                                error: function (xhr) {
-                                //Do Something to handle error
-                                }
-                        });
-                }
-        function showpage() {
-        var row = document.getElementById("maxRows").value;
-                var search = document.getElementById("search").value;
-                $.ajax({
-                url: "/Bmazon/SellerControllerMap",
-                        type: "get",
-                        data: {
-                        search: search,
-                                row: row,
-                                index: pageNum,
-                                service: "showpageorder"
-                        },
-                        success: function (respone) {
-                        var text = document.getElementById("showpage");
-                                text.innerHTML = respone;
-                        },
-                        error: function (xhr) {
-                        //Do Something to handle error
-                        } });
-        }
+                                                var pageNum;
+                                                $(document).on('click', '.pagination li', function () {
+                                                    pageNum = $(this).data('repair');
+                                                    pagination();
+                                                });
+                                                function pagination() {
+                                                    var row = document.getElementById("maxRows").value;
+                                                    var search = document.getElementById("search").value;
+                                                    console.log(row);
+                                                    console.log(search);
+                                                    console.log(pageNum);
+                                                    $.ajax({
+                                                        url: "/Bmazon/SellerControllerMap",
+                                                        type: "get",
+                                                        data: {
+                                                            search: search,
+                                                            row: row,
+                                                            index: pageNum,
+                                                            service: "commentpaging"
+                                                        },
+                                                        success: function (respone) {
+                                                            var text = document.getElementById("product");
+                                                            text.innerHTML = respone;
+                                                            showpage();
+                                                        },
+                                                        error: function (xhr) {
+                                                            //Do Something to handle error
+                                                        }
+                                                    });
+                                                }
+                                                function showpage() {
+                                                    var row = document.getElementById("maxRows").value;
+                                                    var search = document.getElementById("search").value;
+                                                    $.ajax({
+                                                        url: "/Bmazon/SellerControllerMap",
+                                                        type: "get",
+                                                        data: {
+                                                            search: search,
+                                                            row: row,
+                                                            index: pageNum,
+                                                            service: "showpagecomment"
+                                                        },
+                                                        success: function (respone) {
+                                                            var text = document.getElementById("showpage");
+                                                            text.innerHTML = respone;
+                                                        },
+                                                        error: function (xhr) {
+                                                            //Do Something to handle error
+                                                        }});
+                                                }
     </script>
 </html>

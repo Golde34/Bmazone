@@ -43,6 +43,7 @@ public class SellerController extends HttpServlet {
 
     ProductDAO pDAO = new ProductDAO();
     CategoryDAO cateDAO = new CategoryDAO();
+    CommentDAO comDAO = new CommentDAO();
     GenreDAO gDAO = new GenreDAO();
     UserDAO uDAO = new UserDAO();
     WareHouseDAO whDAO = new WareHouseDAO();
@@ -136,10 +137,18 @@ public class SellerController extends HttpServlet {
             if (service.equalsIgnoreCase("orderdetail")) {
                 serviceOrderDetail(request, response);
             }
-
             //Edit Seller Information
             if (service.equalsIgnoreCase("editSellerInformation")) {
                 serviceEditSellerInformation(request, response);
+            }
+            if (service.equalsIgnoreCase("feedback")) {
+                serviceFeedBack(request, response);
+            }
+            if (service.equalsIgnoreCase("showpagecomment")) {
+                servicePageComment(request, response);
+            }
+             if (service.equalsIgnoreCase("commentpaging")) {
+                servicePagingComment(request, response);
             }
         }
     }
@@ -671,10 +680,10 @@ public class SellerController extends HttpServlet {
     public void serviceOrderDetail(HttpServletRequest request, HttpServletResponse response) {
         String id = request.getParameter("productid");
         Product product = pDAO.getProductByID(Integer.parseInt(id));
-        
+
         String genreid = pgDAO.getGenreIdByProductId(product.getProductID());
         Genre genre = gDAO.getGenreById(Integer.parseInt(genreid));
-        
+
         String categoryId = pcDAO.getCategoryIdByProductId(product.getProductID());
         Category category = cateDAO.getCategoryByCateId(categoryId);
 
@@ -709,6 +718,102 @@ public class SellerController extends HttpServlet {
         sendDispatcher(request, response, "UserControllerMap?service=turnOnSalesFeature");
     }
 
+    public void serviceFeedBack(HttpServletRequest request, HttpServletResponse response) {
+        User account = (User) request.getSession().getAttribute("currUser");
+        String userID = account.getUserId();
+        Seller seller = sellerDAO.getSellerByUserID(Integer.parseInt(userID));
+        String sellerID = Integer.toString(seller.getSellerID());
+        ArrayList<Comment> listProduct = comDAO.getCommentsBySeller(5);
+        ArrayList<Comment> listPaging = comDAO.getCommentsBySellerPaging(1, 5, "", 5);
+        int totalPage = listProduct.size() / 5;
+        if (listProduct.size() != totalPage * 5) {
+            totalPage += 1;
+        }
+        request.setAttribute("index", 1);
+        request.setAttribute("totalPage", totalPage);
+        request.setAttribute("listProduct", listPaging);
+        sendDispatcher(request, response, "seller/sellerfeedback.jsp");
+    }
+
+    public void servicePageComment(HttpServletRequest request, HttpServletResponse response) throws IOException {
+        User account = (User) request.getSession().getAttribute("currUser");
+        Seller seller = sellerDAO.getSellerByUserID(Integer.parseInt(account.getUserId()));
+        int sellerID = seller.getSellerID();
+        PrintWriter pr = response.getWriter();
+        int index = 1, numOfRow = 5;
+        String search = request.getParameter("search");
+        if (request.getParameter("index") != null) {
+            index = Integer.parseInt(request.getParameter("index"));
+        }
+        if (request.getParameter("row") != null) {
+            numOfRow = Integer.parseInt(request.getParameter("row"));
+        }
+        int totalResult =comDAO.getNumberOfCommentPaging(search,sellerID);
+        int totalPage = totalResult / numOfRow;
+        if (totalResult != numOfRow * totalPage) {
+            totalPage += 1;
+        }
+        int prev = index == 1 ? 1 : index - 1;
+        int next = index == totalPage ? totalPage : index + 1;
+        if (totalResult > numOfRow) {
+            pr.print("<li data-repair=\"1\" class=\"page-item\">");
+            pr.print("<a class=\"page-link\" aria-label=\"First\">");
+            pr.print("<span aria-hidden=\"true\"><i class=\"fas fa-backward\"></i>");
+            pr.print("<span class=\"sr-only\">(current)</span> ");
+            pr.print("</span>");
+            pr.print("</a>");
+            pr.print("</li>");
+            pr.print("<li data-repair=\"" + prev + "\" class=\"page-item\">");
+            pr.print("<a class=\"page-link\" aria-label=\"Previous\">");
+            pr.print("<span aria-hidden=\"true\"><i class=\"fas fa-arrow-left\"></i>");
+            pr.print("<span class=\"sr-only\">(current)</span> ");
+            pr.print("</span>");
+            pr.print("</a>");
+            pr.print("</li>");
+            for (int i = 1; i <= totalPage; i++) {
+                if (i < index - 2) {
+                    continue;
+                }
+                if (index < 3) {
+                    if (i > 5) {
+                        break;
+                    }
+                } else {
+                    if (i > index + 2) {
+                        break;
+                    }
+                }
+                if (index == i) {
+                    pr.print("<li  class=\"page-item active\" data-repair=\"" + i + "\">");
+                } else {
+                    pr.print("<li  class=\"page-item\" data-repair=\"" + i + "\">");
+                }
+                pr.print("<a class=\"page-link\">");
+                pr.print("<div class=\"index\">" + i + "</div>");
+                pr.print("<span class=\"sr-only\">(current)</span>");
+                pr.print("</a>");
+                pr.print("</li>");
+            }
+            pr.print("<li data-repair=\"" + next + "\" class=\"page-item\">");
+            pr.print("<a class=\"page-link\" aria-label=\"Next\">");
+            pr.print("<span aria-hidden=\"true\"><i class=\"fas fa-arrow-right\"></i>");
+            pr.print("<span class=\"sr-only\">(current)</span> ");
+            pr.print("</span>");
+            pr.print("</a>");
+            pr.print("</li>");
+            pr.print("<li data-repair=\"" + totalPage + "\" class=\"page-item\">");
+            pr.print("<a class=\"page-link\" aria-label=\"Last\">");
+            pr.print("<span aria-hidden=\"true\"><i class=\"fas fa-forward\"></i>");
+            pr.print("<span class=\"sr-only\">(current)</span> ");
+            pr.print("</span>");
+            pr.print("</a>");
+            pr.print("</li>");
+        }
+        if (request.getParameter("row") == null) {
+            sendDispatcher(request, response, "seller/sellerfeedback.jsp");
+        }
+    }
+
     public void sendDispatcher(HttpServletRequest request, HttpServletResponse response, String path) {
         try {
             RequestDispatcher rd = request.getRequestDispatcher(path);
@@ -717,6 +822,39 @@ public class SellerController extends HttpServlet {
         } catch (ServletException | IOException ex) {
             Logger.getLogger(AdminController.class
                     .getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+     public void servicePagingComment(HttpServletRequest request, HttpServletResponse response) throws IOException {
+        User account = (User) request.getSession().getAttribute("currUser");
+        Seller seller = sellerDAO.getSellerByUserID(Integer.parseInt(account.getUserId()));
+        String sellerID = Integer.toString(seller.getSellerID());
+
+        PrintWriter pr = response.getWriter();
+
+        int index = 1, numOfRow = 5;
+        String search = request.getParameter("search");
+        if (request.getParameter("row") != null) {
+            numOfRow = Integer.parseInt(request.getParameter("row"));
+        }
+        if (request.getParameter("index") != null) {
+            index = Integer.parseInt(request.getParameter("index"));
+        }
+        ArrayList<Comment> listPaging = comDAO.getCommentsBySellerPaging(index, numOfRow, search,seller.getSellerID());
+        request.setAttribute("index", index);
+        request.setAttribute("listProduct", listPaging);
+        for (Comment comment : listPaging) {
+            String id= ""+comment.getUserID();
+           User u= uDAO.getUserById(id);
+            pr.print("<tr>"
+                    + "<td><div>" + comment.getContent() + "</div></td>"
+                    + "<td>" +comment.getRating() + "/5</td>"
+                    + "<td>" + u.getPublicName()+ "</td>"
+                    + "<td>" + pDAO.getProductByID(comment.getProductID()).getProductName()+ "</td>"                  
+                    + "</tr>"
+            );
+        }
+        if (request.getParameter("row") == null) {
+            sendDispatcher(request, response, "seller/sellerfeedback.jsp");
         }
     }
 
