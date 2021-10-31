@@ -160,7 +160,8 @@ public class CommentDAOTest {
         System.out.println("checkExistComment");
         CommentDAO instance = new CommentDAO();
         int cid = 1;
-        boolean result = instance.checkExistComment(cid);
+        int uid = 1;
+        boolean result = instance.checkExistComment(cid, uid);
         assertEquals(true, result);
     }
     @Test
@@ -168,7 +169,8 @@ public class CommentDAOTest {
         System.out.println("checkExistComment");
         CommentDAO instance = new CommentDAO();
         int cid = -5;
-        boolean result = instance.checkExistComment(cid);
+        int uid = -1;
+        boolean result = instance.checkExistComment(cid, uid);
         assertEquals(false, result);
     }
     

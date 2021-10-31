@@ -205,6 +205,29 @@ public class CommentDAO extends BaseDAO {
 
     public ArrayList<Comment> getCommentsByUserId(int uid) {
         ArrayList<Comment> comments = new ArrayList<>();
+        String sql = "select * from `Comment` where userId  = ? order by commentID desc LIMIT 4";
+        try {
+            pre = conn.prepareStatement(sql);
+            pre.setInt(1, uid);
+            rs= pre.executeQuery();
+            while (rs.next()) {
+                Comment x = new Comment();
+                x.setCommentID(rs.getInt("commentID"));
+                x.setProductID(rs.getInt("productID"));
+                x.setUserID(rs.getInt("userId"));
+                x.setContent(rs.getString("content"));
+                x.setRating(rs.getInt("rating"));
+                x.setStatus(rs.getInt("status"));
+                comments.add(x);
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(CommentDAO.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return comments;
+    }
+    
+    public ArrayList<Comment> getAllCommentsByUserId(int uid) {
+        ArrayList<Comment> comments = new ArrayList<>();
         String sql = "select * from `Comment` where userId  = ? order by commentID desc";
         try {
             pre = conn.prepareStatement(sql);

@@ -23,7 +23,7 @@
 <html>
     <head>
         <%
-            User x = (User) request.getSession().getAttribute("currUser");
+            User x = (User) request.getAttribute("otherUser");
             UserDAO daoUser = new UserDAO();
             CommentDAO daoComment = new CommentDAO();
             ProductTypeDAO daoPrType = new ProductTypeDAO();
@@ -105,8 +105,6 @@
                                 <div class="pr-lg-1 mb-2 col-md-4">
                                     <div class="left-component p-4 rounded shadow-sm">
                                         <h4 class="mb-0"><strong>About</strong></h4>
-                                        <a style="color: #00669c;" href="${contextPath}/UserControllerMap?service=editProfile">
-                                            <p>Add more info about who you are</p></a>
                                         <div style="font-size: 25px;" class="row col-md-12">
                                             <a href="<%= x.getFacebook()%>" target="_blank" class="col-md-3">
                                                 <i class="fab fa-facebook-f"></i></a> 
@@ -126,23 +124,6 @@
                                         <a style="color: #00669c;" href="${contextPath}/UserControllerMap?service=account"> Go to your account</a>
                                     </div>
                                     <br>
-                                    <div class="left-component p-4 rounded shadow-sm">
-                                        <a href="CartControllerMap?service=MyOrder">
-                                            <h4 class="mb-0"><strong>Views your orders</strong></h4>
-                                        </a>
-                                    </div>
-                                    <br>
-                                    <div class="left-component p-4 rounded shadow-sm">
-                                        <%if (x.getSystemRole() == 0) {%>
-                                        <a href="${contextPath}/UserControllerMap?service=turnOnSalesFeature">
-                                            <h4 class="mb-0"><strong>Wanna create an online shop? Click here</strong></h4>
-                                        </a>
-                                        <% } else {%> 
-                                        <a href="${contextPath}/UserControllerMap?service=editProfile">
-                                            <h4 class="mb-0"><strong>Edit Seller Information</strong></h4>
-                                        </a>
-                                        <%}%>
-                                    </div>
                                 </div>
 
                                 <div class="mb-2 pl-lg-1 col-md-8">
