@@ -279,7 +279,7 @@ public class HomePageController extends HttpServlet {
             request.setAttribute("previous", previous);
         }
 
-        List<Product> listProduct = proDAO.getProductBySellerPaging(page, id);
+        List<Product> listProduct = proDAO.getProductBySellerPaging(page, Integer.parseInt(id));
 
         request.setAttribute("end", end);
         request.setAttribute("begin", begin);
