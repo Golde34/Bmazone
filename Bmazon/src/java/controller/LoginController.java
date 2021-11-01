@@ -265,18 +265,17 @@ public class LoginController extends HttpServlet {
         SendEmail s = new SendEmail();
         String mess = "";
         HttpSession session = request.getSession();
-        User account = (User) session.getAttribute("currUser");
         String username = request.getParameter("username");
+        session.setAttribute("username", username);
         String email = request.getParameter("mail");
         boolean exist = daoUser.checkExistUserNameAndMail(username, email);
         if (exist == true) {
             String option = "forgot";
-            String href = "http://localhost:8080/Bmazon/loginAndSecurity/resetPass.jsp";
+            String href = "<a href = http://localhost:8080/Bmazon/loginAndSecurity/resetPass.jsp>Here</a>";
             boolean test = s.sendEmail(username, email, href, option);
             if (test == true) {
                 session.setAttribute("usename", username);
                 sendDispatcher(request, response, "loginAndSecurity/notification.jsp");
-                // include: xu ly xong thang path quay lai, forward: ko quay lai.
             } else {
                 request.setAttribute("mess", "Failed to send reset email");
                 sendDispatcher(request, response, "loginAndSecurity/forgot.jsp");
@@ -299,7 +298,8 @@ public class LoginController extends HttpServlet {
             request.setAttribute("mess", mess);
             sendDispatcher(request, response, "loginAndSecurity/resetPass.jsp");
         } else {
-            daoUser.changePassword(username, newPass);
+            String securePassword = SecurePBKDF2.generateStrongPasswordHash(newPass);
+            daoUser.changePassword(username, securePassword);
             mess = "Reset password successfully!";
             request.setAttribute("mess", mess);
             sendDispatcher(request, response, "loginAndSecurity/login.jsp");
