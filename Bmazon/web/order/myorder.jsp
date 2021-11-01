@@ -110,7 +110,7 @@
                          <%if (order.getState()==0&&order.getStatus()==1) {
                                     %>
                                      <div class="col-md-6">
-                                    <a href="CartControllerMap?service=Deactice&orderID=<%=order.getOrderID()%>&status=0" style="float: right"><button class="button" onclick="return confirm('Are you sure not to buy these products?');">Deactive</button></a>
+                                    <a href="CartControllerMap?service=Deactice&orderID=<%=order.getOrderID()%>&status=0" style="float: right"><button class="button" onclick="return confirm('Are you sure not to buy these products?');">Stop Buying</button></a>
                                      </div>
                                      
                                 <%  }
