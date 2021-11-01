@@ -64,9 +64,7 @@
                 <div class="heading-section">
                     <h2>Product Details</h2>
                 </div>
-
                 <div class="row">
-
                     <div class="col-md-6">
                         <div id="slider" class="owl-carousel product-slider">
                             <%for (Gallery gallery : listGallery) {%>
@@ -91,14 +89,14 @@
                                 <div class="product-name"><%=product.getProductName()%></div>
                                 <div class="reviews-counter">
                                     <div class="rate">
-                                        <label for="star5" title="text">5 stars</label>
-                                        <label for="star4" title="text">4 stars</label>
-                                        <input type="radio" id="star3" name="rate" value="3" checked />
-                                        <label for="star3" title="text">3 stars</label>
-                                        <label for="star2" title="text">2 stars</label>
-                                        <label for="star1" title="text">1 star</label>
+                                        <% for (int star = 5; star > 0; star--) {%>
+                                        <%if (star <= product.getRating()) {%>
+                                        <label for="star<%=star%>" title="text" style="color: #ffe793;"><%=star%> stars</label>
+                                        <%} else {%>
+                                        <label for="star<%=star%>" title="text"><%=star%> stars</label>
+                                        <%}
+                                    }%>
                                     </div>
-                                    <span>3 Reviews</span>
                                 </div>
 
                                 <%double price1 = Double.parseDouble(daoProductType.getProductPrice(product.getProductID()));%>
@@ -154,16 +152,18 @@
 
                                         <input type="button" value="-" class="minus button is-form">		<label class="screen-reader-text" for="quantity_6167ef4cc82d1">Số lượng</label>
                                         <input type="number" class="input-text qty text" step="1" min="1" max="<%=pt.getQuantity()%>" name="quantity" value="1" title="SL" size="4" pattern="[0-9]*" inputmode="numeric" />
-                                        <input type="button" value="+" class="plus button is-form">	</div>
-
-                                    <%} else {%>
-                                    <p>This product is out of stock</p>
-                                    <%}%>
-
-
+                                        <input type="button" value="+" class="plus button is-form">	
+                                    </div>
                                 </div><br>
                                 <p style="color: red">${mess}</p>
                                 <button type="submit"class="round-black-btn" name="service" value="AddToCart">Add to Cart</button>
+                                <%} else {%>
+                                <p>This product is out of stock</p>
+                                <br><br>
+                                <%}%>
+
+
+
                             </form>
 
                         </div>
@@ -192,7 +192,7 @@
                             <div class="comment_box">
                                 <div class="col-md-6">
                                     <p class="comment_content">
-                                        From:<a href="UserControllerMap?service=userInteraction&userId=<%=elem.getUserID()%>"> 
+                                        From:<a href="HomePageControllerMap?service=userInteraction&userId=<%=elem.getUserID()%>"> 
                                             <%=daoUser.getUserById(String.valueOf(elem.getUserID())).getFullname()%>
                                         </a>
                                     </p> 
@@ -215,10 +215,10 @@
                                 if (x != null && !daoComment.checkExistComment(product.getProductID(), Integer.parseInt(x.getUserId()))) {%>
                             <form action="ProductDetailControllerMap" class="review-form">
                                 <div class="form-group">
-                                    
+
                                     <p style="color: black; font-size: 18px;">Your rating:    
                                         <input name="rating" type="number" min="0" max="5" style="width: 60px; height: 40px;"> 
-                                       <i style="color: #ffe793; height: 30px; width: 30px; " class="fas fa-star"></i>
+                                        <i style="color: #ffe793; height: 30px; width: 30px; " class="fas fa-star"></i>
                                     </p>      
                                     <div class="form-group">
                                         <label>Your message</label>

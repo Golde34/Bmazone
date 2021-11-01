@@ -37,7 +37,7 @@
                 html.className = html.className.replace(/\bno-js\b/, 'js')
             })(document.documentElement);</script>
         <title>BMAZON</title>
-        
+
         <link rel="stylesheet" href="${contextPath}/css/1.css">
         <link rel='stylesheet' id='contact-form-7-css'  href='http://mauweb.monamedia.net/lazada/wp-content/plugins/contact-form-7/includes/css/styles.css?ver=4.9.1' type='text/css' media='all' />
         <link rel='stylesheet' id='menu-image-css'  href='http://mauweb.monamedia.net/lazada/wp-content/plugins/menu-image/menu-image.css?ver=1.1' type='text/css' media='all' />
@@ -205,9 +205,6 @@
                                             <li class="html widget_shopping_cart">
                                                 <div class="widget_shopping_cart_content">
 
-
-
-
                                                     <%      for (CartItem item : ShoppingCart) {
                                                             String image = "images/" + item.getImage();
                                                     %>
@@ -221,11 +218,7 @@
                                                     </ul>
                                                     <% } %>
 
-
-
                                                     <p class="woocommerce-mini-cart__buttons buttons"><a href="CartControllerMap?service=Cart" class="button wc-forward">Xem giỏ hàng</a></p>
-
-
                                                 </div>
                                             </li>
                                         </ul><!-- .nav-dropdown -->
@@ -271,7 +264,7 @@
                                                 <%-- so luong item in cart--%>
                                             </i>
                                         </a>
-                                              <% } %>
+                                        <% } %>
 
                                         <!-- Cart Sidebar Popup -->
                                         <div id="cart-popup" class="mfp-hide widget_shopping_cart">
@@ -280,13 +273,7 @@
                                                     <h4 class="uppercase">Cart</h4>
                                                     <div class="is-divider"></div>
                                                 </div>
-                                                <div class="widget_shopping_cart_content">
-
-
-                                                 
-
-                                               
-
+                                                <div class="widget_shopping_cart_content">      
                                                 </div>
                                                 <div class="cart-sidebar-content relative"></div>  </div>
                                         </div>

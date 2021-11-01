@@ -88,6 +88,10 @@ public class HomePageController extends HttpServlet {
             if (service.equalsIgnoreCase("shopPageProduct")) {
                 serviceShopPageProduct(request, response);
             }
+            //user interation
+            if (service.equalsIgnoreCase("userInteraction")) {
+                serviceUserInteraction(request, response);
+            }
         }
     }
 
@@ -357,6 +361,24 @@ public class HomePageController extends HttpServlet {
 
     }
 
+    private void serviceUserInteraction(HttpServletRequest request, HttpServletResponse response) {
+        User x = (User) request.getSession().getAttribute("currUser");
+        String userId = request.getParameter("userId");
+        User u = userDAO.getUserById(userId);
+        if (x == null) {
+            request.setAttribute("otherUser", u);
+            sendDispatcher(request, response, "user/otherUser.jsp");
+        } else {
+            if (u.getUserId().equals(x.getUserId())) {
+                request.setAttribute("currUser", x);
+                sendDispatcher(request, response, "user/profile.jsp");
+            } else {
+                request.setAttribute("otherUser", u);
+                sendDispatcher(request, response, "user/otherUser.jsp");
+            }
+        }
+    }
+    
     public void sendDispatcher(HttpServletRequest request, HttpServletResponse response, String path) {
         try {
             RequestDispatcher rd = request.getRequestDispatcher(path);

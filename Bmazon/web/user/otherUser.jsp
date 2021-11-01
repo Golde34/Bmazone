@@ -23,6 +23,7 @@
 <html>
     <head>
         <%
+            User currUser = (User) request.getSession().getAttribute("currUser");
             User x = (User) request.getAttribute("otherUser");
             UserDAO daoUser = new UserDAO();
             CommentDAO daoComment = new CommentDAO();
@@ -59,28 +60,12 @@
                                     <div class=" profilepic__image rounded mb-2 img-thumbnail" >
                                         <object data="upload/<%= x.getProfileImage()%>" width="180" height="180"></object>
                                     </div>
-                                    <a href="${contextPath}/UserControllerMap?service=uploadProfileImage">
-                                        <div class="profilepic__content">
-                                            <span class="profilepic__icon"><i class="fas fa-camera"></i></span>
-                                            <span class="profilepic__text">Upload Image</span>
-                                        </div> 
-                                    </a>
                                 </div>
-                                <a href="${contextPath}/UserControllerMap?service=editProfile" class="btn btn-outline-dark btn-sm btn-block">Edit profile</a>
-
                             </div>
                             <div class="media-body mb-5 text-white">
-                                <h4 class="mt-0 mb-0" style="color: #ffffff; font-size:30px;"><%=x.getPublicName()%>
-                                    <a href="${contextPath}/UserControllerMap?service=editProfile">   
-                                        <i class="fas fa-pencil-alt" style="color: #96a2b8;"></i></a>
-                                </h4>
+                                <h4 class="mt-0 mb-0" style="color: #ffffff; font-size:30px;"><%=x.getPublicName()%></h4>
                                 <p class="mb-4" style="color: #ffffff;"> <i class="fas fa-map-marker-alt mr-2"></i><%= x.getAddress()%></p>
                             </div>
-                        </div>
-                        <div class="icon-background">
-                            <a href="${contextPath}/UserControllerMap?service=uploadBackgroundImage">
-                                <i class="fas fa-camera" style="font-size:2.5em; color: #96a2b8;"></i>
-                            </a>
                         </div>
                     </div>
 
@@ -120,8 +105,12 @@
                                     <br>
                                     <div class="left-component p-4 rounded shadow-sm">
                                         <h4 class="mb-0"><strong>Account</strong></h4>
-                                        <p style="color: #333">Check your orders, add payment options, manage your password and more.</p>
-                                        <a style="color: #00669c;" href="${contextPath}/UserControllerMap?service=account"> Go to your account</a>
+                                        <p style="color: #333">Have you checked out your Public Profile yet? Make sure it’s up to date!</p>
+                                        <% if (currUser == null) { %>
+                                        <a style="color: #00669c;" href="${contextPath}/loginAndSecurity/login.jsp"> Login first!</a>
+                                        <%} else {%>
+                                        <a style="color: #00669c;" href="${contextPath}/UserControllerMap?service=info"> Go to your Public Profile</a>
+                                        <%}%>
                                     </div>
                                     <br>
                                 </div>
@@ -216,7 +205,7 @@
                                 <div class="col-lg-6 "> 
                                     <div class="box">
                                         <a href="ProductDetailControllerMap?service=getProductDetail&pid=<%=p.getProductID()%>">
-                                        <object style="height: 300px;" data="images/<%=g.getLink()%>"></object></a>
+                                            <object style="height: 300px;" data="images/<%=g.getLink()%>"></object></a>
                                         <div class="overlay">
                                             <div class="content">
                                                 <a href="ProductDetailControllerMap?service=getProductDetail&pid=<%=p.getProductID()%>">Read More</a>

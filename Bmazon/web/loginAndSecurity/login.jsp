@@ -43,9 +43,18 @@
                     <button class="btn btn-secondary btn-block buttonSignIn" type="submit"><i
                             class="fas fa-sign-in-alt"></i> Sign-In</button>
                     <!--forgot-->
-                    <a style="font-size: 15px; text-align: right; color: #415a70"
+                    <div class="row">
+                        <div class="col-md-6">
+                            <a style="font-size: 15px; text-align: left; color: #415a70"
+                       href="${contextPath}/HomePageControllerMap">
+                        Back to Home Page <i class="fas fa-angle-right"></i></a>
+                        </div>
+                        <div class="col-md-6">
+                        <a style="font-size: 15px; text-align: right; color: #415a70"
                        href="${contextPath}/loginAndSecurity/forgot.jsp">
-                        <i class="fas fa-angle-left"></i> Forgot Password</a>
+                        <i class="fas fa-angle-left"></i> Forgot Password</a>      
+                        </div>
+                    </div>
                     <hr>
                     <!--<p style="font-size: 15px; color: #3C589C">Wanna sign in by another way?</p>-->
                     <!--                    <div class="row">

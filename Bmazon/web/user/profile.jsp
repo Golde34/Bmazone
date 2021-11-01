@@ -44,6 +44,23 @@
         <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
         <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.0.7/css/all.css">     
         <link rel="stylesheet" href="${contextPath}/css/profile.css"> 
+        <style>
+            .cover {
+                background-color: black;
+                background-image: url(${contextPath}/upload/<%= x.getBackgroundImage()%>);
+                background-size: cover;
+                background-repeat: no-repeat;
+                background-position:center; 
+                height: 230px;
+                position: relative;
+                width: 100%;
+                margin-left: auto;
+                margin-right: auto;
+            } 
+            .row .first-right-comment{
+                height: 25px;
+            }   
+        </style>
     </head>
     <body>
         <jsp:include page="../header.jsp"/>
@@ -150,7 +167,7 @@
                                     <div class="right-component p-4 rounded shadow-sm bg-light">
                                         <div class="py-3 d-flex justify-content-between">
                                             <h3 class="mb-0"><strong>Activities</strong></h3>
-                                            <a href="#" class="btn btn-link text-muted">Show all</a>
+                                            <a href="UserControllerMap?service=listAllComments" class="btn btn-link text-muted">Show all</a>
                                         </div>
                                         <hr>
                                         <p class="font-italic mb-0"><%=x.getPublicName()%> has no activities to share.</p>
@@ -163,7 +180,7 @@
                                         <%if (i == 0) {%>
                                         <div class="py-3 d-flex justify-content-between">
                                             <h3 class="mb-0"><strong>Activities</strong></h3>
-                                            <a href="#" class="btn btn-link text-muted">Show all</a>
+                                            <a href="UserControllerMap?service=listAllComments" class="btn btn-link text-muted">Show all</a>
                                         </div><hr>
                                         <% } else { %>
                                         <p></p>
@@ -235,7 +252,7 @@
                                 <div class="col-lg-6 "> 
                                     <div class="box">
                                         <a href="ProductDetailControllerMap?service=getProductDetail&pid=<%=p.getProductID()%>">
-                                        <object style="height: 300px;" data="images/<%=g.getLink()%>"></object></a>
+                                            <object style="height: 300px;" data="images/<%=g.getLink()%>"></object></a>
                                         <div class="overlay">
                                             <div class="content">
                                                 <a href="ProductDetailControllerMap?service=getProductDetail&pid=<%=p.getProductID()%>">Read More</a>
@@ -254,86 +271,4 @@
         </div>
         <jsp:include page="../footer.jsp"/>
     </body>
-    <style>
-        .row .first-right-comment{
-            height: 25px;
-        }
-        .cover {
-            background-color: black;
-            background-image: url(${contextPath}/upload/<%= x.getBackgroundImage()%>);
-            background-size: cover;
-            background-repeat: no-repeat;
-            background-position:center; 
-            height: 230px;
-            position: relative;
-            width: 100%;
-            margin-left: auto;
-            margin-right: auto;
-        } 
-
-        .reviews-counter {
-            font-size: 13px;
-        }
-        .reviews-counter span {
-            vertical-align: -2px;
-        }
-        .rate {
-            float: left;
-            padding: 0 10px 0 0;
-        }
-        .rate:not(:checked) > input {
-            position:absolute;
-            top:-9999px;
-        }
-        .rate:not(:checked) > label {
-            float: right;
-            width: 18px;
-            overflow: hidden;
-            white-space: nowrap;
-            cursor: pointer;
-            font-size: 21px;
-            color:#ccc;
-            margin-bottom: 0;
-            line-height: 21px;
-        }
-        .rate:not(:checked) > label:before {
-            content: '\2605';
-        }
-        .content{
-            position: absolute;
-            top: 20%; left: 50%;
-            transform:translate(-50%,-50%);
-            -ms-transform:translate(-50%,-50%);
-            font-size: 60px;
-            color: white;
-            overflow: hidden;
-        }
-        .box p{
-            font-family: 'Forum', cursive;
-            text-align: center;
-            color: #fff;
-            font-size: 2em;
-            font-weight: bold;
-            font-variant: small-caps;
-        }
-        .box a{
-            font-size: 30px;
-            display: block;
-            text-align: center;
-            padding: 10px 10px 0px 10px;
-            text-decoration: none;
-            color: #cb0c9f;
-            cursor: pointer;
-        }
-        .overlay{
-            opacity: 0;
-
-        }
-        .box:hover img{
-            opacity: 0.2;
-        }
-        .box:hover .overlay{
-            opacity: 1;
-        }
-    </style>
 </html>
