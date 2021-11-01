@@ -17,6 +17,7 @@ import java.sql.Date;
 import java.text.DecimalFormat;
 import java.text.NumberFormat;
 import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -190,7 +191,7 @@ public class AdminController extends HttpServlet {
             if (service.equalsIgnoreCase("deletecompany")) {
                 serviceDeleteCompany(service, request, response);
             }
-            //Delete Ship Company
+            //Active Ship Company
             if (service.equalsIgnoreCase("activecompany")) {
                 serviceActiveCompany(service, request, response);
             }
@@ -301,14 +302,18 @@ public class AdminController extends HttpServlet {
                 serviceOrderResponse(service, request, response);
             }
             //PagingOrderRespone
-            if (service.equalsIgnoreCase("pagingSellerResponse")) {
-                serviceSellerResponse(service, request, response);
+            if (service.equalsIgnoreCase("pagingOrderResponse")) {
+                servicePagingOrderResponse(service, request, response);
             }
-            //Accept Seller Request
+            //PagingOrderRespone
+            if (service.equalsIgnoreCase("showPageOrderResponse")) {
+                serviceShowPageOrderResponse(service, request, response);
+            }
+            //Order Detail
             if (service.equalsIgnoreCase("orderDetail")) {
                 serviceOrderDetail(service, request, response);
             }
-            //Deny Seller Request
+            //Handle Seller Request
             if (service.equalsIgnoreCase("handleOrder")) {
                 serviceHandleOrder(service, request, response);
             }
@@ -1844,6 +1849,116 @@ public class AdminController extends HttpServlet {
         request.setAttribute("listOrder", listOrderPaging);
         request.setAttribute("service", service);
         sendDispatcher(request, response, "admin/orderRespone.jsp");
+    }
+
+    public void servicePagingOrderResponse(String service, HttpServletRequest request, HttpServletResponse response) throws IOException {
+        PrintWriter pr = response.getWriter();
+        SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy");
+        request.setAttribute("service", service);
+        int index = 1, numOfRow = 5;
+        String search = request.getParameter("search");
+        if (request.getParameter("row") != null) {
+            numOfRow = Integer.parseInt(request.getParameter("row"));
+        }
+        if (request.getParameter("index") != null) {
+            index = Integer.parseInt(request.getParameter("index"));
+        }
+        List<Order> listPaging = daoorder.getAllPagingOrder(index, numOfRow, "");
+        request.setAttribute("index", index);
+        request.setAttribute("listOrder", listPaging);
+        for (Order order : listPaging) {
+            pr.print("<tr>"
+                    + "<td>" + order.getShipName() + " </td>"
+                    + "<td>" + sdf.format(order.getOrderDate()) + "</td>"
+                    + "<td>" + order.getShipAddress() + " - " + order.getShipCity() + "</td>"
+                    + "<td>" + order.getShipPhone() + "</td>"
+                    + "<td>" + order.getPaymentMethod() + "</td>"
+                    + "<td style='white-space: nowrap'><a href=\"AdminControllerMap?service=orderDetail&orderId=" + order.getOrderID() + "\"><button style='margin-right:4px' class=\"btn btn-primary\">View</button></a>");
+            pr.print("<a href=\"AdminControllerMap?service=handleOrder&action=accept&orderId=" + order.getOrderID()+ "\" onclick=\"return confirm('Are you sure?');\"><button style='margin-right:4px' class=\"btn btn-primary\">Accept</button></a>");
+            pr.print("<a href=\"AdminControllerMap?service=handleOrder&action=refuse&orderId=" + order.getOrderID()+ "\" onclick=\"return confirm('Are you sure?');\"><button class=\"btn btn-primary\">Refuse</button></a>");
+            pr.print("</td>"
+                    + "</tr>"
+            );
+        }
+        if (request.getParameter("row") == null) {
+            sendDispatcher(request, response, "admin/orderResponse.jsp");
+        }
+    }
+
+    public void serviceShowPageOrderResponse(String service, HttpServletRequest request, HttpServletResponse response) throws IOException {
+        PrintWriter pr = response.getWriter();
+        int index = 1, numOfRow = 5;
+        String search = request.getParameter("search");
+        if (request.getParameter("index") != null) {
+            index = Integer.parseInt(request.getParameter("index"));
+        }
+        if (request.getParameter("row") != null) {
+            numOfRow = Integer.parseInt(request.getParameter("row"));
+        }
+        int totalResult = daoorder.getPageNumber("");
+        int totalPage = totalResult / numOfRow;
+        if (totalResult != numOfRow * totalPage) {
+            totalPage += 1;
+        }
+        int prev = index == 1 ? 1 : index - 1;
+        int next = index == totalPage ? totalPage : index + 1;
+        if (totalResult > numOfRow) {
+            pr.print("<li data-repair=\"1\" class=\"page-item\">");
+            pr.print("<a class=\"page-link\" aria-label=\"First\">");
+            pr.print("<span aria-hidden=\"true\"><i class=\"fas fa-backward\"></i>");
+            pr.print("<span class=\"sr-only\">(current)</span> ");
+            pr.print("</span>");
+            pr.print("</a>");
+            pr.print("</li>");
+            pr.print("<li data-repair=\"" + prev + "\" class=\"page-item\">");
+            pr.print("<a class=\"page-link\" aria-label=\"Previous\">");
+            pr.print("<span aria-hidden=\"true\"><i class=\"fas fa-arrow-left\"></i>");
+            pr.print("<span class=\"sr-only\">(current)</span> ");
+            pr.print("</span>");
+            pr.print("</a>");
+            pr.print("</li>");
+            for (int i = 1; i <= totalPage; i++) {
+                if (i < index - 2) {
+                    continue;
+                }
+                if (index < 3) {
+                    if (i > 5) {
+                        break;
+                    }
+                } else {
+                    if (i > index + 2) {
+                        break;
+                    }
+                }
+                if (index == i) {
+                    pr.print("<li  class=\"page-item active\" data-repair=\"" + i + "\">");
+                } else {
+                    pr.print("<li  class=\"page-item\" data-repair=\"" + i + "\">");
+                }
+                pr.print("<a class=\"page-link\">");
+                pr.print("<div class=\"index\">" + i + "</div>");
+                pr.print("<span class=\"sr-only\">(current)</span>");
+                pr.print("</a>");
+                pr.print("</li>");
+            }
+            pr.print("<li data-repair=\"" + next + "\" class=\"page-item\">");
+            pr.print("<a class=\"page-link\" aria-label=\"Next\">");
+            pr.print("<span aria-hidden=\"true\"><i class=\"fas fa-arrow-right\"></i>");
+            pr.print("<span class=\"sr-only\">(current)</span> ");
+            pr.print("</span>");
+            pr.print("</a>");
+            pr.print("</li>");
+            pr.print("<li data-repair=\"" + totalPage + "\" class=\"page-item\">");
+            pr.print("<a class=\"page-link\" aria-label=\"Last\">");
+            pr.print("<span aria-hidden=\"true\"><i class=\"fas fa-forward\"></i>");
+            pr.print("<span class=\"sr-only\">(current)</span> ");
+            pr.print("</span>");
+            pr.print("</a>");
+            pr.print("</li>");
+        }
+        if (request.getParameter("row") == null) {
+            sendDispatcher(request, response, "admin/orderResponse.jsp");
+        }
     }
 
     public void serviceOrderDetail(String service, HttpServletRequest request, HttpServletResponse response) {

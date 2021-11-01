@@ -81,7 +81,7 @@
                                                     <th style="width: 15%">Action</th>
                                                 </tr>
                                             </thead>
-                                            <tbody id="gallery">
+                                            <tbody id="order">
                                             <%for (Order order : listOrder) {%>
                                             <tr>
                                                 <td><%=order.getShipName()%></td>
@@ -179,10 +179,10 @@
                         search: search,
                         row: row,
                         index: pageNum,
-                        service: "pagingGallery"
+                        service: "pagingOrderResponse"
                     },
                     success: function (respone) {
-                        var text = document.getElementById("gallery");
+                        var text = document.getElementById("order");
                         text.innerHTML = respone;
                         showpage();
                     },
@@ -207,7 +207,7 @@
                         search: search,
                         row: row,
                         index: pageNum,
-                        service: "showpageGallery"
+                        service: "showPageOrderResponse"
                     },
                     success: function (respone) {
                         var text = document.getElementById("showpage");
