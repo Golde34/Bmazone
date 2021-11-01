@@ -6,7 +6,7 @@
 <c:set var="contextPath" value="${pageContext.request.contextPath}" />
 <%
     CategoryDAO daocate = new CategoryDAO();
-    int categoryid = (Integer) request.getAttribute("categoryid");
+    int cateid = (Integer) request.getAttribute("cateid");
     Genre genre = new Genre();
     if (request.getAttribute("genre") != null) {
         genre = (Genre) request.getAttribute("genre");
@@ -21,7 +21,6 @@
     }
     String service = (String) request.getAttribute("service");
     User curUser = (User) request.getSession().getAttribute("currUser");
-    ArrayList<Genre> listGenre = (ArrayList<Genre>) request.getAttribute("listGenre");
 %>
 
 <!DOCTYPE html>
@@ -46,44 +45,45 @@
     <body class="g-sidenav-show  bg-gray-100">
         <aside class="sidenav navbar navbar-vertical navbar-expand-xs border-0 border-radius-xl my-3 fixed-start ms-3 " id="sidenav-main">
             <jsp:include page="adminsidebar.jsp"></jsp:include>
-        </aside>
-        <main class="main-content position-relative max-height-vh-100 h-100 mt-1 border-radius-lg ">
-            <!-- Navbar -->
+            </aside>
+            <main class="main-content position-relative max-height-vh-100 h-100 mt-1 border-radius-lg ">
+                <!-- Navbar -->
             <jsp:include page="adminheader.jsp"></jsp:include>
                 <!-- End Navbar -->
                 <div class="container-fluid py-4">
                     <div class="row my-4">
                         <div class="col-lg-12 col-md-12 mb-md-0 mb-4">
-                            <div class="card">
-                                <div class="card-body px-0 pb-2" >    
-                                    <div class="card-header py-3 d-flex justify-content-between">
-                                        <h3 class="m-0 font-weight-bold text-primary">User Detail</h3>
-                                        <a href="AdminControllerMap?service=genremanagement"><btn class="btn btn-primary">User Management</btn></a>
+                            <form class="needs-validation" novalidate action="/Bmazon/AdminControllerMap" method="POST">
+                                <div class="card">
+                                    <div class="card-body px-0 pb-2" >    
+                                        <div class="card-header py-3 d-flex justify-content-between">
+                                            <h3 class="m-0 font-weight-bold text-primary">Genre Detail</h3>
+                                            <a href="AdminControllerMap?service=updatecategorydetail&cateid=<%=cateid%>"><btn class="btn btn-primary">Back</btn></a>
                                     </div>
-                                <% if (state.equals("success")) {%>
-                                <h6 class="text-success mt-3 px-4">${mess}</h6>
-                                <%}%>
-                                <% if (state.equals("fail")) {%>
-                                <h6 class="text-danger mt-3 px-4">${mess}</h6>
-                                <%}%>
-                                <div class="card-body">
-                                    <form class="needs-validation" novalidate action="/Bmazon/AdminControllerMap" method="POST">
+                                    <% if (state.equals("success")) {%>
+                                    <h6 class="text-success mt-3 px-4">${mess}</h6>
+                                    <%}%>
+                                    <% if (state.equals("fail")) {%>
+                                    <h6 class="text-danger mt-3 px-4">${mess}</h6>
+                                    <%}%>
+                                    <div class="card-body">
                                         <table class="table table-striped">
                                             <tr>
-                                                <td style="width: 30%;">Genre Name</td>
-                                                <td style="width: 70%;">
-                                                    <input pattern="[^' ']+" class="form-control" type="text" value="${genrename}" name="genrename" required>
+                                                <td>Category Name</td>
+                                                <td>
+                                                    <input pattern="[^' ']+" class="form-control" type="text" value="<%=daocate.getCategoryById(cateid)%>" name="categoryname" readonly="">
+                                                    <input type="hidden" value="<%=cateid%>" name="cateid">
                                                     <div class="invalid-feedback">
-                                                        Not blank and no space at beginning or ending
+                                                        Not blank and no space
                                                     </div>
                                                 </td>
                                             </tr>
                                             <tr>
-                                                <td>Category Name</td>
-                                                <td>
-                                                    <input pattern="[^' ']+" class="form-control" type="text" value="<%=daocate.getCategoryById(categoryid) %>" name="categoryid" required>
+                                                <td style="width: 30%;">Genre Name</td>
+                                                <td style="width: 70%;">
+                                                    <input pattern="[^' ']+" class="form-control" type="text" name="genrename" required>
                                                     <div class="invalid-feedback">
-                                                        Not blank and no space
+                                                        Not blank and no space at beginning or ending
                                                     </div>
                                                 </td>
                                             </tr>
@@ -95,10 +95,10 @@
                                                 </td>
                                             </tr>
                                         </table>
-                                    </form>
+                                    </div>
                                 </div>
                             </div>
-                        </div>
+                        </form>
                     </div>
                 </div>
             </div>

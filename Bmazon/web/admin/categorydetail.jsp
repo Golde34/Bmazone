@@ -115,8 +115,7 @@
                                 <div class="card-body px-0 pb-2">
                                     <div class="card-header py-3 d-flex justify-content-between">
                                         <h3 class="m-0 font-weight-bold text-primary">Genre Management</h3>
-                                        <a href="AdminControllerMap?service=addgenredetail">
-                                            <button class="btn-primary btn">Add new genre</button></a>
+                                        <a class="btn btn-primary" href="AdminControllerMap?service=addgenredetail&cateid=<%=category.getCategoryID()%>">Add new genre</a>
                                     </div>
                                     <div class="card-body">
                                         <div class="table-responsive">

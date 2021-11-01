@@ -51,7 +51,6 @@ public class AdminController extends HttpServlet {
      * @throws ServletException if a servlet-specific error occurs
      * @throws IOException if an I/O error occurs
      */
-
     OrderDetailDAO daoOrderDetail = new OrderDetailDAO();
     OrderDAO daoorder = new OrderDAO();
     ProductCategoryDAO daopc = new ProductCategoryDAO();
@@ -241,6 +240,10 @@ public class AdminController extends HttpServlet {
             if (service.equalsIgnoreCase("updatecategorydetail") || service.equalsIgnoreCase("addcategorydetail")) {
                 serviceCategoryDetail(service, request, response);
             }
+            //Genre detail to add
+            if (service.equalsIgnoreCase("addgenredetail")) {
+                serviceGenreDetail(service, request, response);
+            }
             //Paging Category
             if (service.equalsIgnoreCase("pagingcategory")) {
                 servicePagingCategory(service, request, response);
@@ -256,7 +259,7 @@ public class AdminController extends HttpServlet {
             //Add Genre
             if (service.equalsIgnoreCase("addgenre")) {
                 serviceAddGenre(service, request, response);
-            //Update Category 
+                //Update Category 
             }
             if (service.equalsIgnoreCase("updatecategory")) {
                 serviceUpdateCategory(service, request, response);
@@ -1508,6 +1511,14 @@ public class AdminController extends HttpServlet {
         request.setAttribute("service", service);
         sendDispatcher(request, response, "admin/categorydetail.jsp");
     }
+    
+    public void serviceGenreDetail(String service, HttpServletRequest request, HttpServletResponse response) {
+        request.setAttribute("service", service);
+        int id = Integer.parseInt(request.getParameter("cateid"));
+        request.setAttribute("cateid", id);
+        request.setAttribute("service", service);
+        sendDispatcher(request, response, "admin/genredetail.jsp");
+    }
 
     public void servicePagingCategory(String service, HttpServletRequest request, HttpServletResponse response) throws IOException {
         PrintWriter pr = response.getWriter();
@@ -1648,11 +1659,11 @@ public class AdminController extends HttpServlet {
             sendDispatcher(request, response, "admin/categorydetail.jsp");
         }
     }
-    
+
     public void serviceAddGenre(String service, HttpServletRequest request, HttpServletResponse response) {
         request.setAttribute("service", service);
-        String genrename = request.getParameter("genrename");
         String cid = request.getParameter("cateid");
+        String genrename = request.getParameter("genrename");
         boolean isExist = false;
         if (daogenre.checkExistGenreName(genrename) == true) {
             isExist = true;
@@ -1663,8 +1674,8 @@ public class AdminController extends HttpServlet {
             request.setAttribute("mess", mess);
             String state = "fail";
             request.setAttribute("state", state);
-            request.setAttribute("service", "addcategory");
-            sendDispatcher(request, response, "admin/genredetail.jsp");
+            request.setAttribute("service", "addgenredetail");
+            sendDispatcher(request, response, "AdminControllerMap?service=addgenredetail&cateid=" + cid);
         }
         if (isExist == false) {
             Genre genre = new Genre(genrename, Integer.parseInt(cid), 1);
@@ -1673,8 +1684,8 @@ public class AdminController extends HttpServlet {
             request.setAttribute("state", state);
             String mess = "Add successfully";
             request.setAttribute("mess", mess);
-            request.setAttribute("service", "addcategory");
-            sendDispatcher(request, response, "admin/genredetail.jsp");
+            request.setAttribute("service", "addgenredetail");
+            sendDispatcher(request, response, "AdminControllerMap?service=addgenredetail&cateid=" + cid);
         }
     }
 
