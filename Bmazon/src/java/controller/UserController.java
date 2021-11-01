@@ -8,6 +8,7 @@ package controller;
 import APIs.SecurePBKDF2;
 import static APIs.SecurePBKDF2.validatePassword;
 import APIs.SendEmail;
+import entity.Comment;
 import entity.Seller;
 import entity.User;
 import java.io.File;
@@ -20,6 +21,7 @@ import java.nio.file.Paths;
 import java.security.NoSuchAlgorithmException;
 import java.security.spec.InvalidKeySpecException;
 import java.sql.Date;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
@@ -32,6 +34,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
+import model.CommentDAO;
 import model.UserDAO;
 import model.DBConnection;
 import model.SellerDAO;
@@ -57,6 +60,7 @@ public class UserController extends HttpServlet {
     DBConnection dbCon = new DBConnection();
     UserDAO daoUser = new UserDAO();
     SellerDAO daoSeller = new SellerDAO();
+    CommentDAO daoComment = new CommentDAO();
     private static final long serialVersionUID = 1;
 
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
@@ -169,9 +173,9 @@ public class UserController extends HttpServlet {
                 serviceEditDenied(request, response);
             }
 
-            //user interation
-            if (service.equalsIgnoreCase("userInteraction")) {
-                serviceUserInteraction(request, response);
+            //List all comments
+            if (service.equalsIgnoreCase("listAllComments")) {
+                serviceListComment(request, response);
             }
         }
     }
@@ -582,18 +586,12 @@ public class UserController extends HttpServlet {
         }
     }
 
-    private void serviceUserInteraction(HttpServletRequest request, HttpServletResponse response) {
+    private void serviceListComment(HttpServletRequest request, HttpServletResponse response) {
         User x = (User) request.getSession().getAttribute("currUser");
-        String userId = request.getParameter("userId");
-        User u = daoUser.getUserById(userId);
-        if (u.getUserId().equals(x.getUserId())) {
-            request.setAttribute("currUser", x);
-            sendDispatcher(request, response, "user/profile.jsp");
-        } else {
-            request.setAttribute("currUser", x);
-            request.setAttribute("otherUser", u);
-            sendDispatcher(request, response, "user/otherUser.jsp");
-        }
+        request.setAttribute("currUser", x);
+        ArrayList<Comment> comments = daoComment.getCommentsByUserId(Integer.parseInt(x.getUserId()));
+        request.setAttribute("listComment", comments);
+        sendDispatcher(request, response, "user/comments.jsp");
     }
 
     public void sendDispatcher(HttpServletRequest request, HttpServletResponse response, String path) {

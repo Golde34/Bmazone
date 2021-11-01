@@ -27,17 +27,10 @@
 <% DecimalFormat nf = new DecimalFormat("###,###,###");%>
 <%
     ProductTypeDAO daoProductType = new ProductTypeDAO();
-    UserDAO daoUser = new UserDAO();
     GalleryDAO daoGallery = new GalleryDAO();
-    Product product = (Product) request.getAttribute("product");
     List<Product> listProduct = (List<Product>) request.getAttribute("listProduct");
-    List<Product> listNewArrival = (List<Product>) request.getAttribute("listNewArrival");
     User user = (User) request.getAttribute("user");
     Seller seller = (Seller) request.getAttribute("seller");
-    CategoryDAO daoCate = new CategoryDAO();
-    GenreDAO genDAO = new GenreDAO();
-    ArrayList<Category> cateList = daoCate.getTrueCategories();
-    ArrayList<Genre> gerneList = genDAO.getTrueGenres();
 %>
 
 <!DOCTYPE html>
@@ -70,12 +63,6 @@
                 .col-md-12{
                     margin-top: 10px;
                     margin-bottom: 10px;
-                }
-                .container a.active{
-                    background-color: #4CAF50;
-                }
-                .woocommerce-pagination a:hover:not(.active){
-                    background-color: chocolate;
                 }
                 .cover{
                     background-color: black;
@@ -145,7 +132,6 @@
                             <% for (Product pro : listProduct) {
                                     String str = "images/" + daoGallery.getSampleOfProduct(pro.getProductID());
                                     double price = Double.parseDouble(daoProductType.getProductPrice(pro.getProductID()));
-
                             %>
                             <div class="product-small col has-hover post-1178 product type-product status-publish has-post-thumbnail product_cat-bach-hoa-online product_cat-do-hop-dong-goi first instock shipping-taxable purchasable product-type-simple" style="margin-top: 20px;">
                                 <div class="col-inner">
@@ -195,7 +181,7 @@
                     </div>
                 </div>
             </div>
-
+                            
             <jsp:include page="../footer.jsp"/>
         </body>
     </html>

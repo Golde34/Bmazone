@@ -81,7 +81,7 @@
                                                     <th style="width: 15%">Action</th>
                                                 </tr>
                                             </thead>
-                                            <tbody id="gallery">
+                                            <tbody id="order">
                                             <%for (Order order : listOrder) {%>
                                             <tr>
                                                 <td><%=order.getShipName()%></td>
@@ -165,7 +165,7 @@
             });
             function pagination() {
                 var row = document.getElementById("maxRows").value;
-                var search = document.getElementById("search").value;
+//                var search = document.getElementById("search").value;
                 $(document).on('change','#maxRows',function(){
                     pageNum=1;
                 });
@@ -176,13 +176,13 @@
                     url: "/Bmazon/AdminControllerMap",
                     type: "get",
                     data: {
-                        search: search,
+//                        search: search,
                         row: row,
                         index: pageNum,
-                        service: "pagingGallery"
+                        service: "pagingOrderResponse"
                     },
                     success: function (respone) {
-                        var text = document.getElementById("gallery");
+                        var text = document.getElementById("order");
                         text.innerHTML = respone;
                         showpage();
                     },
@@ -193,7 +193,7 @@
             }
             function showpage() {
                 var row = document.getElementById("maxRows").value;
-                var search = document.getElementById("search").value;
+//                var search = document.getElementById("search").value;
                 $(document).on('change','#maxRows',function(){
                     pageNum=1;
                 });
@@ -204,10 +204,10 @@
                     url: "/Bmazon/AdminControllerMap",
                     type: "get",
                     data: {
-                        search: search,
+//                        search: search,
                         row: row,
                         index: pageNum,
-                        service: "showpageGallery"
+                        service: "showPageOrderResponse"
                     },
                     success: function (respone) {
                         var text = document.getElementById("showpage");

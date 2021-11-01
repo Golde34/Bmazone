@@ -76,4 +76,80 @@ body {
 .right-component {
     border: 1px solid #D5DBDB; 
     box-shadow: 1px 2px 5px grey;
+}  
+
+.reviews-counter {
+    font-size: 13px;
+}
+
+.reviews-counter span {
+    vertical-align: -2px;
+}
+
+.rate {
+    float: left;
+    padding: 0 10px 0 0;
+}
+
+.rate:not(:checked) > input {
+    position:absolute;
+    top:-9999px;
+}
+
+.rate:not(:checked) > label {
+    float: right;
+    width: 18px;
+    overflow: hidden;
+    white-space: nowrap;
+    cursor: pointer;
+    font-size: 21px;
+    color:#ccc;
+    margin-bottom: 0;
+    line-height: 21px;
+}
+
+.rate:not(:checked) > label:before {
+    content: '\2605';
+}
+
+.content{
+    position: absolute;
+    top: 20%; left: 50%;
+    transform:translate(-50%,-50%);
+    -ms-transform:translate(-50%,-50%);
+    font-size: 60px;
+    color: white;
+    overflow: hidden;
+}
+
+.box p{
+    font-family: 'Forum', cursive;
+    text-align: center;
+    color: #fff;
+    font-size: 2em;
+    font-weight: bold;
+    font-variant: small-caps;
+}
+
+.box a{
+    font-size: 30px;
+    display: block;
+    text-align: center;
+    padding: 10px 10px 0px 10px;
+    text-decoration: none;
+    color: #cb0c9f;
+    cursor: pointer;
+}
+
+.overlay{
+    opacity: 0;
+
+}
+
+.box:hover img{
+    opacity: 0.2;
+}
+
+.box:hover .overlay{
+    opacity: 1;
 }

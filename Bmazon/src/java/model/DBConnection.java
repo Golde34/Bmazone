@@ -24,7 +24,7 @@ public class DBConnection {
     public DBConnection() {
         try {
             Class.forName("com.mysql.cj.jdbc.Driver");
-            connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/bmazon?allowPublicKeyRetrieval=true&useSSL=false", "root", "123456");
+            connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/bmazon?allowPublicKeyRetrieval=true&verifyServerCertificate=false&useSSL=false&requireSSL=false", "root", "123456");
             System.out.println("Connect successfully !!");
         } catch (SQLException ex) {
             Logger.getLogger(DBConnection.class.getName()).log(Level.SEVERE, null, ex);

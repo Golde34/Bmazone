@@ -171,7 +171,7 @@ public class ProductDAO extends BaseDAO {
 
     public static void main(String[] args) {
         ProductDAO pd = new ProductDAO();
-        ArrayList<Product> listPaging = pd.getAllPagingProductBySeller(1, 5, "", "4");
+        ArrayList<Product> listPaging = pd.getProductBySellerPaging(5, 5);
         System.out.println(listPaging.size());
     }
 
@@ -301,19 +301,17 @@ public class ProductDAO extends BaseDAO {
         return list;
     }
 
-    public ArrayList<Product> getProductBySellerPaging(int index, String seller) {
+    public ArrayList<Product> getProductBySellerPaging(int index, int sid) {
 
         ArrayList<Product> list = new ArrayList<>();
-        int start = (index - 1) * 20;
+        int start = (index - 1) * 10;
         String sql
-                = " SELECT * "
-                + "  FROM p  where sellerID = ? \n "
-                + " limit ?,?  ";
+                = " SELECT * \n"
+                + " FROM Product where sellerID = " + sid + " \n "
+                + " limit ?,10";
         try {
             pre = conn.prepareStatement(sql);
-            pre.setString(1, seller);
-            pre.setInt(2, start);
-            pre.setInt(3, 20);
+            pre.setInt(1, start);
             rs = pre.executeQuery();
             while (rs.next()) {
                 Product pro = new Product();
@@ -462,7 +460,7 @@ public class ProductDAO extends BaseDAO {
     public int totalProductSeller(String sid) {
         int count = 0;
 
-        String xSql = "SELECT count(*) Product where sellerID = ?";
+        String xSql = "SELECT count(*) from Product where sellerID = ?";
         try {
             pre = conn.prepareStatement(xSql);
             pre.setString(1, sid);

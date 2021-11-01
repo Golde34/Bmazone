@@ -139,7 +139,6 @@
                             <ul class="page-numbers nav-pagination links text-center">
                                 ${previous}
                                 <c:forEach  begin="${begin}" end="${end}" var="i">
-
                                     <li><a class=" ${page==i?"active":""}" href="ProductDetailControllerMap?service=getRelatedProduct&pid=${pid}&page=${i}">${i}</a></li>
                                     </c:forEach>
                                     ${next}

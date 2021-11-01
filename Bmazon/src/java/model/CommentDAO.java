@@ -134,6 +134,30 @@ public class CommentDAO extends BaseDAO {
         }
         return comments;
     }
+    
+    public ArrayList<Comment> getCommensByProductIdAndRating(int pid, int rating) {
+        ArrayList<Comment> comments = new ArrayList<>();
+        String sql = "select * from `Comment` where productID  = ? and rating = ? order by commentID desc";
+        try {
+            pre = conn.prepareStatement(sql);
+            pre.setInt(1, pid);
+            pre.setInt(2, rating);
+            rs = pre.executeQuery();
+            while (rs.next()) {
+                Comment x = new Comment();
+                x.setCommentID(rs.getInt("commentID"));
+                x.setProductID(rs.getInt("productID"));
+                x.setUserID(rs.getInt("userId"));
+                x.setContent(rs.getString("content"));
+                x.setRating(rs.getInt("rating"));
+                x.setStatus(rs.getInt("status"));
+                comments.add(x);
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(CommentDAO.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return comments;
+    }
 
     public static void main(String[] args) {
         CommentDAO c = new CommentDAO();

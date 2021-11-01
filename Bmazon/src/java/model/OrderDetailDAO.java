@@ -24,9 +24,9 @@ public class OrderDetailDAO extends BaseDAO {
 
     public static void main(String[] args) {
         OrderDetailDAO dao = new OrderDetailDAO();
-        for (Order item : dao.most5BigOrder()) {
+        for (OrderDetail item : dao.getAllOrderDetail(11)) {
 
-            System.out.println(item.getTotal());
+            System.out.println(item.getProductName());
         }
     }
 
