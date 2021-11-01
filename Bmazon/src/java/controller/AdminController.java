@@ -1895,7 +1895,7 @@ public class AdminController extends HttpServlet {
         if (request.getParameter("row") != null) {
             numOfRow = Integer.parseInt(request.getParameter("row"));
         }
-        int totalResult = daoorder.getPageNumber("");
+        int totalResult = daoorder.getAllOrder().size();
         int totalPage = totalResult / numOfRow;
         if (totalResult != numOfRow * totalPage) {
             totalPage += 1;

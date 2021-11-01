@@ -165,7 +165,7 @@
             });
             function pagination() {
                 var row = document.getElementById("maxRows").value;
-                var search = document.getElementById("search").value;
+//                var search = document.getElementById("search").value;
                 $(document).on('change','#maxRows',function(){
                     pageNum=1;
                 });
@@ -176,7 +176,7 @@
                     url: "/Bmazon/AdminControllerMap",
                     type: "get",
                     data: {
-                        search: search,
+//                        search: search,
                         row: row,
                         index: pageNum,
                         service: "pagingOrderResponse"
@@ -193,7 +193,7 @@
             }
             function showpage() {
                 var row = document.getElementById("maxRows").value;
-                var search = document.getElementById("search").value;
+//                var search = document.getElementById("search").value;
                 $(document).on('change','#maxRows',function(){
                     pageNum=1;
                 });
@@ -204,7 +204,7 @@
                     url: "/Bmazon/AdminControllerMap",
                     type: "get",
                     data: {
-                        search: search,
+//                        search: search,
                         row: row,
                         index: pageNum,
                         service: "showPageOrderResponse"

@@ -39,7 +39,7 @@ public class OrderDAO extends BaseDAO {
     public List<Order> getAllPagingOrder(int index, int numOfRow, String search) {
         int start = (index - 1) * numOfRow;
         List<Order> list = new ArrayList<>();
-        String sql = "select * from `order` where state=0 and status=1 limit ?,?";
+        String sql = "select * from `order` where state=0 and status=1 order by orderDate desc limit ?,?";
         try {
             pre = conn.prepareStatement(sql);
             pre.setInt(1, start);
@@ -225,7 +225,7 @@ public class OrderDAO extends BaseDAO {
     public static void main(String[] args) {
 
         OrderDAO odao = new OrderDAO();
-        List<Order> listOrder = odao.getOrderBySellerID(4);
+        List<Order> listOrder = odao.getAllOrder();
         for (Order order : listOrder) {
             System.out.println(order.getOrderID());
         }
@@ -233,9 +233,10 @@ public class OrderDAO extends BaseDAO {
 
     public ArrayList<Order> getAllOrder() {
         ArrayList<Order> list = new ArrayList<>();
-        String sql = "select * from `Order` where status = 1 order by orderID desc";
-
+        String sql = "select * from `Order` where status = 1 and state=0 order by orderID desc";
         try {
+            pre=conn.prepareStatement(sql);
+            rs=pre.executeQuery();
             while (rs.next()) {
                 Order o = new Order();
                 o.setOrderID(rs.getInt("orderID"));
@@ -255,6 +256,8 @@ public class OrderDAO extends BaseDAO {
                 o.setStatus(rs.getInt("status"));
                 list.add(o);
             }
+            rs.close();
+            pre.close();
         } catch (SQLException ex) {
             Logger.getLogger(OrderDAO.class.getName()).log(Level.SEVERE, null, ex);
         }
