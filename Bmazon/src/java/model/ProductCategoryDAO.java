@@ -28,6 +28,7 @@ public class ProductCategoryDAO extends BaseDAO{
                 String cid=rs.getString("categoryId");
                 return cid;
             }
+            rs.close();
             pre.close();
         } catch (SQLException e) {
             Logger.getLogger(ProductCategoryDAO.class.getName()).log(Level.SEVERE, null, e);

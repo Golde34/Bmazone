@@ -18,25 +18,29 @@ import java.util.logging.Logger;
  * @author Admin
  */
 public class RoleDAO extends BaseDAO {
+
     BaseDAO dbConn = new BaseDAO();
 
     public int getPageNumber(String search) {
         int num = 0;
-        String xSql= "SELECT COUNT(*) FROM `Role` where roleName like '%" + search + "%'";
-        ResultSet rs = dbConn.getData(xSql);
+        String xSql = "SELECT COUNT(*) FROM `Role` where roleName like '%" + search + "%'";
         try {
+            pre = conn.prepareStatement(xSql);
+            rs = pre.executeQuery();
             if (rs.next()) {
                 num = rs.getInt(1);
             }
+            rs.close();
+            pre.close();
         } catch (SQLException ex) {
             Logger.getLogger(UserDAO.class.getName()).log(Level.SEVERE, null, ex);
         }
         return num;
     }
-    
+
     public List<Role> getAllPagingRole(int index, int numOfRow, String search) {
         List<Role> list = new ArrayList<>();
-        String xSql= "declare @PageNo INT = ? \n"
+        String xSql = "declare @PageNo INT = ? \n"
                 + "declare @PageSize INT= ? \n"
                 + "SELECT * from(\n"
                 + "SELECT *,\n"
@@ -60,6 +64,8 @@ public class RoleDAO extends BaseDAO {
                         rs.getInt(5),
                         rs.getInt(6)));
             }
+            rs.close();
+            pre.close();
         } catch (SQLException ex) {
             Logger.getLogger(UserDAO.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -74,15 +80,16 @@ public class RoleDAO extends BaseDAO {
             pre.setInt(1, status == 1 ? 1 : 0);
             pre.setInt(2, id);
             n = pre.executeUpdate();
+            pre.close();
         } catch (SQLException ex) {
             Logger.getLogger(ProductDAO.class.getName()).log(Level.SEVERE, null, ex);
         }
         return n;
     }
-    
+
     public int addRole(Role r) {
         int n = 0;
-        String xSql= "INSERT INTO `Role` (`roleID`, `roleName`, `adminPermission`, `sellerPermission`, `customerPermission`, `status`)"
+        String xSql = "INSERT INTO `Role` (`roleID`, `roleName`, `adminPermission`, `sellerPermission`, `customerPermission`, `status`)"
                 + "     VALUES (?,?,?,?,?,1)";
         try {
             pre = conn.prepareStatement(xSql);
@@ -101,7 +108,7 @@ public class RoleDAO extends BaseDAO {
 
     public int editRole(Role r) {
         int n = 0;
-        String xSql= "update `Role` set `roleName` = ? ,`adminPermission` = ?, `sellerPermission` = ?,`customerPermission` = ?, `status` = ? where `roleID` = ?";
+        String xSql = "update `Role` set `roleName` = ? ,`adminPermission` = ?, `sellerPermission` = ?,`customerPermission` = ?, `status` = ? where `roleID` = ?";
         try {
             pre = conn.prepareStatement(xSql);
             pre.setString(1, r.getRoleName());
@@ -111,6 +118,7 @@ public class RoleDAO extends BaseDAO {
             pre.setInt(5, r.getStatus());
             pre.setInt(6, r.getRoleID());
             n = pre.executeUpdate();
+            pre.close();
         } catch (SQLException e) {
         }
         return n;
@@ -122,42 +130,49 @@ public class RoleDAO extends BaseDAO {
             pre = conn.prepareStatement(sql);
             pre.setInt(1, roleID);
             pre.executeUpdate();
+            pre.close();
         } catch (SQLException e) {
         }
     }
 
     public boolean checkExistRoleName(String roleName) {
-        String xSql= "SELECT * FROM `Role` where roleName like ?";
+        boolean isExist = false;
+        String xSql = "SELECT * FROM `Role` where roleName like ?";
         try {
             pre = conn.prepareStatement(xSql);
             pre.setString(1, roleName);
             rs = pre.executeQuery();
             if (rs.next()) {
-                return true;
+                isExist = true;
             }
+            rs.close();
+            pre.close();
         } catch (SQLException ex) {
             Logger.getLogger(UserDAO.class.getName()).log(Level.SEVERE, null, ex);
         }
-        return false;
+        return isExist;
     }
 
     public boolean checkExistRoleId(int id) {
-        String xSql= "SELECT * FROM `Role` where roleID = " + id;
+        boolean isExist = false;
+        String xSql = "SELECT * FROM `Role` where roleID = " + id;
         try {
             pre = conn.prepareStatement(xSql);
             rs = pre.executeQuery();
             if (rs.next()) {
-                return true;
+                isExist =  true;
             }
+            rs.close();
+            pre.close();
         } catch (SQLException ex) {
             Logger.getLogger(UserDAO.class.getName()).log(Level.SEVERE, null, ex);
         }
-        return false;
+        return isExist;
     }
 
     public Role getRoleId(int id) {
         Role role = new Role();
-        String xSql= "select * from Role where roleID = " + id;
+        String xSql = "select * from Role where roleID = " + id;
         try {
             pre = conn.prepareStatement(xSql);
             rs = pre.executeQuery();
@@ -169,14 +184,17 @@ public class RoleDAO extends BaseDAO {
                 role.setStatus(rs.getInt("status"));
                 role.setRoleID(rs.getInt("roleID"));
             }
-        } catch (SQLException e) {
+            rs.close();
+            pre.close();
+        } catch (SQLException ex) {
+            Logger.getLogger(UserDAO.class.getName()).log(Level.SEVERE, null, ex);
         }
         return role;
     }
 
     public List<Role> getAllRole() {
         List<Role> list = new ArrayList<>();
-        String xSql= "select * from Role where `status` = 1";
+        String xSql = "select * from Role where `status` = 1";
         try {
             pre = conn.prepareStatement(xSql);
             rs = pre.executeQuery();
@@ -189,14 +207,17 @@ public class RoleDAO extends BaseDAO {
                         rs.getInt(5),
                         rs.getInt(6)));
             }
-        } catch (SQLException e) {
+            rs.close();
+            pre.close();
+        } catch (SQLException ex) {
+            Logger.getLogger(UserDAO.class.getName()).log(Level.SEVERE, null, ex);
         }
         return list;
     }
 
     public List<Role> searchRole(String text) {
         List<Role> list = new ArrayList<>();
-        String xSql= "SELECT * FROM `Role` where roleName like '%" + text + "%'";
+        String xSql = "SELECT * FROM `Role` where roleName like '%" + text + "%'";
         try {
             pre = conn.prepareStatement(xSql);
             rs = pre.executeQuery();
@@ -209,7 +230,10 @@ public class RoleDAO extends BaseDAO {
                         rs.getInt(5),
                         rs.getInt(6)));
             }
-        } catch (SQLException e) {
+            rs.close();
+            pre.close();
+        } catch (SQLException ex) {
+            Logger.getLogger(UserDAO.class.getName()).log(Level.SEVERE, null, ex);
         }
         return list;
     }

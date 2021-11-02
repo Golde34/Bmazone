@@ -26,6 +26,7 @@ public class ProductGenreDAO extends BaseDAO {
                 String gid = rs.getString("GenreID");
                 return gid;
             }
+            rs.close();
             pre.close();
         } catch (SQLException e) {
             Logger.getLogger(ProductCategoryDAO.class.getName()).log(Level.SEVERE, null, e);
