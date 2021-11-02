@@ -125,10 +125,7 @@
                             <div class="col-md-6">
                                 <a href="CartControllerMap?service=MyOrder" class="btn btn-warning" data-abc="true"> <i class="fa fa-chevron-left"></i> Back to orders</a>
                             </div>
-                            <div class="col-md-6">
-
-                                <a href="CartControllerMap?service=MyOrder" data-toggle="modal"><btn class="btn btn-success">Add</btn></a>
-                            </div>
+                           
                         </div>
                     </div>
                 </article>

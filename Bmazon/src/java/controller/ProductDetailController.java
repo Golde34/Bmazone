@@ -10,6 +10,7 @@ import entity.Gallery;
 import entity.Product;
 import entity.ProductType;
 import entity.User;
+import entity.View;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
@@ -29,6 +30,7 @@ import model.DBConnection;
 import model.GalleryDAO;
 import model.ProductDAO;
 import model.ProductTypeDAO;
+import model.ViewDAO;
 
 /**
  *
@@ -59,6 +61,7 @@ public class ProductDetailController extends HttpServlet {
     GalleryDAO daoGallery = new GalleryDAO();
     ProductTypeDAO daoProductType = new ProductTypeDAO();
     CommentDAO daoComment = new CommentDAO();
+    ViewDAO viewDAO= new ViewDAO();
     private static final long serialVersionUID = 1;
 
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
@@ -92,6 +95,16 @@ public class ProductDetailController extends HttpServlet {
 
     public void serviceProductDetail(HttpServletRequest request, HttpServletResponse response) {
         int id = Integer.parseInt(request.getParameter("pid"));
+        User x = (User) request.getSession().getAttribute("currUser");
+        if (x!=null) {
+            View view= viewDAO.getView(id, Integer.parseInt(x.getUserId()));
+            if (view==null) {
+                View insert= new View(Integer.parseInt(x.getUserId()),id, 1);
+                viewDAO.insertClick(insert);
+            }else{
+                viewDAO.changeClick(view);
+            }
+        }
         Product product = daoProduct.getProductByID(id);
         request.setAttribute("product", product);
         List<Gallery> listGallery = daoGallery.getAllGalleryOfProduct(id);
@@ -117,15 +130,14 @@ public class ProductDetailController extends HttpServlet {
     public void serviceRelatedProduct(HttpServletRequest request, HttpServletResponse response) {
         int id = Integer.parseInt(request.getParameter("pid"));
         int count = daoProduct.totalRelatedProduct(id);
-        
+
         Product product = daoProduct.getProductByID(id);
         request.setAttribute("product", product);
         List<Gallery> listGallery = daoGallery.getAllGalleryOfProduct(id);
         request.setAttribute("listGallery", listGallery);
         List<ProductType> listProductType = daoProductType.getProductByProductID(id);
         request.setAttribute("listProductType", listProductType);
-        
-        
+
         int size = 10;
         int total = count / size;
         int page, end;
@@ -158,15 +170,15 @@ public class ProductDetailController extends HttpServlet {
             request.setAttribute("next", next);
             request.setAttribute("previous", previous);
         }
-        
+
         ArrayList<Product> listRelated = daoProduct.getRelatedProductByProductIDPaging(page, id);
-        
+
         request.setAttribute("listRelated", listRelated);
         request.setAttribute("end", end);
         request.setAttribute("begin", begin);
         request.setAttribute("pid", id);
         request.setAttribute("count", count);
-        
+
         sendDispatcher(request, response, "product/relatedProduct.jsp");
     }
 
@@ -199,12 +211,11 @@ public class ProductDetailController extends HttpServlet {
         newCom.setUserID(Integer.parseInt(user.getUserId()));
         newCom.setRating(rating);
         newCom.setContent(content);
-        if (!daoComment.checkExistComment(id, Integer.parseInt(user.getUserId()))){
+        if (!daoComment.checkExistComment(id, Integer.parseInt(user.getUserId()))) {
             daoComment.insertComment(newCom);
         }
         sendDispatcher(request, response, "ProductDetailControllerMap?service=getProductDetail&pid=" + id);
     }
-
 
     private void writeObject(ObjectOutputStream stream)
             throws IOException {
@@ -215,6 +226,7 @@ public class ProductDetailController extends HttpServlet {
             throws IOException, ClassNotFoundException {
         stream.defaultReadObject();
     }
+
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
     /**
      * Handles the HTTP <code>GET</code> method.

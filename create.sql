@@ -177,3 +177,10 @@ CREATE TABLE `Comment`(
 	FOREIGN KEY (userId) REFERENCES `User`(userId),
 	FOREIGN KEY (productID) REFERENCES Product(productID)
 );
+create table productview(
+userID int,
+productid int,
+click int,
+FOREIGN KEY (userID) REFERENCES `User`(userID),
+FOREIGN KEY (productID) REFERENCES Product (productID)
+);
