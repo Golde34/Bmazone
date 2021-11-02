@@ -32,6 +32,7 @@ public class GalleryDAO extends BaseDAO {
             pre = conn.prepareStatement(sql);
             pre.setInt(1, id);
             n = pre.executeUpdate();
+            pre.close();
         } catch (Exception ex) {
             Logger.getLogger(UserDAO.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -49,6 +50,7 @@ public class GalleryDAO extends BaseDAO {
             pre.setString(3, g.getLink());
             pre.setInt(4, g.getStatus());
             n = pre.executeUpdate();
+            pre.close();
         } catch (Exception ex) {
             Logger.getLogger(UserDAO.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -66,6 +68,7 @@ public class GalleryDAO extends BaseDAO {
             pre.setDouble(4, g.getStatus());
             pre.setInt(5, g.getGalleryID());
             n = pre.executeUpdate();
+            pre.close();
         } catch (Exception ex) {
             Logger.getLogger(UserDAO.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -75,11 +78,14 @@ public class GalleryDAO extends BaseDAO {
     public int getPageNumber(String search) {
         int num = 0;
         String xSql = "SELECT COUNT(*) AS NumberOfGallerys FROM gallery,product where gallery.productID=product.productID and product.productName like '%"+search+"%'";
-        ResultSet rs = dbConn.getData(xSql);
         try {
+            pre=conn.prepareStatement(xSql);
+            rs=pre.executeQuery();
             if (rs.next()) {
                 num = rs.getInt(1);
             }
+            rs.close();
+            pre.close();
         } catch (SQLException ex) {
             Logger.getLogger(UserDAO.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -159,6 +165,7 @@ public class GalleryDAO extends BaseDAO {
             pre.setInt(1, (status == 1 ? 1 : 0));
             pre.setInt(2, id);
             n = pre.executeUpdate();
+            pre.close();
         } catch (SQLException ex) {
             Logger.getLogger(UserDAO.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -179,6 +186,8 @@ public class GalleryDAO extends BaseDAO {
                         rs.getString(4),
                         rs.getInt(5)));
             }
+            rs.close();
+            pre.close();
         } catch (Exception ex) {
             Logger.getLogger(UserDAO.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -225,6 +234,8 @@ public class GalleryDAO extends BaseDAO {
                         rs.getString(4),
                         rs.getInt(5)));
             }
+            rs.close();
+            pre.close();
         } catch (Exception ex) {
             Logger.getLogger(UserDAO.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -241,6 +252,8 @@ public class GalleryDAO extends BaseDAO {
             while (rs.next()) {
                 s = rs.getString("link");
             }
+            rs.close();
+            pre.close();
         } catch (Exception ex) {
             Logger.getLogger(UserDAO.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -257,6 +270,8 @@ public class GalleryDAO extends BaseDAO {
             if (rs.next()) {
                 s = rs.getString("link");
             }
+            rs.close();
+            pre.close();
         } catch (Exception ex) {
             Logger.getLogger(UserDAO.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -278,6 +293,8 @@ public class GalleryDAO extends BaseDAO {
                         rs.getString(4),
                         rs.getInt(5)));
             }
+            rs.close();
+            pre.close();
         } catch (Exception ex) {
             Logger.getLogger(UserDAO.class.getName()).log(Level.SEVERE, null, ex);
         }

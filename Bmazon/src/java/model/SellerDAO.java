@@ -24,7 +24,7 @@ public class SellerDAO extends BaseDAO {
 
     public int addSeler(Seller s) {
         int n = 0;
-        String xSql= "INSERT INTO Seller (userID, sellerShopName, sellerPhone, evidence, sellerMainProduct, description, sellerVerification, status)"
+        String xSql = "INSERT INTO Seller (userID, sellerShopName, sellerPhone, evidence, sellerMainProduct, description, sellerVerification, status)"
                 + "     VALUES (?,?,?,?,?,?,?,1)";
         try {
             pre = conn.prepareStatement(xSql);
@@ -59,7 +59,9 @@ public class SellerDAO extends BaseDAO {
             pre.setInt(8, s.getStatus());
             pre.setInt(9, s.getSellerID());
             n = pre.executeUpdate();
+            pre.close();
         } catch (SQLException e) {
+            Logger.getLogger(RoleDAO.class.getName()).log(Level.SEVERE, null, e);
         }
         return n;
     }
@@ -71,84 +73,109 @@ public class SellerDAO extends BaseDAO {
             pre = conn.prepareStatement(sql);
             pre.setInt(1, sellerID);
             n = pre.executeUpdate();
+            pre.close();
         } catch (SQLException e) {
+            Logger.getLogger(RoleDAO.class.getName()).log(Level.SEVERE, null, e);
         }
         return n;
     }
 
     public boolean checkExistPhone(String phone) {
+        boolean isExist = false;
         String sql = "SELECT * FROM Seller WHERE sellerPhone = '" + phone + "' and status = 1";
-        rs = dbConn.getData(sql);
         try {
+            pre = conn.prepareStatement(sql);
+            rs = pre.executeQuery();
             if (rs.next()) {
-                return true;
+                isExist = true;
             }
+            rs.close();
+            pre.close();
         } catch (SQLException ex) {
             Logger.getLogger(UserDAO.class.getName()).log(Level.SEVERE, null, ex);
         }
-        return false;
+        return isExist;
     }
 
     public boolean checkExistUserID(int id) {
+        boolean isExist = false;
         String sql = "SELECT * FROM Seller WHERE userID = " + id + " and status = 1";
-        rs = dbConn.getData(sql);
         try {
+            pre = conn.prepareStatement(sql);
+            rs = pre.executeQuery();
             if (rs.next()) {
-                return true;
+                isExist = true;
             }
+            rs.close();
+            pre.close();
         } catch (SQLException ex) {
             Logger.getLogger(UserDAO.class.getName()).log(Level.SEVERE, null, ex);
         }
-        return false;
+        return isExist;
     }
 
     public boolean checkExistSellerShopName(String sellerShopName) {
-        String xSql= "SELECT * FROM Seller where sellerShopName like '" + sellerShopName + "'";
-        try {
-            rs = dbConn.getData(xSql);
-            if (rs.next()) {
-                return true;
-            }
-        } catch (SQLException ex) {
-            Logger.getLogger(UserDAO.class.getName()).log(Level.SEVERE, null, ex);
-        }
-        return false;
-    }
-
-    public boolean checkExistSellerId(int id) {
-        String xSql= "SELECT * FROM Seller where sellerID = " + id;
+        boolean isExist = false;
+        String xSql = "SELECT * FROM Seller where sellerShopName like '" + sellerShopName + "'";
         try {
             pre = conn.prepareStatement(xSql);
             rs = pre.executeQuery();
             if (rs.next()) {
-                return true;
+                isExist = true;
             }
+            rs.close();
+            pre.close();
         } catch (SQLException ex) {
             Logger.getLogger(UserDAO.class.getName()).log(Level.SEVERE, null, ex);
         }
-        return false;
+        return isExist;
+    }
+
+    public boolean checkExistSellerId(int id) {
+        boolean isExist = false;
+        String xSql = "SELECT * FROM Seller where sellerID = " + id;
+        try {
+            pre = conn.prepareStatement(xSql);
+            rs = pre.executeQuery();
+            if (rs.next()) {
+                isExist = true;
+            }
+            rs.close();
+            pre.close();
+        } catch (SQLException ex) {
+            Logger.getLogger(UserDAO.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return isExist;
     }
 
     public Seller getSellerID(String id) {
-        String xSql= "select * from Seller where sellerID = " + id;
+        Seller seller = new Seller();
+        String xSql = "select * from Seller where sellerID = " + id;
         try {
-            rs = dbConn.getData(xSql);
+            pre = conn.prepareStatement(xSql);
+            rs = pre.executeQuery();
             if (rs.next()) {
-                Seller seller = new Seller(rs.getInt("sellerID"), rs.getInt("userID"),
-                        rs.getString("sellerShopName"), rs.getString("sellerPhone"),
-                        rs.getString("evidence"), rs.getInt("sellerMainProduct"),
-                        rs.getString("description"), rs.getInt("sellerVerification"),
-                        rs.getInt("status"));
-                return seller;
+                seller.setSellerID(rs.getInt("sellerID"));
+                seller.setUserID(rs.getInt("userID"));
+                seller.setSellerShopName(rs.getString("sellerShopName"));
+                seller.setSellerPhone(rs.getString("sellerPhone"));
+                seller.setEvidence(rs.getString("evidence"));
+                seller.setSellerMainProduct(rs.getInt("sellerMainProduct"));
+                seller.setDescription(rs.getString("description"));
+                seller.setSellerVerification(rs.getInt("sellerVerification"));
+                seller.setStatus(rs.getInt("status"));
             }
-        } catch (SQLException e) {
+            rs.close();
+            pre.close();
+        } catch (SQLException ex) {
+            Logger.getLogger(UserDAO.class.getName()).log(Level.SEVERE, null, ex);
         }
-        return null;
+        return seller;
     }
 
     public List<Seller> getAllSeller() {
         List<Seller> list = new ArrayList<>();
-        String xSql= "select * from Seller where status = 1 and sellerVerification = 1";
+        String xSql = "select * from Seller where status = 1 and sellerVerification = 1";
         try {
             pre = conn.prepareStatement(xSql);
             rs = pre.executeQuery();
@@ -164,14 +191,17 @@ public class SellerDAO extends BaseDAO {
                         rs.getInt(8),
                         rs.getInt(9)));
             }
-        } catch (SQLException e) {
+            rs.close();
+            pre.close();
+        } catch (SQLException ex) {
+            Logger.getLogger(UserDAO.class.getName()).log(Level.SEVERE, null, ex);
         }
         return list;
     }
 
     public List<Seller> getSellerBySellerRequest() {
         List<Seller> list = new ArrayList<>();
-        String xSql= "select * from Seller where status = 1 and sellerVerification = 0";
+        String xSql = "select * from Seller where status = 1 and sellerVerification = 0";
         try {
             pre = conn.prepareStatement(xSql);
             rs = pre.executeQuery();
@@ -182,79 +212,97 @@ public class SellerDAO extends BaseDAO {
                         rs.getString("description"), rs.getInt("sellerVerification"),
                         rs.getInt("status")));
             }
-            return list;
-        } catch (SQLException e) {
+            rs.close();
+            pre.close();
+        } catch (SQLException ex) {
+            Logger.getLogger(UserDAO.class.getName()).log(Level.SEVERE, null, ex);
         }
-        return null;
+        return list;
     }
 
     public Seller getSellerByUserID(int userID) {
-        String xSql= "select * from Seller where userID = " + userID;
-        rs = dbConn.getData(xSql);
+        Seller seller = new Seller();
+        String xSql = "select * from Seller where userID = " + userID;
         try {
+            pre = conn.prepareStatement(xSql);
+            rs = pre.executeQuery();
             if (rs.next()) {
-                Seller seller = new Seller(rs.getInt("sellerID"), rs.getInt("userID"),
-                        rs.getString("sellerShopName"), rs.getString("sellerPhone"),
-                        rs.getString("evidence"), rs.getInt("sellerMainProduct"),
-                        rs.getString("description"), rs.getInt("sellerVerification"),
-                        rs.getInt("status"));
-                return seller;
+                seller.setSellerID(rs.getInt("sellerID"));
+                seller.setUserID(rs.getInt("userID"));
+                seller.setSellerShopName(rs.getString("sellerShopName"));
+                seller.setSellerPhone(rs.getString("sellerPhone"));
+                seller.setEvidence(rs.getString("evidence"));
+                seller.setSellerMainProduct(rs.getInt("sellerMainProduct"));
+                seller.setDescription(rs.getString("description"));
+                seller.setSellerVerification(rs.getInt("sellerVerification"));
+                seller.setStatus(rs.getInt("status"));
             }
+            rs.close();
+            pre.close();
         } catch (SQLException e) {
             Logger.getLogger(SellerDAO.class.getName()).log(Level.SEVERE, null, e);
         }
-        return null;
+        return seller;
     }
 
     public Seller getSellerByProductId(int productID) {
-        String xSql= "select * from Seller s INNER JOIN Product p \n"
+        Seller seller = new Seller();
+        String xSql = "select * from Seller s INNER JOIN Product p \n"
                 + "ON s.sellerID = p.sellerID\n"
                 + "where p.productID=" + productID;
-        rs = dbConn.getData(xSql);
         try {
+            pre=conn.prepareStatement(xSql);
+            rs = pre.executeQuery();
             if (rs.next()) {
-                Seller seller = new Seller(rs.getInt("sellerID"), rs.getInt("userID"),
-                        rs.getString("sellerShopName"), rs.getString("sellerPhone"),
-                        rs.getString("evidence"), rs.getInt("sellerMainProduct"),
-                        rs.getString("description"), rs.getInt("sellerVerification"),
-                        rs.getInt("status"));
-                return seller;
+                seller.setSellerID(rs.getInt("sellerID"));
+                seller.setUserID(rs.getInt("userID"));
+                seller.setSellerShopName(rs.getString("sellerShopName"));
+                seller.setSellerPhone(rs.getString("sellerPhone"));
+                seller.setEvidence(rs.getString("evidence"));
+                seller.setSellerMainProduct(rs.getInt("sellerMainProduct"));
+                seller.setDescription(rs.getString("description"));
+                seller.setSellerVerification(rs.getInt("sellerVerification"));
+                seller.setStatus(rs.getInt("status"));
             }
+            rs.close();
+            pre.close();
         } catch (Exception e) {
             Logger.getLogger(SellerDAO.class.getName()).log(Level.SEVERE, null, e);
         }
-        return null;
+        return seller;
     }
 
     public int acceptSellerRequest(int sellerID) {
         int n = 0;
-        String xSql= "update Seller set sellerVerification = 1 where sellerID = ?";
+        String xSql = "update Seller set sellerVerification = 1 where sellerID = ?";
         try {
             pre = conn.prepareStatement(xSql);
             pre.setInt(1, sellerID);
             n = pre.executeUpdate();
+            pre.close();
         } catch (SQLException e) {
-             Logger.getLogger(SellerDAO.class.getName()).log(Level.SEVERE, null, e);
+            Logger.getLogger(SellerDAO.class.getName()).log(Level.SEVERE, null, e);
         }
         return n;
     }
 
     public int denySellerRequest(int sellerID) {
         int n = 0;
-        String xSql= "update Seller set sellerVerification = 2 where sellerI] = ?";
+        String xSql = "update Seller set sellerVerification = 2 where sellerI] = ?";
         try {
             pre = conn.prepareStatement(xSql);
             pre.setInt(1, sellerID);
             n = pre.executeUpdate();
+            pre.close();
         } catch (SQLException e) {
-             Logger.getLogger(SellerDAO.class.getName()).log(Level.SEVERE, null, e);
+            Logger.getLogger(SellerDAO.class.getName()).log(Level.SEVERE, null, e);
         }
         return n;
     }
 
     public List<Seller> searchSeller(String text) {
         List<Seller> list = new ArrayList<>();
-        String xSql= "SELECT * FROM Seller where sellerShopName like '%" + text + "%'";
+        String xSql = "SELECT * FROM Seller where sellerShopName like '%" + text + "%'";
         try {
             pre = conn.prepareStatement(xSql);
             rs = pre.executeQuery();
@@ -270,8 +318,10 @@ public class SellerDAO extends BaseDAO {
                         rs.getInt(8),
                         rs.getInt(9)));
             }
+            rs.close();
+            pre.close();
         } catch (Exception e) {
-             Logger.getLogger(SellerDAO.class.getName()).log(Level.SEVERE, null, e);
+            Logger.getLogger(SellerDAO.class.getName()).log(Level.SEVERE, null, e);
         }
         return list;
     }

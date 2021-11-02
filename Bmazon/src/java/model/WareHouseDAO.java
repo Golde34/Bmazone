@@ -33,11 +33,14 @@ public class WareHouseDAO extends BaseDAO {
     public int getPageNumber(String search) {
         int num = 0;
         String xSql = "SELECT COUNT(*) FROM `WareHouse` where wareHouseAddress like '%" + search + "%'";
-        ResultSet rs = dbConn.getData(xSql);
         try {
+            pre=conn.prepareStatement(xSql);
+            rs=pre.executeQuery();
             if (rs.next()) {
                 num = rs.getInt(1);
             }
+            rs.close();
+            pre.close();
         } catch (SQLException ex) {
             Logger.getLogger(UserDAO.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -59,6 +62,8 @@ public class WareHouseDAO extends BaseDAO {
                         rs.getString(2),
                         rs.getInt(3)));
             }
+            rs.close();
+            pre.close();
         } catch (SQLException ex) {
             Logger.getLogger(UserDAO.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -73,6 +78,7 @@ public class WareHouseDAO extends BaseDAO {
             pre.setInt(1, status == 1 ? 1 : 0);
             pre.setInt(2, id);
             n = pre.executeUpdate();
+            pre.close();
         } catch (SQLException ex) {
             Logger.getLogger(ProductDAO.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -86,7 +92,9 @@ public class WareHouseDAO extends BaseDAO {
             pre = conn.prepareStatement(xSql);
             pre.setString(1, wh.getWareHouseAddress());
             n = pre.executeUpdate();
-        } catch (SQLException e) {
+            pre.close();
+        } catch (SQLException ex) {
+            Logger.getLogger(UserDAO.class.getName()).log(Level.SEVERE, null, ex);
         }
         return n;
     }
@@ -100,7 +108,9 @@ public class WareHouseDAO extends BaseDAO {
             pre.setInt(2, wh.getStatus());
             pre.setInt(3, wh.getWareHouseID());
             n = pre.executeUpdate();
-        } catch (SQLException e) {
+            pre.close();
+        } catch (SQLException ex) {
+            Logger.getLogger(UserDAO.class.getName()).log(Level.SEVERE, null, ex);
         }
         return n;
     }
@@ -114,6 +124,8 @@ public class WareHouseDAO extends BaseDAO {
             if (rs.next()) {
                 return true;
             }
+            rs.close();
+            pre.close();
         } catch (SQLException ex) {
             Logger.getLogger(UserDAO.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -132,7 +144,10 @@ public class WareHouseDAO extends BaseDAO {
                 wh.setWareHouseAddress(rs.getString(2));
                 wh.setStatus(rs.getInt(3));
             }
-        } catch (SQLException e) {
+            rs.close();
+            pre.close();
+        } catch (SQLException ex) {
+            Logger.getLogger(UserDAO.class.getName()).log(Level.SEVERE, null, ex);
         }
         return wh;
     }
@@ -149,7 +164,10 @@ public class WareHouseDAO extends BaseDAO {
                         rs.getString(2),
                         rs.getInt(3)));
             }
-        } catch (SQLException e) {
+            rs.close();
+            pre.close();
+        } catch (SQLException ex) {
+            Logger.getLogger(UserDAO.class.getName()).log(Level.SEVERE, null, ex);
         }
         return list;
     }

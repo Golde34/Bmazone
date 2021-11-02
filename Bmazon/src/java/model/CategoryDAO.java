@@ -32,6 +32,8 @@ public class CategoryDAO extends BaseDAO {
                 Category x = new Category(categoryID, categoryName, status);
                 list.add(x);
             }
+            rs.close();
+            pre.close();
         } catch (SQLException ex) {
             Logger.getLogger(CategoryDAO.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -54,6 +56,8 @@ public class CategoryDAO extends BaseDAO {
                 Category x = new Category(categoryID, categoryName, status);
                 list.add(x);
             }
+            rs.close();
+            pre.close();
         } catch (SQLException ex) {
             Logger.getLogger(CategoryDAO.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -68,6 +72,7 @@ public class CategoryDAO extends BaseDAO {
             pre.setString(1, cate.getCategoryName());
             pre.setInt(2, cate.getStatus());
             n = pre.executeUpdate();
+            pre.close();
         } catch (SQLException ex) {
             Logger.getLogger(CategoryDAO.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -83,6 +88,7 @@ public class CategoryDAO extends BaseDAO {
             pre.setInt(2, cate.getStatus());
             pre.setInt(3, cate.getCategoryID());
             n = pre.executeUpdate();
+            pre.close();
         } catch (SQLException ex) {
             Logger.getLogger(CategoryDAO.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -102,6 +108,7 @@ public class CategoryDAO extends BaseDAO {
                 cat.setStatus(rs.getInt("status"));
                 return cat;
             }
+            pre.close();
         } catch (SQLException ex) {
         }
         return null;
@@ -118,6 +125,7 @@ public class CategoryDAO extends BaseDAO {
                 cat.setCategoryName(rs.getString("categoryName"));
                 cat.setStatus(rs.getInt("status"));
             }
+            pre.close();
         } catch (SQLException ex) {
         }
         return cat;
@@ -136,6 +144,8 @@ public class CategoryDAO extends BaseDAO {
                 categoryName = rs.getString("categoryName");
 
             }
+            rs.close();
+            pre.close();
         } catch (SQLException ex) {
             Logger.getLogger(CategoryDAO.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -150,6 +160,7 @@ public class CategoryDAO extends BaseDAO {
             pre.setInt(1, (status == 1 ? 1 : 0));
             pre.setInt(2, id);
             n = pre.executeUpdate();
+            pre.close();
         } catch (SQLException ex) {
             Logger.getLogger(CategoryDAO.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -164,6 +175,7 @@ public class CategoryDAO extends BaseDAO {
             pre = conn.prepareStatement(sql);
             pre.setInt(1, id);
             n = pre.executeUpdate();
+            pre.close();
         } catch (SQLException ex) {
             Logger.getLogger(CategoryDAO.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -172,11 +184,14 @@ public class CategoryDAO extends BaseDAO {
 
     public boolean checkExistCategoryName(String categoryName) {
         String sql = "SELECT * FROM Category WHERE categoryName = '" + categoryName + "'";
-        rs = dbConn.getData(sql);
         try {
+            pre=conn.prepareStatement(sql);
+            rs=pre.executeQuery();
             if (rs.next()) {
                 return true;
             }
+            rs.close();
+            pre.close();
         } catch (SQLException ex) {
             Logger.getLogger(CategoryDAO.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -186,11 +201,14 @@ public class CategoryDAO extends BaseDAO {
     public int getPageNumber(String search) {
         int num = 0;
         String xSql = "SELECT COUNT(*) FROM Category where categoryName like '%" + search + "%'";
-        ResultSet rs = dbConn.getData(xSql);
         try {
+            pre=conn.prepareStatement(xSql);
+            rs=pre.executeQuery();
             if (rs.next()) {
                 num = rs.getInt(1);
             }
+            rs.close();
+            pre.close();
         } catch (SQLException ex) {
             Logger.getLogger(UserDAO.class.getName()).log(Level.SEVERE, null, ex);
         }

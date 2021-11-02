@@ -242,7 +242,7 @@ public class ProductDAOTest {
     public void testGetProductBySellerPaging() {
         System.out.println("getProductBySellerPaging");
         ProductDAO instance = new ProductDAO();
-        assertNotNull(instance.getProductBySellerPaging(1, "1"));
+        assertNotNull(instance.getProductBySellerPaging(1, 1));
         // TODO review the generated test code and remove the default call to fail.
 
     }
@@ -251,7 +251,7 @@ public class ProductDAOTest {
     public void testGetProductBySellerPagingNotNull() {
         System.out.println("getProductBySellerPaging");
         ProductDAO instance = new ProductDAO();
-        assertEquals(0,instance.getProductBySellerPaging(10, "0").size());
+        assertEquals(0,instance.getProductBySellerPaging(10, 0).size());
         // TODO review the generated test code and remove the default call to fail.
 
     }

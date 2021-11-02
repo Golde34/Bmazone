@@ -29,6 +29,7 @@ public class ShipCompanyDAO extends BaseDAO {
             pre.setInt(1, status == 1 ? 1 : 0);
             pre.setInt(2, id);
             n = pre.executeUpdate();
+            pre.close();
         } catch (SQLException ex) {
             Logger.getLogger(ProductDAO.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -47,18 +48,21 @@ public class ShipCompanyDAO extends BaseDAO {
 //        return n;
 //    }
     public boolean checkExistCompanyName(String companyname) {
+        boolean isExist = false;
         String xSql = "SELECT * FROM `ShipCompany` where companyName like ?";
         try {
             pre = conn.prepareStatement(xSql);
             pre.setString(1, companyname);
             rs = pre.executeQuery();
             if (rs.next()) {
-                return true;
+                isExist = true;
             }
+            rs.close();
+            pre.close();
         } catch (SQLException ex) {
             Logger.getLogger(UserDAO.class.getName()).log(Level.SEVERE, null, ex);
         }
-        return false;
+        return isExist;
     }
 
     public int addShipCompany(ShipCompany sp) {
@@ -72,6 +76,7 @@ public class ShipCompanyDAO extends BaseDAO {
             pre.setInt(3, sp.getCommitDate());
             pre.setInt(4, sp.getStatus());
             n = pre.executeUpdate();
+            pre.close();
         } catch (SQLException e) {
         }
         return n;
@@ -88,6 +93,7 @@ public class ShipCompanyDAO extends BaseDAO {
             pre.setInt(4, sp.getStatus());
             pre.setInt(5, sp.getCompanyID());
             n = pre.executeUpdate();
+            pre.close();
         } catch (SQLException e) {
         }
         return n;
@@ -106,6 +112,8 @@ public class ShipCompanyDAO extends BaseDAO {
                 company.setUnitCost(rs.getDouble("unitCost"));
                 company.setCompanyID(rs.getInt("companyID"));
             }
+            rs.close();
+            pre.close();
         } catch (SQLException e) {
         }
         return company;
@@ -114,11 +122,14 @@ public class ShipCompanyDAO extends BaseDAO {
     public int getPageNumber(String search) {
         int num = 0;
         String xSql = "SELECT COUNT(*) FROM `ShipCompany` where companyName like '%" + search + "%' or commitDate like '%" + search + "%' or unitCost like '%" + search + "%'";
-        ResultSet rs = dbConn.getData(xSql);
         try {
+            pre=conn.prepareStatement(xSql);
+            rs=pre.executeQuery();
             if (rs.next()) {
                 num = rs.getInt(1);
             }
+            rs.close();
+            pre.close();
         } catch (SQLException ex) {
             Logger.getLogger(UserDAO.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -146,6 +157,8 @@ public class ShipCompanyDAO extends BaseDAO {
                         rs.getInt(4),
                         rs.getInt(5)));
             }
+            rs.close();
+            pre.close();
         } catch (SQLException ex) {
             Logger.getLogger(UserDAO.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -166,6 +179,8 @@ public class ShipCompanyDAO extends BaseDAO {
                         rs.getInt(4),
                         rs.getInt(5)));
             }
+            rs.close();
+            pre.close();
         } catch (SQLException e) {
         }
         return list;

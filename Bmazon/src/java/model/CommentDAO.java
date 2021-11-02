@@ -32,6 +32,7 @@ public class CommentDAO extends BaseDAO {
             pre.setString(3, obj.getContent());
             pre.setDouble(4, obj.getRating());
             n = pre.executeUpdate();
+            pre.close();
         } catch (SQLException ex) {
             Logger.getLogger(CommentDAO.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -46,6 +47,7 @@ public class CommentDAO extends BaseDAO {
             pre.setInt(1, status == 1 ? 1 : 0);
             pre.setInt(2, id);
             n = pre.executeUpdate();
+            pre.close();
         } catch (SQLException ex) {
             Logger.getLogger(ProductDAO.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -55,11 +57,14 @@ public class CommentDAO extends BaseDAO {
     public int getNumberOfComment(int pID) {
         int num = 0;
         String xSql = "SELECT COUNT(*) FROM `Comment` where productID = " + pID;
-        ResultSet rs = dbConn.getData(xSql);
         try {
+            pre=conn.prepareStatement(xSql);
+            rs=pre.executeQuery();
             if (rs.next()) {
                 num = rs.getInt(1);
             }
+            rs.close();
+            pre.close();
         } catch (SQLException ex) {
             Logger.getLogger(UserDAO.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -69,11 +74,14 @@ public class CommentDAO extends BaseDAO {
     public int getPageNumber(String search, int pid) {
         int num = 0;
         String xSql = "SELECT COUNT(*) FROM `Comment` where productID = " + pid + " and content like '%" + search + "%'";
-        ResultSet rs = dbConn.getData(xSql);
         try {
+            pre=conn.prepareStatement(xSql);
+            rs=pre.executeQuery();
             if (rs.next()) {
                 num = rs.getInt(1);
             }
+            rs.close();
+            pre.close();
         } catch (SQLException ex) {
             Logger.getLogger(UserDAO.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -106,6 +114,8 @@ public class CommentDAO extends BaseDAO {
                         rs.getDouble(5),
                         rs.getInt(6)));
             }
+            rs.close();
+            pre.close();
         } catch (SQLException ex) {
             Logger.getLogger(UserDAO.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -129,6 +139,8 @@ public class CommentDAO extends BaseDAO {
                 x.setStatus(rs.getInt("status"));
                 comments.add(x);
             }
+            rs.close();
+            pre.close();
         } catch (SQLException ex) {
             Logger.getLogger(CommentDAO.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -153,6 +165,8 @@ public class CommentDAO extends BaseDAO {
                 x.setStatus(rs.getInt("status"));
                 comments.add(x);
             }
+            rs.close();
+            pre.close();
         } catch (SQLException ex) {
             Logger.getLogger(CommentDAO.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -182,6 +196,8 @@ public class CommentDAO extends BaseDAO {
                 x.setStatus(rs.getInt("status"));
                 comments.add(x);
             }
+            rs.close();
+            pre.close();
         } catch (SQLException ex) {
             Logger.getLogger(CommentDAO.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -190,11 +206,14 @@ public class CommentDAO extends BaseDAO {
       public int getNumberOfCommentPaging(String search,int pID) {
         int num = 0;
         String xSql = "SELECT COUNT(*) FROM `Comment` where sellerID = " + pID+"and content like '%"+search+"%'";
-        ResultSet rs = dbConn.getData(xSql);
         try {
+            pre=conn.prepareStatement(xSql);
+            rs=pre.executeQuery();
             if (rs.next()) {
                 num = rs.getInt(1);
             }
+            rs.close();
+            pre.close();
         } catch (SQLException ex) {
             Logger.getLogger(UserDAO.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -221,6 +240,8 @@ public class CommentDAO extends BaseDAO {
                 x.setStatus(rs.getInt("status"));
                 comments.add(x);
             }
+            rs.close();
+            pre.close();
         } catch (SQLException ex) {
             Logger.getLogger(CommentDAO.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -244,6 +265,8 @@ public class CommentDAO extends BaseDAO {
                 x.setStatus(rs.getInt("status"));
                 comments.add(x);
             }
+            rs.close();
+            pre.close();
         } catch (SQLException ex) {
             Logger.getLogger(CommentDAO.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -267,6 +290,8 @@ public class CommentDAO extends BaseDAO {
                 x.setStatus(rs.getInt("status"));
                 comments.add(x);
             }
+            rs.close();
+            pre.close();
         } catch (SQLException ex) {
             Logger.getLogger(CommentDAO.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -296,6 +321,8 @@ public class CommentDAO extends BaseDAO {
             while (rs.next()) {
                 check = true;
             }
+            rs.close();
+            pre.close();
         } catch (SQLException ex) {
             Logger.getLogger(CommentDAO.class.getName()).log(Level.SEVERE, null, ex);
         }

@@ -25,11 +25,14 @@ public class OrderDAO extends BaseDAO {
     public int getPageNumber(String search) {
         int num = 0;
         String Sql = "SELECT COUNT(*) FROM `Order`";
-        ResultSet rs = dbConn.getData(Sql);
         try {
+            pre=conn.prepareStatement(Sql);
+            rs=pre.executeQuery();
             if (rs.next()) {
                 num = rs.getInt(1);
             }
+            rs.close();
+            pre.close();
         } catch (SQLException ex) {
             Logger.getLogger(UserDAO.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -64,6 +67,8 @@ public class OrderDAO extends BaseDAO {
                 o.setStatus(rs.getInt("status"));
                 list.add(o);
             }
+            rs.close();
+            pre.close();
         } catch (SQLException ex) {
             Logger.getLogger(UserDAO.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -118,6 +123,8 @@ public class OrderDAO extends BaseDAO {
                 o.setStatus(rs.getInt("status"));
                 list.add(o);
             }
+            rs.close();
+            pre.close();
         } catch (SQLException ex) {
             Logger.getLogger(UserDAO.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -143,6 +150,7 @@ public class OrderDAO extends BaseDAO {
             pre.setDouble(9, obj.getTotal());
             pre.setInt(10, obj.getState());
             n = pre.executeUpdate();
+            pre.close();
         } catch (SQLException ex) {
             Logger.getLogger(OrderDAO.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -157,6 +165,7 @@ public class OrderDAO extends BaseDAO {
             pre.setInt(1, status);
             pre.setInt(2, orderId);
             n = pre.executeUpdate();
+            pre.close();
         } catch (SQLException ex) {
             Logger.getLogger(OrderDAO.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -183,6 +192,7 @@ public class OrderDAO extends BaseDAO {
             pre.setInt(12, obj.getState());
             pre.setInt(13, obj.getOrderID());
             n = pre.executeUpdate();
+            pre.close();
         } catch (SQLException ex) {
             Logger.getLogger(OrderDAO.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -274,9 +284,10 @@ public class OrderDAO extends BaseDAO {
     public Order getOrderByOrderID(int orderid) {
         ArrayList<Order> list = new ArrayList<>();
         String sql = "select * from `Order` where orderID = " + orderid;
-        ResultSet rs = dbConn.getData(sql);
         Order o = null;
         try {
+            pre=conn.prepareStatement(sql);
+            rs=pre.executeQuery();
             while (rs.next()) {
                 o = new Order();
                 o.setOrderID(rs.getInt("orderID"));
@@ -296,6 +307,8 @@ public class OrderDAO extends BaseDAO {
                 o.setStatus(rs.getInt("status"));
 
             }
+            rs.close();
+            pre.close();
         } catch (SQLException ex) {
             Logger.getLogger(OrderDAO.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -305,8 +318,9 @@ public class OrderDAO extends BaseDAO {
     public List<Order> getOrderByUser(int userID) {
         List<Order> list = new ArrayList<>();
         String sql = "select * from `Order` where userID = " + userID + " order by orderDate desc ";
-        ResultSet rs = dbConn.getData(sql);
         try {
+            pre=conn.prepareStatement(sql);
+            rs=pre.executeQuery();
             while (rs.next()) {
                 Order o = new Order();
                 o.setOrderID(rs.getInt("orderID"));
@@ -326,31 +340,42 @@ public class OrderDAO extends BaseDAO {
                 o.setStatus(rs.getInt("status"));
                 list.add(o);
             }
+            rs.close();
+            pre.close();
         } catch (SQLException e) {
         }
         return list;
     }
 
     public Order getLatestOrder(String userID) {
+        Order o = new Order();
         String sql = "SELECT * FROM `Order` WHERE userID = '" + userID + "' ORDER BY OrderID desc limit 0,1";
-        ResultSet rs = dbConn.getData(sql);
         try {
+            pre=conn.prepareStatement(sql);
+            rs=pre.executeQuery();
             if (rs.next()) {
-                Order order = new Order(rs.getInt("orderID"), rs.getString("userID"),
-                        rs.getDate("orderDate"), rs.getDate("requiredDate"),
-                        rs.getDate("shippedDate"), rs.getString("shipName"),
-                        rs.getString("shipAddress"), rs.getString("shipCity"),
-                        rs.getString("shipPhone"), rs.getDouble("shipMoney"),
-                        rs.getDouble("total"), rs.getInt("companyID"),
-                        rs.getString("paymentMethod"),
-                        rs.getInt("state"), rs.getInt("status")
-                );
-                return order;
+                o.setOrderID(rs.getInt("orderID"));
+                o.setUserID(rs.getString("userID"));
+                o.setOrderDate(rs.getDate("orderDate"));
+                o.setRequiredDate(rs.getDate("requiredDate"));
+                o.setShippedDate(rs.getDate("shippedDate"));
+                o.setShipName(rs.getString("shipname"));
+                o.setShipAddress(rs.getString("shipaddress"));
+                o.setShipCity(rs.getString("shipcity"));
+                o.setShipPhone(rs.getString("shipphone"));
+                o.setCompanyID(rs.getInt("companyID"));
+                o.setShipMoney(rs.getDouble("shipmoney"));
+                o.setPaymentMethod(rs.getString("paymentmethod"));
+                o.setTotal(rs.getDouble("total"));
+                o.setState(rs.getInt("state"));
+                o.setStatus(rs.getInt("status"));
             }
+            rs.close();
+            pre.close();
         } catch (SQLException ex) {
             Logger.getLogger(UserDAO.class.getName()).log(Level.SEVERE, null, ex);
         }
-        return null;
+        return o;
     }
 
     public int changeState(int id, int state) {
@@ -361,6 +386,7 @@ public class OrderDAO extends BaseDAO {
             pre.setInt(1, state);
             pre.setInt(2, id);
             n = pre.executeUpdate();
+            pre.close();
         } catch (SQLException ex) {
             Logger.getLogger(UserDAO.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -430,6 +456,8 @@ public class OrderDAO extends BaseDAO {
                 o.setStatus(rs.getInt("status"));
                 list.add(o);
             }
+            rs.close();
+            pre.close();
         } catch (SQLException ex) {
             Logger.getLogger(OrderDAO.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -483,6 +511,8 @@ public class OrderDAO extends BaseDAO {
             if (rs.next()) {
                 count = rs.getInt("NoUser");
             }
+            rs.close();
+            pre.close();
         } catch (SQLException ex) {
             Logger.getLogger(UserDAO.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -498,6 +528,8 @@ public class OrderDAO extends BaseDAO {
             if (rs.next()) {
                 count = rs.getInt("NoProduct");
             }
+            rs.close();
+            pre.close();
         } catch (SQLException ex) {
             Logger.getLogger(UserDAO.class.getName()).log(Level.SEVERE, null, ex);
         }

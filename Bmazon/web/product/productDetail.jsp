@@ -96,7 +96,7 @@
                                         <label for="star<%=star%>" title="text"><%=star%> stars</label>
                                         <%}
                                     }%>
-                                    </div>
+                                    </div><span><%=countNumberComment%> reviews</span>
                                 </div>
 
                                 <%double price1 = Double.parseDouble(daoProductType.getProductPrice(product.getProductID()));%>

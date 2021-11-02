@@ -53,6 +53,7 @@ public class UserDAO extends BaseDAO {
             pre.setInt(20, obj.getSystemRole());
             pre.setInt(21, obj.getStatus());
             n = pre.executeUpdate();
+            pre.close();
         } catch (SQLException ex) {
             Logger.getLogger(UserDAO.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -66,6 +67,7 @@ public class UserDAO extends BaseDAO {
             pre.setString(1, newPass);
             pre.setString(2, username);
             int n = pre.executeUpdate();
+            pre.close();
             return n;
         } catch (SQLException ex) {
             Logger.getLogger(UserDAO.class.getName()).log(Level.SEVERE, null, ex);
@@ -81,6 +83,7 @@ public class UserDAO extends BaseDAO {
             pre.setInt(1, (status == 1 ? 1 : 0));
             pre.setString(2, username);
             n = pre.executeUpdate();
+            pre.close();
         } catch (SQLException ex) {
             Logger.getLogger(UserDAO.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -95,6 +98,7 @@ public class UserDAO extends BaseDAO {
             pre.setInt(1, (status == 1 ? 1 : 0));
             pre.setInt(2, id);
             n = pre.executeUpdate();
+            pre.close();
         } catch (SQLException ex) {
             Logger.getLogger(UserDAO.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -102,65 +106,84 @@ public class UserDAO extends BaseDAO {
     }
 
     public boolean checkExistUserName(String username) {
+        boolean isExist = false;
         String sql = "SELECT * FROM `User` WHERE username = '" + username + "'";
-        ResultSet rs = dbConn.getData(sql);
         try {
+            pre = conn.prepareStatement(sql);
+            rs = pre.executeQuery();
             if (rs.next()) {
-                return true;
+                isExist = true;
             }
+            rs.close();
+            pre.close();
         } catch (SQLException ex) {
             Logger.getLogger(UserDAO.class.getName()).log(Level.SEVERE, null, ex);
         }
-        return false;
+        return isExist;
     }
 
     public boolean checkExistPhone(String phone) {
+        boolean isExist = false;
         String sql = "SELECT * FROM `User` WHERE phoneNumber = '" + phone + "'";
-        ResultSet rs = dbConn.getData(sql);
         try {
+            pre = conn.prepareStatement(sql);
+            rs = pre.executeQuery();
             if (rs.next()) {
-                return true;
+                isExist = true;
             }
+            rs.close();
+            pre.close();
         } catch (SQLException ex) {
             Logger.getLogger(UserDAO.class.getName()).log(Level.SEVERE, null, ex);
         }
-        return false;
+        return isExist;
     }
 
     public boolean checkExistMail(String mail) {
+        boolean isExist = false;
         String sql = "SELECT * FROM `User` WHERE email = '" + mail + "'";
-        ResultSet rs = dbConn.getData(sql);
         try {
+            pre = conn.prepareStatement(sql);
+            rs = pre.executeQuery();
             if (rs.next()) {
-                return true;
+                isExist = true;
             }
+            rs.close();
+            pre.close();
         } catch (SQLException ex) {
             Logger.getLogger(UserDAO.class.getName()).log(Level.SEVERE, null, ex);
         }
-        return false;
+        return isExist;
     }
 
     public boolean checkExistUserNameAndMail(String username, String mail) {
+        boolean isExist = false;
         String sql = "SELECT * FROM `User` WHERE username = '" + username + "' and email = '" + mail + "' and status = 1";
-        ResultSet rs = dbConn.getData(sql);
         try {
+            pre = conn.prepareStatement(sql);
+            rs = pre.executeQuery();
             if (rs.next()) {
-                return true;
+                isExist = true;
             }
+            rs.close();
+            pre.close();
         } catch (SQLException ex) {
             Logger.getLogger(UserDAO.class.getName()).log(Level.SEVERE, null, ex);
         }
-        return false;
+        return isExist;
     }
 
     public int getPageNumber(String search) {
         int num = 0;
         String xSql = "SELECT COUNT(*) FROM `User` where fullname like '%" + search + "%' or email like '%" + search + "%' or phoneNumber like '%" + search + "%' or address like '%" + search + "%'";
-        ResultSet rs = dbConn.getData(xSql);
         try {
+            pre = conn.prepareStatement(xSql);
+            rs = pre.executeQuery();
             if (rs.next()) {
                 num = rs.getInt(1);
             }
+            rs.close();
+            pre.close();
         } catch (SQLException ex) {
             Logger.getLogger(UserDAO.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -190,6 +213,8 @@ public class UserDAO extends BaseDAO {
                         rs.getInt("status"));
                 list.add(user);
             }
+            rs.close();
+            pre.close();
         } catch (SQLException ex) {
             Logger.getLogger(UserDAO.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -198,8 +223,9 @@ public class UserDAO extends BaseDAO {
 
     public User getUserByUsername(String username) {
         String sql = "SELECT * FROM `User` WHERE username = '" + username + "' and status=1";
-        ResultSet rs = dbConn.getData(sql);
         try {
+            pre = conn.prepareStatement(sql);
+            rs = pre.executeQuery();
             if (rs.next()) {
                 User user = new User(rs.getString("userID"), rs.getString("username"),
                         rs.getString("password"), rs.getString("email"),
@@ -214,6 +240,8 @@ public class UserDAO extends BaseDAO {
                         rs.getInt("status"));
                 return user;
             }
+            rs.close();
+            pre.close();
         } catch (SQLException ex) {
             Logger.getLogger(UserDAO.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -222,8 +250,9 @@ public class UserDAO extends BaseDAO {
 
     public User getUserById(String id) {
         String sql = "SELECT * FROM `User` WHERE userID = '" + id + "'";
-        ResultSet rs = dbConn.getData(sql);
         try {
+            pre = conn.prepareStatement(sql);
+            rs = pre.executeQuery();
             if (rs.next()) {
                 User user = new User(rs.getString("userID"), rs.getString("username"),
                         rs.getString("password"), rs.getString("email"),
@@ -238,6 +267,8 @@ public class UserDAO extends BaseDAO {
                         rs.getInt("status"));
                 return user;
             }
+            rs.close();
+            pre.close();
         } catch (SQLException ex) {
             Logger.getLogger(UserDAO.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -246,8 +277,9 @@ public class UserDAO extends BaseDAO {
 
     public User getUserBySellerId(Seller s) {
         String sql = "select * from `User` WHERE userID = " + s.getUserID();
-        ResultSet rs = dbConn.getData(sql);
         try {
+            pre = conn.prepareStatement(sql);
+            rs = pre.executeQuery();
             if (rs.next()) {
                 User user = new User(rs.getString("userID"), rs.getString("username"),
                         rs.getString("password"), rs.getString("email"),
@@ -262,6 +294,8 @@ public class UserDAO extends BaseDAO {
                         rs.getInt("status"));
                 return user;
             }
+            rs.close();
+            pre.close();
         } catch (SQLException ex) {
             Logger.getLogger(UserDAO.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -271,8 +305,9 @@ public class UserDAO extends BaseDAO {
     public ArrayList<User> getAllUser() {
         ArrayList<User> list = new ArrayList<>();
         String sql = "SELECT * FROM `User`";
-        ResultSet rs = dbConn.getData(sql);
         try {
+            pre=conn.prepareStatement(sql);
+            rs=pre.executeQuery();
             while (rs.next()) {
                 User user = new User(rs.getString("userID"), rs.getString("username"),
                         rs.getString("password"), rs.getString("email"),
@@ -287,6 +322,8 @@ public class UserDAO extends BaseDAO {
                         rs.getInt("status"));
                 list.add(user);
             }
+            rs.close();
+            pre.close();
         } catch (SQLException ex) {
             Logger.getLogger(UserDAO.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -306,8 +343,9 @@ public class UserDAO extends BaseDAO {
         }
 
         String sql = "SELECT * FROM `User` WHERE status = 1 and username like '%" + uName + "%' " + s1 + " " + s2;
-        ResultSet rs = dbConn.getData(sql);
         try {
+            pre=conn.prepareStatement(sql);
+            rs=pre.executeQuery();
             while (rs.next()) {
                 User user = new User(rs.getString("userID"), rs.getString("username"),
                         rs.getString("password"), rs.getString("email"),
@@ -322,6 +360,8 @@ public class UserDAO extends BaseDAO {
                         rs.getInt("status"));
                 list.add(user);
             }
+            rs.close();
+            pre.close();
         } catch (SQLException ex) {
             Logger.getLogger(UserDAO.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -333,13 +373,16 @@ public class UserDAO extends BaseDAO {
         UserDAO uDao = new UserDAO();
         RoleDAO rDao = new RoleDAO();
         String sql = "SELECT u.userID, r.roleID FROM `User` u INNER JOIN [Role] r ON u.systemRole = r.roleID  where u.[status]=1";
-        ResultSet rs = dbConn.getData(sql);
         try {
+            pre=conn.prepareStatement(sql);
+            rs=pre.executeQuery();
             while (rs.next()) {
                 User u = uDao.getUserById(rs.getString("userID"));
                 Role r = rDao.getRoleId(rs.getInt("roleID"));
                 map.put(u, r);
             }
+            rs.close();
+            pre.close();
         } catch (SQLException ex) {
             Logger.getLogger(UserDAO.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -357,13 +400,16 @@ public class UserDAO extends BaseDAO {
                 + "ROW_NUMBER() over (order by userID) as RowNum\n"
                 + "  FROM [Bmazon].[dbo].[User] u INNER JOIN [Role] r ON u.systemRole = r.roleID where u.fullname like '%" + search + "%' or r.roleName like '%" + search + "%')T\n"
                 + "where T.RowNum between ((@PageNo-1)*@PageSize)+1 and (@PageNo*@PageSize)";
-        ResultSet rs = dbConn.getData(xSql);
         try {
+            pre=conn.prepareStatement(xSql);
+            rs=pre.executeQuery();
             while (rs.next()) {
                 User u = uDao.getUserById(rs.getString("userID"));
                 Role r = rDao.getRoleId(rs.getInt("roleID"));
                 map.put(u, r);
             }
+            rs.close();
+            pre.close();
         } catch (SQLException ex) {
             Logger.getLogger(UserDAO.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -379,6 +425,7 @@ public class UserDAO extends BaseDAO {
             pre.setString(2, username);
             pre.setString(3, mail);
             n = pre.executeUpdate();
+            pre.close();
         } catch (SQLException ex) {
             Logger.getLogger(UserDAO.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -417,6 +464,7 @@ public class UserDAO extends BaseDAO {
             pre.setInt(22, obj.getStatus());
             pre.setString(23, obj.getUserId());
             n = pre.executeUpdate();
+            pre.close();
         } catch (SQLException ex) {
             Logger.getLogger(UserDAO.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -431,6 +479,7 @@ public class UserDAO extends BaseDAO {
             pre.setDouble(1, obj.getWallet() + amount);
             pre.setString(2, obj.getUserId());
             n = pre.executeUpdate();
+            pre.close();
         } catch (SQLException ex) {
             Logger.getLogger(UserDAO.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -445,6 +494,7 @@ public class UserDAO extends BaseDAO {
             pre.setDouble(1, obj.getWallet() - amount);
             pre.setString(2, obj.getUserId());
             n = pre.executeUpdate();
+            pre.close();
         } catch (SQLException ex) {
             Logger.getLogger(UserDAO.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -468,6 +518,7 @@ public class UserDAO extends BaseDAO {
             pre.setString(8, obj.getPassword());
             pre.setString(9, obj.getUserId());
             n = pre.executeUpdate();
+            pre.close();
         } catch (SQLException ex) {
             Logger.getLogger(UserDAO.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -486,6 +537,7 @@ public class UserDAO extends BaseDAO {
             pre.setString(4, obj.getPassword());
             pre.setString(5, obj.getUserId());
             n = pre.executeUpdate();
+            pre.close();
         } catch (SQLException ex) {
             Logger.getLogger(UserDAO.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -500,6 +552,7 @@ public class UserDAO extends BaseDAO {
             pre.setInt(1, activityPoint);
             pre.setString(2, obj.getUserId());
             n = pre.executeUpdate();
+            pre.close();
         } catch (SQLException ex) {
             Logger.getLogger(UserDAO.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -514,6 +567,7 @@ public class UserDAO extends BaseDAO {
             pre.setString(1, uploadImg);
             pre.setString(2, obj.getUserId());
             n = pre.executeUpdate();
+            pre.close();
         } catch (SQLException ex) {
             Logger.getLogger(UserDAO.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -528,6 +582,7 @@ public class UserDAO extends BaseDAO {
             pre.setString(1, uploadImg);
             pre.setString(2, obj.getUserId());
             n = pre.executeUpdate();
+            pre.close();
         } catch (SQLException ex) {
             Logger.getLogger(UserDAO.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -556,6 +611,8 @@ public class UserDAO extends BaseDAO {
                         rs.getInt("status"));
                 return user;
             }
+            rs.close();
+            pre.close();
         } catch (SQLException ex) {
             Logger.getLogger(UserDAO.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -583,6 +640,8 @@ public class UserDAO extends BaseDAO {
                         rs.getInt("status"));
                 return user;
             }
+            rs.close();
+            pre.close();
         } catch (SQLException ex) {
             Logger.getLogger(UserDAO.class.getName()).log(Level.SEVERE, null, ex);
         }

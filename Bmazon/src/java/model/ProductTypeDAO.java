@@ -29,6 +29,8 @@ public class ProductTypeDAO extends BaseDAO {
             if (rs.next()) {
                 num = rs.getInt(1);
             }
+            rs.close();
+            pre.close();
         } catch (SQLException ex) {
             Logger.getLogger(UserDAO.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -68,6 +70,7 @@ public class ProductTypeDAO extends BaseDAO {
             pre.setInt(1, quantity);
             pre.setString(2, ProTypeId);
             n = pre.executeUpdate();
+            pre.close();
         } catch (SQLException e) {
         }
         return n;
@@ -90,6 +93,8 @@ public class ProductTypeDAO extends BaseDAO {
                         rs.getInt(7),
                         rs.getInt(8)));
             }
+            rs.close();
+            pre.close();
         } catch (SQLException e) {
         }
         return list;
@@ -113,6 +118,8 @@ public class ProductTypeDAO extends BaseDAO {
                         rs.getInt(7),
                         rs.getInt(8));
             }
+            rs.close();
+            pre.close();
         } catch (SQLException e) {
         }
         return ptype;
@@ -139,6 +146,8 @@ public class ProductTypeDAO extends BaseDAO {
                         rs.getInt(7),
                         rs.getInt(8));
             }
+            rs.close();
+            pre.close();
         } catch (SQLException e) {
         }
         return ptype;
@@ -162,6 +171,8 @@ public class ProductTypeDAO extends BaseDAO {
                         rs.getInt(7),
                         rs.getInt(8));
             }
+            rs.close();
+            pre.close();
         } catch (SQLException e) {
         }
         return ptype;
@@ -179,6 +190,8 @@ public class ProductTypeDAO extends BaseDAO {
             while (rs.next()) {
                 quantity = rs.getInt("quantity");
             }
+            rs.close();
+            pre.close();
         } catch (SQLException e) {
         }
         return quantity;
@@ -194,6 +207,8 @@ public class ProductTypeDAO extends BaseDAO {
             if (rs.next()) {
                 pid = rs.getInt("productID");
             }
+            rs.close();
+            pre.close();
         } catch (SQLException e) {
 
         }
@@ -218,6 +233,8 @@ public class ProductTypeDAO extends BaseDAO {
                         rs.getInt(7),
                         rs.getInt(8)));
             }
+            rs.close();
+            pre.close();
         } catch (SQLException e) {
         }
         return list;
@@ -243,6 +260,8 @@ public class ProductTypeDAO extends BaseDAO {
                 pt.setStatus(rs.getInt("status"));
 
             }
+            rs.close();
+            pre.close();
         } catch (SQLException e) {
         }
         return pt;
@@ -266,6 +285,8 @@ public class ProductTypeDAO extends BaseDAO {
                         rs.getInt(7),
                         rs.getInt(8)));
             }
+            rs.close();
+            pre.close();
         } catch (SQLException e) {
         }
         return list;
@@ -280,6 +301,8 @@ public class ProductTypeDAO extends BaseDAO {
             while (rs.next()) {
                 list.add(rs.getString("size"));
             }
+            rs.close();
+            pre.close();
         } catch (SQLException e) {
         }
         return list;
@@ -294,6 +317,8 @@ public class ProductTypeDAO extends BaseDAO {
             while (rs.next()) {
                 list.add(rs.getString("color"));
             }
+            rs.close();
+            pre.close();
         } catch (SQLException e) {
         }
         return list;
@@ -308,6 +333,8 @@ public class ProductTypeDAO extends BaseDAO {
             while (rs.next()) {
                 price = rs.getString("price");
             }
+            rs.close();
+            pre.close();
         } catch (SQLException e) {
         }
         return price;
@@ -328,6 +355,7 @@ public class ProductTypeDAO extends BaseDAO {
             pre.setInt(7, p.getQuantity());
             pre.setInt(8, p.getStatus());
             n = pre.executeUpdate();
+            pre.close();
         } catch (SQLException e) {
         }
         return n;
@@ -347,6 +375,7 @@ public class ProductTypeDAO extends BaseDAO {
             pre.setInt(7, p.getStatus());
             pre.setString(8, p.getProductTypeId());
             n = pre.executeUpdate();
+            pre.close();
         } catch (SQLException e) {
         }
         return n;
@@ -359,6 +388,7 @@ public class ProductTypeDAO extends BaseDAO {
             pre = conn.prepareStatement(sql);
             pre.setString(1, ProTypeId);
             n = pre.executeUpdate();
+            pre.close();
         } catch (SQLException e) {
         }
         return n;
@@ -372,6 +402,7 @@ public class ProductTypeDAO extends BaseDAO {
             pre.setInt(1, (status == 1 ? 1 : 0));
             pre.setString(2, id);
             n = pre.executeUpdate();
+            pre.close();
         } catch (SQLException ex) {
             Logger.getLogger(ProductDAO.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -396,6 +427,8 @@ public class ProductTypeDAO extends BaseDAO {
                         rs.getInt(7),
                         rs.getInt(8)));
             }
+            rs.close();
+            pre.close();
         } catch (SQLException e) {
         }
         return list;
@@ -409,6 +442,8 @@ public class ProductTypeDAO extends BaseDAO {
             if (rs.next()) {
                 return true;
             }
+            rs.close();
+            pre.close();
         } catch (SQLException ex) {
             Logger.getLogger(UserDAO.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -423,6 +458,8 @@ public class ProductTypeDAO extends BaseDAO {
             if (rs.next()) {
                 return true;
             }
+            rs.close();
+            pre.close();
         } catch (SQLException ex) {
             Logger.getLogger(UserDAO.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -464,6 +501,8 @@ public class ProductTypeDAO extends BaseDAO {
                 pt.setStatus(rs.getInt("status"));
                 list.add(pt);
             }
+            rs.close();
+            pre.close();
         } catch (SQLException ex) {
             Logger.getLogger(UserDAO.class.getName()).log(Level.SEVERE, null, ex);
         }
