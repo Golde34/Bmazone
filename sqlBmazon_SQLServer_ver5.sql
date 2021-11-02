@@ -191,20 +191,13 @@ CREATE TABLE [Comment](
 
 )
 
-/*CREATE TABLE Cart(
-	userID,
-	productID,
-	quantity,
-	price
-)*/
-
-/*CREATE TABLE Sales(
-	ProductTypeID,
-	Sale,
-	status
-) */
-
---CREATE TABLE Sale
---CREATE TABLE Seller
---CREATE TABLE ShopDetail
---Sua insert rating thanh 5 sao
+CREATE TABLE [Transaction] (
+	transactionID int not null PRIMARY KEY identity(1,1),
+	userID int not null,
+	pin nvarchar(25),
+	[money] money,
+	[history] datetime,
+	[state] int, 
+	[status] bit,
+	FOREIGN KEY (userID) REFERENCES [User](userID) 
+)

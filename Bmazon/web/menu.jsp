@@ -1,4 +1,4 @@
-<%@page import="java.text.DecimalFormat"%>
+F<%@page import="java.text.DecimalFormat"%>
 <%@page import="java.text.NumberFormat"%>
 <%@page import="java.util.Locale"%>
 <%@page import="java.util.Collections"%>
@@ -138,7 +138,7 @@
 
                                 <div class="col medium-12 small-12 large-12"  >
                                     <div class="col-inner text-right" >
-                                        <p class="orange" style="float: right" ><a href="HomePageControllerMap?service=list">Xem Tất Cả &gt;</a></p>
+                                        <p class="orange" style="float: right" ><a href="HomePageControllerMap?service=list">Show All &gt;</a></p>
                                     </div>
                                 </div>
 
@@ -290,7 +290,7 @@
                                         <h3>New Arrival</h3>
                                     </div>
                                     <div class="col-inner text-right" >
-                                        <p class="orange" ><a href="HomePageControllerMap?service=list">Xem Tất Cả &gt;</a></p>
+                                        <p class="orange" ><a href="HomePageControllerMap?service=list">Show All &gt;</a></p>
                                     </div>
                                 </div>
 
@@ -383,7 +383,7 @@
                                         <h4><img src="images/Apple1.jpg"  style="height: 40px"></h4>
                                     </div>
                                     <div class="col-inner text-right" >
-                                        <p class="orange" ><a href="HomepageControllerMap?service=">Xem Tất Cả &gt;</a></p>
+                                        <p class="orange" ><a href="HomepageControllerMap?service=">Show All &gt;</a></p>
                                     </div>
                                 </div>
 
