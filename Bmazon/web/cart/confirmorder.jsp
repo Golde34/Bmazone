@@ -3,6 +3,7 @@
     Created on : Sep 12, 2021, 3:07:53 PM
     Author     : Admin
 --%>
+<%@page import="model.OrderDetailDAO"%>
 <%@page import="entity.OrderDetail"%>
 <%@page import="entity.Order"%>
 <%@page import="model.ShipCompanyDAO"%>
@@ -17,8 +18,10 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <% DecimalFormat nf = new DecimalFormat("###,###,###");
-    Order o = (Order) request.getAttribute("order");
-    ArrayList<OrderDetail> list = (ArrayList<OrderDetail>) request.getAttribute("DetailList");
+//    Order o = (Order) request.getAttribute("order");
+//    ArrayList<OrderDetail> list = (ArrayList<OrderDetail>) request.getAttribute("DetailList");
+    ArrayList<Order> listOrder = (ArrayList<Order>) request.getAttribute("listOrder");
+    OrderDetailDAO daoOrderDetail = new OrderDetailDAO();
 %>
 
 <html>
@@ -76,7 +79,8 @@
 
                                             <section class="woocommerce-order-details">
                                                 <h2 class="woocommerce-order-details__title">Order Detail</h2>
-
+                                                <%for(Order order: listOrder){
+                                                            ArrayList<OrderDetail> list = daoOrderDetail.getAllOrderDetail(order.getOrderID());%>
                                                 <table class="woocommerce-table woocommerce-table--order-details shop_table order_details">
 
                                                     <thead>
@@ -87,8 +91,8 @@
                                                     </thead>
 
                                                     <tbody>
-                                                        <%for (OrderDetail od : list) {
-                                                           
+                                                        
+                                                            <%for (OrderDetail od : list) {
                                                         double x=od.getPrice();
                                                         %>
                                                         <tr class="woocommerce-table__line-item order_item">
@@ -100,14 +104,15 @@
                                                                 <span class="woocommerce-Price-amount amount"><%=nf.format(od.getPrice())%>&nbsp;<span class="woocommerce-Price-currencySymbol">&#8363;</span></span>	</td>
 
                                                         </tr>
-                                                        <% } %>
+                                                    <hr>
+                                                        <% }%>
 
                                                     </tbody>
 
                                                     <tfoot>
                                                         <tr>
                                                             <th scope="row">Sub Total:</th>
-                                                            <td><span class="woocommerce-Price-amount amount"><%=nf.format(o.getTotal())%>&nbsp;<span class="woocommerce-Price-currencySymbol">&#8363;</span></span></td>
+                                                            <td><span class="woocommerce-Price-amount amount"><%=nf.format(order.getTotal())%>&nbsp;<span class="woocommerce-Price-currencySymbol">&#8363;</span></span></td>
                                                         </tr>
                                                         <tr>
                                                             <th scope="row">Delivery:</th>
@@ -115,15 +120,15 @@
                                                         </tr>
                                                         <tr>
                                                             <th scope="row">Payment Method:</th>
-                                                            <td><%=o.getPaymentMethod()%></td>
+                                                            <td><%=order.getPaymentMethod()%></td>
                                                         </tr>
                                                         <tr>
                                                             <th scope="row">Total:</th>
-                                                            <td><span class="woocommerce-Price-amount amount"><%=nf.format(o.getTotal())%>&nbsp;<span class="woocommerce-Price-currencySymbol">&#8363;</span></span></td>
+                                                            <td><span class="woocommerce-Price-amount amount"><%=nf.format(order.getTotal())%>&nbsp;<span class="woocommerce-Price-currencySymbol">&#8363;</span></span></td>
                                                         </tr>
                                                     </tfoot>
                                                 </table>
-
+                                                        <%}%>
                                             </section>
 
 
@@ -134,24 +139,25 @@
                                                 <p class="success-color woocommerce-notice woocommerce-notice--success woocommerce-thankyou-order-received"><strong>Cảm ơn bạn. Đơn hàng của bạn đã được nhận.</strong></p>
 
                                                 <ul class="woocommerce-order-overview woocommerce-thankyou-order-details order_details">
-
+                                                    <% for (Order order : listOrder){%>
                                                     <li class="woocommerce-order-overview__order order">
-                                                        OrderID:						<strong><%=o.getOrderID()%></strong>
+                                                        OrderID:						<strong><%=order.getOrderID()%></strong>
                                                     </li>
 
                                                     <li class="woocommerce-order-overview__date date">
-                                                        Order Date:							<strong><%=o.getOrderDate()%></strong>
+                                                        Order Date:							<strong><%=order.getOrderDate()%></strong>
                                                     </li>
 
 
                                                     <li class="woocommerce-order-overview__total total">
-                                                        Total:						<strong><span class="woocommerce-Price-amount amount"><%=nf.format(o.getTotal())%>&nbsp;<span class="woocommerce-Price-currencySymbol">&#8363;</span></span></strong>
+                                                        Total:						<strong><span class="woocommerce-Price-amount amount"><%=nf.format(order.getTotal())%>&nbsp;<span class="woocommerce-Price-currencySymbol">&#8363;</span></span></strong>
                                                     </li>
 
                                                     <li class="woocommerce-order-overview__payment-method method">
-                                                       Payment Method:							<strong><%=o.getPaymentMethod()%></strong>
+                                                       Payment Method:							<strong><%=order.getPaymentMethod()%></strong>
                                                     </li>
-
+                                                    <hr>
+                                                    <%}%>
                                                 </ul>
 
                                                 <div class="clear"></div>
