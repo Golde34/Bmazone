@@ -17,6 +17,7 @@ import java.sql.Date;
 import java.text.DecimalFormat;
 import java.text.NumberFormat;
 import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -157,7 +158,30 @@ public class SellerController extends HttpServlet {
             if (service.equalsIgnoreCase("showpageorder")) {
                 serviceShowPageOrder(request, response);
             }
-
+            
+            // <editor-fold defaultstate="collapsed" desc="Order Response service. Click on the + sign on the left to edit the code.">
+            //OrderResponse
+            if (service.equalsIgnoreCase("orderResponse")) {
+                serviceOrderResponse(service, request, response);
+            }
+            //PagingOrderRespone
+            if (service.equalsIgnoreCase("pagingOrderResponse")) {
+                servicePagingOrderResponse(service, request, response);
+            }
+            //PagingOrderRespone
+            if (service.equalsIgnoreCase("showPageOrderResponse")) {
+                serviceShowPageOrderResponse(service, request, response);
+            }
+            //Order Detail
+//            if (service.equalsIgnoreCase("orderDetail")) {
+//                serviceOrderDetail(service, request, response);
+//            }
+            //Handle Seller Request
+            if (service.equalsIgnoreCase("handleOrder")) {
+                serviceHandleOrder(service, request, response);
+            }
+            //</editor-fold>
+            
             //Order Detail
             if (service.equalsIgnoreCase("orderdetail")) {
                 serviceOrderDetail(request, response);
@@ -990,7 +1014,175 @@ public class SellerController extends HttpServlet {
         sendDispatcher(request, response, "seller/orderdetail.jsp");
     }
     //</editor-fold>
+    
+    // <editor-fold defaultstate="collapsed" desc="Order Response Method. Click on the + sign on the left to edit the code.">
+    public void serviceOrderResponse(String service, HttpServletRequest request, HttpServletResponse response) {
+        User account = (User) request.getSession().getAttribute("currUser");
+        String userID = account.getUserId();
+        Seller seller = sellerDAO.getSellerByUserID(Integer.parseInt(userID));
+        int sellerID = seller.getSellerID();
+        List<Order> listOder = oDAO.getPagingOrderWaitedBySeller(1, 10000000, "", sellerID);
+        List<Order> listPaging = oDAO.getPagingOrderWaitedBySeller(1, 5, "", sellerID);
+        int totalPage = listOder.size() / 5;
+        if (listOder.size() != totalPage * 5) {
+            totalPage += 1;
+        }
+        request.setAttribute("index", 1);
+        request.setAttribute("totalPage", totalPage);
+        request.setAttribute("listOrder", listPaging);
+        sendDispatcher(request, response, "seller/orderResponse.jsp");
+    }
 
+    public void servicePagingOrderResponse(String service, HttpServletRequest request, HttpServletResponse response) throws IOException {
+        PrintWriter pr = response.getWriter();
+        SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy");
+        request.setAttribute("service", service);
+        int index = 1, numOfRow = 5;
+        String search = request.getParameter("search");
+        if (request.getParameter("row") != null) {
+            numOfRow = Integer.parseInt(request.getParameter("row"));
+        }
+        if (request.getParameter("index") != null) {
+            index = Integer.parseInt(request.getParameter("index"));
+        }
+        List<Order> listPaging = oDAO.getAllPagingOrder(index, numOfRow, "");
+        request.setAttribute("index", index);
+        request.setAttribute("listOrder", listPaging);
+        for (Order order : listPaging) {
+            pr.print("<tr>"
+                    + "<td>" + order.getShipName() + " </td>"
+                    + "<td>" + sdf.format(order.getOrderDate()) + "</td>"
+                    + "<td>" + order.getShipAddress() + " - " + order.getShipCity() + "</td>"
+                    + "<td>" + order.getShipPhone() + "</td>"
+                    + "<td>" + order.getPaymentMethod() + "</td>"
+                    + "<td style='white-space: nowrap'><a href=\"AdminControllerMap?service=orderDetail&orderId=" + order.getOrderID() + "\"><button style='margin-right:4px' class=\"btn btn-primary\">View</button></a>");
+            pr.print("<a href=\"AdminControllerMap?service=handleOrder&action=accept&orderId=" + order.getOrderID()+ "\" onclick=\"return confirm('Are you sure?');\"><button style='margin-right:4px' class=\"btn btn-primary\">Accept</button></a>");
+            pr.print("<a href=\"AdminControllerMap?service=handleOrder&action=refuse&orderId=" + order.getOrderID()+ "\" onclick=\"return confirm('Are you sure?');\"><button class=\"btn btn-primary\">Refuse</button></a>");
+            pr.print("</td>"
+                    + "</tr>"
+            );
+        }
+        if (request.getParameter("row") == null) {
+            sendDispatcher(request, response, "seller/orderResponse.jsp");
+        }
+    }
+
+    public void serviceShowPageOrderResponse(String service, HttpServletRequest request, HttpServletResponse response) throws IOException {
+        PrintWriter pr = response.getWriter();
+        int index = 1, numOfRow = 5;
+        String search = request.getParameter("search");
+        if (request.getParameter("index") != null) {
+            index = Integer.parseInt(request.getParameter("index"));
+        }
+        if (request.getParameter("row") != null) {
+            numOfRow = Integer.parseInt(request.getParameter("row"));
+        }
+        int totalResult = oDAO.getAllOrder().size();
+        int totalPage = totalResult / numOfRow;
+        if (totalResult != numOfRow * totalPage) {
+            totalPage += 1;
+        }
+        int prev = index == 1 ? 1 : index - 1;
+        int next = index == totalPage ? totalPage : index + 1;
+        if (totalResult > numOfRow) {
+            pr.print("<li data-repair=\"1\" class=\"page-item\">");
+            pr.print("<a class=\"page-link\" aria-label=\"First\">");
+            pr.print("<span aria-hidden=\"true\"><i class=\"fas fa-backward\"></i>");
+            pr.print("<span class=\"sr-only\">(current)</span> ");
+            pr.print("</span>");
+            pr.print("</a>");
+            pr.print("</li>");
+            pr.print("<li data-repair=\"" + prev + "\" class=\"page-item\">");
+            pr.print("<a class=\"page-link\" aria-label=\"Previous\">");
+            pr.print("<span aria-hidden=\"true\"><i class=\"fas fa-arrow-left\"></i>");
+            pr.print("<span class=\"sr-only\">(current)</span> ");
+            pr.print("</span>");
+            pr.print("</a>");
+            pr.print("</li>");
+            for (int i = 1; i <= totalPage; i++) {
+                if (i < index - 2) {
+                    continue;
+                }
+                if (index < 3) {
+                    if (i > 5) {
+                        break;
+                    }
+                } else {
+                    if (i > index + 2) {
+                        break;
+                    }
+                }
+                if (index == i) {
+                    pr.print("<li  class=\"page-item active\" data-repair=\"" + i + "\">");
+                } else {
+                    pr.print("<li  class=\"page-item\" data-repair=\"" + i + "\">");
+                }
+                pr.print("<a class=\"page-link\">");
+                pr.print("<div class=\"index\">" + i + "</div>");
+                pr.print("<span class=\"sr-only\">(current)</span>");
+                pr.print("</a>");
+                pr.print("</li>");
+            }
+            pr.print("<li data-repair=\"" + next + "\" class=\"page-item\">");
+            pr.print("<a class=\"page-link\" aria-label=\"Next\">");
+            pr.print("<span aria-hidden=\"true\"><i class=\"fas fa-arrow-right\"></i>");
+            pr.print("<span class=\"sr-only\">(current)</span> ");
+            pr.print("</span>");
+            pr.print("</a>");
+            pr.print("</li>");
+            pr.print("<li data-repair=\"" + totalPage + "\" class=\"page-item\">");
+            pr.print("<a class=\"page-link\" aria-label=\"Last\">");
+            pr.print("<span aria-hidden=\"true\"><i class=\"fas fa-forward\"></i>");
+            pr.print("<span class=\"sr-only\">(current)</span> ");
+            pr.print("</span>");
+            pr.print("</a>");
+            pr.print("</li>");
+        }
+        if (request.getParameter("row") == null) {
+            sendDispatcher(request, response, "seller/orderResponse.jsp");
+        }
+    }
+
+//    public void serviceOrderDetail(String service, HttpServletRequest request, HttpServletResponse response) {
+//        String orderId = request.getParameter("orderId");
+//        Order order = oDAO.getOrderByOrderID(Integer.parseInt(orderId));
+//        request.setAttribute("order", order);
+//        request.setAttribute("service", service);
+//        sendDispatcher(request, response, "admin/orderDetail.jsp");
+//    }
+
+    public void serviceHandleOrder(String service, HttpServletRequest request, HttpServletResponse response) {
+        String action = request.getParameter("action");
+        String orderId = request.getParameter("orderId");
+        if (action.equalsIgnoreCase("accept")) {
+            ArrayList<OrderDetail> listDetail = odDAO.getOrderDetailByOrderId(Integer.parseInt(orderId));
+            for (OrderDetail orderDetail : listDetail) {
+                ProductType pt = ptDAO.getProductTypeByPTypeID(orderDetail.getProductTypeId());
+                int quantity = pt.getQuantity() - orderDetail.getQuantity();
+                pt.setQuantity(quantity);
+                ptDAO.editProduct(pt);
+            }
+            oDAO.changeState(Integer.parseInt(orderId), 1);
+        }
+        if (action.equalsIgnoreCase("refuse")) {
+            oDAO.changeStatus(Integer.parseInt(orderId), 0);
+        }
+        User account = (User) request.getSession().getAttribute("currUser");
+        String userID = account.getUserId();
+        Seller seller = sellerDAO.getSellerByUserID(Integer.parseInt(userID));
+        int sellerID = seller.getSellerID();
+        List<Order> listOder = oDAO.getPagingOrderWaitedBySeller(1, 10000000, "", sellerID);
+        List<Order> listPaging = oDAO.getPagingOrderWaitedBySeller(1, 5, "", sellerID);
+        int totalPage = listOder.size() / 5;
+        if (listOder.size() != totalPage * 5) {
+            totalPage += 1;
+        }
+        request.setAttribute("index", 1);
+        request.setAttribute("totalPage", totalPage);
+        request.setAttribute("listOrder", listPaging);
+        sendDispatcher(request, response, "seller/orderResponse.jsp");
+    }
+    // </editor-fold>
     //
     private void serviceEditSellerInformation(HttpServletRequest request, HttpServletResponse response) {
         String mess = "";

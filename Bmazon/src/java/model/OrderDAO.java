@@ -26,8 +26,8 @@ public class OrderDAO extends BaseDAO {
         int num = 0;
         String Sql = "SELECT COUNT(*) FROM `Order`";
         try {
-            pre=conn.prepareStatement(Sql);
-            rs=pre.executeQuery();
+            pre = conn.prepareStatement(Sql);
+            rs = pre.executeQuery();
             if (rs.next()) {
                 num = rs.getInt(1);
             }
@@ -47,6 +47,46 @@ public class OrderDAO extends BaseDAO {
             pre = conn.prepareStatement(sql);
             pre.setInt(1, start);
             pre.setInt(2, numOfRow);
+            rs = pre.executeQuery();
+            while (rs.next()) {
+                Order o = new Order();
+                o.setOrderID(rs.getInt("orderID"));
+                o.setUserID(rs.getString("userID"));
+                o.setOrderDate(rs.getDate("orderDate"));
+                o.setRequiredDate(rs.getDate("requiredDate"));
+                o.setShippedDate(rs.getDate("shippedDate"));
+                o.setShipName(rs.getString("shipname"));
+                o.setShipAddress(rs.getString("shipaddress"));
+                o.setShipCity(rs.getString("shipcity"));
+                o.setShipPhone(rs.getString("shipphone"));
+                o.setCompanyID(rs.getInt("companyID"));
+                o.setShipMoney(rs.getDouble("shipmoney"));
+                o.setPaymentMethod(rs.getString("paymentmethod"));
+                o.setTotal(rs.getDouble("total"));
+                o.setState(rs.getInt("state"));
+                o.setStatus(rs.getInt("status"));
+                list.add(o);
+            }
+            rs.close();
+            pre.close();
+        } catch (SQLException ex) {
+            Logger.getLogger(UserDAO.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return list;
+    }
+
+    public List<Order> getPagingOrderWaitedBySeller(int index, int numOfRow, String search, int sellerID) {
+        int start = (index - 1) * numOfRow;
+        List<Order> list = new ArrayList<>();
+        String sql = "select o.orderID,o.userID, o.orderDate,o.requiredDate,o.shippedDate,o.shipName,o.shipAddress,o.shipCity,o.shipPhone,o.companyID,o.shipMoney,o.paymentMethod,o.total,  o.state, o.`status`\n"
+                + "from OrderDetail od inner join ProductType pt on od.productTypeID=pt.productTypeId inner join Product p on pt.productID=p.productID inner join `Order` o on od.orderID = o.orderID\n"
+                + "where p.sellerID = ? and o.`status` = 1 and o.state=0\n"
+                + "group by od.orderID limit ?,?";
+        try {
+            pre = conn.prepareStatement(sql);
+            pre.setInt(1, sellerID);
+            pre.setInt(2, start);
+            pre.setInt(3, numOfRow);
             rs = pre.executeQuery();
             while (rs.next()) {
                 Order o = new Order();
@@ -245,8 +285,8 @@ public class OrderDAO extends BaseDAO {
         ArrayList<Order> list = new ArrayList<>();
         String sql = "select * from `Order` where status = 1 and state=0 order by orderID desc";
         try {
-            pre=conn.prepareStatement(sql);
-            rs=pre.executeQuery();
+            pre = conn.prepareStatement(sql);
+            rs = pre.executeQuery();
             while (rs.next()) {
                 Order o = new Order();
                 o.setOrderID(rs.getInt("orderID"));
@@ -286,8 +326,8 @@ public class OrderDAO extends BaseDAO {
         String sql = "select * from `Order` where orderID = " + orderid;
         Order o = null;
         try {
-            pre=conn.prepareStatement(sql);
-            rs=pre.executeQuery();
+            pre = conn.prepareStatement(sql);
+            rs = pre.executeQuery();
             while (rs.next()) {
                 o = new Order();
                 o.setOrderID(rs.getInt("orderID"));
@@ -319,8 +359,8 @@ public class OrderDAO extends BaseDAO {
         List<Order> list = new ArrayList<>();
         String sql = "select * from `Order` where userID = " + userID + " order by orderDate desc ";
         try {
-            pre=conn.prepareStatement(sql);
-            rs=pre.executeQuery();
+            pre = conn.prepareStatement(sql);
+            rs = pre.executeQuery();
             while (rs.next()) {
                 Order o = new Order();
                 o.setOrderID(rs.getInt("orderID"));
@@ -351,8 +391,8 @@ public class OrderDAO extends BaseDAO {
         Order o = new Order();
         String sql = "SELECT * FROM `Order` WHERE userID = '" + userID + "' ORDER BY OrderID desc limit 0,1";
         try {
-            pre=conn.prepareStatement(sql);
-            rs=pre.executeQuery();
+            pre = conn.prepareStatement(sql);
+            rs = pre.executeQuery();
             if (rs.next()) {
                 o.setOrderID(rs.getInt("orderID"));
                 o.setUserID(rs.getString("userID"));

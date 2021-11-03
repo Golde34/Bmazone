@@ -49,10 +49,6 @@
         <link href="${contextPath}/css/seller/style.css" rel="stylesheet" type="text/css" />
         <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.0.7/css/all.css"> 
         <script src="https://kit.fontawesome.com/42d5adcbca.js" crossorigin="anonymous"></script>
-
-        <style type="text/css">
-
-        </style>
     </head>
 
     <!--%
