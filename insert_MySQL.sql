@@ -24,6 +24,11 @@ INSERT INTO User(username, password, email, phoneNumber, sell, wallet, fullname,
 VALUES ('G', '123456', 'asf@gmail.com', '0988907272', 0, 120000, 'Dong Viet',  'Viet', 'TP HCM', 'defaultPicture.jpg','background_profile.jpg','Tester', 0, '2001-3-16', 'Shopping', 'fb', 'ins', 'twt', 'yt', 3000, 0, 1);
 INSERT INTO User(username, password, email, phoneNumber, sell, wallet, fullname, publicName, address, profileImage, backgroundImage, occupation, gender, DOB, bio, Facebook, Instagram, Twitter, Youtube, activityPoint, systemRole, status)
 VALUES ('Employee', '1000:5b42403563616438303836:6f4b2f2dbd24e2a8f5fbe7132c1b322093c82e29a270090b', 'employee@gmail.com', '0983424233', 0, 120000, 'Employee',  'Employee', 'TP HCM', 'defaultPicture.jpg','background_profile.jpg','Employee', 0, '2001-3-16', 'Shopping', 'fb', 'ins', 'twt', 'yt', 3000, 2, 1);
+INSERT INTO User(username, password, email, phoneNumber, sell, wallet, fullname, publicName, address, profileImage, backgroundImage, occupation, gender, DOB, bio, Facebook, Instagram, Twitter, Youtube, activityPoint, systemRole, status)
+VALUES ('Employee2', '1000:5b42403563616438303836:6f4b2f2dbd24e2a8f5fbe7132c1b322093c82e29a270090b', 'employee2@gmail.com', '0983424232', 0, 120000, 'Employee',  'Employee', 'TP HCM', 'defaultPicture.jpg','background_profile.jpg','Employee', 0, '2001-3-16', 'Shopping', 'fb', 'ins', 'twt', 'yt', 3000, 2, 1);
+INSERT INTO User(username, password, email, phoneNumber, sell, wallet, fullname, publicName, address, profileImage, backgroundImage, occupation, gender, DOB, bio, Facebook, Instagram, Twitter, Youtube, activityPoint, systemRole, status)
+VALUES ('Employee3', '1000:5b42403563616438303836:6f4b2f2dbd24e2a8f5fbe7132c1b322093c82e29a270090b', 'employee3@gmail.com', '0983424231', 0, 120000, 'Employee',  'Employee', 'TP HCM', 'defaultPicture.jpg','background_profile.jpg','Employee', 0, '2001-3-16', 'Shopping', 'fb', 'ins', 'twt', 'yt', 3000, 2, 1);
+
 
 
 
