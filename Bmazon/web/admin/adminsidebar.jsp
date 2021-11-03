@@ -53,6 +53,22 @@
                 </a>
         </li>
         <li class="nav-item">
+            <%if (service.equalsIgnoreCase("employeemanagement") || service.equalsIgnoreCase("updateemployee") || service.equalsIgnoreCase("addemployee")) {%>
+            <a class="nav-link active" href="AdminControllerMap?service=employeeanagement">
+                <%} else {%>
+                <a class="nav-link" href="AdminControllerMap?service=employeemanagement">
+                    <%}%>
+                    <div class="icon icon-shape icon-sm shadow border-radius-md bg-white text-center me-2 d-flex align-items-center justify-content-center">
+                        <%if (service.equalsIgnoreCase("employeemanagement") || service.equalsIgnoreCase("updateemployee") || service.equalsIgnoreCase("addemployee")) {%>
+                        <i class="fas fa-users"></i>
+                        <%} else {%>
+                        <i class="fas fa-users" style="color: black"></i>
+                        <%}%>
+                    </div>
+                    <span class="nav-link-text ms-1">Employee Management</span>
+                </a>
+        </li>
+        <li class="nav-item">
             <%if (service.equalsIgnoreCase("productmanagement") || service.equalsIgnoreCase("updateproductdetail") || service.equalsIgnoreCase("productdetail")) {%>
             <a class="nav-link active" href="AdminControllerMap?service=productmanagement">
                 <%} else {%>

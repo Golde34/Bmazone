@@ -116,6 +116,38 @@ public class AdminController extends HttpServlet {
             if (service.equalsIgnoreCase("activeuser")) {
                 serviceActiveUser(service, request, response);
             }
+
+            if (service.equalsIgnoreCase("employeemanagement")) {
+                serviceEmployeeManagement(service, request, response);
+            }
+//            //User detail to add and update
+//            if (service.equalsIgnoreCase("updateemployeedetail") || service.equalsIgnoreCase("addemployeedetail")) {
+//                serviceEmployeeDetail(service, request, response);
+//            }
+            //Paging User
+            if (service.equalsIgnoreCase("pagingemployee")) {
+                servicePagingEmployee(service, request, response);
+            }
+            //Show Page User
+            if (service.equalsIgnoreCase("showpageemployee")) {
+                serviceShowPageEmployee(request, response);
+            }
+            //Add user
+//            if (service.equalsIgnoreCase("adduser")) {
+//                serviceAddEmployee(service, request, response);
+//            }
+            //Update User 
+//            if (service.equalsIgnoreCase("updateuser")) {
+//                serviceUpdateUser(service, request, response);
+//            }
+//            //Delete user
+//            if (service.equalsIgnoreCase("deleteuser")) {
+//                serviceDeleteUser(service, request, response);
+            // }
+            //Active user
+            if (service.equalsIgnoreCase("activeuser")) {
+                serviceActiveUser(service, request, response);
+            }
             //</editor-fold>
 
             // <editor-fold defaultstate="collapsed" desc="Product service. Click on the + sign on the left to edit the code.">
@@ -1516,7 +1548,7 @@ public class AdminController extends HttpServlet {
         request.setAttribute("service", service);
         sendDispatcher(request, response, "admin/categorydetail.jsp");
     }
-    
+
     public void serviceGenreDetail(String service, HttpServletRequest request, HttpServletResponse response) {
         request.setAttribute("service", service);
         int id = Integer.parseInt(request.getParameter("cateid"));
@@ -1874,8 +1906,8 @@ public class AdminController extends HttpServlet {
                     + "<td>" + order.getShipPhone() + "</td>"
                     + "<td>" + order.getPaymentMethod() + "</td>"
                     + "<td style='white-space: nowrap'><a href=\"AdminControllerMap?service=orderDetail&orderId=" + order.getOrderID() + "\"><button style='margin-right:4px' class=\"btn btn-primary\">View</button></a>");
-            pr.print("<a href=\"AdminControllerMap?service=handleOrder&action=accept&orderId=" + order.getOrderID()+ "\" onclick=\"return confirm('Are you sure?');\"><button style='margin-right:4px' class=\"btn btn-primary\">Accept</button></a>");
-            pr.print("<a href=\"AdminControllerMap?service=handleOrder&action=refuse&orderId=" + order.getOrderID()+ "\" onclick=\"return confirm('Are you sure?');\"><button class=\"btn btn-primary\">Refuse</button></a>");
+            pr.print("<a href=\"AdminControllerMap?service=handleOrder&action=accept&orderId=" + order.getOrderID() + "\" onclick=\"return confirm('Are you sure?');\"><button style='margin-right:4px' class=\"btn btn-primary\">Accept</button></a>");
+            pr.print("<a href=\"AdminControllerMap?service=handleOrder&action=refuse&orderId=" + order.getOrderID() + "\" onclick=\"return confirm('Are you sure?');\"><button class=\"btn btn-primary\">Refuse</button></a>");
             pr.print("</td>"
                     + "</tr>"
             );
@@ -2174,7 +2206,20 @@ public class AdminController extends HttpServlet {
                     + "<td><div><a href=\"AdminControllerMap?service=deleteRole&roleID=" + role.getRoleID() + "\" onclick=\"return confirm('Are you sure you want to Remove?');\"><span class=\"fas fa-trash-alt\"></span></a></div></td>" + "</tr>"
             );
         }
-    }//</editor-fold>
+    }
+    // <editor-fold defaultstate="collapsed" desc="Employee methods. Click on the + sign on the left to edit the code.">
+       public void serviceEmployeeManagement(String service, HttpServletRequest request, HttpServletResponse response) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    public void servicePagingEmployee(String service, HttpServletRequest request, HttpServletResponse response) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    public void serviceShowPageEmployee(HttpServletRequest request, HttpServletResponse response) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+    //</editor-fold>
 
     public void sendDispatcher(HttpServletRequest request, HttpServletResponse response, String path) {
         try {
@@ -2246,5 +2291,7 @@ public class AdminController extends HttpServlet {
     public String getServletInfo() {
         return "Short description";
     }// </editor-fold>
+
+ 
 
 }

@@ -3,6 +3,7 @@ INSERT INTO `Role`(roleID, roleName, adminPermission,employeePermission,sellerPe
 INSERT INTO `Role`(roleID, roleName, adminPermission,employeePermission,sellerPermission,customerPermission,status) VALUES (1, 'Administrator',1,1, 1, 1, 1);
 INSERT INTO `Role`(roleID, roleName, adminPermission,employeePermission,sellerPermission,customerPermission,status) VALUES (98, 'Tester',0,0, 0, 0, 1);
 INSERT INTO `Role`(roleID, roleName, adminPermission,employeePermission,sellerPermission,customerPermission,status) VALUES (2, 'Employee',0, 1,0, 1, 1);
+INSERT INTO `Role`(roleID, roleName, adminPermission,employeePermission,sellerPermission,customerPermission,status) VALUES (3, 'Seller',0, 0, 1, 1, 1);
 
 
 
