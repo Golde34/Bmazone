@@ -70,6 +70,17 @@ CREATE TABLE Seller (
 	FOREIGN KEY (sellerMainProduct) REFERENCES Category(categoryID)
 );
 
+CREATE TABLE Employees (
+	employeeID int not null PRIMARY KEY AUTO_INCREMENT,
+	userID int not null,
+    name nvarchar(255) not null,
+	startdate date,
+	salary double,
+	avatar nvarchar(255),
+	status bit,
+	FOREIGN KEY (userID) REFERENCES `User`(userID)
+);
+
 -- co 1 bang Company
 CREATE TABLE Warehouse(
 	wareHouseID int NOT NULL  PRIMARY KEY AUTO_INCREMENT,

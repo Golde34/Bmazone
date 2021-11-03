@@ -54,6 +54,11 @@ VALUES (4, 'Im lang', '0938576926', 'owner can sell everything', 1, 'Quite pleas
 INSERT INTO Seller(userID, sellerShopName, sellerPhone, evidence, sellerMainProduct, description, sellerVerification, status) 
 VALUES (6, 'Ba con tuan loc', '0928673463', 'owner can sell everything', 1, 'Ong gia noel', 1, 1);
 
+-- employee
+Insert into employees(userID,name,startdate,salary,avatar,status) values(9,'Nguyen Van A',now(),1000000,'defaultPicture.jpg',1);
+Insert into employees(userID,name,startdate,salary,avatar,status) values(10,'Nguyen Van B',now(),1200000,'defaultPicture.jpg',1);
+Insert into employees(userID,name,startdate,salary,avatar,status) values(11,'Nguyen Van C',now(),1100000,'defaultPicture.jpg',1);
+
 
 -- Genre
 INSERT INTO Genre(genreName,categoryID,images,status)VALUES ('Technology',1,'1.png', 1);
