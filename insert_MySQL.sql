@@ -1,7 +1,8 @@
-
-INSERT INTO `Role`(roleID, roleName, adminPermission,sellerPermission,customerPermission, status) VALUES (0, 'Customer', 0, 0, 1, 1);
-INSERT INTO `Role`(roleID, roleName, adminPermission,sellerPermission,customerPermission,status) VALUES (1, 'Administrator',1, 1, 1, 1);
-INSERT INTO `Role`(roleID, roleName, adminPermission,sellerPermission,customerPermission,status) VALUES (98, 'Tester',0, 0, 0, 1);
+use bmazon;
+INSERT INTO `Role`(roleID, roleName, adminPermission,employeePermission,sellerPermission,customerPermission, status) VALUES (0, 'Customer', 0,0, 0, 1, 1);
+INSERT INTO `Role`(roleID, roleName, adminPermission,employeePermission,sellerPermission,customerPermission,status) VALUES (1, 'Administrator',1,1, 1, 1, 1);
+INSERT INTO `Role`(roleID, roleName, adminPermission,employeePermission,sellerPermission,customerPermission,status) VALUES (98, 'Tester',0,0, 0, 0, 1);
+INSERT INTO `Role`(roleID, roleName, adminPermission,employeePermission,sellerPermission,customerPermission,status) VALUES (2, 'Employee',0, 1,0, 1, 1);
 
 
 
@@ -21,6 +22,10 @@ INSERT INTO User(username, password, email, phoneNumber, sell, wallet, fullname,
 VALUES ('Phuong', '1000:5b42403563616438303836:6f4b2f2dbd24e2a8f5fbe7132c1b322093c82e29a270090b', 'phuongnt@gmail.com', '0982768937', 0, 120000, 'Nguyen Thu Phuong',  'Phuong', 'TP HCM', 'defaultPicture.jpg','background_profile.jpg','Marketing', 0, '2001-3-16', 'Shopping', 'Thu Phuong', 'ins', 'twt', 'yt', 3000, 0, 1);
 INSERT INTO User(username, password, email, phoneNumber, sell, wallet, fullname, publicName, address, profileImage, backgroundImage, occupation, gender, DOB, bio, Facebook, Instagram, Twitter, Youtube, activityPoint, systemRole, status)
 VALUES ('G', '123456', 'asf@gmail.com', '0988907272', 0, 120000, 'Dong Viet',  'Viet', 'TP HCM', 'defaultPicture.jpg','background_profile.jpg','Tester', 0, '2001-3-16', 'Shopping', 'fb', 'ins', 'twt', 'yt', 3000, 0, 1);
+INSERT INTO User(username, password, email, phoneNumber, sell, wallet, fullname, publicName, address, profileImage, backgroundImage, occupation, gender, DOB, bio, Facebook, Instagram, Twitter, Youtube, activityPoint, systemRole, status)
+VALUES ('Employee', '1000:5b42403563616438303836:6f4b2f2dbd24e2a8f5fbe7132c1b322093c82e29a270090b', 'employee@gmail.com', '0983424233', 0, 120000, 'Employee',  'Employee', 'TP HCM', 'defaultPicture.jpg','background_profile.jpg','Employee', 0, '2001-3-16', 'Shopping', 'fb', 'ins', 'twt', 'yt', 3000, 2, 1);
+
+
 
 
 -- Category

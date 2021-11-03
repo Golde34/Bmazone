@@ -16,20 +16,22 @@ public class Role implements Serializable {
     private int roleID;
     private String roleName;
     private int adminPermission;
+    private int employeePermisson;
     private int sellerPermission;
     private int customerPermission;
     private int status;
 
-    public Role() {
-    }
-
-    public Role(int roleID, String roleName, int adminPermission, int sellerPermission, int customerPermission, int status) {
+    public Role(int roleID, String roleName, int adminPermission, int employeePermisson, int sellerPermission, int customerPermission, int status) {
         this.roleID = roleID;
         this.roleName = roleName;
         this.adminPermission = adminPermission;
+        this.employeePermisson = employeePermisson;
         this.sellerPermission = sellerPermission;
         this.customerPermission = customerPermission;
         this.status = status;
+    }
+
+    public Role() {
     }
 
     public int getRoleID() {
@@ -56,6 +58,14 @@ public class Role implements Serializable {
         this.adminPermission = adminPermission;
     }
 
+    public int getEmployeePermisson() {
+        return employeePermisson;
+    }
+
+    public void setEmployeePermisson(int employeePermisson) {
+        this.employeePermisson = employeePermisson;
+    }
+
     public int getSellerPermission() {
         return sellerPermission;
     }
@@ -71,7 +81,7 @@ public class Role implements Serializable {
     public void setCustomerPermission(int customerPermission) {
         this.customerPermission = customerPermission;
     }
-    
+
     public int getStatus() {
         return status;
     }
@@ -79,4 +89,6 @@ public class Role implements Serializable {
     public void setStatus(int status) {
         this.status = status;
     }
+    
+
 }

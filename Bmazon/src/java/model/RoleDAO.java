@@ -62,7 +62,8 @@ public class RoleDAO extends BaseDAO {
                         rs.getInt(3),
                         rs.getInt(4),
                         rs.getInt(5),
-                        rs.getInt(6)));
+                        rs.getInt(6),
+                        rs.getInt(7)));
             }
             rs.close();
             pre.close();
@@ -89,8 +90,8 @@ public class RoleDAO extends BaseDAO {
 
     public int addRole(Role r) {
         int n = 0;
-        String xSql = "INSERT INTO `Role` (`roleID`, `roleName`, `adminPermission`, `sellerPermission`, `customerPermission`, `status`)"
-                + "     VALUES (?,?,?,?,?,1)";
+        String xSql = "INSERT INTO `Role` (`roleID`, `roleName`, `adminPermission`,`employeePermission` ,`sellerPermission`, `customerPermission`, `status`)"
+                + "     VALUES (?,?,?,?,?,?,1)";
         try {
             pre = conn.prepareStatement(xSql);
             pre.setInt(1, r.getRoleID());
@@ -108,15 +109,16 @@ public class RoleDAO extends BaseDAO {
 
     public int editRole(Role r) {
         int n = 0;
-        String xSql = "update `Role` set `roleName` = ? ,`adminPermission` = ?, `sellerPermission` = ?,`customerPermission` = ?, `status` = ? where `roleID` = ?";
+        String xSql = "update `Role` set `roleName` = ? ,`adminPermission` = ?,`employeePermission` = ?, `sellerPermission` = ?,`customerPermission` = ?, `status` = ? where `roleID` = ?";
         try {
             pre = conn.prepareStatement(xSql);
             pre.setString(1, r.getRoleName());
             pre.setInt(2, r.getAdminPermission());
-            pre.setInt(3, r.getSellerPermission());
-            pre.setInt(4, r.getCustomerPermission());
-            pre.setInt(5, r.getStatus());
-            pre.setInt(6, r.getRoleID());
+            pre.setInt(3, r.getEmployeePermisson());
+            pre.setInt(4, r.getSellerPermission());
+            pre.setInt(5, r.getCustomerPermission());
+            pre.setInt(6, r.getStatus());
+            pre.setInt(7, r.getRoleID());
             n = pre.executeUpdate();
             pre.close();
         } catch (SQLException e) {
@@ -179,6 +181,7 @@ public class RoleDAO extends BaseDAO {
             if (rs.next()) {;
                 role.setRoleName(rs.getString("roleName"));
                 role.setAdminPermission(rs.getInt("adminPermission"));
+                role.setAdminPermission(rs.getInt("employeePermission"));
                 role.setSellerPermission(rs.getInt("sellerPermission"));
                 role.setCustomerPermission(rs.getInt("customerPermission"));
                 role.setStatus(rs.getInt("status"));
@@ -205,7 +208,8 @@ public class RoleDAO extends BaseDAO {
                         rs.getInt(3),
                         rs.getInt(4),
                         rs.getInt(5),
-                        rs.getInt(6)));
+                        rs.getInt(6),
+                        rs.getInt(7)));
             }
             rs.close();
             pre.close();
@@ -223,12 +227,13 @@ public class RoleDAO extends BaseDAO {
             rs = pre.executeQuery();
             while (rs.next()) {
                 list.add(new Role(
-                        rs.getInt(1),
+                       rs.getInt(1),
                         rs.getString(2),
                         rs.getInt(3),
                         rs.getInt(4),
                         rs.getInt(5),
-                        rs.getInt(6)));
+                        rs.getInt(6),
+                        rs.getInt(7)));
             }
             rs.close();
             pre.close();
