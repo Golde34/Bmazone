@@ -13,13 +13,9 @@ import java.sql.Statement;
 
 public class BaseDAO extends DBConnection {
 
-    Connection conn;
+    Connection conn=null;
     PreparedStatement pre = null;
     ResultSet rs = null;
-    
-    public BaseDAO() {
-        conn=connection;
-    }
 
     protected void finalize() {
         try {

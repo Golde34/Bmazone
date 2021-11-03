@@ -1490,7 +1490,7 @@ public class AdminController extends HttpServlet {
     // <editor-fold defaultstate="collapsed" desc="Category methods. Click on the + sign on the left to edit the code.">
     public void serviceCategoryManagement(String service, HttpServletRequest request, HttpServletResponse response) {
         ArrayList<Category> listPaging = daocategory.getAllPagingCategory(1, 5, "");
-        ArrayList<Category> listCategory = daocategory.getTrueCategories();
+        ArrayList<Category> listCategory = daocategory.getAllCategories();
         int totalPage = listCategory.size() / 5;
         if (listCategory.size() != totalPage * 5) {
             totalPage += 1;
@@ -1739,7 +1739,7 @@ public class AdminController extends HttpServlet {
         daocategory.changeStatus(id, 0);
         daogenre.changeStatusByCateID(id, 0);
         ArrayList<Category> listPaging = daocategory.getAllPagingCategory(1, 5, "");
-        ArrayList<Category> listCategory = daocategory.getTrueCategories();
+        ArrayList<Category> listCategory = daocategory.getAllCategories();
         int totalPage = listCategory.size() / 5;
         if (listCategory.size() != totalPage * 5) {
             totalPage += 1;
@@ -1756,7 +1756,7 @@ public class AdminController extends HttpServlet {
         daocategory.changeStatus(id, 1);
         daogenre.changeStatusByCateID(id, 1);
         ArrayList<Category> listPaging = daocategory.getAllPagingCategory(1, 5, "");
-        ArrayList<Category> listCategory = daocategory.getTrueCategories();
+        ArrayList<Category> listCategory = daocategory.getAllCategories();
         int totalPage = listCategory.size() / 5;
         if (listCategory.size() != totalPage * 5) {
             totalPage += 1;

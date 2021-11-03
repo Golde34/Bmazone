@@ -18,7 +18,7 @@
     DBConnection dbCon = new DBConnection();
     CategoryDAO daoCate = new CategoryDAO();
     GenreDAO genDAO = new GenreDAO();
-    ArrayList<Category> cateList = daoCate.getTrueCategories();
+    ArrayList<Category> cateList = daoCate.getAllCategories();
     ArrayList<Genre> gerneList = genDAO.getTrueGenres();
 
 %>

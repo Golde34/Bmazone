@@ -19,44 +19,18 @@ import java.util.logging.Logger;
  */
 public class DBConnection {
 
-    Connection connection = null;
-
-    public DBConnection() {
-        try {
-            Class.forName("com.mysql.cj.jdbc.Driver");
-            connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/bmazon?allowPublicKeyRetrieval=true&verifyServerCertificate=false&useSSL=false&requireSSL=false", "root", "123456");
-            System.out.println("Connect successfully !!");
-        } catch (SQLException ex) {
-            Logger.getLogger(DBConnection.class.getName()).log(Level.SEVERE, null, ex);
-        } catch (ClassNotFoundException ex) {
-            Logger.getLogger(DBConnection.class.getName()).log(Level.SEVERE, null, ex);
-        }
+    public Connection getConnection() throws Exception {
+        String url = "jdbc:mysql://" + serverName + ":" + portNumber + "/" + dbName + "?" + condition;
+        Class.forName("com.mysql.cj.jdbc.Driver");
+        return DriverManager.getConnection(url, userID, password);
     }
-
-    public DBConnection(String URL, String username, String pass) {
-        try {
-            Class.forName("com.mysql.cj.jdbc.Driver");
-            connection = DriverManager.getConnection(URL, username, pass);
-            System.out.println("Connect successfully !!");
-        } catch (SQLException ex) {
-            Logger.getLogger(DBConnection.class.getName()).log(Level.SEVERE, null, ex);
-        } catch (ClassNotFoundException ex) {
-            Logger.getLogger(DBConnection.class.getName()).log(Level.SEVERE, null, ex);
-        }
-    }
-
-    public Connection getConnection() {
-        return connection;
-    }
-
-    public ResultSet getData(String sql) {
-        ResultSet rs = null;
-        try {
-            Statement stm = connection.createStatement(ResultSet.TYPE_SCROLL_SENSITIVE, ResultSet.CONCUR_UPDATABLE);
-            rs = stm.executeQuery(sql);
-        } catch (SQLException ex) {
-            Logger.getLogger(DBConnection.class.getName()).log(Level.SEVERE, null, ex);
-        }
-        return rs;
-    }
+    /*Insert your other code right after this comment*/
+ /*Change/update information of your database connection, DO NOT change name of instance variables in this class*/
+    private final String serverName = "localhost";
+    private final String dbName = "bmazon";
+    private final String portNumber = "3306";
+    private final String instance = "";//LEAVE THIS ONE EMPTY IF YOUR SQL IS A SINGLE INSTANCE
+    private final String userID = "root";
+    private final String password = "123456";
+    private final String condition = "allowPublicKeyRetrieval=true&verifyServerCertificate=false&useSSL=false&requireSSL=false";
 }

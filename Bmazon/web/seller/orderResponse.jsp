@@ -95,8 +95,8 @@
                                     Orders
                                 </header>
                                 <div class="table_head py-3 d-flex justify-content-between">
-                                    <div class="rowNum">
-                                        <h6 class="d-inline">Select number of Rows</h6>
+                                    <div class="rowNum" style="padding:20px">
+                                        <h3 class="d-inline">Select number of Rows</h3>
                                         <div class="form-group d-inline">
                                             <select onchange="pagination()" name="state" id="maxRows" class="form-control d-inline" style="width:80px">
                                                 <option value="5">5</option>
@@ -132,8 +132,8 @@
                                                 <td><%=order.getPaymentMethod()%></td>
                                                 <td style='white-space: nowrap'>
                                                     <a href="SellerControllerMap?service=orderDetail&orderid=<%=order.getOrderID()%>"><button class="btn btn-primary">View</button></a>
-                                                    <a href="SellerControllerMap?service=handleOrder&action=accept&orderId=<%=order.getOrderID()%>" onclick="return confirm('Are you sure?');"><button class="btn btn-primary">Accept</button></a>
-                                                    <a href="SellerControllerMap?service=handleOrder&action=refuse&orderId=<%=order.getOrderID()%>" onclick="return confirm('Are you sure?');"><button class="btn btn-primary">Refuse</button></a>
+                                                    <a href="SellerControllerMap?service=handleOrder&action=accept&orderId=<%=order.getOrderID()%>" onclick="return confirm('Are you sure?');"><button class="btn btn-success">Accept</button></a>
+                                                    <a href="SellerControllerMap?service=handleOrder&action=refuse&orderId=<%=order.getOrderID()%>" onclick="return confirm('Are you sure?');"><button class="btn btn-danger">Refuse</button></a>
                                                 </td>
                                             </tr>
                                             <%}%>
@@ -191,9 +191,9 @@
                         </div>
                     </div>
                 </section>
-                <div class="footer-main">
+<!--                <div class="footer-main">
                     &copy Bmazon, 2021
-                </div>
+                </div>-->
             </aside>
         </div>
     </body>
