@@ -24,8 +24,8 @@ public class SellerDAO extends BaseDAO {
 
     public int addSeler(Seller s) {
         int n = 0;
-        String xSql = "INSERT INTO Seller (userID, sellerShopName, sellerPhone, evidence, sellerMainProduct, description, sellerVerification, status)"
-                + "     VALUES (?,?,?,?,?,?,?,1)";
+        String xSql = "INSERT INTO Seller (userID, sellerShopName, sellerPhone, evidence, sellerMainProduct, description, sellerVerification, backGroundImage, avatar, status)"
+                + "     VALUES (?,?,?,?,?,?,?,?,?,1)";
         try {
             conn = new DBConnection().getConnection();
             pre = conn.prepareStatement(xSql);
@@ -36,6 +36,8 @@ public class SellerDAO extends BaseDAO {
             pre.setInt(5, s.getSellerMainProduct());
             pre.setString(6, s.getDescription());
             pre.setInt(7, s.getSellerVerification());
+            pre.setString(8, s.getBackGroundImage());
+            pre.setString(9, s.getAvatar());
             n = pre.executeUpdate();
 
         } catch (Exception e) {
@@ -55,7 +57,8 @@ public class SellerDAO extends BaseDAO {
     public int editSeller(Seller s) {
         int n = 0;
         String xSql = "update Seller set userID = ? ,sellerShopName = ?, sellerPhone = ?, evidence = ?,"
-                + "sellerMainProduct = ?, description = ?, sellerVerification = ?, status = ? where sellerID = ?";
+                + "sellerMainProduct = ?, description = ?, sellerVerification = ?, backGroundImage = ?,"
+                + "avatar = ?, status = ? where sellerID = ?";
         try {
             conn = new DBConnection().getConnection();
             pre = conn.prepareStatement(xSql);
@@ -66,7 +69,9 @@ public class SellerDAO extends BaseDAO {
             pre.setInt(5, s.getSellerMainProduct());
             pre.setString(6, s.getDescription());
             pre.setInt(7, s.getSellerVerification());
-            pre.setInt(8, s.getStatus());
+            pre.setString(8, s.getBackGroundImage());
+            pre.setString(9, s.getAvatar());
+            pre.setInt(10, s.getStatus());
             pre.setInt(11, s.getSellerID());
             n = pre.executeUpdate();
 
@@ -223,6 +228,8 @@ public class SellerDAO extends BaseDAO {
                 seller.setSellerMainProduct(rs.getInt("sellerMainProduct"));
                 seller.setDescription(rs.getString("description"));
                 seller.setSellerVerification(rs.getInt("sellerVerification"));
+                seller.setBackGroundImage(rs.getString("backGroundImage"));
+                seller.setAvatar(rs.getString("avatar"));
                 seller.setStatus(rs.getInt("status"));
             }
 
@@ -257,6 +264,8 @@ public class SellerDAO extends BaseDAO {
                         rs.getInt(6),
                         rs.getString(7),
                         rs.getInt(8),
+                        rs.getString(9),
+                        rs.getString(10),
                         rs.getInt(11)));
             }
 
@@ -291,6 +300,8 @@ public class SellerDAO extends BaseDAO {
                         rs.getInt(6),
                         rs.getString(7),
                         rs.getInt(8),
+                        rs.getString(9),
+                        rs.getString(10),
                         rs.getInt(11)));
             }
 
@@ -320,6 +331,7 @@ public class SellerDAO extends BaseDAO {
                         rs.getString("sellerShopName"), rs.getString("sellerPhone"),
                         rs.getString("evidence"), rs.getInt("sellerMainProduct"),
                         rs.getString("description"), rs.getInt("sellerVerification"),
+                        rs.getString("backGroundImage"), rs.getString("avatar"),
                         rs.getInt("status")));
             }
 
@@ -336,7 +348,7 @@ public class SellerDAO extends BaseDAO {
         }
         return list;
     }
-
+    
     public Seller getSellerByUserID(int userID) {
         Seller seller = new Seller();
         String xSql = "select * from Seller where userID = " + userID;
@@ -353,6 +365,8 @@ public class SellerDAO extends BaseDAO {
                 seller.setSellerMainProduct(rs.getInt("sellerMainProduct"));
                 seller.setDescription(rs.getString("description"));
                 seller.setSellerVerification(rs.getInt("sellerVerification"));
+                seller.setBackGroundImage(rs.getString("backGroundImage"));
+                seller.setAvatar(rs.getString("avatar"));
                 seller.setStatus(rs.getInt("status"));
             }
 
@@ -388,6 +402,8 @@ public class SellerDAO extends BaseDAO {
                 seller.setSellerMainProduct(rs.getInt("sellerMainProduct"));
                 seller.setDescription(rs.getString("description"));
                 seller.setSellerVerification(rs.getInt("sellerVerification"));
+                seller.setBackGroundImage(rs.getString("backGroundImage"));
+                seller.setAvatar(rs.getString("avatar"));
                 seller.setStatus(rs.getInt("status"));
             }
 
@@ -468,7 +484,9 @@ public class SellerDAO extends BaseDAO {
                         rs.getInt(6),
                         rs.getString(7),
                         rs.getInt(8),
-                        rs.getInt(9)));
+                        rs.getString(9),
+                        rs.getString(10),
+                        rs.getInt(11)));
             }
 
         } catch (Exception e) {

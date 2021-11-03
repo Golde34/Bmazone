@@ -2052,7 +2052,7 @@ public class AdminController extends HttpServlet {
         Seller s = daoseller.getSellerID(strSellerID);
         User u = daouser.getUserBySellerId(s);
         u.setSell(1);
-        u.setSystemRole(2);
+        u.setSystemRole(3);
         //add parameter to jsp
         List<Seller> listAllSeller = daoseller.getAllSeller();
         request.setAttribute("listAllSeller", listAllSeller);
