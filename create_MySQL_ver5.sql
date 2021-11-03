@@ -4,6 +4,7 @@ CREATE TABLE `Role` (
 	roleID int UNSIGNED PRIMARY KEY NOT NULL,
 	roleName varchar(255),
 	adminPermission bit,
+    employeePermission bit,
 	sellerPermission bit,
 	customerPermission bit,
 	status bit

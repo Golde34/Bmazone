@@ -111,6 +111,9 @@
                                             <% if (x.getSystemRole() == 1) {%>
                                             <li  ><a href="${contextPath}/AdminControllerMap" class="menu-image-title-after"><span >Admin Dashboard</span></a></li>
                                                 <%}%>
+                                             <% if (x.getSystemRole() == 1|| x.getSystemRole()==2) {%>
+                                            <li  ><a href="${contextPath}/EmployeeControllerMap" class="menu-image-title-after"><span>Employee Dashboard</span></a></li>
+                                                <%}%>
                                                 <% if (x.getSell() == 1) { %>
                                             <li  ><a href="${contextPath}/SellerControllerMap" class="menu-image-title-after"><span >Seller Dashboard</span></a></li>
                                                 <%}%>
