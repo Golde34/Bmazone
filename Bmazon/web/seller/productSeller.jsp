@@ -111,7 +111,11 @@
                                 <i class="fa fa-gavel"></i> <span>Product Management</span>
                             </a>
                         </li>
-
+                        <li>
+                            <a href="SellerControllerMap?service=orderResponse">
+                                <i class="fa fa-globe"></i> <span>Order Response</span>
+                            </a>
+                        </li>
                         <li>
                             <a href="SellerControllerMap?service=ordermanagement">
                                 <i class="fa fa-globe"></i> <span>Order Management</span>

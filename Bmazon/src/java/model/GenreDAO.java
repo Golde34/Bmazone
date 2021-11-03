@@ -1,4 +1,4 @@
-    package model;
+package model;
 
 import entity.Category;
 import entity.Genre;
@@ -13,7 +13,6 @@ public class GenreDAO extends BaseDAO {
 
     BaseDAO dbConn = new BaseDAO();
 
-
     public ArrayList<Genre> getAllGenres() {
         String sql = "select * from Genre WHERE status=1";
         ArrayList<Genre> list = new ArrayList<>();
@@ -23,6 +22,7 @@ public class GenreDAO extends BaseDAO {
         int categoryID;
         int status;
         try {
+            conn = new DBConnection().getConnection();
             pre = conn.prepareStatement(sql);
             rs = pre.executeQuery();
             while (rs.next()) {
@@ -33,10 +33,17 @@ public class GenreDAO extends BaseDAO {
                 x = new Genre(genreID, genreName, categoryID, status);
                 list.add(x);
             }
-            rs.close();
-            pre.close();
-        } catch (SQLException ex) {
+
+        } catch (Exception ex) {
             Logger.getLogger(CategoryDAO.class.getName()).log(Level.SEVERE, null, ex);
+        }finally {
+            try {
+                rs.close();
+                pre.close();
+                conn.close();
+            } catch (Exception ex) {
+                Logger.getLogger(CategoryDAO.class.getName()).log(Level.SEVERE, null, ex);
+            }
         }
         return list;
     }
@@ -50,6 +57,7 @@ public class GenreDAO extends BaseDAO {
         int categoryID;
         int status;
         try {
+            conn = new DBConnection().getConnection();
             pre = conn.prepareStatement(sql);
             rs = pre.executeQuery();
             while (rs.next()) {
@@ -60,10 +68,17 @@ public class GenreDAO extends BaseDAO {
                 x = new Genre(genreID, genreName, categoryID, status);
                 list.add(x);
             }
-            rs.close();
-            pre.close();
-        } catch (SQLException ex) {
+
+        } catch (Exception ex) {
             Logger.getLogger(CategoryDAO.class.getName()).log(Level.SEVERE, null, ex);
+        }finally {
+            try {
+                rs.close();
+                pre.close();
+                conn.close();
+            } catch (Exception ex) {
+                Logger.getLogger(CategoryDAO.class.getName()).log(Level.SEVERE, null, ex);
+            }
         }
         return list;
     }
@@ -78,6 +93,7 @@ public class GenreDAO extends BaseDAO {
         String images;
         int status;
         try {
+            conn = new DBConnection().getConnection();
             pre = conn.prepareStatement(sql);
             rs = pre.executeQuery();
             while (rs.next()) {
@@ -89,10 +105,17 @@ public class GenreDAO extends BaseDAO {
                 x = new Genre(genreID, genreName, categoryID, status, images);
                 list.add(x);
             }
-            rs.close();
-            pre.close();
-        } catch (SQLException ex) {
+
+        } catch (Exception ex) {
             Logger.getLogger(CategoryDAO.class.getName()).log(Level.SEVERE, null, ex);
+        }finally {
+            try {
+                rs.close();
+                pre.close();
+                conn.close();
+            } catch (Exception ex) {
+                Logger.getLogger(CategoryDAO.class.getName()).log(Level.SEVERE, null, ex);
+            }
         }
         return list;
     }
@@ -106,6 +129,7 @@ public class GenreDAO extends BaseDAO {
         int categoryID;
         int status;
         try {
+            conn = new DBConnection().getConnection();
             pre = conn.prepareStatement(sql);
             rs = pre.executeQuery();
             while (rs.next()) {
@@ -117,10 +141,17 @@ public class GenreDAO extends BaseDAO {
                 x = new Genre(genreID, genreName, categoryID, status, images);
                 list.add(x);
             }
-            rs.close();
-            pre.close();
-        } catch (SQLException ex) {
+
+        } catch (Exception ex) {
             Logger.getLogger(CategoryDAO.class.getName()).log(Level.SEVERE, null, ex);
+        }finally {
+            try {
+                rs.close();
+                pre.close();
+                conn.close();
+            } catch (Exception ex) {
+                Logger.getLogger(CategoryDAO.class.getName()).log(Level.SEVERE, null, ex);
+            }
         }
         return list;
     }
@@ -129,14 +160,23 @@ public class GenreDAO extends BaseDAO {
         int n = 0;
         String sql = "Insert into Genre(genreName,categoryID,status) values (?,?,?)";
         try {
+            conn = new DBConnection().getConnection();
             pre = conn.prepareStatement(sql);
             pre.setString(1, gen.getGenreName());
             pre.setInt(2, gen.getCategoryID());
             pre.setInt(3, gen.getStatus());
             n = pre.executeUpdate();
-            pre.close();
-        } catch (SQLException ex) {
+
+        } catch (Exception ex) {
             Logger.getLogger(CategoryDAO.class.getName()).log(Level.SEVERE, null, ex);
+        }finally {
+            try {
+                rs.close();
+                pre.close();
+                conn.close();
+            } catch (Exception ex) {
+                Logger.getLogger(CategoryDAO.class.getName()).log(Level.SEVERE, null, ex);
+            }
         }
         return n;
     }
@@ -145,33 +185,50 @@ public class GenreDAO extends BaseDAO {
         int n = 0;
         String sql = "update Genre set genreName=?, categoryID=?, status=? where genreID=?";
         try {
+            conn = new DBConnection().getConnection();
             pre = conn.prepareStatement(sql);
             pre.setString(1, gen.getGenreName());
             pre.setInt(2, gen.getCategoryID());
             pre.setInt(3, gen.getStatus());
             pre.setInt(4, gen.getGenreID());
             n = pre.executeUpdate();
-            pre.close();
-        } catch (SQLException ex) {
+
+        } catch (Exception ex) {
             Logger.getLogger(CategoryDAO.class.getName()).log(Level.SEVERE, null, ex);
+        }finally {
+            try {
+                rs.close();
+                pre.close();
+                conn.close();
+            } catch (Exception ex) {
+                Logger.getLogger(CategoryDAO.class.getName()).log(Level.SEVERE, null, ex);
+            }
         }
         return n;
     }
-    
+
     public int getCategoryIdByGenreId(String id) {
         int cid = -1;
         String Sql = "SELECT categoryID FROM Genre where genreID =?";
         try {
+            conn = new DBConnection().getConnection();
             pre = conn.prepareStatement(Sql);
             pre.setString(1, id);
             rs = pre.executeQuery();
             if (rs.next()) {
                 cid = rs.getInt("categoryID");
             }
-            rs.close();
-            pre.close();
-        } catch (SQLException e) {
 
+        } catch (Exception e) {
+
+        }finally {
+            try {
+                rs.close();
+                pre.close();
+                conn.close();
+            } catch (Exception ex) {
+                Logger.getLogger(CategoryDAO.class.getName()).log(Level.SEVERE, null, ex);
+            }
         }
         return cid;
     }
@@ -184,6 +241,7 @@ public class GenreDAO extends BaseDAO {
         int categoryID;
         int status;
         try {
+            conn = new DBConnection().getConnection();
             pre = conn.prepareStatement(sql);
             rs = pre.executeQuery();
             while (rs.next()) {
@@ -193,10 +251,17 @@ public class GenreDAO extends BaseDAO {
                 status = rs.getInt("status");
                 x = new Genre(genreID, genreName, categoryID, status);
             }
-            rs.close();
-            pre.close();
-        } catch (SQLException ex) {
+
+        } catch (Exception ex) {
             Logger.getLogger(CategoryDAO.class.getName()).log(Level.SEVERE, null, ex);
+        }finally {
+            try {
+                rs.close();
+                pre.close();
+                conn.close();
+            } catch (Exception ex) {
+                Logger.getLogger(CategoryDAO.class.getName()).log(Level.SEVERE, null, ex);
+            }
         }
         return x;
     }
@@ -205,28 +270,46 @@ public class GenreDAO extends BaseDAO {
         int n = 0;
         String sql = "update Genre set status = ? where genreID = ?";
         try {
+            conn = new DBConnection().getConnection();
             pre = conn.prepareStatement(sql);
             pre.setInt(1, status);
             pre.setInt(2, id);
             n = pre.executeUpdate();
-            pre.close();
-        } catch (SQLException ex) {
+
+        } catch (Exception ex) {
             Logger.getLogger(CategoryDAO.class.getName()).log(Level.SEVERE, null, ex);
+        }finally {
+            try {
+                rs.close();
+                pre.close();
+                conn.close();
+            } catch (Exception ex) {
+                Logger.getLogger(CategoryDAO.class.getName()).log(Level.SEVERE, null, ex);
+            }
         }
         return n;
     }
-    
+
     public int changeStatusByCateID(int cid, int status) {
         int n = 0;
         String sql = "update Genre set status = ? where categoryID = ?";
         try {
+            conn = new DBConnection().getConnection();
             pre = conn.prepareStatement(sql);
             pre.setInt(1, status);
             pre.setInt(2, cid);
             n = pre.executeUpdate();
-            pre.close();
-        } catch (SQLException ex) {
+
+        } catch (Exception ex) {
             Logger.getLogger(CategoryDAO.class.getName()).log(Level.SEVERE, null, ex);
+        }finally {
+            try {
+                rs.close();
+                pre.close();
+                conn.close();
+            } catch (Exception ex) {
+                Logger.getLogger(CategoryDAO.class.getName()).log(Level.SEVERE, null, ex);
+            }
         }
         return n;
     }
@@ -235,12 +318,21 @@ public class GenreDAO extends BaseDAO {
         int n = 0;
         String sql = "delete from Genre where genreID =?";
         try {
+            conn = new DBConnection().getConnection();
             pre = conn.prepareStatement(sql);
             pre.setInt(1, id);
             n = pre.executeUpdate();
-            pre.close();
-        } catch (SQLException ex) {
+
+        } catch (Exception ex) {
             Logger.getLogger(CategoryDAO.class.getName()).log(Level.SEVERE, null, ex);
+        }finally {
+            try {
+                rs.close();
+                pre.close();
+                conn.close();
+            } catch (Exception ex) {
+                Logger.getLogger(CategoryDAO.class.getName()).log(Level.SEVERE, null, ex);
+            }
         }
         return n;
     }
@@ -248,24 +340,33 @@ public class GenreDAO extends BaseDAO {
     public boolean checkExistGenreName(String genreName) {
         String sql = "SELECT * FROM Genre WHERE genreName = '" + genreName + "'";
         try {
-            pre=conn.prepareStatement(sql);
-            rs=pre.executeQuery();
+            conn = new DBConnection().getConnection();
+            pre = conn.prepareStatement(sql);
+            rs = pre.executeQuery();
             if (rs.next()) {
                 return true;
             }
-            rs.close();
-            pre.close();
-        } catch (SQLException ex) {
+
+        } catch (Exception ex) {
             Logger.getLogger(CategoryDAO.class.getName()).log(Level.SEVERE, null, ex);
+        }finally {
+            try {
+                rs.close();
+                pre.close();
+                conn.close();
+            } catch (Exception ex) {
+                Logger.getLogger(CategoryDAO.class.getName()).log(Level.SEVERE, null, ex);
+            }
         }
         return false;
     }
 
     public ArrayList<Genre> getAllPagingGenre(int index, int numOfRow, String search) {
-        int start = (index-1)*numOfRow;
+        int start = (index - 1) * numOfRow;
         ArrayList<Genre> list = new ArrayList<>();
-        String xSql = "select * from genre where genreName like '%"+search+"%' limit ?,?";
+        String xSql = "select * from genre where genreName like '%" + search + "%' limit ?,?";
         try {
+            conn = new DBConnection().getConnection();
             pre = conn.prepareStatement(xSql);
             pre.setInt(1, start);
             pre.setInt(2, numOfRow);
@@ -274,27 +375,42 @@ public class GenreDAO extends BaseDAO {
                 Genre genre = new Genre(rs.getInt("genreID"), rs.getString("genreName"), rs.getInt("categoryID"), rs.getInt("status"), rs.getString("images"));
                 list.add(genre);
             }
-            rs.close();
-            pre.close();
-        } catch (SQLException ex) {
+
+        } catch (Exception ex) {
             Logger.getLogger(UserDAO.class.getName()).log(Level.SEVERE, null, ex);
+        }finally {
+            try {
+                rs.close();
+                pre.close();
+                conn.close();
+            } catch (Exception ex) {
+                Logger.getLogger(CategoryDAO.class.getName()).log(Level.SEVERE, null, ex);
+            }
         }
         return list;
     }
-    
+
     public int getPageNumber(String search) {
         int num = 0;
         String xSql = "SELECT COUNT(*) Genre where genreName like '%" + search + "%'";
         try {
-            pre=conn.prepareStatement(xSql);
-            rs=pre.executeQuery();
+            conn = new DBConnection().getConnection();
+            pre = conn.prepareStatement(xSql);
+            rs = pre.executeQuery();
             if (rs.next()) {
                 num = rs.getInt(1);
             }
-            rs.close();
-            pre.close();
-        } catch (SQLException ex) {
+
+        } catch (Exception ex) {
             Logger.getLogger(UserDAO.class.getName()).log(Level.SEVERE, null, ex);
+        }finally {
+            try {
+                rs.close();
+                pre.close();
+                conn.close();
+            } catch (Exception ex) {
+                Logger.getLogger(CategoryDAO.class.getName()).log(Level.SEVERE, null, ex);
+            }
         }
         return num;
     }

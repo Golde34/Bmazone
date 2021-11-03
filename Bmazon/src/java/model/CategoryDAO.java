@@ -13,9 +13,10 @@ public class CategoryDAO extends BaseDAO {
     BaseDAO dbConn = new BaseDAO();
 
     public static void main(String[] args) {
-       CategoryDAO cd= new CategoryDAO();
+        CategoryDAO cd = new CategoryDAO();
         System.out.println(cd.getAllCategories());
     }
+
     public ArrayList<Category> getAllCategories() {
         String sql = "select * from Category WHERE status=1";
         ArrayList<Category> list = new ArrayList<>();
@@ -23,6 +24,7 @@ public class CategoryDAO extends BaseDAO {
         String categoryName;
         int status;
         try {
+            conn = new DBConnection().getConnection();
             pre = conn.prepareStatement(sql);
             rs = pre.executeQuery();
             while (rs.next()) {
@@ -32,49 +34,69 @@ public class CategoryDAO extends BaseDAO {
                 Category x = new Category(categoryID, categoryName, status);
                 list.add(x);
             }
-            rs.close();
-            pre.close();
-        } catch (SQLException ex) {
+        } catch (Exception ex) {
             Logger.getLogger(CategoryDAO.class.getName()).log(Level.SEVERE, null, ex);
+        } finally {
+            try {
+                rs.close();
+                pre.close();
+                conn.close();
+            } catch (SQLException ex) {
+                Logger.getLogger(CategoryDAO.class.getName()).log(Level.SEVERE, null, ex);
+            }
         }
         return list;
     }
 
-    public ArrayList<Category> getTrueCategories() {
-        String sql = "select * from Category";
-        ArrayList<Category> list = new ArrayList<>();
-        int categoryID;
-        String categoryName;
-        int status;
-        try {
-            pre = conn.prepareStatement(sql);
-            rs = pre.executeQuery();
-            while (rs.next()) {
-                categoryID = rs.getInt("categoryID");
-                categoryName = rs.getString("categoryName");
-                status = rs.getInt("status");
-                Category x = new Category(categoryID, categoryName, status);
-                list.add(x);
-            }
-            rs.close();
-            pre.close();
-        } catch (SQLException ex) {
-            Logger.getLogger(CategoryDAO.class.getName()).log(Level.SEVERE, null, ex);
-        }
-        return list;
-    }
+//    public ArrayList<Category> getTrueCategories() {
+//        String sql = "select * from Category";
+//        ArrayList<Category> list = new ArrayList<>();
+//        int categoryID;
+//        String categoryName;
+//        int status;
+//        try {
+//            conn = new DBConnection().getConnection();
+//            pre = conn.prepareStatement(sql);
+//            rs = pre.executeQuery();
+//            while (rs.next()) {
+//                categoryID = rs.getInt("categoryID");
+//                categoryName = rs.getString("categoryName");
+//                status = rs.getInt("status");
+//                Category x = new Category(categoryID, categoryName, status);
+//                list.add(x);
+//            }
+//        } catch (Exception ex) {
+//            Logger.getLogger(CategoryDAO.class.getName()).log(Level.SEVERE, null, ex);
+//        } finally {
+//            try {
+//                rs.close();
+//                pre.close();
+//                conn.close();
+//            } catch (SQLException ex) {
+//                Logger.getLogger(CategoryDAO.class.getName()).log(Level.SEVERE, null, ex);
+//            }
+//        }
+//        return list;
+//    }
 
     public int insertCategory(Category cate) {
         int n = 0;
         String sql = "Insert into Category(categoryName,status) values (?,?)";
         try {
+            conn = new DBConnection().getConnection();
             pre = conn.prepareStatement(sql);
             pre.setString(1, cate.getCategoryName());
             pre.setInt(2, cate.getStatus());
             n = pre.executeUpdate();
-            pre.close();
-        } catch (SQLException ex) {
+        } catch (Exception ex) {
             Logger.getLogger(CategoryDAO.class.getName()).log(Level.SEVERE, null, ex);
+        } finally {
+            try {
+                pre.close();
+                conn.close();
+            } catch (SQLException ex) {
+                Logger.getLogger(CategoryDAO.class.getName()).log(Level.SEVERE, null, ex);
+            }
         }
         return n;
     }
@@ -83,14 +105,21 @@ public class CategoryDAO extends BaseDAO {
         int n = 0;
         String sql = "update Category set categoryName=?, status=? where categoryID=?";
         try {
+            conn = new DBConnection().getConnection();
             pre = conn.prepareStatement(sql);
             pre.setString(1, cate.getCategoryName());
             pre.setInt(2, cate.getStatus());
             pre.setInt(3, cate.getCategoryID());
             n = pre.executeUpdate();
-            pre.close();
-        } catch (SQLException ex) {
+        } catch (Exception ex) {
             Logger.getLogger(CategoryDAO.class.getName()).log(Level.SEVERE, null, ex);
+        } finally {
+            try {
+                pre.close();
+                conn.close();
+            } catch (SQLException ex) {
+                Logger.getLogger(CategoryDAO.class.getName()).log(Level.SEVERE, null, ex);
+            }
         }
         return n;
     }
@@ -99,6 +128,7 @@ public class CategoryDAO extends BaseDAO {
         String xSql = "select * from Category where categoryID= ?";
         Category cat = new Category();
         try {
+            conn = new DBConnection().getConnection();
             pre = conn.prepareStatement(xSql);
             pre.setString(1, id);
             rs = pre.executeQuery();
@@ -108,16 +138,24 @@ public class CategoryDAO extends BaseDAO {
                 cat.setStatus(rs.getInt("status"));
                 return cat;
             }
-            pre.close();
-        } catch (SQLException ex) {
+        } catch (Exception ex) {
+            Logger.getLogger(CategoryDAO.class.getName()).log(Level.SEVERE, null, ex);
+        } finally {
+            try {
+                pre.close();
+                conn.close();
+            } catch (SQLException ex) {
+                Logger.getLogger(CategoryDAO.class.getName()).log(Level.SEVERE, null, ex);
+            }
         }
         return null;
     }
-    
-        public Category getCategoryByGenreId(int id) {
+
+    public Category getCategoryByGenreId(int id) {
         String xSql = "select * from Category c join Genre g on c.categoryID = g.categoryID where genreID =" + id;
         Category cat = new Category();
         try {
+            conn = new DBConnection().getConnection();
             pre = conn.prepareStatement(xSql);
             rs = pre.executeQuery();
             if (rs.next()) {
@@ -125,8 +163,15 @@ public class CategoryDAO extends BaseDAO {
                 cat.setCategoryName(rs.getString("categoryName"));
                 cat.setStatus(rs.getInt("status"));
             }
-            pre.close();
-        } catch (SQLException ex) {
+        } catch (Exception ex) {
+            Logger.getLogger(CategoryDAO.class.getName()).log(Level.SEVERE, null, ex);
+        } finally {
+            try {
+                pre.close();
+                conn.close();
+            } catch (SQLException ex) {
+                Logger.getLogger(CategoryDAO.class.getName()).log(Level.SEVERE, null, ex);
+            }
         }
         return cat;
     }
@@ -137,6 +182,7 @@ public class CategoryDAO extends BaseDAO {
         String categoryName = null;
 
         try {
+            conn = new DBConnection().getConnection();
             pre = conn.prepareStatement(sql);
             rs = pre.executeQuery();
             while (rs.next()) {
@@ -144,10 +190,16 @@ public class CategoryDAO extends BaseDAO {
                 categoryName = rs.getString("categoryName");
 
             }
-            rs.close();
-            pre.close();
-        } catch (SQLException ex) {
+        } catch (Exception ex) {
             Logger.getLogger(CategoryDAO.class.getName()).log(Level.SEVERE, null, ex);
+        } finally {
+            try {
+                rs.close();
+                pre.close();
+                conn.close();
+            } catch (SQLException ex) {
+                Logger.getLogger(CategoryDAO.class.getName()).log(Level.SEVERE, null, ex);
+            }
         }
         return categoryName;
     }
@@ -156,13 +208,20 @@ public class CategoryDAO extends BaseDAO {
         int n = 0;
         String sql = "update Category set status = ? where categoryID = ?";
         try {
+            conn = new DBConnection().getConnection();
             pre = conn.prepareStatement(sql);
             pre.setInt(1, (status == 1 ? 1 : 0));
             pre.setInt(2, id);
-            n = pre.executeUpdate();
-            pre.close();
-        } catch (SQLException ex) {
+            n = pre.executeUpdate();;
+        } catch (Exception ex) {
             Logger.getLogger(CategoryDAO.class.getName()).log(Level.SEVERE, null, ex);
+        } finally {
+            try {
+                pre.close();
+                conn.close();
+            } catch (SQLException ex) {
+                Logger.getLogger(CategoryDAO.class.getName()).log(Level.SEVERE, null, ex);
+            }
         }
         return n;
     }
@@ -172,11 +231,12 @@ public class CategoryDAO extends BaseDAO {
         String sql = "delete from Category where categoryID = ?";
 
         try {
+            conn = new DBConnection().getConnection();
             pre = conn.prepareStatement(sql);
             pre.setInt(1, id);
             n = pre.executeUpdate();
             pre.close();
-        } catch (SQLException ex) {
+        } catch (Exception ex) {
             Logger.getLogger(CategoryDAO.class.getName()).log(Level.SEVERE, null, ex);
         }
         return n;
@@ -185,41 +245,56 @@ public class CategoryDAO extends BaseDAO {
     public boolean checkExistCategoryName(String categoryName) {
         String sql = "SELECT * FROM Category WHERE categoryName = '" + categoryName + "'";
         try {
-            pre=conn.prepareStatement(sql);
-            rs=pre.executeQuery();
+            conn = new DBConnection().getConnection();
+            pre = conn.prepareStatement(sql);
+            rs = pre.executeQuery();
             if (rs.next()) {
                 return true;
             }
-            rs.close();
-            pre.close();
-        } catch (SQLException ex) {
+        } catch (Exception ex) {
             Logger.getLogger(CategoryDAO.class.getName()).log(Level.SEVERE, null, ex);
+        } finally {
+            try {
+                rs.close();
+                pre.close();
+                conn.close();
+            } catch (SQLException ex) {
+                Logger.getLogger(CategoryDAO.class.getName()).log(Level.SEVERE, null, ex);
+            }
         }
         return false;
     }
-    
+
     public int getPageNumber(String search) {
         int num = 0;
         String xSql = "SELECT COUNT(*) FROM Category where categoryName like '%" + search + "%'";
         try {
-            pre=conn.prepareStatement(xSql);
-            rs=pre.executeQuery();
+            conn = new DBConnection().getConnection();
+            pre = conn.prepareStatement(xSql);
+            rs = pre.executeQuery();
             if (rs.next()) {
                 num = rs.getInt(1);
             }
-            rs.close();
-            pre.close();
-        } catch (SQLException ex) {
-            Logger.getLogger(UserDAO.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (Exception ex) {
+            Logger.getLogger(CategoryDAO.class.getName()).log(Level.SEVERE, null, ex);
+        } finally {
+            try {
+                rs.close();
+                pre.close();
+                conn.close();
+            } catch (SQLException ex) {
+                Logger.getLogger(CategoryDAO.class.getName()).log(Level.SEVERE, null, ex);
+            }
         }
         return num;
     }
-    
+
     public ArrayList<Category> getAllPagingCategory(int index, int numOfRow, String search) {
-        int start=(index-1)*numOfRow;
+        int start = (index - 1) * numOfRow;
         ArrayList<Category> list = new ArrayList<>();
-        String xSql = "SELECT * FROM category where categoryName like '%"+search+"%' LIMIT ?,?";
+        String xSql = "SELECT * FROM category where categoryName like '%" + search + "%' LIMIT ?,?";
         try {
+            conn = new DBConnection().getConnection();
             pre = conn.prepareStatement(xSql);
             pre.setInt(1, start);
             pre.setInt(2, numOfRow);
@@ -228,10 +303,16 @@ public class CategoryDAO extends BaseDAO {
                 Category category = new Category(rs.getInt("categoryID"), rs.getString("categoryName"), rs.getInt("status"));
                 list.add(category);
             }
-            rs.close();
-            pre.close();
-        } catch (SQLException ex) {
-            Logger.getLogger(UserDAO.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (Exception ex) {
+            Logger.getLogger(CategoryDAO.class.getName()).log(Level.SEVERE, null, ex);
+        } finally {
+            try {
+                rs.close();
+                pre.close();
+                conn.close();
+            } catch (SQLException ex) {
+                Logger.getLogger(CategoryDAO.class.getName()).log(Level.SEVERE, null, ex);
+            }
         }
         return list;
     }

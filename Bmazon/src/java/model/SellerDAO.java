@@ -27,6 +27,7 @@ public class SellerDAO extends BaseDAO {
         String xSql = "INSERT INTO Seller (userID, sellerShopName, sellerPhone, evidence, sellerMainProduct, description, sellerVerification, status)"
                 + "     VALUES (?,?,?,?,?,?,?,1)";
         try {
+            conn = new DBConnection().getConnection();
             pre = conn.prepareStatement(xSql);
             pre.setInt(1, s.getUserID());
             pre.setString(2, s.getSellerShopName());
@@ -36,9 +37,17 @@ public class SellerDAO extends BaseDAO {
             pre.setString(6, s.getDescription());
             pre.setInt(7, s.getSellerVerification());
             n = pre.executeUpdate();
-            pre.close();
+
         } catch (Exception e) {
             Logger.getLogger(RoleDAO.class.getName()).log(Level.SEVERE, null, e);
+        } finally {
+            try {
+                rs.close();
+                pre.close();
+                conn.close();
+            } catch (Exception ex) {
+                Logger.getLogger(CategoryDAO.class.getName()).log(Level.SEVERE, null, ex);
+            }
         }
         return n;
     }
@@ -48,6 +57,7 @@ public class SellerDAO extends BaseDAO {
         String xSql = "update Seller set userID = ? ,sellerShopName = ?, sellerPhone = ?, evidence = ?,"
                 + "sellerMainProduct = ?, description = ?, sellerVerification = ?, status = ? where sellerID = ?";
         try {
+            conn = new DBConnection().getConnection();
             pre = conn.prepareStatement(xSql);
             pre.setInt(1, s.getUserID());
             pre.setString(2, s.getSellerShopName());
@@ -59,9 +69,17 @@ public class SellerDAO extends BaseDAO {
             pre.setInt(8, s.getStatus());
             pre.setInt(11, s.getSellerID());
             n = pre.executeUpdate();
-            pre.close();
-        } catch (SQLException e) {
+
+        } catch (Exception e) {
             Logger.getLogger(RoleDAO.class.getName()).log(Level.SEVERE, null, e);
+        } finally {
+            try {
+                rs.close();
+                pre.close();
+                conn.close();
+            } catch (Exception ex) {
+                Logger.getLogger(CategoryDAO.class.getName()).log(Level.SEVERE, null, ex);
+            }
         }
         return n;
     }
@@ -70,12 +88,21 @@ public class SellerDAO extends BaseDAO {
         int n = 0;
         String sql = "delete from Seller where sellerID = ?";
         try {
+            conn = new DBConnection().getConnection();
             pre = conn.prepareStatement(sql);
             pre.setInt(1, sellerID);
             n = pre.executeUpdate();
-            pre.close();
-        } catch (SQLException e) {
+
+        } catch (Exception e) {
             Logger.getLogger(RoleDAO.class.getName()).log(Level.SEVERE, null, e);
+        } finally {
+            try {
+                rs.close();
+                pre.close();
+                conn.close();
+            } catch (Exception ex) {
+                Logger.getLogger(CategoryDAO.class.getName()).log(Level.SEVERE, null, ex);
+            }
         }
         return n;
     }
@@ -84,15 +111,23 @@ public class SellerDAO extends BaseDAO {
         boolean isExist = false;
         String sql = "SELECT * FROM Seller WHERE sellerPhone = '" + phone + "' and status = 1";
         try {
+            conn = new DBConnection().getConnection();
             pre = conn.prepareStatement(sql);
             rs = pre.executeQuery();
             if (rs.next()) {
                 isExist = true;
             }
-            rs.close();
-            pre.close();
-        } catch (SQLException ex) {
+
+        } catch (Exception ex) {
             Logger.getLogger(UserDAO.class.getName()).log(Level.SEVERE, null, ex);
+        } finally {
+            try {
+                rs.close();
+                pre.close();
+                conn.close();
+            } catch (Exception ex) {
+                Logger.getLogger(CategoryDAO.class.getName()).log(Level.SEVERE, null, ex);
+            }
         }
         return isExist;
     }
@@ -101,15 +136,23 @@ public class SellerDAO extends BaseDAO {
         boolean isExist = false;
         String sql = "SELECT * FROM Seller WHERE userID = " + id + " and status = 1";
         try {
+            conn = new DBConnection().getConnection();
             pre = conn.prepareStatement(sql);
             rs = pre.executeQuery();
             if (rs.next()) {
                 isExist = true;
             }
-            rs.close();
-            pre.close();
-        } catch (SQLException ex) {
+
+        } catch (Exception ex) {
             Logger.getLogger(UserDAO.class.getName()).log(Level.SEVERE, null, ex);
+        } finally {
+            try {
+                rs.close();
+                pre.close();
+                conn.close();
+            } catch (Exception ex) {
+                Logger.getLogger(CategoryDAO.class.getName()).log(Level.SEVERE, null, ex);
+            }
         }
         return isExist;
     }
@@ -118,15 +161,23 @@ public class SellerDAO extends BaseDAO {
         boolean isExist = false;
         String xSql = "SELECT * FROM Seller where sellerShopName like '" + sellerShopName + "'";
         try {
+            conn = new DBConnection().getConnection();
             pre = conn.prepareStatement(xSql);
             rs = pre.executeQuery();
             if (rs.next()) {
                 isExist = true;
             }
-            rs.close();
-            pre.close();
-        } catch (SQLException ex) {
+
+        } catch (Exception ex) {
             Logger.getLogger(UserDAO.class.getName()).log(Level.SEVERE, null, ex);
+        } finally {
+            try {
+                rs.close();
+                pre.close();
+                conn.close();
+            } catch (Exception ex) {
+                Logger.getLogger(CategoryDAO.class.getName()).log(Level.SEVERE, null, ex);
+            }
         }
         return isExist;
     }
@@ -135,15 +186,23 @@ public class SellerDAO extends BaseDAO {
         boolean isExist = false;
         String xSql = "SELECT * FROM Seller where sellerID = " + id;
         try {
+            conn = new DBConnection().getConnection();
             pre = conn.prepareStatement(xSql);
             rs = pre.executeQuery();
             if (rs.next()) {
                 isExist = true;
             }
-            rs.close();
-            pre.close();
-        } catch (SQLException ex) {
+
+        } catch (Exception ex) {
             Logger.getLogger(UserDAO.class.getName()).log(Level.SEVERE, null, ex);
+        } finally {
+            try {
+                rs.close();
+                pre.close();
+                conn.close();
+            } catch (Exception ex) {
+                Logger.getLogger(CategoryDAO.class.getName()).log(Level.SEVERE, null, ex);
+            }
         }
         return isExist;
     }
@@ -152,6 +211,7 @@ public class SellerDAO extends BaseDAO {
         Seller seller = new Seller();
         String xSql = "select * from Seller where sellerID = " + id;
         try {
+            conn = new DBConnection().getConnection();
             pre = conn.prepareStatement(xSql);
             rs = pre.executeQuery();
             if (rs.next()) {
@@ -165,10 +225,17 @@ public class SellerDAO extends BaseDAO {
                 seller.setSellerVerification(rs.getInt("sellerVerification"));
                 seller.setStatus(rs.getInt("status"));
             }
-            rs.close();
-            pre.close();
-        } catch (SQLException ex) {
+
+        } catch (Exception ex) {
             Logger.getLogger(UserDAO.class.getName()).log(Level.SEVERE, null, ex);
+        } finally {
+            try {
+                rs.close();
+                pre.close();
+                conn.close();
+            } catch (Exception ex) {
+                Logger.getLogger(CategoryDAO.class.getName()).log(Level.SEVERE, null, ex);
+            }
         }
         return seller;
     }
@@ -177,6 +244,7 @@ public class SellerDAO extends BaseDAO {
         List<Seller> list = new ArrayList<>();
         String xSql = "select * from Seller where status = 1 and sellerVerification = 1";
         try {
+            conn = new DBConnection().getConnection();
             pre = conn.prepareStatement(xSql);
             rs = pre.executeQuery();
             while (rs.next()) {
@@ -191,18 +259,26 @@ public class SellerDAO extends BaseDAO {
                         rs.getInt(8),
                         rs.getInt(11)));
             }
-            rs.close();
-            pre.close();
-        } catch (SQLException ex) {
+
+        } catch (Exception ex) {
             Logger.getLogger(UserDAO.class.getName()).log(Level.SEVERE, null, ex);
+        } finally {
+            try {
+                rs.close();
+                pre.close();
+                conn.close();
+            } catch (Exception ex) {
+                Logger.getLogger(CategoryDAO.class.getName()).log(Level.SEVERE, null, ex);
+            }
         }
         return list;
     }
-    
+
     public List<Seller> getNewSeller() {
         List<Seller> list = new ArrayList<>();
         String xSql = "select * from Seller where status = 1 and sellerVerification = 1 ORDER BY sellerID desc LIMIT 5";
         try {
+            conn = new DBConnection().getConnection();
             pre = conn.prepareStatement(xSql);
             rs = pre.executeQuery();
             while (rs.next()) {
@@ -217,10 +293,17 @@ public class SellerDAO extends BaseDAO {
                         rs.getInt(8),
                         rs.getInt(11)));
             }
-            rs.close();
-            pre.close();
-        } catch (SQLException ex) {
+
+        } catch (Exception ex) {
             Logger.getLogger(UserDAO.class.getName()).log(Level.SEVERE, null, ex);
+        } finally {
+            try {
+                rs.close();
+                pre.close();
+                conn.close();
+            } catch (Exception ex) {
+                Logger.getLogger(CategoryDAO.class.getName()).log(Level.SEVERE, null, ex);
+            }
         }
         return list;
     }
@@ -229,6 +312,7 @@ public class SellerDAO extends BaseDAO {
         List<Seller> list = new ArrayList<>();
         String xSql = "select * from Seller where status = 1 and sellerVerification = 0";
         try {
+            conn = new DBConnection().getConnection();
             pre = conn.prepareStatement(xSql);
             rs = pre.executeQuery();
             while (rs.next()) {
@@ -238,10 +322,17 @@ public class SellerDAO extends BaseDAO {
                         rs.getString("description"), rs.getInt("sellerVerification"),
                         rs.getInt("status")));
             }
-            rs.close();
-            pre.close();
-        } catch (SQLException ex) {
+
+        } catch (Exception ex) {
             Logger.getLogger(UserDAO.class.getName()).log(Level.SEVERE, null, ex);
+        } finally {
+            try {
+                rs.close();
+                pre.close();
+                conn.close();
+            } catch (Exception ex) {
+                Logger.getLogger(CategoryDAO.class.getName()).log(Level.SEVERE, null, ex);
+            }
         }
         return list;
     }
@@ -250,6 +341,7 @@ public class SellerDAO extends BaseDAO {
         Seller seller = new Seller();
         String xSql = "select * from Seller where userID = " + userID;
         try {
+            conn = new DBConnection().getConnection();
             pre = conn.prepareStatement(xSql);
             rs = pre.executeQuery();
             if (rs.next()) {
@@ -263,10 +355,17 @@ public class SellerDAO extends BaseDAO {
                 seller.setSellerVerification(rs.getInt("sellerVerification"));
                 seller.setStatus(rs.getInt("status"));
             }
-            rs.close();
-            pre.close();
-        } catch (SQLException e) {
+
+        } catch (Exception e) {
             Logger.getLogger(SellerDAO.class.getName()).log(Level.SEVERE, null, e);
+        } finally {
+            try {
+                rs.close();
+                pre.close();
+                conn.close();
+            } catch (Exception ex) {
+                Logger.getLogger(CategoryDAO.class.getName()).log(Level.SEVERE, null, ex);
+            }
         }
         return seller;
     }
@@ -277,7 +376,8 @@ public class SellerDAO extends BaseDAO {
                 + "ON s.sellerID = p.sellerID\n"
                 + "where p.productID=" + productID;
         try {
-            pre=conn.prepareStatement(xSql);
+            conn = new DBConnection().getConnection();
+            pre = conn.prepareStatement(xSql);
             rs = pre.executeQuery();
             if (rs.next()) {
                 seller.setSellerID(rs.getInt("sellerID"));
@@ -290,10 +390,17 @@ public class SellerDAO extends BaseDAO {
                 seller.setSellerVerification(rs.getInt("sellerVerification"));
                 seller.setStatus(rs.getInt("status"));
             }
-            rs.close();
-            pre.close();
+
         } catch (Exception e) {
             Logger.getLogger(SellerDAO.class.getName()).log(Level.SEVERE, null, e);
+        } finally {
+            try {
+                rs.close();
+                pre.close();
+                conn.close();
+            } catch (Exception ex) {
+                Logger.getLogger(CategoryDAO.class.getName()).log(Level.SEVERE, null, ex);
+            }
         }
         return seller;
     }
@@ -302,12 +409,21 @@ public class SellerDAO extends BaseDAO {
         int n = 0;
         String xSql = "update Seller set sellerVerification = 1 where sellerID = ?";
         try {
+            conn = new DBConnection().getConnection();
             pre = conn.prepareStatement(xSql);
             pre.setInt(1, sellerID);
             n = pre.executeUpdate();
-            pre.close();
-        } catch (SQLException e) {
+
+        } catch (Exception e) {
             Logger.getLogger(SellerDAO.class.getName()).log(Level.SEVERE, null, e);
+        } finally {
+            try {
+                rs.close();
+                pre.close();
+                conn.close();
+            } catch (Exception ex) {
+                Logger.getLogger(CategoryDAO.class.getName()).log(Level.SEVERE, null, ex);
+            }
         }
         return n;
     }
@@ -316,12 +432,21 @@ public class SellerDAO extends BaseDAO {
         int n = 0;
         String xSql = "update Seller set sellerVerification = 2 where sellerI] = ?";
         try {
+            conn = new DBConnection().getConnection();
             pre = conn.prepareStatement(xSql);
             pre.setInt(1, sellerID);
             n = pre.executeUpdate();
-            pre.close();
-        } catch (SQLException e) {
+
+        } catch (Exception e) {
             Logger.getLogger(SellerDAO.class.getName()).log(Level.SEVERE, null, e);
+        } finally {
+            try {
+                rs.close();
+                pre.close();
+                conn.close();
+            } catch (Exception ex) {
+                Logger.getLogger(CategoryDAO.class.getName()).log(Level.SEVERE, null, ex);
+            }
         }
         return n;
     }
@@ -330,6 +455,7 @@ public class SellerDAO extends BaseDAO {
         List<Seller> list = new ArrayList<>();
         String xSql = "SELECT * FROM Seller where sellerShopName like '%" + text + "%'";
         try {
+            conn = new DBConnection().getConnection();
             pre = conn.prepareStatement(xSql);
             rs = pre.executeQuery();
             while (rs.next()) {
@@ -344,10 +470,17 @@ public class SellerDAO extends BaseDAO {
                         rs.getInt(8),
                         rs.getInt(9)));
             }
-            rs.close();
-            pre.close();
+
         } catch (Exception e) {
             Logger.getLogger(SellerDAO.class.getName()).log(Level.SEVERE, null, e);
+        } finally {
+            try {
+                rs.close();
+                pre.close();
+                conn.close();
+            } catch (Exception ex) {
+                Logger.getLogger(CategoryDAO.class.getName()).log(Level.SEVERE, null, ex);
+            }
         }
         return list;
     }

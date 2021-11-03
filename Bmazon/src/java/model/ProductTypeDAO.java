@@ -23,16 +23,25 @@ public class ProductTypeDAO extends BaseDAO {
         String xSql = "SELECT COUNT(*)from ProductType\n"
                 + "       where color like '%" + search + "%' and productID = ?";
         try {
+            conn=new DBConnection().getConnection();
             pre = conn.prepareStatement(xSql);
             pre.setString(1, productID);
             rs = pre.executeQuery();
             if (rs.next()) {
                 num = rs.getInt(1);
             }
-            rs.close();
-            pre.close();
-        } catch (SQLException ex) {
+            
+            
+        } catch (Exception ex) {
             Logger.getLogger(UserDAO.class.getName()).log(Level.SEVERE, null, ex);
+        }finally {
+            try {
+                rs.close();
+                pre.close();
+                conn.close();
+            } catch (Exception ex) {
+                Logger.getLogger(CategoryDAO.class.getName()).log(Level.SEVERE, null, ex);
+            }
         }
         return num;
     }
@@ -41,6 +50,7 @@ public class ProductTypeDAO extends BaseDAO {
         ArrayList<ProductType> list = new ArrayList<>();
         String sql = "SELECT * FROM ProductType where productID = " + pid + " and color like '%" + search + "%' limit ?,?";
         try {
+            conn=new DBConnection().getConnection();
             pre = conn.prepareStatement(sql);
             rs = pre.executeQuery();
             while (rs.next()) {
@@ -54,10 +64,18 @@ public class ProductTypeDAO extends BaseDAO {
                         rs.getInt(7),
                         rs.getInt(8)));
             }
-            rs.close();
-            pre.close();
-        } catch (SQLException e) {
+            
+            
+        } catch (Exception e) {
             Logger.getLogger(ProductDAO.class.getName()).log(Level.SEVERE, null, e);
+        }finally {
+            try {
+                rs.close();
+                pre.close();
+                conn.close();
+            } catch (Exception ex) {
+                Logger.getLogger(CategoryDAO.class.getName()).log(Level.SEVERE, null, ex);
+            }
         }
         return list;
     }
@@ -66,12 +84,21 @@ public class ProductTypeDAO extends BaseDAO {
         int n = 0;
         String xSql = "update ProductType set quantity =? where productTypeId = ?";
         try {
+            conn=new DBConnection().getConnection();
             pre = conn.prepareStatement(xSql);
             pre.setInt(1, quantity);
             pre.setString(2, ProTypeId);
             n = pre.executeUpdate();
-            pre.close();
-        } catch (SQLException e) {
+            
+        } catch (Exception e) {
+        }finally {
+            try {
+                rs.close();
+                pre.close();
+                conn.close();
+            } catch (Exception ex) {
+                Logger.getLogger(CategoryDAO.class.getName()).log(Level.SEVERE, null, ex);
+            }
         }
         return n;
     }
@@ -80,6 +107,7 @@ public class ProductTypeDAO extends BaseDAO {
         List<ProductType> list = new ArrayList<>();
         String xSql = "select * from ProductType where status = 1";
         try {
+            conn=new DBConnection().getConnection();
             pre = conn.prepareStatement(xSql);
             rs = pre.executeQuery();
             while (rs.next()) {
@@ -93,9 +121,17 @@ public class ProductTypeDAO extends BaseDAO {
                         rs.getInt(7),
                         rs.getInt(8)));
             }
-            rs.close();
-            pre.close();
-        } catch (SQLException e) {
+            
+            
+        } catch (Exception e) {
+        }finally {
+            try {
+                rs.close();
+                pre.close();
+                conn.close();
+            } catch (Exception ex) {
+                Logger.getLogger(CategoryDAO.class.getName()).log(Level.SEVERE, null, ex);
+            }
         }
         return list;
     }
@@ -104,6 +140,7 @@ public class ProductTypeDAO extends BaseDAO {
         ProductType ptype = new ProductType();
         String xSql = "select * from ProductType where productTypeId = ?";
         try {
+            conn=new DBConnection().getConnection();
             pre = conn.prepareStatement(xSql);
             pre.setString(1, ProTypeId);
             rs = pre.executeQuery();
@@ -118,9 +155,17 @@ public class ProductTypeDAO extends BaseDAO {
                         rs.getInt(7),
                         rs.getInt(8));
             }
-            rs.close();
-            pre.close();
-        } catch (SQLException e) {
+            
+            
+        } catch (Exception e) {
+        }finally {
+            try {
+                rs.close();
+                pre.close();
+                conn.close();
+            } catch (Exception ex) {
+                Logger.getLogger(CategoryDAO.class.getName()).log(Level.SEVERE, null, ex);
+            }
         }
         return ptype;
     }
@@ -129,6 +174,7 @@ public class ProductTypeDAO extends BaseDAO {
         ProductType ptype = new ProductType();
         String xSql = "select * from ProductType where productID = ? and price = ? and size = ? and color = ?";
         try {
+            conn=new DBConnection().getConnection();
             pre = conn.prepareStatement(xSql);
             pre.setInt(1, productID);
             pre.setDouble(2, price);
@@ -146,9 +192,17 @@ public class ProductTypeDAO extends BaseDAO {
                         rs.getInt(7),
                         rs.getInt(8));
             }
-            rs.close();
-            pre.close();
-        } catch (SQLException e) {
+            
+            
+        } catch (Exception e) {
+        }finally {
+            try {
+                rs.close();
+                pre.close();
+                conn.close();
+            } catch (Exception ex) {
+                Logger.getLogger(CategoryDAO.class.getName()).log(Level.SEVERE, null, ex);
+            }
         }
         return ptype;
     }
@@ -157,6 +211,7 @@ public class ProductTypeDAO extends BaseDAO {
         ProductType ptype = new ProductType();
         String xSql = "select * from ProductType where productID = ? LIMIT 1";
         try {
+            conn=new DBConnection().getConnection();
             pre = conn.prepareStatement(xSql);
             pre.setInt(1, productID);
             rs = pre.executeQuery();
@@ -171,9 +226,17 @@ public class ProductTypeDAO extends BaseDAO {
                         rs.getInt(7),
                         rs.getInt(8));
             }
-            rs.close();
-            pre.close();
-        } catch (SQLException e) {
+            
+            
+        } catch (Exception e) {
+        }finally {
+            try {
+                rs.close();
+                pre.close();
+                conn.close();
+            } catch (Exception ex) {
+                Logger.getLogger(CategoryDAO.class.getName()).log(Level.SEVERE, null, ex);
+            }
         }
         return ptype;
     }
@@ -182,6 +245,7 @@ public class ProductTypeDAO extends BaseDAO {
         int quantity = 0;
         String xSql = "SELECT quantity FROM ProductType WHERE productTypeID = ? and size = ? and color = ?";
         try {
+            conn=new DBConnection().getConnection();
             pre = conn.prepareStatement(xSql);
             pre.setString(1, pid);
             pre.setString(2, size);
@@ -190,9 +254,17 @@ public class ProductTypeDAO extends BaseDAO {
             while (rs.next()) {
                 quantity = rs.getInt("quantity");
             }
-            rs.close();
-            pre.close();
-        } catch (SQLException e) {
+            
+            
+        } catch (Exception e) {
+        }finally {
+            try {
+                rs.close();
+                pre.close();
+                conn.close();
+            } catch (Exception ex) {
+                Logger.getLogger(CategoryDAO.class.getName()).log(Level.SEVERE, null, ex);
+            }
         }
         return quantity;
     }
@@ -201,16 +273,25 @@ public class ProductTypeDAO extends BaseDAO {
         int pid = -1;
         String xSql = "SELECT productID FROM ProductType where productTypeId =?";
         try {
+            conn=new DBConnection().getConnection();
             pre = conn.prepareStatement(xSql);
             pre.setString(1, id);
             rs = pre.executeQuery();
             if (rs.next()) {
                 pid = rs.getInt("productID");
             }
-            rs.close();
-            pre.close();
-        } catch (SQLException e) {
+            
+            
+        } catch (Exception e) {
 
+        }finally {
+            try {
+                rs.close();
+                pre.close();
+                conn.close();
+            } catch (Exception ex) {
+                Logger.getLogger(CategoryDAO.class.getName()).log(Level.SEVERE, null, ex);
+            }
         }
         return pid;
     }
@@ -219,6 +300,7 @@ public class ProductTypeDAO extends BaseDAO {
         List<ProductType> list = new ArrayList<>();
         String xSql = "select * from ProductType where productID = ?";
         try {
+            conn=new DBConnection().getConnection();
             pre = conn.prepareStatement(xSql);
             pre.setInt(1, pid);
             rs = pre.executeQuery();
@@ -233,9 +315,17 @@ public class ProductTypeDAO extends BaseDAO {
                         rs.getInt(7),
                         rs.getInt(8)));
             }
-            rs.close();
-            pre.close();
-        } catch (SQLException e) {
+            
+            
+        } catch (Exception e) {
+        }finally {
+            try {
+                rs.close();
+                pre.close();
+                conn.close();
+            } catch (Exception ex) {
+                Logger.getLogger(CategoryDAO.class.getName()).log(Level.SEVERE, null, ex);
+            }
         }
         return list;
     }
@@ -244,6 +334,7 @@ public class ProductTypeDAO extends BaseDAO {
         ProductType pt = new ProductType();
         String xSql = "select pt.* from Product p join ProductType pt on p.productID = pt.productID where p.productID = ? and pt.size = ? and pt.color = ?";
         try {
+            conn=new DBConnection().getConnection();
             pre = conn.prepareStatement(xSql);
             pre.setString(1, productID);
             pre.setString(2, size);
@@ -260,9 +351,17 @@ public class ProductTypeDAO extends BaseDAO {
                 pt.setStatus(rs.getInt("status"));
 
             }
-            rs.close();
-            pre.close();
-        } catch (SQLException e) {
+            
+            
+        } catch (Exception e) {
+        }finally {
+            try {
+                rs.close();
+                pre.close();
+                conn.close();
+            } catch (Exception ex) {
+                Logger.getLogger(CategoryDAO.class.getName()).log(Level.SEVERE, null, ex);
+            }
         }
         return pt;
     }
@@ -271,6 +370,7 @@ public class ProductTypeDAO extends BaseDAO {
         ArrayList<ProductType> list = new ArrayList<>();
         String xSql = "SELECT * FROM ProductType WHERE color like ?";
         try {
+            conn=new DBConnection().getConnection();
             pre = conn.prepareStatement(xSql);
             pre.setString(1, "%" + color + "%");
             rs = pre.executeQuery();
@@ -285,9 +385,17 @@ public class ProductTypeDAO extends BaseDAO {
                         rs.getInt(7),
                         rs.getInt(8)));
             }
-            rs.close();
-            pre.close();
-        } catch (SQLException e) {
+            
+            
+        } catch (Exception e) {
+        }finally {
+            try {
+                rs.close();
+                pre.close();
+                conn.close();
+            } catch (Exception ex) {
+                Logger.getLogger(CategoryDAO.class.getName()).log(Level.SEVERE, null, ex);
+            }
         }
         return list;
     }
@@ -296,14 +404,23 @@ public class ProductTypeDAO extends BaseDAO {
         ArrayList<String> list = new ArrayList<>();
         String xSql = "select distinct size from ProductType where productID = " + id + "";
         try {
+            conn=new DBConnection().getConnection();
             pre = conn.prepareStatement(xSql);
             rs = pre.executeQuery();
             while (rs.next()) {
                 list.add(rs.getString("size"));
             }
-            rs.close();
-            pre.close();
-        } catch (SQLException e) {
+            
+            
+        } catch (Exception e) {
+        }finally {
+            try {
+                rs.close();
+                pre.close();
+                conn.close();
+            } catch (Exception ex) {
+                Logger.getLogger(CategoryDAO.class.getName()).log(Level.SEVERE, null, ex);
+            }
         }
         return list;
     }
@@ -312,14 +429,23 @@ public class ProductTypeDAO extends BaseDAO {
         ArrayList<String> list = new ArrayList<>();
         String xSql = "select distinct color from ProductType where productID = " + id + "";
         try {
+            conn=new DBConnection().getConnection();
             pre = conn.prepareStatement(xSql);
             rs = pre.executeQuery();
             while (rs.next()) {
                 list.add(rs.getString("color"));
             }
-            rs.close();
-            pre.close();
-        } catch (SQLException e) {
+            
+            
+        } catch (Exception e) {
+        }finally {
+            try {
+                rs.close();
+                pre.close();
+                conn.close();
+            } catch (Exception ex) {
+                Logger.getLogger(CategoryDAO.class.getName()).log(Level.SEVERE, null, ex);
+            }
         }
         return list;
     }
@@ -328,14 +454,23 @@ public class ProductTypeDAO extends BaseDAO {
         String price = null;
         String xSql = "SELECT price FROM ProductType WHERE productID = " + pid + " Order by price";
         try {
+            conn=new DBConnection().getConnection();
             pre = conn.prepareStatement(xSql);
             rs = pre.executeQuery();
             while (rs.next()) {
                 price = rs.getString("price");
             }
-            rs.close();
-            pre.close();
-        } catch (SQLException e) {
+            
+            
+        } catch (Exception e) {
+        }finally {
+            try {
+                rs.close();
+                pre.close();
+                conn.close();
+            } catch (Exception ex) {
+                Logger.getLogger(CategoryDAO.class.getName()).log(Level.SEVERE, null, ex);
+            }
         }
         return price;
     }
@@ -345,6 +480,7 @@ public class ProductTypeDAO extends BaseDAO {
         String xSql = "INSERT INTO ProductType (productTypeId,productID,size,color,price,wareHouseID,quantity,status)\n"
                 + "     VALUES (?,?,?,?,?,?,?,?)";
         try {
+            conn=new DBConnection().getConnection();
             pre = conn.prepareStatement(xSql);
             pre.setString(1, p.getProductTypeId());
             pre.setInt(2, p.getProductID());
@@ -355,8 +491,16 @@ public class ProductTypeDAO extends BaseDAO {
             pre.setInt(7, p.getQuantity());
             pre.setInt(8, p.getStatus());
             n = pre.executeUpdate();
-            pre.close();
-        } catch (SQLException e) {
+            
+        } catch (Exception e) {
+        }finally {
+            try {
+                rs.close();
+                pre.close();
+                conn.close();
+            } catch (Exception ex) {
+                Logger.getLogger(CategoryDAO.class.getName()).log(Level.SEVERE, null, ex);
+            }
         }
         return n;
     }
@@ -365,6 +509,7 @@ public class ProductTypeDAO extends BaseDAO {
         int n = 0;
         String xSql = "UPDATE ProductType SET productID = ?,size = ? ,color = ? ,price = ?,wareHouseID = ?,quantity = ?,status = ? WHERE productTypeId = ?";
         try {
+            conn=new DBConnection().getConnection();
             pre = conn.prepareStatement(xSql);
             pre.setInt(1, p.getProductID());
             pre.setString(2, p.getSize());
@@ -375,8 +520,16 @@ public class ProductTypeDAO extends BaseDAO {
             pre.setInt(7, p.getStatus());
             pre.setString(8, p.getProductTypeId());
             n = pre.executeUpdate();
-            pre.close();
-        } catch (SQLException e) {
+            
+        } catch (Exception e) {
+        }finally {
+            try {
+                rs.close();
+                pre.close();
+                conn.close();
+            } catch (Exception ex) {
+                Logger.getLogger(CategoryDAO.class.getName()).log(Level.SEVERE, null, ex);
+            }
         }
         return n;
     }
@@ -385,11 +538,20 @@ public class ProductTypeDAO extends BaseDAO {
         int n = 0;
         String sql = "delete from ProductType where productTypeId = ?";
         try {
+            conn=new DBConnection().getConnection();
             pre = conn.prepareStatement(sql);
             pre.setString(1, ProTypeId);
             n = pre.executeUpdate();
-            pre.close();
-        } catch (SQLException e) {
+            
+        } catch (Exception e) {
+        }finally {
+            try {
+                rs.close();
+                pre.close();
+                conn.close();
+            } catch (Exception ex) {
+                Logger.getLogger(CategoryDAO.class.getName()).log(Level.SEVERE, null, ex);
+            }
         }
         return n;
     }
@@ -398,13 +560,22 @@ public class ProductTypeDAO extends BaseDAO {
         int n = 0;
         String sql = "update ProductType set status = ? where productTypeId = ?";
         try {
+            conn=new DBConnection().getConnection();
             pre = conn.prepareStatement(sql);
             pre.setInt(1, (status == 1 ? 1 : 0));
             pre.setString(2, id);
             n = pre.executeUpdate();
-            pre.close();
-        } catch (SQLException ex) {
+            
+        } catch (Exception ex) {
             Logger.getLogger(ProductDAO.class.getName()).log(Level.SEVERE, null, ex);
+        }finally {
+            try {
+                rs.close();
+                pre.close();
+                conn.close();
+            } catch (Exception ex) {
+                Logger.getLogger(CategoryDAO.class.getName()).log(Level.SEVERE, null, ex);
+            }
         }
         return n;
     }
@@ -413,6 +584,7 @@ public class ProductTypeDAO extends BaseDAO {
         List<ProductType> list = new ArrayList<>();
         String xSql = "SELECT distinct *FROM ProductType where productTypeId like '%" + text + "%' or productID like '%" + text + "%' or size like '%" + text + "%' or color like '%" + text + "%' or price like '%" + text + "%' or wareHouseID like '%" + text + "%' or quantity like '%" + text + "%'";
         try {
+            conn=new DBConnection().getConnection();
             pre = conn.prepareStatement(xSql);
             pre.setString(1, text);
             rs = pre.executeQuery();
@@ -427,9 +599,17 @@ public class ProductTypeDAO extends BaseDAO {
                         rs.getInt(7),
                         rs.getInt(8)));
             }
-            rs.close();
-            pre.close();
-        } catch (SQLException e) {
+            
+            
+        } catch (Exception e) {
+        }finally {
+            try {
+                rs.close();
+                pre.close();
+                conn.close();
+            } catch (Exception ex) {
+                Logger.getLogger(CategoryDAO.class.getName()).log(Level.SEVERE, null, ex);
+            }
         }
         return list;
     }
@@ -437,15 +617,24 @@ public class ProductTypeDAO extends BaseDAO {
     public boolean checkExistColor(String color) {
         String sql = "SELECT * FROM ProductType WHERE color = '" + color + "'";
         try {
+            conn=new DBConnection().getConnection();
             pre = conn.prepareStatement(sql);
             rs = pre.executeQuery();
             if (rs.next()) {
                 return true;
             }
-            rs.close();
-            pre.close();
-        } catch (SQLException ex) {
+            
+            
+        } catch (Exception ex) {
             Logger.getLogger(UserDAO.class.getName()).log(Level.SEVERE, null, ex);
+        }finally {
+            try {
+                rs.close();
+                pre.close();
+                conn.close();
+            } catch (Exception ex) {
+                Logger.getLogger(CategoryDAO.class.getName()).log(Level.SEVERE, null, ex);
+            }
         }
         return false;
     }
@@ -453,15 +642,24 @@ public class ProductTypeDAO extends BaseDAO {
     public boolean checkExistSizeAndColor(String size, String color, int productId) {
         String sql = "SELECT * FROM ProductType WHERE size = '" + size + "' and color='" + color + "' and productID=" + productId;
         try {
+            conn=new DBConnection().getConnection();
             pre = conn.prepareStatement(sql);
             rs = pre.executeQuery();
             if (rs.next()) {
                 return true;
             }
-            rs.close();
-            pre.close();
-        } catch (SQLException ex) {
+            
+            
+        } catch (Exception ex) {
             Logger.getLogger(UserDAO.class.getName()).log(Level.SEVERE, null, ex);
+        }finally {
+            try {
+                rs.close();
+                pre.close();
+                conn.close();
+            } catch (Exception ex) {
+                Logger.getLogger(CategoryDAO.class.getName()).log(Level.SEVERE, null, ex);
+            }
         }
         return false;
     }
@@ -485,6 +683,7 @@ public class ProductTypeDAO extends BaseDAO {
         ArrayList<ProductType> list = new ArrayList<>();
         String xSql= "select * from producttype where productID like'%%' limit ?,?";
         try {
+            conn=new DBConnection().getConnection();
             pre=conn.prepareStatement(xSql);
             pre.setInt(1, start);
             pre.setInt(2, numOfRow);
@@ -501,10 +700,18 @@ public class ProductTypeDAO extends BaseDAO {
                 pt.setStatus(rs.getInt("status"));
                 list.add(pt);
             }
-            rs.close();
-            pre.close();
-        } catch (SQLException ex) {
+            
+            
+        } catch (Exception ex) {
             Logger.getLogger(UserDAO.class.getName()).log(Level.SEVERE, null, ex);
+        }finally {
+            try {
+                rs.close();
+                pre.close();
+                conn.close();
+            } catch (Exception ex) {
+                Logger.getLogger(CategoryDAO.class.getName()).log(Level.SEVERE, null, ex);
+            }
         }
         return list;
     }

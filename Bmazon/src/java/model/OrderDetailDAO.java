@@ -35,6 +35,7 @@ public class OrderDetailDAO extends BaseDAO {
         String sql = "Insert into OrderDetail(orderID, productTypeID, productName, price, quantity, status)"
                 + " values (?,?,?,?,?,1)";
         try {
+            conn = new DBConnection().getConnection();
             pre = conn.prepareStatement(sql);
             pre.setInt(1, obj.getOrderID());
             pre.setString(2, obj.getProductTypeId());
@@ -42,9 +43,17 @@ public class OrderDetailDAO extends BaseDAO {
             pre.setDouble(4, obj.getPrice());
             pre.setInt(5, obj.getQuantity());
             n = pre.executeUpdate();
-            pre.close();
-        } catch (SQLException ex) {
+
+        } catch (Exception ex) {
             Logger.getLogger(OrderDetailDAO.class.getName()).log(Level.SEVERE, null, ex);
+        } finally {
+            try {
+                rs.close();
+                pre.close();
+                conn.close();
+            } catch (Exception ex) {
+                Logger.getLogger(CategoryDAO.class.getName()).log(Level.SEVERE, null, ex);
+            }
         }
         return n;
     }
@@ -57,7 +66,7 @@ public class OrderDetailDAO extends BaseDAO {
 //            pre.setString(1, orderId);
 //            pre.setString(2, productTypeID);
 //            n = pre.executeUpdate();
-//        } catch (SQLException ex) {
+//        } catch (Exception ex) {
 //            Logger.getLogger(OrderDetailDAO.class.getName()).log(Level.SEVERE, null, ex);
 //        }
 //        return n;
@@ -66,15 +75,24 @@ public class OrderDetailDAO extends BaseDAO {
         int n = 0;
         String sql = "update OrderDetail set quantity=? where orderID=? and productTypeID=?";
         try {
+            conn = new DBConnection().getConnection();
             pre = conn.prepareStatement(sql);
             pre.setInt(1, obj.getQuantity());
             pre.setInt(2, obj.getOrderID());
             pre.setString(3, obj.getProductTypeId());
             n = pre.executeUpdate();
-            pre.close();
-        } catch (SQLException ex) {
+
+        } catch (Exception ex) {
             Logger.getLogger(OrderDetailDAO.class.getName()).log(Level.SEVERE, null, ex);
 
+        } finally {
+            try {
+                rs.close();
+                pre.close();
+                conn.close();
+            } catch (Exception ex) {
+                Logger.getLogger(CategoryDAO.class.getName()).log(Level.SEVERE, null, ex);
+            }
         }
         return n;
     }
@@ -83,8 +101,9 @@ public class OrderDetailDAO extends BaseDAO {
         ArrayList<OrderDetail> list = new ArrayList<>();
         String sql = "select * from `OrderDetail` where orderID = " + oid + " and status = 1  order by orderID desc";
         try {
-            pre=conn.prepareStatement(sql);
-            rs=pre.executeQuery();
+            conn = new DBConnection().getConnection();
+            pre = conn.prepareStatement(sql);
+            rs = pre.executeQuery();
             while (rs.next()) {
                 OrderDetail o = new OrderDetail();
                 o.setOrderID(rs.getInt("orderID"));
@@ -95,10 +114,17 @@ public class OrderDetailDAO extends BaseDAO {
                 o.setStatus(rs.getInt("status"));
                 list.add(o);
             }
-            rs.close();
-            pre.close();
-        } catch (SQLException ex) {
+
+        } catch (Exception ex) {
             Logger.getLogger(OrderDAO.class.getName()).log(Level.SEVERE, null, ex);
+        } finally {
+            try {
+                rs.close();
+                pre.close();
+                conn.close();
+            } catch (Exception ex) {
+                Logger.getLogger(CategoryDAO.class.getName()).log(Level.SEVERE, null, ex);
+            }
         }
         return list;
     }
@@ -109,16 +135,24 @@ public class OrderDetailDAO extends BaseDAO {
                 + "from OrderDetail od inner join ProductType pt on od.productTypeID=pt.productTypeId inner join Product p on pt.productID=p.productID inner join `Order` o on od.orderID = o.orderID\n"
                 + "where od.productTypeID = ? and o.state = 3";
         try {
+            conn = new DBConnection().getConnection();
             pre = conn.prepareStatement(sql);
             pre.setString(1, ptID);
             rs = pre.executeQuery();
             if (rs.next()) {
                 result = rs.getInt(1);
             }
-            rs.close();
-            pre.close();
-        } catch (SQLException ex) {
+
+        } catch (Exception ex) {
             Logger.getLogger(OrderDetailDAO.class.getName()).log(Level.SEVERE, null, ex);
+        } finally {
+            try {
+                rs.close();
+                pre.close();
+                conn.close();
+            } catch (Exception ex) {
+                Logger.getLogger(CategoryDAO.class.getName()).log(Level.SEVERE, null, ex);
+            }
         }
         return result;
     }
@@ -127,6 +161,7 @@ public class OrderDetailDAO extends BaseDAO {
         ArrayList<OrderDetail> list = new ArrayList<>();
         String xSql = "select * from `orderdetail` where orderID=?";
         try {
+            conn = new DBConnection().getConnection();
             pre = conn.prepareStatement(xSql);
             pre.setInt(1, orderId);
             rs = pre.executeQuery();
@@ -141,10 +176,17 @@ public class OrderDetailDAO extends BaseDAO {
                 list.add(od);
                 return list;
             }
-            rs.close();
-            pre.close();
-        } catch (SQLException ex) {
+
+        } catch (Exception ex) {
             Logger.getLogger(OrderDetailDAO.class.getName()).log(Level.SEVERE, null, ex);
+        } finally {
+            try {
+                rs.close();
+                pre.close();
+                conn.close();
+            } catch (Exception ex) {
+                Logger.getLogger(CategoryDAO.class.getName()).log(Level.SEVERE, null, ex);
+            }
         }
         return list;
     }
@@ -154,16 +196,24 @@ public class OrderDetailDAO extends BaseDAO {
         String sql = "select sum(od.quantity), p.productID from OrderDetail od inner join ProductType pt on od.productTypeID=pt.productTypeId inner join Product p on pt.productID=p.productID inner join `Order` o on od.orderID = o.orderID\n"
                 + "where p.productID=? and o.state = 3\n";
         try {
+            conn = new DBConnection().getConnection();
             pre = conn.prepareStatement(sql);
             pre.setString(1, pid);
             rs = pre.executeQuery();
             if (rs.next()) {
                 result = rs.getInt(1);
             }
-            rs.close();
-            pre.close();
-        } catch (SQLException ex) {
+
+        } catch (Exception ex) {
             Logger.getLogger(OrderDetailDAO.class.getName()).log(Level.SEVERE, null, ex);
+        } finally {
+            try {
+                rs.close();
+                pre.close();
+                conn.close();
+            } catch (Exception ex) {
+                Logger.getLogger(CategoryDAO.class.getName()).log(Level.SEVERE, null, ex);
+            }
         }
         return result;
     }
@@ -173,6 +223,7 @@ public class OrderDetailDAO extends BaseDAO {
         String sql = "select od.orderID, od.productTypeID, od.ProductName, od.price,od.quantity,od.`status` from OrderDetail od inner join ProductType pt on od.productTypeID=pt.productTypeId inner join Product p on pt.productID=p.productID inner join `Order` o on od.orderID = o.orderID\n"
                 + "   where p.sellerID=? and od.orderID = ?";
         try {
+            conn = new DBConnection().getConnection();
             pre = conn.prepareStatement(sql);
             pre.setInt(1, sellerID);
             pre.setInt(2, oid);
@@ -187,10 +238,17 @@ public class OrderDetailDAO extends BaseDAO {
                 od.setStatus(rs.getInt("status"));
                 list.add(od);
             }
-            rs.close();
-            pre.close();
-        } catch (SQLException ex) {
+
+        } catch (Exception ex) {
             Logger.getLogger(OrderDAO.class.getName()).log(Level.SEVERE, null, ex);
+        } finally {
+            try {
+                rs.close();
+                pre.close();
+                conn.close();
+            } catch (Exception ex) {
+                Logger.getLogger(CategoryDAO.class.getName()).log(Level.SEVERE, null, ex);
+            }
         }
         return list;
     }
@@ -200,16 +258,24 @@ public class OrderDetailDAO extends BaseDAO {
         String sql = "select sum(od.price*od.quantity) from OrderDetail od inner join ProductType pt on od.productTypeID=pt.productTypeId inner join Product p on pt.productID=p.productID inner join `Order` o on od.orderID = o.orderID\n"
                 + "where p.sellerID=? and o.state = 3";
         try {
+            conn = new DBConnection().getConnection();
             pre = conn.prepareStatement(sql);
             pre.setDouble(1, sellerID);
             rs = pre.executeQuery();
             if (rs.next()) {
                 result = rs.getDouble(1);
             }
-            rs.close();
-            pre.close();
-        } catch (SQLException ex) {
+
+        } catch (Exception ex) {
             Logger.getLogger(OrderDetailDAO.class.getName()).log(Level.SEVERE, null, ex);
+        } finally {
+            try {
+                rs.close();
+                pre.close();
+                conn.close();
+            } catch (Exception ex) {
+                Logger.getLogger(CategoryDAO.class.getName()).log(Level.SEVERE, null, ex);
+            }
         }
         return result;
     }
@@ -219,6 +285,7 @@ public class OrderDetailDAO extends BaseDAO {
         String sql = "select o.userID,sum(od.price*od.quantity) as Spent from OrderDetail od inner join ProductType pt on od.productTypeID=pt.productTypeId inner join Product p on pt.productID=p.productID inner join `Order` o on od.orderID = o.orderID\n"
                 + "   where o.state =3 order by Spent desc limit 0,5";
         try {
+            conn = new DBConnection().getConnection();
             pre = conn.prepareStatement(sql);
             rs = pre.executeQuery();
             while (rs.next()) {
@@ -227,10 +294,17 @@ public class OrderDetailDAO extends BaseDAO {
                 customer.setSpent(rs.getDouble(2));
                 list.add(customer);
             }
-            rs.close();
-            pre.close();
-        } catch (SQLException ex) {
+
+        } catch (Exception ex) {
             Logger.getLogger(OrderDAO.class.getName()).log(Level.SEVERE, null, ex);
+        } finally {
+            try {
+                rs.close();
+                pre.close();
+                conn.close();
+            } catch (Exception ex) {
+                Logger.getLogger(CategoryDAO.class.getName()).log(Level.SEVERE, null, ex);
+            }
         }
         return list;
 
@@ -242,6 +316,7 @@ public class OrderDetailDAO extends BaseDAO {
         String sql = "select o.orderID,sum(od.price*od.quantity) as Spent from OrderDetail od inner join ProductType pt on od.productTypeID=pt.productTypeId inner join Product p on pt.productID=p.productID inner join `Order` o on od.orderID = o.orderID\n"
                 + "   where o.state =3 group by o.orderID order by Spent desc limit 0,5";
         try {
+            conn = new DBConnection().getConnection();
             pre = conn.prepareStatement(sql);
             rs = pre.executeQuery();
             while (rs.next()) {
@@ -250,10 +325,17 @@ public class OrderDetailDAO extends BaseDAO {
                 order.setTotal(rs.getDouble(2));
                 list.add(order);
             }
-            rs.close();
-            pre.close();
-        } catch (SQLException ex) {
+
+        } catch (Exception ex) {
             Logger.getLogger(OrderDAO.class.getName()).log(Level.SEVERE, null, ex);
+        } finally {
+            try {
+                rs.close();
+                pre.close();
+                conn.close();
+            } catch (Exception ex) {
+                Logger.getLogger(CategoryDAO.class.getName()).log(Level.SEVERE, null, ex);
+            }
         }
         return list;
     }

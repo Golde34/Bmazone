@@ -25,13 +25,22 @@ public class ShipCompanyDAO extends BaseDAO {
         int n = 0;
         String sql = "update `ShipCompany` set status = ? where `companyID` = ?";
         try {
+            conn = new DBConnection().getConnection();
             pre = conn.prepareStatement(sql);
             pre.setInt(1, status == 1 ? 1 : 0);
             pre.setInt(2, id);
             n = pre.executeUpdate();
-            pre.close();
-        } catch (SQLException ex) {
+
+        } catch (Exception ex) {
             Logger.getLogger(ProductDAO.class.getName()).log(Level.SEVERE, null, ex);
+        } finally {
+            try {
+                rs.close();
+                pre.close();
+                conn.close();
+            } catch (Exception ex) {
+                Logger.getLogger(CategoryDAO.class.getName()).log(Level.SEVERE, null, ex);
+            }
         }
         return n;
     }
@@ -43,7 +52,7 @@ public class ShipCompanyDAO extends BaseDAO {
 //            pre = conn.prepareStatement(sql);
 //            pre.setString(1, companyID);
 //            n = pre.executeUpdate();
-//        } catch (SQLException e) {
+//        } catch (Exception e) {
 //        }
 //        return n;
 //    }
@@ -51,16 +60,24 @@ public class ShipCompanyDAO extends BaseDAO {
         boolean isExist = false;
         String xSql = "SELECT * FROM `ShipCompany` where companyName like ?";
         try {
+            conn = new DBConnection().getConnection();
             pre = conn.prepareStatement(xSql);
             pre.setString(1, companyname);
             rs = pre.executeQuery();
             if (rs.next()) {
                 isExist = true;
             }
-            rs.close();
-            pre.close();
-        } catch (SQLException ex) {
+
+        } catch (Exception ex) {
             Logger.getLogger(UserDAO.class.getName()).log(Level.SEVERE, null, ex);
+        } finally {
+            try {
+                rs.close();
+                pre.close();
+                conn.close();
+            } catch (Exception ex) {
+                Logger.getLogger(CategoryDAO.class.getName()).log(Level.SEVERE, null, ex);
+            }
         }
         return isExist;
     }
@@ -70,14 +87,23 @@ public class ShipCompanyDAO extends BaseDAO {
         String xSql = "INSERT INTO ShipCompany (`companyName`,`unitCost`,`commitDate`,`status`)\n"
                 + "     VALUES (?,?,?,?)";
         try {
+            conn = new DBConnection().getConnection();
             pre = conn.prepareStatement(xSql);
             pre.setString(1, sp.getCompanyName());
             pre.setDouble(2, sp.getUnitCost());
             pre.setInt(3, sp.getCommitDate());
             pre.setInt(4, sp.getStatus());
             n = pre.executeUpdate();
-            pre.close();
-        } catch (SQLException e) {
+
+        } catch (Exception e) {
+        } finally {
+            try {
+                rs.close();
+                pre.close();
+                conn.close();
+            } catch (Exception ex) {
+                Logger.getLogger(CategoryDAO.class.getName()).log(Level.SEVERE, null, ex);
+            }
         }
         return n;
     }
@@ -86,6 +112,7 @@ public class ShipCompanyDAO extends BaseDAO {
         int n = 0;
         String xSql = "update ShipCompany set `companyName` = ? ,`unitCost` = ? ,`commitDate` = ? ,`status` =? where `companyID` = ?";
         try {
+            conn = new DBConnection().getConnection();
             pre = conn.prepareStatement(xSql);
             pre.setString(1, sp.getCompanyName());
             pre.setDouble(2, sp.getUnitCost());
@@ -93,8 +120,16 @@ public class ShipCompanyDAO extends BaseDAO {
             pre.setInt(4, sp.getStatus());
             pre.setInt(5, sp.getCompanyID());
             n = pre.executeUpdate();
-            pre.close();
-        } catch (SQLException e) {
+
+        } catch (Exception e) {
+        } finally {
+            try {
+                rs.close();
+                pre.close();
+                conn.close();
+            } catch (Exception ex) {
+                Logger.getLogger(CategoryDAO.class.getName()).log(Level.SEVERE, null, ex);
+            }
         }
         return n;
     }
@@ -103,6 +138,7 @@ public class ShipCompanyDAO extends BaseDAO {
         ShipCompany company = new ShipCompany();
         String xSql = "select * from ShipCompany where companyID = " + id;
         try {
+            conn = new DBConnection().getConnection();
             pre = conn.prepareStatement(xSql);
             rs = pre.executeQuery();
             if (rs.next()) {
@@ -112,9 +148,16 @@ public class ShipCompanyDAO extends BaseDAO {
                 company.setUnitCost(rs.getDouble("unitCost"));
                 company.setCompanyID(rs.getInt("companyID"));
             }
-            rs.close();
-            pre.close();
-        } catch (SQLException e) {
+
+        } catch (Exception e) {
+        } finally {
+            try {
+                rs.close();
+                pre.close();
+                conn.close();
+            } catch (Exception ex) {
+                Logger.getLogger(CategoryDAO.class.getName()).log(Level.SEVERE, null, ex);
+            }
         }
         return company;
     }
@@ -123,15 +166,23 @@ public class ShipCompanyDAO extends BaseDAO {
         int num = 0;
         String xSql = "SELECT COUNT(*) FROM `ShipCompany` where companyName like '%" + search + "%' or commitDate like '%" + search + "%' or unitCost like '%" + search + "%'";
         try {
-            pre=conn.prepareStatement(xSql);
-            rs=pre.executeQuery();
+            conn = new DBConnection().getConnection();
+            pre = conn.prepareStatement(xSql);
+            rs = pre.executeQuery();
             if (rs.next()) {
                 num = rs.getInt(1);
             }
-            rs.close();
-            pre.close();
-        } catch (SQLException ex) {
+
+        } catch (Exception ex) {
             Logger.getLogger(UserDAO.class.getName()).log(Level.SEVERE, null, ex);
+        } finally {
+            try {
+                rs.close();
+                pre.close();
+                conn.close();
+            } catch (Exception ex) {
+                Logger.getLogger(CategoryDAO.class.getName()).log(Level.SEVERE, null, ex);
+            }
         }
         return num;
     }
@@ -145,6 +196,7 @@ public class ShipCompanyDAO extends BaseDAO {
         List<ShipCompany> list = new ArrayList<>();
         String xSql = "select * from shipcompany where companyName like '%" + search + "%' or unitCost like '%" + search + "%' or commitDate like '%" + search + "%' limit ?,?";
         try {
+            conn = new DBConnection().getConnection();
             pre = conn.prepareStatement(xSql);
             pre.setInt(1, start);
             pre.setInt(2, numOfRow);
@@ -157,10 +209,17 @@ public class ShipCompanyDAO extends BaseDAO {
                         rs.getInt(4),
                         rs.getInt(5)));
             }
-            rs.close();
-            pre.close();
-        } catch (SQLException ex) {
+
+        } catch (Exception ex) {
             Logger.getLogger(UserDAO.class.getName()).log(Level.SEVERE, null, ex);
+        } finally {
+            try {
+                rs.close();
+                pre.close();
+                conn.close();
+            } catch (Exception ex) {
+                Logger.getLogger(CategoryDAO.class.getName()).log(Level.SEVERE, null, ex);
+            }
         }
         return list;
     }
@@ -169,6 +228,7 @@ public class ShipCompanyDAO extends BaseDAO {
         List<ShipCompany> list = new ArrayList<>();
         String xSql = "select * from ShipCompany";
         try {
+            conn = new DBConnection().getConnection();
             pre = conn.prepareStatement(xSql);
             rs = pre.executeQuery();
             while (rs.next()) {
@@ -179,9 +239,16 @@ public class ShipCompanyDAO extends BaseDAO {
                         rs.getInt(4),
                         rs.getInt(5)));
             }
-            rs.close();
-            pre.close();
-        } catch (SQLException e) {
+
+        } catch (Exception e) {
+        } finally {
+            try {
+                rs.close();
+                pre.close();
+                conn.close();
+            } catch (Exception ex) {
+                Logger.getLogger(CategoryDAO.class.getName()).log(Level.SEVERE, null, ex);
+            }
         }
         return list;
     }

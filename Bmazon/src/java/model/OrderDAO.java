@@ -26,15 +26,24 @@ public class OrderDAO extends BaseDAO {
         int num = 0;
         String Sql = "SELECT COUNT(*) FROM `Order`";
         try {
+            conn = new DBConnection().getConnection();
             pre = conn.prepareStatement(Sql);
             rs = pre.executeQuery();
             if (rs.next()) {
                 num = rs.getInt(1);
             }
-            rs.close();
-            pre.close();
-        } catch (SQLException ex) {
+            
+            
+        } catch (Exception ex) {
             Logger.getLogger(UserDAO.class.getName()).log(Level.SEVERE, null, ex);
+        } finally {
+            try {
+                rs.close();
+                pre.close();
+                conn.close();
+            } catch (Exception ex) {
+                Logger.getLogger(CategoryDAO.class.getName()).log(Level.SEVERE, null, ex);
+            }
         }
         return num;
     }
@@ -44,6 +53,7 @@ public class OrderDAO extends BaseDAO {
         List<Order> list = new ArrayList<>();
         String sql = "select * from `order` where state=0 and status=1 order by orderDate desc limit ?,?";
         try {
+            conn = new DBConnection().getConnection();
             pre = conn.prepareStatement(sql);
             pre.setInt(1, start);
             pre.setInt(2, numOfRow);
@@ -67,10 +77,18 @@ public class OrderDAO extends BaseDAO {
                 o.setStatus(rs.getInt("status"));
                 list.add(o);
             }
-            rs.close();
-            pre.close();
-        } catch (SQLException ex) {
+            
+            
+        } catch (Exception ex) {
             Logger.getLogger(UserDAO.class.getName()).log(Level.SEVERE, null, ex);
+        } finally {
+            try {
+                rs.close();
+                pre.close();
+                conn.close();
+            } catch (Exception ex) {
+                Logger.getLogger(CategoryDAO.class.getName()).log(Level.SEVERE, null, ex);
+            }
         }
         return list;
     }
@@ -83,6 +101,7 @@ public class OrderDAO extends BaseDAO {
                 + "where p.sellerID = ? and o.`status` = 1 and o.state=0\n"
                 + "group by od.orderID limit ?,?";
         try {
+            conn = new DBConnection().getConnection();
             pre = conn.prepareStatement(sql);
             pre.setInt(1, sellerID);
             pre.setInt(2, start);
@@ -107,10 +126,18 @@ public class OrderDAO extends BaseDAO {
                 o.setStatus(rs.getInt("status"));
                 list.add(o);
             }
-            rs.close();
-            pre.close();
-        } catch (SQLException ex) {
+            
+            
+        } catch (Exception ex) {
             Logger.getLogger(UserDAO.class.getName()).log(Level.SEVERE, null, ex);
+        } finally {
+            try {
+                rs.close();
+                pre.close();
+                conn.close();
+            } catch (Exception ex) {
+                Logger.getLogger(CategoryDAO.class.getName()).log(Level.SEVERE, null, ex);
+            }
         }
         return list;
     }
@@ -126,7 +153,7 @@ public class OrderDAO extends BaseDAO {
 //            if (rs.next()) {
 //                num = rs.getInt(1);
 //            }
-//        } catch (SQLException ex) {
+//        } catch (Exception ex) {
 //            Logger.getLogger(UserDAO.class.getName()).log(Level.SEVERE, null, ex);
 //        }
 //        return num;
@@ -139,6 +166,7 @@ public class OrderDAO extends BaseDAO {
                 + "where p.sellerID = ? and o.`status` = 1\n"
                 + "group by od.orderID limit ?,?";
         try {
+            conn = new DBConnection().getConnection();
             pre = conn.prepareStatement(sql);
             pre.setInt(1, sellerID);
             pre.setInt(2, start);
@@ -163,10 +191,18 @@ public class OrderDAO extends BaseDAO {
                 o.setStatus(rs.getInt("status"));
                 list.add(o);
             }
-            rs.close();
-            pre.close();
-        } catch (SQLException ex) {
+            
+            
+        } catch (Exception ex) {
             Logger.getLogger(UserDAO.class.getName()).log(Level.SEVERE, null, ex);
+        } finally {
+            try {
+                rs.close();
+                pre.close();
+                conn.close();
+            } catch (Exception ex) {
+                Logger.getLogger(CategoryDAO.class.getName()).log(Level.SEVERE, null, ex);
+            }
         }
         return list;
     }
@@ -178,6 +214,7 @@ public class OrderDAO extends BaseDAO {
                 + "           ,`shipPhone`,`companyID`,`shipMoney`,`paymentMethod`,`total`,`state`,`status`)"
                 + "     VALUES (?,now(),now(),now(),?,?,?,?,?,?,?,?,?,1)";
         try {
+            conn = new DBConnection().getConnection();
             pre = conn.prepareStatement(sql);
             pre.setString(1, obj.getUserID());
             pre.setString(2, obj.getShipName());
@@ -190,9 +227,17 @@ public class OrderDAO extends BaseDAO {
             pre.setDouble(9, obj.getTotal());
             pre.setInt(10, obj.getState());
             n = pre.executeUpdate();
-            pre.close();
-        } catch (SQLException ex) {
+            
+        } catch (Exception ex) {
             Logger.getLogger(OrderDAO.class.getName()).log(Level.SEVERE, null, ex);
+        } finally {
+            try {
+                rs.close();
+                pre.close();
+                conn.close();
+            } catch (Exception ex) {
+                Logger.getLogger(CategoryDAO.class.getName()).log(Level.SEVERE, null, ex);
+            }
         }
         return n;
     }
@@ -201,13 +246,22 @@ public class OrderDAO extends BaseDAO {
         int n = 0;
         String sql = "UPDATE `Order` SET status = ? WHERE orderID = ?";
         try {
+            conn = new DBConnection().getConnection();
             pre = conn.prepareStatement(sql);
             pre.setInt(1, status);
             pre.setInt(2, orderId);
             n = pre.executeUpdate();
-            pre.close();
-        } catch (SQLException ex) {
+            
+        } catch (Exception ex) {
             Logger.getLogger(OrderDAO.class.getName()).log(Level.SEVERE, null, ex);
+        } finally {
+            try {
+                rs.close();
+                pre.close();
+                conn.close();
+            } catch (Exception ex) {
+                Logger.getLogger(CategoryDAO.class.getName()).log(Level.SEVERE, null, ex);
+            }
         }
         return n;
     }
@@ -217,6 +271,7 @@ public class OrderDAO extends BaseDAO {
         String sql = "update `Order` set`orderDate`=? ,`requiredDate`=?,`shippedDate`=?,`shipName`=?,`shipAddress`=?,`shipCity`=?,"
                 + "           `shipPhone`=?,`companyID`=?,`shipMoney`=?,`paymentMethod`=? ,`total`=? ,`state`=?,`status`=1 where orderID=?";
         try {
+            conn = new DBConnection().getConnection();
             pre = conn.prepareStatement(sql);
             pre.setDate(1, obj.getOrderDate());
             pre.setDate(2, obj.getRequiredDate());
@@ -232,9 +287,17 @@ public class OrderDAO extends BaseDAO {
             pre.setInt(12, obj.getState());
             pre.setInt(13, obj.getOrderID());
             n = pre.executeUpdate();
-            pre.close();
-        } catch (SQLException ex) {
+            
+        } catch (Exception ex) {
             Logger.getLogger(OrderDAO.class.getName()).log(Level.SEVERE, null, ex);
+        } finally {
+            try {
+                rs.close();
+                pre.close();
+                conn.close();
+            } catch (Exception ex) {
+                Logger.getLogger(CategoryDAO.class.getName()).log(Level.SEVERE, null, ex);
+            }
         }
         return n;
     }
@@ -243,6 +306,7 @@ public class OrderDAO extends BaseDAO {
         ArrayList<Order> list = new ArrayList<>();
         String sql = "select * from `Order` where status = 1 and state=1";
         try {
+            conn = new DBConnection().getConnection();
             pre = conn.prepareStatement(sql);
             rs = pre.executeQuery();
             while (rs.next()) {
@@ -264,10 +328,18 @@ public class OrderDAO extends BaseDAO {
                 o.setStatus(rs.getInt("status"));
                 list.add(o);
             }
-            rs.close();
-            pre.close();
-        } catch (SQLException ex) {
+            
+            
+        } catch (Exception ex) {
             Logger.getLogger(OrderDAO.class.getName()).log(Level.SEVERE, null, ex);
+        } finally {
+            try {
+                rs.close();
+                pre.close();
+                conn.close();
+            } catch (Exception ex) {
+                Logger.getLogger(CategoryDAO.class.getName()).log(Level.SEVERE, null, ex);
+            }
         }
         return list;
     }
@@ -285,6 +357,7 @@ public class OrderDAO extends BaseDAO {
         ArrayList<Order> list = new ArrayList<>();
         String sql = "select * from `Order` where status = 1 and state=0 order by orderID desc";
         try {
+            conn = new DBConnection().getConnection();
             pre = conn.prepareStatement(sql);
             rs = pre.executeQuery();
             while (rs.next()) {
@@ -306,10 +379,18 @@ public class OrderDAO extends BaseDAO {
                 o.setStatus(rs.getInt("status"));
                 list.add(o);
             }
-            rs.close();
-            pre.close();
-        } catch (SQLException ex) {
+            
+            
+        } catch (Exception ex) {
             Logger.getLogger(OrderDAO.class.getName()).log(Level.SEVERE, null, ex);
+        } finally {
+            try {
+                rs.close();
+                pre.close();
+                conn.close();
+            } catch (Exception ex) {
+                Logger.getLogger(CategoryDAO.class.getName()).log(Level.SEVERE, null, ex);
+            }
         }
         return list;
     }
@@ -326,6 +407,7 @@ public class OrderDAO extends BaseDAO {
         String sql = "select * from `Order` where orderID = " + orderid;
         Order o = null;
         try {
+            conn = new DBConnection().getConnection();
             pre = conn.prepareStatement(sql);
             rs = pre.executeQuery();
             while (rs.next()) {
@@ -347,10 +429,18 @@ public class OrderDAO extends BaseDAO {
                 o.setStatus(rs.getInt("status"));
 
             }
-            rs.close();
-            pre.close();
-        } catch (SQLException ex) {
+            
+            
+        } catch (Exception ex) {
             Logger.getLogger(OrderDAO.class.getName()).log(Level.SEVERE, null, ex);
+        } finally {
+            try {
+                rs.close();
+                pre.close();
+                conn.close();
+            } catch (Exception ex) {
+                Logger.getLogger(CategoryDAO.class.getName()).log(Level.SEVERE, null, ex);
+            }
         }
         return o;
     }
@@ -359,6 +449,7 @@ public class OrderDAO extends BaseDAO {
         List<Order> list = new ArrayList<>();
         String sql = "select * from `Order` where userID = " + userID + " order by orderDate desc ";
         try {
+            conn = new DBConnection().getConnection();
             pre = conn.prepareStatement(sql);
             rs = pre.executeQuery();
             while (rs.next()) {
@@ -380,9 +471,17 @@ public class OrderDAO extends BaseDAO {
                 o.setStatus(rs.getInt("status"));
                 list.add(o);
             }
-            rs.close();
-            pre.close();
-        } catch (SQLException e) {
+            
+            
+        } catch (Exception e) {
+        } finally {
+            try {
+                rs.close();
+                pre.close();
+                conn.close();
+            } catch (Exception ex) {
+                Logger.getLogger(CategoryDAO.class.getName()).log(Level.SEVERE, null, ex);
+            }
         }
         return list;
     }
@@ -391,6 +490,7 @@ public class OrderDAO extends BaseDAO {
         Order o = new Order();
         String sql = "SELECT * FROM `Order` WHERE userID = '" + userID + "' ORDER BY OrderID desc limit 0,1";
         try {
+            conn = new DBConnection().getConnection();
             pre = conn.prepareStatement(sql);
             rs = pre.executeQuery();
             if (rs.next()) {
@@ -410,10 +510,18 @@ public class OrderDAO extends BaseDAO {
                 o.setState(rs.getInt("state"));
                 o.setStatus(rs.getInt("status"));
             }
-            rs.close();
-            pre.close();
-        } catch (SQLException ex) {
+            
+            
+        } catch (Exception ex) {
             Logger.getLogger(UserDAO.class.getName()).log(Level.SEVERE, null, ex);
+        } finally {
+            try {
+                rs.close();
+                pre.close();
+                conn.close();
+            } catch (Exception ex) {
+                Logger.getLogger(CategoryDAO.class.getName()).log(Level.SEVERE, null, ex);
+            }
         }
         return o;
     }
@@ -422,13 +530,22 @@ public class OrderDAO extends BaseDAO {
         int n = 0;
         String xSql = "UPDATE `bmazon`.`order` SET `state` = ? WHERE `orderID` = ?";
         try {
+            conn = new DBConnection().getConnection();
             pre = conn.prepareStatement(xSql);
             pre.setInt(1, state);
             pre.setInt(2, id);
             n = pre.executeUpdate();
-            pre.close();
-        } catch (SQLException ex) {
+            
+        } catch (Exception ex) {
             Logger.getLogger(UserDAO.class.getName()).log(Level.SEVERE, null, ex);
+        } finally {
+            try {
+                rs.close();
+                pre.close();
+                conn.close();
+            } catch (Exception ex) {
+                Logger.getLogger(CategoryDAO.class.getName()).log(Level.SEVERE, null, ex);
+            }
         }
         return n;
     }
@@ -437,6 +554,7 @@ public class OrderDAO extends BaseDAO {
         ArrayList<Order> list = new ArrayList<>();
         String xSql = "select * from `Order` where status = 1 and state=1 and month(orderdate) = ?";
         try {
+            conn = new DBConnection().getConnection();
             pre = conn.prepareStatement(xSql);
             pre.setInt(1, month);
             rs = pre.executeQuery();
@@ -459,10 +577,18 @@ public class OrderDAO extends BaseDAO {
                 o.setStatus(rs.getInt("status"));
                 list.add(o);
             }
-            rs.close();
-            pre.close();
-        } catch (SQLException ex) {
+            
+            
+        } catch (Exception ex) {
             Logger.getLogger(UserDAO.class.getName()).log(Level.SEVERE, null, ex);
+        } finally {
+            try {
+                rs.close();
+                pre.close();
+                conn.close();
+            } catch (Exception ex) {
+                Logger.getLogger(CategoryDAO.class.getName()).log(Level.SEVERE, null, ex);
+            }
         }
         return list;
     }
@@ -474,6 +600,7 @@ public class OrderDAO extends BaseDAO {
                 + "where p.sellerID = ? and o.`status` = 1\n"
                 + "group by od.orderID";
         try {
+            conn = new DBConnection().getConnection();
             pre = conn.prepareStatement(sql);
             pre.setInt(1, sellerID);
             rs = pre.executeQuery();
@@ -496,10 +623,18 @@ public class OrderDAO extends BaseDAO {
                 o.setStatus(rs.getInt("status"));
                 list.add(o);
             }
-            rs.close();
-            pre.close();
-        } catch (SQLException ex) {
+            
+            
+        } catch (Exception ex) {
             Logger.getLogger(OrderDAO.class.getName()).log(Level.SEVERE, null, ex);
+        } finally {
+            try {
+                rs.close();
+                pre.close();
+                conn.close();
+            } catch (Exception ex) {
+                Logger.getLogger(CategoryDAO.class.getName()).log(Level.SEVERE, null, ex);
+            }
         }
         return list;
     }
@@ -511,15 +646,24 @@ public class OrderDAO extends BaseDAO {
         double profit = 0;
         String xSql = "select sum(total-shipMoney) as profit from `Order` where status = 1 and state=1";
         try {
+            conn = new DBConnection().getConnection();
             pre = conn.prepareStatement(xSql);
             rs = pre.executeQuery();
             if (rs.next()) {
                 profit = rs.getDouble("profit");
             }
-            rs.close();
-            pre.close();
-        } catch (SQLException ex) {
+            
+            
+        } catch (Exception ex) {
             Logger.getLogger(UserDAO.class.getName()).log(Level.SEVERE, null, ex);
+        } finally {
+            try {
+                rs.close();
+                pre.close();
+                conn.close();
+            } catch (Exception ex) {
+                Logger.getLogger(CategoryDAO.class.getName()).log(Level.SEVERE, null, ex);
+            }
         }
         return profit;
     }
@@ -528,16 +672,25 @@ public class OrderDAO extends BaseDAO {
         double profit = 0;
         String xSql = "select sum(total-shipMoney) as profit from `Order` where status = 1 and state=1 and month(orderdate) = ?";
         try {
+            conn = new DBConnection().getConnection();
             pre = conn.prepareStatement(xSql);
             pre.setInt(1, month);
             rs = pre.executeQuery();
             if (rs.next()) {
                 profit = rs.getDouble("profit");
             }
-            rs.close();
-            pre.close();
-        } catch (SQLException ex) {
+            
+            
+        } catch (Exception ex) {
             Logger.getLogger(UserDAO.class.getName()).log(Level.SEVERE, null, ex);
+        } finally {
+            try {
+                rs.close();
+                pre.close();
+                conn.close();
+            } catch (Exception ex) {
+                Logger.getLogger(CategoryDAO.class.getName()).log(Level.SEVERE, null, ex);
+            }
         }
         return profit;
     }
@@ -546,15 +699,24 @@ public class OrderDAO extends BaseDAO {
         int count = 0;
         String xSql = "select count(distinct userid) as NoUser from `order` where status=1 and state=1";
         try {
+            conn = new DBConnection().getConnection();
             pre = conn.prepareStatement(xSql);
             rs = pre.executeQuery();
             if (rs.next()) {
                 count = rs.getInt("NoUser");
             }
-            rs.close();
-            pre.close();
-        } catch (SQLException ex) {
+            
+            
+        } catch (Exception ex) {
             Logger.getLogger(UserDAO.class.getName()).log(Level.SEVERE, null, ex);
+        } finally {
+            try {
+                rs.close();
+                pre.close();
+                conn.close();
+            } catch (Exception ex) {
+                Logger.getLogger(CategoryDAO.class.getName()).log(Level.SEVERE, null, ex);
+            }
         }
         return count;
     }
@@ -563,15 +725,24 @@ public class OrderDAO extends BaseDAO {
         int count = 0;
         String xSql = "select count(distinct productTypeID) as NoProduct from orderdetail,`order` where orderdetail.orderID=`order`.orderID and `order`.`status`=1 and state=1";
         try {
+            conn = new DBConnection().getConnection();
             pre = conn.prepareStatement(xSql);
             rs = pre.executeQuery();
             if (rs.next()) {
                 count = rs.getInt("NoProduct");
             }
-            rs.close();
-            pre.close();
-        } catch (SQLException ex) {
+            
+            
+        } catch (Exception ex) {
             Logger.getLogger(UserDAO.class.getName()).log(Level.SEVERE, null, ex);
+        } finally {
+            try {
+                rs.close();
+                pre.close();
+                conn.close();
+            } catch (Exception ex) {
+                Logger.getLogger(CategoryDAO.class.getName()).log(Level.SEVERE, null, ex);
+            }
         }
         return count;
     }
