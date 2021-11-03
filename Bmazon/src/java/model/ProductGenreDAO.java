@@ -18,7 +18,7 @@ import java.util.logging.Logger;
 public class ProductGenreDAO extends BaseDAO {
 
     public String getGenreIdByProductId(int productId) {
-        String xSql = "select * from ProductGenre where productID=" + productId;
+        String xSql= "select * from ProductGenre where productID=" + productId;
         try {
             pre = conn.prepareStatement(xSql);
             rs = pre.executeQuery();
@@ -30,21 +30,13 @@ public class ProductGenreDAO extends BaseDAO {
             pre.close();
         } catch (SQLException e) {
             Logger.getLogger(ProductCategoryDAO.class.getName()).log(Level.SEVERE, null, e);
-        } finally {
-            if (conn != null) {
-                try {
-                    conn.close();
-                } catch (SQLException ex) {
-                    Logger.getLogger(CategoryDAO.class.getName()).log(Level.SEVERE, null, ex);
-                }
-            }
         }
         return null;
     }
-
-    public ProductGenre getProductGenreByProduct(String pid) {
+    
+    public ProductGenre getProductGenreByProduct(String pid){
         ProductGenre pg = new ProductGenre();
-        String xSql = "SELECT * FROM ProductGenre where productID=?";
+        String xSql ="SELECT * FROM ProductGenre where productID=?";
         try {
             pre = conn.prepareStatement(xSql);
             pre.setString(1, pid);
@@ -58,14 +50,6 @@ public class ProductGenreDAO extends BaseDAO {
             pre.close();
         } catch (SQLException e) {
             Logger.getLogger(ProductGenreDAO.class.getName()).log(Level.SEVERE, null, e);
-        } finally {
-            if (conn != null) {
-                try {
-                    conn.close();
-                } catch (SQLException ex) {
-                    Logger.getLogger(CategoryDAO.class.getName()).log(Level.SEVERE, null, ex);
-                }
-            }
         }
         return pg;
     }
@@ -87,18 +71,10 @@ public class ProductGenreDAO extends BaseDAO {
             pre.close();
         } catch (SQLException e) {
             Logger.getLogger(ProductGenreDAO.class.getName()).log(Level.SEVERE, null, e);
-        } finally {
-            if (conn != null) {
-                try {
-                    conn.close();
-                } catch (SQLException ex) {
-                    Logger.getLogger(CategoryDAO.class.getName()).log(Level.SEVERE, null, ex);
-                }
-            }
         }
         return list;
     }
-
+    
     public int updateProductGenre(ProductGenre obj) {
         int n = 0;
         String sql = "UPDATE ProductGenre SET genreID = ? WHERE productID =?";
@@ -110,14 +86,6 @@ public class ProductGenreDAO extends BaseDAO {
             pre.close();
         } catch (SQLException e) {
             Logger.getLogger(ProductGenreDAO.class.getName()).log(Level.SEVERE, null, e);
-        } finally {
-            if (conn != null) {
-                try {
-                    conn.close();
-                } catch (SQLException ex) {
-                    Logger.getLogger(CategoryDAO.class.getName()).log(Level.SEVERE, null, ex);
-                }
-            }
         }
         return n;
     }
@@ -136,14 +104,6 @@ public class ProductGenreDAO extends BaseDAO {
             pre.close();
         } catch (SQLException e) {
             Logger.getLogger(ProductGenreDAO.class.getName()).log(Level.SEVERE, null, e);
-        } finally {
-            if (conn != null) {
-                try {
-                    conn.close();
-                } catch (SQLException ex) {
-                    Logger.getLogger(CategoryDAO.class.getName()).log(Level.SEVERE, null, ex);
-                }
-            }
         }
         return n;
     }

@@ -34,14 +34,6 @@ public class RoleDAO extends BaseDAO {
             pre.close();
         } catch (SQLException ex) {
             Logger.getLogger(UserDAO.class.getName()).log(Level.SEVERE, null, ex);
-        } finally {
-            if (conn != null) {
-                try {
-                    conn.close();
-                } catch (SQLException ex) {
-                    Logger.getLogger(CategoryDAO.class.getName()).log(Level.SEVERE, null, ex);
-                }
-            }
         }
         return num;
     }
@@ -76,14 +68,6 @@ public class RoleDAO extends BaseDAO {
             pre.close();
         } catch (SQLException ex) {
             Logger.getLogger(UserDAO.class.getName()).log(Level.SEVERE, null, ex);
-        } finally {
-            if (conn != null) {
-                try {
-                    conn.close();
-                } catch (SQLException ex) {
-                    Logger.getLogger(CategoryDAO.class.getName()).log(Level.SEVERE, null, ex);
-                }
-            }
         }
         return list;
     }
@@ -99,14 +83,6 @@ public class RoleDAO extends BaseDAO {
             pre.close();
         } catch (SQLException ex) {
             Logger.getLogger(ProductDAO.class.getName()).log(Level.SEVERE, null, ex);
-        } finally {
-            if (conn != null) {
-                try {
-                    conn.close();
-                } catch (SQLException ex) {
-                    Logger.getLogger(CategoryDAO.class.getName()).log(Level.SEVERE, null, ex);
-                }
-            }
         }
         return n;
     }
@@ -126,14 +102,6 @@ public class RoleDAO extends BaseDAO {
             pre.close();
         } catch (Exception e) {
             Logger.getLogger(RoleDAO.class.getName()).log(Level.SEVERE, null, e);
-        } finally {
-            if (conn != null) {
-                try {
-                    conn.close();
-                } catch (SQLException ex) {
-                    Logger.getLogger(CategoryDAO.class.getName()).log(Level.SEVERE, null, ex);
-                }
-            }
         }
         return n;
     }
@@ -152,14 +120,6 @@ public class RoleDAO extends BaseDAO {
             n = pre.executeUpdate();
             pre.close();
         } catch (SQLException e) {
-        } finally {
-            if (conn != null) {
-                try {
-                    conn.close();
-                } catch (SQLException ex) {
-                    Logger.getLogger(CategoryDAO.class.getName()).log(Level.SEVERE, null, ex);
-                }
-            }
         }
         return n;
     }
@@ -172,14 +132,6 @@ public class RoleDAO extends BaseDAO {
             pre.executeUpdate();
             pre.close();
         } catch (SQLException e) {
-        } finally {
-            if (conn != null) {
-                try {
-                    conn.close();
-                } catch (SQLException ex) {
-                    Logger.getLogger(CategoryDAO.class.getName()).log(Level.SEVERE, null, ex);
-                }
-            }
         }
     }
 
@@ -197,14 +149,6 @@ public class RoleDAO extends BaseDAO {
             pre.close();
         } catch (SQLException ex) {
             Logger.getLogger(UserDAO.class.getName()).log(Level.SEVERE, null, ex);
-        } finally {
-            if (conn != null) {
-                try {
-                    conn.close();
-                } catch (SQLException ex) {
-                    Logger.getLogger(CategoryDAO.class.getName()).log(Level.SEVERE, null, ex);
-                }
-            }
         }
         return isExist;
     }
@@ -216,20 +160,12 @@ public class RoleDAO extends BaseDAO {
             pre = conn.prepareStatement(xSql);
             rs = pre.executeQuery();
             if (rs.next()) {
-                isExist = true;
+                isExist =  true;
             }
             rs.close();
             pre.close();
         } catch (SQLException ex) {
             Logger.getLogger(UserDAO.class.getName()).log(Level.SEVERE, null, ex);
-        } finally {
-            if (conn != null) {
-                try {
-                    conn.close();
-                } catch (SQLException ex) {
-                    Logger.getLogger(CategoryDAO.class.getName()).log(Level.SEVERE, null, ex);
-                }
-            }
         }
         return isExist;
     }
@@ -252,14 +188,6 @@ public class RoleDAO extends BaseDAO {
             pre.close();
         } catch (SQLException ex) {
             Logger.getLogger(UserDAO.class.getName()).log(Level.SEVERE, null, ex);
-        } finally {
-            if (conn != null) {
-                try {
-                    conn.close();
-                } catch (SQLException ex) {
-                    Logger.getLogger(CategoryDAO.class.getName()).log(Level.SEVERE, null, ex);
-                }
-            }
         }
         return role;
     }
@@ -283,14 +211,6 @@ public class RoleDAO extends BaseDAO {
             pre.close();
         } catch (SQLException ex) {
             Logger.getLogger(UserDAO.class.getName()).log(Level.SEVERE, null, ex);
-        } finally {
-            if (conn != null) {
-                try {
-                    conn.close();
-                } catch (SQLException ex) {
-                    Logger.getLogger(CategoryDAO.class.getName()).log(Level.SEVERE, null, ex);
-                }
-            }
         }
         return list;
     }
@@ -314,14 +234,6 @@ public class RoleDAO extends BaseDAO {
             pre.close();
         } catch (SQLException ex) {
             Logger.getLogger(UserDAO.class.getName()).log(Level.SEVERE, null, ex);
-        } finally {
-            if (conn != null) {
-                try {
-                    conn.close();
-                } catch (SQLException ex) {
-                    Logger.getLogger(CategoryDAO.class.getName()).log(Level.SEVERE, null, ex);
-                }
-            }
         }
         return list;
     }

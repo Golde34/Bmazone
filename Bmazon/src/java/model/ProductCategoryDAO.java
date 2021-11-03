@@ -17,33 +17,25 @@ import java.util.logging.Logger;
  *
  * @author Admin
  */
-public class ProductCategoryDAO extends BaseDAO {
-
-    public String getCategoryIdByProductId(int productId) {
-        String xSql = "select * from ProductCategory where productID=" + productId;
+public class ProductCategoryDAO extends BaseDAO{
+    
+    public String getCategoryIdByProductId(int productId){
+        String xSql= "select * from ProductCategory where productID=" + productId;
         try {
             pre = conn.prepareStatement(xSql);
             rs = pre.executeQuery();
-            if (rs.next()) {
-                String cid = rs.getString("categoryId");
+            if(rs.next()){
+                String cid=rs.getString("categoryId");
                 return cid;
             }
             rs.close();
             pre.close();
         } catch (SQLException e) {
             Logger.getLogger(ProductCategoryDAO.class.getName()).log(Level.SEVERE, null, e);
-        } finally {
-            if (conn != null) {
-                try {
-                    conn.close();
-                } catch (SQLException ex) {
-                    Logger.getLogger(CategoryDAO.class.getName()).log(Level.SEVERE, null, ex);
-                }
-            }
         }
         return null;
     }
-
+    
     public int updateProductCategory(ProductCategory obj) {
         int n = 0;
         String sql = "UPDATE ProductCategory SET [categoryId] = ? WHERE productID = ?";
@@ -55,18 +47,10 @@ public class ProductCategoryDAO extends BaseDAO {
             pre.close();
         } catch (SQLException e) {
             Logger.getLogger(ProductCategoryDAO.class.getName()).log(Level.SEVERE, null, e);
-        } finally {
-            if (conn != null) {
-                try {
-                    conn.close();
-                } catch (SQLException ex) {
-                    Logger.getLogger(CategoryDAO.class.getName()).log(Level.SEVERE, null, ex);
-                }
-            }
         }
         return n;
     }
-
+    
     public ArrayList<ProductCategory> getAllProductCategory() {
         ArrayList<ProductCategory> list = new ArrayList<>();
         String sql = "SELECT * FROM ProductCategory where status=1";
@@ -84,25 +68,15 @@ public class ProductCategoryDAO extends BaseDAO {
             pre.close();
         } catch (SQLException e) {
             Logger.getLogger(ProductCategoryDAO.class.getName()).log(Level.SEVERE, null, e);
-        } finally {
-            if (conn != null) {
-                try {
-                    conn.close();
-                } catch (SQLException ex) {
-                    Logger.getLogger(CategoryDAO.class.getName()).log(Level.SEVERE, null, ex);
-                }
-            }
         }
         return list;
     }
-
     public static void main(String[] args) {
         ProductCategoryDAO dao = new ProductCategoryDAO();
         ProductCategory p = dao.getProductCateByProductID(50);
         System.out.println(p.getProductID());
     }
-
-    public ProductCategory getProductCateByProductID(int pid) {
+    public ProductCategory getProductCateByProductID(int pid){
         ProductCategory proCate = new ProductCategory();
         String sql = "SELECT * FROM ProductCategory where productID = " + pid;
         try {
@@ -117,18 +91,10 @@ public class ProductCategoryDAO extends BaseDAO {
             pre.close();
         } catch (SQLException e) {
             Logger.getLogger(ProductCategoryDAO.class.getName()).log(Level.SEVERE, null, e);
-        } finally {
-            if (conn != null) {
-                try {
-                    conn.close();
-                } catch (SQLException ex) {
-                    Logger.getLogger(CategoryDAO.class.getName()).log(Level.SEVERE, null, ex);
-                }
-            }
         }
         return proCate;
     }
-
+    
     public int addProductCategory(int productID, int categoryID) {
         int n = 0;
         String sql = "INSERT INTO ProductCategory\n"
@@ -143,14 +109,6 @@ public class ProductCategoryDAO extends BaseDAO {
             pre.close();
         } catch (SQLException e) {
             Logger.getLogger(ProductCategoryDAO.class.getName()).log(Level.SEVERE, null, e);
-        } finally {
-            if (conn != null) {
-                try {
-                    conn.close();
-                } catch (SQLException ex) {
-                    Logger.getLogger(CategoryDAO.class.getName()).log(Level.SEVERE, null, ex);
-                }
-            }
         }
         return n;
     }

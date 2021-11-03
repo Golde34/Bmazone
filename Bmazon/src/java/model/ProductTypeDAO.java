@@ -33,14 +33,6 @@ public class ProductTypeDAO extends BaseDAO {
             pre.close();
         } catch (SQLException ex) {
             Logger.getLogger(UserDAO.class.getName()).log(Level.SEVERE, null, ex);
-        } finally {
-            if (conn != null) {
-                try {
-                    conn.close();
-                } catch (SQLException ex) {
-                    Logger.getLogger(CategoryDAO.class.getName()).log(Level.SEVERE, null, ex);
-                }
-            }
         }
         return num;
     }
@@ -66,14 +58,6 @@ public class ProductTypeDAO extends BaseDAO {
             pre.close();
         } catch (SQLException e) {
             Logger.getLogger(ProductDAO.class.getName()).log(Level.SEVERE, null, e);
-        } finally {
-            if (conn != null) {
-                try {
-                    conn.close();
-                } catch (SQLException ex) {
-                    Logger.getLogger(CategoryDAO.class.getName()).log(Level.SEVERE, null, ex);
-                }
-            }
         }
         return list;
     }
@@ -88,14 +72,6 @@ public class ProductTypeDAO extends BaseDAO {
             n = pre.executeUpdate();
             pre.close();
         } catch (SQLException e) {
-        } finally {
-            if (conn != null) {
-                try {
-                    conn.close();
-                } catch (SQLException ex) {
-                    Logger.getLogger(CategoryDAO.class.getName()).log(Level.SEVERE, null, ex);
-                }
-            }
         }
         return n;
     }
@@ -120,14 +96,6 @@ public class ProductTypeDAO extends BaseDAO {
             rs.close();
             pre.close();
         } catch (SQLException e) {
-        } finally {
-            if (conn != null) {
-                try {
-                    conn.close();
-                } catch (SQLException ex) {
-                    Logger.getLogger(CategoryDAO.class.getName()).log(Level.SEVERE, null, ex);
-                }
-            }
         }
         return list;
     }
@@ -153,14 +121,6 @@ public class ProductTypeDAO extends BaseDAO {
             rs.close();
             pre.close();
         } catch (SQLException e) {
-        } finally {
-            if (conn != null) {
-                try {
-                    conn.close();
-                } catch (SQLException ex) {
-                    Logger.getLogger(CategoryDAO.class.getName()).log(Level.SEVERE, null, ex);
-                }
-            }
         }
         return ptype;
     }
@@ -189,14 +149,6 @@ public class ProductTypeDAO extends BaseDAO {
             rs.close();
             pre.close();
         } catch (SQLException e) {
-        } finally {
-            if (conn != null) {
-                try {
-                    conn.close();
-                } catch (SQLException ex) {
-                    Logger.getLogger(CategoryDAO.class.getName()).log(Level.SEVERE, null, ex);
-                }
-            }
         }
         return ptype;
     }
@@ -222,18 +174,10 @@ public class ProductTypeDAO extends BaseDAO {
             rs.close();
             pre.close();
         } catch (SQLException e) {
-        } finally {
-            if (conn != null) {
-                try {
-                    conn.close();
-                } catch (SQLException ex) {
-                    Logger.getLogger(CategoryDAO.class.getName()).log(Level.SEVERE, null, ex);
-                }
-            }
         }
         return ptype;
     }
-
+    
     public int getProductQuantity(String pid, String size, String color) {
         int quantity = 0;
         String xSql = "SELECT quantity FROM ProductType WHERE productTypeID = ? and size = ? and color = ?";
@@ -249,14 +193,6 @@ public class ProductTypeDAO extends BaseDAO {
             rs.close();
             pre.close();
         } catch (SQLException e) {
-        } finally {
-            if (conn != null) {
-                try {
-                    conn.close();
-                } catch (SQLException ex) {
-                    Logger.getLogger(CategoryDAO.class.getName()).log(Level.SEVERE, null, ex);
-                }
-            }
         }
         return quantity;
     }
@@ -275,14 +211,6 @@ public class ProductTypeDAO extends BaseDAO {
             pre.close();
         } catch (SQLException e) {
 
-        } finally {
-            if (conn != null) {
-                try {
-                    conn.close();
-                } catch (SQLException ex) {
-                    Logger.getLogger(CategoryDAO.class.getName()).log(Level.SEVERE, null, ex);
-                }
-            }
         }
         return pid;
     }
@@ -308,14 +236,6 @@ public class ProductTypeDAO extends BaseDAO {
             rs.close();
             pre.close();
         } catch (SQLException e) {
-        } finally {
-            if (conn != null) {
-                try {
-                    conn.close();
-                } catch (SQLException ex) {
-                    Logger.getLogger(CategoryDAO.class.getName()).log(Level.SEVERE, null, ex);
-                }
-            }
         }
         return list;
     }
@@ -343,14 +263,6 @@ public class ProductTypeDAO extends BaseDAO {
             rs.close();
             pre.close();
         } catch (SQLException e) {
-        } finally {
-            if (conn != null) {
-                try {
-                    conn.close();
-                } catch (SQLException ex) {
-                    Logger.getLogger(CategoryDAO.class.getName()).log(Level.SEVERE, null, ex);
-                }
-            }
         }
         return pt;
     }
@@ -376,14 +288,6 @@ public class ProductTypeDAO extends BaseDAO {
             rs.close();
             pre.close();
         } catch (SQLException e) {
-        } finally {
-            if (conn != null) {
-                try {
-                    conn.close();
-                } catch (SQLException ex) {
-                    Logger.getLogger(CategoryDAO.class.getName()).log(Level.SEVERE, null, ex);
-                }
-            }
         }
         return list;
     }
@@ -400,14 +304,6 @@ public class ProductTypeDAO extends BaseDAO {
             rs.close();
             pre.close();
         } catch (SQLException e) {
-        } finally {
-            if (conn != null) {
-                try {
-                    conn.close();
-                } catch (SQLException ex) {
-                    Logger.getLogger(CategoryDAO.class.getName()).log(Level.SEVERE, null, ex);
-                }
-            }
         }
         return list;
     }
@@ -424,18 +320,10 @@ public class ProductTypeDAO extends BaseDAO {
             rs.close();
             pre.close();
         } catch (SQLException e) {
-        } finally {
-            if (conn != null) {
-                try {
-                    conn.close();
-                } catch (SQLException ex) {
-                    Logger.getLogger(CategoryDAO.class.getName()).log(Level.SEVERE, null, ex);
-                }
-            }
         }
         return list;
     }
-
+  
     public String getProductPrice(int pid) {
         String price = null;
         String xSql = "SELECT price FROM ProductType WHERE productID = " + pid + " Order by price";
@@ -448,14 +336,6 @@ public class ProductTypeDAO extends BaseDAO {
             rs.close();
             pre.close();
         } catch (SQLException e) {
-        } finally {
-            if (conn != null) {
-                try {
-                    conn.close();
-                } catch (SQLException ex) {
-                    Logger.getLogger(CategoryDAO.class.getName()).log(Level.SEVERE, null, ex);
-                }
-            }
         }
         return price;
     }
@@ -477,14 +357,6 @@ public class ProductTypeDAO extends BaseDAO {
             n = pre.executeUpdate();
             pre.close();
         } catch (SQLException e) {
-        } finally {
-            if (conn != null) {
-                try {
-                    conn.close();
-                } catch (SQLException ex) {
-                    Logger.getLogger(CategoryDAO.class.getName()).log(Level.SEVERE, null, ex);
-                }
-            }
         }
         return n;
     }
@@ -505,18 +377,10 @@ public class ProductTypeDAO extends BaseDAO {
             n = pre.executeUpdate();
             pre.close();
         } catch (SQLException e) {
-        } finally {
-            if (conn != null) {
-                try {
-                    conn.close();
-                } catch (SQLException ex) {
-                    Logger.getLogger(CategoryDAO.class.getName()).log(Level.SEVERE, null, ex);
-                }
-            }
         }
         return n;
     }
-
+    
     public int deleteProductType(String ProTypeId) {
         int n = 0;
         String sql = "delete from ProductType where productTypeId = ?";
@@ -526,18 +390,10 @@ public class ProductTypeDAO extends BaseDAO {
             n = pre.executeUpdate();
             pre.close();
         } catch (SQLException e) {
-        } finally {
-            if (conn != null) {
-                try {
-                    conn.close();
-                } catch (SQLException ex) {
-                    Logger.getLogger(CategoryDAO.class.getName()).log(Level.SEVERE, null, ex);
-                }
-            }
         }
         return n;
     }
-
+    
     public int changeStatus(String id, int status) {
         int n = 0;
         String sql = "update ProductType set status = ? where productTypeId = ?";
@@ -549,14 +405,6 @@ public class ProductTypeDAO extends BaseDAO {
             pre.close();
         } catch (SQLException ex) {
             Logger.getLogger(ProductDAO.class.getName()).log(Level.SEVERE, null, ex);
-        } finally {
-            if (conn != null) {
-                try {
-                    conn.close();
-                } catch (SQLException ex) {
-                    Logger.getLogger(CategoryDAO.class.getName()).log(Level.SEVERE, null, ex);
-                }
-            }
         }
         return n;
     }
@@ -582,14 +430,6 @@ public class ProductTypeDAO extends BaseDAO {
             rs.close();
             pre.close();
         } catch (SQLException e) {
-        } finally {
-            if (conn != null) {
-                try {
-                    conn.close();
-                } catch (SQLException ex) {
-                    Logger.getLogger(CategoryDAO.class.getName()).log(Level.SEVERE, null, ex);
-                }
-            }
         }
         return list;
     }
@@ -606,14 +446,6 @@ public class ProductTypeDAO extends BaseDAO {
             pre.close();
         } catch (SQLException ex) {
             Logger.getLogger(UserDAO.class.getName()).log(Level.SEVERE, null, ex);
-        } finally {
-            if (conn != null) {
-                try {
-                    conn.close();
-                } catch (SQLException ex) {
-                    Logger.getLogger(CategoryDAO.class.getName()).log(Level.SEVERE, null, ex);
-                }
-            }
         }
         return false;
     }
@@ -630,18 +462,10 @@ public class ProductTypeDAO extends BaseDAO {
             pre.close();
         } catch (SQLException ex) {
             Logger.getLogger(UserDAO.class.getName()).log(Level.SEVERE, null, ex);
-        } finally {
-            if (conn != null) {
-                try {
-                    conn.close();
-                } catch (SQLException ex) {
-                    Logger.getLogger(CategoryDAO.class.getName()).log(Level.SEVERE, null, ex);
-                }
-            }
         }
         return false;
     }
-
+    
 //    public boolean checkDupProTypeId(int pid) {
 //        String xSql= "SELECT * FROM product WHERE id = ?";
 //        try {
@@ -655,16 +479,17 @@ public class ProductTypeDAO extends BaseDAO {
 //        }
 //        return false;
 //    }
+
     public ArrayList<ProductType> getAllPagingProductType(int index, int numOfRow, String search, String pid) {
-        int start = (index - 1) * numOfRow;
+        int start=(index-1)*numOfRow;
         ArrayList<ProductType> list = new ArrayList<>();
-        String xSql = "select * from producttype where productID like'%%' limit ?,?";
+        String xSql= "select * from producttype where productID like'%%' limit ?,?";
         try {
-            pre = conn.prepareStatement(xSql);
+            pre=conn.prepareStatement(xSql);
             pre.setInt(1, start);
             pre.setInt(2, numOfRow);
-            rs = pre.executeQuery();
-            while (rs.next()) {
+            rs=pre.executeQuery();
+            while(rs.next()){
                 ProductType pt = new ProductType();
                 pt.setProductTypeId(rs.getString("productTypeId"));
                 pt.setQuantity(rs.getInt("productID"));
@@ -680,14 +505,6 @@ public class ProductTypeDAO extends BaseDAO {
             pre.close();
         } catch (SQLException ex) {
             Logger.getLogger(UserDAO.class.getName()).log(Level.SEVERE, null, ex);
-        } finally {
-            if (conn != null) {
-                try {
-                    conn.close();
-                } catch (SQLException ex) {
-                    Logger.getLogger(CategoryDAO.class.getName()).log(Level.SEVERE, null, ex);
-                }
-            }
         }
         return list;
     }

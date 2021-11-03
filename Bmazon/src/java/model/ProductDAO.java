@@ -26,8 +26,8 @@ public class ProductDAO extends BaseDAO {
         String xSql = "SELECT COUNT(*)from Product p join Seller s on p.sellerID=s.sellerID join ProductCategory pc on p.productID=pc.productID join Category c on pc.categoryId=c.categoryID join ProductGenre pg on pg.productID=p.productID join Genre g on g.genreID=pg.genreID\n"
                 + "   where p.productName like '%" + search + "%' or c.categoryName like '%" + search + "%' or g.genreName like '%" + search + "%' or s.sellerShopName like '%" + search + "%'";
         try {
-            pre = conn.prepareStatement(xSql);
-            rs = pre.executeQuery();
+            pre=conn.prepareStatement(xSql);
+            rs=pre.executeQuery();
             if (rs.next()) {
                 num = rs.getInt(1);
             }
@@ -35,14 +35,6 @@ public class ProductDAO extends BaseDAO {
             pre.close();
         } catch (SQLException ex) {
             Logger.getLogger(UserDAO.class.getName()).log(Level.SEVERE, null, ex);
-        } finally {
-            if (conn != null) {
-                try {
-                    conn.close();
-                } catch (SQLException ex) {
-                    Logger.getLogger(CategoryDAO.class.getName()).log(Level.SEVERE, null, ex);
-                }
-            }
         }
         return num;
     }
@@ -62,14 +54,6 @@ public class ProductDAO extends BaseDAO {
             rs.close();
         } catch (SQLException ex) {
             Logger.getLogger(UserDAO.class.getName()).log(Level.SEVERE, null, ex);
-        } finally {
-            if (conn != null) {
-                try {
-                    conn.close();
-                } catch (SQLException ex) {
-                    Logger.getLogger(CategoryDAO.class.getName()).log(Level.SEVERE, null, ex);
-                }
-            }
         }
         return num;
     }
@@ -99,14 +83,6 @@ public class ProductDAO extends BaseDAO {
             pre.close();
         } catch (SQLException e) {
             Logger.getLogger(ProductDAO.class.getName()).log(Level.SEVERE, null, e);
-        } finally {
-            if (conn != null) {
-                try {
-                    conn.close();
-                } catch (SQLException ex) {
-                    Logger.getLogger(CategoryDAO.class.getName()).log(Level.SEVERE, null, ex);
-                }
-            }
         }
         return list;
     }
@@ -137,14 +113,6 @@ public class ProductDAO extends BaseDAO {
             pre.close();
         } catch (SQLException e) {
             Logger.getLogger(ProductDAO.class.getName()).log(Level.SEVERE, null, e);
-        } finally {
-            if (conn != null) {
-                try {
-                    conn.close();
-                } catch (SQLException ex) {
-                    Logger.getLogger(CategoryDAO.class.getName()).log(Level.SEVERE, null, ex);
-                }
-            }
         }
         return list;
     }
@@ -170,14 +138,6 @@ public class ProductDAO extends BaseDAO {
             pre.close();
         } catch (SQLException e) {
             Logger.getLogger(ProductDAO.class.getName()).log(Level.SEVERE, null, e);
-        } finally {
-            if (conn != null) {
-                try {
-                    conn.close();
-                } catch (SQLException ex) {
-                    Logger.getLogger(CategoryDAO.class.getName()).log(Level.SEVERE, null, ex);
-                }
-            }
         }
         return list;
     }
@@ -210,14 +170,6 @@ public class ProductDAO extends BaseDAO {
             pre.close();
         } catch (SQLException e) {
             Logger.getLogger(ProductDAO.class.getName()).log(Level.SEVERE, null, e);
-        } finally {
-            if (conn != null) {
-                try {
-                    conn.close();
-                } catch (SQLException ex) {
-                    Logger.getLogger(CategoryDAO.class.getName()).log(Level.SEVERE, null, ex);
-                }
-            }
         }
         return list;
     }
@@ -243,14 +195,6 @@ public class ProductDAO extends BaseDAO {
             pre.close();
         } catch (SQLException e) {
             Logger.getLogger(ProductDAO.class.getName()).log(Level.SEVERE, null, e);
-        } finally {
-            if (conn != null) {
-                try {
-                    conn.close();
-                } catch (SQLException ex) {
-                    Logger.getLogger(CategoryDAO.class.getName()).log(Level.SEVERE, null, ex);
-                }
-            }
         }
         return list;
     }
@@ -276,14 +220,6 @@ public class ProductDAO extends BaseDAO {
             pre.close();
         } catch (SQLException e) {
             Logger.getLogger(ProductDAO.class.getName()).log(Level.SEVERE, null, e);
-        } finally {
-            if (conn != null) {
-                try {
-                    conn.close();
-                } catch (SQLException ex) {
-                    Logger.getLogger(CategoryDAO.class.getName()).log(Level.SEVERE, null, ex);
-                }
-            }
         }
         return list;
     }
@@ -310,14 +246,6 @@ public class ProductDAO extends BaseDAO {
             pre.close();
         } catch (SQLException e) {
             Logger.getLogger(ProductDAO.class.getName()).log(Level.SEVERE, null, e);
-        } finally {
-            if (conn != null) {
-                try {
-                    conn.close();
-                } catch (SQLException ex) {
-                    Logger.getLogger(CategoryDAO.class.getName()).log(Level.SEVERE, null, ex);
-                }
-            }
         }
         return list;
     }
@@ -343,14 +271,6 @@ public class ProductDAO extends BaseDAO {
             pre.close();
         } catch (SQLException e) {
             Logger.getLogger(ProductDAO.class.getName()).log(Level.SEVERE, null, e);
-        } finally {
-            if (conn != null) {
-                try {
-                    conn.close();
-                } catch (SQLException ex) {
-                    Logger.getLogger(CategoryDAO.class.getName()).log(Level.SEVERE, null, ex);
-                }
-            }
         }
         return list;
     }
@@ -376,14 +296,6 @@ public class ProductDAO extends BaseDAO {
             pre.close();
         } catch (SQLException e) {
             Logger.getLogger(ProductDAO.class.getName()).log(Level.SEVERE, null, e);
-        } finally {
-            if (conn != null) {
-                try {
-                    conn.close();
-                } catch (SQLException ex) {
-                    Logger.getLogger(CategoryDAO.class.getName()).log(Level.SEVERE, null, ex);
-                }
-            }
         }
         return list;
     }
@@ -415,14 +327,6 @@ public class ProductDAO extends BaseDAO {
             pre.close();
         } catch (SQLException e) {
             Logger.getLogger(ProductDAO.class.getName()).log(Level.SEVERE, null, e);
-        } finally {
-            if (conn != null) {
-                try {
-                    conn.close();
-                } catch (SQLException ex) {
-                    Logger.getLogger(CategoryDAO.class.getName()).log(Level.SEVERE, null, ex);
-                }
-            }
         }
         return list;
     }
@@ -449,14 +353,6 @@ public class ProductDAO extends BaseDAO {
             pre.close();
         } catch (SQLException e) {
             Logger.getLogger(ProductDAO.class.getName()).log(Level.SEVERE, null, e);
-        } finally {
-            if (conn != null) {
-                try {
-                    conn.close();
-                } catch (SQLException ex) {
-                    Logger.getLogger(CategoryDAO.class.getName()).log(Level.SEVERE, null, ex);
-                }
-            }
         }
         return list;
     }
@@ -483,14 +379,6 @@ public class ProductDAO extends BaseDAO {
             pre.close();
         } catch (SQLException e) {
             Logger.getLogger(ProductDAO.class.getName()).log(Level.SEVERE, null, e);
-        } finally {
-            if (conn != null) {
-                try {
-                    conn.close();
-                } catch (SQLException ex) {
-                    Logger.getLogger(CategoryDAO.class.getName()).log(Level.SEVERE, null, ex);
-                }
-            }
         }
         return list;
     }
@@ -518,14 +406,6 @@ public class ProductDAO extends BaseDAO {
             pre.close();
         } catch (SQLException e) {
             Logger.getLogger(ProductDAO.class.getName()).log(Level.SEVERE, null, e);
-        } finally {
-            if (conn != null) {
-                try {
-                    conn.close();
-                } catch (SQLException ex) {
-                    Logger.getLogger(CategoryDAO.class.getName()).log(Level.SEVERE, null, ex);
-                }
-            }
         }
         return list;
     }
@@ -549,14 +429,6 @@ public class ProductDAO extends BaseDAO {
             pre.close();
         } catch (SQLException e) {
             Logger.getLogger(ProductDAO.class.getName()).log(Level.SEVERE, null, e);
-        } finally {
-            if (conn != null) {
-                try {
-                    conn.close();
-                } catch (SQLException ex) {
-                    Logger.getLogger(CategoryDAO.class.getName()).log(Level.SEVERE, null, ex);
-                }
-            }
         }
         return pro;
     }
@@ -581,14 +453,6 @@ public class ProductDAO extends BaseDAO {
             pre.close();
         } catch (SQLException e) {
             Logger.getLogger(ProductDAO.class.getName()).log(Level.SEVERE, null, e);
-        } finally {
-            if (conn != null) {
-                try {
-                    conn.close();
-                } catch (SQLException ex) {
-                    Logger.getLogger(CategoryDAO.class.getName()).log(Level.SEVERE, null, ex);
-                }
-            }
         }
         return pro;
     }
@@ -608,14 +472,6 @@ public class ProductDAO extends BaseDAO {
             pre.close();
         } catch (SQLException e) {
             Logger.getLogger(ProductDAO.class.getName()).log(Level.SEVERE, null, e);
-        } finally {
-            if (conn != null) {
-                try {
-                    conn.close();
-                } catch (SQLException ex) {
-                    Logger.getLogger(CategoryDAO.class.getName()).log(Level.SEVERE, null, ex);
-                }
-            }
         }
         return count;
     }
@@ -633,14 +489,6 @@ public class ProductDAO extends BaseDAO {
             pre.close();
         } catch (SQLException e) {
             Logger.getLogger(ProductDAO.class.getName()).log(Level.SEVERE, null, e);
-        } finally {
-            if (conn != null) {
-                try {
-                    conn.close();
-                } catch (SQLException ex) {
-                    Logger.getLogger(CategoryDAO.class.getName()).log(Level.SEVERE, null, ex);
-                }
-            }
         }
         return count;
     }
@@ -659,14 +507,6 @@ public class ProductDAO extends BaseDAO {
             pre.close();
         } catch (SQLException e) {
             Logger.getLogger(ProductDAO.class.getName()).log(Level.SEVERE, null, e);
-        } finally {
-            if (conn != null) {
-                try {
-                    conn.close();
-                } catch (SQLException ex) {
-                    Logger.getLogger(CategoryDAO.class.getName()).log(Level.SEVERE, null, ex);
-                }
-            }
         }
         return count;
     }
@@ -685,14 +525,6 @@ public class ProductDAO extends BaseDAO {
             pre.close();
         } catch (SQLException e) {
             Logger.getLogger(ProductDAO.class.getName()).log(Level.SEVERE, null, e);
-        } finally {
-            if (conn != null) {
-                try {
-                    conn.close();
-                } catch (SQLException ex) {
-                    Logger.getLogger(CategoryDAO.class.getName()).log(Level.SEVERE, null, ex);
-                }
-            }
         }
         return count;
     }
@@ -707,7 +539,7 @@ public class ProductDAO extends BaseDAO {
 
     }
 
-    public ArrayList<Product> getProductByName(int index, String name) {
+    public ArrayList<Product> getProductByName(int index, String name ) {
         ArrayList<Product> list = new ArrayList<>();
         int start = (index - 1) * 20;
         String s = "";
@@ -726,7 +558,7 @@ public class ProductDAO extends BaseDAO {
 //        s += " ) ";
         String sql
                 = " SELECT *\n  "
-                + " FROM Product as p join productcategory as pc on p.productid=pc.productid  where (productName like '%" + name + "%' OR description like '%" + name + "%' )\n"
+                + " FROM Product as p join productcategory as pc on p.productid=pc.productid  where (productName like '%"+name+"%' OR description like '%"+name+"%' )\n"
                 + s
                 + "limit ?,?   ";
         try {
@@ -749,14 +581,6 @@ public class ProductDAO extends BaseDAO {
             pre.close();
         } catch (SQLException e) {
             Logger.getLogger(ProductDAO.class.getName()).log(Level.SEVERE, null, e);
-        } finally {
-            if (conn != null) {
-                try {
-                    conn.close();
-                } catch (SQLException ex) {
-                    Logger.getLogger(CategoryDAO.class.getName()).log(Level.SEVERE, null, ex);
-                }
-            }
         }
         return list;
     }
@@ -788,14 +612,6 @@ public class ProductDAO extends BaseDAO {
             pre.close();
         } catch (SQLException e) {
             Logger.getLogger(ProductDAO.class.getName()).log(Level.SEVERE, null, e);
-        } finally {
-            if (conn != null) {
-                try {
-                    conn.close();
-                } catch (SQLException ex) {
-                    Logger.getLogger(CategoryDAO.class.getName()).log(Level.SEVERE, null, ex);
-                }
-            }
         }
         return list;
     }
@@ -822,14 +638,6 @@ public class ProductDAO extends BaseDAO {
             pre.close();
         } catch (SQLException e) {
             Logger.getLogger(ProductDAO.class.getName()).log(Level.SEVERE, null, e);
-        } finally {
-            if (conn != null) {
-                try {
-                    conn.close();
-                } catch (SQLException ex) {
-                    Logger.getLogger(CategoryDAO.class.getName()).log(Level.SEVERE, null, ex);
-                }
-            }
         }
         return list;
     }
@@ -856,14 +664,6 @@ public class ProductDAO extends BaseDAO {
             pre.close();
         } catch (SQLException e) {
             Logger.getLogger(ProductDAO.class.getName()).log(Level.SEVERE, null, e);
-        } finally {
-            if (conn != null) {
-                try {
-                    conn.close();
-                } catch (SQLException ex) {
-                    Logger.getLogger(CategoryDAO.class.getName()).log(Level.SEVERE, null, ex);
-                }
-            }
         }
         return list;
     }
@@ -889,14 +689,6 @@ public class ProductDAO extends BaseDAO {
             pre.close();
         } catch (SQLException e) {
             Logger.getLogger(ProductDAO.class.getName()).log(Level.SEVERE, null, e);
-        } finally {
-            if (conn != null) {
-                try {
-                    conn.close();
-                } catch (SQLException ex) {
-                    Logger.getLogger(CategoryDAO.class.getName()).log(Level.SEVERE, null, ex);
-                }
-            }
         }
         return list;
     }
@@ -928,14 +720,6 @@ public class ProductDAO extends BaseDAO {
             pre.close();
         } catch (SQLException e) {
             Logger.getLogger(ProductDAO.class.getName()).log(Level.SEVERE, null, e);
-        } finally {
-            if (conn != null) {
-                try {
-                    conn.close();
-                } catch (SQLException ex) {
-                    Logger.getLogger(CategoryDAO.class.getName()).log(Level.SEVERE, null, ex);
-                }
-            }
         }
         return list;
     }
@@ -955,14 +739,6 @@ public class ProductDAO extends BaseDAO {
             pre.close();
         } catch (SQLException e) {
             Logger.getLogger(ProductDAO.class.getName()).log(Level.SEVERE, null, e);
-        } finally {
-            if (conn != null) {
-                try {
-                    conn.close();
-                } catch (SQLException ex) {
-                    Logger.getLogger(CategoryDAO.class.getName()).log(Level.SEVERE, null, ex);
-                }
-            }
         }
         return n;
     }
@@ -990,14 +766,6 @@ public class ProductDAO extends BaseDAO {
             pre.close();
         } catch (SQLException e) {
             Logger.getLogger(ProductDAO.class.getName()).log(Level.SEVERE, null, e);
-        } finally {
-            if (conn != null) {
-                try {
-                    conn.close();
-                } catch (SQLException ex) {
-                    Logger.getLogger(CategoryDAO.class.getName()).log(Level.SEVERE, null, ex);
-                }
-            }
         }
         return n;
     }
@@ -1013,14 +781,6 @@ public class ProductDAO extends BaseDAO {
             pre.close();
         } catch (SQLException ex) {
             Logger.getLogger(ProductDAO.class.getName()).log(Level.SEVERE, null, ex);
-        } finally {
-            if (conn != null) {
-                try {
-                    conn.close();
-                } catch (SQLException ex) {
-                    Logger.getLogger(CategoryDAO.class.getName()).log(Level.SEVERE, null, ex);
-                }
-            }
         }
         return n;
     }

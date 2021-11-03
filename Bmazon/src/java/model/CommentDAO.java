@@ -35,14 +35,6 @@ public class CommentDAO extends BaseDAO {
             pre.close();
         } catch (SQLException ex) {
             Logger.getLogger(CommentDAO.class.getName()).log(Level.SEVERE, null, ex);
-        } finally {
-            if (conn != null) {
-                try {
-                    conn.close();
-                } catch (SQLException ex) {
-                    Logger.getLogger(CategoryDAO.class.getName()).log(Level.SEVERE, null, ex);
-                }
-            }
         }
         return n;
     }
@@ -58,14 +50,6 @@ public class CommentDAO extends BaseDAO {
             pre.close();
         } catch (SQLException ex) {
             Logger.getLogger(ProductDAO.class.getName()).log(Level.SEVERE, null, ex);
-        } finally {
-            if (conn != null) {
-                try {
-                    conn.close();
-                } catch (SQLException ex) {
-                    Logger.getLogger(CategoryDAO.class.getName()).log(Level.SEVERE, null, ex);
-                }
-            }
         }
         return n;
     }
@@ -74,8 +58,8 @@ public class CommentDAO extends BaseDAO {
         int num = 0;
         String xSql = "SELECT COUNT(*) FROM `Comment` where productID = " + pID;
         try {
-            pre = conn.prepareStatement(xSql);
-            rs = pre.executeQuery();
+            pre=conn.prepareStatement(xSql);
+            rs=pre.executeQuery();
             if (rs.next()) {
                 num = rs.getInt(1);
             }
@@ -83,14 +67,6 @@ public class CommentDAO extends BaseDAO {
             pre.close();
         } catch (SQLException ex) {
             Logger.getLogger(UserDAO.class.getName()).log(Level.SEVERE, null, ex);
-        } finally {
-            if (conn != null) {
-                try {
-                    conn.close();
-                } catch (SQLException ex) {
-                    Logger.getLogger(CategoryDAO.class.getName()).log(Level.SEVERE, null, ex);
-                }
-            }
         }
         return num;
     }
@@ -99,8 +75,8 @@ public class CommentDAO extends BaseDAO {
         int num = 0;
         String xSql = "SELECT COUNT(*) FROM `Comment` where productID = " + pid + " and content like '%" + search + "%'";
         try {
-            pre = conn.prepareStatement(xSql);
-            rs = pre.executeQuery();
+            pre=conn.prepareStatement(xSql);
+            rs=pre.executeQuery();
             if (rs.next()) {
                 num = rs.getInt(1);
             }
@@ -108,14 +84,6 @@ public class CommentDAO extends BaseDAO {
             pre.close();
         } catch (SQLException ex) {
             Logger.getLogger(UserDAO.class.getName()).log(Level.SEVERE, null, ex);
-        } finally {
-            if (conn != null) {
-                try {
-                    conn.close();
-                } catch (SQLException ex) {
-                    Logger.getLogger(CategoryDAO.class.getName()).log(Level.SEVERE, null, ex);
-                }
-            }
         }
         return num;
     }
@@ -150,14 +118,6 @@ public class CommentDAO extends BaseDAO {
             pre.close();
         } catch (SQLException ex) {
             Logger.getLogger(UserDAO.class.getName()).log(Level.SEVERE, null, ex);
-        } finally {
-            if (conn != null) {
-                try {
-                    conn.close();
-                } catch (SQLException ex) {
-                    Logger.getLogger(CategoryDAO.class.getName()).log(Level.SEVERE, null, ex);
-                }
-            }
         }
         return list;
     }
@@ -183,18 +143,10 @@ public class CommentDAO extends BaseDAO {
             pre.close();
         } catch (SQLException ex) {
             Logger.getLogger(CommentDAO.class.getName()).log(Level.SEVERE, null, ex);
-        } finally {
-            if (conn != null) {
-                try {
-                    conn.close();
-                } catch (SQLException ex) {
-                    Logger.getLogger(CategoryDAO.class.getName()).log(Level.SEVERE, null, ex);
-                }
-            }
         }
         return comments;
     }
-
+    
     public ArrayList<Comment> getCommensByProductIdAndRating(int pid, int rating) {
         ArrayList<Comment> comments = new ArrayList<>();
         String sql = "select * from `Comment` where productID  = ? and rating = ? order by commentID desc";
@@ -217,14 +169,6 @@ public class CommentDAO extends BaseDAO {
             pre.close();
         } catch (SQLException ex) {
             Logger.getLogger(CommentDAO.class.getName()).log(Level.SEVERE, null, ex);
-        } finally {
-            if (conn != null) {
-                try {
-                    conn.close();
-                } catch (SQLException ex) {
-                    Logger.getLogger(CategoryDAO.class.getName()).log(Level.SEVERE, null, ex);
-                }
-            }
         }
         return comments;
     }
@@ -256,24 +200,15 @@ public class CommentDAO extends BaseDAO {
             pre.close();
         } catch (SQLException ex) {
             Logger.getLogger(CommentDAO.class.getName()).log(Level.SEVERE, null, ex);
-        } finally {
-            if (conn != null) {
-                try {
-                    conn.close();
-                } catch (SQLException ex) {
-                    Logger.getLogger(CategoryDAO.class.getName()).log(Level.SEVERE, null, ex);
-                }
-            }
         }
         return comments;
     }
-
-    public int getNumberOfCommentPaging(String search, int pID) {
+      public int getNumberOfCommentPaging(String search,int pID) {
         int num = 0;
-        String xSql = "SELECT COUNT(*) FROM `Comment` where sellerID = " + pID + "and content like '%" + search + "%'";
+        String xSql = "SELECT COUNT(*) FROM `Comment` where sellerID = " + pID+"and content like '%"+search+"%'";
         try {
-            pre = conn.prepareStatement(xSql);
-            rs = pre.executeQuery();
+            pre=conn.prepareStatement(xSql);
+            rs=pre.executeQuery();
             if (rs.next()) {
                 num = rs.getInt(1);
             }
@@ -281,14 +216,6 @@ public class CommentDAO extends BaseDAO {
             pre.close();
         } catch (SQLException ex) {
             Logger.getLogger(UserDAO.class.getName()).log(Level.SEVERE, null, ex);
-        } finally {
-            if (conn != null) {
-                try {
-                    conn.close();
-                } catch (SQLException ex) {
-                    Logger.getLogger(CategoryDAO.class.getName()).log(Level.SEVERE, null, ex);
-                }
-            }
         }
         return num;
     }
@@ -317,14 +244,6 @@ public class CommentDAO extends BaseDAO {
             pre.close();
         } catch (SQLException ex) {
             Logger.getLogger(CommentDAO.class.getName()).log(Level.SEVERE, null, ex);
-        } finally {
-            if (conn != null) {
-                try {
-                    conn.close();
-                } catch (SQLException ex) {
-                    Logger.getLogger(CategoryDAO.class.getName()).log(Level.SEVERE, null, ex);
-                }
-            }
         }
         return comments;
     }
@@ -335,7 +254,7 @@ public class CommentDAO extends BaseDAO {
         try {
             pre = conn.prepareStatement(sql);
             pre.setInt(1, uid);
-            rs = pre.executeQuery();
+            rs= pre.executeQuery();
             while (rs.next()) {
                 Comment x = new Comment();
                 x.setCommentID(rs.getInt("commentID"));
@@ -350,18 +269,10 @@ public class CommentDAO extends BaseDAO {
             pre.close();
         } catch (SQLException ex) {
             Logger.getLogger(CommentDAO.class.getName()).log(Level.SEVERE, null, ex);
-        } finally {
-            if (conn != null) {
-                try {
-                    conn.close();
-                } catch (SQLException ex) {
-                    Logger.getLogger(CategoryDAO.class.getName()).log(Level.SEVERE, null, ex);
-                }
-            }
         }
         return comments;
     }
-
+    
     public ArrayList<Comment> getAllCommentsByUserId(int uid) {
         ArrayList<Comment> comments = new ArrayList<>();
         String sql = "select * from `Comment` where userId  = ? order by commentID desc";
@@ -383,14 +294,6 @@ public class CommentDAO extends BaseDAO {
             pre.close();
         } catch (SQLException ex) {
             Logger.getLogger(CommentDAO.class.getName()).log(Level.SEVERE, null, ex);
-        } finally {
-            if (conn != null) {
-                try {
-                    conn.close();
-                } catch (SQLException ex) {
-                    Logger.getLogger(CategoryDAO.class.getName()).log(Level.SEVERE, null, ex);
-                }
-            }
         }
         return comments;
     }
@@ -422,14 +325,6 @@ public class CommentDAO extends BaseDAO {
             pre.close();
         } catch (SQLException ex) {
             Logger.getLogger(CommentDAO.class.getName()).log(Level.SEVERE, null, ex);
-        } finally {
-            if (conn != null) {
-                try {
-                    conn.close();
-                } catch (SQLException ex) {
-                    Logger.getLogger(CategoryDAO.class.getName()).log(Level.SEVERE, null, ex);
-                }
-            }
         }
         return check;
     }
