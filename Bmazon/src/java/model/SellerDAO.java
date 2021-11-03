@@ -6,6 +6,7 @@
 package model;
 
 import entity.Seller;
+import entity.User;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -501,5 +502,62 @@ public class SellerDAO extends BaseDAO {
             }
         }
         return list;
+    }
+    
+    public ArrayList<Seller> getAllPagingSellerRequest(int index, int numOfRow, String search) {
+        int start = (index - 1) * numOfRow;
+        ArrayList<Seller> list = new ArrayList<>();
+        String xSql = "select * from seller where sellerVerification = 0 and ( sellerShopName like '%" + search + "%' or sellerPhone like '%" + search + "%' or sellerVerification like '%" + search + "%') limit ?,?";
+        try {
+            conn=new DBConnection().getConnection();
+            pre = conn.prepareStatement(xSql);
+            pre.setInt(1, start);
+            pre.setInt(2, numOfRow);
+            rs = pre.executeQuery();
+            while (rs.next()) {
+                Seller seller = new Seller(rs.getInt("sellerID"), rs.getInt("userID"),
+                        rs.getString("sellerShopName"), rs.getString("sellerPhone"),
+                        rs.getString("evidence"), rs.getInt("sellerMainProduct"),
+                        rs.getString("description"), rs.getInt("sellerVerification"),
+                        rs.getString("backGroundImage"), rs.getString("avatar"),
+                        rs.getInt("status"));
+                list.add(seller);
+            } 
+        } catch (Exception ex) {
+            Logger.getLogger(UserDAO.class.getName()).log(Level.SEVERE, null, ex);
+        } finally {
+            try {
+                rs.close();
+                pre.close();
+                conn.close();
+            } catch (Exception ex) {
+                Logger.getLogger(CategoryDAO.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
+        return list;
+    }
+    
+    public int getPageNumberSellerResponse(String search) {
+        int num = 0;
+        String xSql = "SELECT COUNT(*) FROM `Seller` where sellerVerification = 1 and ( sellerShopName like '%" + search + "%' or sellerPhone like '%" + search + "%' or sellerVerification like '%" + search + "%')";
+        try {
+            conn=new DBConnection().getConnection();
+            pre = conn.prepareStatement(xSql);
+            rs = pre.executeQuery();
+            if (rs.next()) {
+                num = rs.getInt(1);
+            }         
+        } catch (Exception ex) {
+            Logger.getLogger(UserDAO.class.getName()).log(Level.SEVERE, null, ex);
+        } finally {
+            try {
+                rs.close();
+                pre.close();
+                conn.close();
+            } catch (Exception ex) {
+                Logger.getLogger(CategoryDAO.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
+        return num;
     }
 }

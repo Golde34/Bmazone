@@ -364,6 +364,14 @@ public class AdminController extends HttpServlet {
             if (service.equalsIgnoreCase("denySeller")) {
                 serviceDenySellerRequest(service, request, response);
             }
+            //Paging Seller Response
+            if (service.equalsIgnoreCase("pagingSellerResponse")) {
+                servicePagingSellerResponse(service, request, response);
+            }
+            //Show Page Seller
+            if (service.equalsIgnoreCase("showpageSellerResponse")) {
+                serviceShowPageSellerResponse(request, response);
+            }
             //</editor-fold>
 
             // <editor-fold defaultstate="collapsed" desc="Role serive. Click on the + sign on the left to edit the code.">
@@ -2034,16 +2042,28 @@ public class AdminController extends HttpServlet {
 
     // <editor-fold defaultstate="collapsed" desc="Seller Response Method. Click on the + sign on the left to edit the code.">
     public void serviceSellerResponse(String service, HttpServletRequest request, HttpServletResponse response) {
-        request.setAttribute("service", service);
+        ArrayList<Seller> listPaging = daoseller.getAllPagingSellerRequest(1, 5, "");
         List<Seller> listSellerRequest = daoseller.getSellerBySellerRequest();
-        request.setAttribute("listSellerRequest", listSellerRequest);
+        int totalPage = listSellerRequest.size() / 5;
+        if (listSellerRequest.size() != totalPage * 5) {
+            totalPage += 1;
+        }
+        request.setAttribute("index", 1);
+        request.setAttribute("totalPage", totalPage);
+        request.setAttribute("service", service);
+        request.setAttribute("listSellerRequest", listPaging);
         List<Seller> listNewSeller = daoseller.getNewSeller();
         request.setAttribute("listNewSeller", listNewSeller);
         sendDispatcher(request, response, "admin/authorization/sellerResponse.jsp");
     }
 
     private void serviceAcceptSellerRequest(String service, HttpServletRequest request, HttpServletResponse response) {
-        request.setAttribute("service", service);
+        ArrayList<Seller> listPaging = daoseller.getAllPagingSellerRequest(1, 5, "");
+        List<Seller> listSellerRequest = daoseller.getSellerBySellerRequest();
+        int totalPage = listSellerRequest.size() / 5;
+        if (listSellerRequest.size() != totalPage * 5) {
+            totalPage += 1;
+        }
         //change seller status
         int sellerID = Integer.parseInt(request.getParameter("sellerID"));
         daoseller.acceptSellerRequest(sellerID);
@@ -2054,22 +2074,145 @@ public class AdminController extends HttpServlet {
         u.setSell(1);
         u.setSystemRole(3);
         //add parameter to jsp
-        List<Seller> listAllSeller = daoseller.getAllSeller();
-        request.setAttribute("listAllSeller", listAllSeller);
-        List<Seller> listSellerRequest = daoseller.getSellerBySellerRequest();
-        request.setAttribute("listSellerRequest", listSellerRequest);
+        List<Seller> listNewSeller = daoseller.getNewSeller();
+        request.setAttribute("listNewSeller", listNewSeller);
+        request.setAttribute("index", 1);
+        request.setAttribute("totalPage", totalPage);
+        request.setAttribute("service", service);
+        request.setAttribute("listSellerRequest", listPaging);
+        request.setAttribute("service", service);
         sendDispatcher(request, response, "admin/authorization/sellerResponse.jsp");
     }
 
     private void serviceDenySellerRequest(String service, HttpServletRequest request, HttpServletResponse response) {
-        request.setAttribute("service", service);
         int sellerID = Integer.parseInt(request.getParameter("sellerID"));
         daoseller.denySellerRequest(sellerID);
-        List<Seller> listAllSeller = daoseller.getAllSeller();
-        request.setAttribute("listAllSeller", listAllSeller);
+        List<Seller> listNewSeller = daoseller.getNewSeller();
+        request.setAttribute("listNewSeller", listNewSeller);
+        ArrayList<Seller> listPaging = daoseller.getAllPagingSellerRequest(1, 5, "");
         List<Seller> listSellerRequest = daoseller.getSellerBySellerRequest();
-        request.setAttribute("listSellerRequest", listSellerRequest);
+        int totalPage = listSellerRequest.size() / 5;
+        if (listSellerRequest.size() != totalPage * 5) {
+            totalPage += 1;
+        }
+        request.setAttribute("index", 1);
+        request.setAttribute("totalPage", totalPage);
+        request.setAttribute("service", service);
+        request.setAttribute("listSellerRequest", listPaging);
         sendDispatcher(request, response, "admin/authorization/sellerResponse.jsp");
+    }
+
+    public void servicePagingSellerResponse(String service, HttpServletRequest request, HttpServletResponse response) throws IOException {
+        PrintWriter pr = response.getWriter();
+        request.setAttribute("service", service);
+        int index = 1, numOfRow = 5;
+        String search = request.getParameter("search");
+        if (request.getParameter("row") != null) {
+            numOfRow = Integer.parseInt(request.getParameter("row"));
+        }
+        if (request.getParameter("index") != null) {
+            index = Integer.parseInt(request.getParameter("index"));
+        }
+        ArrayList<Seller> listPaging = daoseller.getAllPagingSellerRequest(index, numOfRow, search);
+        request.setAttribute("index", index);
+        request.setAttribute("listSellerRequest", listPaging);
+        for (Seller seller : listPaging) {
+            pr.print("<tr>\n"
+                    + " <td>" + seller.getSellerID() + "</td>"
+                    + " <td>" + seller.getSellerShopName() + "</td>"
+                    + " <td>" + seller.getSellerPhone() + "</td>"
+                    + " <td>" + seller.getEvidence() + "</td>"
+                    + " <td>" + seller.getSellerMainProduct() + "</td>"
+                    + " <td>" + seller.getSellerVerification() + "</td>"
+                    + " <td><a style=\" background-color: #F56565; border-radius:10px; padding:5px; color: white; \" "
+                    + "href=\"AdminControllerMap?service=acceptSeller&sellerID=" + seller.getSellerID() + "\">\n"
+                    + " <i class=\"fas fa-check\"></i>   Accept </a>\n"
+                    + " </td>\n"
+                    + " <td><a style=\" background-color: #CB0C9F ; border-radius:10px; padding:5px; color: white;\" "
+                    + "href=\"AdminControllerMap?service=denySeller&sellerID=" + seller.getSellerID() + "\" onclick=\"return confirm('Are you sure you want to Deny this seller?');\">\n"
+                    + " <i class=\"fas fa-times\"></i>   Deny </a>\n"
+                    + " </td>\n"
+                    + " </tr>");
+        }
+        if (request.getParameter("row") == null) {
+            sendDispatcher(request, response, "admin/authorization/sellerResponse.jsp");
+        }
+    }
+
+    public void serviceShowPageSellerResponse(HttpServletRequest request, HttpServletResponse response) throws IOException {
+        PrintWriter pr = response.getWriter();
+        int index = 1, numOfRow = 5;
+        String search = request.getParameter("search");
+        if (request.getParameter("index") != null) {
+            index = Integer.parseInt(request.getParameter("index"));
+        }
+        if (request.getParameter("row") != null) {
+            numOfRow = Integer.parseInt(request.getParameter("row"));
+        }
+        int totalResult = daoseller.getPageNumberSellerResponse(search);
+        int totalPage = totalResult / numOfRow;
+        if (totalResult != numOfRow * totalPage) {
+            totalPage += 1;
+        }
+        int prev = index == 1 ? 1 : index - 1;
+        int next = index == totalPage ? totalPage : index + 1;
+        if (totalResult > numOfRow) {
+            pr.print("<li data-repair=\"1\" class=\"page-item\">");
+            pr.print("<a class=\"page-link\" aria-label=\"First\">");
+            pr.print("<span aria-hidden=\"true\"><i class=\"fas fa-backward\"></i>");
+            pr.print("<span class=\"sr-only\">(current)</span> ");
+            pr.print("</span>");
+            pr.print("</a>");
+            pr.print("</li>");
+            pr.print("<li data-repair=\"" + prev + "\" class=\"page-item\">");
+            pr.print("<a class=\"page-link\" aria-label=\"Previous\">");
+            pr.print("<span aria-hidden=\"true\"><i class=\"fas fa-arrow-left\"></i>");
+            pr.print("<span class=\"sr-only\">(current)</span> ");
+            pr.print("</span>");
+            pr.print("</a>");
+            pr.print("</li>");
+            for (int i = 1; i <= totalPage; i++) {
+                if (i < index - 2) {
+                    continue;
+                }
+                if (index < 3) {
+                    if (i > 5) {
+                        break;
+                    }
+                } else {
+                    if (i > index + 2) {
+                        break;
+                    }
+                }
+                if (index == i) {
+                    pr.print("<li  class=\"page-item active\" data-repair=\"" + i + "\">");
+                } else {
+                    pr.print("<li  class=\"page-item\" data-repair=\"" + i + "\">");
+                }
+                pr.print("<a class=\"page-link\">");
+                pr.print("<div class=\"index\">" + i + "</div>");
+                pr.print("<span class=\"sr-only\">(current)</span>");
+                pr.print("</a>");
+                pr.print("</li>");
+            }
+            pr.print("<li data-repair=\"" + next + "\" class=\"page-item\">");
+            pr.print("<a class=\"page-link\" aria-label=\"Next\">");
+            pr.print("<span aria-hidden=\"true\"><i class=\"fas fa-arrow-right\"></i>");
+            pr.print("<span class=\"sr-only\">(current)</span> ");
+            pr.print("</span>");
+            pr.print("</a>");
+            pr.print("</li>");
+            pr.print("<li data-repair=\"" + totalPage + "\" class=\"page-item\">");
+            pr.print("<a class=\"page-link\" aria-label=\"Last\">");
+            pr.print("<span aria-hidden=\"true\"><i class=\"fas fa-forward\"></i>");
+            pr.print("<span class=\"sr-only\">(current)</span> ");
+            pr.print("</span>");
+            pr.print("</a>");
+            pr.print("</li>");
+        }
+        if (request.getParameter("row") == null) {
+            sendDispatcher(request, response, "admin/authorization/sellerResponse.jsp");
+        }
     }
     // </editor-fold>
 
@@ -2207,8 +2350,9 @@ public class AdminController extends HttpServlet {
             );
         }
     }
+
     // <editor-fold defaultstate="collapsed" desc="Employee methods. Click on the + sign on the left to edit the code.">
-       public void serviceEmployeeManagement(String service, HttpServletRequest request, HttpServletResponse response) {
+    public void serviceEmployeeManagement(String service, HttpServletRequest request, HttpServletResponse response) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
@@ -2291,7 +2435,5 @@ public class AdminController extends HttpServlet {
     public String getServletInfo() {
         return "Short description";
     }// </editor-fold>
-
- 
 
 }
