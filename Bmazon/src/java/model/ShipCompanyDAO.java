@@ -32,6 +32,14 @@ public class ShipCompanyDAO extends BaseDAO {
             pre.close();
         } catch (SQLException ex) {
             Logger.getLogger(ProductDAO.class.getName()).log(Level.SEVERE, null, ex);
+        } finally {
+            if (conn != null) {
+                try {
+                    conn.close();
+                } catch (SQLException ex) {
+                    Logger.getLogger(CategoryDAO.class.getName()).log(Level.SEVERE, null, ex);
+                }
+            }
         }
         return n;
     }
@@ -61,6 +69,14 @@ public class ShipCompanyDAO extends BaseDAO {
             pre.close();
         } catch (SQLException ex) {
             Logger.getLogger(UserDAO.class.getName()).log(Level.SEVERE, null, ex);
+        } finally {
+            if (conn != null) {
+                try {
+                    conn.close();
+                } catch (SQLException ex) {
+                    Logger.getLogger(CategoryDAO.class.getName()).log(Level.SEVERE, null, ex);
+                }
+            }
         }
         return isExist;
     }
@@ -78,6 +94,14 @@ public class ShipCompanyDAO extends BaseDAO {
             n = pre.executeUpdate();
             pre.close();
         } catch (SQLException e) {
+        } finally {
+            if (conn != null) {
+                try {
+                    conn.close();
+                } catch (SQLException ex) {
+                    Logger.getLogger(CategoryDAO.class.getName()).log(Level.SEVERE, null, ex);
+                }
+            }
         }
         return n;
     }
@@ -95,6 +119,14 @@ public class ShipCompanyDAO extends BaseDAO {
             n = pre.executeUpdate();
             pre.close();
         } catch (SQLException e) {
+        } finally {
+            if (conn != null) {
+                try {
+                    conn.close();
+                } catch (SQLException ex) {
+                    Logger.getLogger(CategoryDAO.class.getName()).log(Level.SEVERE, null, ex);
+                }
+            }
         }
         return n;
     }
@@ -115,6 +147,14 @@ public class ShipCompanyDAO extends BaseDAO {
             rs.close();
             pre.close();
         } catch (SQLException e) {
+        } finally {
+            if (conn != null) {
+                try {
+                    conn.close();
+                } catch (SQLException ex) {
+                    Logger.getLogger(CategoryDAO.class.getName()).log(Level.SEVERE, null, ex);
+                }
+            }
         }
         return company;
     }
@@ -123,8 +163,8 @@ public class ShipCompanyDAO extends BaseDAO {
         int num = 0;
         String xSql = "SELECT COUNT(*) FROM `ShipCompany` where companyName like '%" + search + "%' or commitDate like '%" + search + "%' or unitCost like '%" + search + "%'";
         try {
-            pre=conn.prepareStatement(xSql);
-            rs=pre.executeQuery();
+            pre = conn.prepareStatement(xSql);
+            rs = pre.executeQuery();
             if (rs.next()) {
                 num = rs.getInt(1);
             }
@@ -132,6 +172,14 @@ public class ShipCompanyDAO extends BaseDAO {
             pre.close();
         } catch (SQLException ex) {
             Logger.getLogger(UserDAO.class.getName()).log(Level.SEVERE, null, ex);
+        } finally {
+            if (conn != null) {
+                try {
+                    conn.close();
+                } catch (SQLException ex) {
+                    Logger.getLogger(CategoryDAO.class.getName()).log(Level.SEVERE, null, ex);
+                }
+            }
         }
         return num;
     }
@@ -161,6 +209,14 @@ public class ShipCompanyDAO extends BaseDAO {
             pre.close();
         } catch (SQLException ex) {
             Logger.getLogger(UserDAO.class.getName()).log(Level.SEVERE, null, ex);
+        } finally {
+            if (conn != null) {
+                try {
+                    conn.close();
+                } catch (SQLException ex) {
+                    Logger.getLogger(CategoryDAO.class.getName()).log(Level.SEVERE, null, ex);
+                }
+            }
         }
         return list;
     }
@@ -182,6 +238,14 @@ public class ShipCompanyDAO extends BaseDAO {
             rs.close();
             pre.close();
         } catch (SQLException e) {
+        } finally {
+            if (conn != null) {
+                try {
+                    conn.close();
+                } catch (SQLException ex) {
+                    Logger.getLogger(CategoryDAO.class.getName()).log(Level.SEVERE, null, ex);
+                }
+            }
         }
         return list;
     }

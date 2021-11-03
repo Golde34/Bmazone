@@ -45,6 +45,14 @@ public class OrderDetailDAO extends BaseDAO {
             pre.close();
         } catch (SQLException ex) {
             Logger.getLogger(OrderDetailDAO.class.getName()).log(Level.SEVERE, null, ex);
+        } finally {
+            if (conn != null) {
+                try {
+                    conn.close();
+                } catch (SQLException ex) {
+                    Logger.getLogger(CategoryDAO.class.getName()).log(Level.SEVERE, null, ex);
+                }
+            }
         }
         return n;
     }
@@ -75,6 +83,14 @@ public class OrderDetailDAO extends BaseDAO {
         } catch (SQLException ex) {
             Logger.getLogger(OrderDetailDAO.class.getName()).log(Level.SEVERE, null, ex);
 
+        } finally {
+            if (conn != null) {
+                try {
+                    conn.close();
+                } catch (SQLException ex) {
+                    Logger.getLogger(CategoryDAO.class.getName()).log(Level.SEVERE, null, ex);
+                }
+            }
         }
         return n;
     }
@@ -83,8 +99,8 @@ public class OrderDetailDAO extends BaseDAO {
         ArrayList<OrderDetail> list = new ArrayList<>();
         String sql = "select * from `OrderDetail` where orderID = " + oid + " and status = 1  order by orderID desc";
         try {
-            pre=conn.prepareStatement(sql);
-            rs=pre.executeQuery();
+            pre = conn.prepareStatement(sql);
+            rs = pre.executeQuery();
             while (rs.next()) {
                 OrderDetail o = new OrderDetail();
                 o.setOrderID(rs.getInt("orderID"));
@@ -99,6 +115,14 @@ public class OrderDetailDAO extends BaseDAO {
             pre.close();
         } catch (SQLException ex) {
             Logger.getLogger(OrderDAO.class.getName()).log(Level.SEVERE, null, ex);
+        } finally {
+            if (conn != null) {
+                try {
+                    conn.close();
+                } catch (SQLException ex) {
+                    Logger.getLogger(CategoryDAO.class.getName()).log(Level.SEVERE, null, ex);
+                }
+            }
         }
         return list;
     }
@@ -119,6 +143,14 @@ public class OrderDetailDAO extends BaseDAO {
             pre.close();
         } catch (SQLException ex) {
             Logger.getLogger(OrderDetailDAO.class.getName()).log(Level.SEVERE, null, ex);
+        } finally {
+            if (conn != null) {
+                try {
+                    conn.close();
+                } catch (SQLException ex) {
+                    Logger.getLogger(CategoryDAO.class.getName()).log(Level.SEVERE, null, ex);
+                }
+            }
         }
         return result;
     }
@@ -145,6 +177,14 @@ public class OrderDetailDAO extends BaseDAO {
             pre.close();
         } catch (SQLException ex) {
             Logger.getLogger(OrderDetailDAO.class.getName()).log(Level.SEVERE, null, ex);
+        } finally {
+            if (conn != null) {
+                try {
+                    conn.close();
+                } catch (SQLException ex) {
+                    Logger.getLogger(CategoryDAO.class.getName()).log(Level.SEVERE, null, ex);
+                }
+            }
         }
         return list;
     }
@@ -164,6 +204,14 @@ public class OrderDetailDAO extends BaseDAO {
             pre.close();
         } catch (SQLException ex) {
             Logger.getLogger(OrderDetailDAO.class.getName()).log(Level.SEVERE, null, ex);
+        } finally {
+            if (conn != null) {
+                try {
+                    conn.close();
+                } catch (SQLException ex) {
+                    Logger.getLogger(CategoryDAO.class.getName()).log(Level.SEVERE, null, ex);
+                }
+            }
         }
         return result;
     }
@@ -191,6 +239,14 @@ public class OrderDetailDAO extends BaseDAO {
             pre.close();
         } catch (SQLException ex) {
             Logger.getLogger(OrderDAO.class.getName()).log(Level.SEVERE, null, ex);
+        } finally {
+            if (conn != null) {
+                try {
+                    conn.close();
+                } catch (SQLException ex) {
+                    Logger.getLogger(CategoryDAO.class.getName()).log(Level.SEVERE, null, ex);
+                }
+            }
         }
         return list;
     }
@@ -210,6 +266,14 @@ public class OrderDetailDAO extends BaseDAO {
             pre.close();
         } catch (SQLException ex) {
             Logger.getLogger(OrderDetailDAO.class.getName()).log(Level.SEVERE, null, ex);
+        } finally {
+            if (conn != null) {
+                try {
+                    conn.close();
+                } catch (SQLException ex) {
+                    Logger.getLogger(CategoryDAO.class.getName()).log(Level.SEVERE, null, ex);
+                }
+            }
         }
         return result;
     }
@@ -231,6 +295,14 @@ public class OrderDetailDAO extends BaseDAO {
             pre.close();
         } catch (SQLException ex) {
             Logger.getLogger(OrderDAO.class.getName()).log(Level.SEVERE, null, ex);
+        } finally {
+            if (conn != null) {
+                try {
+                    conn.close();
+                } catch (SQLException ex) {
+                    Logger.getLogger(CategoryDAO.class.getName()).log(Level.SEVERE, null, ex);
+                }
+            }
         }
         return list;
 
@@ -254,6 +326,14 @@ public class OrderDetailDAO extends BaseDAO {
             pre.close();
         } catch (SQLException ex) {
             Logger.getLogger(OrderDAO.class.getName()).log(Level.SEVERE, null, ex);
+        } finally {
+            if (conn != null) {
+                try {
+                    conn.close();
+                } catch (SQLException ex) {
+                    Logger.getLogger(CategoryDAO.class.getName()).log(Level.SEVERE, null, ex);
+                }
+            }
         }
         return list;
     }

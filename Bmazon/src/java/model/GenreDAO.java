@@ -1,4 +1,4 @@
-    package model;
+package model;
 
 import entity.Category;
 import entity.Genre;
@@ -12,7 +12,6 @@ import java.util.logging.Logger;
 public class GenreDAO extends BaseDAO {
 
     BaseDAO dbConn = new BaseDAO();
-
 
     public ArrayList<Genre> getAllGenres() {
         String sql = "select * from Genre WHERE status=1";
@@ -37,6 +36,14 @@ public class GenreDAO extends BaseDAO {
             pre.close();
         } catch (SQLException ex) {
             Logger.getLogger(CategoryDAO.class.getName()).log(Level.SEVERE, null, ex);
+        } finally {
+            if (conn != null) {
+                try {
+                    conn.close();
+                } catch (SQLException ex) {
+                    Logger.getLogger(CategoryDAO.class.getName()).log(Level.SEVERE, null, ex);
+                }
+            }
         }
         return list;
     }
@@ -64,6 +71,14 @@ public class GenreDAO extends BaseDAO {
             pre.close();
         } catch (SQLException ex) {
             Logger.getLogger(CategoryDAO.class.getName()).log(Level.SEVERE, null, ex);
+        } finally {
+            if (conn != null) {
+                try {
+                    conn.close();
+                } catch (SQLException ex) {
+                    Logger.getLogger(CategoryDAO.class.getName()).log(Level.SEVERE, null, ex);
+                }
+            }
         }
         return list;
     }
@@ -93,6 +108,14 @@ public class GenreDAO extends BaseDAO {
             pre.close();
         } catch (SQLException ex) {
             Logger.getLogger(CategoryDAO.class.getName()).log(Level.SEVERE, null, ex);
+        } finally {
+            if (conn != null) {
+                try {
+                    conn.close();
+                } catch (SQLException ex) {
+                    Logger.getLogger(CategoryDAO.class.getName()).log(Level.SEVERE, null, ex);
+                }
+            }
         }
         return list;
     }
@@ -121,6 +144,14 @@ public class GenreDAO extends BaseDAO {
             pre.close();
         } catch (SQLException ex) {
             Logger.getLogger(CategoryDAO.class.getName()).log(Level.SEVERE, null, ex);
+        } finally {
+            if (conn != null) {
+                try {
+                    conn.close();
+                } catch (SQLException ex) {
+                    Logger.getLogger(CategoryDAO.class.getName()).log(Level.SEVERE, null, ex);
+                }
+            }
         }
         return list;
     }
@@ -137,6 +168,14 @@ public class GenreDAO extends BaseDAO {
             pre.close();
         } catch (SQLException ex) {
             Logger.getLogger(CategoryDAO.class.getName()).log(Level.SEVERE, null, ex);
+        } finally {
+            if (conn != null) {
+                try {
+                    conn.close();
+                } catch (SQLException ex) {
+                    Logger.getLogger(CategoryDAO.class.getName()).log(Level.SEVERE, null, ex);
+                }
+            }
         }
         return n;
     }
@@ -154,10 +193,18 @@ public class GenreDAO extends BaseDAO {
             pre.close();
         } catch (SQLException ex) {
             Logger.getLogger(CategoryDAO.class.getName()).log(Level.SEVERE, null, ex);
+        } finally {
+            if (conn != null) {
+                try {
+                    conn.close();
+                } catch (SQLException ex) {
+                    Logger.getLogger(CategoryDAO.class.getName()).log(Level.SEVERE, null, ex);
+                }
+            }
         }
         return n;
     }
-    
+
     public int getCategoryIdByGenreId(String id) {
         int cid = -1;
         String Sql = "SELECT categoryID FROM Genre where genreID =?";
@@ -170,8 +217,16 @@ public class GenreDAO extends BaseDAO {
             }
             rs.close();
             pre.close();
-        } catch (SQLException e) {
-
+        } catch (SQLException ex) {
+            Logger.getLogger(CategoryDAO.class.getName()).log(Level.SEVERE, null, ex);
+        } finally {
+            if (conn != null) {
+                try {
+                    conn.close();
+                } catch (SQLException ex) {
+                    Logger.getLogger(CategoryDAO.class.getName()).log(Level.SEVERE, null, ex);
+                }
+            }
         }
         return cid;
     }
@@ -197,6 +252,14 @@ public class GenreDAO extends BaseDAO {
             pre.close();
         } catch (SQLException ex) {
             Logger.getLogger(CategoryDAO.class.getName()).log(Level.SEVERE, null, ex);
+        } finally {
+            if (conn != null) {
+                try {
+                    conn.close();
+                } catch (SQLException ex) {
+                    Logger.getLogger(CategoryDAO.class.getName()).log(Level.SEVERE, null, ex);
+                }
+            }
         }
         return x;
     }
@@ -212,10 +275,18 @@ public class GenreDAO extends BaseDAO {
             pre.close();
         } catch (SQLException ex) {
             Logger.getLogger(CategoryDAO.class.getName()).log(Level.SEVERE, null, ex);
+        } finally {
+            if (conn != null) {
+                try {
+                    conn.close();
+                } catch (SQLException ex) {
+                    Logger.getLogger(CategoryDAO.class.getName()).log(Level.SEVERE, null, ex);
+                }
+            }
         }
         return n;
     }
-    
+
     public int changeStatusByCateID(int cid, int status) {
         int n = 0;
         String sql = "update Genre set status = ? where categoryID = ?";
@@ -227,6 +298,14 @@ public class GenreDAO extends BaseDAO {
             pre.close();
         } catch (SQLException ex) {
             Logger.getLogger(CategoryDAO.class.getName()).log(Level.SEVERE, null, ex);
+        } finally {
+            if (conn != null) {
+                try {
+                    conn.close();
+                } catch (SQLException ex) {
+                    Logger.getLogger(CategoryDAO.class.getName()).log(Level.SEVERE, null, ex);
+                }
+            }
         }
         return n;
     }
@@ -241,6 +320,14 @@ public class GenreDAO extends BaseDAO {
             pre.close();
         } catch (SQLException ex) {
             Logger.getLogger(CategoryDAO.class.getName()).log(Level.SEVERE, null, ex);
+        } finally {
+            if (conn != null) {
+                try {
+                    conn.close();
+                } catch (SQLException ex) {
+                    Logger.getLogger(CategoryDAO.class.getName()).log(Level.SEVERE, null, ex);
+                }
+            }
         }
         return n;
     }
@@ -248,8 +335,8 @@ public class GenreDAO extends BaseDAO {
     public boolean checkExistGenreName(String genreName) {
         String sql = "SELECT * FROM Genre WHERE genreName = '" + genreName + "'";
         try {
-            pre=conn.prepareStatement(sql);
-            rs=pre.executeQuery();
+            pre = conn.prepareStatement(sql);
+            rs = pre.executeQuery();
             if (rs.next()) {
                 return true;
             }
@@ -257,14 +344,22 @@ public class GenreDAO extends BaseDAO {
             pre.close();
         } catch (SQLException ex) {
             Logger.getLogger(CategoryDAO.class.getName()).log(Level.SEVERE, null, ex);
+        } finally {
+            if (conn != null) {
+                try {
+                    conn.close();
+                } catch (SQLException ex) {
+                    Logger.getLogger(CategoryDAO.class.getName()).log(Level.SEVERE, null, ex);
+                }
+            }
         }
         return false;
     }
 
     public ArrayList<Genre> getAllPagingGenre(int index, int numOfRow, String search) {
-        int start = (index-1)*numOfRow;
+        int start = (index - 1) * numOfRow;
         ArrayList<Genre> list = new ArrayList<>();
-        String xSql = "select * from genre where genreName like '%"+search+"%' limit ?,?";
+        String xSql = "select * from genre where genreName like '%" + search + "%' limit ?,?";
         try {
             pre = conn.prepareStatement(xSql);
             pre.setInt(1, start);
@@ -278,16 +373,24 @@ public class GenreDAO extends BaseDAO {
             pre.close();
         } catch (SQLException ex) {
             Logger.getLogger(UserDAO.class.getName()).log(Level.SEVERE, null, ex);
+        } finally {
+            if (conn != null) {
+                try {
+                    conn.close();
+                } catch (SQLException ex) {
+                    Logger.getLogger(CategoryDAO.class.getName()).log(Level.SEVERE, null, ex);
+                }
+            }
         }
         return list;
     }
-    
+
     public int getPageNumber(String search) {
         int num = 0;
         String xSql = "SELECT COUNT(*) Genre where genreName like '%" + search + "%'";
         try {
-            pre=conn.prepareStatement(xSql);
-            rs=pre.executeQuery();
+            pre = conn.prepareStatement(xSql);
+            rs = pre.executeQuery();
             if (rs.next()) {
                 num = rs.getInt(1);
             }
@@ -295,6 +398,14 @@ public class GenreDAO extends BaseDAO {
             pre.close();
         } catch (SQLException ex) {
             Logger.getLogger(UserDAO.class.getName()).log(Level.SEVERE, null, ex);
+        } finally {
+            if (conn != null) {
+                try {
+                    conn.close();
+                } catch (SQLException ex) {
+                    Logger.getLogger(CategoryDAO.class.getName()).log(Level.SEVERE, null, ex);
+                }
+            }
         }
         return num;
     }

@@ -13,9 +13,10 @@ public class CategoryDAO extends BaseDAO {
     BaseDAO dbConn = new BaseDAO();
 
     public static void main(String[] args) {
-       CategoryDAO cd= new CategoryDAO();
+        CategoryDAO cd = new CategoryDAO();
         System.out.println(cd.getAllCategories());
     }
+
     public ArrayList<Category> getAllCategories() {
         String sql = "select * from Category WHERE status=1";
         ArrayList<Category> list = new ArrayList<>();
@@ -36,6 +37,14 @@ public class CategoryDAO extends BaseDAO {
             pre.close();
         } catch (SQLException ex) {
             Logger.getLogger(CategoryDAO.class.getName()).log(Level.SEVERE, null, ex);
+        } finally {
+            if (conn != null) {
+                try {
+                    conn.close();
+                } catch (SQLException ex) {
+                    Logger.getLogger(CategoryDAO.class.getName()).log(Level.SEVERE, null, ex);
+                }
+            }
         }
         return list;
     }
@@ -60,6 +69,14 @@ public class CategoryDAO extends BaseDAO {
             pre.close();
         } catch (SQLException ex) {
             Logger.getLogger(CategoryDAO.class.getName()).log(Level.SEVERE, null, ex);
+        } finally {
+            if (conn != null) {
+                try {
+                    conn.close();
+                } catch (SQLException ex) {
+                    Logger.getLogger(CategoryDAO.class.getName()).log(Level.SEVERE, null, ex);
+                }
+            }
         }
         return list;
     }
@@ -75,6 +92,14 @@ public class CategoryDAO extends BaseDAO {
             pre.close();
         } catch (SQLException ex) {
             Logger.getLogger(CategoryDAO.class.getName()).log(Level.SEVERE, null, ex);
+        } finally {
+            if (conn != null) {
+                try {
+                    conn.close();
+                } catch (SQLException ex) {
+                    Logger.getLogger(CategoryDAO.class.getName()).log(Level.SEVERE, null, ex);
+                }
+            }
         }
         return n;
     }
@@ -91,6 +116,14 @@ public class CategoryDAO extends BaseDAO {
             pre.close();
         } catch (SQLException ex) {
             Logger.getLogger(CategoryDAO.class.getName()).log(Level.SEVERE, null, ex);
+        } finally {
+            if (conn != null) {
+                try {
+                    conn.close();
+                } catch (SQLException ex) {
+                    Logger.getLogger(CategoryDAO.class.getName()).log(Level.SEVERE, null, ex);
+                }
+            }
         }
         return n;
     }
@@ -110,11 +143,20 @@ public class CategoryDAO extends BaseDAO {
             }
             pre.close();
         } catch (SQLException ex) {
+            Logger.getLogger(CategoryDAO.class.getName()).log(Level.SEVERE, null, ex);
+        } finally {
+            if (conn != null) {
+                try {
+                    conn.close();
+                } catch (SQLException ex) {
+                    Logger.getLogger(CategoryDAO.class.getName()).log(Level.SEVERE, null, ex);
+                }
+            }
         }
         return null;
     }
-    
-        public Category getCategoryByGenreId(int id) {
+
+    public Category getCategoryByGenreId(int id) {
         String xSql = "select * from Category c join Genre g on c.categoryID = g.categoryID where genreID =" + id;
         Category cat = new Category();
         try {
@@ -127,6 +169,15 @@ public class CategoryDAO extends BaseDAO {
             }
             pre.close();
         } catch (SQLException ex) {
+            Logger.getLogger(CategoryDAO.class.getName()).log(Level.SEVERE, null, ex);
+        } finally {
+            if (conn != null) {
+                try {
+                    conn.close();
+                } catch (SQLException ex) {
+                    Logger.getLogger(CategoryDAO.class.getName()).log(Level.SEVERE, null, ex);
+                }
+            }
         }
         return cat;
     }
@@ -148,6 +199,14 @@ public class CategoryDAO extends BaseDAO {
             pre.close();
         } catch (SQLException ex) {
             Logger.getLogger(CategoryDAO.class.getName()).log(Level.SEVERE, null, ex);
+        } finally {
+            if (conn != null) {
+                try {
+                    conn.close();
+                } catch (SQLException ex) {
+                    Logger.getLogger(CategoryDAO.class.getName()).log(Level.SEVERE, null, ex);
+                }
+            }
         }
         return categoryName;
     }
@@ -163,6 +222,14 @@ public class CategoryDAO extends BaseDAO {
             pre.close();
         } catch (SQLException ex) {
             Logger.getLogger(CategoryDAO.class.getName()).log(Level.SEVERE, null, ex);
+        } finally {
+            if (conn != null) {
+                try {
+                    conn.close();
+                } catch (SQLException ex) {
+                    Logger.getLogger(CategoryDAO.class.getName()).log(Level.SEVERE, null, ex);
+                }
+            }
         }
         return n;
     }
@@ -185,8 +252,8 @@ public class CategoryDAO extends BaseDAO {
     public boolean checkExistCategoryName(String categoryName) {
         String sql = "SELECT * FROM Category WHERE categoryName = '" + categoryName + "'";
         try {
-            pre=conn.prepareStatement(sql);
-            rs=pre.executeQuery();
+            pre = conn.prepareStatement(sql);
+            rs = pre.executeQuery();
             if (rs.next()) {
                 return true;
             }
@@ -194,16 +261,24 @@ public class CategoryDAO extends BaseDAO {
             pre.close();
         } catch (SQLException ex) {
             Logger.getLogger(CategoryDAO.class.getName()).log(Level.SEVERE, null, ex);
+        } finally {
+            if (conn != null) {
+                try {
+                    conn.close();
+                } catch (SQLException ex) {
+                    Logger.getLogger(CategoryDAO.class.getName()).log(Level.SEVERE, null, ex);
+                }
+            }
         }
         return false;
     }
-    
+
     public int getPageNumber(String search) {
         int num = 0;
         String xSql = "SELECT COUNT(*) FROM Category where categoryName like '%" + search + "%'";
         try {
-            pre=conn.prepareStatement(xSql);
-            rs=pre.executeQuery();
+            pre = conn.prepareStatement(xSql);
+            rs = pre.executeQuery();
             if (rs.next()) {
                 num = rs.getInt(1);
             }
@@ -211,14 +286,22 @@ public class CategoryDAO extends BaseDAO {
             pre.close();
         } catch (SQLException ex) {
             Logger.getLogger(UserDAO.class.getName()).log(Level.SEVERE, null, ex);
+        } finally {
+            if (conn != null) {
+                try {
+                    conn.close();
+                } catch (SQLException ex) {
+                    Logger.getLogger(CategoryDAO.class.getName()).log(Level.SEVERE, null, ex);
+                }
+            }
         }
         return num;
     }
-    
+
     public ArrayList<Category> getAllPagingCategory(int index, int numOfRow, String search) {
-        int start=(index-1)*numOfRow;
+        int start = (index - 1) * numOfRow;
         ArrayList<Category> list = new ArrayList<>();
-        String xSql = "SELECT * FROM category where categoryName like '%"+search+"%' LIMIT ?,?";
+        String xSql = "SELECT * FROM category where categoryName like '%" + search + "%' LIMIT ?,?";
         try {
             pre = conn.prepareStatement(xSql);
             pre.setInt(1, start);
@@ -232,6 +315,14 @@ public class CategoryDAO extends BaseDAO {
             pre.close();
         } catch (SQLException ex) {
             Logger.getLogger(UserDAO.class.getName()).log(Level.SEVERE, null, ex);
+        } finally {
+            if (conn != null) {
+                try {
+                    conn.close();
+                } catch (SQLException ex) {
+                    Logger.getLogger(CategoryDAO.class.getName()).log(Level.SEVERE, null, ex);
+                }
+            }
         }
         return list;
     }
