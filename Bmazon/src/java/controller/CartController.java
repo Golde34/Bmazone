@@ -14,12 +14,10 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import entity.CartItem;
-import entity.Order;
-import entity.OrderDetail;
-import entity.ProductType;
+import entity.*;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
+import java.net.HttpCookie;
 import java.text.DecimalFormat;
 import java.util.List;
 import java.util.logging.Level;
@@ -27,11 +25,7 @@ import java.util.logging.Logger;
 import javafx.scene.control.Alert;
 import javax.servlet.RequestDispatcher;
 import javax.servlet.http.Cookie;
-import model.ProductTypeDAO;
-import model.GalleryDAO;
-import model.OrderDAO;
-import model.OrderDetailDAO;
-import model.UserDAO;
+import model.*;
 
 /**
  *
@@ -48,6 +42,7 @@ public class CartController extends HttpServlet {
      * @throws ServletException if a servlet-specific error occurs
      * @throws IOException if an I/O error occurs
      */
+    ProductDAO productDao = new ProductDAO();
     ProductTypeDAO ptd = new ProductTypeDAO();
     GalleryDAO galdao = new GalleryDAO();
     UserDAO uDao = new UserDAO();
@@ -102,7 +97,7 @@ public class CartController extends HttpServlet {
         User x = (User) request.getSession().getAttribute("currUser");
         request.setAttribute("currUser", x);
         ArrayList<CartItem> ShoppingCart = (ArrayList<CartItem>) request.getSession().getAttribute("ShoppingCart");
-        
+
         request.getSession().setAttribute("ShoppingCart", ShoppingCart);
         sendDispatcher(request, response, "cart/cart.jsp");
     }
@@ -112,8 +107,8 @@ public class CartController extends HttpServlet {
         if (x == null) {
             sendDispatcher(request, response, "loginAndSecurity/login.jsp");
         }
-        Cookie cookie = null;
-        Cookie arr[] = request.getCookies();
+        
+        
         ArrayList<CartItem> ShoppingCart = (ArrayList<CartItem>) request.getSession().getAttribute("ShoppingCart");
         String pid = request.getParameter("pid");
         String size = request.getParameter("size");
@@ -161,11 +156,10 @@ public class CartController extends HttpServlet {
 
         for (int i = 0; i < ShoppingCart.size(); i++) {
             ProductType pt = ptd.getProductTypeByColorAndSize(ShoppingCart.get(i).getColor(), ShoppingCart.get(i).getSize(), String.valueOf(ShoppingCart.get(i).getProductID()));
-            if (Integer.parseInt(quantityString[i]) < 1 || Integer.parseInt(quantityString[i]) > pt.getQuantity()) {  
+            if (Integer.parseInt(quantityString[i]) < 1 || Integer.parseInt(quantityString[i]) > pt.getQuantity()) {
                 request.getSession().setAttribute("ShoppingCart", ShoppingCart);
                 sendDispatcher(request, response, "cart/cart.jsp");
-            }
-            else if(ShoppingCart.get(i).getCartID() == Integer.parseInt(idString[i])) {
+            } else if (ShoppingCart.get(i).getCartID() == Integer.parseInt(idString[i])) {
                 ShoppingCart.get(i).setQuantity(Integer.parseInt(quantityString[i]));
                 ShoppingCart.get(i).setTotalCost(Integer.parseInt(quantityString[i]) * (ShoppingCart.get(i).getPrice()));
             }
@@ -240,51 +234,97 @@ public class CartController extends HttpServlet {
         String id = x.getUserId();
         double wallet = x.getWallet();
         ArrayList<CartItem> ShoppingCart = (ArrayList<CartItem>) request.getSession().getAttribute("ShoppingCart");
-        if ("COD".equals(payment)) {
-            Order o = new Order(id, shipName, shipAddress, shipCity, shipPhone, 0, Double.parseDouble(totalString), shipCompany, payment, 0);
-            oDao.insertOrder(o);
-            Order thisOrder = oDao.getLatestOrder(x.getUserId());
-//                insertOrderDetail
-            for (CartItem cartItem : ShoppingCart) {
-                ProductType productTy = ptd.getExactProductTypeByProductId(cartItem.getProductID(), cartItem.getPrice(), cartItem.getSize(), cartItem.getColor());
-                OrderDetail od = new OrderDetail(thisOrder.getOrderID(), productTy.getProductTypeId(), cartItem.getName(), cartItem.getPrice(), cartItem.getQuantity(), 0);
-                odDao.insertOrderDetail(od);
+        ArrayList<Integer> distinctShopId = new ArrayList<>();
+        for (CartItem cartItem : ShoppingCart) {
+            Product product = productDao.getProductByID(cartItem.getProductID());
+            if (!distinctShopId.contains(product.getSeller())) {
+                distinctShopId.add(product.getSeller());
             }
+        }
+        ArrayList<Order> listOrder = new ArrayList<>();
+        if ("COD".equals(payment)) {
+            for (Integer sellerId : distinctShopId) {
+                double total = 0;
+                Order o = new Order(id, shipName, shipAddress, shipCity, shipPhone, 0, 0, shipCompany, payment, 0);
+                oDao.insertOrder(o);
+                Order thisOrder = oDao.getLatestOrder(x.getUserId());
+                for (CartItem cartItem : ShoppingCart) {
+                    Product product = productDao.getProductByID(cartItem.getProductID());
+                    if (product.getSeller() == sellerId) {
+                        total += cartItem.getPrice() * cartItem.getQuantity();
+                        ProductType productTy = ptd.getExactProductTypeByProductId(cartItem.getProductID(), cartItem.getPrice(), cartItem.getSize(), cartItem.getColor());
+                        OrderDetail od = new OrderDetail(thisOrder.getOrderID(), productTy.getProductTypeId(), cartItem.getName(), cartItem.getPrice(), cartItem.getQuantity(), 0);
+                        odDao.insertOrderDetail(od);
+                    }
+                }
+                thisOrder.setTotal(total);
+                oDao.updateOrder(thisOrder);
+                listOrder.add(thisOrder);
+            }
+//            Order o = new Order(id, shipName, shipAddress, shipCity, shipPhone, 0, Double.parseDouble(totalString), shipCompany, payment, 0);
+//            oDao.insertOrder(o);
+//            Order thisOrder = oDao.getLatestOrder(x.getUserId());
+//                insertOrderDetail
+//            for (CartItem cartItem : ShoppingCart) {
+//                ProductType productTy = ptd.getExactProductTypeByProductId(cartItem.getProductID(), cartItem.getPrice(), cartItem.getSize(), cartItem.getColor());
+//                OrderDetail od = new OrderDetail(thisOrder.getOrderID(), productTy.getProductTypeId(), cartItem.getName(), cartItem.getPrice(), cartItem.getQuantity(), 0);
+//                odDao.insertOrderDetail(od);
+//            }
 //                update session & db
             ShoppingCart.removeAll(ShoppingCart);
             request.getSession().setAttribute("ShoppingCart", ShoppingCart);
             request.getSession().setAttribute("currUser", x);
 
-            ArrayList<OrderDetail> DetailList = odDao.getAllOrderDetail(thisOrder.getOrderID());
+//            ArrayList<OrderDetail> DetailList = odDao.getAllOrderDetail(thisOrder.getOrderID());
             request.getSession().setAttribute("ShoppingCart", ShoppingCart);
             request.getSession().setAttribute("currUser", x);
-            request.setAttribute("order", thisOrder);
-            request.setAttribute("DetailList", DetailList);
+            request.setAttribute("listOrder", listOrder);
+//            request.setAttribute("order", thisOrder);
+//            request.setAttribute("DetailList", DetailList);
             request.setAttribute("mess", "Order Sucessfully!");
 //                sendDispatcher(request, response, "cart/cart.jsp");
             sendDispatcher(request, response, "cart/confirmorder.jsp");
 
         } else if ("Wallet".equals(payment)) {
             if (wallet >= Double.parseDouble(totalString)) {
-                Order o = new Order(id, shipName, shipAddress, shipCity, shipPhone, 0, Double.parseDouble(totalString), shipCompany, payment, 0);
-                oDao.insertOrder(o);
-                Order thisOrder = oDao.getLatestOrder(x.getUserId());
-//                insertOrderDetail
-                for (CartItem cartItem : ShoppingCart) {
-                    ProductType productTy = ptd.getExactProductTypeByProductId(cartItem.getProductID(), cartItem.getPrice(), cartItem.getSize(), cartItem.getColor());
-                    OrderDetail od = new OrderDetail(thisOrder.getOrderID(), productTy.getProductTypeId(), cartItem.getName(), cartItem.getPrice(), cartItem.getQuantity(), 0);
-                    odDao.insertOrderDetail(od);
+                for (Integer sellerId : distinctShopId) {
+                    double total = 0;
+                    Order o = new Order(id, shipName, shipAddress, shipCity, shipPhone, 0, 0, shipCompany, payment, 0);
+                    oDao.insertOrder(o);
+                    Order thisOrder = oDao.getLatestOrder(x.getUserId());
+                    for (CartItem cartItem : ShoppingCart) {
+                        Product product = productDao.getProductByID(cartItem.getProductID());
+                        if (product.getSeller() == sellerId) {
+                            total += cartItem.getPrice() * cartItem.getQuantity();
+                            ProductType productTy = ptd.getExactProductTypeByProductId(cartItem.getProductID(), cartItem.getPrice(), cartItem.getSize(), cartItem.getColor());
+                            OrderDetail od = new OrderDetail(thisOrder.getOrderID(), productTy.getProductTypeId(), cartItem.getName(), cartItem.getPrice(), cartItem.getQuantity(), 0);
+                            odDao.insertOrderDetail(od);
+                        }
+                    }
+                    thisOrder.setTotal(total);
+                    oDao.updateOrder(thisOrder);
+                    listOrder.add(thisOrder);
                 }
+//                Order o = new Order(id, shipName, shipAddress, shipCity, shipPhone, 0, Double.parseDouble(totalString), shipCompany, payment, 0);
+//                oDao.insertOrder(o);
+//                Order thisOrder = oDao.getLatestOrder(x.getUserId());
+//                insertOrderDetail
+//                for (CartItem cartItem : ShoppingCart) {
+//                    ProductType productTy = ptd.getExactProductTypeByProductId(cartItem.getProductID(), cartItem.getPrice(), cartItem.getSize(), cartItem.getColor());
+//                    OrderDetail od = new OrderDetail(thisOrder.getOrderID(), productTy.getProductTypeId(), cartItem.getName(), cartItem.getPrice(), cartItem.getQuantity(), 0);
+//                    odDao.insertOrderDetail(od);
+//                }
 //                update session & db
                 ShoppingCart.removeAll(ShoppingCart);
                 x.setWallet(wallet - Double.parseDouble(totalString));
                 uDao.updateInfoUserByAdmin(x);
 
-                ArrayList<OrderDetail> DetailList = odDao.getAllOrderDetail(thisOrder.getOrderID());
+//            ArrayList<OrderDetail> DetailList = odDao.getAllOrderDetail(thisOrder.getOrderID());
                 request.getSession().setAttribute("ShoppingCart", ShoppingCart);
                 request.getSession().setAttribute("currUser", x);
-                request.setAttribute("order", thisOrder);
-                request.setAttribute("DetailList", DetailList);
+                request.setAttribute("listOrder", listOrder);
+//            request.setAttribute("order", thisOrder);
+//            request.setAttribute("DetailList", DetailList);
                 request.setAttribute("mess", "Order Sucessfully!");
 //                sendDispatcher(request, response, "cart/cart.jsp");
                 sendDispatcher(request, response, "cart/confirmorder.jsp");

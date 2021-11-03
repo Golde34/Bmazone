@@ -9,6 +9,7 @@ import entity.*;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -171,12 +172,6 @@ public class ProductDAO extends BaseDAO {
             Logger.getLogger(ProductDAO.class.getName()).log(Level.SEVERE, null, e);
         }
         return list;
-    }
-
-    public static void main(String[] args) {
-        ProductDAO pd = new ProductDAO();
-        ArrayList<Product> listPaging = pd.getProductBySellerPaging(5, 5);
-        System.out.println(listPaging.size());
     }
 
     public ArrayList<Product> getProductSale() {
@@ -388,10 +383,11 @@ public class ProductDAO extends BaseDAO {
         return list;
     }
 
-    public ArrayList<Product> getProductSuggest() {
+    public ArrayList<Product> getProductSuggest(int userid) {
 
         ArrayList<Product> list = new ArrayList<>();
-        String sql = "SELECT  * FROM Product order by releaseDate limit 0,16";
+        String sql = "select p.productId,p.productname,`description`,rating,releaseDate,sellerID,status from  productview as  pv right join product as p on pv.productid= p.productid and userid = " + userid
+                + " order by click desc limit 0,16 ";
         try {
             pre = conn.prepareStatement(sql);
             rs = pre.executeQuery();
@@ -533,12 +529,37 @@ public class ProductDAO extends BaseDAO {
         return count;
     }
 
-    public ArrayList<Product> getProductByName(int index, String name) {
+    public static void main(String[] args) {
+        ProductDAO pd = new ProductDAO();
+        String[] cate = {"1", "2", "3"};
+        //List<Product> x = pd.getProductByName(1, "", cate);
+//        for (Product product : x) {
+//            System.out.println(product);
+//        }
+
+    }
+
+    public ArrayList<Product> getProductByName(int index, String name ) {
         ArrayList<Product> list = new ArrayList<>();
         int start = (index - 1) * 20;
+        String s = "";
+//        if (cate != null || cate.length != 0) {
+//            s += "And( ";
+//            for (int i = 0; i < cate.length - 1; i++) {
+//                if (cate[i] != null || cate[i] != "") {
+//
+//                    s += "pc.categoryId= " + cate[i] + " ";
+//                    if (i < cate.length - 2) {
+//                        s += " or ";
+//                    }
+//                }
+//            }
+//        }
+//        s += " ) ";
         String sql
                 = " SELECT *\n  "
-                + "   FROM Product p  where productName like '%" + name + "%' OR description like '%" + name + "%' \n "
+                + " FROM Product as p join productcategory as pc on p.productid=pc.productid  where (productName like '%"+name+"%' OR description like '%"+name+"%' )\n"
+                + s
                 + "limit ?,?   ";
         try {
             pre = conn.prepareStatement(sql);
@@ -567,15 +588,14 @@ public class ProductDAO extends BaseDAO {
 
     public ArrayList<Product> getProductByFilter(int index, String name, String s) {
         ArrayList<Product> list = new ArrayList<>();
-        String sql = " declare @PageNo INT = " + index + " \n"
-                + " declare @PageSize INT=20 \n"
-                + " SELECT * from( \n"
-                + " SELECT p.productID,p.productName,p.description,p.releaseDate,p.rating,p.sellerID,p.status,\n  "
-                + " ROW_NUMBER() over (order by p.productID) as RowNum\n  "
-                + "   FROM [Bmazon].[dbo].[Product] p join ProductCategory pc on p.productID=pc.productID  where (productName like '%" + name + "%' OR description like '%" + name + "%') " + s + " ) as T \n "
-                + " where T.RowNum between ((@PageNo-1)*@PageSize)+1 and (@PageNo*@PageSize)  ";
+        int start = (index - 1) * 20;
+        String sql = "Select *"
+                + "   FROM product as p join ProductCategory as pc on p.productID=pc.productID  where (productName like '%" + name + "%' OR description like '%" + name + "%') " + s + " \n "
+                + " limt ?,?  ";
         try {
             pre = conn.prepareStatement(sql);
+            pre.setInt(1, start);
+            pre.setInt(2, 20);
             rs = pre.executeQuery();
             while (rs.next()) {
                 Product pro = new Product();
@@ -764,7 +784,5 @@ public class ProductDAO extends BaseDAO {
         }
         return n;
     }
-    
-    
 
 }

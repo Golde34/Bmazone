@@ -99,4 +99,10 @@ public class Product implements Serializable {
     public void setStatus(int status) {
         this.status = status;
     }
+
+    @Override
+    public String toString() {
+        return "Product{" + "productID=" + productID + ", productName=" + productName + ", description=" + description + ", rating=" + rating + ", releaseDate=" + releaseDate + ", seller=" + seller + ", status=" + status + '}';
+    }
+    
 }

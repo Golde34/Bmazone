@@ -141,13 +141,13 @@
                                         <div class="woof_redraw_zone" data-woof-ver="2.1.7">
 
 
+                                            <form action="HomePageControllerMap" method="POST">
+                                                <div data-css-class="woof_container_product_cat" class="woof_container woof_container_checkbox woof_container_product_cat woof_container_1 woof_container_danhmcsnphm">
+                                                    <div class="woof_container_overlay_item"></div>
+                                                    <div class="woof_container_inner woof_container_inner_danhmcsnphm">
+                                                        <h4>Danh mục sản phẩm	    <a href="javascript: void(0);" title="toggle" class="woof_front_toggle woof_front_toggle_opened" data-condition="opened">+</a>
+                                                        </h4>
 
-                                            <div data-css-class="woof_container_product_cat" class="woof_container woof_container_checkbox woof_container_product_cat woof_container_1 woof_container_danhmcsnphm">
-                                                <div class="woof_container_overlay_item"></div>
-                                                <div class="woof_container_inner woof_container_inner_danhmcsnphm">
-                                                    <h4>Danh mục sản phẩm	    <a href="javascript: void(0);" title="toggle" class="woof_front_toggle woof_front_toggle_opened" data-condition="opened">+</a>
-                                                    </h4>
-                                                    <form action="HomePageControllerMap" method="POST">
                                                         <div class="woof_block_html_items" >
                                                             <ul class="woof_list woof_list_checkbox">
                                                                 <input type="hidden" value="${search}" name="search">
@@ -159,61 +159,61 @@
                                                                 <li class="woof_term_182" >
                                                                     <input type="checkbox" class="woof_checkbox_term woof_checkbox_term_182" data-tax="product_cat" name="cid" data-term-id="" value="<%=cate.getCategoryID()%>"/>
                                                                     <label class="woof_checkbox_label " for="cid"><%=cate.getCategoryName()%>
-                                                                   
-                                                                    </label>
-                                                                   
-                                                                </li>
-                                                                 <%
-                                                                        }
 
-                                                                    %>  
+                                                                    </label>
+
+                                                                </li>
+                                                                <%
+                                                                    }
+
+                                                                %>  
 
                                                             </ul>
 
                                                         </div>
-                                                    </form>
+                                                        
 
-                                                  
+
+
+                                                    </div>
+                                                </div>
+
+
+
+
+                                                <div data-css-class="woof_price3_search_container" class="woof_price3_search_container woof_container">
+                                                    <div class="woof_container_overlay_item"></div>
+                                                    <div class="woof_container_inner">
+                                                        <h4>Lọc theo giá</h4>
+
+
+                                                        <input class="woof_range_slider" id="6167e86ddbe4c" data-min="30000" data-max="40300000" data-min-now="30000" data-max-now="40300000" data-step="1" data-slider-prefix="" data-slider-postfix=" &#8363;" value="" />
+
+                                                    </div>
+                                                </div>
+
+
+
+
+
+
+
+                                                <div class="woof_submit_search_form_container">
+
+
+
+                                                    <button style="float: right;" class="button woof_reset_search_form" data-link="">Reset</button>
+                                                    <button type="submit" style="float: right;" class="button woof_reset_search_form" name="service" value="search">Add Filter</button>
+
+
+
+
+
+
+
+
 
                                                 </div>
-                                            </div>
-
-
-
-
-                                            <div data-css-class="woof_price3_search_container" class="woof_price3_search_container woof_container">
-                                                <div class="woof_container_overlay_item"></div>
-                                                <div class="woof_container_inner">
-                                                    <h4>Lọc theo giá</h4>
-
-
-                                                    <input class="woof_range_slider" id="6167e86ddbe4c" data-min="30000" data-max="40300000" data-min-now="30000" data-max-now="40300000" data-step="1" data-slider-prefix="" data-slider-postfix=" &#8363;" value="" />
-
-                                                </div>
-                                            </div>
-
-
-
-
-
-
-
-                                            <div class="woof_submit_search_form_container">
-
-
-
-                                                <button style="float: right;" class="button woof_reset_search_form" data-link="">Reset</button>
-                                                <button type="submit" style="float: right;" class="button woof_reset_search_form" name="service" value="check">Add Filter</button>
-
-
-
-
-
-
-
-
-
-                                            </div>
                                             </form>
 
                                         </div>

@@ -27,6 +27,7 @@ import entity.User;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.util.List;
+import javax.servlet.http.HttpSession;
 import model.DBConnection;
 import model.SellerDAO;
 import model.UserDAO;
@@ -97,14 +98,8 @@ public class HomePageController extends HttpServlet {
 
     public void serviceHomepage(HttpServletRequest request, HttpServletResponse response) {
 
-        List<Product> ListSale = proDAO.getProductSale();
-        List<Product> ListNew = proDAO.getProductNew();
-        List<Product> ListApple = proDAO.getProductApple();
-        List<Product> ListSuggest = proDAO.getProductSuggest();
-        request.setAttribute("ListSale", ListSale);
-        request.setAttribute("ListNew", ListNew);
-        request.setAttribute("ListApple", ListApple);
-        request.setAttribute("ListSuggest", ListSuggest);
+       
+        request.setAttribute("Home", "home");
         sendDispatcher(request, response, "/index.jsp");
 
     }
@@ -176,10 +171,12 @@ public class HomePageController extends HttpServlet {
 
     public void serviceSearch(HttpServletRequest request, HttpServletResponse response) {
         String str = request.getParameter("search").trim();
+        HttpSession session = request.getSession();
+        String[] idcate = request.getParameterValues("cid");      
         int count = proDAO.totalSearchProduct(str);
         String address;
         int size = 20;
-        int total = count/size;
+        int total = count / size;
         int page, end;
         String pageString = request.getParameter("page");
         if (pageString == null) {
@@ -195,12 +192,12 @@ public class HomePageController extends HttpServlet {
         }
         if (page <= total - 2) {
             end = page + 2;
-        } else if(total > 2){
+        } else if (total > 2) {
             end = total;
             begin = total - 2;
-        }else {
-            begin=1;
-            end=2;
+        } else {
+            begin = 1;
+            end = 2;
         }
         if (page == 1) {
             request.setAttribute("next", next);
@@ -210,6 +207,8 @@ public class HomePageController extends HttpServlet {
             request.setAttribute("next", next);
             request.setAttribute("previous", previous);
         }
+        
+        
         List<Product> ListP = proDAO.getProductByName(page, str);
         address = "<a>" + " Results for " + str + "  </a> <span class=" + "divider" + ">&#47;</span>";
         request.setAttribute("address", address);
@@ -222,6 +221,8 @@ public class HomePageController extends HttpServlet {
         sendDispatcher(request, response, "productList/list.jsp");
 
     }
+    
+   
 
     public void serviceShopPage(HttpServletRequest request, HttpServletResponse response) {
 
@@ -378,7 +379,7 @@ public class HomePageController extends HttpServlet {
             }
         }
     }
-    
+
     public void sendDispatcher(HttpServletRequest request, HttpServletResponse response, String path) {
         try {
             RequestDispatcher rd = request.getRequestDispatcher(path);

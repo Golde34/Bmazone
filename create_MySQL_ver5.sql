@@ -178,6 +178,15 @@ CREATE TABLE `Comment`(
 	FOREIGN KEY (productID) REFERENCES Product(productID)
 );
 
+create table productview(
+userID int,
+productid int,
+click int,
+FOREIGN KEY (userID) REFERENCES `User`(userID),
+FOREIGN KEY (productID) REFERENCES Product (productID)
+);
+
+
 CREATE TABLE `Transaction`(
 	transactionID int not null PRIMARY KEY AUTO_INCREMENT,
     userID int not null,
@@ -188,3 +197,4 @@ CREATE TABLE `Transaction`(
     status bit,
     FOREIGN KEY (userID) REFERENCES `User`(userID)
 )
+
