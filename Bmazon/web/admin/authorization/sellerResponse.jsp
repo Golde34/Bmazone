@@ -8,7 +8,7 @@
 <c:set var="contextPath" value="${pageContext.request.contextPath}" />
 <%
     List<Seller> listRequestSeller = (List<Seller>) request.getAttribute("listSellerRequest");
-    List<Seller> listAllSeller = (List<Seller>) request.getAttribute("listAllSeller");
+    List<Seller> listNewSeller = (List<Seller>) request.getAttribute("listNewSeller");
     String mess = (String) request.getAttribute("mess");
     if (mess == null) {
         mess = "";
@@ -101,15 +101,16 @@
                                 <div class="card-body px-0 pb-2">
                                     <div class="card-header py-3" 
                                          style="display: flex;
-                                         justify-content: space-between;">
-                                        <h3 class="m-0 font-weight-bold text-primary">List All Seller</h3>
+                                         justify-content: space-between; margin:0;">
+                                        <h3 class="m-0 font-weight-bold text-primary">New Seller</h3>
+                                        <a href="#">
+                                            <button class="btn-primary btn">Seller Management</button></a>
                                     </div>
                                     <div class="card-body">
                                         <div class="table_head py-3" style="display: flex;
                                              justify-content: space-between;">
-                                            <div class="tb_search">
-                                                <input style="width: 100%;" type="text" oninput="searchByName(this)" placeholder="Search.." class="form-control">
-                                            </div>
+                                            <!--<a href="AdminControllerMap?service=sellerManagement">Show all</a>-->
+                                            <a style="font-size: 20px;  " href="#">Show all</a>
                                         </div>
                                         <div class="table-responsive">
                                             <table class="table table-bordered table-striped" id="dataTable" style="text-align: center;">
@@ -120,13 +121,12 @@
                                                         <th>Seller Phone</th>
                                                         <th>Seller Certification</th>
                                                         <th>Main Product</th>
-                                                        <th>Seller Verification</th>
-                                                        <th></th>
-                                                        <th></th>
+                                                        <th>Seller Verification</th>                                                 
+                                                        <th>Status</th>
                                                     </tr>
                                                 </thead>
                                                 <tbody id="role">
-                                                    <%for (Seller seller : listAllSeller) {%>
+                                                    <%for (Seller seller : listNewSeller) {%>
                                                     <tr>
                                                         <td><%=seller.getSellerID()%></td>
                                                         <td><%=seller.getSellerShopName()%></td>
@@ -134,14 +134,11 @@
                                                         <td><%=seller.getEvidence()%></td>
                                                         <td><%=seller.getSellerMainProduct()%></td>
                                                         <td><%=seller.getSellerVerification()%></td>
-                                                        <td>
-<!--                                                            <a style=" background-color: #9EE345 ; border-radius:10px; padding:5px; color: white; " href="AdminControllerMap?service=acceptSeller&sellerID=<%=seller.getSellerID()%>">
-                                                                <i class="fas fa-check"></i>   Accept </a>-->
-                                                        </td>
-                                                        <td>
-<!--                                                            <a style=" background-color: #e34f4f ; border-radius:10px; padding: 5px 12px; color: white;" href="AdminControllerMap?service=denySeller&sellerID=<%=seller.getSellerID()%>" onclick="return confirm('Are you sure you want to Deny this seller?');">
-                                                                <i class="fas fa-times"></i>   Deny </a>-->
-                                                        </td>
+                                                        <%if (seller.getStatus() == 0) {%>
+                                                        <td>Deactive</td>
+                                                        <%} else {%>
+                                                        <td>Active</td>
+                                                        <%}%>
                                                     </tr>
                                                     <%}%>
                                                 </tbody>
@@ -154,7 +151,27 @@
                     </div>
                 </div>
         </main>
-
+        <script>
+            function searchByName(param) {
+                var txtSearch = param.value;
+                $.ajax({
+                    url: "/Bmazon/AdminControllerMap",
+                    type: "get",
+                    data: {
+                        search: txtSearch,
+                        service: "searchSeller"
+                    },
+                    success: function (respone) {
+                        var text = document.getElementById("role");
+                        text.innerHTML = respone;
+                        getPagination('#dataTable');
+                    },
+                    error: function (xhr) {
+                        //Do Something to handle error
+                    }
+                });
+            }
+        </script>
         <!--   Core JS Files   -->
         <script src="${contextPath}/js/core/popper.min.js"></script>
         <script src="${contextPath}/js/core/bootstrap.min.js"></script>
@@ -163,27 +180,7 @@
         <script src="${contextPath}/js/plugins/chartjs.min.js"></script>
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
         <script src="${contextPath}/js/tablepagination.js"></script>
-        <script>
-                                                        function searchByName(param) {
-                                                            var txtSearch = param.value;
-                                                            $.ajax({
-                                                                url: "/Bmazon/AdminControllerMap",
-                                                                type: "get",
-                                                                data: {
-                                                                    search: txtSearch,
-                                                                    service: "searchRole"
-                                                                },
-                                                                success: function (respone) {
-                                                                    var text = document.getElementById("role");
-                                                                    text.innerHTML = respone;
-                                                                    getPagination('#dataTable');
-                                                                },
-                                                                error: function (xhr) {
-                                                                    //Do Something to handle error
-                                                                }
-                                                            });
-                                                        }
-        </script>
+
         <!-- Github buttons -->
         <script async defer src="https://buttons.github.io/buttons.js"></script>
         <!-- Control Center for Soft Dashboard: parallax effects, scripts for the example pages etc -->

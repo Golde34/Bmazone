@@ -372,7 +372,8 @@ public class UserDAO extends BaseDAO {
         HashMap<User, Role> map = new HashMap<>();
         UserDAO uDao = new UserDAO();
         RoleDAO rDao = new RoleDAO();
-        String sql = "SELECT u.userID, r.roleID FROM `User` u INNER JOIN [Role] r ON u.systemRole = r.roleID  where u.[status]=1";
+        String sql = "SELECT u.userID, r.roleID FROM `User` u INNER JOIN `Role` r ON u.systemRole = r.roleID  where u.status=1";
+        ResultSet rs = dbConn.getData(sql);
         try {
             pre=conn.prepareStatement(sql);
             rs=pre.executeQuery();

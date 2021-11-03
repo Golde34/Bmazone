@@ -57,7 +57,7 @@ public class SellerDAO extends BaseDAO {
             pre.setString(6, s.getDescription());
             pre.setInt(7, s.getSellerVerification());
             pre.setInt(8, s.getStatus());
-            pre.setInt(9, s.getSellerID());
+            pre.setInt(11, s.getSellerID());
             n = pre.executeUpdate();
             pre.close();
         } catch (SQLException e) {
@@ -189,7 +189,33 @@ public class SellerDAO extends BaseDAO {
                         rs.getInt(6),
                         rs.getString(7),
                         rs.getInt(8),
-                        rs.getInt(9)));
+                        rs.getInt(11)));
+            }
+            rs.close();
+            pre.close();
+        } catch (SQLException ex) {
+            Logger.getLogger(UserDAO.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return list;
+    }
+    
+    public List<Seller> getNewSeller() {
+        List<Seller> list = new ArrayList<>();
+        String xSql = "select * from Seller where status = 1 and sellerVerification = 1 ORDER BY sellerID desc LIMIT 5";
+        try {
+            pre = conn.prepareStatement(xSql);
+            rs = pre.executeQuery();
+            while (rs.next()) {
+                list.add(new Seller(
+                        rs.getInt(1),
+                        rs.getInt(2),
+                        rs.getString(3),
+                        rs.getString(4),
+                        rs.getString(5),
+                        rs.getInt(6),
+                        rs.getString(7),
+                        rs.getInt(8),
+                        rs.getInt(11)));
             }
             rs.close();
             pre.close();

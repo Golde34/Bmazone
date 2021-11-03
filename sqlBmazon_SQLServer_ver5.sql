@@ -46,7 +46,7 @@ CREATE TABLE [User] (
 	activityPoint int CHECK(activityPoint>=0),
 	systemRole int,
 	[status] bit,
-
+	FOREIGN KEY (systemRole) REFERENCES Role([roleID])
 )
 
 CREATE TABLE [Category] (

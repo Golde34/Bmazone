@@ -2005,8 +2005,8 @@ public class AdminController extends HttpServlet {
         request.setAttribute("service", service);
         List<Seller> listSellerRequest = daoseller.getSellerBySellerRequest();
         request.setAttribute("listSellerRequest", listSellerRequest);
-        List<Seller> listAllSeller = daoseller.getAllSeller();
-        request.setAttribute("listAllSeller", listAllSeller);
+        List<Seller> listNewSeller = daoseller.getNewSeller();
+        request.setAttribute("listNewSeller", listNewSeller);
         sendDispatcher(request, response, "admin/authorization/sellerResponse.jsp");
     }
 
