@@ -120,7 +120,7 @@ public class EmployeeController extends HttpServlet {
         List<Transaction> listTransactionPaging = daotransaction.getAllPagingTransaction(1, 5, "");
         List<Transaction> listRequestTransaction = daotransaction.getAllTransaction();
         int totalPage = listRequestTransaction.size() / 5;
-        if (listRequestTransaction.size() > 5) {
+        if (listRequestTransaction.size() != totalPage * 5) {
             totalPage += 1;
         }
         request.setAttribute("index", 1);
@@ -180,9 +180,7 @@ public class EmployeeController extends HttpServlet {
         }
         int totalResult = daotransaction.getPageNumber(search);
         int totalPage = totalResult / numOfRow;
-        if (totalResult != numOfRow * totalPage) {
-            totalPage += 1;
-        }
+
         int prev = index == 1 ? 1 : index - 1;
         int next = index == totalPage ? totalPage : index + 1;
         if (totalResult > numOfRow) {
@@ -245,6 +243,8 @@ public class EmployeeController extends HttpServlet {
     }
 
     private void serviceAcceptTopUpRequest(String service, HttpServletRequest request, HttpServletResponse response) {
+        HttpSession session = request.getSession();
+        User x = (User) request.getSession().getAttribute("currUser");
         request.setAttribute("service", service);
         int transactionid = Integer.parseInt(request.getParameter("transactionID"));
         daotransaction.acceptTopUpRequest(transactionid);
@@ -256,6 +256,7 @@ public class EmployeeController extends HttpServlet {
         } else {
             daouser.withdrawalWalletUser(u, money);
         }
+        session.setAttribute("currUser", daouser.getUserById(x.getUserId()));
 
         List<Transaction> listTransactionPaging = daotransaction.getAllPagingTransaction(1, 5, "");
         List<Transaction> listRequestTransaction = daotransaction.getAllTransaction();

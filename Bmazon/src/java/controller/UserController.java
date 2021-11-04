@@ -464,6 +464,8 @@ public class UserController extends HttpServlet {
             LocalDateTime now = LocalDateTime.now();
             Transaction t = new Transaction(x.getUserId(), amount, dtf.format(now), 2);
             daoTransaction.insertTransaction(t);
+            //daoUser.withdrawalWalletUser(x, amount);
+            //request.getSession().setAttribute("currUser", daoUser.getUserById(x.getUserId()));
             mess = "Please wait for acceptance!";
             request.setAttribute("mess", mess);
             sendDispatcher(request, response, "UserControllerMap?service=editWallet");
