@@ -96,7 +96,6 @@ public class ProductDAO extends BaseDAO {
                 pro.setStatus(rs.getInt("status"));
                 list.add(pro);
             }
-
         } catch (Exception e) {
             Logger.getLogger(ProductDAO.class.getName()).log(Level.SEVERE, null, e);
         } finally {

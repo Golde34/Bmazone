@@ -63,7 +63,7 @@
         <jsp:include page="../header.jsp"/>
 
         <div class="container">
-            <%if (sel == null) {%>
+            <%if (sel.getSellerID() == 0) {%>
             <br>
             <h1>Turn on Sales Feature</h1>
             <br>
@@ -116,11 +116,11 @@
                     </div> 
                 </div>
             </form>
-            <%} else if (sel != null && sel.getSellerVerification() == 0) {%>
+            <%} else if (sel.getSellerID() != 0 && sel.getSellerVerification() == 0) {%>
             <div style="height: 25rem;">
                 <p style="color: red; font-size: 18px;">Waiting for administrator to verify your registration certificate...</p>
             </div>
-            <%} else if (sel != null && sel.getSellerVerification() == 2) {%>
+            <%} else if (sel.getSellerID() != 0 && sel.getSellerVerification() == 2) {%>
             <br>
             <h1>Turn on Sales Feature</h1>
             <br>
@@ -176,7 +176,7 @@
                 </div>
             </form>
 
-            <%} else if (sel != null && sel.getSellerVerification() == 1) {%>
+            <%} else if (sel.getSellerID() != 0 && sel.getSellerVerification() == 1) {%>
             <br>
             <h1>Turn on Sales Feature</h1>
             <br>

@@ -29,6 +29,10 @@
         <servlet-name>AdminController</servlet-name>
     </filter-mapping>
     <filter-mapping>
+        <filter-name>roleFilter</filter-name>
+        <servlet-name>EmployeeController</servlet-name>
+    </filter-mapping>
+    <filter-mapping>
         <filter-name>sessionFilter</filter-name>
         <url-pattern>/*</url-pattern>
     </filter-mapping>
@@ -47,6 +51,10 @@
     <filter-mapping>
         <filter-name>authenticationFilter</filter-name>
         <servlet-name>UserController</servlet-name>
+    </filter-mapping>
+    <filter-mapping>
+        <filter-name>authenticationFilter</filter-name>
+        <servlet-name>EmployeeController</servlet-name>
     </filter-mapping>
     <servlet>
         <servlet-name>HomePageController</servlet-name>
@@ -76,6 +84,10 @@
         <servlet-name>LoginController</servlet-name>
         <servlet-class>controller.LoginController</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>EmployeeController</servlet-name>
+        <servlet-class>controller.EmployeeController</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>HomePageController</servlet-name>
         <url-pattern>/HomePageControllerMap</url-pattern>
@@ -103,6 +115,10 @@
     <servlet-mapping>
         <servlet-name>CartController</servlet-name>
         <url-pattern>/CartControllerMap</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>EmployeeController</servlet-name>
+        <url-pattern>/EmployeeControllerMap</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>

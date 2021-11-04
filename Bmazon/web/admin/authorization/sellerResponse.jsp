@@ -13,6 +13,10 @@
     if (mess == null) {
         mess = "";
     }
+    int index = (Integer) request.getAttribute("index");
+    int totalPage = (Integer) request.getAttribute("totalPage");
+    int prev = index == 1 ? 1 : index - 1;
+    int next = index == totalPage ? totalPage : index + 1;
 %>
 
 <!DOCTYPE html>
@@ -56,8 +60,19 @@
                                     <div class="card-body">
                                         <div class="table_head py-3" style="display: flex;
                                              justify-content: space-between;">
-                                            <div class="tb_search">
-                                                <input style="width: 100%;" type="text" oninput="searchByName(this)" placeholder="Search.." class="form-control">
+                                            <div class="rowNum">
+                                                <h6 style="display: inline">Select number of Rows</h6>
+                                                <div class="form-group" style="display: inline;">
+                                                    <select onchange="pagination()" name="state" id="maxRows" class="form-control" style="width:80px;display:inline;">
+                                                        <option value="5">5</option>
+                                                        <option value="10">10</option>
+                                                        <option value="20">20</option>
+                                                        <option value="5000">Show All</option>
+                                                    </select>
+                                                </div>
+                                            </div>
+                                            <div>
+                                                <input id="search" style="width: 100%;" type="text" oninput="pagination()" placeholder="Search.." class="form-control">
                                             </div>
                                         </div>
                                         <div class="table-responsive">
@@ -70,11 +85,11 @@
                                                         <th>Seller Certification</th>
                                                         <th>Main Product</th>
                                                         <th>Seller Verification</th>
-                                                        <th></th>
-                                                        <th></th>
+                                                        <th>Accept</th>
+                                                        <th>Deny</th>
                                                     </tr>
                                                 </thead>
-                                                <tbody id="role">
+                                                <tbody id="seller">
                                                 <%for (Seller seller : listRequestSeller) {%>
                                                 <tr>
                                                     <td><%=seller.getSellerID()%></td>
@@ -87,7 +102,8 @@
                                                         <a style=" background-color: #F56565; border-radius:10px; padding:5px; color: white; " href="AdminControllerMap?service=acceptSeller&sellerID=<%=seller.getSellerID()%>">
                                                             <i class="fas fa-check"></i>   Accept </a>
                                                     </td>
-                                                    <td><a style=" background-color: #CB0C9F ; border-radius:10px; padding:5px; color: white;" href="AdminControllerMap?service=denySeller&sellerID=<%=seller.getSellerID()%>" onclick="return confirm('Are you sure you want to Deny this seller?');">
+                                                    <td>
+                                                        <a style=" background-color: #CB0C9F ; border-radius:10px; padding:5px; color: white;" href="AdminControllerMap?service=denySeller&sellerID=<%=seller.getSellerID()%>" onclick="return confirm('Are you sure you want to Deny this seller?');">
                                                             <i class="fas fa-times"></i>   Deny </a>
                                                     </td>
                                                 </tr>
@@ -95,6 +111,53 @@
                                             </tbody>
                                         </table>
                                     </div>
+                                </div>
+                                <div class="pagination-container mt-4 d-flex justify-content-around" style="cursor: pointer;">
+                                    <nav>
+                                        <%if (totalPage > 1) {%>
+                                        <ul class="pagination" id="showpage">
+                                            <li data-repair="1" class="page-item">
+                                                <a class="page-link" aria-label="First">
+                                                    <span aria-hidden="true"><i class="fas fa-backward"></i>
+                                                        <span class="sr-only">(current)</span> 
+                                                    </span>
+                                                </a>
+                                            </li>
+                                            <li data-repair="<%=prev%>" class="page-item">
+                                                <a class="page-link" aria-label="Previous">
+                                                    <span aria-hidden="true"><i class="fas fa-arrow-left"></i>
+                                                        <span class="sr-only">(current)</span> 
+                                                    </span>
+                                                </a>
+                                            </li>
+                                            <%int limit = totalPage > 5 ? 5 : totalPage;%>
+                                            <%for (int i = 1; i <= limit; i++) {%>
+                                            <%if (index == i) {%>
+                                            <li  class="page-item active" data-repair="<%=i%>">
+                                            <%} else {%><li  class="page-item" data-repair="<%=i%>"> <%}%>
+                                                <a class="page-link">
+                                                    <div class="index"><%=i%></div>
+                                                    <span class="sr-only">(current)</span>
+                                                </a>
+                                            </li>
+                                            <%}%>
+                                            <li data-repair="<%=next%>" class="page-item">
+                                                <a class="page-link" aria-label="Next">
+                                                    <span aria-hidden="true"><i class="fas fa-arrow-right"></i>
+                                                        <span class="sr-only">(current)</span> 
+                                                    </span>
+                                                </a>
+                                            </li>
+                                            <li data-repair="<%=totalPage%>" class="page-item">
+                                                <a class="page-link" aria-label="Last">
+                                                    <span aria-hidden="true"><i class="fas fa-forward"></i>
+                                                        <span class="sr-only">(current)</span> 
+                                                    </span>
+                                                </a>
+                                            </li>
+                                        </ul>
+                                        <%}%>
+                                    </nav>
                                 </div>
                             </div>
                             <div class="card">
@@ -152,19 +215,51 @@
                 </div>
         </main>
         <script>
-            function searchByName(param) {
-                var txtSearch = param.value;
+            var pageNum;
+            $(document).on('click', '.pagination li', function () {
+                pageNum = $(this).data('repair');
+                pagination();
+            });
+            function pagination() {
+                var row = document.getElementById("maxRows").value;
+                var search = document.getElementById("search").value;
+                console.log(row);
+                console.log(search);
+                console.log(pageNum);
                 $.ajax({
                     url: "/Bmazon/AdminControllerMap",
                     type: "get",
                     data: {
-                        search: txtSearch,
-                        service: "searchSeller"
+                        search: search,
+                        row: row,
+                        index: pageNum,
+                        service: "pagingSellerResponse"
                     },
                     success: function (respone) {
-                        var text = document.getElementById("role");
+                        var text = document.getElementById("seller");
                         text.innerHTML = respone;
-                        getPagination('#dataTable');
+                        showpage();
+                    },
+                    error: function (xhr) {
+                        //Do Something to handle error
+                    }
+                });
+            }
+            function showpage() {
+                var row = document.getElementById("maxRows").value;
+                var search = document.getElementById("search").value;
+                $.ajax({
+                    url: "/Bmazon/AdminControllerMap",
+                    type: "get",
+                    data: {
+                        search: search,
+                        row: row,
+                        index: pageNum,
+                        service: "showpageSellerResponse"
+                    },
+                    success: function (respone) {
+                        var text = document.getElementById("showpage");
+                        text.innerHTML = respone;
                     },
                     error: function (xhr) {
                         //Do Something to handle error
