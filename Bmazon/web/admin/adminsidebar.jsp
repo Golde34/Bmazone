@@ -69,6 +69,22 @@
                 </a>
         </li>
         <li class="nav-item">
+            <%if (service.equalsIgnoreCase("sellermanagement") || service.equalsIgnoreCase("updatesellerdetail")) {%>
+            <a class="nav-link active" href="AdminControllerMap?service=sellermanagement">
+                <%} else {%>
+                <a class="nav-link" href="AdminControllerMap?service=sellermanagement">
+                    <%}%>
+                    <div class="icon icon-shape icon-sm shadow border-radius-md bg-white text-center me-2 d-flex align-items-center justify-content-center">
+                        <%if (service.equalsIgnoreCase("sellermanagement") || service.equalsIgnoreCase("updateseller")) {%>
+                        <i class="fas fa-users"></i>
+                        <%} else {%>
+                        <i class="fas fa-users" style="color: black"></i>
+                        <%}%>
+                    </div>
+                    <span class="nav-link-text ms-1">Seller Management</span>
+                </a>
+        </li>
+        <li class="nav-item">
             <%if (service.equalsIgnoreCase("productmanagement") || service.equalsIgnoreCase("updateproductdetail") || service.equalsIgnoreCase("productdetail")) {%>
             <a class="nav-link active" href="AdminControllerMap?service=productmanagement">
                 <%} else {%>

@@ -1,15 +1,17 @@
+<%@page import="model.CategoryDAO"%>
 <%@page import="java.util.*"%>
 <%@page import="entity.*"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <c:set var="contextPath" value="${pageContext.request.contextPath}" />
 <%
+    CategoryDAO daocate = new CategoryDAO();
     int index = (Integer) request.getAttribute("index");
     int totalPage = (Integer) request.getAttribute("totalPage");
     int prev = index == 1 ? 1 : index - 1;
     int next = index == totalPage ? totalPage : index + 1;
     User curUser = (User) request.getSession().getAttribute("currUser");
-    ArrayList<User> listUser = (ArrayList<User>) request.getAttribute("listUser");
+    ArrayList<Seller> listSeller = (ArrayList<Seller>) request.getAttribute("listSeller");
 %>
 
 <!DOCTYPE html>
@@ -48,8 +50,6 @@
                                 <div class="card-body px-0 pb-2">
                                     <div class="card-header py-3 d-flex justify-content-between">
                                         <h3 class="m-0 font-weight-bold text-primary">Seller Management</h3>
-                                        <a href="AdminControllerMap?service=addsellerdetail">
-                                            <button class="btn-primary btn">Add new seller</button></a>
                                     </div>
                                     <div class="card-body">
                                         <div class="table_head py-3 d-flex justify-content-between">
@@ -72,28 +72,26 @@
                                             <table style="width: 100%;" class="text-center">
                                                 <thead class="text-uppercase bg-gray-200">
                                                     <tr>
-                                                        <th style="width: 25%">Seller Name</th>
-                                                        <th style="width: 10%">Shop Name</th>
-                                                        <th style="width: 20%">Email</th>
-                                                        <th style="width: 10%">Phone</th>
-                                                        <th style="width: 20%">Address</th>
+                                                        <th style="width: 25%">Shop Name</th>
+                                                        <th style="width: 15%">Phone</th>
+                                                        <th style="width: 25%">Evidence</th>
+                                                        <th style="width: 20%">Description</th>
                                                         <th style="width: 15%">Action</th>
                                                     </tr>
                                                 </thead>
                                                 <tbody id="seller">
-                                                <%for (User user : listUser) {%>
+                                                <%for (Seller seller : listSeller) {%>
                                                 <tr>
-                                                    <td><%=user.getUsername()%></td>
-                                                    <td><%=user.getEmail()%></td>
-                                                    <td><%=user.getFullname()%></td>
-                                                    <td><%=user.getPhoneNumber()%></td>
-                                                    <td><%=user.getAddress()%></td>
+                                                    <td><%=seller.getSellerShopName()%></td>
+                                                    <td><%=seller.getSellerPhone()%></td>
+                                                    <td><%=seller.getEvidence()%></td>
+                                                    <td><%=seller.getDescription()%></td>
                                                     <td style='white-space: nowrap'>
-                                                        <a href="AdminControllerMap?service=updateuserdetail&userid=<%=user.getUserId()%>"><button class="btn btn-primary">Edit</button></a>
-                                                        <% if (user.getStatus() == 1) {%>
-                                                        <a href="AdminControllerMap?service=deleteuser&userid=<%=user.getUserId()%>" onclick="return confirm('Are you sure?');"><button class="btn btn-primary">Deactive</button></a>
+                                                        <a href="AdminControllerMap?service=updatesellerdetail&sellerid=<%=seller.getSellerID()%>"><button class="btn btn-primary">Edit</button></a>
+                                                        <% if (seller.getStatus() == 1) {%>
+                                                        <a href="AdminControllerMap?service=deleteseller&sellerid=<%=seller.getSellerID()%>" onclick="return confirm('Are you sure?');"><button class="btn btn-primary">Deactive</button></a>
                                                         <%} else {%>
-                                                        <a href="AdminControllerMap?service=activeuser&userid=<%=user.getUserId()%>" onclick="return confirm('Are you sure?');"><button class="btn btn-primary">Active</button></a>
+                                                        <a href="AdminControllerMap?service=activeseller&sellerid=<%=seller.getSellerID()%>" onclick="return confirm('Are you sure?');"><button class="btn btn-primary">Active</button></a>
                                                         <%}%>
                                                     </td>
                                                 </tr>
@@ -155,63 +153,65 @@
                 </div>
             </div>
         </main>
-        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
-        <script>
-            var pageNum;
-            $(document).on('click', '.pagination li', function () {
-                pageNum = $(this).data('repair');
-                pagination();
-            });
-            function pagination() {
-                var row = document.getElementById("maxRows").value;
-                var search = document.getElementById("search").value;
-                console.log(row);
-                console.log(search);
-                console.log(pageNum);
-                $.ajax({
-                    url: "/Bmazon/AdminControllerMap",
-                    type: "get",
-                    data: {
-                        search: search,
-                        row: row,
-                        index: pageNum,
-                        service: "pagingseller"
-                    },
-                    success: function (respone) {
-                        var text = document.getElementById("seller");
-                        text.innerHTML = respone;
-                        showpage();
-                    },
-                    error: function (xhr) {
-                        //Do Something to handle error
-                    }
-                });
-            }
-            function showpage() {
-                var row = document.getElementById("maxRows").value;
-                var search = document.getElementById("search").value;
-                $.ajax({
-                    url: "/Bmazon/AdminControllerMap",
-                    type: "get",
-                    data: {
-                        search: search,
-                        row: row,
-                        index: pageNum,
-                        service: "showpageseller"
-                    },
-                    success: function (respone) {
-                        var text = document.getElementById("showpage");
-                        text.innerHTML = respone;
-                    },
-                    error: function (xhr) {
-                        //Do Something to handle error
-                    }
-                });
-            }
-        </script>
-        <!--   Core JS Files   -->
         <script src="${contextPath}/js/core/popper.min.js"></script>
         <script src="${contextPath}/js/core/bootstrap.min.js"></script>
+        <script src="${contextPath}/js/plugins/perfect-scrollbar.min.js"></script>
+        <script src="${contextPath}/js/plugins/smooth-scrollbar.min.js"></script>
+        <script src="${contextPath}/js/plugins/chartjs.min.js"></script>
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+        <script>
+                                                            var pageNum;
+                                                            $(document).on('click', '.pagination li', function () {
+                                                                pageNum = $(this).data('repair');
+                                                                pagination();
+                                                            });
+                                                            function pagination() {
+                                                                var row = document.getElementById("maxRows").value;
+                                                                var search = document.getElementById("search").value;
+                                                                console.log(row);
+                                                                console.log(search);
+                                                                console.log(pageNum);
+                                                                $.ajax({
+                                                                    url: "/Bmazon/AdminControllerMap",
+                                                                    type: "get",
+                                                                    data: {
+                                                                        search: search,
+                                                                        row: row,
+                                                                        index: pageNum,
+                                                                        service: "pagingseller"
+                                                                    },
+                                                                    success: function (respone) {
+                                                                        var text = document.getElementById("seller");
+                                                                        text.innerHTML = respone;
+                                                                        showpage();
+                                                                    },
+                                                                    error: function (xhr) {
+                                                                        //Do Something to handle error
+                                                                    }
+                                                                });
+                                                            }
+                                                            function showpage() {
+                                                                var row = document.getElementById("maxRows").value;
+                                                                var search = document.getElementById("search").value;
+                                                                $.ajax({
+                                                                    url: "/Bmazon/AdminControllerMap",
+                                                                    type: "get",
+                                                                    data: {
+                                                                        search: search,
+                                                                        row: row,
+                                                                        index: pageNum,
+                                                                        service: "showpageseller"
+                                                                    },
+                                                                    success: function (respone) {
+                                                                        var text = document.getElementById("showpage");
+                                                                        text.innerHTML = respone;
+                                                                    },
+                                                                    error: function (xhr) {
+                                                                        //Do Something to handle error
+                                                                    }
+                                                                });
+                                                            }
+        </script>
 
     </body>
 

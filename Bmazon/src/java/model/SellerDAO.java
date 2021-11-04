@@ -90,6 +90,36 @@ public class SellerDAO extends BaseDAO {
         return n;
     }
 
+    public int updateSeller(Seller s) {
+        int n = 0;
+        String xSql = "update Seller set sellerShopName = ?, sellerPhone = ?, evidence = ?,"
+                + "sellerMainProduct = ?, description = ?, status = ? where sellerID = ?";
+        try {
+            conn = new DBConnection().getConnection();
+            pre = conn.prepareStatement(xSql);
+            pre.setString(1, s.getSellerShopName());
+            pre.setString(2, s.getSellerPhone());
+            pre.setString(3, s.getEvidence());
+            pre.setInt(4, s.getSellerMainProduct());
+            pre.setString(5, s.getDescription());
+            pre.setInt(6, s.getStatus());
+            pre.setInt(7, s.getSellerID());
+            n = pre.executeUpdate();
+
+        } catch (Exception e) {
+            Logger.getLogger(RoleDAO.class.getName()).log(Level.SEVERE, null, e);
+        } finally {
+            try {
+                rs.close();
+                pre.close();
+                conn.close();
+            } catch (Exception ex) {
+                Logger.getLogger(CategoryDAO.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
+        return n;
+    }
+
     public int deleteSeller(int sellerID) {
         int n = 0;
         String sql = "delete from Seller where sellerID = ?";
@@ -248,8 +278,8 @@ public class SellerDAO extends BaseDAO {
         return seller;
     }
 
-    public List<Seller> getAllSeller() {
-        List<Seller> list = new ArrayList<>();
+    public ArrayList<Seller> getAllSeller() {
+        ArrayList<Seller> list = new ArrayList<>();
         String xSql = "select * from Seller where status = 1 and sellerVerification = 1";
         try {
             conn = new DBConnection().getConnection();
@@ -349,7 +379,7 @@ public class SellerDAO extends BaseDAO {
         }
         return list;
     }
-    
+
     public Seller getSellerByUserID(int userID) {
         Seller seller = new Seller();
         String xSql = "select * from Seller where userID = " + userID;
@@ -503,13 +533,13 @@ public class SellerDAO extends BaseDAO {
         }
         return list;
     }
-    
+
     public ArrayList<Seller> getAllPagingSellerRequest(int index, int numOfRow, String search) {
         int start = (index - 1) * numOfRow;
         ArrayList<Seller> list = new ArrayList<>();
         String xSql = "select * from seller where sellerVerification = 0 and ( sellerShopName like '%" + search + "%' or sellerPhone like '%" + search + "%' or sellerVerification like '%" + search + "%') limit ?,?";
         try {
-            conn=new DBConnection().getConnection();
+            conn = new DBConnection().getConnection();
             pre = conn.prepareStatement(xSql);
             pre.setInt(1, start);
             pre.setInt(2, numOfRow);
@@ -522,7 +552,7 @@ public class SellerDAO extends BaseDAO {
                         rs.getString("backGroundImage"), rs.getString("avatar"),
                         rs.getInt("status"));
                 list.add(seller);
-            } 
+            }
         } catch (Exception ex) {
             Logger.getLogger(UserDAO.class.getName()).log(Level.SEVERE, null, ex);
         } finally {
@@ -536,17 +566,17 @@ public class SellerDAO extends BaseDAO {
         }
         return list;
     }
-    
+
     public int getPageNumberSellerResponse(String search) {
         int num = 0;
         String xSql = "SELECT COUNT(*) FROM `Seller` where sellerVerification = 1 and ( sellerShopName like '%" + search + "%' or sellerPhone like '%" + search + "%' or sellerVerification like '%" + search + "%')";
         try {
-            conn=new DBConnection().getConnection();
+            conn = new DBConnection().getConnection();
             pre = conn.prepareStatement(xSql);
             rs = pre.executeQuery();
             if (rs.next()) {
                 num = rs.getInt(1);
-            }         
+            }
         } catch (Exception ex) {
             Logger.getLogger(UserDAO.class.getName()).log(Level.SEVERE, null, ex);
         } finally {
@@ -559,5 +589,86 @@ public class SellerDAO extends BaseDAO {
             }
         }
         return num;
+    }
+
+    public ArrayList<Seller> getAllPagingSeller(int index, int numOfRow, String search) {
+        int start = (index - 1) * numOfRow;
+        ArrayList<Seller> list = new ArrayList<>();
+        String xSql = "select * from Seller where sellerShopName like '%" + search + "%' or sellerPhone like '%" + search + "%' or description like '%" + search + "%' limit ?,?";
+        try {
+            conn = new DBConnection().getConnection();
+            pre = conn.prepareStatement(xSql);
+            pre.setInt(1, start);
+            pre.setInt(2, numOfRow);
+            rs = pre.executeQuery();
+            while (rs.next()) {
+                Seller seller = new Seller(rs.getInt("sellerID"), rs.getInt("userID"),
+                        rs.getString("sellerShopName"), rs.getString("sellerPhone"),
+                        rs.getString("evidence"), rs.getInt("sellerMainProduct"),
+                        rs.getString("description"), rs.getInt("sellerVerification"),
+                        rs.getString("backGroundImage"), rs.getString("avatar"),
+                        rs.getInt("status"));
+                list.add(seller);
+            }
+        } catch (Exception ex) {
+            Logger.getLogger(UserDAO.class.getName()).log(Level.SEVERE, null, ex);
+        } finally {
+            try {
+                rs.close();
+                pre.close();
+                conn.close();
+            } catch (Exception ex) {
+                Logger.getLogger(CategoryDAO.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
+        return list;
+    }
+
+    public int getPageNumber(String search) {
+        int num = 0;
+        String xSql = "SELECT COUNT(*) FROM Seller where sellerShopName like '%" + search + "%' or sellerPhone like '%" + search + "%' or description like '%" + search + "%'";
+        try {
+            conn = new DBConnection().getConnection();
+            pre = conn.prepareStatement(xSql);
+            rs = pre.executeQuery();
+            if (rs.next()) {
+                num = rs.getInt(1);
+            }
+        } catch (Exception ex) {
+            Logger.getLogger(UserDAO.class.getName()).log(Level.SEVERE, null, ex);
+        } finally {
+            try {
+                rs.close();
+                pre.close();
+                conn.close();
+            } catch (Exception ex) {
+                Logger.getLogger(CategoryDAO.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
+        return num;
+    }
+
+    public int changeStatus(int id, int status) {
+        int n = 0;
+        String sql = "UPDATE Seller SET status = ? WHERE sellerID = ?";
+        try {
+            conn = new DBConnection().getConnection();
+            pre = conn.prepareStatement(sql);
+            pre.setInt(1, (status == 1 ? 1 : 0));
+            pre.setInt(2, id);
+            n = pre.executeUpdate();
+
+        } catch (Exception ex) {
+            Logger.getLogger(UserDAO.class.getName()).log(Level.SEVERE, null, ex);
+        } finally {
+            try {
+                rs.close();
+                pre.close();
+                conn.close();
+            } catch (Exception ex) {
+                Logger.getLogger(CategoryDAO.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
+        return n;
     }
 }
