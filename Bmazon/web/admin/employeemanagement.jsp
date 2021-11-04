@@ -9,7 +9,7 @@
     int prev = index == 1 ? 1 : index - 1;
     int next = index == totalPage ? totalPage : index + 1;
     User curUser = (User) request.getSession().getAttribute("currUser");
-    ArrayList<User> listUser = (ArrayList<User>) request.getAttribute("listUser");
+    ArrayList<Employee> listEmp = (ArrayList<Employee>) request.getAttribute("ListEmployee");
 %>
 
 <!DOCTYPE html>
@@ -49,7 +49,7 @@
                                     <div class="card-header py-3 d-flex justify-content-between">
                                         <h3 class="m-0 font-weight-bold text-primary">User Management</h3>
                                         <a href="AdminControllerMap?service=addemployee">
-                                            <button class="btn-primary btn">Add new user</button></a>
+                                            <button class="btn-primary btn">Add New Employee</button></a>
                                     </div>
                                     <div class="card-body">
                                         <div class="table_head py-3 d-flex justify-content-between">
@@ -76,24 +76,26 @@
                                                         <th style="width: 10%">Name</th>
                                                         <th style="width: 20%">Start Date</th>
                                                         <th style="width: 10%">Salary</th>
-                                                        <th style="width: 20%">Avatar</th>
+                                                      
                                                         <th style="width: 15%"></th>
                                                     </tr>
                                                 </thead>
                                                 <tbody id="user">
-                                                <%for (User user : listUser) {%>
+                                                <%for (Employee emp : listEmp) {
+                                               
+                                                %>
                                                 <tr>
-                                                    <td><%=user.getUsername()%></td>
-                                                    <td><%=user.getEmail()%></td>
-                                                    <td><%=user.getFullname()%></td>
-                                                    <td><%=user.getPhoneNumber()%></td>
-                                                    <td><%=user.getAddress()%></td>
+                                                    <td><%=emp.getEmployeeId()%></td>
+                                                    <td><%=emp.getName() %></td>
+                                                    <td><%=emp.getStartDate() %></td>
+                                                    <td><%=emp.getSalary() %></td>
+                                                    
                                                     <td style='white-space: nowrap'>
-                                                        <a href="AdminControllerMap?service=updateuserdetail&userid=<%=user.getUserId()%>"><button class="btn btn-primary">Edit</button></a>
-                                                        <% if (user.getStatus() == 1) {%>
-                                                        <a href="AdminControllerMap?service=deleteuser&userid=<%=user.getUserId()%>" onclick="return confirm('Are you sure?');"><button class="btn btn-primary">Deactive</button></a>
+                                                        <a href="AdminControllerMap?service=updateemployeedetail&empid=<%=emp.getEmployeeId()%>"><button class="btn btn-primary">Edit</button></a>
+                                                        <% if (emp.getStatus() == 1) {%>
+                                                        <a href="AdminControllerMap?service=deleteemployee&empid=<%=emp.getEmployeeId()%>" onclick="return confirm('Are you sure?');"><button class="btn btn-primary">Deactive</button></a>
                                                         <%} else {%>
-                                                        <a href="AdminControllerMap?service=activeuser&userid=<%=user.getUserId()%>" onclick="return confirm('Are you sure?');"><button class="btn btn-primary">Active</button></a>
+                                                        <a href="AdminControllerMap?service=activeemployee&empid=<%=emp.getEmployeeId()%>" onclick="return confirm('Are you sure?');"><button class="btn btn-primary">Active</button></a>
                                                         <%}%>
                                                     </td>
                                                 </tr>
@@ -175,7 +177,7 @@
                         search: search,
                         row: row,
                         index: pageNum,
-                        service: "paginguser"
+                        service: "pagingemployee"
                     },
                     success: function (respone) {
                         var text = document.getElementById("user");

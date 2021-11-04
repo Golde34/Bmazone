@@ -66,7 +66,9 @@ public class AdminController extends HttpServlet {
     UserDAO daouser = new UserDAO();
     WareHouseDAO daowarehouse = new WareHouseDAO();
     RoleDAO daorole = new RoleDAO();
+    EmployeeDAO empDAO= new EmployeeDAO();
     TransactionDAO daotransaction = new TransactionDAO();
+
     private static final long serialVersionUID = 1;
 
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
@@ -117,7 +119,9 @@ public class AdminController extends HttpServlet {
             if (service.equalsIgnoreCase("activeuser")) {
                 serviceActiveUser(service, request, response);
             }
+             //</editor-fold>
 
+            // <editor-fold defaultstate="collapsed" desc="Employee service. Click on the + sign on the left to edit the code.">
             if (service.equalsIgnoreCase("employeemanagement")) {
                 serviceEmployeeManagement(service, request, response);
             }
@@ -2649,19 +2653,137 @@ public class AdminController extends HttpServlet {
             );
         }
     }
-    //</editor-fold>
 
+      //</editor-fold>
     // <editor-fold defaultstate="collapsed" desc="Employee methods. Click on the + sign on the left to edit the code.">
     public void serviceEmployeeManagement(String service, HttpServletRequest request, HttpServletResponse response) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        List<Employee> listPaging = empDAO.getAllPagingEmployee(1, 5, "");
+        List<Employee> listEmployee =empDAO.getAllEmployee();
+        int totalPage = listEmployee.size() / 5;
+        if (listEmployee.size() != totalPage * 5) {
+            totalPage += 1;
+        }
+        request.setAttribute("index", 1);
+        request.setAttribute("totalPage", totalPage);
+        request.setAttribute("ListEmployee", listPaging);
+        request.setAttribute("service", service);
+        sendDispatcher(request, response, "admin/employeemanagement.jsp");
+
     }
 
-    public void servicePagingEmployee(String service, HttpServletRequest request, HttpServletResponse response) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    public void servicePagingEmployee(String service, HttpServletRequest request, HttpServletResponse response) throws IOException {
+        PrintWriter pr = response.getWriter();
+        request.setAttribute("service", service);
+        int index = 1, numOfRow = 5;
+        String search = request.getParameter("search");
+        if (request.getParameter("row") != null) {
+            numOfRow = Integer.parseInt(request.getParameter("row"));
+        }
+        if (request.getParameter("index") != null) {
+            index = Integer.parseInt(request.getParameter("index"));
+        }
+        List<Employee> listPaging = empDAO.getAllPagingEmployee(index, numOfRow, search);
+        request.setAttribute("index", index);
+        request.setAttribute("listUser", listPaging);
+        for (Employee emp : listPaging) {
+            pr.print("<tr>"
+                    + "<td>" + emp.getEmployeeId() + " </td>"
+                    + "<td>" + emp.getName() + "</td>"
+                    + "<td>" +emp.getStartDate() + "</td>"
+                    + "<td>" + emp.getSalary() + "</td>"
+                    
+                    + "<td style='white-space: nowrap'><a href=\"AdminControllerMap?service=updateuserdetail&empid=" + emp.getEmployeeId() + "\"><button style='margin-right:4px' class=\"btn btn-primary\">Edit</button></a>");
+            if (emp.getStatus() == 1) {
+                pr.print("<a href=\"AdminControllerMap?service=deleteemployee&empid=" +emp.getEmployeeId() + "\" onclick=\"return confirm('Are you sure?');\"><button class=\"btn btn-primary\">Deactive</button></a>");
+            } else {
+                pr.print("<a href=\"AdminControllerMap?service=activeemployee&empid=" + emp.getEmployeeId()+ "\" onclick=\"return confirm('Are you sure?');\"><button class=\"btn btn-primary\">Active</button></a>");
+            }
+            pr.print("</td>"
+                    + "</tr>"
+            );
+        }
+        if (request.getParameter("row") == null) {
+            sendDispatcher(request, response, "admin/employeemanagement.jsp");
+        }
     }
 
-    public void serviceShowPageEmployee(HttpServletRequest request, HttpServletResponse response) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+  
+    
+
+    public void serviceShowPageEmployee(HttpServletRequest request, HttpServletResponse response) throws IOException {
+        PrintWriter pr = response.getWriter();
+        int index = 1, numOfRow = 5;
+        String search = request.getParameter("search");
+        if (request.getParameter("index") != null) {
+            index = Integer.parseInt(request.getParameter("index"));
+        }
+        if (request.getParameter("row") != null) {
+            numOfRow = Integer.parseInt(request.getParameter("row"));
+        }
+        int totalResult = empDAO.getAllEmployee().size();
+        int totalPage = totalResult / numOfRow;
+        if (totalResult != numOfRow * totalPage) {
+            totalPage += 1;
+        }
+        int prev = index == 1 ? 1 : index - 1;
+        int next = index == totalPage ? totalPage : index + 1;
+        if (totalResult > numOfRow) {
+            pr.print("<li data-repair=\"1\" class=\"page-item\">");
+            pr.print("<a class=\"page-link\" aria-label=\"First\">");
+            pr.print("<span aria-hidden=\"true\"><i class=\"fas fa-backward\"></i>");
+            pr.print("<span class=\"sr-only\">(current)</span> ");
+            pr.print("</span>");
+            pr.print("</a>");
+            pr.print("</li>");
+            pr.print("<li data-repair=\"" + prev + "\" class=\"page-item\">");
+            pr.print("<a class=\"page-link\" aria-label=\"Previous\">");
+            pr.print("<span aria-hidden=\"true\"><i class=\"fas fa-arrow-left\"></i>");
+            pr.print("<span class=\"sr-only\">(current)</span> ");
+            pr.print("</span>");
+            pr.print("</a>");
+            pr.print("</li>");
+            for (int i = 1; i <= totalPage; i++) {
+                if (i < index - 2) {
+                    continue;
+                }
+                if (index < 3) {
+                    if (i > 5) {
+                        break;
+                    }
+                } else {
+                    if (i > index + 2) {
+                        break;
+                    }
+                }
+                if (index == i) {
+                    pr.print("<li  class=\"page-item active\" data-repair=\"" + i + "\">");
+                } else {
+                    pr.print("<li  class=\"page-item\" data-repair=\"" + i + "\">");
+                }
+                pr.print("<a class=\"page-link\">");
+                pr.print("<div class=\"index\">" + i + "</div>");
+                pr.print("<span class=\"sr-only\">(current)</span>");
+                pr.print("</a>");
+                pr.print("</li>");
+            }
+            pr.print("<li data-repair=\"" + next + "\" class=\"page-item\">");
+            pr.print("<a class=\"page-link\" aria-label=\"Next\">");
+            pr.print("<span aria-hidden=\"true\"><i class=\"fas fa-arrow-right\"></i>");
+            pr.print("<span class=\"sr-only\">(current)</span> ");
+            pr.print("</span>");
+            pr.print("</a>");
+            pr.print("</li>");
+            pr.print("<li data-repair=\"" + totalPage + "\" class=\"page-item\">");
+            pr.print("<a class=\"page-link\" aria-label=\"Last\">");
+            pr.print("<span aria-hidden=\"true\"><i class=\"fas fa-forward\"></i>");
+            pr.print("<span class=\"sr-only\">(current)</span> ");
+            pr.print("</span>");
+            pr.print("</a>");
+            pr.print("</li>");
+        }
+        if (request.getParameter("row") == null) {
+            sendDispatcher(request, response, "admin/employeemanagement.jsp");
+        }
     }
     //</editor-fold>
 
