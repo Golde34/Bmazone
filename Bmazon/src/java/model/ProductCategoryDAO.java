@@ -124,7 +124,7 @@ public class ProductCategoryDAO extends BaseDAO {
                 pre.close();
                 conn.close();
             } catch (Exception ex) {
-                Logger.getLogger(CategoryDAO.class.getName()).log(Level.SEVERE, null, ex);
+                Logger.getLogger(ProductCategoryDAO.class.getName()).log(Level.SEVERE, null, ex);
             }
         }
         return proCate;

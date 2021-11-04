@@ -5,11 +5,14 @@
  */
 package controller;
 
+import java.time.format.DateTimeFormatter;
+import java.time.LocalDateTime;
 import APIs.SecurePBKDF2;
 import static APIs.SecurePBKDF2.validatePassword;
 import APIs.SendEmail;
 import entity.Comment;
 import entity.Seller;
+import entity.Transaction;
 import entity.User;
 import java.io.File;
 import java.io.IOException;
@@ -38,6 +41,7 @@ import model.CommentDAO;
 import model.UserDAO;
 import model.DBConnection;
 import model.SellerDAO;
+import model.TransactionDAO;
 import org.apache.commons.fileupload.FileItem;
 import org.apache.commons.fileupload.disk.DiskFileItemFactory;
 import org.apache.commons.fileupload.servlet.ServletFileUpload;
@@ -61,6 +65,8 @@ public class UserController extends HttpServlet {
     UserDAO daoUser = new UserDAO();
     SellerDAO daoSeller = new SellerDAO();
     CommentDAO daoComment = new CommentDAO();
+    TransactionDAO daoTransaction = new TransactionDAO();
+
     private static final long serialVersionUID = 1;
 
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
@@ -426,9 +432,11 @@ public class UserController extends HttpServlet {
         double amount = (double) session.getAttribute("amount");
 
         if (verifyCode.equals(authCode)) {
-            daoUser.depositWalletUser(x, amount);
-            session.setAttribute("currUser", daoUser.getUserById(x.getUserId()));
-            mess = "Deposit Successfully!";
+            DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy/MM/dd HH:mm:ss");
+            LocalDateTime now = LocalDateTime.now();
+            Transaction t = new Transaction(x.getUserId(), amount, dtf.format(now), 1);
+            daoTransaction.insertTransaction(t);
+            mess = "Please wait for acceptance!";
             request.setAttribute("mess", mess);
             sendDispatcher(request, response, "UserControllerMap?service=editWallet");
         } else {
@@ -452,9 +460,11 @@ public class UserController extends HttpServlet {
         double amount = (double) session.getAttribute("amount");
 
         if (verifyCode.equals(authCode)) {
-            daoUser.withdrawalWalletUser(x, amount);
-            request.getSession().setAttribute("currUser", daoUser.getUserById(x.getUserId()));
-            mess = "Withdrawal Successfully!";
+            DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy/MM/dd HH:mm:ss");
+            LocalDateTime now = LocalDateTime.now();
+            Transaction t = new Transaction(x.getUserId(), amount, dtf.format(now), 2);
+            daoTransaction.insertTransaction(t);
+            mess = "Please wait for acceptance!";
             request.setAttribute("mess", mess);
             sendDispatcher(request, response, "UserControllerMap?service=editWallet");
         } else {

@@ -1,3 +1,4 @@
+<%@page import="model.SellerDAO"%>
 <%@page import="java.text.DecimalFormat"%>
 <%@page import="entity.CartItem"%>
 <%@page import="entity.Gallery"%>
@@ -16,6 +17,7 @@
 <c:set var="contextPath" value="${pageContext.request.contextPath}" />
 <%
     DBConnection dbCon = new DBConnection();
+    SellerDAO daoSeller = new SellerDAO();
     CategoryDAO daoCate = new CategoryDAO();
     GenreDAO genDAO = new GenreDAO();
     ArrayList<Category> cateList = daoCate.getAllCategories();
@@ -111,11 +113,12 @@
                                             <% if (x.getSystemRole() == 1) {%>
                                             <li  ><a href="${contextPath}/AdminControllerMap" class="menu-image-title-after"><span >Admin Dashboard</span></a></li>
                                                 <%}%>
-                                             <% if (x.getSystemRole() == 1|| x.getSystemRole()==2) {%>
+                                                <% if (x.getSystemRole() == 2) {%>
                                             <li  ><a href="${contextPath}/EmployeeControllerMap" class="menu-image-title-after"><span>Employee Dashboard</span></a></li>
                                                 <%}%>
-                                                <% if (x.getSell() == 1) { %>
+                                                <% if (x.getSell() == 1) {%>
                                             <li  ><a href="${contextPath}/SellerControllerMap" class="menu-image-title-after"><span >Seller Dashboard</span></a></li>
+                                            <li  ><a href="${contextPath}/HomePageControllerMap?service=shopPage&sid=<%=daoSeller.getSellerByUserID(Integer.parseInt(x.getUserId())).getSellerID()%>" class="menu-image-title-after"><span >Shop Page</span></a></li>
                                                 <%}%>
                                             <li  ><a href="${contextPath}/UserControllerMap?service=account" class="menu-image-title-after"><span >Account</span></a></li>
                                             <li  ><a href="${contextPath}/UserControllerMap?service=info" class="menu-image-title-after"><span >User profile</span></a></li>

@@ -243,7 +243,10 @@ public class RoleDAO extends BaseDAO {
         }
         return isExist;
     }
-
+    public static void main(String[] args) {
+        RoleDAO dao = new RoleDAO();
+                System.out.println(dao.getRoleId(2).getRoleName());
+    }
     public Role getRoleId(int id) {
         Role role = new Role();
         String xSql = "select * from Role where roleID = " + id;
@@ -254,7 +257,7 @@ public class RoleDAO extends BaseDAO {
             if (rs.next()) {;
                 role.setRoleName(rs.getString("roleName"));
                 role.setAdminPermission(rs.getInt("adminPermission"));
-                role.setAdminPermission(rs.getInt("employeePermission"));
+                role.setEmployeePermisson(rs.getInt("employeePermission"));
                 role.setSellerPermission(rs.getInt("sellerPermission"));
                 role.setCustomerPermission(rs.getInt("customerPermission"));
                 role.setStatus(rs.getInt("status"));

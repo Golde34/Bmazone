@@ -202,11 +202,10 @@ FOREIGN KEY (productID) REFERENCES Product (productID)
 CREATE TABLE `Transaction`(
 	transactionID int not null PRIMARY KEY AUTO_INCREMENT,
     userID int not null,
-    pin varchar(25),
     money double,
-	`history` datetime,
+	`history` varchar(255),
     state int,
-    status bit,
+    status int,
     FOREIGN KEY (userID) REFERENCES `User`(userID)
 )
 

@@ -66,6 +66,7 @@ public class AdminController extends HttpServlet {
     UserDAO daouser = new UserDAO();
     WareHouseDAO daowarehouse = new WareHouseDAO();
     RoleDAO daorole = new RoleDAO();
+    TransactionDAO daotransaction = new TransactionDAO();
     private static final long serialVersionUID = 1;
 
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
@@ -147,6 +148,41 @@ public class AdminController extends HttpServlet {
             //Active user
             if (service.equalsIgnoreCase("activeuser")) {
                 serviceActiveUser(service, request, response);
+            }
+            //</editor-fold>
+            
+            // <editor-fold defaultstate="collapsed" desc="Seller service. Click on the + sign on the left to edit the code.">
+            //Seller Management
+            if (service.equalsIgnoreCase("sellermanagement")) {
+                serviceSellerManagement(service, request, response);
+            }
+            //Seller detail to add and update
+            if (service.equalsIgnoreCase("updatesellerdetail") || service.equalsIgnoreCase("addsellerdetail")) {
+                serviceSellerDetail(service, request, response);
+            }
+            //Seller User
+            if (service.equalsIgnoreCase("pagingseller")) {
+                servicePagingSeller(service, request, response);
+            }
+            //Show Page Seller
+            if (service.equalsIgnoreCase("showpageseller")) {
+                serviceShowPageSeller(request, response);
+            }
+            //Add Seller
+            if (service.equalsIgnoreCase("addseller")) {
+                serviceAddSeller(service, request, response);
+            }
+            //Update Seller 
+            if (service.equalsIgnoreCase("updateseller")) {
+                serviceUpdateSeller(service, request, response);
+            }
+            //Delete Seller
+            if (service.equalsIgnoreCase("deleteseller")) {
+                serviceDeleteSeller(service, request, response);
+            }
+            //Active Seller
+            if (service.equalsIgnoreCase("activeseller")) {
+                serviceActiveSeller(service, request, response);
             }
             //</editor-fold>
 
@@ -350,7 +386,7 @@ public class AdminController extends HttpServlet {
                 serviceHandleOrder(service, request, response);
             }
             //</editor-fold>
-
+            
             // <editor-fold defaultstate="collapsed" desc="Seller Response. Click on the + sign on the left to edit the code.">
             //SellerResposne
             if (service.equalsIgnoreCase("sellerResponse")) {
@@ -665,6 +701,269 @@ public class AdminController extends HttpServlet {
     }
 
     public void serviceActiveUser(String service, HttpServletRequest request, HttpServletResponse response) {
+        int id = Integer.parseInt(request.getParameter("userid"));
+        daouser.changeStatus(id, 1);
+        ArrayList<User> listPaging = daouser.getAllPagingUser(1, 5, "");
+        ArrayList<User> listUser = daouser.getAllUser();
+        int totalPage = listUser.size() / 5;
+        if (listUser.size() != totalPage * 5) {
+            totalPage += 1;
+        }
+        request.setAttribute("index", 1);
+        request.setAttribute("totalPage", totalPage);
+        request.setAttribute("listUser", listPaging);
+        request.setAttribute("service", "usermanagement");
+        sendDispatcher(request, response, "admin/usermanagement.jsp");
+    }
+// </editor-fold>
+    
+    // <editor-fold defaultstate="collapsed" desc="Seller methods. Click on the + sign on the left to edit the code.">
+    public void serviceSellerManagement(String service, HttpServletRequest request, HttpServletResponse response) {
+        ArrayList<User> listPaging = daouser.getAllPagingUser(1, 5, "");
+        ArrayList<User> listUser = daouser.getAllUser();
+        int totalPage = listUser.size() / 5;
+        if (listUser.size() != totalPage * 5) {
+            totalPage += 1;
+        }
+        request.setAttribute("index", 1);
+        request.setAttribute("totalPage", totalPage);
+        request.setAttribute("listUser", listPaging);
+        request.setAttribute("service", service);
+        sendDispatcher(request, response, "admin/usermanagement.jsp");
+    }
+
+    public void serviceSellerDetail(String service, HttpServletRequest request, HttpServletResponse response) {
+        request.setAttribute("service", service);
+        if (service.equalsIgnoreCase("adduserdetail")) {
+            sendDispatcher(request, response, "admin/userdetail.jsp");
+            return;
+        }
+        String id = request.getParameter("userid");
+        User user = daouser.getUserById(id);
+        request.setAttribute("user", user);
+        request.setAttribute("service", service);
+        sendDispatcher(request, response, "admin/userdetail.jsp");
+    }
+
+    public void servicePagingSeller(String service, HttpServletRequest request, HttpServletResponse response) throws IOException {
+        PrintWriter pr = response.getWriter();
+        request.setAttribute("service", service);
+        int index = 1, numOfRow = 5;
+        String search = request.getParameter("search");
+        if (request.getParameter("row") != null) {
+            numOfRow = Integer.parseInt(request.getParameter("row"));
+        }
+        if (request.getParameter("index") != null) {
+            index = Integer.parseInt(request.getParameter("index"));
+        }
+        ArrayList<User> listPaging = daouser.getAllPagingUser(index, numOfRow, search);
+        request.setAttribute("index", index);
+        request.setAttribute("listUser", listPaging);
+        for (User user : listPaging) {
+            pr.print("<tr>"
+                    + "<td>" + user.getUsername() + " </td>"
+                    + "<td>" + user.getEmail() + "</td>"
+                    + "<td>" + user.getFullname() + "</td>"
+                    + "<td>" + user.getPhoneNumber() + "</td>"
+                    + "<td>" + user.getAddress() + "</td>"
+                    + "<td style='white-space: nowrap'><a href=\"AdminControllerMap?service=updateuserdetail&userid=" + user.getUserId() + "\"><button style='margin-right:4px' class=\"btn btn-primary\">Edit</button></a>");
+            if (user.getStatus() == 1) {
+                pr.print("<a href=\"AdminControllerMap?service=deleteuser&userid=" + user.getUserId() + "\" onclick=\"return confirm('Are you sure?');\"><button class=\"btn btn-primary\">Deactive</button></a>");
+            } else {
+                pr.print("<a href=\"AdminControllerMap?service=activeuser&userid=" + user.getUserId() + "\" onclick=\"return confirm('Are you sure?');\"><button class=\"btn btn-primary\">Active</button></a>");
+            }
+            pr.print("</td>"
+                    + "</tr>"
+            );
+        }
+        if (request.getParameter("row") == null) {
+            sendDispatcher(request, response, "admin/usermanagement.jsp");
+        }
+    }
+
+    public void serviceShowPageSeller(HttpServletRequest request, HttpServletResponse response) throws IOException {
+        PrintWriter pr = response.getWriter();
+        int index = 1, numOfRow = 5;
+        String search = request.getParameter("search");
+        if (request.getParameter("index") != null) {
+            index = Integer.parseInt(request.getParameter("index"));
+        }
+        if (request.getParameter("row") != null) {
+            numOfRow = Integer.parseInt(request.getParameter("row"));
+        }
+        int totalResult = daouser.getPageNumber(search);
+        int totalPage = totalResult / numOfRow;
+        if (totalResult != numOfRow * totalPage) {
+            totalPage += 1;
+        }
+        int prev = index == 1 ? 1 : index - 1;
+        int next = index == totalPage ? totalPage : index + 1;
+        if (totalResult > numOfRow) {
+            pr.print("<li data-repair=\"1\" class=\"page-item\">");
+            pr.print("<a class=\"page-link\" aria-label=\"First\">");
+            pr.print("<span aria-hidden=\"true\"><i class=\"fas fa-backward\"></i>");
+            pr.print("<span class=\"sr-only\">(current)</span> ");
+            pr.print("</span>");
+            pr.print("</a>");
+            pr.print("</li>");
+            pr.print("<li data-repair=\"" + prev + "\" class=\"page-item\">");
+            pr.print("<a class=\"page-link\" aria-label=\"Previous\">");
+            pr.print("<span aria-hidden=\"true\"><i class=\"fas fa-arrow-left\"></i>");
+            pr.print("<span class=\"sr-only\">(current)</span> ");
+            pr.print("</span>");
+            pr.print("</a>");
+            pr.print("</li>");
+            for (int i = 1; i <= totalPage; i++) {
+                if (i < index - 2) {
+                    continue;
+                }
+                if (index < 3) {
+                    if (i > 5) {
+                        break;
+                    }
+                } else {
+                    if (i > index + 2) {
+                        break;
+                    }
+                }
+                if (index == i) {
+                    pr.print("<li  class=\"page-item active\" data-repair=\"" + i + "\">");
+                } else {
+                    pr.print("<li  class=\"page-item\" data-repair=\"" + i + "\">");
+                }
+                pr.print("<a class=\"page-link\">");
+                pr.print("<div class=\"index\">" + i + "</div>");
+                pr.print("<span class=\"sr-only\">(current)</span>");
+                pr.print("</a>");
+                pr.print("</li>");
+            }
+            pr.print("<li data-repair=\"" + next + "\" class=\"page-item\">");
+            pr.print("<a class=\"page-link\" aria-label=\"Next\">");
+            pr.print("<span aria-hidden=\"true\"><i class=\"fas fa-arrow-right\"></i>");
+            pr.print("<span class=\"sr-only\">(current)</span> ");
+            pr.print("</span>");
+            pr.print("</a>");
+            pr.print("</li>");
+            pr.print("<li data-repair=\"" + totalPage + "\" class=\"page-item\">");
+            pr.print("<a class=\"page-link\" aria-label=\"Last\">");
+            pr.print("<span aria-hidden=\"true\"><i class=\"fas fa-forward\"></i>");
+            pr.print("<span class=\"sr-only\">(current)</span> ");
+            pr.print("</span>");
+            pr.print("</a>");
+            pr.print("</li>");
+        }
+        if (request.getParameter("row") == null) {
+            sendDispatcher(request, response, "admin/usermanagement.jsp");
+        }
+    }
+
+    public void serviceAddSeller(String service, HttpServletRequest request, HttpServletResponse response) {
+        request.setAttribute("service", service);
+        String username = request.getParameter("username");
+        String password = request.getParameter("password");
+        String fullname = request.getParameter("fullname");
+        String email = request.getParameter("email");
+        String phone = request.getParameter("phone");
+        String address = request.getParameter("address");
+        int gender = Integer.parseInt(request.getParameter("gender"));
+        boolean isExist = false;
+        if (daouser.checkExistMail(email) == true
+                || daouser.checkExistPhone(phone) == true
+                || daouser.checkExistUserName(username) == true) {
+            isExist = true;
+        }
+        if (isExist == true) {
+            request.setAttribute("username", username);
+            request.setAttribute("password", password);
+            request.setAttribute("fullname", fullname);
+            request.setAttribute("email", email);
+            request.setAttribute("phone", phone);
+            request.setAttribute("address", address);
+            String mess = "Add fail because duplicate information";
+            request.setAttribute("mess", mess);
+            String state = "fail";
+            request.setAttribute("state", state);
+            request.setAttribute("service", "adduserdetail");
+            sendDispatcher(request, response, "admin/userdetail.jsp");
+        }
+        if (isExist == false) {
+            User user = new User(username, password, email, phone, 0, 0, fullname, "", address, "", "", "", gender, "", "", "", "", "", 0, 0, 1);
+            daouser.addUser(user);
+            ArrayList<User> listPaging = daouser.getAllPagingUser(1, 5, "");
+            String state = "success";
+            request.setAttribute("state", state);
+            request.setAttribute("listUser", listPaging);
+            String mess = "Add successfully";
+            request.setAttribute("mess", mess);
+            request.setAttribute("service", "adduserdetail");
+            sendDispatcher(request, response, "admin/userdetail.jsp");
+        }
+    }
+
+    public void serviceUpdateSeller(String service, HttpServletRequest request, HttpServletResponse response) {
+        request.setAttribute("service", service);
+        String id = request.getParameter("id");
+        User user = daouser.getUserById(id);
+        String username = request.getParameter("username");
+        String password = request.getParameter("password");
+        String fullname = request.getParameter("fullname");
+        String email = request.getParameter("email");
+        String phone = request.getParameter("phone");
+        String address = request.getParameter("address");
+        int gender = Integer.parseInt(request.getParameter("gender"));
+        boolean isExist = false;
+        if ((daouser.checkExistMail(email) && !email.equalsIgnoreCase(user.getEmail()))
+                || (daouser.checkExistPhone(phone) && !phone.equalsIgnoreCase(user.getPhoneNumber()))
+                || (daouser.checkExistUserName(username) && !username.equalsIgnoreCase(user.getUsername()))) {
+            isExist = true;
+        }
+        if (isExist == true) {
+            String state = "fail";
+            request.setAttribute("state", state);
+            String mess = "Update fail because duplicate information";
+            request.setAttribute("mess", mess);
+            request.setAttribute("user", user);
+            request.setAttribute("service", "updateuserdetail");
+            sendDispatcher(request, response, "admin/userdetail.jsp");
+        }
+        if (isExist == false) {
+            user.setUsername(username);
+            user.setPassword(password);
+            user.setFullname(fullname);
+            user.setEmail(email);
+            user.setPhoneNumber(phone);
+            user.setAddress(address);
+            user.setGender(gender);
+            daouser.updateInfoUserByAdmin(user);
+            String state = "success";
+            request.setAttribute("state", state);
+            ArrayList<User> listPaging = daouser.getAllPagingUser(1, 5, "");
+            request.setAttribute("listUser", listPaging);
+            request.setAttribute("user", user);
+            request.setAttribute("service", "updateuserdetail");
+            String mess = "Update successfully";
+            request.setAttribute("mess", mess);
+            sendDispatcher(request, response, "admin/userdetail.jsp");
+        }
+    }
+
+    public void serviceDeleteSeller(String service, HttpServletRequest request, HttpServletResponse response) {
+        int id = Integer.parseInt(request.getParameter("userid"));
+        daouser.changeStatus(id, 0);
+        ArrayList<User> listPaging = daouser.getAllPagingUser(1, 5, "");
+        ArrayList<User> listUser = daouser.getAllUser();
+        int totalPage = listUser.size() / 5;
+        if (listUser.size() != totalPage * 5) {
+            totalPage += 1;
+        }
+        request.setAttribute("index", 1);
+        request.setAttribute("totalPage", totalPage);
+        request.setAttribute("listUser", listPaging);
+        request.setAttribute("service", "usermanagement");
+        sendDispatcher(request, response, "admin/usermanagement.jsp");
+    }
+
+    public void serviceActiveSeller(String service, HttpServletRequest request, HttpServletResponse response) {
         int id = Integer.parseInt(request.getParameter("userid"));
         daouser.changeStatus(id, 1);
         ArrayList<User> listPaging = daouser.getAllPagingUser(1, 5, "");
@@ -2350,6 +2649,7 @@ public class AdminController extends HttpServlet {
             );
         }
     }
+    //</editor-fold>
 
     // <editor-fold defaultstate="collapsed" desc="Employee methods. Click on the + sign on the left to edit the code.">
     public void serviceEmployeeManagement(String service, HttpServletRequest request, HttpServletResponse response) {
