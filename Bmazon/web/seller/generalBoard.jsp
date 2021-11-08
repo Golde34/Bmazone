@@ -75,7 +75,7 @@
                                 <span class="sm-st-icon"><img style="margin-bottom: 10%" src="https://www.pinclipart.com/picdir/middle/524-5249716_dollar-clipart-blue-dollar-blue-transparent-free-for.png" class="img-circle"></span>
                                 <div class="sm-st-info">
                                     <span><%= nf.format(odDAO.totalBenefitBySellerID(seller.getSellerID())) %> VND</span>
-                                    Total Profit
+                                    Total Revenue
                                 </div>
                             </div>
                         </div>

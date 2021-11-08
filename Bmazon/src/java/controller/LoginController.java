@@ -170,17 +170,18 @@ public class LoginController extends HttpServlet {
         String Email = request.getParameter("email");
         String Phone = request.getParameter("phone");
 
-        if (!Password.equals(Repassword)) {
-            request.setAttribute("mess", "Password must be same as repeat password");
-            request.setAttribute("usernameRegis", Username);
-            request.setAttribute("passwordRegis", Password);
-            request.setAttribute("repasswordRegis", Repassword);
-            request.setAttribute("fullnameRegis", fullname);
-            request.setAttribute("emailRegis", Email);
-            request.setAttribute("phoneRegis", Phone);
-            request.getRequestDispatcher("loginAndSecurity/register.jsp").include(request, response);
-            return;
-        }
+//        if (!Password.equals(Repassword)) {
+//            request.setAttribute("mess", "Password must be same as repeat password");
+//            request.setAttribute("usernameRegis", Username);
+//            request.setAttribute("passwordRegis", Password);
+//            request.setAttribute("repasswordRegis", Repassword);
+//            request.setAttribute("fullnameRegis", fullname);
+//            request.setAttribute("emailRegis", Email);
+//            request.setAttribute("phoneRegis", Phone);
+//            request.getRequestDispatcher("loginAndSecurity/register.jsp").include(request, response);
+//            return;
+//        }
+
         boolean isExist = false;
         if (daoUser.checkExistUserName(Username) == true) {
             messRegis = "Duplicate username!";
