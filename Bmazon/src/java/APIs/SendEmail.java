@@ -20,6 +20,7 @@ import javax.mail.Transport;
 import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeMessage;
 import static APIs.Editor.addTable;
+import static APIs.Editor.tableRegis;
 import java.io.UnsupportedEncodingException;
 import javax.mail.MessagingException;
 
@@ -90,7 +91,7 @@ public class SendEmail {
                 //set email subject
                 msg.setSubject("User Email Verification from Bmazon");
                 //set message text
-                msg.setText("Hello, " + username + ". Please verify your account using this code: " + code);
+                msg.setContent(tableRegis(username, code), "text/html; charset=UTF-8");
             } else if (option.equals("editwallet")) {
                 msg.setSubject("Wallet Request Verification from Bmazon");
                 msg.setText("Please verify your request using this code: " + code);

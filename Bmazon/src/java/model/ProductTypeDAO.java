@@ -681,12 +681,13 @@ public class ProductTypeDAO extends BaseDAO {
     public ArrayList<ProductType> getAllPagingProductType(int index, int numOfRow, String search, String pid) {
         int start=(index-1)*numOfRow;
         ArrayList<ProductType> list = new ArrayList<>();
-        String xSql= "select * from producttype where productID like'%%' limit ?,?";
+        String xSql= "select * from producttype where productID = ? limit ?,?";
         try {
             conn=new DBConnection().getConnection();
             pre=conn.prepareStatement(xSql);
-            pre.setInt(1, start);
-            pre.setInt(2, numOfRow);
+            pre.setString(1, pid);
+            pre.setInt(2, start);
+            pre.setInt(3, numOfRow);
             rs=pre.executeQuery();
             while(rs.next()){
                 ProductType pt = new ProductType();

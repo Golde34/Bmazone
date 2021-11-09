@@ -4,6 +4,7 @@
     Author     : DELL
 --%>
 
+<%@page import="java.text.SimpleDateFormat"%>
 <%@page import="entity.Gallery"%>
 <%@page import="model.GalleryDAO"%>
 <%@page import="entity.WareHouse"%>
