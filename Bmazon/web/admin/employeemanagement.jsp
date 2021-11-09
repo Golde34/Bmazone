@@ -48,7 +48,7 @@
                                 <div class="card-body px-0 pb-2">
                                     <div class="card-header py-3 d-flex justify-content-between">
                                         <h3 class="m-0 font-weight-bold text-primary">User Management</h3>
-                                        <a href="AdminControllerMap?service=addemployee">
+                                        <a href="AdminControllerMap?service=addemployeedetail">
                                             <button class="btn-primary btn">Add New Employee</button></a>
                                     </div>
                                     <div class="card-body">

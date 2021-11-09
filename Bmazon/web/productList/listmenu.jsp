@@ -24,7 +24,7 @@
 <%
     List<Product> ListProduct = (List<Product>) request.getAttribute("listP");
     CategoryDAO daoCate = new CategoryDAO();
-    List<Category> ListCate = daoCate.getTrueCategories();
+    List<Category> ListCate = daoCate.getAllCategories();
     GenreDAO genDAO = new GenreDAO();
     ProductDAO proDAO = new ProductDAO();
     GalleryDAO gallDAO = new GalleryDAO();

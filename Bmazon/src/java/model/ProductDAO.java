@@ -528,6 +528,43 @@ public class ProductDAO extends BaseDAO {
         }
         return list;
     }
+    public ArrayList<Product> getProductSuggest(int index,int userid) {
+
+        ArrayList<Product> list = new ArrayList<>();
+         int start = (index - 1) * 10;
+   
+        String sql = "select p.productId,p.productname,`description`,rating,releaseDate,sellerID,status from  productview as  pv right join product as p on pv.productid= p.productid and userid = " + userid
+                + " order by click desc limit ?,20 ";
+        try {
+            conn = new DBConnection().getConnection();
+            pre = conn.prepareStatement(sql);
+            pre.setInt(1, start);
+            rs = pre.executeQuery();
+            while (rs.next()) {
+                Product pro = new Product();
+                pro.setProductID(rs.getInt("productID"));
+                pro.setProductName(rs.getString("productName"));
+                pro.setDescription(rs.getString("description"));
+                pro.setRating(rs.getInt("rating"));
+                pro.setReleaseDate(rs.getDate("releaseDate"));
+                pro.setSeller(rs.getInt("sellerID"));
+                pro.setStatus(rs.getInt("status"));
+                list.add(pro);
+            }
+
+        } catch (Exception e) {
+            Logger.getLogger(ProductDAO.class.getName()).log(Level.SEVERE, null, e);
+        } finally {
+            try {
+                rs.close();
+                pre.close();
+                conn.close();
+            } catch (Exception ex) {
+                Logger.getLogger(CategoryDAO.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
+        return list;
+    }
 
     public Product getProductByID(int id) {
         Product pro = new Product();
@@ -696,15 +733,7 @@ public class ProductDAO extends BaseDAO {
         return count;
     }
 
-    public static void main(String[] args) {
-        ProductDAO pd = new ProductDAO();
-        String[] cate = {"1", "2", "3"};
-        //List<Product> x = pd.getProductByName(1, "", cate);
-//        for (Product product : x) {
-//            System.out.println(product);
-//        }
-
-    }
+  
 
     public ArrayList<Product> getProductByName(int index, String name) {
         ArrayList<Product> list = new ArrayList<>();
@@ -798,11 +827,56 @@ public class ProductDAO extends BaseDAO {
         }
         return list;
     }
+      public static void main(String[] args) {
+        ProductDAO pd = new ProductDAO();
+          System.out.println(pd.getProductSuggest(1, 1));
+        //List<Product> x = pd.getProductByName(1, "", cate);
+//        for (Product product : x) {
+//            System.out.println(product);
+//        }
 
-    public ArrayList<Product> getProductByCategory(int categoryID) {
+    }
+   
+
+    public ArrayList<Product> getProductByCategory(int categoryID,int page) {
         ArrayList<Product> list = new ArrayList<>();
-        String sql = "SELECT * FROM Product as a join ProductCategory as b on a.productID=b.productID \n"
-                + "WHERE a.status=1 and b.categoryId=" + categoryID;
+        int start=( page - 1 )* 20 ;
+        String sql = " SELECT * FROM Product as a join ProductCategory as b on a.productID=b.productID \n"
+                + " WHERE a.status=1 and b.categoryId ="+categoryID+" limit "+start+", 20 ";
+        try {
+            conn = new DBConnection().getConnection();
+            pre = conn.prepareStatement(sql);
+            rs = pre.executeQuery();
+            while (rs.next()) {
+                Product pro = new Product();
+                pro.setProductID(rs.getInt("productID"));
+                pro.setProductName(rs.getString("productName"));
+                pro.setDescription(rs.getString("description"));
+                pro.setRating(rs.getInt("rating"));
+                pro.setReleaseDate(rs.getDate("releaseDate"));
+                pro.setSeller(rs.getInt("sellerID"));
+                pro.setStatus(rs.getInt("status"));
+                list.add(pro);
+            }
+
+        } catch (Exception e) {
+            Logger.getLogger(ProductDAO.class.getName()).log(Level.SEVERE, null, e);
+        } finally {
+            try {
+                rs.close();
+                pre.close();
+                conn.close();
+            } catch (Exception ex) {
+                Logger.getLogger(CategoryDAO.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
+        return list;
+    }
+     public ArrayList<Product> getProductByGenre(int categoryID,int page) {
+        ArrayList<Product> list = new ArrayList<>();
+        int start=( page - 1 )* 20 ;
+        String sql = " SELECT * FROM Product as a join ProductGenre as b on a.productID=b.productID \n"
+                + " WHERE a.status=1 and b.genreId ="+categoryID+" limit "+start+", 20 ";
         try {
             conn = new DBConnection().getConnection();
             pre = conn.prepareStatement(sql);
@@ -833,9 +907,44 @@ public class ProductDAO extends BaseDAO {
         return list;
     }
 
-    public ArrayList<Product> getProductByGenre(int genreID) {
+    public ArrayList<Product> getProductBycate(int categoryID ) {
         ArrayList<Product> list = new ArrayList<>();
-        String sql = "SELECT * FROM Product as a join ProductGenre as b on a.productID=b.productID WHERE a.status=1 and b.genreID=" + genreID;
+        String sql = "SELECT * FROM Product as a join ProductCategory as b on a.productID=b.productID \n"
+                + "WHERE a.status=1 and b.categoryId=" + categoryID ;
+
+        try {
+            conn = new DBConnection().getConnection();
+            pre = conn.prepareStatement(sql);
+            rs = pre.executeQuery();
+            while (rs.next()) {
+                Product pro = new Product();
+                pro.setProductID(rs.getInt("productID"));
+                pro.setProductName(rs.getString("productName"));
+                pro.setDescription(rs.getString("description"));
+                pro.setRating(rs.getInt("rating"));
+                pro.setReleaseDate(rs.getDate("releaseDate"));
+                pro.setSeller(rs.getInt("sellerID"));
+                pro.setStatus(rs.getInt("status"));
+                list.add(pro);
+            }
+
+        } catch (Exception e) {
+            Logger.getLogger(ProductDAO.class.getName()).log(Level.SEVERE, null, e);
+        } finally {
+            try {
+                rs.close();
+                pre.close();
+                conn.close();
+            } catch (Exception ex) {
+                Logger.getLogger(CategoryDAO.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
+        return list;
+    }
+      public ArrayList<Product> getProductByGenre(int genreID ) {
+        ArrayList<Product> list = new ArrayList<>();
+        String sql = "SELECT * FROM Product as a join ProductGenre as b on a.productID=b.productID \n"
+                + "WHERE a.status=1 and b.genreId=" + genreID ;
 
         try {
             conn = new DBConnection().getConnection();
