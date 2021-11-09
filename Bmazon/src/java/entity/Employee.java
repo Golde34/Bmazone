@@ -33,6 +33,24 @@ public class Employee {
         this.status = status;
     }
 
+    public Employee(int userId, String name, Date startDate, double salary, String avatar, int status) {
+        this.userId = userId;
+        this.name = name;
+        this.startDate = startDate;
+        this.salary = salary;
+        this.avatar = avatar;
+        this.status = status;
+    }
+
+    public Employee(int userId, String name, double salary, String avatar, int status) {
+        this.userId = userId;
+        this.name = name;
+        this.salary = salary;
+        this.avatar = avatar;
+        this.status = status;
+    }
+    
+
     public int getEmployeeId() {
         return employeeId;
     }

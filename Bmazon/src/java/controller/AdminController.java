@@ -66,7 +66,7 @@ public class AdminController extends HttpServlet {
     UserDAO daouser = new UserDAO();
     WareHouseDAO daowarehouse = new WareHouseDAO();
     RoleDAO daorole = new RoleDAO();
-    EmployeeDAO empDAO= new EmployeeDAO();
+    EmployeeDAO empDAO = new EmployeeDAO();
     TransactionDAO daotransaction = new TransactionDAO();
 
     private static final long serialVersionUID = 1;
@@ -119,42 +119,42 @@ public class AdminController extends HttpServlet {
             if (service.equalsIgnoreCase("activeuser")) {
                 serviceActiveUser(service, request, response);
             }
-             //</editor-fold>
+            //</editor-fold>
 
             // <editor-fold defaultstate="collapsed" desc="Employee service. Click on the + sign on the left to edit the code.">
             if (service.equalsIgnoreCase("employeemanagement")) {
                 serviceEmployeeManagement(service, request, response);
             }
-//            //User detail to add and update
-//            if (service.equalsIgnoreCase("updateemployeedetail") || service.equalsIgnoreCase("addemployeedetail")) {
-//                serviceEmployeeDetail(service, request, response);
-//            }
-            //Paging User
+//            //Employee detail to add and update
+            if (service.equalsIgnoreCase("updateemployeedetail") || service.equalsIgnoreCase("addemployeedetail")) {
+                serviceEmployeeDetail(service, request, response);
+            }
+            //Paging Employee
             if (service.equalsIgnoreCase("pagingemployee")) {
                 servicePagingEmployee(service, request, response);
             }
-            //Show Page User
+            //Show Page Employee
             if (service.equalsIgnoreCase("showpageemployee")) {
                 serviceShowPageEmployee(request, response);
             }
-            //Add user
-//            if (service.equalsIgnoreCase("adduser")) {
-//                serviceAddEmployee(service, request, response);
-//            }
-            //Update User 
-//            if (service.equalsIgnoreCase("updateuser")) {
-//                serviceUpdateUser(service, request, response);
-//            }
-//            //Delete user
-//            if (service.equalsIgnoreCase("deleteuser")) {
-//                serviceDeleteUser(service, request, response);
-            // }
-            //Active user
-            if (service.equalsIgnoreCase("activeuser")) {
-                serviceActiveUser(service, request, response);
+//            Add Employee
+            if (service.equalsIgnoreCase("addemployee")) {
+                serviceAddEmployee(service, request, response);
+            }
+//            Update Employee
+            if (service.equalsIgnoreCase("updateemployee")) {
+                serviceUpdateEmployee(service, request, response);
+            }
+//            Delete Employee
+            if (service.equalsIgnoreCase("deleteemployee")) {
+                serviceDeleteEmployee(service, request, response);
+            }
+//            Active Employee
+            if (service.equalsIgnoreCase("activeemployee")) {
+                serviceActiveEmployee(service, request, response);
             }
             //</editor-fold>
-            
+
             // <editor-fold defaultstate="collapsed" desc="Seller service. Click on the + sign on the left to edit the code.">
             //Seller Management
             if (service.equalsIgnoreCase("sellermanagement")) {
@@ -386,7 +386,7 @@ public class AdminController extends HttpServlet {
                 serviceHandleOrder(service, request, response);
             }
             //</editor-fold>
-            
+
             // <editor-fold defaultstate="collapsed" desc="Seller Response. Click on the + sign on the left to edit the code.">
             //SellerResposne
             if (service.equalsIgnoreCase("sellerResponse")) {
@@ -716,7 +716,7 @@ public class AdminController extends HttpServlet {
         sendDispatcher(request, response, "admin/usermanagement.jsp");
     }
 // </editor-fold>
-    
+
     // <editor-fold defaultstate="collapsed" desc="Seller methods. Click on the + sign on the left to edit the code.">
     public void serviceSellerManagement(String service, HttpServletRequest request, HttpServletResponse response) {
         ArrayList<Seller> listPaging = daoseller.getAllPagingSeller(1, 5, "");
@@ -2595,12 +2595,14 @@ public class AdminController extends HttpServlet {
         }
     }
 
+
       //</editor-fold>
     
+
     // <editor-fold defaultstate="collapsed" desc="Employee methods. Click on the + sign on the left to edit the code.">
     public void serviceEmployeeManagement(String service, HttpServletRequest request, HttpServletResponse response) {
         List<Employee> listPaging = empDAO.getAllPagingEmployee(1, 5, "");
-        List<Employee> listEmployee =empDAO.getAllEmployee();
+        List<Employee> listEmployee = empDAO.getAllEmployee();
         int totalPage = listEmployee.size() / 5;
         if (listEmployee.size() != totalPage * 5) {
             totalPage += 1;
@@ -2631,14 +2633,13 @@ public class AdminController extends HttpServlet {
             pr.print("<tr>"
                     + "<td>" + emp.getEmployeeId() + " </td>"
                     + "<td>" + emp.getName() + "</td>"
-                    + "<td>" +emp.getStartDate() + "</td>"
+                    + "<td>" + emp.getStartDate() + "</td>"
                     + "<td>" + emp.getSalary() + "</td>"
-                    
-                    + "<td style='white-space: nowrap'><a href=\"AdminControllerMap?service=updateuserdetail&empid=" + emp.getEmployeeId() + "\"><button style='margin-right:4px' class=\"btn btn-primary\">Edit</button></a>");
+                    + "<td style='white-space: nowrap'><a href=\"AdminControllerMap?service=updateemployeedetail&empid=" + emp.getEmployeeId() + "\"><button style='margin-right:4px' class=\"btn btn-primary\">Edit</button></a>");
             if (emp.getStatus() == 1) {
-                pr.print("<a href=\"AdminControllerMap?service=deleteemployee&empid=" +emp.getEmployeeId() + "\" onclick=\"return confirm('Are you sure?');\"><button class=\"btn btn-primary\">Deactive</button></a>");
+                pr.print("<a href=\"AdminControllerMap?service=deleteemployee&empid=" + emp.getEmployeeId() + "\" onclick=\"return confirm('Are you sure?');\"><button class=\"btn btn-primary\">Deactive</button></a>");
             } else {
-                pr.print("<a href=\"AdminControllerMap?service=activeemployee&empid=" + emp.getEmployeeId()+ "\" onclick=\"return confirm('Are you sure?');\"><button class=\"btn btn-primary\">Active</button></a>");
+                pr.print("<a href=\"AdminControllerMap?service=activeemployee&empid=" + emp.getEmployeeId() + "\" onclick=\"return confirm('Are you sure?');\"><button class=\"btn btn-primary\">Active</button></a>");
             }
             pr.print("</td>"
                     + "</tr>"
@@ -2648,9 +2649,6 @@ public class AdminController extends HttpServlet {
             sendDispatcher(request, response, "admin/employeemanagement.jsp");
         }
     }
-
-  
-    
 
     public void serviceShowPageEmployee(HttpServletRequest request, HttpServletResponse response) throws IOException {
         PrintWriter pr = response.getWriter();
@@ -2726,6 +2724,176 @@ public class AdminController extends HttpServlet {
         if (request.getParameter("row") == null) {
             sendDispatcher(request, response, "admin/employeemanagement.jsp");
         }
+    }
+
+    public void serviceAddEmployee(String service, HttpServletRequest request, HttpServletResponse response) {
+        request.setAttribute("service", service);
+        String username = request.getParameter("username");
+        String password = request.getParameter("password");
+        String email = request.getParameter("email");
+        String phone = request.getParameter("phone");
+        String address = request.getParameter("address");
+        int gender = Integer.parseInt(request.getParameter("gender"));
+        String employeename = request.getParameter("employeename");
+        String salary = request.getParameter("salary");
+
+        boolean isExist = false;
+        if (daouser.checkExistMail(email) == true
+                || daouser.checkExistPhone(phone) == true
+                || daouser.checkExistUserName(username) == true) {
+            isExist = true;
+        }
+        if (isExist == true) {
+            request.setAttribute("username", username);
+            request.setAttribute("password", password);
+            request.setAttribute("email", email);
+            request.setAttribute("phone", phone);
+            request.setAttribute("address", address);
+            request.setAttribute("employeename", employeename);
+            request.setAttribute("salary", salary);
+            String mess = "Add fail because duplicate information";
+            request.setAttribute("mess", mess);
+            String state = "fail";
+            request.setAttribute("state", state);
+            request.setAttribute("service", "adduserdetail");
+            sendDispatcher(request, response, "admin/employeedetail.jsp");
+        }
+        if (isExist == false) {
+            User user = new User(username, password, email, phone, 0, 0, employeename, "", address, "", "", "", gender, "", "", "", "", "", 0, 2, 1);
+            daouser.addUser(user);
+            User ue = daouser.getUserByUsername(username);
+            NumberFormat format = NumberFormat.getInstance(Locale.US);
+            Number cost = 0, date = 0;
+            try {
+                cost = format.parse(salary);
+
+            } catch (ParseException e) {
+                e.printStackTrace();
+            }
+            String unitCostTemp = String.valueOf(cost);
+            Employee emp = new Employee(Integer.parseInt(ue.getUserId()), employeename, Double.parseDouble(unitCostTemp), "link", 1);
+            empDAO.addEmployee(emp);
+            List<Employee> liste = empDAO.getAllPagingEmployee(1, 5, "");
+            request.setAttribute("listEmployee", liste);
+            request.setAttribute("employee", emp);
+            String mess = "Update successfully";
+            request.setAttribute("mess", mess);
+            request.setAttribute("service", "addemployeedetail");
+            sendDispatcher(request, response, "admin/employeedetail.jsp");
+        }
+    }
+
+    public void serviceEmployeeDetail(String service, HttpServletRequest request, HttpServletResponse response) {
+        request.setAttribute("service", service);
+        if (service.equalsIgnoreCase("addemployeedetail")) {
+            sendDispatcher(request, response, "admin/employeedetail.jsp");
+            return;
+        }
+        String id = request.getParameter("empid");
+        Employee emp = empDAO.getEmployeeID(id);
+        String uid = String.valueOf(emp.getUserId());
+        request.setAttribute("user", daouser.getUserById(uid));
+        request.setAttribute("employee", emp);
+        sendDispatcher(request, response, "admin/employeedetail.jsp");
+    }
+
+    public void serviceUpdateEmployee(String service, HttpServletRequest request, HttpServletResponse response) {
+        request.setAttribute("service", service);
+        String id = request.getParameter("empid");
+        Employee emp = empDAO.getEmployeeID(id);
+        String uid = String.valueOf(emp.getUserId());
+        User user = daouser.getUserById(uid);
+        String username = request.getParameter("username");
+        String password = request.getParameter("password");
+        String email = request.getParameter("email");
+        String phone = request.getParameter("phone");
+        String address = request.getParameter("address");
+        int gender = Integer.parseInt(request.getParameter("gender"));
+        String employeename = request.getParameter("employeename");
+        String salary = request.getParameter("salary");
+        String startdate = request.getParameter("startdate");
+        boolean isExist = false;
+        if ((daouser.checkExistMail(email) && !email.equalsIgnoreCase(user.getEmail()))
+                || (daouser.checkExistPhone(phone) && !phone.equalsIgnoreCase(user.getPhoneNumber()))) {
+            isExist = true;
+        }
+        if (isExist == true) {
+            String state = "fail";
+            request.setAttribute("state", state);
+            String mess = "Update fail because duplicate information";
+            request.setAttribute("mess", mess);
+            request.setAttribute("user", user);
+            request.setAttribute("employee", emp);
+            request.setAttribute("service", "updateemployeedetail");
+            sendDispatcher(request, response, "admin/employeedetail.jsp");
+        }
+        if (isExist == false) {
+            NumberFormat format = NumberFormat.getInstance(Locale.US);
+            Number cost = 0, date = 0;
+            try {
+                cost = format.parse(salary);
+
+            } catch (ParseException e) {
+                e.printStackTrace();
+            }
+            String unitCostTemp = String.valueOf(cost);
+
+            user.setUsername(username);
+            user.setPassword(password);
+            user.setFullname(employeename);
+            user.setEmail(email);
+            user.setPhoneNumber(phone);
+            user.setAddress(address);
+            user.setGender(gender);
+            emp.setName(employeename);
+            emp.setSalary(Double.parseDouble(unitCostTemp));
+            emp.setStartDate(Date.valueOf(startdate));
+
+            daouser.updateInfoUserByAdmin(user);
+            empDAO.editEmployee(emp);
+            String state = "success";
+            List<Employee> liste = empDAO.getAllPagingEmployee(1, 5, "");
+            request.setAttribute("listEmployee", liste);
+            request.setAttribute("employee", emp);
+            String mess = "Update successfully";
+            request.setAttribute("mess", mess);
+            request.setAttribute("service", "updateemployeedetail");
+            sendDispatcher(request, response, "admin/employeedetail.jsp");
+        }
+    }
+
+    public void serviceActiveEmployee(String service, HttpServletRequest request, HttpServletResponse response) {
+        String id = request.getParameter("empid");
+        empDAO.changeStatus(Integer.parseInt(id), 1);
+        sendDispatcher(request, response, "admin/employeemanagement.jsp");
+        List<Employee> listPaging = empDAO.getAllPagingEmployee(1, 5, "");
+        List<Employee> listEmployee = empDAO.getAllEmployee();
+        int totalPage = listEmployee.size() / 5;
+        if (listEmployee.size() != totalPage * 5) {
+            totalPage += 1;
+        }
+        request.setAttribute("index", 1);
+        request.setAttribute("totalPage", totalPage);
+        request.setAttribute("ListEmployee", listPaging);
+        request.setAttribute("service", service);
+        sendDispatcher(request, response, "admin/employeemanagement.jsp");
+    }
+
+    public void serviceDeleteEmployee(String service, HttpServletRequest request, HttpServletResponse response) {
+        String id = request.getParameter("empid");
+        empDAO.changeStatus(Integer.parseInt(id), 0);
+        sendDispatcher(request, response, "admin/employeemanagement.jsp");
+        List<Employee> listPaging = empDAO.getAllPagingEmployee(1, 5, "");
+        List<Employee> listEmployee = empDAO.getAllEmployee();
+        int totalPage = listEmployee.size() / 5;
+        if (listEmployee.size() != totalPage * 5) {
+            totalPage += 1;
+        }
+        request.setAttribute("index", 1);
+        request.setAttribute("totalPage", totalPage);
+        request.setAttribute("ListEmployee", listPaging);
+        request.setAttribute("service", service);
+        sendDispatcher(request, response, "admin/employeemanagement.jsp");
     }
     //</editor-fold>
 

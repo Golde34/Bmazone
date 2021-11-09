@@ -105,8 +105,15 @@ public class HomePageController extends HttpServlet {
     }
 
     public void serviceList(HttpServletRequest request, HttpServletResponse response) {
+        User x = (User) request.getSession().getAttribute("currUser");
+        int id=0;
+        if (x!=null) {
+            id=Integer.parseInt(x.getUserId());
+        }
+        
+        
         int count = proDAO.totalProduct();
-        int size = 24;
+        int size = 20;
         int total = count / size;
         int page, end;
         String pageString = request.getParameter("page");
@@ -127,6 +134,13 @@ public class HomePageController extends HttpServlet {
             end = total;
             begin = total - 2;
         }
+         if (total>2) {
+             end = total;
+            begin = total - 2;
+        } else{
+           end=2;
+           begin=1;               
+        }
         if (page == 1) {
             request.setAttribute("next", next);
         } else if (page == total) {
@@ -135,7 +149,8 @@ public class HomePageController extends HttpServlet {
             request.setAttribute("next", next);
             request.setAttribute("previous", previous);
         }
-        List<Product> ListP = proDAO.getTrueProduct(page);
+        
+        List<Product> ListP = proDAO.getProductSuggest(page,id );
         request.setAttribute("end", end);
         request.setAttribute("href", "list");
         request.setAttribute("begin", begin);
@@ -147,25 +162,112 @@ public class HomePageController extends HttpServlet {
 
     public void serviceByCate(HttpServletRequest request, HttpServletResponse response) {
         int id = Integer.parseInt(request.getParameter("cid"));
-        List<Product> ListP = proDAO.getProductByCategory(id);
+        int count = proDAO.getProductBycate(id).size();
+        int size = 24;
+        int total = count / size;
+        int page, end;
+        String pageString = request.getParameter("page");
+        if (pageString == null) {
+            page = 1;
+        } else {
+            page = Integer.parseInt(pageString);
+        }
+        int begin = page;
+        String previous = "  <li><a class='' href=" + "HomePageControllerMap?service=ByCate&page=" + (page - 1) + ">P</a></li>";
+        String next = "  <li><a class='' href=" + "HomePageControllerMap?service=ByCate&page=" + (page + 1) + ">N</a></li>";
+        if (count % size != 0) {
+            total += 1;
+        }
+        if (page <= total - 2) {
+            end = page + 2;
+        } 
+        if (total>2) {
+             end = total;
+            begin = total - 2;
+        } else{
+           end=2;
+           begin=1;               
+        }
+ 
+        
+        if (page == 1) {
+            request.setAttribute("next", next);
+        } else if (page == total) {
+            request.setAttribute("previous", previous);
+        } else {
+            request.setAttribute("next", next);
+            request.setAttribute("previous", previous);
+        }
+        
+        List<Product> ListP = proDAO.getProductByCategory(id,page);
+        request.setAttribute("end", end);
+        request.setAttribute("href", "ByCate&id="+id);
+        request.setAttribute("begin", begin);
+        request.setAttribute("listP", ListP);
+        request.setAttribute("count", count);
         String address;
         address = "<a href=" + "HomePageControllerMap?service=ByCate&cid=" + id + ">" + cateDAO.getCategoryById(id) + "  </a> <span class=" + "divider" + ">&#47;</span>";
         request.setAttribute("address", address);
-        request.setAttribute("listP", ListP);
         sendDispatcher(request, response, "productList/list.jsp");
 
     }
 
     public void serviceByGenre(HttpServletRequest request, HttpServletResponse response) {
         int id = Integer.parseInt(request.getParameter("gid"));
-        List<Product> ListP = proDAO.getProductByGenre(id);
-        String address;
-        address = "<a href=" + "HomePageControllerMap?service=ByCate&cid=" + genDAO.getGenreById(id).getCategoryID() + ">" + cateDAO.getCategoryById(genDAO.getGenreById(id).getCategoryID()) + "  </a> <span class=" + "divider" + ">&#47;</span>";
+        int count = proDAO.getProductByGenre(id).size();
+        int size = 24;
+        int total = count / size;
+        int page, end;
+        String pageString = request.getParameter("page");
+        if (pageString == null) {
+            page = 1;
+        } else {
+            page = Integer.parseInt(pageString);
+        }
+        int begin = page;
+        String previous = "  <li><a class='' href=" + "HomePageControllerMap?service=ByCate&page=" + (page - 1) + ">P</a></li>";
+        String next = "  <li><a class='' href=" + "HomePageControllerMap?service=ByCate&page=" + (page + 1) + ">N</a></li>";
+        if (count % size != 0) {
+            total += 1;
+        }
+        if (page <= total - 2) {
+            end = page + 2;
+        } 
+        if (total>2) {
+             end = total;
+            begin = total - 2;
+        } else{
+           end=2;
+           begin=1;               
+        }
+ 
+        
+        if (page == 1) {
+            request.setAttribute("next", next);
+        } else if (page == total) {
+            request.setAttribute("previous", previous);
+        } else {
+            request.setAttribute("next", next);
+            request.setAttribute("previous", previous);
+        }
+        
+        List<Product> ListP = proDAO.getProductByGenre(id,page);
+        request.setAttribute("end", end);
+        request.setAttribute("href", "ByGenre&id="+id);
+        request.setAttribute("begin", begin);
+        request.setAttribute("listP", ListP);
+         String address;
+         address = "<a href=" + "HomePageControllerMap?service=ByCate&cid=" + genDAO.getGenreById(id).getCategoryID() + ">" + cateDAO.getCategoryById(genDAO.getGenreById(id).getCategoryID()) + "  </a> <span class=" + "divider" + ">&#47;</span>";
 
         address += "<a href=" + "HomePageControllerMap?service=ByGenre&gid=" + id + ">" + genDAO.getGenreById(id).getGenreName() + "  </a> <span class=" + "divider" + ">&#47;</span>";
         request.setAttribute("address", address);
-        request.setAttribute("listP", ListP);
+        request.setAttribute("count", count);
         sendDispatcher(request, response, "productList/list.jsp");
+
+       
+        
+      
+       
 
     }
 
