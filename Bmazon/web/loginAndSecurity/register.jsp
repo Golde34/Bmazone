@@ -49,7 +49,7 @@
                            value="${passwordRegis}" class="form-control" data-type="password" required autofocus="">
 
                     <label for="pass" class="label">Repeat Password</label> 
-                    <input id="repassword" oninput="check(this)" type="password" pattern="^\S+$" name="resignuppass" value="${repasswordRegis}" class="form-control" placeholder="Repeat Password" data-type="password"required autofocus="" >
+                    <input id="repassword" oninput="check(this)" type="password" name="resignuppass" value="${repasswordRegis}" class="form-control" placeholder="Repeat Password" data-type="password"required autofocus="" >
 
                     <br>
 
@@ -80,7 +80,7 @@
     <script src="/script.js"></script>
     <script language='javascript' type='text/javascript'>
         function check(input) {
-            if (input.value != document.getElementById('password').value) {
+            if (input.value != document.getElementById('pass').value) {
                 input.setCustomValidity('Password Must be Matching.');
             } else {
                 // input is valid -- reset the error message

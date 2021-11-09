@@ -10,6 +10,7 @@ import java.time.LocalDateTime;
 import APIs.SecurePBKDF2;
 import static APIs.SecurePBKDF2.validatePassword;
 import APIs.SendEmail;
+import entity.Category;
 import entity.Comment;
 import entity.Seller;
 import entity.Transaction;
@@ -24,6 +25,7 @@ import java.nio.file.Paths;
 import java.security.NoSuchAlgorithmException;
 import java.security.spec.InvalidKeySpecException;
 import java.sql.Date;
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -37,6 +39,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
+import model.CategoryDAO;
 import model.CommentDAO;
 import model.UserDAO;
 import model.DBConnection;
@@ -66,6 +69,7 @@ public class UserController extends HttpServlet {
     SellerDAO daoSeller = new SellerDAO();
     CommentDAO daoComment = new CommentDAO();
     TransactionDAO daoTransaction = new TransactionDAO();
+    CategoryDAO daoCategory = new CategoryDAO();
 
     private static final long serialVersionUID = 1;
 
@@ -164,6 +168,21 @@ public class UserController extends HttpServlet {
             //withdrawal wallet
             if (service.equalsIgnoreCase("withdrawal")) {
                 serviceWithdrawal(request, response);
+            }
+
+            //history transaction
+            if (service.equalsIgnoreCase("historyTransaction")) {
+                serviceHistoryTransaction(service, request, response);
+            }
+
+            //paging history transaction
+            if (service.equalsIgnoreCase("pagingtransaction")) {
+                servicePagingTransaction(service, request, response);
+            }
+
+            //show page history transaction
+            if (service.equalsIgnoreCase("showpagetransaction")) {
+                serviceShowPageTransaction(service, request, response);
             }
 
             //Turn on seller feature
@@ -518,6 +537,140 @@ public class UserController extends HttpServlet {
             session.setAttribute("authcode", code);
             session.setAttribute("amount", amount);
             sendDispatcher(request, response, "user/verifyWalletWithdrawal.jsp");
+        }
+    }
+
+    private void serviceHistoryTransaction(String service, HttpServletRequest request, HttpServletResponse response) {
+        HttpSession session = request.getSession();
+        User x = (User) session.getAttribute("currUser");
+        ArrayList<Transaction> listHistoryTransactionPaging = daoTransaction.getAllPagingTransactionByUser(1, 5, "", x.getUserId());
+        ArrayList<Transaction> listTransaction = daoTransaction.getTransactionByUserID(Integer.parseInt(x.getUserId()));
+        int totalPage = listTransaction.size() / 5;
+        if (listTransaction.size() != totalPage * 5) {
+            totalPage += 1;
+        }
+        request.setAttribute("index", 1);
+        request.setAttribute("totalPage", totalPage);
+        request.setAttribute("listHistoryTransaction", listHistoryTransactionPaging);
+        request.setAttribute("service", service);
+        sendDispatcher(request, response, "user/historyTransaction.jsp");
+    }
+
+    public void servicePagingTransaction(String service, HttpServletRequest request, HttpServletResponse response) throws IOException {
+        DecimalFormat nf = new DecimalFormat("###,###,###");
+        HttpSession session = request.getSession();
+        User x = (User) session.getAttribute("currUser");
+        PrintWriter pr = response.getWriter();
+        request.setAttribute("service", service);
+        int index = 1, numOfRow = 5;
+        String search = request.getParameter("search");
+        if (request.getParameter("row") != null) {
+            numOfRow = Integer.parseInt(request.getParameter("row"));
+        }
+        if (request.getParameter("index") != null) {
+            index = Integer.parseInt(request.getParameter("index"));
+        }
+        ArrayList<Transaction> listPaging = daoTransaction.getAllPagingTransactionByUser(index, numOfRow, search, x.getUserId());
+        request.setAttribute("index", index);
+        request.setAttribute("listTransaction", listPaging);
+        for (Transaction transaction : listPaging) {
+            pr.print("<tr>"
+                    + "<td style=\"width: 25%; text-align: center;\">" + transaction.getHistory() + " </td>"
+                    + "<td style=\"width: 25%; text-align: center;\">" + nf.format(transaction.getMoney()) + " </td>"
+                    );
+            if (transaction.getState() == 1) {
+                pr.print("<td style=\"width: 25%; text-align: center;\">Deposit</td>");
+            } else {
+                pr.print("<td style=\"width: 25%; text-align: center;\">Withdrawal</td>");
+            }
+            if (transaction.getStatus() == 0) {
+                pr.print("<td style=\"width: 25%; text-align: center;\"><span style=\"color: red; font-weight: bold;\">Failed</span></td>");
+            } else if (transaction.getStatus() == 1) {
+                pr.print("<td style=\"width: 25%; text-align: center;\"><span style=\"color: green; font-weight: bold;\">Successfully</span></td>");
+            } else {
+                pr.print("<td style=\"width: 25%; text-align: center;\"><span style=\"color: blueviolet; font-weight: bold;\">Pending</span></td>");
+            }
+            pr.print("</tr>"
+            );
+        }
+        if (request.getParameter("row") == null) {
+            sendDispatcher(request, response, "user/historyTransaction.jsp");
+        }
+    }
+
+    public void serviceShowPageTransaction(String service, HttpServletRequest request, HttpServletResponse response) throws IOException {
+        PrintWriter pr = response.getWriter();
+        int index = 1, numOfRow = 5;
+        String search = request.getParameter("search");
+        if (request.getParameter("index") != null) {
+            index = Integer.parseInt(request.getParameter("index"));
+        }
+        if (request.getParameter("row") != null) {
+            numOfRow = Integer.parseInt(request.getParameter("row"));
+        }
+        int totalResult = daoTransaction.getPageNumber(search);
+        int totalPage = totalResult / numOfRow;
+        if (totalResult != numOfRow * totalPage) {
+            totalPage += 1;
+        }
+        int prev = index == 1 ? 1 : index - 1;
+        int next = index == totalPage ? totalPage : index + 1;
+        if (totalResult > numOfRow) {
+            pr.print("<li data-repair=\"1\" class=\"page-item\">");
+            pr.print("<a class=\"page-link\" aria-label=\"First\">");
+            pr.print("<span aria-hidden=\"true\"><i class=\"fas fa-backward\"></i>");
+            pr.print("<span class=\"sr-only\">(current)</span> ");
+            pr.print("</span>");
+            pr.print("</a>");
+            pr.print("</li>");
+            pr.print("<li data-repair=\"" + prev + "\" class=\"page-item\">");
+            pr.print("<a class=\"page-link\" aria-label=\"Previous\">");
+            pr.print("<span aria-hidden=\"true\"><i class=\"fas fa-arrow-left\"></i>");
+            pr.print("<span class=\"sr-only\">(current)</span> ");
+            pr.print("</span>");
+            pr.print("</a>");
+            pr.print("</li>");
+            for (int i = 1; i <= totalPage; i++) {
+                if (i < index - 2) {
+                    continue;
+                }
+                if (index < 3) {
+                    if (i > 5) {
+                        break;
+                    }
+                } else {
+                    if (i > index + 2) {
+                        break;
+                    }
+                }
+                if (index == i) {
+                    pr.print("<li  class=\"page-item active\" data-repair=\"" + i + "\">");
+                } else {
+                    pr.print("<li  class=\"page-item\" data-repair=\"" + i + "\">");
+                }
+                pr.print("<a class=\"page-link\">");
+                pr.print("<div class=\"index\">" + i + "</div>");
+                pr.print("<span class=\"sr-only\">(current)</span>");
+                pr.print("</a>");
+                pr.print("</li>");
+            }
+            pr.print("<li data-repair=\"" + next + "\" class=\"page-item\">");
+            pr.print("<a class=\"page-link\" aria-label=\"Next\">");
+            pr.print("<span aria-hidden=\"true\"><i class=\"fas fa-arrow-right\"></i>");
+            pr.print("<span class=\"sr-only\">(current)</span> ");
+            pr.print("</span>");
+            pr.print("</a>");
+            pr.print("</li>");
+            pr.print("<li data-repair=\"" + totalPage + "\" class=\"page-item\">");
+            pr.print("<a class=\"page-link\" aria-label=\"Last\">");
+            pr.print("<span aria-hidden=\"true\"><i class=\"fas fa-forward\"></i>");
+            pr.print("<span class=\"sr-only\">(current)</span> ");
+            pr.print("</span>");
+            pr.print("</a>");
+            pr.print("</li>");
+        }
+        if (request.getParameter("row") == null) {
+            sendDispatcher(request, response, "user/historyTransaction.jsp");
         }
     }
 

@@ -46,6 +46,13 @@
             .title h1{
                 font-size: 50px;
             }
+            .col-md-4 .btn-primary{
+                border-radius: 15px;
+                text-align: center;
+                padding-top: 15px;
+                padding-left: 25px;
+                padding-right: 25px;
+            }
         </style>
     </head>
     <body>
@@ -116,18 +123,22 @@
                             <br>
                             <h6 style="color: blue" style="font-size: small" >${mess}</h6>
 
-                            <div class="row">
+                            <div class="row" style="margin-left: 70px;">
                                 <br><br>
-                                <div class="col-md-4"></div>
-                                <div class="col-md-4">
+                                <div class="col-md-6">
                                     <button type="submit" name="service" value="deposit" style="text-align:center; color:white;border-radius: 15px;height: 2em; width: 8em;" class="btn-danger" > Deposit
                                     </button>
+                                </div>
+                                <div class="col-md-6">
                                     <button type="submit" name="service" value="withdrawal" style="text-align:center; color:white;border-radius: 15px;height: 2em; width: 8em;" class="btn-success" > Withdrawal
                                     </button> 
                                 </div>
-                            </div> 
-                            <br><br>
+                            </div>
+                            <br>
                         </form>
+                        <div class="col-md-4">
+                            <a class="btn btn-primary" style="margin-left: 185px;" href="UserControllerMap?service=historyTransaction"><h2>History</h2></a>
+                        </div>
                     </div>
                 </div>
             </div>
