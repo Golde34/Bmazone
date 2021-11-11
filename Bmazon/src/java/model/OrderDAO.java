@@ -471,8 +471,6 @@ public class OrderDAO extends BaseDAO {
                 o.setStatus(rs.getInt("status"));
                 list.add(o);
             }
-            
-            
         } catch (Exception e) {
         } finally {
             try {
