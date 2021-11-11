@@ -29,6 +29,7 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.security.NoSuchAlgorithmException;
 import java.security.spec.InvalidKeySpecException;
+import model.CartItemDAO;
 
 /**
  *
@@ -47,6 +48,7 @@ public class LoginController extends HttpServlet {
      */
     DBConnection dbCon = new DBConnection();
     UserDAO daoUser = new UserDAO();
+    CartItemDAO cartDAO= new CartItemDAO();
     private static final long serialVersionUID = 1;
 
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
@@ -140,6 +142,10 @@ public class LoginController extends HttpServlet {
                 session.setAttribute("currUser", log);
                 session.setAttribute("role", log.getSystemRole());
                 ArrayList<CartItem> ShoppingCart = new ArrayList<>();
+                if (cartDAO.getCartByID(Integer.parseInt(log.getUserId()))!=null ) {
+                    ShoppingCart= cartDAO.getCartByID(Integer.parseInt(log.getUserId()));
+                }
+                
                 session.setAttribute("ShoppingCart", ShoppingCart);
                 sendDispatcher(request, response, "index.jsp");
             } else {

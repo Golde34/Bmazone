@@ -60,7 +60,7 @@ public class CategoryDAO extends BaseDAO {
 //            rs = pre.executeQuery();
 //            while (rs.next()) {
 //                categoryID = rs.getInt("categoryID");
-//                categoryName = rs.getString("categoryName");
+//                categoryName = rs.gering("categoryName");
 //                status = rs.getInt("status");
 //                Category x = new Category(categoryID, categoryName, status);
 //                list.add(x);

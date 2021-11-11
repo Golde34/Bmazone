@@ -86,7 +86,7 @@ ProductTypeDAO ptd= new ProductTypeDAO();
 
                                                                 <a href="CartControllerMap?service=Update&cartID=<%=item.getCartID()%>&quantity=<%= item.getQuantity()-1 %>"> <input type="button" value="-" class="minus button is-form">	</a>	<label class="screen-reader-text" for="quantity_6167ef4cc82d1">Số lượng</label>
                                                                 <input type="number" class="input-text qty text" step="1" min="1" max="<%=pt.getQuantity()%>" name="quantity" value="<%=item.getQuantity()%>" title="SL" size="4" pattern="[0-9]*" inputmode="numeric" />
-                                                                <a href="CartControllerMap?service=Update&cartID=<%=item.getCartID()%>&quantity=<%= item.getQuantity()-1 %>"> <input type="button" value="+" class="plus button is-form"></a>	</div>
+                                                                <a href="CartControllerMap?service=Update&cartID=<%=item.getCartID()%>&quantity=<%= item.getQuantity()+1 %>"> <input type="button" value="+" class="plus button is-form"></a>	</div>
                                                         </td>
 
                                                         <td class="product-subtotal" data-title="TotalCost">

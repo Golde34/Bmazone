@@ -447,7 +447,7 @@ public class OrderDAO extends BaseDAO {
 
     public List<Order> getOrderByUser(int userID) {
         List<Order> list = new ArrayList<>();
-        String sql = "select * from `Order` where userID = " + userID + " order by orderDate desc ";
+        String sql = "select * from `Order` where userID = " + userID + " order by orderid desc ";
         try {
             conn = new DBConnection().getConnection();
             pre = conn.prepareStatement(sql);

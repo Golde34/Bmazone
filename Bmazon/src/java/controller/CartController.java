@@ -25,6 +25,7 @@ import java.util.logging.Logger;
 import javafx.scene.control.Alert;
 import javax.servlet.RequestDispatcher;
 import javax.servlet.http.Cookie;
+import javax.xml.ws.spi.http.HttpContext;
 import model.*;
 
 /**
@@ -48,6 +49,7 @@ public class CartController extends HttpServlet {
     UserDAO uDao = new UserDAO();
     OrderDAO oDao = new OrderDAO();
     OrderDetailDAO odDao = new OrderDetailDAO();
+    CartItemDAO cartDAO = new CartItemDAO();
     private static final long serialVersionUID = 1;
     DecimalFormat nf = new DecimalFormat("###,###,###");
 
@@ -107,8 +109,8 @@ public class CartController extends HttpServlet {
         if (x == null) {
             sendDispatcher(request, response, "loginAndSecurity/login.jsp");
         }
-        
-        
+        int uid = Integer.parseInt(x.getUserId());
+
         ArrayList<CartItem> ShoppingCart = (ArrayList<CartItem>) request.getSession().getAttribute("ShoppingCart");
         String pid = request.getParameter("pid");
         String size = request.getParameter("size");
@@ -134,12 +136,14 @@ public class CartController extends HttpServlet {
                     request.setAttribute("mess", mess);
                 }
                 ShoppingCart.get(i).setTotalCost(ShoppingCart.get(i).getQuantity() * Double.parseDouble(pt.getPrice()));
+                cartDAO.UpdateProduct(ShoppingCart.get(i), uid);
                 check = false;
             }
 
         }
         if (check == true) {
             CartItem cartitem = new CartItem(ShoppingCart.size() + 1, pt.getProductID(), name, pt.getSize(), pt.getColor(), image, Double.parseDouble(pt.getPrice()), quantity, total);
+            cartDAO.addProduct(cartitem, uid);
             ShoppingCart.add(cartitem);
         }
 
@@ -149,6 +153,9 @@ public class CartController extends HttpServlet {
     }
 
     public void serviceUpdate(HttpServletRequest request, HttpServletResponse response) {
+        User x = (User) request.getSession().getAttribute("currUser");
+
+        int uid = Integer.parseInt(x.getUserId());
         ArrayList<CartItem> ShoppingCart = (ArrayList<CartItem>) request.getSession().getAttribute("ShoppingCart");
         String[] idString = request.getParameterValues("cartID");
         String[] quantityString = request.getParameterValues("quantity");
@@ -162,6 +169,7 @@ public class CartController extends HttpServlet {
             } else if (ShoppingCart.get(i).getCartID() == Integer.parseInt(idString[i])) {
                 ShoppingCart.get(i).setQuantity(Integer.parseInt(quantityString[i]));
                 ShoppingCart.get(i).setTotalCost(Integer.parseInt(quantityString[i]) * (ShoppingCart.get(i).getPrice()));
+                cartDAO.UpdateProduct(ShoppingCart.get(i), uid);
             }
         }
 
@@ -170,17 +178,20 @@ public class CartController extends HttpServlet {
     }
 
     public void serviceDelete(HttpServletRequest request, HttpServletResponse response) {
+        User x = (User) request.getSession().getAttribute("currUser");
+        int uid = Integer.parseInt(x.getUserId());
         ArrayList<CartItem> ShoppingCart = (ArrayList<CartItem>) request.getSession().getAttribute("ShoppingCart");
         String ID = request.getParameter("cartID");
         int cartID = Integer.parseInt(ID);
         for (int i = 0; i < ShoppingCart.size(); i++) {
             if (ShoppingCart.get(i).getCartID() == cartID) {
                 ShoppingCart.remove(i);
-//
+                cartDAO.removeCart(uid, cartID);
             }
         }
         for (int i = 0; i < ShoppingCart.size(); i++) {
             ShoppingCart.get(i).setCartID(i + 1);
+            cartDAO.UpdateProduct(ShoppingCart.get(i), uid);
 
         }
 
@@ -234,8 +245,9 @@ public class CartController extends HttpServlet {
         String id = x.getUserId();
         double wallet = x.getWallet();
         ArrayList<CartItem> ShoppingCart = (ArrayList<CartItem>) request.getSession().getAttribute("ShoppingCart");
+        ArrayList<CartItem> CheckOutList = (ArrayList<CartItem>) request.getSession().getAttribute("CheckOutList");
         ArrayList<Integer> distinctShopId = new ArrayList<>();
-        for (CartItem cartItem : ShoppingCart) {
+        for (CartItem cartItem : CheckOutList) {
             Product product = productDao.getProductByID(cartItem.getProductID());
             if (!distinctShopId.contains(product.getSeller())) {
                 distinctShopId.add(product.getSeller());
@@ -248,7 +260,7 @@ public class CartController extends HttpServlet {
                 Order o = new Order(id, shipName, shipAddress, shipCity, shipPhone, 0, 0, shipCompany, payment, 0);
                 oDao.insertOrder(o);
                 Order thisOrder = oDao.getLatestOrder(x.getUserId());
-                for (CartItem cartItem : ShoppingCart) {
+                for (CartItem cartItem : CheckOutList) {
                     Product product = productDao.getProductByID(cartItem.getProductID());
                     if (product.getSeller() == sellerId) {
                         total += cartItem.getPrice() * cartItem.getQuantity();
@@ -271,11 +283,21 @@ public class CartController extends HttpServlet {
 //                odDao.insertOrderDetail(od);
 //            }
 //                update session & db
-            ShoppingCart.removeAll(ShoppingCart);
-            request.getSession().setAttribute("ShoppingCart", ShoppingCart);
-            request.getSession().setAttribute("currUser", x);
 
-//            ArrayList<OrderDetail> DetailList = odDao.getAllOrderDetail(thisOrder.getOrderID());
+            for (int i = 0; i < ShoppingCart.size(); i++) {
+                for (CartItem cartItem : CheckOutList) {
+                    if (ShoppingCart.get(i).getCartID() == cartItem.getCartID()) {
+                        ShoppingCart.remove(i);
+                        cartDAO.removeCart(Integer.parseInt(id), cartItem.getCartID());
+                    }
+                }
+            }
+            for (int i = 0; i < ShoppingCart.size(); i++) {
+                ShoppingCart.get(i).setCartID(i + 1);
+                cartDAO.UpdateProduct(ShoppingCart.get(i), Integer.parseInt(id));
+
+            }
+
             request.getSession().setAttribute("ShoppingCart", ShoppingCart);
             request.getSession().setAttribute("currUser", x);
             request.setAttribute("listOrder", listOrder);
@@ -292,7 +314,7 @@ public class CartController extends HttpServlet {
                     Order o = new Order(id, shipName, shipAddress, shipCity, shipPhone, 0, 0, shipCompany, payment, 0);
                     oDao.insertOrder(o);
                     Order thisOrder = oDao.getLatestOrder(x.getUserId());
-                    for (CartItem cartItem : ShoppingCart) {
+                    for (CartItem cartItem : CheckOutList) {
                         Product product = productDao.getProductByID(cartItem.getProductID());
                         if (product.getSeller() == sellerId) {
                             total += cartItem.getPrice() * cartItem.getQuantity();
@@ -315,11 +337,21 @@ public class CartController extends HttpServlet {
 //                    odDao.insertOrderDetail(od);
 //                }
 //                update session & db
-                ShoppingCart.removeAll(ShoppingCart);
-                x.setWallet(wallet - Double.parseDouble(totalString));
-                uDao.updateInfoUserByAdmin(x);
 
-//            ArrayList<OrderDetail> DetailList = odDao.getAllOrderDetail(thisOrder.getOrderID());
+                for (int i = 0; i < ShoppingCart.size(); i++) {
+                    for (CartItem cartItem : CheckOutList) {
+                        if (ShoppingCart.get(i).getCartID() == cartItem.getCartID()) {
+                            ShoppingCart.remove(i);
+                            cartDAO.removeCart(Integer.parseInt(id), cartItem.getCartID());
+                        }
+                    }
+                }
+                for (int i = 0; i < ShoppingCart.size(); i++) {
+                    ShoppingCart.get(i).setCartID(i + 1);
+                    cartDAO.UpdateProduct(ShoppingCart.get(i), Integer.parseInt(id));
+
+                }
+
                 request.getSession().setAttribute("ShoppingCart", ShoppingCart);
                 request.getSession().setAttribute("currUser", x);
                 request.setAttribute("listOrder", listOrder);
@@ -329,6 +361,7 @@ public class CartController extends HttpServlet {
 //                sendDispatcher(request, response, "cart/cart.jsp");
                 sendDispatcher(request, response, "cart/confirmorder.jsp");
             } else {
+             
                 request.getSession().setAttribute("ShoppingCart", ShoppingCart);
                 request.getSession().setAttribute("currUser", x);
                 request.setAttribute("total", nf.format(Double.parseDouble(totalString)));

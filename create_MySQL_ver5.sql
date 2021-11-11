@@ -207,5 +207,19 @@ CREATE TABLE `Transaction`(
     state int,
     status int,
     FOREIGN KEY (userID) REFERENCES `User`(userID)
-)
+);
+
+Create table cart(
+	cartID int Primary Key,
+	productID int ,
+    name varchar(255),
+    size varchar(255),
+    color varchar(255),
+    image varchar(255),
+    price double ,
+    quantity int,
+    totalCost double ,
+    userid int,
+    FOREIGN KEY (userID) REFERENCES `User`(userID)
+    );
 
