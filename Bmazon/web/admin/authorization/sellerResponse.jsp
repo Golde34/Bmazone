@@ -166,14 +166,14 @@
                                          style="display: flex;
                                          justify-content: space-between; margin:0;">
                                         <h3 class="m-0 font-weight-bold text-primary">New Seller</h3>
-                                        <a href="#">
+                                        <a href="AdminControllerMap?service=sellermanagement">
                                             <button class="btn-primary btn">Seller Management</button></a>
                                     </div>
                                     <div class="card-body">
                                         <div class="table_head py-3" style="display: flex;
                                              justify-content: space-between;">
                                             <!--<a href="AdminControllerMap?service=sellerManagement">Show all</a>-->
-                                            <a style="font-size: 20px;  " href="#">Show all</a>
+                                            <a style="font-size: 20px;  " href="AdminControllerMap?service=sellermanagement">Show all</a>
                                         </div>
                                         <div class="table-responsive">
                                             <table class="table table-bordered table-striped" id="dataTable" style="text-align: center;">

@@ -60,7 +60,6 @@
         </style>
     </head>
     <body>
-
         <div class="wrap">
             <jsp:include page="../header.jsp"/>
             <main id="main" class="">
@@ -68,47 +67,36 @@
                     <div class="row row-main">
                         <div class="large-12 col">
                             <div class="col-inner">
-
-
-
                                 <div class="woocommerce">
                                     <div class="row">
-
-
                                         <div class="large-7 col">
-
                                             <section class="woocommerce-order-details">
                                                 <h2 class="woocommerce-order-details__title">Order Detail</h2>
-                                                <%for(Order order: listOrder){
-                                                            ArrayList<OrderDetail> list = daoOrderDetail.getAllOrderDetail(order.getOrderID());%>
+                                                <%for (Order order : listOrder) {
+                                                        ArrayList<OrderDetail> list = daoOrderDetail.getAllOrderDetail(order.getOrderID());%>
                                                 <table class="woocommerce-table woocommerce-table--order-details shop_table order_details">
-
                                                     <thead>
                                                         <tr>
                                                             <th class="woocommerce-table__product-name product-name">Product</th>
                                                             <th class="woocommerce-table__product-table product-total">Total</th>
                                                         </tr>
                                                     </thead>
-
                                                     <tbody>
-                                                        
-                                                            <%for (OrderDetail od : list) {
-                                                        double x=od.getPrice();
+                                                        <%for (OrderDetail od : list) {
+                                                                double x = od.getPrice();
                                                         %>
                                                         <tr class="woocommerce-table__line-item order_item">
-                                                            
                                                             <td class="woocommerce-table__product-name product-name">
                                                                 <a href=""><%=od.getProductName()%> </a> <strong class="product-quantity">&times; <%=od.getQuantity()%></strong>	</td>
-
                                                             <td class="woocommerce-table__product-total product-total">
-                                                                <span class="woocommerce-Price-amount amount"><%=nf.format(od.getPrice())%>&nbsp;<span class="woocommerce-Price-currencySymbol">&#8363;</span></span>	</td>
-
+                                                                <span class="woocommerce-Price-amount amount"><%=nf.format(od.getPrice())%>&nbsp;<span class="woocommerce-Price-currencySymbol">&#8363;</span> 
+                                                                </span>	
+                                                            </td>
                                                         </tr>
                                                     <hr>
-                                                        <% }%>
+                                                    <% }%>
 
                                                     </tbody>
-
                                                     <tfoot>
                                                         <tr>
                                                             <th scope="row">Sub Total:</th>
@@ -128,18 +116,16 @@
                                                         </tr>
                                                     </tfoot>
                                                 </table>
-                                                        <%}%>
+                                                <%}%>
                                             </section>
-
-
                                         </div>
 
                                         <div class="large-5 col">
                                             <div class="is-well col-inner entry-content">
-                                                <p class="success-color woocommerce-notice woocommerce-notice--success woocommerce-thankyou-order-received"><strong>Cảm ơn bạn. Đơn hàng của bạn đã được nhận.</strong></p>
-
+                                                <p class="success-color woocommerce-notice woocommerce-notice--success woocommerce-thankyou-order-received">
+                                                    <strong>Thank you! Your order have been received.</strong></p>
                                                 <ul class="woocommerce-order-overview woocommerce-thankyou-order-details order_details">
-                                                    <% for (Order order : listOrder){%>
+                                                    <% for (Order order : listOrder) {%>
                                                     <li class="woocommerce-order-overview__order order">
                                                         OrderID:						<strong><%=order.getOrderID()%></strong>
                                                     </li>
@@ -154,28 +140,20 @@
                                                     </li>
 
                                                     <li class="woocommerce-order-overview__payment-method method">
-                                                       Payment Method:							<strong><%=order.getPaymentMethod()%></strong>
+                                                        Payment Method:							<strong><%=order.getPaymentMethod()%></strong>
                                                     </li>
                                                     <hr>
                                                     <%}%>
                                                 </ul>
-
                                                 <div class="clear"></div>
                                             </div>
                                         </div>
-
-
-
                                     </div>
                                 </div>
-
-
                             </div><!-- .col-inner -->
                         </div><!-- .large-12 -->
                     </div><!-- .row -->
                 </div>
-
-
             </main>
             <jsp:include page="../footer.jsp"/>
         </div>

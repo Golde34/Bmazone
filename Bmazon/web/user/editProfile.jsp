@@ -71,7 +71,7 @@
                             <div class="box">
                                 <h2><strong>Your public name</strong></h2>
                                 <div class="col-md-12 ">
-                                    <input name="username" type="text" value="<%=x.getPublicName()%>" style="width: 25rem;">
+                                    <input name="username" type="text" value="<%=x.getPublicName()%>" style="width: 25rem;" required>
                                     <p>This will not change the name associated with your account (<%=x.getFullname()%>)
                                         <span><a style="color: red;" href="${contextPath}/UserControllerMap?service=editPrivateProfile">   Edit</a></span>
                                     </p>
@@ -86,13 +86,13 @@
                                             <p>Bio</p>
                                             <textarea name="bio" placeholder="Share a little about you"></textarea>
                                             <p>Date of birth</p>
-                                            <input type="date" name="dob" value="<%=x.getDOB()%>">
+                                            <input id="inputDate" max="1921-01-01" type="date" name="dob" value="<%=x.getDOB()%>">
                                         </div>
                                         <div class="col-md-6">
                                             <p>Location</p>
-                                            <input name="address" type="text" value="<%= x.getAddress()%>" placeholder="Enter your location">
+                                            <input pattern="^[^\s]+(\s+[^\s]+)*$" name="address" type="text" value="<%= x.getAddress()%>" placeholder="Enter your location" required>
                                             <p>Occupation</p>
-                                            <input name="occupation" type="text" value="<%= x.getOccupation()%>" placeholder="Enter your occupation">
+                                            <input name="occupation" type="text" value="<%= x.getOccupation()%>" placeholder="Enter your occupation" required>
                                             <p>Gender</p>
                                             <% if (x.getGender() == 0) {%>
                                             <select name="gender">
@@ -159,4 +159,18 @@
         <br><br><br>
         <jsp:include page="../footer.jsp"/>
     </body>
+    <script>
+        var today = new Date();
+        var dd = today.getDate();
+        var mm = today.getMonth()+1; //January is 0!
+        var yyyy = today.getFullYear();
+        if(dd<10){
+        dd='0'+dd
+        } 
+        if(mm<10){
+        mm='0'+mm
+        } 
+        today = yyyy+'-'+mm+'-'+dd;
+        document.getElementById("inputDate").setAttribute("max", today);
+    </script>
 </html>
