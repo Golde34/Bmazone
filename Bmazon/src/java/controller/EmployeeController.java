@@ -5,6 +5,7 @@
  */
 package controller;
 
+import APIs.SendEmail;
 import entity.*;
 import java.io.File;
 import java.io.IOException;
@@ -243,6 +244,8 @@ public class EmployeeController extends HttpServlet {
     }
 
     private void serviceAcceptTopUpRequest(String service, HttpServletRequest request, HttpServletResponse response) {
+        DecimalFormat nf = new DecimalFormat("###,###,###");
+        SendEmail s = new SendEmail();
         HttpSession session = request.getSession();
         User x = (User) request.getSession().getAttribute("currUser");
         request.setAttribute("service", service);
@@ -251,10 +254,15 @@ public class EmployeeController extends HttpServlet {
 
         User u = daouser.getUserById(daotransaction.getTransactionByTransactionID(transactionid).getUserID());
         double money = daotransaction.getTransactionByTransactionID(transactionid).getMoney();
+        String option = "topup";
         if (daotransaction.getTransactionByTransactionID(transactionid).getState() == 1) {
             daouser.depositWalletUser(u, money);
+            String text1 = "Deposit: " + nf.format(money) + ".";
+            s.sendEmail(u.getUsername(), u.getEmail(), text1, option);
         } else {
             daouser.withdrawalWalletUser(u, money);
+            String text2 = "Withdrawal: " + nf.format(money) + ".";
+            s.sendEmail(u.getUsername(), u.getEmail(), text2, option);
         }
         session.setAttribute("currUser", daouser.getUserById(x.getUserId()));
 
@@ -273,9 +281,21 @@ public class EmployeeController extends HttpServlet {
     }
 
     private void serviceDenyTopUpRequest(String service, HttpServletRequest request, HttpServletResponse response) {
+        DecimalFormat nf = new DecimalFormat("###,###,###");
+        SendEmail s = new SendEmail();
         request.setAttribute("service", service);
         int transactionid = Integer.parseInt(request.getParameter("transactionID"));
         daotransaction.denyTopUpRequest(transactionid);
+        User u = daouser.getUserById(daotransaction.getTransactionByTransactionID(transactionid).getUserID());
+        double money = daotransaction.getTransactionByTransactionID(transactionid).getMoney();
+        String option = "denytopup";
+        if (daotransaction.getTransactionByTransactionID(transactionid).getState() == 1) {
+            String text1 = "Deposit: " + nf.format(money) + ".";
+            s.sendEmail(u.getUsername(), u.getEmail(), text1, option);
+        }else{
+            String text2 = "Withdrawal: " + nf.format(money) + ".";
+            s.sendEmail(u.getUsername(), u.getEmail(), text2, option);
+        }
 
         List<Transaction> listTransactionPaging = daotransaction.getAllPagingTransaction(1, 5, "");
         List<Transaction> listRequestTransaction = daotransaction.getAllTransaction();
