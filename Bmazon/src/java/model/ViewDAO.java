@@ -22,7 +22,9 @@ public class ViewDAO extends BaseDAO {
 
     public static void main(String[] args) {
         ViewDAO v = new ViewDAO();
-        System.out.println(v.getView(10, 5));
+      //  v.insertClick(new View(6,6,1));
+      System.out.println(v.getView(6, 6));
+        
     }
 
     public int insertClick(View obj) {
@@ -75,10 +77,12 @@ public class ViewDAO extends BaseDAO {
     }
 
     public View getView(int pID, int userid) {
-        String xSql = "SELECT * FROM productview where productId = " + pID + " and userid = " + userid;
+        String xSql = " select * FROM productview where productid = " + pID + " and userID = " + userid;
         View o = null;
         try {
             conn = new DBConnection().getConnection();
+            pre = conn.prepareStatement(xSql);
+            rs = pre.executeQuery();
             if (rs.next()) {
                 o = new View(
                         rs.getInt("userId"),

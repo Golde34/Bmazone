@@ -829,7 +829,7 @@ public class ProductDAO extends BaseDAO {
     }
       public static void main(String[] args) {
         ProductDAO pd = new ProductDAO();
-          System.out.println(pd.getProductSuggest(1, 1));
+          System.out.println(pd.getProductByID(90));
         //List<Product> x = pd.getProductByName(1, "", cate);
 //        for (Product product : x) {
 //            System.out.println(product);
