@@ -86,6 +86,10 @@
                                                 <td><input type="text" name="customerPermission" class="form-control"></td>
                                             </tr>
                                             <tr>
+                                                <td>Employee Permission<p></td>
+                                                <td><input type="text" name="employeePermission" class="form-control"></td>
+                                            </tr>
+                                            <tr>
                                                 <td></td>
                                                 <td>
                                                     <input type="submit" value="Add Role" class="btn btn-primary">
@@ -115,6 +119,10 @@
                                             <tr>
                                                 <td>Customer Permission<p></td>
                                                 <td><input type="text" name="customerPermission" value="<%=role.getCustomerPermission()%>" class="form-control"></td>
+                                            </tr>
+                                            <tr>
+                                                <td>Employee Permission<p></td>
+                                                <td><input type="text" name="employeePermission" value="<%=role.getEmployeePermission()%>" class="form-control"></td>
                                             </tr>
                                             <tr>
                                                 <td></td>
