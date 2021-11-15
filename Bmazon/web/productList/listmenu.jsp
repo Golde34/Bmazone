@@ -80,12 +80,12 @@
     </head>
     <body class="home page-template page-template-page-blank page-template-page-blank-php page page-id-16 page-parent lightbox nav-dropdown-has-arrow" >
         <% String list = (String) request.getAttribute("href");
+        
 
         %>
         <input   id="totalnumber" type="hidden" value="<%=total%>" >
         <div id="wrapper">
             <%if (!list.equals("list")) {
-
 
             %>
             <div class="shop-page-title category-page-title page-title ">
@@ -151,8 +151,50 @@
                                                         <div class="woof_block_html_items" >
                                                             <ul class="woof_list woof_list_checkbox">
                                                                 <input type="hidden" value="${search}" name="search">
+                                                                <%if (list == "check") {
 
-                                                                <% for (Category cate : ListCate) {
+
+                                                                %>
+                                                                <% String[] idcate = (String[]) request.getSession().getAttribute("idcate");
+                                                                    if (idcate != null || idcate.length > 0) {
+                                                                        boolean check = false;
+                                                                        for (Category cate : ListCate) {
+
+                                                                            for (int i = 0; i < idcate.length; i++) {
+                                                                                if (cate.getCategoryID() == Integer.parseInt(idcate[i])) {
+
+
+                                                                %>
+                                                                <li class="woof_term_182" >
+                                                                    <input type="checkbox" class="woof_checkbox_term woof_checkbox_term_182" data-tax="product_cat" name="cid" data-term-id="" value="<%=cate.getCategoryID()%>" checked/>
+                                                                    <label class="woof_checkbox_label " for="cid"><%=cate.getCategoryName()%>
+
+                                                                    </label>
+
+                                                                </li>
+                                                                <%
+                                                                            check = true;
+                                                                        }
+
+                                                                    }
+                                                                    if (check == false) {
+
+                                                                %>
+                                                                <li class="woof_term_182" >
+                                                                    <input type="checkbox" class="woof_checkbox_term woof_checkbox_term_182" data-tax="product_cat" name="cid" data-term-id="" value="<%=cate.getCategoryID()%>">
+                                                                    <label class="woof_checkbox_label " for="cid"><%=cate.getCategoryName()%>
+
+                                                                    </label>
+
+                                                                </li>
+                                                                <%  }
+                                                                            check = false;
+
+                                                                        }
+                                                                    }
+
+                                                                } else {
+                                                                    for (Category cate : ListCate) {
 
 
                                                                 %>
@@ -163,15 +205,14 @@
                                                                     </label>
 
                                                                 </li>
-                                                                <%
+                                                                <% }
                                                                     }
-
                                                                 %>  
 
                                                             </ul>
 
                                                         </div>
-                                                        
+
 
 
 
@@ -181,16 +222,7 @@
 
 
 
-                                                <div data-css-class="woof_price3_search_container" class="woof_price3_search_container woof_container">
-                                                    <div class="woof_container_overlay_item"></div>
-                                                    <div class="woof_container_inner">
-                                                        <h4>Lọc theo giá</h4>
 
-
-                                                        <input class="woof_range_slider" id="6167e86ddbe4c" data-min="30000" data-max="40300000" data-min-now="30000" data-max-now="40300000" data-step="1" data-slider-prefix="" data-slider-postfix=" &#8363;" value="" />
-
-                                                    </div>
-                                                </div>
 
 
 
@@ -202,8 +234,9 @@
 
 
 
-                                                    <button style="float: right;" class="button woof_reset_search_form" data-link="">Reset</button>
-                                                    <button type="submit" style="float: right;" class="button woof_reset_search_form" name="service" value="search">Add Filter</button>
+
+                                                    <button type="submit" style="float: right;" class="button woof_reset_search_form" name="service" value="filter">Add Filter</button>
+
 
 
 
@@ -215,6 +248,7 @@
 
                                                 </div>
                                             </form>
+                                            <a href="HomePageControllerMap?service=search&search=${search}">   <button style="float: right;" class="button woof_reset_search_form" data-link="">Reset</button></a>
 
                                         </div>
 
@@ -276,9 +310,9 @@
                         </div>
                         <div class="container">
                             <nav class="woocommerce-pagination">
-                                <%if (total>1) {
-                                        
-                                    
+                                <%if (total > 1) {
+
+
                                 %>
                                 <ul class="page-numbers nav-pagination links text-center">
                                     ${previous}

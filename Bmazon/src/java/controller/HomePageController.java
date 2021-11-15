@@ -27,6 +27,7 @@ import entity.User;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.util.List;
+import javax.mail.Session;
 import javax.servlet.http.HttpSession;
 import model.DBConnection;
 import model.SellerDAO;
@@ -86,6 +87,9 @@ public class HomePageController extends HttpServlet {
             if (service.equalsIgnoreCase("check")) {
                 serviceFilter(request, response);
             }
+            if (service.equalsIgnoreCase("filter")) {
+                Filter(request, response);
+            }
             if (service.equalsIgnoreCase("shopPageProduct")) {
                 serviceShopPageProduct(request, response);
             }
@@ -98,7 +102,6 @@ public class HomePageController extends HttpServlet {
 
     public void serviceHomepage(HttpServletRequest request, HttpServletResponse response) {
 
-       
         request.setAttribute("Home", "home");
         sendDispatcher(request, response, "/index.jsp");
 
@@ -106,12 +109,11 @@ public class HomePageController extends HttpServlet {
 
     public void serviceList(HttpServletRequest request, HttpServletResponse response) {
         User x = (User) request.getSession().getAttribute("currUser");
-        int id=0;
-        if (x!=null) {
-            id=Integer.parseInt(x.getUserId());
+        int id = 0;
+        if (x != null) {
+            id = Integer.parseInt(x.getUserId());
         }
-        
-        
+
         int count = proDAO.totalProduct();
         int size = 20;
         int total = count / size;
@@ -130,30 +132,44 @@ public class HomePageController extends HttpServlet {
         }
         if (page <= total - 2) {
             end = page + 2;
-        }else 
-         if (total>2) {
-             end = total;
+        } else if (total > 2) {
+            end = total;
             begin = total - 2;
-        } else{
-           end=2;
-           begin=1;               
+        } else if (total == 1) {
+            end = 1;
+            begin = 1;
+        } else {
+            end = 2;
+            begin = 1;
+
         }
-        if (page == 1) {
+        if (page == 1 && total != 1) {
             request.setAttribute("next", next);
-        } else if (page == total) {
+        } else if (page == total && total != 1) {
             request.setAttribute("previous", previous);
+        } else if (total == 1) {
+
         } else {
             request.setAttribute("next", next);
             request.setAttribute("previous", previous);
         }
-        
-        List<Product> ListP = proDAO.getProductSuggest(page,id );
-        request.setAttribute("end", end);
-        request.setAttribute("href", "list");
-        request.setAttribute("begin", begin);
-        request.setAttribute("listP", ListP);
-        request.setAttribute("count", count);
-        sendDispatcher(request, response, "productList/list.jsp");
+
+        List<Product> ListP = proDAO.getProductSuggest(page, id);
+
+        request.setAttribute(
+                "end", end);
+        request.setAttribute(
+                "href", "list");
+        request.setAttribute(
+                "begin", begin);
+        request.setAttribute(
+                "listP", ListP);
+        request.setAttribute(
+                "count", count);
+        request.setAttribute(
+                "count2", count);
+        sendDispatcher(request, response,
+                "productList/list.jsp");
 
     }
 
@@ -177,34 +193,40 @@ public class HomePageController extends HttpServlet {
         }
         if (page <= total - 2) {
             end = page + 2;
-        } 
-        if (total>2) {
-             end = total;
-            begin = total - 2;
-        } else{
-           end=2;
-           begin=1;               
         }
- 
-        
-        if (page == 1) {
+        if (total > 2) {
+            end = total;
+            begin = total - 2;
+        } else if (total == 1) {
+            end = 1;
+            begin = 1;
+        } else {
+            end = 2;
+            begin = 1;
+
+        }
+          if (page == 1 && total != 1) {
             request.setAttribute("next", next);
-        } else if (page == total) {
+        } else if (page == total && total != 1) {
             request.setAttribute("previous", previous);
+        } else if (total == 1) {
+
         } else {
             request.setAttribute("next", next);
             request.setAttribute("previous", previous);
         }
-        
-        List<Product> ListP = proDAO.getProductByCategory(id,page);
+
+
+        List<Product> ListP = proDAO.getProductByCategory(id, page);
         request.setAttribute("end", end);
-        request.setAttribute("href", "ByCate&id="+id);
+        request.setAttribute("href", "ByCate&id=" + id);
         request.setAttribute("begin", begin);
         request.setAttribute("listP", ListP);
         request.setAttribute("count", count);
         String address;
         address = "<a href=" + "HomePageControllerMap?service=ByCate&cid=" + id + ">" + cateDAO.getCategoryById(id) + "  </a> <span class=" + "divider" + ">&#47;</span>";
         request.setAttribute("address", address);
+        request.setAttribute("count2", count);
         sendDispatcher(request, response, "productList/list.jsp");
 
     }
@@ -229,49 +251,49 @@ public class HomePageController extends HttpServlet {
         }
         if (page <= total - 2) {
             end = page + 2;
-        } 
-        if (total>2) {
-             end = total;
-            begin = total - 2;
-        } else{
-           end=2;
-           begin=1;               
         }
- 
-        
-        if (page == 1) {
+        if (total > 2) {
+            end = total;
+            begin = total - 2;
+        } else if (total == 1) {
+            end = 1;
+            begin = 1;
+        } else {
+            end = 2;
+            begin = 1;
+
+        }
+          if (page == 1 && total != 1) {
             request.setAttribute("next", next);
-        } else if (page == total) {
+        } else if (page == total && total != 1) {
             request.setAttribute("previous", previous);
+        } else if (total == 1) {
+
         } else {
             request.setAttribute("next", next);
             request.setAttribute("previous", previous);
         }
-        
-        List<Product> ListP = proDAO.getProductByGenre(id,page);
+
+
+        List<Product> ListP = proDAO.getProductByGenre(id, page);
         request.setAttribute("end", end);
-        request.setAttribute("href", "ByGenre&id="+id);
+        request.setAttribute("href", "ByGenre&id=" + id);
         request.setAttribute("begin", begin);
         request.setAttribute("listP", ListP);
-         String address;
-         address = "<a href=" + "HomePageControllerMap?service=ByCate&cid=" + genDAO.getGenreById(id).getCategoryID() + ">" + cateDAO.getCategoryById(genDAO.getGenreById(id).getCategoryID()) + "  </a> <span class=" + "divider" + ">&#47;</span>";
+        String address;
+        address = "<a href=" + "HomePageControllerMap?service=ByCate&cid=" + genDAO.getGenreById(id).getCategoryID() + ">" + cateDAO.getCategoryById(genDAO.getGenreById(id).getCategoryID()) + "  </a> <span class=" + "divider" + ">&#47;</span>";
 
         address += "<a href=" + "HomePageControllerMap?service=ByGenre&gid=" + id + ">" + genDAO.getGenreById(id).getGenreName() + "  </a> <span class=" + "divider" + ">&#47;</span>";
         request.setAttribute("address", address);
         request.setAttribute("count", count);
+        request.setAttribute("count2", count);
         sendDispatcher(request, response, "productList/list.jsp");
-
-       
-        
-      
-       
 
     }
 
     public void serviceSearch(HttpServletRequest request, HttpServletResponse response) {
         String str = request.getParameter("search").trim();
-        HttpSession session = request.getSession();
-        String[] idcate = request.getParameterValues("cid");      
+
         int count = proDAO.totalSearchProduct(str);
         String address;
         int size = 20;
@@ -294,20 +316,26 @@ public class HomePageController extends HttpServlet {
         } else if (total > 2) {
             end = total;
             begin = total - 2;
-        } else {
+        } else if (total == 1) {
+            end = 1;
             begin = 1;
+        } else {
             end = 2;
+            begin = 1;
+
         }
-        if (page == 1) {
+         if (page == 1 && total != 1) {
             request.setAttribute("next", next);
-        } else if (page == total) {
+        } else if (page == total && total != 1) {
             request.setAttribute("previous", previous);
+        } else if (total == 1) {
+
         } else {
             request.setAttribute("next", next);
             request.setAttribute("previous", previous);
         }
-        
-        
+
+
         List<Product> ListP = proDAO.getProductByName(page, str);
         address = "<a>" + " Results for " + str + "  </a> <span class=" + "divider" + ">&#47;</span>";
         request.setAttribute("address", address);
@@ -316,12 +344,11 @@ public class HomePageController extends HttpServlet {
         request.setAttribute("listP", ListP);
         request.setAttribute("search", str);
         request.setAttribute("count", count);
+        request.setAttribute("count2", count);
         request.setAttribute("href", ("search&search=" + str));
         sendDispatcher(request, response, "productList/list.jsp");
 
     }
-    
-   
 
     public void serviceShopPage(HttpServletRequest request, HttpServletResponse response) {
 
@@ -370,18 +397,25 @@ public class HomePageController extends HttpServlet {
         }
         if (page <= total - 2) {
             end = page + 2;
+        } else if (total == 1) {
+            end = 1;
+            begin = 1;
         } else {
-            end = total;
-            begin = total - 1;
+            end = 2;
+            begin = 1;
+
         }
-        if (page == 1) {
+          if (page == 1 && total != 1) {
             request.setAttribute("next", next);
-        } else if (page == total) {
+        } else if (page == total && total != 1) {
             request.setAttribute("previous", previous);
+        } else if (total == 1) {
+
         } else {
             request.setAttribute("next", next);
             request.setAttribute("previous", previous);
         }
+
 
         List<Product> listProduct = proDAO.getProductBySellerPaging(page, Integer.parseInt(id));
 
@@ -394,11 +428,26 @@ public class HomePageController extends HttpServlet {
         sendDispatcher(request, response, "seller/shopPageProduct.jsp");
     }
 
+    public void Filter(HttpServletRequest request, HttpServletResponse response) throws IOException {
+        HttpSession session = request.getSession();
+        String str = request.getParameter("search").trim();
+        String[] x = request.getParameterValues("cid");
+        if (x == null || x.length == 0) {
+            sendDispatcher(request, response, "HomePageControllerMap?service=search&search=" + str);
+        }
+        String[] idcate = x;
+        session.setAttribute("idcate", idcate);
+        session.setAttribute("str", str);
+        sendDispatcher(request, response, "HomePageControllerMap?service=check");
+    }
+
     public void serviceFilter(HttpServletRequest request, HttpServletResponse response) throws IOException {
 
-        String str = request.getParameter("search").trim();
-        int count = proDAO.totalSearchProduct(str);
-        String[] idcate = request.getParameterValues("cid");
+        String[] idcate = (String[]) request.getSession().getAttribute("idcate");
+
+        String str = (String) request.getSession().getAttribute("str");
+        int count = proDAO.totalSearchProductFilter(str, idcate);
+
         String address;
         int size = 20;
         int total = count / size;
@@ -417,46 +466,40 @@ public class HomePageController extends HttpServlet {
         }
         if (page <= total - 2) {
             end = page + 2;
-        } else {
+        } else if (total > 2) {
             end = total;
             begin = total - 2;
+        } else if (total == 1) {
+            end = 1;
+            begin = 1;
+        } else {
+            end = 2;
+            begin = 1;
+
         }
-        if (page == 1) {
+         if (page == 1 && total != 1) {
             request.setAttribute("next", next);
-        } else if (page == total) {
+        } else if (page == total && total != 1) {
             request.setAttribute("previous", previous);
+        } else if (total == 1) {
+
         } else {
             request.setAttribute("next", next);
             request.setAttribute("previous", previous);
         }
-        String s = "And (";
-        int j = 0;
-        String[] catef = new String[7];
-        for (int i = 0; i < idcate.length; i++) {
-            if (idcate[i] != null) {
-                catef[j] = idcate[i];
-                j++;
-            }
-        }
-        for (int i = 0; i < j; i++) {
-            if (i < j - 1) {
-                s += "pc.categoryId=" + catef[i] + " OR ";
-            } else {
-                s += "pc.categoryID=" + catef[i] + " ";
-            }
 
-        }
-        s += ")";
-        List<Product> ListP = proDAO.getProductByFilter(page, "", s);
+
+        List<Product> ListP = proDAO.getProductByFilter(page, str, idcate);
         address = "<a>" + " Results for " + str + "  </a> <span class=" + "divider" + ">&#47;</span>";
-        request.setAttribute("address", s);
+        request.setAttribute("address", "");
         request.setAttribute("end", end);
         request.setAttribute("begin", begin);
         request.setAttribute("listP", ListP);
         request.setAttribute("search", str);
         request.setAttribute("count", count);
+        request.setAttribute("count2", count);
         request.setAttribute("idcate", idcate);
-        request.setAttribute("href", ("&search=" + "" + "&s=" + s));
+        request.setAttribute("href", ("check"));
         sendDispatcher(request, response, "productList/list.jsp");
 
     }
@@ -483,8 +526,10 @@ public class HomePageController extends HttpServlet {
         try {
             RequestDispatcher rd = request.getRequestDispatcher(path);
             rd.forward(request, response);
+
         } catch (ServletException | IOException ex) {
-            Logger.getLogger(HomePageController.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(HomePageController.class
+                    .getName()).log(Level.SEVERE, null, ex);
         }
     }
 
