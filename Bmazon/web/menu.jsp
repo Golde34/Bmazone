@@ -33,14 +33,14 @@ F<%@page import="java.text.DecimalFormat"%>
     List<Product> ListGear = proDAO.getProductGear();
     List<Product> ListApple = proDAO.getProductApple();
     User x = (User) request.getSession().getAttribute("currUser");
-    int userid=0;
-    if (x!=null) {
-     userid=Integer.parseInt(x.getUserId());
-     }
-     List<Product> ListSuggest = proDAO.getProductSuggest(userid);
+    int userid = 0;
+    if (x != null) {
+        userid = Integer.parseInt(x.getUserId());
+    }
+    List<Product> ListSuggest = proDAO.getProductSuggest(userid);
 
     List<Genre> ListGenre = genDAO.getHomeGenre();
-
+    List<Genre> ListGenre2 = genDAO.getHomeGenre2();
 
 %>
 <!DOCTYPE html>
@@ -267,6 +267,44 @@ F<%@page import="java.text.DecimalFormat"%>
                                                                     </div>
                                                                 </div>
                                                             </div>
+                                                        </div>
+                                                        <div class="row row-collapse"  id="row-1046789590">
+                                                            <div class="col small-12 large-12"  ><div class="col-inner"  >
+
+
+                                                                    <div class="row large-columns-8 medium-columns-3 small-columns-2 row-collapse has-shadow row-box-shadow-1">
+                                                                          <% for (Genre g : ListGenre2) {
+                                                                                String str = "images/Genre/" + g.getImages();
+                                                                        %>
+                                                                        <div class="product-category col" >
+                                                                            <div class="col-inner">
+                                                                                <a href="HomePageControllerMap?service=ByGenre&gid=<%=g.getGenreID()%>">               
+                                                                                    <div class="box box-category has-hover box-normal ">
+                                                                                        <div class="box-image" style="width:50%;">
+                                                                                            <div class="" >
+                                                                                                <img src="<%=str%>"  width="300" height="300" />          
+                                                                                            </div>
+                                                                                        </div><!-- box-image -->
+                                                                                        <div class="box-text text-center" >
+                                                                                            <div class="box-text-inner">
+                                                                                                <h5 class="uppercase header-title">
+                                                                                                    <%=g.getGenreName()%>                   </h5>
+
+                                                                                            </div><!-- .box-text-inner -->
+                                                                                        </div><!-- .box-text -->
+                                                                                    </div><!-- .box -->
+                                                                                </a>            </div><!-- .col-inner -->
+                                                                        </div><!-- .col -->
+                                                                        <%
+
+                                                                            }
+                                                                        %>
+                                                                    </div>
+                                                                </div></div>
+
+                                                            <style scope="scope">
+
+                                                            </style>
                                                         </div>
                                                     </div>
                                                 </div><!-- .ux-slider-wrapper -->

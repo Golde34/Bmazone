@@ -261,7 +261,7 @@
 
         </div><!-- ./wrapper -->
 
-    </body>
+   
     <script src="https://kit.fontawesome.com/42d5adcbca.js" crossorigin="anonymous"></script>
     <script src="${contextPath}/js/core/popper.min.js"></script>
     <script src="${contextPath}/js/core/bootstrap.min.js"></script>
@@ -322,4 +322,5 @@
                                                         }});
                                                 }
     </script>
+     </body>
 </html>
