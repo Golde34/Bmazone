@@ -21,9 +21,9 @@ public class ProductDAO extends BaseDAO {
 
     BaseDAO dbConn = new BaseDAO();
 
-    public int getPageNumber(String search,String cateId) {
+    public int getPageNumber(String search, String cateId) {
         int num = 0;
-        String xSql = "select count(*) from product p join productcategory pc on p.productID=pc.productID where productName like '%"+search+"%' and categoryId like'%"+cateId+"%' ";
+        String xSql = "select count(*) from product p join productcategory pc on p.productID=pc.productID where productName like '%" + search + "%' and categoryId like'%" + cateId + "%' ";
         try {
             conn = new DBConnection().getConnection();
             pre = conn.prepareStatement(xSql);
@@ -74,10 +74,10 @@ public class ProductDAO extends BaseDAO {
     }
 
 //hieu
-    public ArrayList<Product> getAllPagingProduct(int index, int numOfRow, String search,String cateId) {
+    public ArrayList<Product> getAllPagingProduct(int index, int numOfRow, String search, String cateId) {
         int start = (index - 1) * numOfRow;
         ArrayList<Product> list = new ArrayList<>();
-        String sql = "select * from product p join productcategory pc on p.productID=pc.productID where productName like '%"+search+"%' and categoryId like'%"+cateId+"%' limit ?,?";
+        String sql = "select * from product p join productcategory pc on p.productID=pc.productID where productName like '%" + search + "%' and categoryId like'%" + cateId + "%' limit ?,?";
         try {
             conn = new DBConnection().getConnection();
             pre = conn.prepareStatement(sql);
@@ -823,14 +823,36 @@ public class ProductDAO extends BaseDAO {
         }
         return list;
     }
-//de sau
 
-    public ArrayList<Product> getProductByFilter(int index, String name, String s) {
+    public static void main(String[] args) {
+        ProductDAO pd = new ProductDAO();
+        String[] cate = {"1", "2","3"};
+        System.out.println(pd.getProductByFilter(2, "i", cate));
+
+        //List<Product> x = pd.getProductByName(1, "", cate);
+//        for (Product product : x) {
+//            System.out.println(product);
+//        }
+    }
+
+    public ArrayList<Product> getProductByFilter(int index, String name, String[] cate) {
         ArrayList<Product> list = new ArrayList<>();
         int start = (index - 1) * 20;
+        String s = "";
+        if (cate != null || cate.length == 0) {
+            s = " and ( ";
+            for (int i = 0; i < cate.length; i++) {
+                if (i < cate.length - 1) {
+                    s = s + " pc.categoryId  = " + cate[i] + " OR ";
+                } else {
+                    s = s + " pc.categoryId = " + cate[i] + " ) ";
+                }
+            }
+        }
         String sql = "Select *"
-                + "   FROM product as p join ProductCategory as pc on p.productID=pc.productID  where (productName like '%" + name + "%' OR description like '%" + name + "%') " + s + " \n "
-                + " limt ?,?  ";
+                + "   FROM product as p join ProductCategory as pc on p.productID=pc.productID  where (productName like '%" + name + "%' OR description like '%" + name + "%') "
+                + s
+                + " limit ? , ?  ";
         try {
             conn = new DBConnection().getConnection();
             pre = conn.prepareStatement(sql);
@@ -863,14 +885,41 @@ public class ProductDAO extends BaseDAO {
         return list;
     }
 
-    public static void main(String[] args) {
-        ProductDAO pd = new ProductDAO();
-          System.out.println(pd.getProductByID(90));
-        //List<Product> x = pd.getProductByName(1, "", cate);
-//        for (Product product : x) {
-//            System.out.println(product);
-//        }
+    public int totalSearchProductFilter(String text, String[] cate) {
+        int count = 0;
+        String s = "";
+        if (cate != null || cate.length == 0) {
+            s = " and ( ";
+            for (int i = 0; i < cate.length; i++) {
+                if (i < cate.length - 1) {
+                    s = s + " pc.categoryId  = " + cate[i] + " OR ";
+                } else {
+                    s = s + " pc.categoryId = " + cate[i] + " ) ";
+                }
+            }
+        }
+        String xSql = "SELECT count(*) FROM product as p join ProductCategory as pc on p.productID=pc.productID where (productName like '%" + text + "%' or description like '%" + text + "%')"
+                + " " + s;
+        try {
+            conn = new DBConnection().getConnection();
+            pre = conn.prepareStatement(xSql);
+            rs = pre.executeQuery();
+            while (rs.next()) {
+                count = rs.getInt(1);
+            }
 
+        } catch (Exception e) {
+            Logger.getLogger(ProductDAO.class.getName()).log(Level.SEVERE, null, e);
+        } finally {
+            try {
+                rs.close();
+                pre.close();
+                conn.close();
+            } catch (Exception ex) {
+                Logger.getLogger(CategoryDAO.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
+        return count;
     }
 
     public ArrayList<Product> getProductByCategory(int categoryID, int page) {
