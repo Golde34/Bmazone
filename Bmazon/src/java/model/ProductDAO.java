@@ -21,10 +21,9 @@ public class ProductDAO extends BaseDAO {
 
     BaseDAO dbConn = new BaseDAO();
 
-    public int getPageNumber(String search) {
+    public int getPageNumber(String search,String cateId) {
         int num = 0;
-        String xSql = "SELECT COUNT(*)from Product p join Seller s on p.sellerID=s.sellerID join ProductCategory pc on p.productID=pc.productID join Category c on pc.categoryId=c.categoryID join ProductGenre pg on pg.productID=p.productID join Genre g on g.genreID=pg.genreID\n"
-                + "   where p.productName like '%" + search + "%' or c.categoryName like '%" + search + "%' or g.genreName like '%" + search + "%' or s.sellerShopName like '%" + search + "%'";
+        String xSql = "select count(*) from product p join productcategory pc on p.productID=pc.productID where productName like '%"+search+"%' and categoryId like'%"+cateId+"%' ";
         try {
             conn = new DBConnection().getConnection();
             pre = conn.prepareStatement(xSql);
@@ -75,10 +74,10 @@ public class ProductDAO extends BaseDAO {
     }
 
 //hieu
-    public ArrayList<Product> getAllPagingProduct(int index, int numOfRow, String search) {
+    public ArrayList<Product> getAllPagingProduct(int index, int numOfRow, String search,String cateId) {
         int start = (index - 1) * numOfRow;
         ArrayList<Product> list = new ArrayList<>();
-        String sql = "select * from product where productName like '%" + search + "%' limit ?,?";
+        String sql = "select * from product p join productcategory pc on p.productID=pc.productID where productName like '%"+search+"%' and categoryId like'%"+cateId+"%' limit ?,?";
         try {
             conn = new DBConnection().getConnection();
             pre = conn.prepareStatement(sql);

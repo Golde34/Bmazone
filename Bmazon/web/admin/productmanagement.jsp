@@ -175,14 +175,15 @@
                                     <h5 class="m-0 font-weight-bold text-primary">Product Filter</h5>
                                 </div>
                                 <div class="card-body">
-                                    <input id="search" style="width: 100%;" type="text" oninput="pagination()" placeholder="Search" class="form-control mx-2">
+                                    <input id="search" style="width: 100%;" type="text" placeholder="Search" class="form-control my-2">
                                     <span class="m-0 font-weight-bold text-primary">Category</span>
                                     <%for (Category cate : listCategory) {%>
-                                    <div>
-                                        <input type="checkbox" id="<%=cate.getCategoryID()%>" name="cid" value="<%=cate.getCategoryID()%>">
+                                    <div class="cate">
+                                        <input data-cate="<%=cate.getCategoryID()%>" type="radio" id="<%=cate.getCategoryID()%>" name="cid" value="<%=cate.getCategoryID()%>">
                                         <label for="<%=cate.getCategoryID()%>"><%=cate.getCategoryName()%></label>
                                     </div>
                                     <%}%>
+                                    <button onclick="pagination()" class="btn btn-primary">Search</button>
                                 </div>
                             </div>
                         </div>
@@ -195,62 +196,64 @@
         <script src="${contextPath}/js/core/bootstrap.min.js"></script>
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
         <script>
-                                                            var pageNum;
-                                                            $(document).on('click', '.pagination li', function () {
-                                                                pageNum = $(this).data('repair');
-                                                                pagination();
-                                                            });
-                                                            function pagination() {
-                                                                var row = document.getElementById("maxRows").value;
-                                                                var search = document.getElementById("search").value;
-                                                                console.log(row);
-                                                                console.log(search);
-                                                                console.log(pageNum);
-                                                                $.ajax({
-                                                                    url: "/Bmazon/AdminControllerMap",
-                                                                    type: "get",
-                                                                    data: {
-                                                                        search: search,
-                                                                        row: row,
-                                                                        index: pageNum,
-                                                                        service: "pagingproduct"
-                                                                    },
-                                                                    success: function (respone) {
-                                                                        var text = document.getElementById("product");
-                                                                        text.innerHTML = respone;
-                                                                        showpage();
-                                                                    },
-                                                                    error: function (xhr) {
-                                                                        //Do Something to handle error
-                                                                    }
-                                                                });
-                                                            }
-                                                            function showpage() {
-                                                                var row = document.getElementById("maxRows").value;
-                                                                var search = document.getElementById("search").value;
-                                                                $.ajax({
-                                                                    url: "/Bmazon/AdminControllerMap",
-                                                                    type: "get",
-                                                                    data: {
-                                                                        search: search,
-                                                                        row: row,
-                                                                        index: pageNum,
-                                                                        service: "showpageproduct"
-                                                                    },
-                                                                    success: function (respone) {
-                                                                        var text = document.getElementById("showpage");
-                                                                        text.innerHTML = respone;
-                                                                    },
-                                                                    error: function (xhr) {
-                                                                        //Do Something to handle error
-                                                                    }
-                                                                });
-                                                            }
+        var category;
+        var pageNum;
+        $(document).on('click', '.pagination li', function () {
+            pageNum = $(this).data('repair');
+            pagination();
+        });
+        $(document).on('click', '.cate input', function () {
+            category = $(this).data('cate');
+        });
+        function pagination() {
+            var row = document.getElementById("maxRows").value;
+            var search = document.getElementById("search").value;
+            console.log(category);
+            console.log(row);
+            console.log(search);
+            console.log(pageNum);
+            $.ajax({
+                url: "/Bmazon/AdminControllerMap",
+                type: "get",
+                data: {
+                    cate: category,
+                    search: search,
+                    row: row,
+                    index: pageNum,
+                    service: "pagingproduct"
+                },
+                success: function (respone) {
+                    var text = document.getElementById("product");
+                    text.innerHTML = respone;
+                    showpage();
+                },
+                error: function (xhr) {
+                    //Do Something to handle error
+                }
+            });
+        }
+        function showpage() {
+            var row = document.getElementById("maxRows").value;
+            var search = document.getElementById("search").value;
+            $.ajax({
+                url: "/Bmazon/AdminControllerMap",
+                type: "get",
+                data: {
+                    cate: category,
+                    search: search,
+                    row: row,
+                    index: pageNum,
+                    service: "showpageproduct"
+                },
+                success: function (respone) {
+                    var text = document.getElementById("showpage");
+                    text.innerHTML = respone;
+                },
+                error: function (xhr) {
+                    //Do Something to handle error
+                }
+            });
+        }
         </script>
     </body>
-
 </html>
-<!-- Github buttons -->
-<!--        <script async defer src="https://buttons.github.io/buttons.js"></script>-->
-<!-- Control Center for Soft Dashboard: parallax effects, scripts for the example pages etc -->
-<!--        <script src="${contextPath}/js/soft-ui-dashboard.min.js?v=1.0.3"></script>-->

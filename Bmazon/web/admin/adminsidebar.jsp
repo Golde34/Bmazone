@@ -11,9 +11,8 @@
     <i class="fas fa-times p-3 cursor-pointer text-secondary opacity-5 position-absolute end-0 top-0 d-none d-xl-none" aria-hidden="true" id="iconSidenav"></i>
     <a class="sidebar-brand d-flex align-items-center justify-content-center" href="${contextPath}/HomePageControllerMap">
         <div class="sidebar-brand-icon">
-            <img  width="124" height="75" src="${contextPath}/images/fpt.png" class="header-logo-dark" />
+            <img  width="125" height="75" src="${contextPath}/images/fpt.png" class="header-logo-dark" />
         </div>
-        <!--                    <div class="sidebar-brand-text mx-3 my-3">Bmazon</div>-->
     </a>
 </div>
 <hr class="horizontal dark mt-0">

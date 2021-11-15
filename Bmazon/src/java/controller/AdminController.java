@@ -927,7 +927,7 @@ public class AdminController extends HttpServlet {
 
     // <editor-fold defaultstate="collapsed" desc="Product methods. Click on the + sign on the left to edit the code.">
     public void serviceProductManagement(String service, HttpServletRequest request, HttpServletResponse response) {
-        ArrayList<Product> listPaging = daoproduct.getAllPagingProduct(1, 5, "");
+        ArrayList<Product> listPaging = daoproduct.getAllPagingProduct(1, 5, "","");
         ArrayList<Product> listProduct = daoproduct.getAllProduct();
         int totalPage = listProduct.size() / 5;
         if (listProduct.size() != 5 * totalPage) {
@@ -946,13 +946,14 @@ public class AdminController extends HttpServlet {
         request.setAttribute("service", service);
         int index = 1, numOfRow = 5;
         String search = request.getParameter("search");
+        String cateId=request.getParameter("cate");
         if (request.getParameter("row") != null) {
             numOfRow = Integer.parseInt(request.getParameter("row"));
         }
         if (request.getParameter("index") != null) {
             index = Integer.parseInt(request.getParameter("index"));
         }
-        ArrayList<Product> listPaging = daoproduct.getAllPagingProduct(index, numOfRow, search);
+        ArrayList<Product> listPaging = daoproduct.getAllPagingProduct(index, numOfRow, search,cateId);
         request.setAttribute("index", index);
         request.setAttribute("listProduct", listPaging);
         for (Product product : listPaging) {
@@ -983,6 +984,7 @@ public class AdminController extends HttpServlet {
         PrintWriter pr = response.getWriter();
         int index = 1, numOfRow = 5;
         String search = request.getParameter("search");
+        String cateId=request.getParameter("cate");
         if (request.getParameter("index") != null) {
             index = Integer.parseInt(request.getParameter("index"));
         }
@@ -990,7 +992,7 @@ public class AdminController extends HttpServlet {
             numOfRow = Integer.parseInt(request.getParameter("row"));
         }
 //        ArrayList<Product> listPaging = daoproduct.getAllPagingProduct(index, numOfRow, search); //never used (fix FindBugs)
-        int totalResult = daoproduct.getPageNumber(search);
+        int totalResult = daoproduct.getPageNumber(search,cateId);
         int totalPage = totalResult / numOfRow;
         if (totalResult != numOfRow * totalPage) {
             totalPage += 1;
@@ -1104,7 +1106,7 @@ public class AdminController extends HttpServlet {
         request.setAttribute("service", service);
         String id = request.getParameter("productid");
         daoproduct.changeStatus(Integer.parseInt(id), 0);
-        ArrayList<Product> listPaging = daoproduct.getAllPagingProduct(1, 5, "");
+        ArrayList<Product> listPaging = daoproduct.getAllPagingProduct(1, 5, "","");
         ArrayList<Product> listProduct = daoproduct.getAllProduct();
         int totalPage = listProduct.size() / 5;
         if (listProduct.size() != 5 * totalPage) {
@@ -1121,7 +1123,7 @@ public class AdminController extends HttpServlet {
         request.setAttribute("service", service);
         String id = request.getParameter("productid");
         daoproduct.changeStatus(Integer.parseInt(id), 1);
-        ArrayList<Product> listPaging = daoproduct.getAllPagingProduct(1, 5, "");
+        ArrayList<Product> listPaging = daoproduct.getAllPagingProduct(1, 5, "","");
         ArrayList<Product> listProduct = daoproduct.getAllProduct();
         int totalPage = listProduct.size() / 5;
         if (listProduct.size() != 5 * totalPage) {
