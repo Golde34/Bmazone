@@ -135,6 +135,40 @@ public class ProductTypeDAO extends BaseDAO {
         }
         return list;
     }
+    public List<ProductType> getAllProductTypeBySeller(int sellerID) {
+        List<ProductType> list = new ArrayList<>();
+        String xSql = "SELECT * FROM producttype pt inner join product p on pt.productID = p.productID \n" +
+                        "where p.sellerID = ?";
+        try {
+            conn=new DBConnection().getConnection();
+            pre = conn.prepareStatement(xSql);
+            pre.setInt(1, sellerID);
+            rs = pre.executeQuery();
+            while (rs.next()) {
+                list.add(new ProductType(
+                        rs.getString(1),
+                        rs.getInt(2),
+                        rs.getString(3),
+                        rs.getString(4),
+                        rs.getString(5),
+                        rs.getInt(6),
+                        rs.getInt(7),
+                        rs.getInt(8)));
+            }
+            
+            
+        } catch (Exception e) {
+        }finally {
+            try {
+                rs.close();
+                pre.close();
+                conn.close();
+            } catch (Exception ex) {
+                Logger.getLogger(CategoryDAO.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
+        return list;
+    }
 
     public ProductType getProductTypeByPTypeID(String ProTypeId) {
         ProductType ptype = new ProductType();
@@ -686,6 +720,45 @@ public class ProductTypeDAO extends BaseDAO {
             conn=new DBConnection().getConnection();
             pre=conn.prepareStatement(xSql);
             pre.setString(1, pid);
+            pre.setInt(2, start);
+            pre.setInt(3, numOfRow);
+            rs=pre.executeQuery();
+            while(rs.next()){
+                ProductType pt = new ProductType();
+                pt.setProductTypeId(rs.getString("productTypeId"));
+                pt.setQuantity(rs.getInt("productID"));
+                pt.setSize(rs.getString("size"));
+                pt.setColor(rs.getString("color"));
+                pt.setPrice(rs.getString("price"));
+                pt.setWareHouseID(rs.getInt("wareHouseID"));
+                pt.setQuantity(rs.getInt("quantity"));
+                pt.setStatus(rs.getInt("status"));
+                list.add(pt);
+            }
+            
+            
+        } catch (Exception ex) {
+            Logger.getLogger(UserDAO.class.getName()).log(Level.SEVERE, null, ex);
+        }finally {
+            try {
+                rs.close();
+                pre.close();
+                conn.close();
+            } catch (Exception ex) {
+                Logger.getLogger(CategoryDAO.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
+        return list;
+    }
+    public ArrayList<ProductType> getAllPagingProductTypeBySeller(int index, int numOfRow, String search, int sellerID) {
+        int start=(index-1)*numOfRow;
+        ArrayList<ProductType> list = new ArrayList<>();
+        String xSql= "SELECT * FROM producttype pt inner join product p on pt.productID = p.productID \n" +
+                        "where p.sellerID = ? limit ?,?";
+        try {
+            conn=new DBConnection().getConnection();
+            pre=conn.prepareStatement(xSql);
+            pre.setInt(1, sellerID);
             pre.setInt(2, start);
             pre.setInt(3, numOfRow);
             rs=pre.executeQuery();

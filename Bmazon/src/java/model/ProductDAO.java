@@ -528,11 +528,12 @@ public class ProductDAO extends BaseDAO {
         }
         return list;
     }
-    public ArrayList<Product> getProductSuggest(int index,int userid) {
+
+    public ArrayList<Product> getProductSuggest(int index, int userid) {
 
         ArrayList<Product> list = new ArrayList<>();
-         int start = (index - 1) * 10;
-   
+        int start = (index - 1) * 10;
+
         String sql = "select p.productId,p.productname,`description`,rating,releaseDate,sellerID,status from  productview as  pv right join product as p on pv.productid= p.productid and userid = " + userid
                 + " order by click desc limit ?,20 ";
         try {
@@ -564,6 +565,40 @@ public class ProductDAO extends BaseDAO {
             }
         }
         return list;
+    }
+
+    public Product getProductByPtypeID(int sellerID, String ptid) {
+        Product pro = new Product();
+        String sql = "SELECT * FROM producttype pt inner join product p on pt.productID = p.productID \n"
+                + "where p.sellerID = ? and pt.productTypeId = ?";
+        try {
+            conn = new DBConnection().getConnection();
+            pre = conn.prepareStatement(sql);
+            pre.setInt(1, sellerID);
+            pre.setString(2, ptid);
+            rs = pre.executeQuery();
+            if (rs.next()) {
+                pro.setProductID(rs.getInt("productID"));
+                pro.setProductName(rs.getString("productName"));
+                pro.setDescription(rs.getString("description"));
+                pro.setRating(rs.getInt("rating"));
+                pro.setReleaseDate(rs.getDate("releaseDate"));
+                pro.setSeller(rs.getInt("sellerID"));
+                pro.setStatus(rs.getInt("status"));
+            }
+
+        } catch (Exception e) {
+            Logger.getLogger(ProductDAO.class.getName()).log(Level.SEVERE, null, e);
+        } finally {
+            try {
+                rs.close();
+                pre.close();
+                conn.close();
+            } catch (Exception ex) {
+                Logger.getLogger(CategoryDAO.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
+        return pro;
     }
 
     public Product getProductByID(int id) {
@@ -599,7 +634,7 @@ public class ProductDAO extends BaseDAO {
 
     public Product getProductLatest(int sellerID) {
         Product pro = new Product();
-        String sql = "SELECT  * FROM Product where sellerID = ? order by productID desc limt 0,1";
+        String sql = "SELECT * FROM Product where sellerID = ? order by productID desc limit 0,1";
         try {
             conn = new DBConnection().getConnection();
             pre = conn.prepareStatement(sql);
@@ -733,8 +768,6 @@ public class ProductDAO extends BaseDAO {
         return count;
     }
 
-  
-
     public ArrayList<Product> getProductByName(int index, String name) {
         ArrayList<Product> list = new ArrayList<>();
         int start = (index - 1) * 20;
@@ -827,22 +860,19 @@ public class ProductDAO extends BaseDAO {
         }
         return list;
     }
-      public static void main(String[] args) {
+
+    public static void main(String[] args) {
         ProductDAO pd = new ProductDAO();
-          System.out.println(pd.getProductSuggest(1, 1));
-        //List<Product> x = pd.getProductByName(1, "", cate);
-//        for (Product product : x) {
-//            System.out.println(product);
-//        }
+        Product product = pd.getProductByPtypeID(4, "Pr25Ty1");
+        System.out.println(product.getProductName());
 
     }
-   
 
-    public ArrayList<Product> getProductByCategory(int categoryID,int page) {
+    public ArrayList<Product> getProductByCategory(int categoryID, int page) {
         ArrayList<Product> list = new ArrayList<>();
-        int start=( page - 1 )* 20 ;
+        int start = (page - 1) * 20;
         String sql = " SELECT * FROM Product as a join ProductCategory as b on a.productID=b.productID \n"
-                + " WHERE a.status=1 and b.categoryId ="+categoryID+" limit "+start+", 20 ";
+                + " WHERE a.status=1 and b.categoryId =" + categoryID + " limit " + start + ", 20 ";
         try {
             conn = new DBConnection().getConnection();
             pre = conn.prepareStatement(sql);
@@ -872,11 +902,12 @@ public class ProductDAO extends BaseDAO {
         }
         return list;
     }
-     public ArrayList<Product> getProductByGenre(int categoryID,int page) {
+
+    public ArrayList<Product> getProductByGenre(int categoryID, int page) {
         ArrayList<Product> list = new ArrayList<>();
-        int start=( page - 1 )* 20 ;
+        int start = (page - 1) * 20;
         String sql = " SELECT * FROM Product as a join ProductGenre as b on a.productID=b.productID \n"
-                + " WHERE a.status=1 and b.genreId ="+categoryID+" limit "+start+", 20 ";
+                + " WHERE a.status=1 and b.genreId =" + categoryID + " limit " + start + ", 20 ";
         try {
             conn = new DBConnection().getConnection();
             pre = conn.prepareStatement(sql);
@@ -907,10 +938,10 @@ public class ProductDAO extends BaseDAO {
         return list;
     }
 
-    public ArrayList<Product> getProductBycate(int categoryID ) {
+    public ArrayList<Product> getProductBycate(int categoryID) {
         ArrayList<Product> list = new ArrayList<>();
         String sql = "SELECT * FROM Product as a join ProductCategory as b on a.productID=b.productID \n"
-                + "WHERE a.status=1 and b.categoryId=" + categoryID ;
+                + "WHERE a.status=1 and b.categoryId=" + categoryID;
 
         try {
             conn = new DBConnection().getConnection();
@@ -941,10 +972,11 @@ public class ProductDAO extends BaseDAO {
         }
         return list;
     }
-      public ArrayList<Product> getProductByGenre(int genreID ) {
+
+    public ArrayList<Product> getProductByGenre(int genreID) {
         ArrayList<Product> list = new ArrayList<>();
         String sql = "SELECT * FROM Product as a join ProductGenre as b on a.productID=b.productID \n"
-                + "WHERE a.status=1 and b.genreId=" + genreID ;
+                + "WHERE a.status=1 and b.genreId=" + genreID;
 
         try {
             conn = new DBConnection().getConnection();

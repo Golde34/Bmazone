@@ -1,18 +1,18 @@
 <%-- 
-    Document   : dashboard
-    Created on : Sep 26, 2021, 12:09:49 PM
-    Author     : DELL
+    Document   : customerSeller
+    Created on : Nov 14, 2021, 7:54:37 PM
+    Author     : Admin
 --%>
 
-<%@page import="entity.Customer"%>
-<%@page import="entity.Seller"%>
-<%@page import="entity.Genre"%>
-<%@page import="entity.Category"%>
 <%@page import="model.UserDAO"%>
 <%@page import="model.SellerDAO"%>
+<%@page import="entity.Seller"%>
+<%@page import="entity.Order"%>
 <%@page import="model.OrderDAO"%>
 <%@page import="model.OrderDetailDAO"%>
 <%@page import="model.ProductDAO"%>
+<%@page import="entity.Genre"%>
+<%@page import="entity.Category"%>
 <%@page import="model.GenreDAO"%>
 <%@page import="model.ProductGenreDAO"%>
 <%@page import="model.CategoryDAO"%>
@@ -49,14 +49,18 @@
         <link href="${contextPath}/css/seller/style.css" rel="stylesheet" type="text/css" />
         <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.0.7/css/all.css"> 
         <script src="https://kit.fontawesome.com/42d5adcbca.js" crossorigin="anonymous"></script>
-        <style type="text/css">
-
-        </style>
     </head>
 
+    <!--%
+        Account account = (Account) session.getAttribute("account");
+        if (account == null || account.isIsAdmin() == false) {
+    %-->
+    <!--    <h2>You must be seller to access this</h2>-->
+    <!--% } else { %-->
 
     <%
-        DecimalFormat nf = new DecimalFormat("###,###,###,###");
+
+        DecimalFormat nf = new DecimalFormat("###,###,###");
         ProductTypeDAO ptDAO = new ProductTypeDAO();
         ProductCategoryDAO pcDAO = new ProductCategoryDAO();
         CategoryDAO cateDAO = new CategoryDAO();
@@ -75,7 +79,7 @@
         int prev = index == 1 ? 1 : index - 1;
         int next = index == totalPage ? totalPage : index + 1;
         User curUser = (User) request.getSession().getAttribute("currUser");
-        ArrayList<Product> listP = (ArrayList<Product>) request.getAttribute("listProduct");
+        List<Order> listO = (ArrayList<Order>) request.getAttribute("listOrder");
 
         String userID = curUser.getUserId();
         Seller seller = sDAO.getSellerByUserID(Integer.parseInt(userID));
@@ -84,6 +88,7 @@
 
     <body class="skin-black">
         <jsp:include page="headerSeller.jsp"/>
+        <!-- header logo: style can be found in header.less -->
         <div class="wrapper row-offcanvas row-offcanvas-left">
             <!-- Left side column. contains the logo and sidebar -->
             <aside class="left-side sidebar-offcanvas">
@@ -112,8 +117,9 @@
                     <!-- /.search form -->
                     <!-- sidebar menu: : style can be found in sidebar.less -->
                     <ul class="sidebar-menu">
-                        <li class="active"><!-- class="tablinks" -->
+                        <li><!-- class="tablinks" -->
                             <!--<a href="" onclick="openObject(event, 'Dashboard')">-->
+
                             <a href="SellerControllerMap">
                                 <i class="fa fa-dashboard"></i> <span>Dashboard</span>
                             </a>
@@ -124,25 +130,23 @@
                             </a>
                         </li>
                         <li>
-                            <a href="SellerControllerMap?service=gallerymanagement">
-                                <i class="fa fa-image"></i> <span>Gallery Management</span>
-                            </a>
-                        </li>
-                        <li>
                             <a href="SellerControllerMap?service=orderResponse">
                                 <i class="fa fa-globe"></i> <span>Order Response</span>
                             </a>
                         </li>
-                        <li>
+                        <li class="active">
                             <a href="SellerControllerMap?service=ordermanagement">
                                 <i class="fa fa-globe"></i> <span>Order Management</span>
                             </a>
                         </li>
+
+
                         <li>
                             <a href="SellerControllerMap?service=feedback">
                                 <i class="fa fa-empire"></i> <span>Feed Back</span>
                             </a>
                         </li>
+
 
 
                     </ul>
@@ -155,68 +159,70 @@
                 <!-- Main content -->
                 <section class="content">
 
+
                     <jsp:include page="generalBoard.jsp"/>
 
                     <!-- Main row -->
                     <!-- Dashboard -->
-                    <div class="row" id="Dashboard" name="tabcontent" style="display: block;">
-
+                    <div class="row" id="Order" name="tabcontent" style="display: block;">
                         <div class="col-md-8">
                             <section class="panel">
                                 <header class="panel-heading">
-                                    Product Sold
+                                    Orders
                                 </header>
-
                                 <div class="table_head py-3" style="display: flex;
-                                     justify-content: space-between;">
-                                    <div class="rowNum">
-                                        <h6 style="display: inline">Select number of Rows</h6>
-                                        <div class="form-group" style="display: inline;">
-                                            <select onchange="pagination()" name="state" id="maxRows" class="form-control" style="width:80px;display:inline;">
-                                                <option value="5">5</option>
-                                                <option value="10">10</option>
-                                                <option value="20">20</option>
-                                                <option value="5000">Show All</option>
-                                            </select>
-                                        </div>
-                                    </div>
-                                    <div class="tb_search">
-                                        <input id="search" style="width: 100%;" type="text" oninput="pagination()" placeholder="Search.." class="form-control">
+                                 justify-content: space-between;">
+                                <div class="rowNum">
+                                    <h6 style="display: inline">Select number of Rows</h6>
+                                    <div class="form-group" style="display: inline;">
+                                        <select onchange="pagination()" name="state" id="maxRows" class="form-control" style="width:80px;display:inline;">
+                                            <option value="5">5</option>
+                                            <option value="10">10</option>
+                                            <option value="20">20</option>
+                                            <option value="5000">Show All</option>
+                                        </select>
                                     </div>
                                 </div>
+                                <div class="tb_search">
+                                    <input id="search" style="width: 100%;" type="text" oninput="pagination()" placeholder="Search.." class="form-control">
+                                </div>
+                            </div>
                                 <div class="panel-body table-responsive">
                                     <table class="table table-hover" id="dataTable">
                                         <thead>
                                             <tr>
-                                                <th style="width: 30%;height: 50px;">Product Name</th>
-                                                <th style="width: 10%;height: 50px;">Rating</th>
-                                                <th style="width: 10%;height: 50px;">Type</th>
-                                                <th style="width: 10%;height: 50px;">Genre</th>
-                                                <th style="width: 10%;height: 50px;">Action</th>
-                                                <th style="width: 10%;height: 50px;">Sold</th>
+                                                <th>Customer</th>
+                                                <th>Order date</th>
+                                                <th>Status</th>
+                                                <th>Action</th>
                                             </tr>
                                         </thead>
-                                        <tbody id="product">
-                                            <% for (Product product : listP) {
-                                                    int proID = product.getProductID();
-                                                    String genreid = pgdao.getGenreIdByProductId(product.getProductID());
-                                                    Genre genre = genreDAO.getGenreById(Integer.parseInt(genreid));
-                                                    int sold = odDAO.sumSoldProductByProductID(Integer.toString(proID));
+                                        <tbody id="order">
+                                            <%
+                                                for (Order o : listO) {
+                                                    User u = uDAO.getUserById(o.getUserID());
                                             %>
                                             <tr>
-                                                <td><div><%= product.getProductName()%></div></td>
-                                                <td><div><%= product.getRating()%>/10</div></td>
-                                                <td><div><%= cateDAO.getCategoryById(pcDAO.getProductCateByProductID(proID).getCategoryID())%></div></td>
-                                                <td><div><%= genre.getGenreName()%></div></td>
-                                                <td><div><a href="SellerControllerMap?service=dashboarddetail&productid=<%= product.getProductID()%>"><button class="btn btn-primary">Detail</button></a>
-                                                    </div></td>
-                                                <td>
-                                                    <div><%= sold%></div>
-                                                </td></tr>
-                                                <% } %>
+                                                <td><%= u.getUsername()%> </td>
+                                                <td><%= o.getOrderDate()%></td>
+
+                                                <% if (o.getState() == 0) {%>
+                                                <td><span class="label label-danger">Wait for accept</span></td>
+                                                <% } else if (o.getState() == 1) {%>
+                                                <td><span class="label label-primary">Order confirmed</span></td>
+                                                <% } else if (o.getState() == 2) {%>
+                                                <td><span class="label label-warning">On The Way</span></td>
+                                                <% } else { %>
+                                                <td><span class="label label-success">Success</span></td>
+                                                <% }%>
+                                                <td><a href="SellerControllerMap?service=orderdetail&orderid=<%= o.getOrderID()%>"><button class="btn btn-primary">Detail</button></a>
+                                                </td>
+                                            </tr>
+                                            <% } %>
                                         </tbody>
                                     </table>
                                 </div>
+
                                 <div class="pagination-container mt-4" style="display: flex;
                                      justify-content: space-around;cursor: pointer;">
                                     <nav>
@@ -272,33 +278,36 @@
                         <div class="col-md-4">
                             <section class="panel">
                                 <header class="panel-heading">
-                                    Most spent customers
+                                    Big Order
                                 </header>
 
                                 <div class="panel-body table-responsive">
                                     <table class="table table-hover">
                                         <thead>
                                             <tr>
-                                                <th>Customer</th>
+                                                <th>Order</th>
                                                 <th>Total spent</th>
                                             </tr>
                                         </thead>
                                         <tbody>
                                             <%
-                                                List<Customer> listCus = odDAO.most5SpentCustomer();
-                                                for (Customer cus : listCus) {
+                                                List<Order> listObig = odDAO.most5BigOrder();
+                                                for (Order obig : listObig) {
 
                                             %>
                                             <tr>
-                                                <td><%= uDAO.getUserById(Integer.toString(cus.getUserID())).getUsername()%> </td>
-                                                <td><%= nf.format(cus.getSpent())%> VND</td>
+                                                <td><a href="SellerControllerMap?service=orderdetail&orderid=<%= obig.getOrderID()%>"><%= obig.getOrderID()%></a></td>
+                                                <td><%= nf.format(obig.getTotal())%> VND</td>
                                             </tr>
-                                            <% }%>
+                                            <% } %>
                                         </tbody>
                                     </table>
                                 </div>
+
                             </section>
+
                         </div>
+
                     </div>
                     <!-- row end -->
                 </section><!-- /.content -->
@@ -310,57 +319,63 @@
         </div><!-- ./wrapper -->
 
     </body>
-
+    <script src="https://kit.fontawesome.com/42d5adcbca.js" crossorigin="anonymous"></script>
+    <script src="${contextPath}/js/core/popper.min.js"></script>
+    <script src="${contextPath}/js/core/bootstrap.min.js"></script>
+    <script src="${contextPath}/js/plugins/perfect-scrollbar.min.js"></script>
+    <script src="${contextPath}/js/plugins/smooth-scrollbar.min.js"></script>
+    <script src="${contextPath}/js/plugins/chartjs.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
     <script>
-        var pageNum;
-        $(document).on('click', '.pagination li', function () {
-            pageNum = $(this).data('repair');
-            pagination();
+                var pageNum;
+                $(document).on('click', '.pagination li', function () {
+        pageNum = $(this).data('repair');
+                pagination();
         });
-        function pagination() {
-            var row = document.getElementById("maxRows").value;
-            var search = document.getElementById("search").value;
-            console.log(row);
-            console.log(search);
-            console.log(pageNum);
-            $.ajax({
-                url: "/Bmazon/SellerControllerMap",
-                type: "get",
-                data: {
-                    search: search,
-                    row: row,
-                    index: pageNum,
-                    service: "pagingdashboard"
-                },
-                success: function (respone) {
-                    var text = document.getElementById("product");
-                    text.innerHTML = respone;
-                    showpage();
-                },
-                error: function (xhr) {
-                    //Do Something to handle error
+                function pagination() {
+                var row = document.getElementById("maxRows").value;
+                        var search = document.getElementById("search").value;
+                        console.log(row);
+                        console.log(search);
+                        console.log(pageNum);
+                        $.ajax({
+                        url: "/Bmazon/SellerControllerMap",
+                                type: "get",
+                                data: {
+                                search: search,
+                                        row: row,
+                                        index: pageNum,
+                                        service: "pagingorder"
+                                },
+                                success: function (respone) {
+                                var text = document.getElementById("order");
+                                        text.innerHTML = respone;
+                                        showpage();
+                                },
+                                error: function (xhr) {
+                                //Do Something to handle error
+                                }
+                        });
                 }
-            });
-        }
         function showpage() {
-            var row = document.getElementById("maxRows").value;
-            var search = document.getElementById("search").value;
-            $.ajax({
+        var row = document.getElementById("maxRows").value;
+                var search = document.getElementById("search").value;
+                $.ajax({
                 url: "/Bmazon/SellerControllerMap",
-                type: "get",
-                data: {
-                    search: search,
-                    row: row,
-                    index: pageNum,
-                    service: "showpagedashboard"
-                },
-                success: function (respone) {
-                    var text = document.getElementById("showpage");
-                    text.innerHTML = respone;
-                },
-                error: function (xhr) {
-                    //Do Something to handle error
-                }});
+                        type: "get",
+                        data: {
+                        search: search,
+                                row: row,
+                                index: pageNum,
+                                service: "showpageorder"
+                        },
+                        success: function (respone) {
+                        var text = document.getElementById("showpage");
+                                text.innerHTML = respone;
+                        },
+                        error: function (xhr) {
+                        //Do Something to handle error
+                        } });
         }
     </script>
 </html>
