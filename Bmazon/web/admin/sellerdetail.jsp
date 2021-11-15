@@ -72,7 +72,7 @@
                                             <tr>
                                                 <td>Shop Name</td>
                                                 <td>
-                                                    <input pattern="[^' ']+" class="form-control" value="<%=seller.getSellerShopName()%>" type="text" name="shopname" required>
+                                                    <input pattern="^[-a-zA-Z0-9-()]+(\s+[-a-zA-Z0-9-()]+)*$" class="form-control" value="<%=seller.getSellerShopName()%>" type="text" name="shopname" required>
                                                     <div class="invalid-feedback">
                                                         Not blank and no space at beginning or ending
                                                     </div>

@@ -151,7 +151,7 @@ public class RoleDAO extends BaseDAO {
             pre = conn.prepareStatement(xSql);
             pre.setString(1, r.getRoleName());
             pre.setInt(2, r.getAdminPermission());
-            pre.setInt(3, r.getEmployeePermisson());
+            pre.setInt(3, r.getEmployeePermission());
             pre.setInt(4, r.getSellerPermission());
             pre.setInt(5, r.getCustomerPermission());
             pre.setInt(6, r.getStatus());
@@ -257,7 +257,7 @@ public class RoleDAO extends BaseDAO {
             if (rs.next()) {;
                 role.setRoleName(rs.getString("roleName"));
                 role.setAdminPermission(rs.getInt("adminPermission"));
-                role.setEmployeePermisson(rs.getInt("employeePermission"));
+                role.setEmployeePermission(rs.getInt("employeePermission"));
                 role.setSellerPermission(rs.getInt("sellerPermission"));
                 role.setCustomerPermission(rs.getInt("customerPermission"));
                 role.setStatus(rs.getInt("status"));

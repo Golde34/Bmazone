@@ -155,6 +155,43 @@ public class GenreDAO extends BaseDAO {
         }
         return list;
     }
+    
+    
+      public ArrayList<Genre> getHomeGenre2() {
+        String sql = "select * from Genre limit 16,32";
+        ArrayList<Genre> list = new ArrayList<>();
+        Genre x = null;
+        int genreID;
+        String genreName, images;
+        int categoryID;
+        int status;
+        try {
+            conn = new DBConnection().getConnection();
+            pre = conn.prepareStatement(sql);
+            rs = pre.executeQuery();
+            while (rs.next()) {
+                genreID = rs.getInt("genreID");
+                genreName = rs.getString("genreName");
+                categoryID = rs.getInt("categoryID");
+                images = rs.getString("images");
+                status = rs.getInt("status");
+                x = new Genre(genreID, genreName, categoryID, status, images);
+                list.add(x);
+            }
+
+        } catch (Exception ex) {
+            Logger.getLogger(CategoryDAO.class.getName()).log(Level.SEVERE, null, ex);
+        }finally {
+            try {
+                rs.close();
+                pre.close();
+                conn.close();
+            } catch (Exception ex) {
+                Logger.getLogger(CategoryDAO.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
+        return list;
+    }
 
     public int insertGenre(Genre gen) {
         int n = 0;

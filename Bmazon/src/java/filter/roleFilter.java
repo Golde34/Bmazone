@@ -114,7 +114,7 @@ public class roleFilter implements Filter {
         User x = (User) httpRequest.getSession().getAttribute("currUser");
         RoleDAO daoRole = new RoleDAO();
         Role role = daoRole.getRoleId(x.getSystemRole());
-        System.out.println(role.getRoleID() + " " +role.getCustomerPermission()+ " " + role.getEmployeePermisson() + " " + role.getAdminPermission() + " " + role.getSellerPermission() + " " + role.getRoleName());
+        System.out.println(role.getRoleID() + " " +role.getCustomerPermission()+ " " + role.getEmployeePermission() + " " + role.getAdminPermission() + " " + role.getSellerPermission() + " " + role.getRoleName());
         String url = httpRequest.getServletPath();
         
         if (x == null) {
@@ -126,7 +126,7 @@ public class roleFilter implements Filter {
         if (x != null && role.getSellerPermission()!= 1 && url.contains("SellerControllerMap")) {
             httpResponse.sendRedirect("HomePageControllerMap");
         } 
-        if (x != null && role.getEmployeePermisson()!= 1 && url.contains("EmployeeControllerMap")) {
+        if (x != null && role.getEmployeePermission()!= 1 && url.contains("EmployeeControllerMap")) {
             httpResponse.sendRedirect("HomePageControllerMap");
         } 
         Throwable problem = null;

@@ -130,10 +130,7 @@ public class HomePageController extends HttpServlet {
         }
         if (page <= total - 2) {
             end = page + 2;
-        } else {
-            end = total;
-            begin = total - 2;
-        }
+        }else 
          if (total>2) {
              end = total;
             begin = total - 2;
