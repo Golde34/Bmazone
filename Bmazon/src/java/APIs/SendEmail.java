@@ -95,9 +95,18 @@ public class SendEmail {
             } else if (option.equals("editwallet")) {
                 msg.setSubject("Wallet Request Verification from Bmazon");
                 msg.setText("Please verify your request using this code: " + code);
-            } else {
+            } else if (option.equals("forgot")){
                 msg.setSubject("User Forgot Password on Bmazon ");
                 msg.setContent(addTable(code), "text/html; charset=UTF-8");
+            } else if (option.equals("topup")){
+                msg.setSubject("Transaction's notification from Bmazon");
+                msg.setText("Your transaction is successful. " + code);
+            } else if (option.equals("denytopup")){
+                msg.setSubject("Transaction's notification from Bmazon");
+                msg.setText("Your transaction is failed. " + code);
+            } else if (option.equals("order")){
+                msg.setSubject("Order's notification from Bmazon");
+                msg.setText(code);
             }
 
             //send the message
