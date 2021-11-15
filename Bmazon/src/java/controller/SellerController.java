@@ -1255,8 +1255,8 @@ public class SellerController extends HttpServlet {
         String userID = account.getUserId();
         Seller seller = sellerDAO.getSellerByUserID(Integer.parseInt(userID));
         String sellerID = Integer.toString(seller.getSellerID());
-        ArrayList<Comment> listProduct = comDAO.getCommentsBySeller(5);
-        ArrayList<Comment> listPaging = comDAO.getCommentsBySellerPaging(1, 5, "", 5);
+        ArrayList<Comment> listProduct = comDAO.getCommentsBySeller(seller.getSellerID());
+        ArrayList<Comment> listPaging = comDAO.getCommentsBySellerPaging(1, 5, "", seller.getSellerID());
         int totalPage = listProduct.size() / 5;
         if (listProduct.size() != totalPage * 5) {
             totalPage += 1;
@@ -1287,7 +1287,7 @@ public class SellerController extends HttpServlet {
         }
         int prev = index == 1 ? 1 : index - 1;
         int next = index == totalPage ? totalPage : index + 1;
-        if (totalResult > numOfRow) {
+       if (totalResult > numOfRow) {
             pr.print("<li data-repair=\"1\" class=\"page-item\">");
             pr.print("<a class=\"page-link\" aria-label=\"First\">");
             pr.print("<span aria-hidden=\"true\"><i class=\"fas fa-backward\"></i>");
@@ -1345,19 +1345,7 @@ public class SellerController extends HttpServlet {
             sendDispatcher(request, response, "seller/sellerfeedback.jsp");
         }
     }
-
-    public void sendDispatcher(HttpServletRequest request, HttpServletResponse response, String path) {
-        try {
-            RequestDispatcher rd = request.getRequestDispatcher(path);
-            rd.forward(request, response);
-
-        } catch (ServletException | IOException ex) {
-            Logger.getLogger(AdminController.class
-                    .getName()).log(Level.SEVERE, null, ex);
-        }
-    }
-
-    public void servicePagingComment(HttpServletRequest request, HttpServletResponse response) throws IOException {
+     public void servicePagingComment(HttpServletRequest request, HttpServletResponse response) throws IOException {
         User account = (User) request.getSession().getAttribute("currUser");
         Seller seller = sellerDAO.getSellerByUserID(Integer.parseInt(account.getUserId()));
         String sellerID = Integer.toString(seller.getSellerID());
@@ -1390,6 +1378,19 @@ public class SellerController extends HttpServlet {
             sendDispatcher(request, response, "seller/sellerfeedback.jsp");
         }
     }
+
+    public void sendDispatcher(HttpServletRequest request, HttpServletResponse response, String path) {
+        try {
+            RequestDispatcher rd = request.getRequestDispatcher(path);
+            rd.forward(request, response);
+
+        } catch (ServletException | IOException ex) {
+            Logger.getLogger(AdminController.class
+                    .getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+
+   
 
     private void writeObject(ObjectOutputStream stream)
             throws IOException {

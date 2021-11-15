@@ -276,6 +276,10 @@
                         </div>
                         <div class="container">
                             <nav class="woocommerce-pagination">
+                                <%if (total>1) {
+                                        
+                                    
+                                %>
                                 <ul class="page-numbers nav-pagination links text-center">
                                     ${previous}
                                     <c:forEach begin="${begin}" end="${end}" var="i">
@@ -284,6 +288,7 @@
                                     </c:forEach>
                                     ${next}
                                 </ul>
+                                <% } %>
                             </nav>
                         </div>
 

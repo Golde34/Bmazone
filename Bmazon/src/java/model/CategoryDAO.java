@@ -48,36 +48,36 @@ public class CategoryDAO extends BaseDAO {
         return list;
     }
 
-//    public ArrayList<Category> getTrueCategories() {
-//        String sql = "select * from Category";
-//        ArrayList<Category> list = new ArrayList<>();
-//        int categoryID;
-//        String categoryName;
-//        int status;
-//        try {
-//            conn = new DBConnection().getConnection();
-//            pre = conn.prepareStatement(sql);
-//            rs = pre.executeQuery();
-//            while (rs.next()) {
-//                categoryID = rs.getInt("categoryID");
-//                categoryName = rs.gering("categoryName");
-//                status = rs.getInt("status");
-//                Category x = new Category(categoryID, categoryName, status);
-//                list.add(x);
-//            }
-//        } catch (Exception ex) {
-//            Logger.getLogger(CategoryDAO.class.getName()).log(Level.SEVERE, null, ex);
-//        } finally {
-//            try {
-//                rs.close();
-//                pre.close();
-//                conn.close();
-//            } catch (SQLException ex) {
-//                Logger.getLogger(CategoryDAO.class.getName()).log(Level.SEVERE, null, ex);
-//            }
-//        }
-//        return list;
-//    }
+    public ArrayList<Category> getTrueCategories() {
+        String sql = "select * from Category";
+        ArrayList<Category> list = new ArrayList<>();
+        int categoryID;
+        String categoryName;
+        int status;
+        try {
+            conn = new DBConnection().getConnection();
+            pre = conn.prepareStatement(sql);
+            rs = pre.executeQuery();
+            while (rs.next()) {
+                categoryID = rs.getInt("categoryID");
+                categoryName = rs.getString("categoryName");
+                status = rs.getInt("status");
+                Category x = new Category(categoryID, categoryName, status);
+                list.add(x);
+            }
+        } catch (Exception ex) {
+            Logger.getLogger(CategoryDAO.class.getName()).log(Level.SEVERE, null, ex);
+        } finally {
+            try {
+                rs.close();
+                pre.close();
+                conn.close();
+            } catch (SQLException ex) {
+                Logger.getLogger(CategoryDAO.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
+        return list;
+    }
 
     public int insertCategory(Category cate) {
         int n = 0;

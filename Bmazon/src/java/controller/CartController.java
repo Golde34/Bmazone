@@ -5,6 +5,7 @@
  */
 package controller;
 
+import APIs.SendEmail;
 import entity.User;
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -234,6 +235,8 @@ public class CartController extends HttpServlet {
 
     public void serviceCheckOut(HttpServletRequest request, HttpServletResponse response) throws IOException {
         //Order
+        DecimalFormat nf = new DecimalFormat("###,###,###");
+        SendEmail s = new SendEmail();
         String shipName = request.getParameter("fullname");
         int shipCompany = Integer.parseInt(request.getParameter("shipCompany"));
         String shipAddress = request.getParameter("address");
@@ -304,6 +307,9 @@ public class CartController extends HttpServlet {
 //            request.setAttribute("order", thisOrder);
 //            request.setAttribute("DetailList", DetailList);
             request.setAttribute("mess", "Order Sucessfully!");
+            String option = "order";
+            String text = "Your order has been successfully placed!";
+            s.sendEmail(x.getUsername(), x.getEmail(), text, option);
 //                sendDispatcher(request, response, "cart/cart.jsp");
             sendDispatcher(request, response, "cart/confirmorder.jsp");
 
@@ -358,10 +364,13 @@ public class CartController extends HttpServlet {
 //            request.setAttribute("order", thisOrder);
 //            request.setAttribute("DetailList", DetailList);
                 request.setAttribute("mess", "Order Sucessfully!");
+                String option = "order";
+                String text = "Your order has been successfully placed!";
+                s.sendEmail(x.getUsername(), x.getEmail(), text, option);
 //                sendDispatcher(request, response, "cart/cart.jsp");
                 sendDispatcher(request, response, "cart/confirmorder.jsp");
             } else {
-             
+
                 request.getSession().setAttribute("ShoppingCart", ShoppingCart);
                 request.getSession().setAttribute("currUser", x);
                 request.setAttribute("total", nf.format(Double.parseDouble(totalString)));

@@ -294,7 +294,7 @@ public class ProductDAOTest {
         System.out.println("getProductSuggest");
         ProductDAO instance = new ProductDAO();
         int expResult = 16;
-        ArrayList<Product> result = instance.getProductSuggest();
+        ArrayList<Product> result = instance.getProductSuggest(1);
         assertEquals(expResult, result.size());
 
     }

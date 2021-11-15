@@ -497,11 +497,14 @@ public class ProductDAO extends BaseDAO {
     public ArrayList<Product> getProductSuggest(int userid) {
 
         ArrayList<Product> list = new ArrayList<>();
-        String sql = "select p.productId,p.productname,`description`,rating,releaseDate,sellerID,status from  productview as  pv right join product as p on pv.productid= p.productid and userid = " + userid
+        String sql = "select p.productId,p.productname,`description`,rating,releaseDate,sellerID,status "
+                + "from  productview as  pv "
+                + "right join product as p on pv.productid= p.productid and userid = ? "
                 + " order by click desc limit 0,16 ";
         try {
             conn = new DBConnection().getConnection();
             pre = conn.prepareStatement(sql);
+            pre.setInt(1, userid);
             rs = pre.executeQuery();
             while (rs.next()) {
                 Product pro = new Product();
@@ -863,8 +866,11 @@ public class ProductDAO extends BaseDAO {
 
     public static void main(String[] args) {
         ProductDAO pd = new ProductDAO();
-        Product product = pd.getProductByPtypeID(4, "Pr25Ty1");
-        System.out.println(product.getProductName());
+          System.out.println(pd.getProductByID(90));
+        //List<Product> x = pd.getProductByName(1, "", cate);
+//        for (Product product : x) {
+//            System.out.println(product);
+//        }
 
     }
 

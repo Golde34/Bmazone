@@ -137,7 +137,7 @@
                                                                 <div id="wallet">
                                                                     <p class="form-row form-row-first" id="billing_wallet_field" data-priority="10">
                                                                         <label for="billing_wallet" class=""> Your Wallet </label>
-                                                                        <input type="text" class="input-text " name="wallet" value="<%=x.getWallet()%>" id="billing_wallet" 
+                                                                        <input type="text" class="input-text " name="wallet" value="<%=nf.format(x.getWallet())%>" id="billing_wallet" 
                                                                                placeholder="" autocomplete="given-name" autofocus="autofocus" />
                                                                     </p>
                                                                     <p class="form-row form-row-last validate-required" data-priority="0">

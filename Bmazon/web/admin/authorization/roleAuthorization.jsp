@@ -78,7 +78,7 @@
                                                     <td><%=role.getRoleName()%></td>
                                                     <% if (role.getAdminPermission() == 1) {%> <td>O</td>
                                                     <%} else {%> <td>X</td> <%}%>
-                                                     <% if (role.getEmployeePermisson()== 1) {%> <td>O</td>
+                                                     <% if (role.getEmployeePermission()== 1) {%> <td>O</td>
                                                     <%} else {%> <td>X</td> <%}%>
                                                     <% if (role.getSellerPermission() == 1) {%>  <td>O</td>
                                                     <%} else {%> <td>X</td> <%}%>

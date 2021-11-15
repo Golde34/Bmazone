@@ -269,7 +269,12 @@ public class UserController extends HttpServlet {
         request.setAttribute("currUser", x);
         User u = x;
         u.setPublicName(request.getParameter("username"));
-        u.setBio(request.getParameter("bio"));
+        String bio = request.getParameter("bio");
+        if (bio.equalsIgnoreCase("") || bio == null) {
+            u.setBio(x.getBio());
+        } else {
+            u.setBio(bio);
+        }
         u.setGender(Integer.parseInt(request.getParameter("gender")));
         u.setDOB(Date.valueOf(request.getParameter("dob")));
         u.setOccupation(request.getParameter("occupation"));
@@ -293,15 +298,15 @@ public class UserController extends HttpServlet {
 
     private void serviceEditPrivateProfile(HttpServletRequest request, HttpServletResponse response) {
         User x = (User) request.getSession().getAttribute("currUser");
-        request.setAttribute("currUser", x);
+        request.setAttribute("currUser", daoUser.getUserById(x.getUserId()));
         sendDispatcher(request, response, "user/editPrivateProfile.jsp");
     }
 
-    private void serviceChangeInfoPrivateProfile(HttpServletRequest request, HttpServletResponse response) {
+    private void serviceChangeInfoPrivateProfile(HttpServletRequest request, HttpServletResponse response) throws NoSuchAlgorithmException, InvalidKeySpecException {
         String mess = "";
 
         User x = (User) request.getSession().getAttribute("currUser");
-        request.setAttribute("currUser", x);
+        request.setAttribute("currUser", daoUser.getUserById(x.getUserId()));
         String name = request.getParameter("name");
         String mail = request.getParameter("mail");
         String phone = request.getParameter("phone");
@@ -317,19 +322,22 @@ public class UserController extends HttpServlet {
             request.setAttribute("mess", mess);
             sendDispatcher(request, response, "user/editPrivateProfile.jsp");
         }
-        if (x.getPassword().equals(pass)) {
+        if (validatePassword(pass, x.getPassword())) {
             User u = x;
             u.setFullname(name);
             u.setEmail(mail);
             u.setPhoneNumber(phone);
             daoUser.updatePrivateInfo(u);
-            System.out.println(u.getPassword() + u.getFullname());
+            System.out.println(u.getPassword() + u.getFullname() + u.getEmail());
             String currentUserID = x.getUserId();
             request.getSession().setAttribute("currUser", daoUser.getUserById(currentUserID));
             mess = "Change private information successfully!";
             request.setAttribute("mess", mess);
             sendDispatcher(request, response, "user/editPrivateProfile.jsp");
         } else {
+            System.out.println(pass);
+            System.out.println(x.getPassword());
+            System.out.println(validatePassword(pass, x.getPassword()));
             mess = "You must enter the correct password";
             request.setAttribute("mess", mess);
             sendDispatcher(request, response, "user/editPrivateProfile.jsp");

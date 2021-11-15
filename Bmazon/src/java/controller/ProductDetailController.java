@@ -61,7 +61,7 @@ public class ProductDetailController extends HttpServlet {
     GalleryDAO daoGallery = new GalleryDAO();
     ProductTypeDAO daoProductType = new ProductTypeDAO();
     CommentDAO daoComment = new CommentDAO();
-    ViewDAO viewDAO= new ViewDAO();
+    ViewDAO viewDAO = new ViewDAO();
     private static final long serialVersionUID = 1;
 
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
@@ -96,13 +96,14 @@ public class ProductDetailController extends HttpServlet {
     public void serviceProductDetail(HttpServletRequest request, HttpServletResponse response) {
         int id = Integer.parseInt(request.getParameter("pid"));
         User x = (User) request.getSession().getAttribute("currUser");
-        if (x!=null) {
-            View view= viewDAO.getView(id, Integer.parseInt(x.getUserId()));
+        if (x != null) {
+            View view = viewDAO.getView(id, Integer.parseInt(x.getUserId()));
             if (view==null) {
-                View insert= new View(Integer.parseInt(x.getUserId()),id, 1);
-                viewDAO.insertClick(insert);
-            }else{
-                viewDAO.changeClick(view);
+                 View insert = new View(Integer.parseInt(x.getUserId()), id, 1);
+                viewDAO.insertClick(insert);         
+            } else {
+                 viewDAO.changeClick(view);
+               
             }
         }
         Product product = daoProduct.getProductByID(id);
