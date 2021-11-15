@@ -293,15 +293,12 @@
                                                     </tr>
                                                     <tr>
                                                         <td><label>Image</label></td>
-                                                        <td>
                                                             <%
                                                                 List<Gallery> listGallery = gallerydao.getAllImageByProductTypeID(ptype.getProductTypeId());
                                                                 for (Gallery gallery : listGallery) {
                                                             %>
-                                                            <label class="imgho" for="file">
+                                                        <td>
                                                             <img id="img" src="images/<%=gallery.getLink()%>">
-                                                            </label>
-                                                            <input required accept="image/*" onchange="loadFile(event)" id="file" type="file" name="photo" style="display: none;">
                                                         </td>
                                                         <% } %>
                                                     </tr>
