@@ -21,9 +21,18 @@ public class ProductDAO extends BaseDAO {
 
     BaseDAO dbConn = new BaseDAO();
 
-    public int getPageNumber(String search, String cateId) {
+    public int getPageNumber(String search, String[] cateId) {
         int num = 0;
-        String xSql = "select count(*) from product p join productcategory pc on p.productID=pc.productID where productName like '%" + search + "%' and categoryId like'%" + cateId + "%' ";
+        String xSql = "select count(*) from product p join productcategory pc on p.productID=pc.productID where productName like '%" + search + "%'";
+        for (int i = 0; i < cateId.length; i++) {
+            if (i == 0) {
+                xSql += " and (categoryId like'%" + cateId[i] + "%'";
+            } else {
+                xSql += " or categoryId like'%" + cateId[i] + "%'";
+            }
+        }
+        xSql += ")";
+
         try {
             conn = new DBConnection().getConnection();
             pre = conn.prepareStatement(xSql);
@@ -74,10 +83,19 @@ public class ProductDAO extends BaseDAO {
     }
 
 //hieu
-    public ArrayList<Product> getAllPagingProduct(int index, int numOfRow, String search, String cateId) {
+    public ArrayList<Product> getAllPagingProduct(int index, int numOfRow, String search, String[] cateId) {
         int start = (index - 1) * numOfRow;
         ArrayList<Product> list = new ArrayList<>();
-        String sql = "select * from product p join productcategory pc on p.productID=pc.productID where productName like '%" + search + "%' and categoryId like'%" + cateId + "%' limit ?,?";
+        String sql = "select * from product p join productcategory pc on p.productID=pc.productID where productName like '%" + search + "%'";
+        for (int i = 0; i < cateId.length; i++) {
+            if (i == 0) {
+                sql += " and (categoryId like'%" + cateId[i] + "%'";
+            } else {
+                sql += " or categoryId like'%" + cateId[i] + "%'";
+            }
+        }
+        sql += ")";
+        sql += "limit ?,?";
         try {
             conn = new DBConnection().getConnection();
             pre = conn.prepareStatement(sql);
@@ -826,8 +844,8 @@ public class ProductDAO extends BaseDAO {
 
     public static void main(String[] args) {
         ProductDAO pd = new ProductDAO();
-        String[] cate = {"1", "2","3"};
-        System.out.println(pd.getProductByFilter(2, "i", cate));
+        String[] cate = {"1", "2", "3"};
+        System.out.println(pd.getPageNumber("", cate));
 
         //List<Product> x = pd.getProductByName(1, "", cate);
 //        for (Product product : x) {

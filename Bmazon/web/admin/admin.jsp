@@ -7,12 +7,13 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <c:set var="contextPath" value="${pageContext.request.contextPath}" />
 <%
+    String[] temp={""};
     SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy");
     DecimalFormat nf = new DecimalFormat("###,###,###");
     ProductDAO daoProduct = new ProductDAO();
     ShipCompanyDAO daoCompany = new ShipCompanyDAO();
     OrderDAO daoOrder = new OrderDAO();
-    ArrayList<Product> top6Product = daoProduct.getAllPagingProduct(1, 6, "");
+    ArrayList<Product> top6Product = daoProduct.getAllPagingProduct(1, 6, "",temp);
     List<ShipCompany> top5Company = daoCompany.getAllPagingShipCompany(1, 5, "");
     User curUser = (User) request.getSession().getAttribute("currUser");
     Double profit = (Double) request.getAttribute("profit");

@@ -179,11 +179,11 @@
                                     <span class="m-0 font-weight-bold text-primary">Category</span>
                                     <%for (Category cate : listCategory) {%>
                                     <div class="cate">
-                                        <input data-cate="<%=cate.getCategoryID()%>" type="radio" id="<%=cate.getCategoryID()%>" name="cid" value="<%=cate.getCategoryID()%>">
+                                        <input type="checkbox" id="<%=cate.getCategoryID()%>" name="cid" value="<%=cate.getCategoryID()%>">
                                         <label for="<%=cate.getCategoryID()%>"><%=cate.getCategoryName()%></label>
                                     </div>
                                     <%}%>
-                                    <button onclick="pagination()" class="btn btn-primary">Search</button>
+                                    <button id="button" onclick="pagination()" class="btn btn-primary">Search</button>
                                 </div>
                             </div>
                         </div>
@@ -196,27 +196,36 @@
         <script src="${contextPath}/js/core/bootstrap.min.js"></script>
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
         <script>
+        var cate = [];
         var category;
         var pageNum;
         $(document).on('click', '.pagination li', function () {
             pageNum = $(this).data('repair');
             pagination();
         });
-        $(document).on('click', '.cate input', function () {
-            category = $(this).data('cate');
+        $(document).ready(function () {
+        $("input[name='cid']").change(function() {
+        var checked = $(this).val();
+          if ($(this).is(':checked')) {
+            cate.push(checked);
+          }else{
+          cate.splice($.inArray(checked, cate),1);
+          }
+        });
         });
         function pagination() {
             var row = document.getElementById("maxRows").value;
             var search = document.getElementById("search").value;
-            console.log(category);
+            console.log(cate);
             console.log(row);
             console.log(search);
             console.log(pageNum);
+            var json = JSON.stringify(cate)
             $.ajax({
                 url: "/Bmazon/AdminControllerMap",
                 type: "get",
                 data: {
-                    cate: category,
+                    json:json,
                     search: search,
                     row: row,
                     index: pageNum,
@@ -227,19 +236,32 @@
                     text.innerHTML = respone;
                     showpage();
                 },
-                error: function (xhr) {
-                    //Do Something to handle error
-                }
+                error:function(x,e) {
+                    if (x.status==0) {
+                        alert('You are offline!!\n Please Check Your Network.');
+                    } else if(x.status==404) {
+                        alert('Requested URL not found.');
+                    } else if(x.status==500) {
+                        alert('Internel Server Error.');
+                    } else if(e=='parsererror') {
+                        alert('Error.\nParsing JSON Request failed.');
+                    } else if(e=='timeout'){
+                        alert('Request Time out.');
+                    } else {
+                        alert('Unknow Error.\n'+x.responseText);
+                    }
+}
             });
         }
         function showpage() {
             var row = document.getElementById("maxRows").value;
             var search = document.getElementById("search").value;
+            var json = JSON.stringify(cate)
             $.ajax({
                 url: "/Bmazon/AdminControllerMap",
                 type: "get",
                 data: {
-                    cate: category,
+                    json:json,
                     search: search,
                     row: row,
                     index: pageNum,
