@@ -231,12 +231,6 @@ public class CommentDAO extends BaseDAO {
         return comments;
     }
 
-    public static void main(String[] args) {
-        CommentDAO c = new CommentDAO();
-        System.out.println(c.getCommentsBySeller(5));
-
-    }
-
     public ArrayList<Comment> getCommentsBySeller(int pid) {
         ArrayList<Comment> comments = new ArrayList<>();
         String sql = "select * from comment as c join product as p on c.productid= p.productid where sellerid=?";
@@ -270,9 +264,17 @@ public class CommentDAO extends BaseDAO {
         return comments;
     }
 
+    public static void main(String[] args) {
+        CommentDAO c = new CommentDAO();
+        System.out.println(c.getNumberOfCommentPaging("", 5));
+
+    }
+
     public int getNumberOfCommentPaging(String search, int pID) {
         int num = 0;
-        String xSql = "SELECT COUNT(*) FROM `Comment` where sellerID = " + pID + "and content like '%" + search + "%'";
+
+        String xSql = "select count(*) from `comment` as c join product as p on c.productid= p.productid where sellerid=" + pID + " and `content` like '%" + search + "%' ";
+
         try {
             conn = new DBConnection().getConnection();
             pre = conn.prepareStatement(xSql);

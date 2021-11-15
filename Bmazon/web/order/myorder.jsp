@@ -106,15 +106,7 @@
                     <a href="CartControllerMap?service=OrderDetail&orderID=<%=order.getOrderID()%>">
                         
                         <h6>Order ID: <%=order.getOrderID()%> (<%=order.getOrderDate()%>)</h6> </a>
-                        </div>
-                         <%if (order.getState()==0&&order.getStatus()==1) {
-                                    %>
-                                     <div class="col-md-6">
-                                    <a href="CartControllerMap?service=Deactice&orderID=<%=order.getOrderID()%>&status=0" style="float: right"><button class="button" onclick="return confirm('Are you sure not to buy these products?');">Stop Buying</button></a>
-                                     </div>
-                                     
-                                <%  }
-                                %>
+                    
                           
                     </div>
                     <a href="CartControllerMap?service=OrderDetail&orderID=<%=order.getOrderID()%>">
@@ -134,6 +126,15 @@
                                 
                                 </div> 
                                 <div class="col"> <strong>Payment Method:</strong> <br> <%=order.getPaymentMethod()%><br> <%=nf.format(order.getTotal())%> </div>
+                                    </div>
+                         <%if (order.getState()==0&&order.getStatus()==1) {
+                                    %>
+                                     <div class="col">
+                                    <a href="CartControllerMap?service=Deactice&orderID=<%=order.getOrderID()%>&status=0" style="float: right"><button class="button" onclick="return confirm('Are you sure not to buy these products?');">Stop Buying</button></a>
+                                     </div>
+                                     
+                                <%  }
+                                %>
                                    
                             </div>
                         </article>
