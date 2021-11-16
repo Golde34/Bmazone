@@ -1,3 +1,4 @@
+<%@page import="model.UserDAO"%>
 <%@page import="model.CategoryDAO"%>
 <%@page import="java.util.ArrayList"%>
 <%@page import="entity.*"%>
@@ -5,6 +6,7 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <c:set var="contextPath" value="${pageContext.request.contextPath}" />
 <%
+    UserDAO daouser = new UserDAO();
     CategoryDAO daocate = new CategoryDAO();
     Seller seller = new Seller();
     if (request.getAttribute("seller") != null) {
@@ -57,8 +59,8 @@
                             <div class="card">
                                 <div class="card-body px-0 pb-2" >    
                                     <div class="card-header py-3 d-flex justify-content-between">
-                                        <h3 class="m-0 font-weight-bold text-primary">Seller Detail</h3>
-                                        <a href="AdminControllerMap?service=sellermanagement"><btn class="btn btn-primary">Seller Management</btn></a>
+                                        <h3 class="m-0 font-weight-bold text-primary">Shop Detail</h3>
+                                        <a href="AdminControllerMap?service=sellermanagement"><btn class="btn btn-primary">Shop Management</btn></a>
                                     </div>
                                 <% if (state.equals("success")) {%>
                                 <h6 class="text-success mt-3 px-4">${mess}</h6>
@@ -69,6 +71,12 @@
                                 <div class="card-body">
                                     <form class="needs-validation" novalidate action="/Bmazon/AdminControllerMap" method="POST">
                                         <table class="table table-striped">
+                                            <tr>
+                                                <td>Seller</td>
+                                                <td>
+                                                    <input class="form-control" value="<%=daouser.getUserBySellerId(seller).getFullname()%>" type="text" name="seller" readonly="">
+                                                </td>
+                                            </tr>
                                             <tr>
                                                 <td>Shop Name</td>
                                                 <td>
@@ -108,7 +116,7 @@
                                             <tr>
                                                 <td></td>
                                                 <td>
-                                                    <input type="submit" value="Update Seller" class="btn btn-primary">
+                                                    <input type="submit" value="Update Shop" class="btn btn-primary">
                                                     <input type="hidden" value="updateseller" name="service">
                                                     <input type="hidden" value="<%=seller.getSellerID()%>" name="id">
                                                 </td>

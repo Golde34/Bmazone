@@ -1,3 +1,5 @@
+<%@page import="model.UserDAO"%>
+<%@page import="model.SellerDAO"%>
 <%@page import="model.CategoryDAO"%>
 <%@page import="java.util.*"%>
 <%@page import="entity.*"%>
@@ -5,6 +7,7 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <c:set var="contextPath" value="${pageContext.request.contextPath}" />
 <%
+    UserDAO daouser = new UserDAO();
     CategoryDAO daocate = new CategoryDAO();
     int index = (Integer) request.getAttribute("index");
     int totalPage = (Integer) request.getAttribute("totalPage");
@@ -49,7 +52,7 @@
                             <div class="card">
                                 <div class="card-body px-0 pb-2">
                                     <div class="card-header py-3 d-flex justify-content-between">
-                                        <h3 class="m-0 font-weight-bold text-primary">Seller Management</h3>
+                                        <h3 class="m-0 font-weight-bold text-primary">Shop Management</h3>
                                     </div>
                                     <div class="card-body">
                                         <div class="table_head py-3 d-flex justify-content-between">
@@ -74,8 +77,8 @@
                                                     <tr>
                                                         <th style="width: 25%">Shop Name</th>
                                                         <th style="width: 15%">Phone</th>
-                                                        <th style="width: 25%">Evidence</th>
-                                                        <th style="width: 20%">Description</th>
+                                                        <th style="width: 20%">Evidence</th>
+                                                        <th style="width: 25%">Description</th>
                                                         <th style="width: 15%">Action</th>
                                                     </tr>
                                                 </thead>
