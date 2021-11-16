@@ -12,7 +12,6 @@
     ProductDAO daoProduct = new ProductDAO();
     ShipCompanyDAO daoCompany = new ShipCompanyDAO();
     OrderDAO daoOrder = new OrderDAO();
-    ArrayList<Product> top6Product = daoProduct.getAllPagingProduct(1, 6, "");
     List<ShipCompany> top5Company = daoCompany.getAllPagingShipCompany(1, 5, "");
     User curUser = (User) request.getSession().getAttribute("currUser");
     Double profit = (Double) request.getAttribute("profit");
