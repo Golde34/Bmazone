@@ -232,17 +232,17 @@
                                             <th style="width: 10%;"></th>
                                         </tr>
                                     </thead>
-                                    <tbody id="product">
+                                    <tbody id="producttype">
                                         <%
                                             for (ProductType ptype : listPT) {
                                                 String ptypeID = ptype.getProductTypeId();
-                                                Product product = pDAO.getProductByPtypeID(sellerID, ptypeID);
+                                                Product product = pDAO.getProductByPtypeID(ptypeID);
+                                                Double price = Double.parseDouble(ptype.getPrice());
                                         %>
                                         <tr>
                                             <td><div><a href="SellerControllerMap?service=gallerydetail&ptypeid=<%=ptypeID%>"><%= product.getProductName()%></a></div></td>
                                             <td><div><%= ptype.getColor()%></div></td>
                                             <td><div><%= ptype.getSize()%></div></td>
-                                            <%Double price = Double.parseDouble(ptype.getPrice());%>
                                             <td><div><%=nf.format(price)%></div></td>
                                             <td><div><%= ptype.getQuantity()%></div></td>
                                             <td><div><a href="#addEmployeeModal" data-toggle="modal"><button class="btn btn-success">Add</button></a>
@@ -251,7 +251,7 @@
                                     <div id="addEmployeeModal" class="modal fade">
                                         <div class="modal-dialog">
                                             <div class="modal-content">
-                                                <form action="/Bmazon/SellerControllerMap" method="post">
+                                <form enctype="multipart/form-data" class="form" action="/Bmazon/SellerControllerMap?service=addgallery&ptypeid=<%= ptype.getProductTypeId()%>" method="POST">
                                                     <div class="modal-header">						
                                                         <h4 class="modal-title">Add Gallery</h4>
                                                         <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
@@ -275,7 +275,6 @@
                                                     <div class="modal-footer">
                                                         <input type="button" class="btn btn-default" data-dismiss="modal" value="Cancel">
                                                         <input type="hidden" value="addgallery" name="service">
-                                                        <input type="hidden" value="<%= ptype.getProductTypeId()%>" name="ptypeid">
                                                         <input type="submit" class="btn btn-success" value="Add">
                                                     </div>
                                                 </form>

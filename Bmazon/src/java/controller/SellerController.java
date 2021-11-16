@@ -149,7 +149,7 @@ public class SellerController extends HttpServlet {
             if (service.equalsIgnoreCase("ordermanagement")) {
                 serviceOrderManagement(request, response);
             }
-            
+
             //Paging order
             if (service.equalsIgnoreCase("pagingorder")) {
                 servicePagingOrder(request, response);
@@ -159,7 +159,7 @@ public class SellerController extends HttpServlet {
             if (service.equalsIgnoreCase("showpageorder")) {
                 serviceShowPageOrder(request, response);
             }
-            
+
             // <editor-fold defaultstate="collapsed" desc="Order Response service. Click on the + sign on the left to edit the code.">
             //OrderResponse
             if (service.equalsIgnoreCase("orderResponse")) {
@@ -182,32 +182,49 @@ public class SellerController extends HttpServlet {
                 serviceHandleOrder(service, request, response);
             }
             //</editor-fold>
-            
+
             //Order Detail
             if (service.equalsIgnoreCase("orderdetail")) {
                 serviceOrderDetail(request, response);
             }
-            
+
             //Gallery management
             if (service.equalsIgnoreCase("gallerymanagement")) {
                 serviceGalleryManagement(request, response);
+            }
+            //Gallery showpage
+            if (service.equalsIgnoreCase("showpagegallery")) {
+                serviceShowPageGallery(request, response);
+            }
+            //Gallery Paging
+            if (service.equalsIgnoreCase("paginggallery")) {
+                servicePagingGallery(request, response);
             }
             //Gallery management
             if (service.equalsIgnoreCase("addgallery")) {
                 serviceAddGallery(request, response);
             }
-            
-            
+
             //Gallery detail
             if (service.equalsIgnoreCase("gallerydetail")) {
                 serviceGalleryDetail(request, response);
             }
-            
-            //Gallery detail
-            if (service.equalsIgnoreCase("gallerydetail")) {
+
+            //Gallery update
+            if (service.equalsIgnoreCase("updategallery")) {
                 serviceUpdateGallery(request, response);
             }
-            
+
+            //Gallery update
+            if (service.equalsIgnoreCase("deactivegallery")) {
+                serviceDeactiveGallery(request, response);
+            }
+
+            //Gallery update
+            if (service.equalsIgnoreCase("activegallery")) {
+                serviceActiveGallery(request, response);
+            }
+
             //Edit Seller Information
             if (service.equalsIgnoreCase("editSellerInformation")) {
                 serviceEditSellerInformation(request, response);
@@ -562,7 +579,7 @@ public class SellerController extends HttpServlet {
 //            Genre genre = gDAO.getGenreById(Integer.parseInt(genreid));
             Double price = Double.parseDouble(ptype.getPrice());
             pr.print("<tr>"
-                    + "<td style=\"width: 90px;\"><label>Color</label></td>"
+                    + "<td><label>Color</label></td>"
                     + "<td>\n"
                     + "<input required style=\"width: 100px;\" type=\"text\" name=\"color\" class=\"form-control\" value=\"" + ptype.getColor() + "\">\n"
                     + "<input type=\"hidden\" name=\"ptid\" value=\"" + ptype.getProductTypeId() + "\">\n"
@@ -582,16 +599,13 @@ public class SellerController extends HttpServlet {
             pr.print("</td>"
                     + "</tr>\n"
                     + "<tr>\n"
-                    + "<td><label>Image</label></td>\n"
-                    + "<td>\n");
+                    + "<td><label>Image</label></td>\n");
             List<Gallery> listGallery = galleryDAO.getAllImageByProductTypeID(ptype.getProductTypeId());
             for (Gallery gallery : listGallery) {
                 pr.print(
-                        "<label class=\"imgho\" for=\"file\">\n"
-                        + "<img id=\"img\" src=\"images/" + gallery.getLink() + "\">\n"
-                        + "</label>\n"
-                        + "<input required accept=\"image/*\" onchange=\"loadFile(event)\" id=\"file\" type=\"file\" name=\"photo\" style=\"display: none;\">"
-                        + "</td>\n");
+                        "<td>\n"
+                        + "                           <img src=\"images/"+gallery.getLink()+"\" width=\"150px\" height=\"120px\">\n"
+                        + "                        </td>");
             }
             pr.print(
                     "</tr>"
@@ -715,18 +729,6 @@ public class SellerController extends HttpServlet {
         int quantity = Integer.parseInt(request.getParameter("quantity"));
         int warehouse = Integer.parseInt(request.getParameter("warehouse"));
         int pid = Integer.parseInt(request.getParameter("proID"));
-        Product product = pDAO.getProductByID(pid);
-        List<ProductType> listProductType = ptDAO.getProductByProductID(product.getProductID());
-        String ptypeID = "Pr" + product.getProductID() + "Ty" + (listProductType.size() + 1);
-        ProductType pt = new ProductType(ptypeID, pid, size, color, price, warehouse, quantity, 1);
-        pt.setProductTypeId(ptypeID);
-        pt.setColor(color);
-        pt.setPrice(price);
-        pt.setSize(size);
-        pt.setQuantity(quantity);
-        pt.setWareHouseID(warehouse);
-        ptDAO.addProductType(pt);
-
 //        String filename = null;
 //        // Create a factory for disk-based file items
 //        try {
@@ -761,12 +763,23 @@ public class SellerController extends HttpServlet {
 //        } catch (Exception ex) {
 //            Logger.getLogger(UserController.class.getName()).log(Level.SEVERE, null, ex);
 //        }
+        Product product = pDAO.getProductByID(pid);
+        List<ProductType> listProductType = ptDAO.getProductByProductID(product.getProductID());
+        String ptypeID = "Pr" + product.getProductID() + "Ty" + (listProductType.size() + 1);
+        ProductType pt = new ProductType(ptypeID, pid, size, color, price, warehouse, quantity, 1);
+        pt.setProductTypeId(ptypeID);
+        pt.setColor(color);
+        pt.setPrice(price);
+        pt.setSize(size);
+        pt.setQuantity(quantity);
+        pt.setWareHouseID(warehouse);
+        ptDAO.addProductType(pt);
+
 //        
 //        Gallery gallery = new Gallery();
 //        gallery.setLink(filename);
 //        gallery.setProductID(pid);
 //        gallery.setProductTypeID(ptypeID);
-//        gallery.setStatus(1);
 //        galleryDAO.addGallery(gallery);
         sendDispatcher(request, response, "SellerControllerMap?service=productdetail&productid=" + pid + "");
     }
@@ -915,7 +928,7 @@ public class SellerController extends HttpServlet {
         for (Order o : listPaging) {
             User u = uDAO.getUserById(o.getUserID());
             pr.print("<tr>"
-                    + "<td>" + u.getUsername() +" </td>"
+                    + "<td>" + u.getUsername() + " </td>"
                     + "<td>" + o.getOrderDate() + "</td>");
             switch (o.getState()) {
                 case 0:
@@ -931,7 +944,7 @@ public class SellerController extends HttpServlet {
                     pr.print("<td><span class=\"label label-success\">Success</span></td>");
                     break;
             }
-            pr.print("<td><a href=\"SellerControllerMap?service=orderdetail&orderid="+o.getOrderID()+"\"><button class=\"btn btn-primary\">Detail</button></a>");
+            pr.print("<td><a href=\"SellerControllerMap?service=orderdetail&orderid=" + o.getOrderID() + "\"><button class=\"btn btn-primary\">Detail</button></a>");
             pr.print("</td>"
                     + "</tr>"
             );
@@ -1036,16 +1049,16 @@ public class SellerController extends HttpServlet {
         sendDispatcher(request, response, "seller/orderdetail.jsp");
     }
     //</editor-fold>
-    
+
     // <editor-fold defaultstate="collapsed" desc="Gallery methods. Click on the + sign on the left to edit the code.">
     public void serviceGalleryManagement(HttpServletRequest request, HttpServletResponse response) {
         User account = (User) request.getSession().getAttribute("currUser");
         String userID = account.getUserId();
         Seller seller = sellerDAO.getSellerByUserID(Integer.parseInt(userID));
         int sellerID = seller.getSellerID();
-        
+
         List<ProductType> listProductType = ptDAO.getAllProductTypeBySeller(sellerID);
-        ArrayList<ProductType> listPaging = ptDAO.getAllPagingProductTypeBySeller(1, 4, "", sellerID);
+        ArrayList<ProductType> listPaging = ptDAO.getAllPagingProductTypeBySeller(1, 5, "", sellerID);
         int totalPage = listProductType.size() / 1;
         if (listProductType.size() != totalPage * 1) {
             totalPage += 1;
@@ -1055,7 +1068,164 @@ public class SellerController extends HttpServlet {
         request.setAttribute("listProductType", listPaging);
         sendDispatcher(request, response, "seller/gallerySeller.jsp");
     }
-    
+
+    public void servicePagingGallery(HttpServletRequest request, HttpServletResponse response) throws IOException {
+        PrintWriter pr = response.getWriter();
+        User account = (User) request.getSession().getAttribute("currUser");
+        String userID = account.getUserId();
+        Seller seller = sellerDAO.getSellerByUserID(Integer.parseInt(userID));
+        int sellerID = seller.getSellerID();
+        int index = 1, numOfRow = 5;
+        String search = request.getParameter("search");
+        if (request.getParameter("index") != null) {
+            index = Integer.parseInt(request.getParameter("index"));
+        }
+        if (request.getParameter("row") != null) {
+            numOfRow = Integer.parseInt(request.getParameter("row"));
+        }
+        ArrayList<ProductType> listPaging = ptDAO.getAllPagingProductTypeBySeller(index, numOfRow, "", sellerID);
+        request.setAttribute("index", index);
+        request.setAttribute("listProductType", listPaging);
+        for (ProductType ptype : listPaging) {
+            String ptypeID = ptype.getProductTypeId();
+            Product product = pDAO.getProductByPtypeID(ptypeID);
+            Double price = Double.parseDouble(ptype.getPrice());
+            pr.print("<tr>\n"
+                    + "                                            <td><div><a href=\"SellerControllerMap?service=gallerydetail&ptypeid=" + ptypeID + "\">" + product.getProductName() + "</a></div></td>\n"
+                    + "                                            <td><div>" + ptype.getColor() + "</div></td>\n"
+                    + "                                            <td><div>" + ptype.getSize() + "</div></td>\n"
+                    + "                                            <td><div>" + nf.format(price) + "</div></td>\n"
+                    + "                                            <td><div>" + ptype.getQuantity() + "</div></td>\n"
+                    + "                                            <td><div><a href=\"#addEmployeeModal\" data-toggle=\"modal\"><button class=\"btn btn-success\">Add</button></a>\n"
+                    + "                                                </div></td>\n"
+                    + "\n"
+                    + "                                    <div id=\"addEmployeeModal\" class=\"modal fade\">\n"
+                    + "                                        <div class=\"modal-dialog\">\n"
+                    + "                                            <div class=\"modal-content\">\n"
+                    + "                                <form enctype=\"multipart/form-data\" class=\"form\" action=\"/Bmazon/SellerControllerMap?service=addgallery&ptypeid=" + ptype.getProductTypeId() + "\" method=\"POST\">\n"
+                    + "                                                    <div class=\"modal-header\">						\n"
+                    + "                                                        <h4 class=\"modal-title\">Add Gallery</h4>\n"
+                    + "                                                        <button type=\"button\" class=\"close\" data-dismiss=\"modal\" aria-hidden=\"true\">&times;</button>\n"
+                    + "                                                    </div>\n"
+                    + "                                                    <div class=\"modal-body\">\n"
+                    + "\n"
+                    + "                                                        <div class=\"form-group\">\n"
+                    + "                                                            <div class=\"wrapper\">\n"
+                    + "                                                                <div class=\"image\">\n"
+                    + "                                                                    <img src=\"\">\n"
+                    + "                                                                </div>\n"
+                    + "                                                                <div class=\"file-name\">\n"
+                    + "                                                                    File name here\n"
+                    + "                                                                </div>\n"
+                    + "                                                            </div>\n"
+                    + "                                                            <input id=\"default-btn\" type=\"file\" hidden class=\"form-control\" name=\"photo\" placeholder=\"Enter photo\">\n"
+                    + "                                                        </div>\n"
+                    + "\n"
+                    + "\n"
+                    + "                                                    </div>\n"
+                    + "                                                    <div class=\"modal-footer\">\n"
+                    + "                                                        <input type=\"button\" class=\"btn btn-default\" data-dismiss=\"modal\" value=\"Cancel\">\n"
+                    + "                                                        <input type=\"hidden\" value=\"addgallery\" name=\"service\">\n"
+                    + "                                                        <input type=\"submit\" class=\"btn btn-success\" value=\"Add\">\n"
+                    + "                                                    </div>\n"
+                    + "                                                </form>\n"
+                    + "                                            </div>\n"
+                    + "                                        </div>\n"
+                    + "                                    </div>\n"
+                    + "                                    </tr>\n"
+                    + "                                    <tr>\n");
+            List<Gallery> listGallery = galleryDAO.getAllImageByProductTypeID(ptype.getProductTypeId());
+            for (Gallery gallery : listGallery) {
+                pr.print("<td>\n"
+                        + "                                            <img id=\"img\" src=\"images/" + gallery.getLink() + "\" width=\"125px\" height=\"100px\">\n"
+                        + "                                        </td>\n");
+            }
+            pr.print("</tr>");
+        }
+        if (request.getParameter("row") == null) {
+            sendDispatcher(request, response, "SellerControllerMap?service=gallerymanagement");
+        }
+    }
+
+    public void serviceShowPageGallery(HttpServletRequest request, HttpServletResponse response) throws IOException {
+        PrintWriter pr = response.getWriter();
+        int index = 1, numOfRow = 5;
+        User account = (User) request.getSession().getAttribute("currUser");
+        String userID = account.getUserId();
+        Seller seller = sellerDAO.getSellerByUserID(Integer.parseInt(userID));
+        int sellerID = seller.getSellerID();
+        if (request.getParameter("index") != null) {
+            index = Integer.parseInt(request.getParameter("index"));
+        }
+        if (request.getParameter("row") != null) {
+            numOfRow = Integer.parseInt(request.getParameter("row"));
+        }
+        int totalResult = galleryDAO.getPageNumberBySeller(sellerID);
+        int totalPage = totalResult / numOfRow;
+        if (totalResult != totalPage * numOfRow) {
+            totalPage += 1;
+        }
+        int prev = index == 1 ? 1 : index - 1;
+        int next = index == totalPage ? totalPage : index + 1;
+        if (totalResult > numOfRow) {
+            pr.print("<li data-repair=\"1\" class=\"page-item\">");
+            pr.print("<a class=\"page-link\" aria-label=\"First\">");
+            pr.print("<span aria-hidden=\"true\"><i class=\"fas fa-backward\"></i>");
+            pr.print("<span class=\"sr-only\">(current)</span> ");
+            pr.print("</span>");
+            pr.print("</a>");
+            pr.print("</li>\n");
+            pr.print("<li data-repair=\"" + prev + "\" class=\"page-item\">");
+            pr.print("<a class=\"page-link\" aria-label=\"Previous\">");
+            pr.print("<span aria-hidden=\"true\"><i class=\"fas fa-arrow-left\"></i>");
+            pr.print("<span class=\"sr-only\">(current)</span> ");
+            pr.print("</span>");
+            pr.print("</a>");
+            pr.print("</li>\n");
+            for (int i = 1; i <= totalPage; i++) {
+                if (i < index - 2) {
+                    continue;
+                }
+                if (index < 3) {
+                    if (i > 5) {
+                        break;
+                    }
+                } else {
+                    if (i > index + 2) {
+                        break;
+                    }
+                }
+                if (index == i) {
+                    pr.print("<li  class=\"page-item active\" data-repair=\"" + i + "\">");
+                } else {
+                    pr.print("<li  class=\"page-item\" data-repair=\"" + i + "\">");
+                }
+                pr.print("<a class=\"page-link\">");
+                pr.print("<div class=\"index\">" + i + "</div>");
+                pr.print("<span class=\"sr-only\">(current)</span>");
+                pr.print("</a>");
+                pr.print("</li>\n");
+            }
+            pr.print("<li data-repair=\"" + next + "\" class=\"page-item\">");
+            pr.print("<a class=\"page-link\" aria-label=\"Next\">");
+            pr.print("<span aria-hidden=\"true\"><i class=\"fas fa-arrow-right\"></i>");
+            pr.print("<span class=\"sr-only\">(current)</span> ");
+            pr.print("</span>");
+            pr.print("</a>");
+            pr.print("</li>\n");
+            pr.print("<li data-repair=\"" + totalPage + "\" class=\"page-item\">");
+            pr.print("<a class=\"page-link\" aria-label=\"Last\">");
+            pr.print("<span aria-hidden=\"true\"><i class=\"fas fa-forward\"></i>");
+            pr.print("<span class=\"sr-only\">(current)</span> ");
+            pr.print("</span>");
+            pr.print("</a>");
+            pr.print("</li>\n");
+        }
+        if (request.getParameter("row") == null) {
+            sendDispatcher(request, response, "seller/gallerySeller.jsp");
+        }
+    }
+
     public void serviceAddGallery(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException, FileUploadException {
         String filename = null;
         // Create a factory for disk-based file items
@@ -1091,22 +1261,24 @@ public class SellerController extends HttpServlet {
         } catch (Exception ex) {
             Logger.getLogger(UserController.class.getName()).log(Level.SEVERE, null, ex);
         }
-//        chua lam phan nay
-//        gallery.setLink(filename);
-//        galleryDAO.editGallery(gallery);
-//        String ptid = gallery.getProductTypeID();
-//        
-//        List<Gallery> listGallery = galleryDAO.getAllImageByProductTypeID(ptid);
-//        Product product = pDAO.getProductByID(gallery.getProductID());
-//        ProductType producttype = ptDAO.getProductTypeByPTypeID(ptid);
-//        
-//        request.setAttribute("filen", filename);
-//        request.setAttribute("product", product);
-//        request.setAttribute("producttype", producttype);
-//        request.setAttribute("listGallery", listGallery);
-//        sendDispatcher(request, response, "seller/galleryDetail.jsp");
+        String ptid = request.getParameter("ptypeid");
+        Product product = pDAO.getProductByPtypeID(ptid);
+        ProductType producttype = ptDAO.getProductTypeByPTypeID(ptid);
+
+        Gallery gallery = new Gallery();
+        gallery.setProductID(product.getProductID());
+        gallery.setProductTypeID(ptid);
+        gallery.setLink(filename);
+        galleryDAO.addGallery(gallery);
+
+        List<Gallery> listGallery = galleryDAO.getAllImageByProductTypeID(ptid);
+
+        request.setAttribute("product", product);
+        request.setAttribute("producttype", producttype);
+        request.setAttribute("listGallery", listGallery);
+        sendDispatcher(request, response, "SellerControllerMap?service=gallerymanagement");
     }
-    
+
     public void serviceGalleryDetail(HttpServletRequest request, HttpServletResponse response) {
         String ptid = request.getParameter("ptypeid");
 
@@ -1122,7 +1294,7 @@ public class SellerController extends HttpServlet {
         request.setAttribute("listGallery", listGallery);
         sendDispatcher(request, response, "seller/galleryDetail.jsp");
     }
-    
+
     public void serviceUpdateGallery(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException, FileUploadException {
         String filename = null;
         // Create a factory for disk-based file items
@@ -1158,24 +1330,39 @@ public class SellerController extends HttpServlet {
         } catch (Exception ex) {
             Logger.getLogger(UserController.class.getName()).log(Level.SEVERE, null, ex);
         }
+
         String id = request.getParameter("galleryid");
         Gallery gallery = galleryDAO.getGalleryById(Integer.parseInt(id));
         gallery.setLink(filename);
         galleryDAO.editGallery(gallery);
         String ptid = gallery.getProductTypeID();
-        
+
         List<Gallery> listGallery = galleryDAO.getAllImageByProductTypeID(ptid);
         Product product = pDAO.getProductByID(gallery.getProductID());
         ProductType producttype = ptDAO.getProductTypeByPTypeID(ptid);
-        
+
         request.setAttribute("filen", filename);
         request.setAttribute("product", product);
         request.setAttribute("producttype", producttype);
         request.setAttribute("listGallery", listGallery);
         sendDispatcher(request, response, "seller/galleryDetail.jsp");
     }
+
+    public void serviceActiveGallery(HttpServletRequest request, HttpServletResponse response) {
+        int id = Integer.parseInt(request.getParameter("galleryid"));
+        galleryDAO.changeStatus(id, 1);
+        Gallery g = galleryDAO.getGalleryById(id);
+        sendDispatcher(request, response, "SellerControllerMap?service=gallerydetail&ptypeid=" + id);
+    }
+
+    public void serviceDeactiveGallery(HttpServletRequest request, HttpServletResponse response) {
+        int id = Integer.parseInt(request.getParameter("galleryid"));
+        galleryDAO.changeStatus(id, 0);
+        Gallery g = galleryDAO.getGalleryById(id);
+        sendDispatcher(request, response, "SellerControllerMap?service=gallerydetail&ptypeid=" + id);
+    }
     //</editor-fold>
-    
+
     // <editor-fold defaultstate="collapsed" desc="Order Response Method. Click on the + sign on the left to edit the code.">
     public void serviceOrderResponse(String service, HttpServletRequest request, HttpServletResponse response) {
         User account = (User) request.getSession().getAttribute("currUser");
@@ -1217,8 +1404,8 @@ public class SellerController extends HttpServlet {
                     + "<td>" + order.getShipPhone() + "</td>"
                     + "<td>" + order.getPaymentMethod() + "</td>"
                     + "<td style='white-space: nowrap'><a href=\"AdminControllerMap?service=orderDetail&orderId=" + order.getOrderID() + "\"><button style='margin-right:4px' class=\"btn btn-primary\">View</button></a>");
-            pr.print("<a href=\"AdminControllerMap?service=handleOrder&action=accept&orderId=" + order.getOrderID()+ "\" onclick=\"return confirm('Are you sure?');\"><button style='margin-right:4px' class=\"btn btn-primary\">Accept</button></a>");
-            pr.print("<a href=\"AdminControllerMap?service=handleOrder&action=refuse&orderId=" + order.getOrderID()+ "\" onclick=\"return confirm('Are you sure?');\"><button class=\"btn btn-primary\">Refuse</button></a>");
+            pr.print("<a href=\"AdminControllerMap?service=handleOrder&action=accept&orderId=" + order.getOrderID() + "\" onclick=\"return confirm('Are you sure?');\"><button style='margin-right:4px' class=\"btn btn-primary\">Accept</button></a>");
+            pr.print("<a href=\"AdminControllerMap?service=handleOrder&action=refuse&orderId=" + order.getOrderID() + "\" onclick=\"return confirm('Are you sure?');\"><button class=\"btn btn-primary\">Refuse</button></a>");
             pr.print("</td>"
                     + "</tr>"
             );
@@ -1311,7 +1498,6 @@ public class SellerController extends HttpServlet {
 //        request.setAttribute("service", service);
 //        sendDispatcher(request, response, "admin/orderDetail.jsp");
 //    }
-
     public void serviceHandleOrder(String service, HttpServletRequest request, HttpServletResponse response) {
         String action = request.getParameter("action");
         String orderId = request.getParameter("orderId");
@@ -1344,11 +1530,8 @@ public class SellerController extends HttpServlet {
         sendDispatcher(request, response, "seller/orderResponse.jsp");
     }
     // </editor-fold>
-    
+
     // <editor-fold defaultstate="collapsed" desc="Customer Method. Click on the + sign on the left to edit the code.">
-    
-    
-    
     //</editor-fold>
     //
     private void serviceEditSellerInformation(HttpServletRequest request, HttpServletResponse response) {
@@ -1409,7 +1592,7 @@ public class SellerController extends HttpServlet {
         }
         int prev = index == 1 ? 1 : index - 1;
         int next = index == totalPage ? totalPage : index + 1;
-       if (totalResult > numOfRow) {
+        if (totalResult > numOfRow) {
             pr.print("<li data-repair=\"1\" class=\"page-item\">");
             pr.print("<a class=\"page-link\" aria-label=\"First\">");
             pr.print("<span aria-hidden=\"true\"><i class=\"fas fa-backward\"></i>");
@@ -1467,7 +1650,8 @@ public class SellerController extends HttpServlet {
             sendDispatcher(request, response, "seller/sellerfeedback.jsp");
         }
     }
-     public void servicePagingComment(HttpServletRequest request, HttpServletResponse response) throws IOException {
+
+    public void servicePagingComment(HttpServletRequest request, HttpServletResponse response) throws IOException {
         User account = (User) request.getSession().getAttribute("currUser");
         Seller seller = sellerDAO.getSellerByUserID(Integer.parseInt(account.getUserId()));
         String sellerID = Integer.toString(seller.getSellerID());
@@ -1511,8 +1695,6 @@ public class SellerController extends HttpServlet {
                     .getName()).log(Level.SEVERE, null, ex);
         }
     }
-
-   
 
     private void writeObject(ObjectOutputStream stream)
             throws IOException {

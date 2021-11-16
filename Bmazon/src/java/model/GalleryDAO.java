@@ -51,14 +51,13 @@ public class GalleryDAO extends BaseDAO {
     public int addGallery(Gallery g) {
         int n = 0;
         String xSql = "INSERT INTO Gallery(productID ,productTypeID ,link,status)\n"
-                + "VALUES (?, ?,? ,?)";
+                + "VALUES (?, ?, ?, 1)";
         try {
             conn = new DBConnection().getConnection();
             pre = conn.prepareStatement(xSql);
             pre.setInt(1, g.getProductID());
             pre.setString(2, g.getProductTypeID());
             pre.setString(3, g.getLink());
-            pre.setInt(4, g.getStatus());
             n = pre.executeUpdate();
 
         } catch (Exception ex) {
@@ -108,6 +107,32 @@ public class GalleryDAO extends BaseDAO {
         try {
             conn = new DBConnection().getConnection();
             pre = conn.prepareStatement(xSql);
+            rs = pre.executeQuery();
+            if (rs.next()) {
+                num = rs.getInt(1);
+            }
+
+        } catch (Exception ex) {
+            Logger.getLogger(UserDAO.class.getName()).log(Level.SEVERE, null, ex);
+        } finally {
+            try {
+                rs.close();
+                pre.close();
+                conn.close();
+            } catch (Exception ex) {
+                Logger.getLogger(CategoryDAO.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
+        return num;
+    }
+    
+    public int getPageNumberBySeller(int sellerID) {
+        int num = 0;
+        String xSql = "SELECT COUNT(*) AS NumberOfGallerys FROM gallery ga inner join product p on ga.productID = p.productID where sellerID = ?";
+        try {
+            conn = new DBConnection().getConnection();
+            pre = conn.prepareStatement(xSql);
+            pre.setInt(1, sellerID);
             rs = pre.executeQuery();
             if (rs.next()) {
                 num = rs.getInt(1);

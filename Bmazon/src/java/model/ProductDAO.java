@@ -587,15 +587,14 @@ public class ProductDAO extends BaseDAO {
         return list;
     }
 
-    public Product getProductByPtypeID(int sellerID, String ptid) {
+    public Product getProductByPtypeID(String ptid) {
         Product pro = new Product();
         String sql = "SELECT * FROM producttype pt inner join product p on pt.productID = p.productID \n"
-                + "where p.sellerID = ? and pt.productTypeId = ?";
+                + "where pt.productTypeId = ?";
         try {
             conn = new DBConnection().getConnection();
             pre = conn.prepareStatement(sql);
-            pre.setInt(1, sellerID);
-            pre.setString(2, ptid);
+            pre.setString(1, ptid);
             rs = pre.executeQuery();
             if (rs.next()) {
                 pro.setProductID(rs.getInt("productID"));

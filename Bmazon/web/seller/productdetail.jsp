@@ -262,20 +262,20 @@
                                             <table id="dataTable" class="table table-borderless">
                                                 <thead>
                                                     <tr>
-                                                        <th style="width: 50px;"></th>
-                                                        <th style="width: 50px;"></th>
-                                                        <th style="width: 50px;"></th>
-                                                        <th style="width: 50px;"></th>
-                                                        <th style="width: 50px;"></th>
-                                                        <th style="width: 50px;"></th>
-                                                        <th style="width: 50px;"></th>
-                                                        <th style="width: 50px;"></th>
+                                                        <th style="width: 150px;"></th>
+                                                        <th style="width: 150px;"></th>
+                                                        <th style="width: 150px;"></th>
+                                                        <th style="width: 150px;"></th>
+                                                        <th style="width: 150px;"></th>
+                                                        <th style="width: 150px;"></th>
+                                                        <th style="width: 150px;"></th>
+                                                        <th style="width: 150px;"></th>
                                                     </tr>
                                                 </thead>
                                                 <tbody id="producttype">
                                                     <% for (ProductType ptype : listPT) {%>
                                                     <tr>
-                                                        <td style="width: 90px;"><label>Color</label></td>
+                                                        <td><label>Color</label></td>
                                                         <td>
                                                             <input required style="width: 100px;" type="text" name="color" class="form-control" value="<%=ptype.getColor()%>">
                                                             <input type="hidden" name="ptid" value="<%=ptype.getProductTypeId()%>">
@@ -302,12 +302,12 @@
                                                     </tr>
                                                     <tr>
                                                         <td><label>Image</label></td>
-                                                            <%
-                                                                List<Gallery> listGallery = gallerydao.getAllImageByProductTypeID(ptype.getProductTypeId());
-                                                                for (Gallery gallery : listGallery) {
-                                                            %>
+                                                        <%
+                                                            List<Gallery> listGallery = gallerydao.getAllImageByProductTypeID(ptype.getProductTypeId());
+                                                            for (Gallery gallery : listGallery) {
+                                                        %>
                                                         <td>
-                                                            <img id="img" src="images/<%=gallery.getLink()%>" width="150px" height="120px">
+                                                            <img src="images/<%=gallery.getLink()%>" width="150px" height="120px">
                                                         </td>
                                                         <% } %>
                                                     </tr>
@@ -415,18 +415,18 @@
                                 <% }%>
                             </select>
                         </div>
-                            
-                        <div class="form-group">
+
+<!--                        <div class="form-group">
                             <div class="wrapper">
-                            <div class="image">
-                                <img src="">
+                                <div class="image">
+                                    <img src="">
+                                </div>
+                                <div class="file-name">
+                                    File name here
+                                </div>
                             </div>
-                            <div class="file-name">
-                                File name here
-                            </div>
-                        </div>
-                        <input id="default-btn" type="file" hidden class="form-control" name="photo" placeholder="Enter photo">
-                        </div>
+                            <input id="default-btn" type="file" hidden class="form-control" name="photo" placeholder="Enter photo">
+                        </div>-->
 
 
                     </div>
@@ -448,99 +448,99 @@
     <script src="${contextPath}/js/plugins/chartjs.min.js"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
     <script>
-        var loadFile = function (event) {
-            var output = document.getElementById('img');
-            img.src = URL.createObjectURL(event.target.files[0]);
-            img.onload = function () {
-                URL.revokeObjectURL(img.src)
-            }
-        };
+                                                                var loadFile = function (event) {
+                                                                    var output = document.getElementById('img');
+                                                                    img.src = URL.createObjectURL(event.target.files[0]);
+                                                                    img.onload = function () {
+                                                                        URL.revokeObjectURL(img.src)
+                                                                    }
+                                                                };
     </script>
     <script>
-                                                    
 
-                                                                var pageNum;
-                                                                $(document).on('click', '.pagination li', function () {
-                                                                pageNum = $(this).data('repair');
-                                                                pagination();
-                                                                });
-                                                                function pagination() {
-                                                                console.log(pageNum);
-                                                                $.ajax({
-                                                                url: "/Bmazon/SellerControllerMap",
-                                                                        type: "get",
-                                                                        data: {
-                                                                                index: pageNum,
-                                                                                service: "pagingproducttype",
-                                                                                productid: "<%= product.getProductID()%>"
-                                                                        },
-                                                                        success: function (respone) {
-                                                                        var text = document.getElementById("producttype");
-                                                                        text.innerHTML = respone;
-                                                                        showpage();
-                                                                        },
-                                                                        error: function (xhr) {
-                                                                        //Do Something to handle error
-                                                                        }
-                                                                });
-                                                                }
-                                                                function showpage() {
-                                                                $.ajax({
-                                                                url: "/Bmazon/SellerControllerMap",
-                                                                        type: "get",
-                                                                        data: {
-                                                                                index: pageNum,
-                                                                                service: "showpageproducttype",
-                                                                                productid: "<%= product.getProductID()%>"
-                                                                        },
-                                                                        success: function (respone) {
-                                                                        var text = document.getElementById("showpage");
-                                                                        text.innerHTML = respone;
-                                                                        },
-                                                                        error: function (xhr) {
-                                                                        //Do Something to handle error
-                                                                        } });
-                                                                }
+
+        var pageNum;
+        $(document).on('click', '.pagination li', function () {
+            pageNum = $(this).data('repair');
+            pagination();
+        });
+        function pagination() {
+            console.log(pageNum);
+            $.ajax({
+                url: "/Bmazon/SellerControllerMap",
+                type: "get",
+                data: {
+                    index: pageNum,
+                    service: "pagingproducttype",
+                    productid: "<%= product.getProductID()%>"
+                },
+                success: function (respone) {
+                    var text = document.getElementById("producttype");
+                    text.innerHTML = respone;
+                    showpage();
+                },
+                error: function (xhr) {
+                    //Do Something to handle error
+                }
+            });
+        }
+        function showpage() {
+            $.ajax({
+                url: "/Bmazon/SellerControllerMap",
+                type: "get",
+                data: {
+                    index: pageNum,
+                    service: "showpageproducttype",
+                    productid: "<%= product.getProductID()%>"
+                },
+                success: function (respone) {
+                    var text = document.getElementById("showpage");
+                    text.innerHTML = respone;
+                },
+                error: function (xhr) {
+                    //Do Something to handle error
+                }});
+        }
     </script>
     <script>
         $("textarea").on('keyup', function () {
-        $(".noti").hide();
+            $(".noti").hide();
         });
         $(document).ready(function () {
         $("#category").change(function () {
         var val = $(this).val();
-        $(".noti").hide();
+                $(".noti").hide();
         <% for (Category cate : listCategory) {%>
         if (val == "<%=cate.getCategoryID()%>"){
         console.log("<%=cate.getCategoryName()%>");
-        $("#genre").html(
+                $("#genre").html(
         <% ArrayList<Genre> list = genredao.getGenresByCategoryId(cate.getCategoryID());
-                for (int i = 0; i < list.size(); i++) {
+            for (int i = 0; i < list.size(); i++) {
                 if (list.size() == 1 || i == list.size() - 1) {%>"<option value='<%=list.get(i).getGenreID()%>'><%=list.get(i).getGenreName()%></option>"
         <%} else {%>"<option value='<%=list.get(i).getGenreID()%>'><%=list.get(i).getGenreName()%></option>" +
         <%}
-                }%>);
+            }%>);
         }
         <%}%>
         });
         });
-        $(".number").on('keyup', function () {
+                $(".number").on('keyup', function () {
         var n = parseInt($(this).val().replace(/\D/g, ''), 10);
-        $(this).val(n.toLocaleString());
-        $(".noti").hide();
+                $(this).val(n.toLocaleString());
+                $(".noti").hide();
         });
                 var today = new Date();
-        var dd = today.getDate();
-        var mm = today.getMonth() + 1; //January is 0!
-        var yyyy = today.getFullYear();
-        if (dd < 10){
+                var dd = today.getDate();
+                var mm = today.getMonth() + 1; //January is 0!
+                var yyyy = today.getFullYear();
+                if (dd < 10){
         dd = '0' + dd
         }
         if (mm < 10){
         mm = '0' + mm
         }
         today = yyyy + '-' + mm + '-' + dd;
-        document.getElementById("inputDate").setAttribute("max", today);
+                document.getElementById("inputDate").setAttribute("max", today);
 
     </script>
 </html>

@@ -125,7 +125,7 @@
         DecimalFormat nf = new DecimalFormat("###,###,###");
         ProductType pt = (ProductType) request.getAttribute("producttype");
         String ptypeID = pt.getProductTypeId();
-        Product product = pDAO.getProductByPtypeID(sellerID, ptypeID);
+        Product product = pDAO.getProductByPtypeID(ptypeID);
         List<Gallery> listGallery = (List<Gallery>) request.getAttribute("listGallery");
     %>
 
@@ -235,7 +235,7 @@
                                 <%
                                     for (Gallery g : listGallery) {
                                 %>
-                                <form enctype="multipart/form-data" class="form" action="/Bmazon/SellerControllerMap?service=updategallery" method="POST">
+                                <form enctype="multipart/form-data" class="form" action="/Bmazon/SellerControllerMap?service=updategallery&galleryid=<%=g.getGalleryID()%>" method="POST">
                                     <table class="table table-hover" id="dataTable">
                                         <thead>
                                             <tr>
@@ -251,8 +251,13 @@
                                                 </label>
                                             </td>
                                             <td><div>
-                                                    <input type="hidden" value="<%=g.getGalleryID()%>" name="galleryid">
+                                                    <!--<input type="hidden" value="updategallery" name="service">-->
                                                     <input type="submit" value="Update Gallery" class="btn btn-primary">
+                                                    <% if(g.getStatus()==1){%>
+                                                    <a href="SellerControllerMap?service=deactivegallery&galleryid=<%=g.getGalleryID()%>" onclick="return confirm('Are you sure?');"><button class="btn btn-danger">Deactive</button></a>
+                                                    <%}else{%>
+                                                    <a href="SellerControllerMap?service=activegallery&galleryid=<%=g.getGalleryID()%>" onclick="return confirm('Are you sure?');"><button class="btn btn-success">Active</button></a>
+                                                    <%}%>
                                                 </div></td>
                                         </tr>
                                     </table>
