@@ -58,7 +58,8 @@
                         </div>
                     </div>
                     <ul class="sidebar-menu">
-                        <li>
+                        <li><!-- class="tablinks" -->
+                            <!--<a href="" onclick="openObject(event, 'Dashboard')">-->
                             <a href="SellerControllerMap">
                                 <i class="fa fa-dashboard"></i> <span>Dashboard</span>
                             </a>
@@ -68,8 +69,13 @@
                                 <i class="fa fa-gavel"></i> <span>Product Management</span>
                             </a>
                         </li>
+                        <li>
+                            <a href="SellerControllerMap?service=gallerymanagement">
+                                <i class="fa fa-image"></i> <span>Gallery Management</span>
+                            </a>
+                        </li>
                         <li class="active">
-                            <a href="SellerControllerMap?service=ordermanagement">
+                            <a href="SellerControllerMap?service=orderResponse">
                                 <i class="fa fa-globe"></i> <span>Order Response</span>
                             </a>
                         </li>

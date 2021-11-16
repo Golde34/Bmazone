@@ -94,7 +94,7 @@
                     <ul class="sidebar-menu">
                         <li class="active"><!-- class="tablinks" -->
                             <!--<a href="" onclick="openObject(event, 'Dashboard')">-->
-                            <a href="SellerControllerMap?service=SellerDashboard">
+                            <a href="SellerControllerMap">
                                 <i class="fa fa-dashboard"></i> <span>Dashboard</span>
                             </a>
                         </li>
@@ -103,7 +103,16 @@
                                 <i class="fa fa-gavel"></i> <span>Product Management</span>
                             </a>
                         </li>
-
+                        <li>
+                            <a href="SellerControllerMap?service=gallerymanagement">
+                                <i class="fa fa-image"></i> <span>Gallery Management</span>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="SellerControllerMap?service=orderResponse">
+                                <i class="fa fa-globe"></i> <span>Order Response</span>
+                            </a>
+                        </li>
                         <li>
                             <a href="SellerControllerMap?service=ordermanagement">
                                 <i class="fa fa-globe"></i> <span>Order Management</span>
@@ -198,17 +207,19 @@
                                                 </tr>
                                                 <tr>
                                                     <td><label>Image</label></td>
-                                                    <td>
-                                                        <%
-                                                            List<Gallery> listGallery = gallerydao.getAllImageByProductTypeID(ptype.getProductTypeId());
-                                                            for (Gallery gallery : listGallery) {
-                                                        %>
 
-                                                        <label style="width: 250px;height: 150px;" for="file">
+
+                                                    <%
+                                                        List<Gallery> listGallery = gallerydao.getAllImageByProductTypeID(ptype.getProductTypeId());
+                                                        for (Gallery gallery : listGallery) {
+                                                    %>
+                                                    <td>
+                                                        <label class="col-md-4" style="width: 250px;height: 150px;" for="img">
                                                             <img id="img" src="images/<%=gallery.getLink()%>">
                                                         </label>
                                                     </td>
                                                     <% } %>
+
                                                 </tr>
                                                 <% }%>
                                             </tbody>

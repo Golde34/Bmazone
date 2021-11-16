@@ -1,4 +1,4 @@
-F<%@page import="java.text.DecimalFormat"%>
+<%@page import="java.text.DecimalFormat"%>
 <%@page import="java.text.NumberFormat"%>
 <%@page import="java.util.Locale"%>
 <%@page import="java.util.Collections"%>
@@ -51,30 +51,20 @@ F<%@page import="java.text.DecimalFormat"%>
 
     </head>
     <body class="home page-template page-template-page-blank page-template-page-blank-php page page-id-16 page-parent lightbox nav-dropdown-has-arrow" >
-
         <div id="wrapper">
-
-
             <main id="main" class="" style="">
-
-
                 <div id="content" role="main" class="content-area" >
                     <section class="section" id="section_2111671223">                   
                         <div class="section-content relative">
-
                             <div class="gap-element" style="display:block; height:auto; padding-top:5px" class="clearfix"></div>
-                            <section class="section sec_tab_banner" id="section_992612852">
 
+                            <!--Slide-->
+                            <section class="section sec_tab_banner" id="section_992612852">
                                 <div class="section-content relative">
                                     <div class="row">
-
                                         <div class="row row-collapse"  id="row-1954119617">
-
                                             <div class="col small-8 large-8"  >
                                                 <div class="col-inner"  >
-
-
-
                                                     <img class="mySlides" src="images/slide1.jpg"  style="height: 495.7px;width: 800px">
                                                     <img class="mySlides" src="images/slide2.jpg"  style="height: 495.7px;width: 800px">
                                                     <img class="mySlides" src="images/slide3.jpg"  style="height: 495.7px;width: 800px">
@@ -85,18 +75,13 @@ F<%@page import="java.text.DecimalFormat"%>
                                                         <span class="w3-badge demo w3-border w3-transparent w3-hover-white" onclick="currentDiv(2)"></span>
                                                         <span class="w3-badge demo w3-border w3-transparent w3-hover-white" onclick="currentDiv(3)"></span>
                                                     </div>
-
-
-
                                                     <script src="js/slide.js"></script>
-
                                                 </div>
                                             </div>    
                                             <div class="col small-4 large-4"  >
                                                 <div class="col-inner"  >
                                                     <img src="images/im1.jpg" >
                                                     <img src="images/im2.jpg" >
-
                                                 </div>
                                             </div>    
                                         </div>
@@ -110,7 +95,6 @@ F<%@page import="java.text.DecimalFormat"%>
                                                 padding-bottom: 0px;
                                             }
                                         </style>
-                                        </section>
                                     </div><!-- .section-content -->
                                     <style scope="scope">
 
@@ -120,9 +104,9 @@ F<%@page import="java.text.DecimalFormat"%>
                                             background-color: rgb(241, 241, 241);
                                         }
                                     </style>
-
                             </section>
 
+                            <!--New Arrival-->
                             <section class="section sec_flash_sale" id="section_16406982">
                                 <div class="section-content relative">
                                     <br><br>
@@ -146,9 +130,6 @@ F<%@page import="java.text.DecimalFormat"%>
                                                 <p class="orange" style="float: right" ><a href="HomePageControllerMap?service=list">Show All &gt;</a></p>
                                             </div>
                                         </div>
-
-
-
                                     </div>
                                     <div class="row row-collapse"  id="row-698964333">
 
@@ -158,8 +139,6 @@ F<%@page import="java.text.DecimalFormat"%>
                                                     <% for (Product p : ListNew) {
                                                             String str = "images/" + gallDAO.getSampleOfProduct(p.getProductID());
                                                             double price = Double.parseDouble(ptDAO.getProductPrice(p.getProductID()));
-
-
                                                     %>
                                                     <div class="col" >
                                                         <div class="col-inner">
@@ -202,7 +181,7 @@ F<%@page import="java.text.DecimalFormat"%>
                                 </style>
                             </section>
 
-
+                            <!--Category & Genre-->             
                             <section class="section sec_danh_muc" id="section_1885747892">
                                 <div class="section-content relative">
                                     <div class="gap-element" style="display:block; height:auto; padding-top:30px" class="clearfix"></div>
@@ -235,8 +214,6 @@ F<%@page import="java.text.DecimalFormat"%>
 
                                                         <div class="row row-collapse"  id="row-75835749">
                                                             <div class="col small-12 large-12"  ><div class="col-inner"  >
-
-
                                                                     <div class="row large-columns-8 medium-columns-3 small-columns-2 row-collapse has-shadow row-box-shadow-1">
                                                                         <% for (Genre g : ListGenre) {
                                                                                 String str = "images/Genre/" + g.getImages();
@@ -270,10 +247,8 @@ F<%@page import="java.text.DecimalFormat"%>
                                                         </div>
                                                         <div class="row row-collapse"  id="row-1046789590">
                                                             <div class="col small-12 large-12"  ><div class="col-inner"  >
-
-
                                                                     <div class="row large-columns-8 medium-columns-3 small-columns-2 row-collapse has-shadow row-box-shadow-1">
-                                                                          <% for (Genre g : ListGenre2) {
+                                                                        <% for (Genre g : ListGenre2) {
                                                                                 String str = "images/Genre/" + g.getImages();
                                                                         %>
                                                                         <div class="product-category col" >
@@ -323,9 +298,143 @@ F<%@page import="java.text.DecimalFormat"%>
                                 </style>
                             </section>
 
+                            <!--Apple-->
+                            <section class="section sec_dien_thoai" id="section_1788051855">
+                                <br>
+                                <div class="section-content relative">
+                                    <div class="gap-element" style="display:block; height:auto; padding-top:30px" class="clearfix"></div>
+                                    <div class="row row-collapse"  style="height: 30px">
+                                        <div class="col small-12 large-12" ><div class="col-inner"   >
+                                                <h3><img src="images/Apple1.jpg"  style="height: 40px"></h3>
+                                            </div>
+                                            <div class="col-inner text-right" >
+                                                <p class="orange" ><a href="HomepageControllerMap?service=">Show All &gt;</a></p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <br><br>
+                                    <div class="row row-collapse align-equal"  id="row-803623343">
+                                        <div class="col medium-12 small-12 large-12"  ><div class="col-inner"  >
+                                                <div class="row large-columns-4 medium-columns- small-columns-2 row-collapse has-shadow row-box-shadow-1 slider row-slider slider-nav-reveal slider-nav-push"  data-flickity-options='{"imagesLoaded": true, "groupCells": "100%", "dragThreshold" : 5, "cellAlign": "left","wrapAround": true,"prevNextButtons": true,"percentPosition": true,"pageDots": false, "rightToLeft": false, "autoPlay" : false}'>
+                                                    <% for (Product ps : ListApple) {
+                                                            String str = "images/" + gallDAO.getSampleOfProduct(ps.getProductID());
+                                                            double price = Double.parseDouble(ptDAO.getProductPrice(ps.getProductID()));
+                                                    %>
+                                                    <div class="col" >
+                                                        <div class="col-inner">
+                                                            <div class="product-small box has-hover box-normal box-text-bottom">
+                                                                <div class="box-image" style="width:150px; height:150px ">
+                                                                    <a href="ProductDetailControllerMap?service=getProductDetail&pid=<%=ps.getProductID()%>">
+                                                                        <img src="<%=str%>"></a>
+                                                                    <div class="image-tools z-top top right show-on-hover">
+                                                                    </div>
+                                                                    <div class="image-tools grid-tools text-center hide-for-small bottom hover-slide-in show-on-hover">
+                                                                    </div>
+                                                                </div><!-- box-image -->
+                                                                <div class="box-text text-center" style="background-color:rgb(255, 255, 255);">
+                                                                    <div class="title-wrapper" >
+                                                                        <p class="category uppercase is-smaller no-text-overflow product-cat op-7"></p> 
+                                                                        <p class="name product-title"><a href="ProductDetailControllerMap?service=getProductDetail&pid=<%=ps.getProductID()%>"> <%=ps.getProductName()%> <br></a></p>
+                                                                    </div> 
+                                                                    <div class="price-wrapper" 
+                                                                         <span class="price">
+
+                                                                            <ins><span class="woocommerce-Price-amount amount"><%=nf.format(price)%>&nbsp; <span class="woocommerce-Price-currencySymbol">&#8363;</span></span></ins></span>
+                                                                    </div>							
+                                                                </div><!-- box-text -->
+                                                            </div><!-- box -->
+                                                        </div><!-- .col-inner -->
+                                                    </div><!-- col -->
+                                                    <%
+
+                                                        }
+                                                    %>
+                                                </div>
+                                            </div></div>
+                                        <style scope="scope">
+
+                                            #row-803623343 > .col > .col-inner {
+                                                background-color: rgb(255, 255, 255);
+                                            }
+                                        </style>
+                                    </div>
+                                </div><!-- .section-content -->
+                                <style scope="scope">
+
+                                    #section_1788051855 {
+                                        padding-top: 0px;
+                                        padding-bottom: 0px;
+                                        background-color: rgb(241, 241, 241);
+                                    }
+                                </style>
+                            </section> 
+
+                            <!--Top genre-->
+                            <section class="section sec_dien_thoai" id="section_1788051855">
+                                <div class="section-content relative">
+                                    <div class="gap-element" style="display:block; height:auto; padding-top:30px" class="clearfix"></div>
+                                    <br>
+                                    <div class="row">
+                                        <div class="col medium-12 small-12 large-12">
+                                            <div class="row large-columns-2 medium-columns- small-columns-2 row-collapse has-shadow row-box-shadow-1 "  >
+                                                <div class="col">
+                                                    <div class="card" style="padding: 15px;">
+                                                        <div class="col-inner">
+                                                            <a href="HomePageControllerMap?service=ByGenre&gid=1">
+                                                                <div class="product-small box has-hover box-normal box-text-bottom">
+                                                                    <div style="padding: 20px;"><h1>Learn yourself in the book adventures</h1></div>
+                                                                    <div class="box-image" style="width:450px; height:300px;">
+                                                                        <img style="width:450px; height:300px;" src="images/read_book.jpg"/>
+                                                                    </div>
+                                                                    <div style="padding: 20px;"> <a href="HomePageControllerMap?service=ByGenre&gid=1">Show all</a></div>
+                                                                </div></a> </div></div></div>
+                                                <div class="col">
+                                                    <div class="card" style="padding: 15px;">
+                                                        <div class="col-inner">
+                                                            <a href="HomePageControllerMap?service=ByGenre&gid=2">
+                                                                <div class="product-small box has-hover box-normal box-text-bottom">
+                                                                    <div style="padding: 20px;"><h1>For your Entertainment</h1></div>
+                                                                    <div class="box-image" style="width:450px; height:300px; ">
+                                                                        <img style="width:450px; height:300px;" src="images/play_game.jpg"/></div>
+                                                                    <div style="padding: 20px;"> <a href="HomePageControllerMap?service=ByGenre&gid=2">Show all</a></div>
+                                                                </div></a></div></div></div>
+                                                <div class="col">
+                                                    <div class="card" style="padding: 15px;">
+                                                        <div class="col-inner">
+                                                            <a href="HomePageControllerMap?service=ByGenre&gid=5">
+                                                                <div class="product-small box has-hover box-normal box-text-bottom">
+                                                                    <div style="padding: 20px;"><h1>Get your convenient smartphone</h1></div>
+                                                                    <div class="box-image" style="width:450px; height:300px; ">
+                                                                        <img style="width:450px; height:300px;" src="images/smartphone.jpg"/></div>
+                                                                    <div style="padding: 20px;"> <a href="HomePageControllerMap?service=ByGenre&gid=5">Show all</a></div>
+                                                                </div></a></div></div></div>
+                                                <div class="col">
+                                                    <div class="card" style="padding: 15px;">
+                                                        <div class="col-inner">
+                                                            <a href="HomePageControllerMap?service=ByGenre&gid=4">
+                                                                <div class="product-small box has-hover box-normal box-text-bottom">
+                                                                    <div style="padding: 20px;"><h1>Macbook and Everything</h1></div>
+                                                                    <div class="box-image" style="width:450px; height:300px; ">
+                                                                        <img style="width:450px; height:300px;" src="images/mac.jpg"/></div>
+                                                                    <div style="padding: 20px;"> <a href="HomePageControllerMap?service=ByGenre&gid=2">Show all</a></div>
+                                                                </div></a></div></div></div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div><!-- .section-content -->
+                                <style scope="scope">
+
+                                    #section_1788051855 {
+                                        padding-top: 0px;
+                                        padding-bottom: 0px;
+                                        background-color: rgb(241, 241, 241);
+                                    }
+                                </style>
+                            </section>                                                        
+
+                            <!--Gaming Gear-->
                             <section class="section sec_top_deal" id="section_1299208273">
                                 <div class="section-content relative">
-
                                     <div class="gap-element" style="display:block; height:auto; padding-top:30px" class="clearfix"></div>
                                     <div class="row row-collapse"  id="row-7631193">
                                         <div class="col small-12 large-12"  >
@@ -336,7 +445,6 @@ F<%@page import="java.text.DecimalFormat"%>
                                                 <p class="orange" ><a href="HomePageControllerMap?service=list">Show All &gt;</a></p>
                                             </div>
                                         </div>
-
                                     </div>
 
                                     <div class="row row-collapse align-equal"  id="row-1706731289">
@@ -414,99 +522,9 @@ F<%@page import="java.text.DecimalFormat"%>
                                 </style>
                             </section>
 
-                            <section class="section sec_dien_thoai" id="section_1788051855">
-
-                                <div class="section-content relative">
-
-                                    <div class="gap-element" style="display:block; height:auto; padding-top:30px" class="clearfix"></div>
-                                    <div class="row row-collapse"  style="height: 30px">
-                                        <div class="col small-12 large-12" ><div class="col-inner"   >
-                                                <h4><img src="images/Apple1.jpg"  style="height: 40px"></h4>
-                                            </div>
-                                            <div class="col-inner text-right" >
-                                                <p class="orange" ><a href="HomepageControllerMap?service=">Show All &gt;</a></p>
-                                            </div>
-                                        </div>
-
-
-                                    </div>
-                                    <br><br>
-                                    <div class="row row-collapse align-equal"  id="row-803623343">
-
-                                        <div class="col medium-12 small-12 large-12"  ><div class="col-inner"  >
-
-                                                <div class="row large-columns-4 medium-columns- small-columns-2 row-collapse has-shadow row-box-shadow-1 slider row-slider slider-nav-reveal slider-nav-push"  data-flickity-options='{"imagesLoaded": true, "groupCells": "100%", "dragThreshold" : 5, "cellAlign": "left","wrapAround": true,"prevNextButtons": true,"percentPosition": true,"pageDots": false, "rightToLeft": false, "autoPlay" : false}'>
-
-                                                    <% for (Product ps : ListApple) {
-                                                            String str = "images/" + gallDAO.getSampleOfProduct(ps.getProductID());
-                                                            double price = Double.parseDouble(ptDAO.getProductPrice(ps.getProductID()));
-
-
-                                                    %>
-                                                    <div class="col" >
-                                                        <div class="col-inner">
-
-
-                                                            <div class="product-small box has-hover box-normal box-text-bottom">
-                                                                <div class="box-image" style="width:150px; height:150px ">
-                                                                    <a href="ProductDetailControllerMap?service=getProductDetail&pid=<%=ps.getProductID()%>">
-                                                                        <img src="<%=str%>"></a>
-                                                                    <div class="image-tools z-top top right show-on-hover">
-                                                                    </div>
-                                                                    <div class="image-tools grid-tools text-center hide-for-small bottom hover-slide-in show-on-hover">
-                                                                    </div>
-                                                                </div><!-- box-image -->
-
-                                                                <div class="box-text text-center" style="background-color:rgb(255, 255, 255);">
-                                                                    <div class="title-wrapper" >
-                                                                        <p class="category uppercase is-smaller no-text-overflow product-cat op-7"></p> 
-                                                                        <p class="name product-title"><a href="ProductDetailControllerMap?service=getProductDetail&pid=<%=ps.getProductID()%>"> <%=ps.getProductName()%> <br></a></p>
-                                                                    </div> 
-                                                                    <div class="price-wrapper" 
-                                                                         <span class="price">
-
-                                                                            <ins><span class="woocommerce-Price-amount amount"><%=nf.format(price)%>&nbsp; <span class="woocommerce-Price-currencySymbol">&#8363;</span></span></ins></span>
-                                                                    </div>							
-                                                                </div><!-- box-text -->
-                                                            </div><!-- box -->
-                                                        </div><!-- .col-inner -->
-                                                    </div><!-- col -->
-                                                    <%
-
-                                                        }
-                                                    %>
-
-
-
-                                                </div>
-                                            </div></div>
-
-                                        <style scope="scope">
-
-                                            #row-803623343 > .col > .col-inner {
-                                                background-color: rgb(255, 255, 255);
-                                            }
-                                        </style>
-                                    </div>
-                                </div><!-- .section-content -->
-
-
-                                <style scope="scope">
-
-                                    #section_1788051855 {
-                                        padding-top: 0px;
-                                        padding-bottom: 0px;
-                                        background-color: rgb(241, 241, 241);
-                                    }
-                                </style>
-                            </section>
-
-
-
-
+                            <!--List Suggest-->             
                             <section class="section sec_dien_thoai" id="section_1788051855">                 
                                 <div class="section-content relative">
-
                                     <div class="gap-element" style="display:block; height:auto; padding-top:30px" class="clearfix"></div>
                                     <div class="row row-collapse"  style="height: 30px">
                                         <div class="col small-12 large-12" ><div class="col-inner"   >
@@ -516,29 +534,19 @@ F<%@page import="java.text.DecimalFormat"%>
                                     </div>
                                     <br><br>
                                     <div class="row row-collapse align-equal"  id="row-803623343">
-
-                                        <div class="col medium-12 small-12 large-12"  ><div class="col-inner"  >
-
+                                        <div class="col medium-12 small-12 large-12"  >
+                                            <div class="col-inner"  >
                                                 <div class="row large-columns-4 medium-columns- small-columns-2 row-collapse has-shadow row-box-shadow-1 "  >
-
                                                     <% for (Product ps : ListSuggest) {
                                                             String str = "images/" + gallDAO.getSampleOfProduct(ps.getProductID());
                                                             double price = Double.parseDouble(ptDAO.getProductPrice(ps.getProductID()));
-
-
                                                     %>
                                                     <div class="col" >
                                                         <div class="col-inner">
-
                                                             <div class="product-small box has-hover box-normal box-text-bottom">
                                                                 <div class="box-image" style="width:150px; height:150px ">
-
-
-
                                                                     <div class=""  >
                                                                         <a href="ProductDetailControllerMap?service=getProductDetail&pid=<%=ps.getProductID()%>">
-
-
                                                                             <img src="<%=str%>"></a>
                                                                     </div>
                                                                     <div class="image-tools z-top top right show-on-hover">
@@ -546,7 +554,6 @@ F<%@page import="java.text.DecimalFormat"%>
                                                                     <div class="image-tools grid-tools text-center hide-for-small bottom hover-slide-in show-on-hover">
                                                                     </div>
                                                                 </div><!-- box-image -->
-
                                                                 <div class="box-text text-center" style="background-color:rgb(255, 255, 255);">
                                                                     <div class="title-wrapper" >
                                                                         <p class="category uppercase is-smaller no-text-overflow product-cat op-7"></p> 
@@ -565,22 +572,18 @@ F<%@page import="java.text.DecimalFormat"%>
 
                                                         }
                                                     %>
-
                                                     <button class="button" onclick="window.location.href = 'HomePageControllerMap?service=list'" style=" border-radius: 5px;margin: auto; ">View More</button>
-
                                                 </div>
                                             </div>
                                         </div>
 
                                         <style scope="scope">
-
                                             #row-803623343 > .col > .col-inner {
                                                 background-color: rgb(255, 255, 255);
                                             }
                                         </style>
                                     </div>
                                 </div><!-- .section-content -->
-
                                 <style scope="scope">
 
                                     #section_1788051855 {

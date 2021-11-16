@@ -33,6 +33,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import model.*;
 import org.apache.commons.fileupload.FileItem;
+import org.apache.commons.fileupload.FileUploadException;
 import org.apache.commons.fileupload.disk.DiskFileItemFactory;
 import org.apache.commons.fileupload.servlet.ServletFileUpload;
 
@@ -60,7 +61,7 @@ public class SellerController extends HttpServlet {
     private static final long serialVersionUID = 1;
 
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException, ParseException {
+            throws ServletException, IOException, ParseException, FileUploadException {
         response.setContentType("text/html;charset=UTF-8");
         try (PrintWriter out = response.getWriter()) {
             String service = request.getParameter("service");
@@ -186,14 +187,27 @@ public class SellerController extends HttpServlet {
             if (service.equalsIgnoreCase("orderdetail")) {
                 serviceOrderDetail(request, response);
             }
+            
             //Gallery management
             if (service.equalsIgnoreCase("gallerymanagement")) {
                 serviceGalleryManagement(request, response);
             }
             //Gallery management
+            if (service.equalsIgnoreCase("addgallery")) {
+                serviceAddGallery(request, response);
+            }
+            
+            
+            //Gallery detail
             if (service.equalsIgnoreCase("gallerydetail")) {
                 serviceGalleryDetail(request, response);
             }
+            
+            //Gallery detail
+            if (service.equalsIgnoreCase("gallerydetail")) {
+                serviceUpdateGallery(request, response);
+            }
+            
             //Edit Seller Information
             if (service.equalsIgnoreCase("editSellerInformation")) {
                 serviceEditSellerInformation(request, response);
@@ -1042,15 +1056,123 @@ public class SellerController extends HttpServlet {
         sendDispatcher(request, response, "seller/gallerySeller.jsp");
     }
     
+    public void serviceAddGallery(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException, FileUploadException {
+        String filename = null;
+        // Create a factory for disk-based file items
+        try {
+            DiskFileItemFactory factory = new DiskFileItemFactory();
+            ServletContext servletContext = this.getServletConfig().getServletContext();
+            File repository = (File) servletContext.getAttribute("javax.servlet.context.tempdir");
+            factory.setRepository(repository);
+            ServletFileUpload upload = new ServletFileUpload(factory);
+            List<FileItem> items = upload.parseRequest(request);
+            // Process the uploaded items
+            Iterator<FileItem> iter = items.iterator();
+            HashMap<String, String> fields = new HashMap<>();
+            while (iter.hasNext()) {
+                FileItem item = iter.next();
+                if (item.isFormField()) {
+                    fields.put(item.getFieldName(), item.getString());
+                    String name = item.getFieldName();
+                    String value = item.getString();
+                    System.out.println(name + " " + value);
+                } else {
+                    filename = item.getName();
+                    if (filename == null || filename.equals("")) {
+                        break;
+                    } else {
+                        Path path = Paths.get(filename);
+                        String storePath = servletContext.getRealPath("/images");
+                        File uploadFile = new File(storePath + "/" + path.getFileName());
+                        item.write(uploadFile);
+                    }
+                }
+            }
+        } catch (Exception ex) {
+            Logger.getLogger(UserController.class.getName()).log(Level.SEVERE, null, ex);
+        }
+//        chua lam phan nay
+//        gallery.setLink(filename);
+//        galleryDAO.editGallery(gallery);
+//        String ptid = gallery.getProductTypeID();
+//        
+//        List<Gallery> listGallery = galleryDAO.getAllImageByProductTypeID(ptid);
+//        Product product = pDAO.getProductByID(gallery.getProductID());
+//        ProductType producttype = ptDAO.getProductTypeByPTypeID(ptid);
+//        
+//        request.setAttribute("filen", filename);
+//        request.setAttribute("product", product);
+//        request.setAttribute("producttype", producttype);
+//        request.setAttribute("listGallery", listGallery);
+//        sendDispatcher(request, response, "seller/galleryDetail.jsp");
+    }
+    
     public void serviceGalleryDetail(HttpServletRequest request, HttpServletResponse response) {
         String ptid = request.getParameter("ptypeid");
 
         ProductType producttype = ptDAO.getProductTypeByPTypeID(ptid);
         List<Gallery> listGallery = galleryDAO.getAllImageByProductTypeID(ptid);
-        
+        int totalPage = listGallery.size() / 1;
+        if (listGallery.size() != totalPage * 1) {
+            totalPage += 1;
+        }
+        request.setAttribute("index", 1);
+        request.setAttribute("totalPage", totalPage);
         request.setAttribute("producttype", producttype);
         request.setAttribute("listGallery", listGallery);
-        sendDispatcher(request, response, "seller/gallerydetail.jsp");
+        sendDispatcher(request, response, "seller/galleryDetail.jsp");
+    }
+    
+    public void serviceUpdateGallery(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException, FileUploadException {
+        String filename = null;
+        // Create a factory for disk-based file items
+        try {
+            DiskFileItemFactory factory = new DiskFileItemFactory();
+            ServletContext servletContext = this.getServletConfig().getServletContext();
+            File repository = (File) servletContext.getAttribute("javax.servlet.context.tempdir");
+            factory.setRepository(repository);
+            ServletFileUpload upload = new ServletFileUpload(factory);
+            List<FileItem> items = upload.parseRequest(request);
+            // Process the uploaded items
+            Iterator<FileItem> iter = items.iterator();
+            HashMap<String, String> fields = new HashMap<>();
+            while (iter.hasNext()) {
+                FileItem item = iter.next();
+                if (item.isFormField()) {
+                    fields.put(item.getFieldName(), item.getString());
+                    String name = item.getFieldName();
+                    String value = item.getString();
+                    System.out.println(name + " " + value);
+                } else {
+                    filename = item.getName();
+                    if (filename == null || filename.equals("")) {
+                        break;
+                    } else {
+                        Path path = Paths.get(filename);
+                        String storePath = servletContext.getRealPath("/images");
+                        File uploadFile = new File(storePath + "/" + path.getFileName());
+                        item.write(uploadFile);
+                    }
+                }
+            }
+        } catch (Exception ex) {
+            Logger.getLogger(UserController.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        String id = request.getParameter("galleryid");
+        Gallery gallery = galleryDAO.getGalleryById(Integer.parseInt(id));
+        gallery.setLink(filename);
+        galleryDAO.editGallery(gallery);
+        String ptid = gallery.getProductTypeID();
+        
+        List<Gallery> listGallery = galleryDAO.getAllImageByProductTypeID(ptid);
+        Product product = pDAO.getProductByID(gallery.getProductID());
+        ProductType producttype = ptDAO.getProductTypeByPTypeID(ptid);
+        
+        request.setAttribute("filen", filename);
+        request.setAttribute("product", product);
+        request.setAttribute("producttype", producttype);
+        request.setAttribute("listGallery", listGallery);
+        sendDispatcher(request, response, "seller/galleryDetail.jsp");
     }
     //</editor-fold>
     
@@ -1416,7 +1538,7 @@ public class SellerController extends HttpServlet {
             throws ServletException, IOException {
         try {
             processRequest(request, response);
-        } catch (ParseException ex) {
+        } catch (ParseException | FileUploadException ex) {
             Logger.getLogger(SellerController.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
@@ -1434,7 +1556,7 @@ public class SellerController extends HttpServlet {
             throws ServletException, IOException {
         try {
             processRequest(request, response);
-        } catch (ParseException ex) {
+        } catch (ParseException | FileUploadException ex) {
             Logger.getLogger(SellerController.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
