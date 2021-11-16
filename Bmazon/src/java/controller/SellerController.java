@@ -1556,7 +1556,7 @@ public class SellerController extends HttpServlet {
             throws ServletException, IOException {
         try {
             processRequest(request, response);
-        } catch (ParseException ex) {
+        } catch (ParseException | FileUploadException ex) {
             Logger.getLogger(SellerController.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
