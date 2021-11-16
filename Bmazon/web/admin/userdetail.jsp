@@ -43,9 +43,9 @@
     <body class="g-sidenav-show  bg-gray-100">
         <aside class="sidenav navbar navbar-vertical navbar-expand-xs border-0 border-radius-xl my-3 fixed-start ms-3 " id="sidenav-main">
             <jsp:include page="adminsidebar.jsp"></jsp:include>
-        </aside>
-        <main class="main-content position-relative max-height-vh-100 h-100 mt-1 border-radius-lg ">
-            <!-- Navbar -->
+            </aside>
+            <main class="main-content position-relative max-height-vh-100 h-100 mt-1 border-radius-lg ">
+                <!-- Navbar -->
             <jsp:include page="adminheader.jsp"></jsp:include>
                 <!-- End Navbar -->
                 <div class="container-fluid py-4">
@@ -124,10 +124,18 @@
                                             <tr>
                                                 <td>Gender</td>
                                                 <td>
-                                                    <select class="form-control" name="gender">
-                                                        <option value="1">Male</option>
-                                                        <option value="0">Female</option>
-                                                    </select>
+                                                    <div class="form-check form-check-inline">
+                                                        <input value="1" class="form-check-input" type="radio" name="gender" id="male">
+                                                        <label class="form-check-label" for="male">
+                                                            Male
+                                                        </label>
+                                                    </div>
+                                                    <div class="form-check form-check-inline">
+                                                        <input value="0" class="form-check-input" type="radio" name="gender" id="female">
+                                                        <label class="form-check-label" for="female">
+                                                            Female
+                                                        </label>
+                                                    </div>
                                                 </td>
                                             </tr>
                                             <tr>
@@ -142,20 +150,11 @@
                                         <%if (service.equalsIgnoreCase("updateuserdetail")) {%>
                                         <table class="table table-striped">
                                             <tr>
-                                                <td>User Name</td>
-                                                <td>
+                                                <td style="width: 30%;">User Name</td>
+                                                <td style="width: 70%;">
                                                     <input pattern="[^' ']+" class="form-control" value="<%=user.getUsername()%>" type="text" name="username" required>
                                                     <div class="invalid-feedback">
                                                         Not blank and no space at beginning or ending
-                                                    </div>
-                                                </td>
-                                            </tr>
-                                            <tr>
-                                                <td>Password</td>
-                                                <td>
-                                                    <input pattern="[^' ']+" class="form-control" value="<%=user.getPassword()%>" type="text" name="password" required>
-                                                    <div class="invalid-feedback">
-                                                        Not blank and no space
                                                     </div>
                                                 </td>
                                             </tr>
@@ -198,10 +197,18 @@
                                             <tr>
                                                 <td>Gender</td>
                                                 <td>
-                                                    <select class="form-control" name="gender">
-                                                        <option <%if (user.getGender() == 1) {%> selected<%}%> value="1">Male</option>
-                                                        <option <%if (user.getGender() == 0) {%> selected<%}%> value="0">Female</option>
-                                                    </select>
+                                                    <div class="form-check form-check-inline">
+                                                        <input <%if (user.getGender() == 1) {%> checked <%}%> value="1" class="form-check-input" type="radio" name="gender" id="male">
+                                                        <label class="form-check-label" for="male">
+                                                            Male
+                                                        </label>
+                                                    </div>
+                                                    <div class="form-check form-check-inline">
+                                                        <input <%if (user.getGender() == 0) {%> checked<%}%> value="0" class="form-check-input" type="radio" name="gender" id="female">
+                                                        <label class="form-check-label" for="female">
+                                                            Female
+                                                        </label>
+                                                    </div>
                                                 </td>
                                             </tr>
                                             <tr>

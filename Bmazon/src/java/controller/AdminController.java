@@ -653,7 +653,6 @@ public class AdminController extends HttpServlet {
         String id = request.getParameter("id");
         User user = daouser.getUserById(id);
         String username = request.getParameter("username");
-        String password = request.getParameter("password");
         String fullname = request.getParameter("fullname");
         String email = request.getParameter("email");
         String phone = request.getParameter("phone");
@@ -676,7 +675,6 @@ public class AdminController extends HttpServlet {
         }
         if (isExist == false) {
             user.setUsername(username);
-            user.setPassword(password);
             user.setFullname(fullname);
             user.setEmail(email);
             user.setPhoneNumber(phone);

@@ -148,7 +148,7 @@
                 </a>
         </li>
 
-        <li class="nav-item">
+<!--        <li class="nav-item">
             <%if (service.equalsIgnoreCase("orderResponse") || service.equalsIgnoreCase("orderDetail")) {%>
             <a class="nav-link active" href="AdminControllerMap?service=orderResponse">
                 <%} else {%>
@@ -163,7 +163,7 @@
                     </div>
                     <span class="nav-link-text ms-1">Order Response</span>
                 </a>
-        </li>
+        </li>-->
     </ul>
     <hr>
     <ul class="navbar-nav">
