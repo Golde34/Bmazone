@@ -55,7 +55,7 @@
                 <!-- End Navbar -->
                 <div class="container-fluid py-4">
                     <div class="row my-4">
-                        <div class="col-lg-10 col-md-10 mb-md-0 mb-4">
+                        <div class="col-lg-9 col-md-9 mb-md-0 mb-4">
                             <div class="card">
                                 <div class="card-body px-0 pb-2">
                                     <div class="card-header py-3" 
@@ -64,8 +64,7 @@
                                         <h3 class="m-0 font-weight-bold text-primary">Product Management</h3>
                                     </div>
                                     <div class="card-body">
-                                        <div class="table_head py-3" style="display: flex;
-                                             justify-content: space-between;">
+                                        <div class="table_head py-3 d-flex justify-content-between">
                                             <div class="rowNum">
                                                 <h6 style="display: inline">Select number of Rows</h6>
                                                 <div class="form-group" style="display: inline;">
@@ -80,7 +79,7 @@
 
                                         </div>
                                         <div class="table-responsive-md">
-                                            <table style="width: 100%" class="text-center">
+                                            <table style="width: 100%" class="text-center table-responsive">
                                                 <thead class="text-uppercase bg-gray-200">
                                                     <tr>
                                                         <th style="width: 30%;padding: 20px;">Product Name</th>
@@ -168,19 +167,17 @@
                             </div>
                         </div>
                     </div>
-                    <div class="col-lg-2 col-md-2 mb-md-0 mb-4">
-                        <div class="card">
+                    <div class="col-lg-3 col-md-3 mb-md-0 mb-4">
+                        <div class="card sticky-top">
                             <div class="px-0">
-                                <div class="px-4 pt-2">
-                                    <h5 class="m-0 font-weight-bold text-primary">Product Filter</h5>
-                                </div>
                                 <div class="card-body">
+                                    <h5 class="m-0 font-weight-bold text-primary">Product Filter</h5>
                                     <input id="search" style="width: 100%;" type="text" placeholder="Search" class="form-control my-2">
                                     <span class="m-0 font-weight-bold text-primary">Category</span>
                                     <%for (Category cate : listCategory) {%>
-                                    <div class="cate">
-                                        <input type="checkbox" id="<%=cate.getCategoryID()%>" name="cid" value="<%=cate.getCategoryID()%>">
-                                        <label for="<%=cate.getCategoryID()%>"><%=cate.getCategoryName()%></label>
+                                    <div class="cate form-check">
+                                        <input class="form-check-input" type="checkbox" id="<%=cate.getCategoryID()%>" name="cid" value="<%=cate.getCategoryID()%>">
+                                        <label class="form-check-label" for="<%=cate.getCategoryID()%>"><%=cate.getCategoryName()%></label>
                                     </div>
                                     <%}%>
                                     <button id="button" onclick="pagination()" class="btn btn-primary">Search</button>
