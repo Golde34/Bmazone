@@ -1,6 +1,6 @@
 <%-- 
-    Document   : gallerySeller
-    Created on : Nov 9, 2021, 2:47:05 PM
+    Document   : galleryDetail
+    Created on : Nov 16, 2021, 10:53:08 AM
     Author     : Admin
 --%>
 
@@ -123,7 +123,10 @@
         int next = index == totalPage ? totalPage : index + 1;
 
         DecimalFormat nf = new DecimalFormat("###,###,###");
-        ArrayList<ProductType> listPT = (ArrayList<ProductType>) request.getAttribute("listProductType");
+        ProductType pt = (ProductType) request.getAttribute("producttype");
+        String ptypeID = pt.getProductTypeId();
+        Product product = pDAO.getProductByPtypeID(sellerID, ptypeID);
+        List<Gallery> listGallery = (List<Gallery>) request.getAttribute("listGallery");
     %>
 
     <body class="skin-black">
@@ -200,104 +203,63 @@
                     <!-- Product management -->
                     <div>
                         <section class="panel">
+                            <div class="card">
+                                <div class="card-header pt-5 d-flex justify-content-between">
+                                    <h3 class="m-0 font-weight-bold text-primary">General Information</h3>
+                                </div>
+                                <div class="card-body">
+                                    <table class="table table-striped">
+                                        <tr>
+                                            <td style="width: 200px;">Product Name</td>
+                                            <td><textarea readonly="" style="width: 500px;" required class="form-control" name="productname"><%=product.getProductName()%></textarea></td>
+                                        </tr>
+                                        <tr>
+                                            <td>Color</td>
+                                            <td><input readonly="" value="<%= pt.getColor()%>">
+                                        </tr>    
+                                        <tr>
+                                            <td>Size</td>
+                                            <td><input readonly="" value="<%= pt.getSize()%>">
+                                        </tr>
+                                        <tr>
+                                            <td>Price</td>
+                                            <td><input readonly="" value="<%= pt.getPrice()%>">
+                                        </tr>
+                                    </table>
+                                </div>
+                            </div>
                             <!--                            <header class="panel-heading">
                                                             Product in shop
                                                         </header>-->
-                            <div class="table_head py-3" style="display: flex;
-                                 justify-content: space-between;">
-                                <div class="rowNum">
-                                    <h6 style="display: inline">Select number of Rows</h6>
-                                    <div class="form-group" style="display: inline;">
-                                        <select onchange="pagination()" name="state" id="maxRows" class="form-control" style="width:80px;display:inline;">
-                                            <option value="5">5</option>
-                                            <option value="10">10</option>
-                                            <option value="20">20</option>
-                                            <option value="5000">Show All</option>
-                                        </select>
-                                    </div>
-                                </div>
-                                <div class="tb_search">
-                                    <input id="search" style="width: 100%;" type="text" oninput="pagination()" placeholder="Search.." class="form-control">
-                                </div>
-                            </div>
                             <div class="panel-body table-responsive">
-                                <table class="table table-hover" id="dataTable">
-                                    <thead>
-                                        <tr>
-                                            <th style="width: 10%;">Product Name</th>
-                                            <th style="width: 10%;">Color</th>
-                                            <th style="width: 10%;">Size</th>
-                                            <th style="width: 10%;">Price</th>
-                                            <th style="width: 10%;">Quantity</th>
-                                            <th style="width: 10%;"></th>
-                                        </tr>
-                                    </thead>
-                                    <tbody id="product">
-                                        <%
-                                            for (ProductType ptype : listPT) {
-                                                String ptypeID = ptype.getProductTypeId();
-                                                Product product = pDAO.getProductByPtypeID(sellerID, ptypeID);
-                                        %>
-                                        <tr>
-                                            <td><div><a href="SellerControllerMap?service=gallerydetail&ptypeid=<%=ptypeID%>"><%= product.getProductName()%></a></div></td>
-                                            <td><div><%= ptype.getColor()%></div></td>
-                                            <td><div><%= ptype.getSize()%></div></td>
-                                            <%Double price = Double.parseDouble(ptype.getPrice());%>
-                                            <td><div><%=nf.format(price)%></div></td>
-                                            <td><div><%= ptype.getQuantity()%></div></td>
-                                            <td><div><a href="#addEmployeeModal" data-toggle="modal"><button class="btn btn-success">Add</button></a>
+                                <%
+                                    for (Gallery g : listGallery) {
+                                %>
+                                <form enctype="multipart/form-data" class="form" action="/Bmazon/SellerControllerMap?service=updategallery" method="POST">
+                                    <table class="table table-hover" id="dataTable">
+                                        <thead>
+                                            <tr>
+                                                <th style="width: 200px;"></th>
+                                                <th style="width: 50px;"></th>
+                                            </tr>
+                                        </thead>
+                                        <tr>                                        
+                                            <td>
+                                                <label class="imgho" for="file">
+                                                    <img id="img" src="images/<%=g.getLink()%>" width="150px" height="120px"> 
+                                                    <input required accept="image/*" onchange="loadFile(event)" id="file" type="file" name="photo" style="display: none;">
+                                                </label>
+                                            </td>
+                                            <td><div>
+                                                    <input type="hidden" value="<%=g.getGalleryID()%>" name="galleryid">
+                                                    <input type="submit" value="Update Gallery" class="btn btn-primary">
                                                 </div></td>
-
-                                    <div id="addEmployeeModal" class="modal fade">
-                                        <div class="modal-dialog">
-                                            <div class="modal-content">
-                                                <form action="/Bmazon/SellerControllerMap" method="post">
-                                                    <div class="modal-header">						
-                                                        <h4 class="modal-title">Add Gallery</h4>
-                                                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-                                                    </div>
-                                                    <div class="modal-body">
-
-                                                        <div class="form-group">
-                                                            <div class="wrapper">
-                                                                <div class="image">
-                                                                    <img src="">
-                                                                </div>
-                                                                <div class="file-name">
-                                                                    File name here
-                                                                </div>
-                                                            </div>
-                                                            <input id="default-btn" type="file" hidden class="form-control" name="photo" placeholder="Enter photo">
-                                                        </div>
-
-
-                                                    </div>
-                                                    <div class="modal-footer">
-                                                        <input type="button" class="btn btn-default" data-dismiss="modal" value="Cancel">
-                                                        <input type="hidden" value="addgallery" name="service">
-                                                        <input type="hidden" value="<%= ptype.getProductTypeId()%>" name="ptypeid">
-                                                        <input type="submit" class="btn btn-success" value="Add">
-                                                    </div>
-                                                </form>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    </tr>
-                                    <tr>
-                                        <%
-                                            List<Gallery> listGallery = galleryDAO.getAllImageByProductTypeID(ptype.getProductTypeId());
-                                            for (Gallery gallery : listGallery) {
-                                        %>
-                                        <td>
-                                            <img id="img" src="images/<%=gallery.getLink()%>" width="125px" height="100px">
-                                        </td>
-                                        <% } %>
-                                    </tr>
-                                    <% } %>
-                                    </tbody>
-                                </table>
+                                        </tr>
+                                    </table>
+                                </form>
+                                <% } %>
                             </div>
-                            <div class="pagination-container mt-4" style="display: flex;
+<!--                            <div class="pagination-container mt-4" style="display: flex;
                                  justify-content: space-around;cursor: pointer;">
                                 <nav>
                                     <%if (totalPage > 1) {%>
@@ -344,7 +306,7 @@
                                     </ul>
                                     <% }%>
                                 </nav>
-                            </div>
+                            </div>-->
                         </section>
 
 
@@ -364,6 +326,7 @@
 
 
         </div><!-- ./wrapper -->
+
     </body>
     <script src="https://kit.fontawesome.com/42d5adcbca.js" crossorigin="anonymous"></script>
     <script src="${contextPath}/js/core/popper.min.js"></script>
@@ -373,13 +336,13 @@
     <script src="${contextPath}/js/plugins/chartjs.min.js"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
     <script>
-                                            var loadFile = function (event) {
-                                                var output = document.getElementById('img');
-                                                img.src = URL.createObjectURL(event.target.files[0]);
-                                                img.onload = function () {
-                                                    URL.revokeObjectURL(img.src)
-                                                }
-                                            };
+                                                        var loadFile = function (event) {
+                                                            var output = document.getElementById('img');
+                                                            img.src = URL.createObjectURL(event.target.files[0]);
+                                                            img.onload = function () {
+                                                                URL.revokeObjectURL(img.src)
+                                                            }
+                                                        };
     </script>
     <script>
 
