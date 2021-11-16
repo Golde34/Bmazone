@@ -16,6 +16,7 @@ public class Customer implements Serializable{
     
     private int userID;
     private double spent;
+    private int order;
 
     public Customer() {
     }
@@ -34,6 +35,14 @@ public class Customer implements Serializable{
 
     public void setSpent(double spent) {
         this.spent = spent;
+    }
+
+    public int getOrder() {
+        return order;
+    }
+
+    public void setOrder(int order) {
+        this.order = order;
     }
     
     

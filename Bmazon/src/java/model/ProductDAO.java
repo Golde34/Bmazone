@@ -1153,7 +1153,7 @@ public class ProductDAO extends BaseDAO {
 
     public int addProduct(Product obj) {
         int n = 0;
-        String sql = "INSERT INTO [Bmazon].[dbo].[Product]([productName],[description],[rating],[releaseDate],[sellerID],[status])"
+        String sql = "INSERT INTO Product(productName,description,rating,releaseDate,sellerID,status)"
                 + "VALUES(?,?,?,?,?,1)";
         try {
             conn = new DBConnection().getConnection();

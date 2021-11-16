@@ -5,6 +5,7 @@
  */
 package controller;
 
+import APIs.SendEmail;
 import entity.*;
 import java.io.File;
 import java.io.IOException;
@@ -237,6 +238,14 @@ public class SellerController extends HttpServlet {
             }
             if (service.equalsIgnoreCase("commentpaging")) {
                 servicePagingComment(request, response);
+            }
+            
+            //Customer management
+            if (service.equalsIgnoreCase("customermanagement")) {
+                serviceCustomerManagement(request, response);
+            }
+            if (service.equalsIgnoreCase("sendthanks")) {
+                serviceSendThanks(request, response);
             }
         }
     }
@@ -1345,7 +1354,7 @@ public class SellerController extends HttpServlet {
         request.setAttribute("product", product);
         request.setAttribute("producttype", producttype);
         request.setAttribute("listGallery", listGallery);
-        sendDispatcher(request, response, "seller/galleryDetail.jsp");
+        sendDispatcher(request, response, "SellerControllerMap?service=gallerydetail&ptypeid=" + ptid);
     }
 
     public void serviceActiveGallery(HttpServletRequest request, HttpServletResponse response) {
@@ -1683,6 +1692,41 @@ public class SellerController extends HttpServlet {
         if (request.getParameter("row") == null) {
             sendDispatcher(request, response, "seller/sellerfeedback.jsp");
         }
+    }
+    
+    public void serviceCustomerManagement(HttpServletRequest request, HttpServletResponse response) {
+        User account = (User) request.getSession().getAttribute("currUser");
+        String userID = account.getUserId();
+        Seller seller = sellerDAO.getSellerByUserID(Integer.parseInt(userID));
+        int sellerID = seller.getSellerID();
+        
+        List<Customer> listCustomer = odDAO.getAllFamiliarCustomer(sellerID);
+        
+        request.setAttribute("listCustomer", listCustomer);
+        sendDispatcher(request, response, "seller/customerSeller.jsp");
+    }
+    
+    public void serviceSendThanks(HttpServletRequest request, HttpServletResponse response) {
+        String cusID = request.getParameter("userID");
+        String ordered = request.getParameter("ordered");
+        User u = uDAO.getUserById(cusID);
+        User account = (User) request.getSession().getAttribute("currUser");
+        String userID = account.getUserId();
+        Seller seller = sellerDAO.getSellerByUserID(Integer.parseInt(userID));
+        String mess = "";
+        String option = "sellerthanks";
+        SendEmail sm = new SendEmail();
+            //call the send email method
+        boolean test = sm.sendEmail(seller.getSellerShopName(), u.getEmail(), ordered, option);
+            //check if the email send successfully
+            if (test == true) {
+                request.setAttribute("messThanks", "Send successfully");
+            } else {
+                request.setAttribute("messThanks", "Failed to send");
+            }
+        
+        request.setAttribute("state", test);
+        sendDispatcher(request, response, "SellerControllerMap?service=customermanagement");
     }
 
     public void sendDispatcher(HttpServletRequest request, HttpServletResponse response, String path) {

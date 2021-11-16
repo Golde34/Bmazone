@@ -107,6 +107,9 @@ public class SendEmail {
             } else if (option.equals("order")){
                 msg.setSubject("Order's notification from Bmazon");
                 msg.setText(code);
+            } else if (option.equals("sellerthanks")){
+                msg.setSubject("Shop " + username + " from Bmazon");
+                msg.setText("Until now, you have purchased " + code + " orders from my shop. Thank you so much, keep your strength");
             }
 
             //send the message

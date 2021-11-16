@@ -24,9 +24,9 @@ public class OrderDetailDAO extends BaseDAO {
 
     public static void main(String[] args) {
         OrderDetailDAO dao = new OrderDetailDAO();
-        for (OrderDetail item : dao.getAllOrderDetail(11)) {
+        for (Customer item : dao.getAllFamiliarCustomer(4)) {
 
-            System.out.println(item.getProductName());
+            System.out.println(item.getOrder());
         }
     }
 
@@ -308,6 +308,37 @@ public class OrderDetailDAO extends BaseDAO {
         }
         return list;
 
+    }
+    public List<Customer> getAllFamiliarCustomer(int sellerID) {
+        List<Customer> list = new ArrayList<>();
+        String sql = "select o.userID, count(distinct o.orderID), sum(o.total)\n" +
+                "from `order` o inner join orderdetail od on o.orderID = od.orderID inner join ProductType pt on od.productTypeID=pt.productTypeId inner join Product p on pt.productID=p.productID \n" +
+                "where p.sellerID = ? group by userID";
+        try {
+            conn = new DBConnection().getConnection();
+            pre = conn.prepareStatement(sql);
+            pre.setInt(1, sellerID);
+            rs = pre.executeQuery();
+            while (rs.next()) {
+                Customer customer = new Customer();
+                customer.setUserID(rs.getInt(1));
+                customer.setOrder(rs.getInt(2));
+                customer.setSpent(rs.getDouble(3));
+                list.add(customer);
+            }
+
+        } catch (Exception ex) {
+            Logger.getLogger(OrderDAO.class.getName()).log(Level.SEVERE, null, ex);
+        } finally {
+            try {
+                rs.close();
+                pre.close();
+                conn.close();
+            } catch (Exception ex) {
+                Logger.getLogger(CategoryDAO.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
+        return list;
     }
 
     public List<Order> most5BigOrder() {

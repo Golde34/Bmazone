@@ -143,6 +143,11 @@
                                 <i class="fa fa-empire"></i> <span>Feed Back</span>
                             </a>
                         </li>
+                        <li>
+                            <a href="SellerControllerMap?service=customermanagement">
+                                <i class="fa fa-empire"></i> <span>Customer Management</span>
+                            </a>
+                        </li>
 
 
                     </ul>
