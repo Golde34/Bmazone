@@ -214,6 +214,8 @@ public class ProductDetailController extends HttpServlet {
         newCom.setContent(content);
         if (!daoComment.checkExistComment(id, Integer.parseInt(user.getUserId()))) {
             daoComment.insertComment(newCom);
+        } else {
+            daoComment.updateComment(newCom);
         }
         sendDispatcher(request, response, "ProductDetailControllerMap?service=getProductDetail&pid=" + id);
     }

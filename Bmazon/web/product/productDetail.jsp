@@ -95,7 +95,7 @@
                                         <%} else {%>
                                         <label for="star<%=star%>" title="text"><%=star%> stars</label>
                                         <%}
-                                    }%>
+                                            }%>
                                     </div><span><%=countNumberComment%> reviews</span>
                                 </div>
 
@@ -215,7 +215,6 @@
                                 if (x != null && !daoComment.checkExistComment(product.getProductID(), Integer.parseInt(x.getUserId()))) {%>
                             <form action="ProductDetailControllerMap" class="review-form">
                                 <div class="form-group">
-
                                     <p style="color: black; font-size: 18px;">Your rating:    
                                         <input name="rating" type="number" min="0" max="5" style="width: 60px; height: 40px;"> 
                                         <i style="color: #ffe793; height: 30px; width: 30px; " class="fas fa-star"></i>
@@ -229,6 +228,40 @@
                                     <button class="round-black-btn" type="submit">Submit Review</button>
                                 </div>
                             </form>
+                            <%} else if (x != null && daoComment.checkExistComment(product.getProductID(), Integer.parseInt(x.getUserId()))) {%>
+                            <% Comment editComment = daoComment.getCommentByUserIdAndProductId(Integer.parseInt(x.getUserId()), product.getProductID());%>
+                            <button style="background-color: #ff531d" type="button" class="btn btn-primary" data-toggle="modal" data-target=".bd-example-modal-lg">Edit Your Comment</button>
+
+                            <div style="padding:20px; margin:5px;" class="modal fade bd-example-modal-lg" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
+                                <div class="modal-dialog" role="document">
+                                    <div class="modal-content">
+                                        <div class="modal-header">
+                                            <h3 class="modal-title" id="exampleModalLabel">Your Comment</h3>
+                                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                <span aria-hidden="true">&times;</span>
+                                            </button>
+                                        </div>
+                                        <div class="modal-body">
+                                            <form action="ProductDetailControllerMap" class="review-form">
+                                                <div class="form-group">
+                                                    <p style="color: black; font-size: 18px;">Your rating:    
+                                                        <input name="rating" type="number" min="0" max="5" style="width: 60px; height: 40px;" value="<%=(int) editComment.getRating()%>"> 
+                                                        <i style="color: #ffe793; height: 30px; width: 30px; " class="fas fa-star"></i>
+                                                    </p>      
+                                                    <div class="form-group">
+                                                        <label>Your message</label>
+                                                        <textarea name="content" class="form-control" rows="10"></textarea>
+                                                        <input type="hidden" name ="service" value="comment" >
+                                                        <input type="hidden" name ="pid" value="<%=product.getProductID()%>" >
+                                                    </div>
+                                                    <button class="round-black-btn" type="submit">Submit Review</button>
+                                                </div>
+                                            </form> 
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
                             <%}%>
                         </div>
                     </div>
