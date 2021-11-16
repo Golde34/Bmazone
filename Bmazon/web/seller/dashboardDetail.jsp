@@ -207,17 +207,19 @@
                                                 </tr>
                                                 <tr>
                                                     <td><label>Image</label></td>
-                                                    <td>
-                                                        <%
-                                                            List<Gallery> listGallery = gallerydao.getAllImageByProductTypeID(ptype.getProductTypeId());
-                                                            for (Gallery gallery : listGallery) {
-                                                        %>
 
-                                                        <label style="width: 250px;height: 150px;" for="file">
+
+                                                    <%
+                                                        List<Gallery> listGallery = gallerydao.getAllImageByProductTypeID(ptype.getProductTypeId());
+                                                        for (Gallery gallery : listGallery) {
+                                                    %>
+                                                    <td>
+                                                        <label class="col-md-4" style="width: 250px;height: 150px;" for="img">
                                                             <img id="img" src="images/<%=gallery.getLink()%>">
                                                         </label>
                                                     </td>
                                                     <% } %>
+
                                                 </tr>
                                                 <% }%>
                                             </tbody>
