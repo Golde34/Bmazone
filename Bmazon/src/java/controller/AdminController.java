@@ -2747,6 +2747,7 @@ public class AdminController extends HttpServlet {
     }
 
     //</editor-fold>
+    
     // <editor-fold defaultstate="collapsed" desc="Employee methods. Click on the + sign on the left to edit the code.">
     public void serviceEmployeeManagement(String service, HttpServletRequest request, HttpServletResponse response) {
         List<Employee> listPaging = empDAO.getAllPagingEmployee(1, 5, "");

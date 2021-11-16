@@ -21,22 +21,6 @@
 <div class="" id="sidenav-collapse-main">
     <ul class="navbar-nav">
         <li class="nav-item">
-            <%if (service.equalsIgnoreCase("EmployeeDashBoard")) {%>
-            <a class="nav-link active" href="EmployeeControllerMap">
-                <%} else {%>
-                <a class="nav-link" href="EmployeeControllerMap">
-                    <%}%>
-                    <div class="icon icon-shape icon-sm shadow border-radius-md bg-white text-center me-2 d-flex align-items-center justify-content-center">
-                        <%if (service.equalsIgnoreCase("EmployeeDashBoard")) {%>
-                        <i class="fas fa-fw fa-tachometer-alt"></i>
-                        <%} else {%>
-                        <i class="fas fa-fw fa-tachometer-alt" style="color: black"></i>
-                        <%}%>
-                    </div>
-                    <span class="nav-link-text ms-1">Dashboard</span>
-                </a>
-        </li>
-        <li class="nav-item">
             <%if (service.equalsIgnoreCase("topupresponse")) {%>
             <a class="nav-link active" href="EmployeeControllerMap?service=topupresponse">
                 <%} else {%>

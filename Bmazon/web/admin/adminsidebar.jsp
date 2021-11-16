@@ -80,7 +80,7 @@
                         <i class="fas fa-users" style="color: black"></i>
                         <%}%>
                     </div>
-                    <span class="nav-link-text ms-1">Seller Management</span>
+                    <span class="nav-link-text ms-1">Shop Management</span>
                 </a>
         </li>
         <li class="nav-item">
