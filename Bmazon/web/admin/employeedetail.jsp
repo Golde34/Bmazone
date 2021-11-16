@@ -116,10 +116,18 @@
                                             <tr>
                                                 <td>Gender</td>
                                                 <td>
-                                                    <select class="form-control" name="gender">
-                                                        <option value="1">Male</option>
-                                                        <option value="0">Female</option>
-                                                    </select>
+                                                     <div class="form-check form-check-inline">
+                                                        <input value="1" class="form-check-input" type="radio" name="gender" id="male">
+                                                        <label class="form-check-label" for="male">
+                                                            Male
+                                                        </label>
+                                                    </div>
+                                                    <div class="form-check form-check-inline">
+                                                        <input value="0" class="form-check-input" type="radio" name="gender" id="female">
+                                                        <label class="form-check-label" for="female">
+                                                            Female
+                                                        </label>
+                                                    </div>
                                                 </td>
                                             </tr>
                                                 <td style="width: 30%;">Employee Name</td>
@@ -159,6 +167,7 @@
                                         <%}%>
                                         <%if (service.equalsIgnoreCase("updateemployeedetail")) {%>
                                         <table class="table table-striped">
+                                            <input type="hidden" name="empid" value="<%=employee.getEmployeeId()%>">
                                              <tr>
                                                 <td>Username</td>
                                                 <td>
@@ -208,10 +217,18 @@
                                             <tr>
                                                <td>Gender</td>
                                                 <td>
-                                                     <select class="form-control" name="gender">
-                                                        <option <%if (user.getGender() == 1) {%> selected<%}%> value="1">Male</option>
-                                                        <option <%if (user.getGender() == 0) {%> selected<%}%> value="0">Female</option>
-                                                    </select>
+                                                      <div class="form-check form-check-inline">
+                                                        <input <%if (user.getGender() == 1) {%> checked <%}%> value="1" class="form-check-input" type="radio" name="gender" id="male">
+                                                        <label class="form-check-label" for="male">
+                                                            Male
+                                                        </label>
+                                                    </div>
+                                                    <div class="form-check form-check-inline">
+                                                        <input <%if (user.getGender() == 0) {%> checked<%}%> value="0" class="form-check-input" type="radio" name="gender" id="female">
+                                                        <label class="form-check-label" for="female">
+                                                            Female
+                                                        </label>
+                                                    </div>
                                                 </td>
                                             </tr>
                                             <tr>

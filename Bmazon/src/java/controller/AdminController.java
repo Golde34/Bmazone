@@ -1103,7 +1103,7 @@ public class AdminController extends HttpServlet {
 
     // <editor-fold defaultstate="collapsed" desc="Product methods. Click on the + sign on the left to edit the code.">
     public void serviceProductManagement(String service, HttpServletRequest request, HttpServletResponse response) {
-        String[] temp={""};
+        String[] temp = {""};
         ArrayList<Product> listPaging = daoproduct.getAllPagingProduct(1, 5, "", temp);
         ArrayList<Product> listProduct = daoproduct.getAllProduct();
         int totalPage = listProduct.size() / 5;
@@ -1287,7 +1287,7 @@ public class AdminController extends HttpServlet {
     public void serviceDeleteProduct(String service, HttpServletRequest request, HttpServletResponse response) {
         request.setAttribute("service", service);
         String id = request.getParameter("productid");
-        String[] temp ={""};
+        String[] temp = {""};
         daoproduct.changeStatus(Integer.parseInt(id), 0);
         ArrayList<Product> listPaging = daoproduct.getAllPagingProduct(1, 5, "", temp);
         ArrayList<Product> listProduct = daoproduct.getAllProduct();
@@ -1306,7 +1306,7 @@ public class AdminController extends HttpServlet {
         request.setAttribute("service", service);
         String id = request.getParameter("productid");
         daoproduct.changeStatus(Integer.parseInt(id), 1);
-        String[] temp ={""};
+        String[] temp = {""};
         ArrayList<Product> listPaging = daoproduct.getAllPagingProduct(1, 5, "", temp);
         ArrayList<Product> listProduct = daoproduct.getAllProduct();
         int totalPage = listProduct.size() / 5;
@@ -3005,8 +3005,8 @@ public class AdminController extends HttpServlet {
             request.setAttribute("employee", emp);
             String mess = "Update successfully";
             request.setAttribute("mess", mess);
-            request.setAttribute("service", "updateemployeedetail");
-            sendDispatcher(request, response, "admin/employeedetail.jsp");
+              request.setAttribute("service", "updateemployeedetail");
+            sendDispatcher(request, response, "AdminControllerMap?service=updateemployeedetail&&empid="+emp.getEmployeeId());
         }
     }
 
