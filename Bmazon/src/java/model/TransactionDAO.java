@@ -27,7 +27,7 @@ public class TransactionDAO extends BaseDAO {
     public List<Transaction> getAllPagingTransaction(int index, int numOfRow, String search) {
         int start = (index - 1) * numOfRow;
         List<Transaction> list = new ArrayList<>();
-        String sql = "select * from `Transaction` where status=2 and money like '%" + search + "%' order by `history` desc limit ?,?";
+        String sql = "select * from `Transaction` t join User u on t.userID = u.userID where t.status=2 and (t.money like '%" + search + "%' or u.fullname like '%" + search + "%') order by `history` desc limit ?,?";
         try {
             conn = new DBConnection().getConnection();
             pre = conn.prepareStatement(sql);
@@ -60,7 +60,7 @@ public class TransactionDAO extends BaseDAO {
     public ArrayList<Transaction> getAllPagingTransactionByUser(int index, int numOfRow, String search, String user) {
         int start = (index - 1) * numOfRow;
         ArrayList<Transaction> list = new ArrayList<>();
-        String sql = "select * from `Transaction` where userID = ? and (money like '%" + search + "%' or history like '%" + search + "%')  limit ?,?";
+        String sql = "select * from `Transaction` where userID = ? and (money like '%" + search + "%' or history like '%" + search + "%') order by `history` desc limit ?,?";
         try {
             conn = new DBConnection().getConnection();
             pre = conn.prepareStatement(sql);

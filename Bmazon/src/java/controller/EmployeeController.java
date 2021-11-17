@@ -81,11 +81,6 @@ public class EmployeeController extends HttpServlet {
                 service = "topupresponse";
             }
 
-            //Employee Dashboard
-            if (service.equalsIgnoreCase("EmployeeDashBoard")) {
-                serviceEmployeeDashBoard(service, request, response);
-            }
-
             // <editor-fold defaultstate="collapsed" desc="Top Up Response service. Click on the + sign on the left to edit the code.">
             //Top Up Response
             if (service.equalsIgnoreCase("topupresponse")) {
@@ -109,11 +104,6 @@ public class EmployeeController extends HttpServlet {
             }
             //</editor-fold>
         }
-    }
-
-    public void serviceEmployeeDashBoard(String service, HttpServletRequest request, HttpServletResponse response) {
-        request.setAttribute("service", service);
-        sendDispatcher(request, response, "employee/employee.jsp");
     }
 
     // <editor-fold defaultstate="collapsed" desc="Top Up Response Method. Click on the + sign on the left to edit the code.">
@@ -254,6 +244,7 @@ public class EmployeeController extends HttpServlet {
 
         User u = daouser.getUserById(daotransaction.getTransactionByTransactionID(transactionid).getUserID());
         double money = daotransaction.getTransactionByTransactionID(transactionid).getMoney();
+        
         String option = "topup";
         if (daotransaction.getTransactionByTransactionID(transactionid).getState() == 1) {
             daouser.depositWalletUser(u, money);
@@ -264,6 +255,7 @@ public class EmployeeController extends HttpServlet {
             String text2 = "Withdrawal: " + nf.format(money) + ".";
             s.sendEmail(u.getUsername(), u.getEmail(), text2, option);
         }
+        
         session.setAttribute("currUser", daouser.getUserById(x.getUserId()));
 
         List<Transaction> listTransactionPaging = daotransaction.getAllPagingTransaction(1, 5, "");
@@ -286,8 +278,10 @@ public class EmployeeController extends HttpServlet {
         request.setAttribute("service", service);
         int transactionid = Integer.parseInt(request.getParameter("transactionID"));
         daotransaction.denyTopUpRequest(transactionid);
+        
         User u = daouser.getUserById(daotransaction.getTransactionByTransactionID(transactionid).getUserID());
         double money = daotransaction.getTransactionByTransactionID(transactionid).getMoney();
+        
         String option = "denytopup";
         if (daotransaction.getTransactionByTransactionID(transactionid).getState() == 1) {
             String text1 = "Deposit: " + nf.format(money) + ".";
