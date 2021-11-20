@@ -258,10 +258,10 @@
                                             <td><div>
                                                     <!--<input type="hidden" value="updategallery" name="service">-->
                                                     <input type="submit" value="Update Gallery" class="btn btn-primary">
-                                                    <% if(g.getStatus()==1){%>
-                                                    <a href="SellerControllerMap?service=deactivegallery&galleryid=<%=g.getGalleryID()%>" onclick="return confirm('Are you sure?');"><button class="btn btn-danger">Deactive</button></a>
-                                                    <%}else{%>
-                                                    <a href="SellerControllerMap?service=activegallery&galleryid=<%=g.getGalleryID()%>" onclick="return confirm('Are you sure?');"><button class="btn btn-success">Active</button></a>
+                                                    <% if (g.getStatus() == 1) {%>
+                                                    <a href="SellerControllerMap?service=deactivegallery&galleryid=<%=g.getGalleryID()%>" onclick="return confirm('Are you sure?');" class="btn btn-danger">Deactive</a>
+                                                    <%} else {%>
+                                                    <a href="SellerControllerMap?service=activegallery&galleryid=<%=g.getGalleryID()%>" onclick="return confirm('Are you sure?');" class="btn btn-success">Active</a>
                                                     <%}%>
                                                 </div></td>
                                         </tr>
@@ -269,54 +269,54 @@
                                 </form>
                                 <% } %>
                             </div>
-<!--                            <div class="pagination-container mt-4" style="display: flex;
-                                 justify-content: space-around;cursor: pointer;">
-                                <nav>
-                                    <%if (totalPage > 1) {%>
-                                    <ul class="pagination" id="showpage">
-                                        <li data-repair="1" class="page-item">
-                                            <a class="page-link" aria-label="First">
-                                                <span aria-hidden="true"><i class="fas fa-backward"></i>
-                                                    <span class="sr-only">(current)</span> 
-                                                </span>
-                                            </a>
-                                        </li>
-                                        <li data-repair="<%=prev%>" class="page-item">
-                                            <a class="page-link" aria-label="Previous">
-                                                <span aria-hidden="true"><i class="fas fa-arrow-left"></i>
-                                                    <span class="sr-only">(current)</span> 
-                                                </span>
-                                            </a>
-                                        </li>
-                                        <%int limit = totalPage > 5 ? 5 : totalPage;%>
-                                        <%for (int i = 1; i <= limit; i++) {%>
-                                        <%if (index == i) {%>
-                                        <li  class="page-item active" data-repair="<%=i%>">
-                                        <%} else {%><li  class="page-item" data-repair="<%=i%>"> <%}%>
-                                            <a class="page-link">
-                                                <div class="index"><%=i%></div>
-                                                <span class="sr-only">(current)</span>
-                                            </a>
-                                        </li>
-                                        <%}%>
-                                        <li data-repair="<%=next%>" class="page-item">
-                                            <a class="page-link" aria-label="Next">
-                                                <span aria-hidden="true"><i class="fas fa-arrow-right"></i>
-                                                    <span class="sr-only">(current)</span> 
-                                                </span>
-                                            </a>
-                                        </li>
-                                        <li data-repair="<%=totalPage%>" class="page-item">
-                                            <a class="page-link" aria-label="Last">
-                                                <span aria-hidden="true"><i class="fas fa-forward"></i>
-                                                    <span class="sr-only">(current)</span> 
-                                                </span>
-                                            </a>
-                                        </li>
-                                    </ul>
-                                    <% }%>
-                                </nav>
-                            </div>-->
+                            <!--                            <div class="pagination-container mt-4" style="display: flex;
+                                                             justify-content: space-around;cursor: pointer;">
+                                                            <nav>
+                            <%if (totalPage > 1) {%>
+                            <ul class="pagination" id="showpage">
+                                <li data-repair="1" class="page-item">
+                                    <a class="page-link" aria-label="First">
+                                        <span aria-hidden="true"><i class="fas fa-backward"></i>
+                                            <span class="sr-only">(current)</span> 
+                                        </span>
+                                    </a>
+                                </li>
+                                <li data-repair="<%=prev%>" class="page-item">
+                                    <a class="page-link" aria-label="Previous">
+                                        <span aria-hidden="true"><i class="fas fa-arrow-left"></i>
+                                            <span class="sr-only">(current)</span> 
+                                        </span>
+                                    </a>
+                                </li>
+                            <%int limit = totalPage > 5 ? 5 : totalPage;%>
+                            <%for (int i = 1; i <= limit; i++) {%>
+                            <%if (index == i) {%>
+                            <li  class="page-item active" data-repair="<%=i%>">
+                            <%} else {%><li  class="page-item" data-repair="<%=i%>"> <%}%>
+                                <a class="page-link">
+                                    <div class="index"><%=i%></div>
+                                    <span class="sr-only">(current)</span>
+                                </a>
+                            </li>
+                            <%}%>
+                            <li data-repair="<%=next%>" class="page-item">
+                                <a class="page-link" aria-label="Next">
+                                    <span aria-hidden="true"><i class="fas fa-arrow-right"></i>
+                                        <span class="sr-only">(current)</span> 
+                                    </span>
+                                </a>
+                            </li>
+                            <li data-repair="<%=totalPage%>" class="page-item">
+                                <a class="page-link" aria-label="Last">
+                                    <span aria-hidden="true"><i class="fas fa-forward"></i>
+                                        <span class="sr-only">(current)</span> 
+                                    </span>
+                                </a>
+                            </li>
+                        </ul>
+                            <% }%>
+                        </nav>
+                    </div>-->
                         </section>
 
 

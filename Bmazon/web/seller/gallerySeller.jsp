@@ -54,44 +54,10 @@
         <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
         <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
         <style type="text/css">
-            .modal .modal-dialog {
-                max-width: 400px;
-            }
-            .modal .modal-header, .modal .modal-body, .modal .modal-footer {
-                padding: 20px 30px;
-            }
-            .modal .modal-content {
-                border-radius: 3px;
-            }
-            .modal .modal-footer {
-                background: #ecf0f1;
-                border-radius: 0 0 3px 3px;
-            }
-            .modal .modal-title {
-                display: inline-block;
-            }
-            .modal .form-control {
-                border-radius: 2px;
-                box-shadow: none;
-                border-color: #dddddd;
-            }
-            .modal textarea.form-control {
-                resize: vertical;
-            }
-            .modal .btn {
-                border-radius: 2px;
-                min-width: 100px;
-            }	
-            .modal form label {
-                font-weight: normal;
-            }
-            .imgho{
-                width: 250px; 
-                height: 150px; 
-            }
-            .imgho:hover{
-                opacity: 0.7;
-                cursor: pointer;
+            .file-custom{
+                -webkit-box-sizing: border-box;
+                -moz-box-sizing: border-box;
+                box-sizing: border-box;
             }
         </style>
     </head>
@@ -244,48 +210,22 @@
                                                 Product product = pDAO.getProductByPtypeID(ptypeID);
                                                 Double price = Double.parseDouble(ptype.getPrice());
                                         %>
-                                        <tr>
-                                            <td><div><a href="SellerControllerMap?service=gallerydetail&ptypeid=<%=ptypeID%>"><%= product.getProductName()%></a></div></td>
-                                            <td><div><%= ptype.getColor()%></div></td>
-                                            <td><div><%= ptype.getSize()%></div></td>
-                                            <td><div><%=nf.format(price)%></div></td>
-                                            <td><div><%= ptype.getQuantity()%></div></td>
-                                            <td><div><a href="#addEmployeeModal" data-toggle="modal"><button class="btn btn-success">Add</button></a>
-                                                </div></td>
-
-                                    <div id="addEmployeeModal" class="modal fade">
-                                        <div class="modal-dialog">
-                                            <div class="modal-content">
-                                <form enctype="multipart/form-data" class="form" action="/Bmazon/SellerControllerMap?service=addgallery&ptypeid=<%= ptype.getProductTypeId()%>" method="POST">
-                                                    <div class="modal-header">						
-                                                        <h4 class="modal-title">Add Gallery</h4>
-                                                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-                                                    </div>
-                                                    <div class="modal-body">
-
-                                                        <div class="form-group">
-                                                            <div class="wrapper">
-                                                                <div class="image">
-                                                                    <img src="">
-                                                                </div>
-                                                                <div class="file-name">
-                                                                    File name here
-                                                                </div>
-                                                            </div>
-                                                            <input id="default-btn" type="file" hidden class="form-control" name="photo" placeholder="Enter photo">
-                                                        </div>
-
-
-                                                    </div>
-                                                    <div class="modal-footer">
-                                                        <input type="button" class="btn btn-default" data-dismiss="modal" value="Cancel">
-                                                        <input type="hidden" value="addgallery" name="service">
-                                                        <input type="submit" class="btn btn-success" value="Add">
-                                                    </div>
-                                                </form>
-                                            </div>
-                                        </div>
-                                    </div>
+                                        <tr style="border-top: solid 2px black;">
+                                    <form enctype="multipart/form-data" class="form" action="/Bmazon/SellerControllerMap?service=addgallery&ptypeid=<%= ptypeID%>" method="POST">
+                                        <td><div><a href="SellerControllerMap?service=gallerydetail&ptypeid=<%=ptypeID%>"><%= product.getProductName()%></a></div></td>
+                                        <td><div><%= ptype.getColor()%></div></td>
+                                        <td><div><%= ptype.getSize()%></div></td>
+                                        <td><div><%=nf.format(price)%></div></td>
+                                        <td><div><%= ptype.getQuantity()%></div></td>
+                                        <td>
+                                            <label class="file">
+                                                <input type="file" name="photo" id="file" aria-label="File browser example">
+                                                <span class="file-custom"></span>
+                                            </label><br>
+                                            <input type="hidden" value="addgallery" name="service">
+                                            <input type="submit" class="btn btn-success" value="Save">
+                                        </td>
+                                    </form>
                                     </tr>
                                     <tr>
                                         <%
