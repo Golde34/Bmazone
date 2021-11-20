@@ -22,8 +22,6 @@ VALUES ('Thinh', '1000:5b42403563616438303836:6f4b2f2dbd24e2a8f5fbe7132c1b322093
 INSERT INTO User(username, password, email, phoneNumber, sell, wallet, fullname, publicName, address, profileImage, backgroundImage, occupation, gender, DOB, bio, Facebook, Instagram, Twitter, Youtube, activityPoint, systemRole, status)
 VALUES ('Phuong', '1000:5b42403563616438303836:6f4b2f2dbd24e2a8f5fbe7132c1b322093c82e29a270090b', 'phuongnt@gmail.com', '0982768937', 0, 120000, 'Nguyen Thu Phuong',  'Phuong', 'TP HCM', 'defaultPicture.jpg','background_profile.jpg','Marketing', 0, '2001-3-16', 'Shopping', 'Thu Phuong', 'ins', 'twt', 'yt', 3000, 0, 1);
 INSERT INTO User(username, password, email, phoneNumber, sell, wallet, fullname, publicName, address, profileImage, backgroundImage, occupation, gender, DOB, bio, Facebook, Instagram, Twitter, Youtube, activityPoint, systemRole, status)
-VALUES ('G', '123456', 'asf@gmail.com', '0988907272', 0, 120000, 'Dong Viet',  'Viet', 'TP HCM', 'defaultPicture.jpg','background_profile.jpg','Tester', 0, '2001-3-16', 'Shopping', 'fb', 'ins', 'twt', 'yt', 3000, 0, 1);
-INSERT INTO User(username, password, email, phoneNumber, sell, wallet, fullname, publicName, address, profileImage, backgroundImage, occupation, gender, DOB, bio, Facebook, Instagram, Twitter, Youtube, activityPoint, systemRole, status)
 VALUES ('Employee', '1000:5b42403563616438303836:6f4b2f2dbd24e2a8f5fbe7132c1b322093c82e29a270090b', 'employee@gmail.com', '0983424233', 0, 120000, 'Employee',  'Employee', 'TP HCM', 'defaultPicture.jpg','background_profile.jpg','Employee', 0, '2001-3-16', 'Shopping', 'fb', 'ins', 'twt', 'yt', 3000, 2, 1);
 INSERT INTO User(username, password, email, phoneNumber, sell, wallet, fullname, publicName, address, profileImage, backgroundImage, occupation, gender, DOB, bio, Facebook, Instagram, Twitter, Youtube, activityPoint, systemRole, status)
 VALUES ('Employee2', '1000:5b42403563616438303836:6f4b2f2dbd24e2a8f5fbe7132c1b322093c82e29a270090b', 'employee2@gmail.com', '0983424232', 0, 120000, 'Employee',  'Employee', 'TP HCM', 'defaultPicture.jpg','background_profile.jpg','Employee', 0, '2001-3-16', 'Shopping', 'fb', 'ins', 'twt', 'yt', 3000, 2, 1);
@@ -56,9 +54,9 @@ INSERT INTO Seller(userID, sellerShopName, sellerPhone, evidence, sellerMainProd
 VALUES (6, 'Ba con tuan loc', '0928673463', 'owner can sell everything', 1, 'Ong gia noel', 1, 1);
 
 -- employee
-Insert into employees(userID,name,startdate,salary,avatar,status) values(9,'Nguyen Van A',now(),1000000,'defaultPicture.jpg',1);
-Insert into employees(userID,name,startdate,salary,avatar,status) values(10,'Nguyen Van B',now(),1200000,'defaultPicture.jpg',1);
-Insert into employees(userID,name,startdate,salary,avatar,status) values(11,'Nguyen Van C',now(),1100000,'defaultPicture.jpg',1);
+Insert into employees(userID,name,startdate,salary,avatar,status) values(8,'Nguyen Van A',now(),1000000,'defaultPicture.jpg',1);
+Insert into employees(userID,name,startdate,salary,avatar,status) values(9,'Nguyen Van B',now(),1200000,'defaultPicture.jpg',1);
+Insert into employees(userID,name,startdate,salary,avatar,status) values(10,'Nguyen Van C',now(),1100000,'defaultPicture.jpg',1);
 
 
 -- Genre
