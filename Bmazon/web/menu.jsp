@@ -416,7 +416,7 @@
                                                                     <div style="padding: 20px;"><h1>Macbook and Everything</h1></div>
                                                                     <div class="box-image" style="width:450px; height:300px; ">
                                                                         <img style="width:450px; height:300px;" src="images/mac.jpg"/></div>
-                                                                    <div style="padding: 20px;"> <a href="HomePageControllerMap?service=ByGenre&gid=2">Show all</a></div>
+                                                                    <div style="padding: 20px;"> <a href="HomePageControllerMap?service=ByGenre&gid=4">Show all</a></div>
                                                                 </div></a></div></div></div>
                                             </div>
                                         </div>
