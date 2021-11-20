@@ -70,6 +70,8 @@ public class SellerController extends HttpServlet {
             if (service == null) {
                 service = "SellerDashboard";
             }
+            
+            // <editor-fold defaultstate="collapsed" desc="Dashboard service. Click on the + sign on the left to edit the code.">
             //Seller Dashboard
             if (service.equalsIgnoreCase("SellerDashboard")) {
                 serviceSellerDashboard(request, response);
@@ -87,6 +89,10 @@ public class SellerController extends HttpServlet {
                 serviceSellerDashboardDetail(request, response);
             }
 
+            //</editor-fold>
+            
+            
+            // <editor-fold defaultstate="collapsed" desc="Product service. Click on the + sign on the left to edit the code.">
             //Product Management
             if (service.equalsIgnoreCase("productmanagement")) {
                 serviceProductManagement(request, response);
@@ -145,7 +151,9 @@ public class SellerController extends HttpServlet {
             if (service.equalsIgnoreCase("showpageproducttype")) {
                 serviceShowPageProductType(request, response);
             }
+            //</editor-fold>
 
+            // <editor-fold defaultstate="collapsed" desc="Order service. Click on the + sign on the left to edit the code.">
             //Order Management
             if (service.equalsIgnoreCase("ordermanagement")) {
                 serviceOrderManagement(request, response);
@@ -189,6 +197,9 @@ public class SellerController extends HttpServlet {
                 serviceOrderDetail(request, response);
             }
 
+            //</editor-fold>
+            
+            // <editor-fold defaultstate="collapsed" desc="Gallery service. Click on the + sign on the left to edit the code.">
             //Gallery management
             if (service.equalsIgnoreCase("gallerymanagement")) {
                 serviceGalleryManagement(request, response);
@@ -225,6 +236,7 @@ public class SellerController extends HttpServlet {
             if (service.equalsIgnoreCase("activegallery")) {
                 serviceActiveGallery(request, response);
             }
+            //</editor-fold>
 
             //Edit Seller Information
             if (service.equalsIgnoreCase("editSellerInformation")) {
@@ -240,19 +252,21 @@ public class SellerController extends HttpServlet {
                 servicePagingComment(request, response);
             }
 
+            // <editor-fold defaultstate="collapsed" desc="Customer service. Click on the + sign on the left to edit the code.">
             //Customer management
             if (service.equalsIgnoreCase("customermanagement")) {
                 serviceCustomerManagement(request, response);
             }
-            
+
             //Customer detail
             if (service.equalsIgnoreCase("customerdetail")) {
                 serviceCustomerDetail(request, response);
             }
-            
+
             if (service.equalsIgnoreCase("sendthanks")) {
                 serviceSendThanks(request, response);
             }
+            //</editor-fold>
         }
     }
 
@@ -1107,8 +1121,8 @@ public class SellerController extends HttpServlet {
             String ptypeID = ptype.getProductTypeId();
             Product product = pDAO.getProductByPtypeID(ptypeID);
             Double price = Double.parseDouble(ptype.getPrice());
-            pr.print("<tr style=\"border-top: solid 2px black;\">\n" +
-"                                    <form enctype=\"multipart/form-data\" class=\"form\" action=\"/Bmazon/SellerControllerMap?service=addgallery&ptypeid=" + ptypeID + "\" method=\"POST\">\n"
+            pr.print("<tr style=\"border-top: solid 2px black;\">\n"
+                    + "                                    <form enctype=\"multipart/form-data\" class=\"form\" action=\"/Bmazon/SellerControllerMap?service=addgallery&ptypeid=" + ptypeID + "\" method=\"POST\">\n"
                     + "                                            <td><div><a href=\"SellerControllerMap?service=gallerydetail&ptypeid=" + ptypeID + "\">" + product.getProductName() + "</a></div></td>\n"
                     + "                                            <td><div>" + ptype.getColor() + "</div></td>\n"
                     + "                                            <td><div>" + ptype.getSize() + "</div></td>\n"
@@ -1516,6 +1530,48 @@ public class SellerController extends HttpServlet {
     // </editor-fold>
 
     // <editor-fold defaultstate="collapsed" desc="Customer Method. Click on the + sign on the left to edit the code.">
+    public void serviceCustomerManagement(HttpServletRequest request, HttpServletResponse response) {
+        User account = (User) request.getSession().getAttribute("currUser");
+        String userID = account.getUserId();
+        Seller seller = sellerDAO.getSellerByUserID(Integer.parseInt(userID));
+        int sellerID = seller.getSellerID();
+
+        List<Customer> listCustomer = odDAO.getAllFamiliarCustomer(sellerID);
+
+        request.setAttribute("listCustomer", listCustomer);
+        sendDispatcher(request, response, "seller/customerSeller.jsp");
+    }
+
+    public void serviceCustomerDetail(HttpServletRequest request, HttpServletResponse response) {
+        int cusID = Integer.parseInt(request.getParameter("cusID"));
+        Customer cus = oDAO.getFamiliarCusByUID(cusID);
+        request.setAttribute("cus", cus);
+        sendDispatcher(request, response, "seller/customerDetail.jsp");
+    }
+
+    public void serviceSendThanks(HttpServletRequest request, HttpServletResponse response) {
+        String cusID = request.getParameter("userID");
+        String ordered = request.getParameter("ordered");
+        User u = uDAO.getUserById(cusID);
+        User account = (User) request.getSession().getAttribute("currUser");
+        String userID = account.getUserId();
+        Seller seller = sellerDAO.getSellerByUserID(Integer.parseInt(userID));
+        String mess = "";
+        String option = "sellerthanks";
+        SendEmail sm = new SendEmail();
+        //call the send email method
+        boolean test = sm.sendEmail(seller.getSellerShopName(), u.getEmail(), ordered, option);
+        //check if the email send successfully
+        if (test == true) {
+            request.setAttribute("messThanks", "Send successfully");
+        } else {
+            request.setAttribute("messThanks", "Failed to send");
+        }
+
+        request.setAttribute("state", test);
+        sendDispatcher(request, response, "SellerControllerMap?service=customermanagement");
+    }
+
     //</editor-fold>
     //
     private void serviceEditSellerInformation(HttpServletRequest request, HttpServletResponse response) {
@@ -1667,48 +1723,6 @@ public class SellerController extends HttpServlet {
         if (request.getParameter("row") == null) {
             sendDispatcher(request, response, "seller/sellerfeedback.jsp");
         }
-    }
-
-    public void serviceCustomerManagement(HttpServletRequest request, HttpServletResponse response) {
-        User account = (User) request.getSession().getAttribute("currUser");
-        String userID = account.getUserId();
-        Seller seller = sellerDAO.getSellerByUserID(Integer.parseInt(userID));
-        int sellerID = seller.getSellerID();
-
-        List<Customer> listCustomer = odDAO.getAllFamiliarCustomer(sellerID);
-
-        request.setAttribute("listCustomer", listCustomer);
-        sendDispatcher(request, response, "seller/customerSeller.jsp");
-    }
-    
-    public void serviceCustomerDetail(HttpServletRequest request, HttpServletResponse response) {
-        int cusID = Integer.parseInt(request.getParameter("cusID"));
-        Customer cus = oDAO.getFamiliarCusByUID(cusID);
-        request.setAttribute("cus", cus);
-        sendDispatcher(request, response, "seller/customerDetail.jsp");
-    }
-
-    public void serviceSendThanks(HttpServletRequest request, HttpServletResponse response) {
-        String cusID = request.getParameter("userID");
-        String ordered = request.getParameter("ordered");
-        User u = uDAO.getUserById(cusID);
-        User account = (User) request.getSession().getAttribute("currUser");
-        String userID = account.getUserId();
-        Seller seller = sellerDAO.getSellerByUserID(Integer.parseInt(userID));
-        String mess = "";
-        String option = "sellerthanks";
-        SendEmail sm = new SendEmail();
-        //call the send email method
-        boolean test = sm.sendEmail(seller.getSellerShopName(), u.getEmail(), ordered, option);
-        //check if the email send successfully
-        if (test == true) {
-            request.setAttribute("messThanks", "Send successfully");
-        } else {
-            request.setAttribute("messThanks", "Failed to send");
-        }
-
-        request.setAttribute("state", test);
-        sendDispatcher(request, response, "SellerControllerMap?service=customermanagement");
     }
 
     public void sendDispatcher(HttpServletRequest request, HttpServletResponse response, String path) {
