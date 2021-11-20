@@ -156,7 +156,7 @@
                     <!-- Main row -->
                     <!-- Dashboard -->
                     <div class="row" id="Order" name="tabcontent" style="display: block;">
-                        <div class="col-md-8">
+                        <div class="col-md-12">
                             <section class="panel">
                                 <!--                            <header class="panel-heading">
                                                                 Product in shop
@@ -178,14 +178,14 @@
                                         <input id="search" style="width: 100%;" type="text" oninput="pagination()" placeholder="Search.." class="form-control">
                                     </div>
                                 </div>
-                                <div class="panel-body table-responsive">
-                                    <table class="table table-hover" id="dataTable">
+                                <div class="table">
+                                    <table class="table">
                                         <thead>
                                             <tr>
                                                 <th style="width: 30%;height: 50px;">Content</th>
-                                                <th style="width: 10%;height: 50px;">Rating</th>                                                
-                                                <th style="width: 10%;height: 50px;">User</th>
-                                                <th style="width: 10%;height: 50px;">Product</th>
+                                                <th style="width: 20%;height: 50px;">Rating</th>                                                
+                                                <th style="width: 20%;height: 50px;">User</th>
+                                                <th style="width: 30%;height: 50px;">Product</th>
 
                                             </tr>
                                         </thead>
