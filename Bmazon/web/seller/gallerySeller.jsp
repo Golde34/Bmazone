@@ -219,7 +219,7 @@
                                         <td><div><%= ptype.getQuantity()%></div></td>
                                         <td>
                                             <label class="file">
-                                                <input type="file" name="photo" id="file" aria-label="File browser example">
+                                                <input type="file" name="photo" id="file" aria-label="File browser example" required="">
                                                 <span class="file-custom"></span>
                                             </label><br>
                                             <input type="submit" class="btn btn-success" value="Save">
