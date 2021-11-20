@@ -54,45 +54,7 @@
         <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
         <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
         <style type="text/css">
-            .modal .modal-dialog {
-                max-width: 400px;
-            }
-            .modal .modal-header, .modal .modal-body, .modal .modal-footer {
-                padding: 20px 30px;
-            }
-            .modal .modal-content {
-                border-radius: 3px;
-            }
-            .modal .modal-footer {
-                background: #ecf0f1;
-                border-radius: 0 0 3px 3px;
-            }
-            .modal .modal-title {
-                display: inline-block;
-            }
-            .modal .form-control {
-                border-radius: 2px;
-                box-shadow: none;
-                border-color: #dddddd;
-            }
-            .modal textarea.form-control {
-                resize: vertical;
-            }
-            .modal .btn {
-                border-radius: 2px;
-                min-width: 100px;
-            }	
-            .modal form label {
-                font-weight: normal;
-            }
-            .imgho{
-                width: 250px; 
-                height: 150px; 
-            }
-            .imgho:hover{
-                opacity: 0.7;
-                cursor: pointer;
-            }
+            
         </style>
     </head>
 

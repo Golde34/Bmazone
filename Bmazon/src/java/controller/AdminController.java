@@ -1424,12 +1424,15 @@ public class AdminController extends HttpServlet {
             pt.setSize(sizes[i]);
             pt.setPrice(prices[i]);
             NumberFormat format = NumberFormat.getInstance(Locale.US);
+            Number nPrice = 0;
             Number nQuantity = 0;
             try {
+                nPrice = format.parse(prices[i]);
                 nQuantity = format.parse(quantities[i]);
             } catch (ParseException ex) {
                 Logger.getLogger(AdminController.class.getName()).log(Level.SEVERE, null, ex);
             }
+            pt.setPrice(Integer.toString(nPrice.intValue()));
             pt.setQuantity(nQuantity.intValue());
             daoproducttype.editProduct(pt);
         }

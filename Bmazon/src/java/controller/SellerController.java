@@ -244,6 +244,12 @@ public class SellerController extends HttpServlet {
             if (service.equalsIgnoreCase("customermanagement")) {
                 serviceCustomerManagement(request, response);
             }
+            
+            //Customer detail
+            if (service.equalsIgnoreCase("customerdetail")) {
+                serviceCustomerDetail(request, response);
+            }
+            
             if (service.equalsIgnoreCase("sendthanks")) {
                 serviceSendThanks(request, response);
             }
@@ -857,14 +863,16 @@ public class SellerController extends HttpServlet {
             ProductType pt = ptDAO.getProductTypeByPTypeID(typeids[i]);
             pt.setColor(colors[i]);
             pt.setSize(sizes[i]);
-            pt.setPrice(prices[i]);
             NumberFormat format = NumberFormat.getInstance(Locale.US);
+            Number nPrice = 0;
             Number nQuantity = 0;
             try {
+                nPrice = format.parse(prices[i]);
                 nQuantity = format.parse(quantities[i]);
             } catch (ParseException ex) {
                 Logger.getLogger(AdminController.class.getName()).log(Level.SEVERE, null, ex);
             }
+            pt.setPrice(Integer.toString(nPrice.intValue()));
             pt.setQuantity(nQuantity.intValue());
             ptDAO.editProduct(pt);
         }
@@ -1111,7 +1119,6 @@ public class SellerController extends HttpServlet {
                     + "                                                <input type=\"file\" name=\"photo\" id=\"file\" aria-label=\"File browser example\">\n"
                     + "                                                <span class=\"file-custom\"></span>\n"
                     + "                                            </label><br>\n"
-                    + "                                            <input type=\"hidden\" value=\"addgallery\" name=\"service\">\n"
                     + "                                            <input type=\"submit\" class=\"btn btn-success\" value=\"Save\">\n"
                     + "                                        </td>\n"
                     + "                                    </form>"
@@ -1672,6 +1679,13 @@ public class SellerController extends HttpServlet {
 
         request.setAttribute("listCustomer", listCustomer);
         sendDispatcher(request, response, "seller/customerSeller.jsp");
+    }
+    
+    public void serviceCustomerDetail(HttpServletRequest request, HttpServletResponse response) {
+        int cusID = Integer.parseInt(request.getParameter("cusID"));
+        Customer cus = oDAO.getFamiliarCusByUID(cusID);
+        request.setAttribute("cus", cus);
+        sendDispatcher(request, response, "seller/customerDetail.jsp");
     }
 
     public void serviceSendThanks(HttpServletRequest request, HttpServletResponse response) {

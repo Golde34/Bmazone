@@ -222,7 +222,6 @@
                                                 <input type="file" name="photo" id="file" aria-label="File browser example">
                                                 <span class="file-custom"></span>
                                             </label><br>
-                                            <input type="hidden" value="addgallery" name="service">
                                             <input type="submit" class="btn btn-success" value="Save">
                                         </td>
                                     </form>
