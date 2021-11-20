@@ -239,11 +239,17 @@ public class SellerController extends HttpServlet {
             if (service.equalsIgnoreCase("commentpaging")) {
                 servicePagingComment(request, response);
             }
-            
+
             //Customer management
             if (service.equalsIgnoreCase("customermanagement")) {
                 serviceCustomerManagement(request, response);
             }
+            
+            //Customer detail
+            if (service.equalsIgnoreCase("customerdetail")) {
+                serviceCustomerDetail(request, response);
+            }
+            
             if (service.equalsIgnoreCase("sendthanks")) {
                 serviceSendThanks(request, response);
             }
@@ -613,7 +619,7 @@ public class SellerController extends HttpServlet {
             for (Gallery gallery : listGallery) {
                 pr.print(
                         "<td>\n"
-                        + "                           <img src=\"images/"+gallery.getLink()+"\" width=\"150px\" height=\"120px\">\n"
+                        + "                           <img src=\"images/" + gallery.getLink() + "\" width=\"150px\" height=\"120px\">\n"
                         + "                        </td>");
             }
             pr.print(
@@ -857,14 +863,16 @@ public class SellerController extends HttpServlet {
             ProductType pt = ptDAO.getProductTypeByPTypeID(typeids[i]);
             pt.setColor(colors[i]);
             pt.setSize(sizes[i]);
-            pt.setPrice(prices[i]);
             NumberFormat format = NumberFormat.getInstance(Locale.US);
+            Number nPrice = 0;
             Number nQuantity = 0;
             try {
+                nPrice = format.parse(prices[i]);
                 nQuantity = format.parse(quantities[i]);
             } catch (ParseException ex) {
                 Logger.getLogger(AdminController.class.getName()).log(Level.SEVERE, null, ex);
             }
+            pt.setPrice(Integer.toString(nPrice.intValue()));
             pt.setQuantity(nQuantity.intValue());
             ptDAO.editProduct(pt);
         }
@@ -1099,48 +1107,21 @@ public class SellerController extends HttpServlet {
             String ptypeID = ptype.getProductTypeId();
             Product product = pDAO.getProductByPtypeID(ptypeID);
             Double price = Double.parseDouble(ptype.getPrice());
-            pr.print("<tr>\n"
+            pr.print("<tr style=\"border-top: solid 2px black;\">\n" +
+"                                    <form enctype=\"multipart/form-data\" class=\"form\" action=\"/Bmazon/SellerControllerMap?service=addgallery&ptypeid=" + ptypeID + "\" method=\"POST\">\n"
                     + "                                            <td><div><a href=\"SellerControllerMap?service=gallerydetail&ptypeid=" + ptypeID + "\">" + product.getProductName() + "</a></div></td>\n"
                     + "                                            <td><div>" + ptype.getColor() + "</div></td>\n"
                     + "                                            <td><div>" + ptype.getSize() + "</div></td>\n"
                     + "                                            <td><div>" + nf.format(price) + "</div></td>\n"
                     + "                                            <td><div>" + ptype.getQuantity() + "</div></td>\n"
-                    + "                                            <td><div><a href=\"#addEmployeeModal\" data-toggle=\"modal\"><button class=\"btn btn-success\">Add</button></a>\n"
-                    + "                                                </div></td>\n"
-                    + "\n"
-                    + "                                    <div id=\"addEmployeeModal\" class=\"modal fade\">\n"
-                    + "                                        <div class=\"modal-dialog\">\n"
-                    + "                                            <div class=\"modal-content\">\n"
-                    + "                                <form enctype=\"multipart/form-data\" class=\"form\" action=\"/Bmazon/SellerControllerMap?service=addgallery&ptypeid=" + ptype.getProductTypeId() + "\" method=\"POST\">\n"
-                    + "                                                    <div class=\"modal-header\">						\n"
-                    + "                                                        <h4 class=\"modal-title\">Add Gallery</h4>\n"
-                    + "                                                        <button type=\"button\" class=\"close\" data-dismiss=\"modal\" aria-hidden=\"true\">&times;</button>\n"
-                    + "                                                    </div>\n"
-                    + "                                                    <div class=\"modal-body\">\n"
-                    + "\n"
-                    + "                                                        <div class=\"form-group\">\n"
-                    + "                                                            <div class=\"wrapper\">\n"
-                    + "                                                                <div class=\"image\">\n"
-                    + "                                                                    <img src=\"\">\n"
-                    + "                                                                </div>\n"
-                    + "                                                                <div class=\"file-name\">\n"
-                    + "                                                                    File name here\n"
-                    + "                                                                </div>\n"
-                    + "                                                            </div>\n"
-                    + "                                                            <input id=\"default-btn\" type=\"file\" hidden class=\"form-control\" name=\"photo\" placeholder=\"Enter photo\">\n"
-                    + "                                                        </div>\n"
-                    + "\n"
-                    + "\n"
-                    + "                                                    </div>\n"
-                    + "                                                    <div class=\"modal-footer\">\n"
-                    + "                                                        <input type=\"button\" class=\"btn btn-default\" data-dismiss=\"modal\" value=\"Cancel\">\n"
-                    + "                                                        <input type=\"hidden\" value=\"addgallery\" name=\"service\">\n"
-                    + "                                                        <input type=\"submit\" class=\"btn btn-success\" value=\"Add\">\n"
-                    + "                                                    </div>\n"
-                    + "                                                </form>\n"
-                    + "                                            </div>\n"
-                    + "                                        </div>\n"
-                    + "                                    </div>\n"
+                    + "                                            <td>\n"
+                    + "                                            <label class=\"file\">\n"
+                    + "                                                <input type=\"file\" name=\"photo\" id=\"file\" aria-label=\"File browser example\">\n"
+                    + "                                                <span class=\"file-custom\"></span>\n"
+                    + "                                            </label><br>\n"
+                    + "                                            <input type=\"submit\" class=\"btn btn-success\" value=\"Save\">\n"
+                    + "                                        </td>\n"
+                    + "                                    </form>"
                     + "                                    </tr>\n"
                     + "                                    <tr>\n");
             List<Gallery> listGallery = galleryDAO.getAllImageByProductTypeID(ptype.getProductTypeId());
@@ -1150,9 +1131,6 @@ public class SellerController extends HttpServlet {
                         + "                                        </td>\n");
             }
             pr.print("</tr>");
-        }
-        if (request.getParameter("row") == null) {
-            sendDispatcher(request, response, "SellerControllerMap?service=gallerymanagement");
         }
     }
 
@@ -1229,9 +1207,6 @@ public class SellerController extends HttpServlet {
             pr.print("</span>");
             pr.print("</a>");
             pr.print("</li>\n");
-        }
-        if (request.getParameter("row") == null) {
-            sendDispatcher(request, response, "seller/gallerySeller.jsp");
         }
     }
 
@@ -1358,17 +1333,17 @@ public class SellerController extends HttpServlet {
     }
 
     public void serviceActiveGallery(HttpServletRequest request, HttpServletResponse response) {
-        int id = Integer.parseInt(request.getParameter("galleryid"));
-        galleryDAO.changeStatus(id, 1);
-        Gallery g = galleryDAO.getGalleryById(id);
-        sendDispatcher(request, response, "SellerControllerMap?service=gallerydetail&ptypeid=" + id);
+        int gid = Integer.parseInt(request.getParameter("galleryid"));
+        galleryDAO.changeStatus(gid, 1);
+        Gallery g = galleryDAO.getGalleryById(gid);
+        sendDispatcher(request, response, "SellerControllerMap?service=gallerydetail&ptypeid=" + g.getProductTypeID());
     }
 
     public void serviceDeactiveGallery(HttpServletRequest request, HttpServletResponse response) {
-        int id = Integer.parseInt(request.getParameter("galleryid"));
-        galleryDAO.changeStatus(id, 0);
-        Gallery g = galleryDAO.getGalleryById(id);
-        sendDispatcher(request, response, "SellerControllerMap?service=gallerydetail&ptypeid=" + id);
+        int gid = Integer.parseInt(request.getParameter("galleryid"));
+        galleryDAO.changeStatus(gid, 0);
+        Gallery g = galleryDAO.getGalleryById(gid);
+        sendDispatcher(request, response, "SellerControllerMap?service=gallerydetail&ptypeid=" + g.getProductTypeID());
     }
     //</editor-fold>
 
@@ -1693,19 +1668,26 @@ public class SellerController extends HttpServlet {
             sendDispatcher(request, response, "seller/sellerfeedback.jsp");
         }
     }
-    
+
     public void serviceCustomerManagement(HttpServletRequest request, HttpServletResponse response) {
         User account = (User) request.getSession().getAttribute("currUser");
         String userID = account.getUserId();
         Seller seller = sellerDAO.getSellerByUserID(Integer.parseInt(userID));
         int sellerID = seller.getSellerID();
-        
+
         List<Customer> listCustomer = odDAO.getAllFamiliarCustomer(sellerID);
-        
+
         request.setAttribute("listCustomer", listCustomer);
         sendDispatcher(request, response, "seller/customerSeller.jsp");
     }
     
+    public void serviceCustomerDetail(HttpServletRequest request, HttpServletResponse response) {
+        int cusID = Integer.parseInt(request.getParameter("cusID"));
+        Customer cus = oDAO.getFamiliarCusByUID(cusID);
+        request.setAttribute("cus", cus);
+        sendDispatcher(request, response, "seller/customerDetail.jsp");
+    }
+
     public void serviceSendThanks(HttpServletRequest request, HttpServletResponse response) {
         String cusID = request.getParameter("userID");
         String ordered = request.getParameter("ordered");
@@ -1716,15 +1698,15 @@ public class SellerController extends HttpServlet {
         String mess = "";
         String option = "sellerthanks";
         SendEmail sm = new SendEmail();
-            //call the send email method
+        //call the send email method
         boolean test = sm.sendEmail(seller.getSellerShopName(), u.getEmail(), ordered, option);
-            //check if the email send successfully
-            if (test == true) {
-                request.setAttribute("messThanks", "Send successfully");
-            } else {
-                request.setAttribute("messThanks", "Failed to send");
-            }
-        
+        //check if the email send successfully
+        if (test == true) {
+            request.setAttribute("messThanks", "Send successfully");
+        } else {
+            request.setAttribute("messThanks", "Failed to send");
+        }
+
         request.setAttribute("state", test);
         sendDispatcher(request, response, "SellerControllerMap?service=customermanagement");
     }

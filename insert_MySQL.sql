@@ -22,8 +22,6 @@ VALUES ('Thinh', '1000:5b42403563616438303836:6f4b2f2dbd24e2a8f5fbe7132c1b322093
 INSERT INTO User(username, password, email, phoneNumber, sell, wallet, fullname, publicName, address, profileImage, backgroundImage, occupation, gender, DOB, bio, Facebook, Instagram, Twitter, Youtube, activityPoint, systemRole, status)
 VALUES ('Phuong', '1000:5b42403563616438303836:6f4b2f2dbd24e2a8f5fbe7132c1b322093c82e29a270090b', 'phuongnt@gmail.com', '0982768937', 0, 120000, 'Nguyen Thu Phuong',  'Phuong', 'TP HCM', 'defaultPicture.jpg','background_profile.jpg','Marketing', 0, '2001-3-16', 'Shopping', 'Thu Phuong', 'ins', 'twt', 'yt', 3000, 0, 1);
 INSERT INTO User(username, password, email, phoneNumber, sell, wallet, fullname, publicName, address, profileImage, backgroundImage, occupation, gender, DOB, bio, Facebook, Instagram, Twitter, Youtube, activityPoint, systemRole, status)
-VALUES ('G', '123456', 'asf@gmail.com', '0988907272', 0, 120000, 'Dong Viet',  'Viet', 'TP HCM', 'defaultPicture.jpg','background_profile.jpg','Tester', 0, '2001-3-16', 'Shopping', 'fb', 'ins', 'twt', 'yt', 3000, 0, 1);
-INSERT INTO User(username, password, email, phoneNumber, sell, wallet, fullname, publicName, address, profileImage, backgroundImage, occupation, gender, DOB, bio, Facebook, Instagram, Twitter, Youtube, activityPoint, systemRole, status)
 VALUES ('Employee', '1000:5b42403563616438303836:6f4b2f2dbd24e2a8f5fbe7132c1b322093c82e29a270090b', 'employee@gmail.com', '0983424233', 0, 120000, 'Employee',  'Employee', 'TP HCM', 'defaultPicture.jpg','background_profile.jpg','Employee', 0, '2001-3-16', 'Shopping', 'fb', 'ins', 'twt', 'yt', 3000, 2, 1);
 INSERT INTO User(username, password, email, phoneNumber, sell, wallet, fullname, publicName, address, profileImage, backgroundImage, occupation, gender, DOB, bio, Facebook, Instagram, Twitter, Youtube, activityPoint, systemRole, status)
 VALUES ('Employee2', '1000:5b42403563616438303836:6f4b2f2dbd24e2a8f5fbe7132c1b322093c82e29a270090b', 'employee2@gmail.com', '0983424232', 0, 120000, 'Employee',  'Employee', 'TP HCM', 'defaultPicture.jpg','background_profile.jpg','Employee', 0, '2001-3-16', 'Shopping', 'fb', 'ins', 'twt', 'yt', 3000, 2, 1);
@@ -56,9 +54,9 @@ INSERT INTO Seller(userID, sellerShopName, sellerPhone, evidence, sellerMainProd
 VALUES (6, 'Ba con tuan loc', '0928673463', 'owner can sell everything', 1, 'Ong gia noel', 1, 1);
 
 -- employee
-Insert into employees(userID,name,startdate,salary,avatar,status) values(9,'Nguyen Van A',now(),1000000,'defaultPicture.jpg',1);
-Insert into employees(userID,name,startdate,salary,avatar,status) values(10,'Nguyen Van B',now(),1200000,'defaultPicture.jpg',1);
-Insert into employees(userID,name,startdate,salary,avatar,status) values(11,'Nguyen Van C',now(),1100000,'defaultPicture.jpg',1);
+Insert into employees(userID,name,startdate,salary,avatar,status) values(8,'Nguyen Van A',now(),1000000,'defaultPicture.jpg',1);
+Insert into employees(userID,name,startdate,salary,avatar,status) values(9,'Nguyen Van B',now(),1200000,'defaultPicture.jpg',1);
+Insert into employees(userID,name,startdate,salary,avatar,status) values(10,'Nguyen Van C',now(),1100000,'defaultPicture.jpg',1);
 
 
 -- Genre
@@ -840,25 +838,25 @@ INSERT INTO Gallery(productID,productTypeID,link,status)VALUES (90,'Pr90Ty1','Pr
 -- Order
 
 INSERT INTO `Order`(userID,orderDate,requiredDate,shippedDate,shipName,shipAddress,shipCity,shipPhone,companyID,shipMoney,paymentMethod,total,state,status)VALUES (1,CURDATE(),CURDATE(),CURDATE(),'Viet','Kim Thanh','Hai Duong',0983586778,1,30000,'COD',20030000, 0, 1);
-INSERT INTO `Order`(userID,orderDate,requiredDate,shippedDate,shipName,shipAddress,shipCity,shipPhone,companyID,shipMoney,paymentMethod,total,state,status)VALUES (2,CURDATE(),CURDATE(),CURDATE(),'Thinh','Thach That','Ha Noi',0938693856,2,30000,'COD',730000, 0, 1);
-INSERT INTO `Order`(userID,orderDate,requiredDate,shippedDate,shipName,shipAddress,shipCity,shipPhone,companyID,shipMoney,paymentMethod,total,state,status)VALUES (4,CURDATE(),CURDATE(),CURDATE(),'Nam','HN','Ha Noi',0938693856,2,30000,'COD',730000, 0, 1);
-INSERT INTO `Order`(userID,orderDate,requiredDate,shippedDate,shipName,shipAddress,shipCity,shipPhone,companyID,shipMoney,paymentMethod,total,state,status)VALUES (4,CURDATE(),CURDATE(),CURDATE(),'Nam','HN','Ha Noi',0938693856,2,31000,'COD',730000, 1, 1);
-INSERT INTO `Order`(userID,orderDate,requiredDate,shippedDate,shipName,shipAddress,shipCity,shipPhone,companyID,shipMoney,paymentMethod,total,state,status)VALUES (4,CURDATE(),CURDATE(),CURDATE(),'Nam','HN','Ha Noi',0938693856,2,32000,'COD',730000, 2, 1);
-INSERT INTO `Order`(userID,orderDate,requiredDate,shippedDate,shipName,shipAddress,shipCity,shipPhone,companyID,shipMoney,paymentMethod,total,state,status)VALUES (4,CURDATE(),CURDATE(),CURDATE(),'Nam','HN','Ha Noi',0938693856,2,33000,'COD',730000, 3, 1);
+INSERT INTO `Order`(userID,orderDate,requiredDate,shippedDate,shipName,shipAddress,shipCity,shipPhone,companyID,shipMoney,paymentMethod,total,state,status)VALUES (2,CURDATE(),CURDATE(),CURDATE(),'Thinh','Thach That','Ha Noi',0938693856,2,30000,'COD',80970000, 0, 1);
+INSERT INTO `Order`(userID,orderDate,requiredDate,shippedDate,shipName,shipAddress,shipCity,shipPhone,companyID,shipMoney,paymentMethod,total,state,status)VALUES (4,CURDATE(),CURDATE(),CURDATE(),'Nam','HN','Ha Noi',0938693856,2,30000,'COD',80970000, 0, 1);
+INSERT INTO `Order`(userID,orderDate,requiredDate,shippedDate,shipName,shipAddress,shipCity,shipPhone,companyID,shipMoney,paymentMethod,total,state,status)VALUES (4,CURDATE(),CURDATE(),CURDATE(),'Nam','HN','Ha Noi',0938693856,2,31000,'COD',80970000, 1, 1);
+INSERT INTO `Order`(userID,orderDate,requiredDate,shippedDate,shipName,shipAddress,shipCity,shipPhone,companyID,shipMoney,paymentMethod,total,state,status)VALUES (4,CURDATE(),CURDATE(),CURDATE(),'Nam','HN','Ha Noi',0938693856,2,32000,'COD',80970000, 2, 1);
+INSERT INTO `Order`(userID,orderDate,requiredDate,shippedDate,shipName,shipAddress,shipCity,shipPhone,companyID,shipMoney,paymentMethod,total,state,status)VALUES (4,CURDATE(),CURDATE(),CURDATE(),'Nam','HN','Ha Noi',0938693856,2,33000,'COD',80970000, 3, 1);
 
 
 
 -- OrderDetail
 INSERT INTO OrderDetail(orderID,productTypeID,productName,price,quantity,status)VALUES (1,'Pr1Ty1','Laptop Acer Nitro 5',20000000,1,1);
 INSERT INTO OrderDetail(orderID,productTypeID,productName,price,quantity,status)VALUES (2,'Pr2Ty1','Chuot Logitech M102',700000,1,1);
-INSERT INTO OrderDetail(orderID,productTypeID,productName,price,quantity,status)VALUES (3,'Pr25Ty1','Oppo x5',7000000,1,1);
-INSERT INTO OrderDetail(orderID,productTypeID,productName,price,quantity,status)VALUES (3,'Pr25Ty2','Oppo x5 2',7000000,2,1);
-INSERT INTO OrderDetail(orderID,productTypeID,productName,price,quantity,status)VALUES (4,'Pr25Ty1','Oppo x5',7000000,1,1);
-INSERT INTO OrderDetail(orderID,productTypeID,productName,price,quantity,status)VALUES (4,'Pr25Ty2','Oppo x5 2',7000000,2,1);
-INSERT INTO OrderDetail(orderID,productTypeID,productName,price,quantity,status)VALUES (5,'Pr25Ty1','Oppo x5',7000000,1,1);
-INSERT INTO OrderDetail(orderID,productTypeID,productName,price,quantity,status)VALUES (5,'Pr25Ty2','Oppo x5 2',7000000,2,1);
-INSERT INTO OrderDetail(orderID,productTypeID,productName,price,quantity,status)VALUES (6,'Pr25Ty1','Oppo x5',7000000,1,1);
-INSERT INTO OrderDetail(orderID,productTypeID,productName,price,quantity,status)VALUES (6,'Pr25Ty2','Oppo x5 2',7000000,2,1);
+INSERT INTO OrderDetail(orderID,productTypeID,productName,price,quantity,status)VALUES (3,'Pr25Ty1','OPPO Find X3 Pro 5G',26990000,1,1);
+INSERT INTO OrderDetail(orderID,productTypeID,productName,price,quantity,status)VALUES (3,'Pr25Ty2','OPPO Find X3 Pro 5G',26990000,2,1);
+INSERT INTO OrderDetail(orderID,productTypeID,productName,price,quantity,status)VALUES (4,'Pr25Ty1','OPPO Find X3 Pro 5G',26990000,1,1);
+INSERT INTO OrderDetail(orderID,productTypeID,productName,price,quantity,status)VALUES (4,'Pr25Ty2','OPPO Find X3 Pro 5G',26990000,2,1);
+INSERT INTO OrderDetail(orderID,productTypeID,productName,price,quantity,status)VALUES (5,'Pr25Ty1','OPPO Find X3 Pro 5G',26990000,1,1);
+INSERT INTO OrderDetail(orderID,productTypeID,productName,price,quantity,status)VALUES (5,'Pr25Ty2','OPPO Find X3 Pro 5G',26990000,2,1);
+INSERT INTO OrderDetail(orderID,productTypeID,productName,price,quantity,status)VALUES (6,'Pr25Ty1','OPPO Find X3 Pro 5G',26990000,1,1);
+INSERT INTO OrderDetail(orderID,productTypeID,productName,price,quantity,status)VALUES (6,'Pr25Ty2','OPPO Find X3 Pro 5G',26990000,2,1);
 
 -- Comment
 INSERT INTO Comment(productID,userId,content,rating,status)VALUES(1,1,'Good.',4,1);

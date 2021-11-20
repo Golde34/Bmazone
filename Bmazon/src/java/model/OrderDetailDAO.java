@@ -313,7 +313,7 @@ public class OrderDetailDAO extends BaseDAO {
         List<Customer> list = new ArrayList<>();
         String sql = "select o.userID, count(distinct o.orderID), sum(o.total)\n" +
                 "from `order` o inner join orderdetail od on o.orderID = od.orderID inner join ProductType pt on od.productTypeID=pt.productTypeId inner join Product p on pt.productID=p.productID \n" +
-                "where p.sellerID = ? group by userID";
+                "where p.sellerID = ? and o.state = 3 group by userID";
         try {
             conn = new DBConnection().getConnection();
             pre = conn.prepareStatement(sql);

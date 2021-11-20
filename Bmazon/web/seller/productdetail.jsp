@@ -290,10 +290,10 @@
                                                             <%Double price = Double.parseDouble(ptype.getPrice());%>
 
                                                         <td><label>Price</label></td>
-                                                        <td><input required style="width: 100px;" type="text" name="price" pattern="[0-9]+" title="please enter number only" class="form-control price" value="<%=nf.format(price)%>"></td>
+                                                        <td><input required style="width: 100px;" type="text" name="price" pattern="[0-9]+" title="please enter number only" class="form-control number" value="<%=nf.format(price)%>"></td>
 
                                                         <td><label>Quantity</label></td>
-                                                        <td><input required style="width: 100px;"  type="text" name="quantity" pattern="[0-9]+" title="please enter number only" class="form-control" value="<%=ptype.getQuantity()%>"></td>
+                                                        <td><input required style="width: 100px;"  type="text" name="quantity" pattern="[0-9]+" title="please enter number only" class="form-control number" value="<%=ptype.getQuantity()%>"></td>
                                                         <td>
                                                             <%if (ptype.getStatus() == 1) {%>
                                                             <a class="btn btn-danger" href="SellerControllerMap?service=deactiveproducttype&producttypeid=<%=ptype.getProductTypeId()%>&productid=<%= product.getProductID()%>" onclick="return confirm('Are you sure?');">Deactive
@@ -404,11 +404,11 @@
                         </div>
                         <div class="form-group">
                             <label>Price</label>
-                            <input name="price" type="text" pattern="[0-9]+" title="please enter number only" class="form-control" required>
+                            <input name="price" type="text" pattern="[0-9]+" title="please enter number only" class="form-control number" required>
                         </div>
                         <div class="form-group">
                             <label>Quantity</label>
-                            <input name="quantity" type="text" pattern="[0-9]+" title="please enter number only" class="form-control" required>
+                            <input name="quantity" type="text" pattern="[0-9]+" title="please enter number only" class="form-control number" required>
                         </div>
                         <div class="form-group">
                             <label>Warehouse</label> <br>

@@ -72,7 +72,7 @@
                                             </div>
                                         </div>
                                         <div>
-                                            <input id="search" style="width: 100%;" type="text" oninput="pagination()" placeholder="Search.." class="form-control">
+                                            <input id="search" style="width: 100%;" type="hidden" oninput="pagination()" placeholder="Search.." class="form-control">
                                         </div>
                                     </div>
                                     <div class="table-responsive">
