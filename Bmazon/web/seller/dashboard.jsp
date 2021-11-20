@@ -292,11 +292,10 @@
                                             <%
                                                 List<Customer> listCus = odDAO.most5SpentCustomer();
                                                 for (Customer cus : listCus) {
-                                                User u = uDAO.getUserById(Integer.toString(cus.getUserID()));
 
                                             %>
                                             <tr>
-                                                <td><a href="SellerControllerMap?service=customerdetail&cusID=<%= cus.getUserID() %>"><%= u.getUsername() %></a></td>
+                                                <td><%= uDAO.getUserById(Integer.toString(cus.getUserID())).getUsername()%> </td>
                                                 <td><%= nf.format(cus.getSpent())%> VND</td>
                                             </tr>
                                             <% }%>

@@ -122,7 +122,7 @@
                                                     User u = uDAO.getUserById(Integer.toString(cus.getUserID()));
                                             %>
                                             <tr>
-                                                <td><a href="SellerControllerMap?service=customerdetail&cusID=<%= cus.getUserID() %>"><%= u.getUsername() %></a></td>
+                                                <td><%= u.getFullname() %></td>
                                                 <td><%= cus.getOrder() %> orders</td>
                                                 <td><%= nf.format(cus.getSpent()) %> VND</td>
                                                 <td style='white-space: nowrap'>

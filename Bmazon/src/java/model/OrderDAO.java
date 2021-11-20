@@ -5,7 +5,6 @@
  */
 package model;
 
-import entity.Customer;
 import entity.Order;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -744,36 +743,5 @@ public class OrderDAO extends BaseDAO {
             }
         }
         return count;
-    }
-    
-    
-    public Customer getFamiliarCusByUID(int uid) {
-        Customer customer = new Customer();
-        String sql = "select userID, count(distinct orderID), sum(total)\n" +
-                    "from `order`\n" +
-                    "where state = 3 and userID = ?";
-        try {
-            conn = new DBConnection().getConnection();
-            pre = conn.prepareStatement(sql);
-            pre.setInt(1, uid);
-            rs = pre.executeQuery();
-            if (rs.next()) {
-                customer.setUserID(rs.getInt(1));
-                customer.setOrder(rs.getInt(2));
-                customer.setSpent(rs.getDouble(3));
-            }
-
-        } catch (Exception e) {
-            Logger.getLogger(ProductDAO.class.getName()).log(Level.SEVERE, null, e);
-        } finally {
-            try {
-                rs.close();
-                pre.close();
-                conn.close();
-            } catch (Exception ex) {
-                Logger.getLogger(CategoryDAO.class.getName()).log(Level.SEVERE, null, ex);
-            }
-        }
-        return customer;
     }
 }
