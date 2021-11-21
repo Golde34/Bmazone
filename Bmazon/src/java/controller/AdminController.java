@@ -2465,6 +2465,7 @@ public class AdminController extends HttpServlet {
         User u = daouser.getUserBySellerId(s);
         u.setSell(1);
         u.setSystemRole(3);
+        daouser.updateInfoUserByAdmin(u);
         //add parameter to jsp
         List<Seller> listNewSeller = daoseller.getNewSeller();
         request.setAttribute("listNewSeller", listNewSeller);

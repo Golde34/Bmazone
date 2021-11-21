@@ -132,6 +132,9 @@
                 </div>
             </div> 
 
+            <%if (listNewArrival.size() == 0) {%>
+            <p></p>
+            <%} else {%>
             <section class="section sec_dien_thoai" id="section_1788051855">
                 <section class="section sec_dien_thoai" id="section_1788051855">
                     <div class="section-content relative">
@@ -198,20 +201,24 @@
                     </style>
                 </section>
             </section>
+            <%}%>
             <br>
-
+            <%if (listProduct.size() == 0) {%>
+            <p></p>   
+            <%} else {%>
             <div id="wrapper">
                 <div class="col large-12">              
                     <div class="shop-container">
                         <h1 style="text-align: center;"><strong>List All Product</strong></h1>
 
                         <div class="products row row-small large-columns-5 medium-columns-3 small-columns-2 has-shadow row-box-shadow-1" id="1">
-                            <% for (int i = 0; i <= listProduct.size(); i++ ) {
-                                if(i == 10) break;
-                                else{
-                                    String str = "images/" + daoGallery.getSampleOfProduct(listProduct.get(i).getProductID());
-                                    double price = Double.parseDouble(daoProductType.getProductPrice(listProduct.get(i).getProductID()));
-                                
+                            <% for (int i = 0; i <= listProduct.size(); i++) {
+                                    if (i == 10)
+                                        break;
+                                    else {
+                                        String str = "images/" + daoGallery.getSampleOfProduct(listProduct.get(i).getProductID());
+                                        double price = Double.parseDouble(daoProductType.getProductPrice(listProduct.get(i).getProductID()));
+
                             %>
                             <div class="product-small col has-hover post-1178 product type-product status-publish has-post-thumbnail product_cat-bach-hoa-online product_cat-do-hop-dong-goi first instock shipping-taxable purchasable product-type-simple" style="margin-top: 20px;">
                                 <div class="col-inner">
@@ -242,7 +249,8 @@
                                     </div><!-- box -->
                                 </div><!-- .col-inner -->
                             </div><!-- col -->
-                            <%   } }
+                            <%   }
+                                }
                             %>
                         </div>
                     </div>
@@ -252,6 +260,7 @@
 
                 </div>
             </div>
+                    <%}%>
 
             <jsp:include page="../footer.jsp"/>
         </body>
