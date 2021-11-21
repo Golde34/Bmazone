@@ -96,14 +96,25 @@ public class ProductDetailController extends HttpServlet {
     public void serviceProductDetail(HttpServletRequest request, HttpServletResponse response) {
         int id = Integer.parseInt(request.getParameter("pid"));
         User x = (User) request.getSession().getAttribute("currUser");
+        ArrayList<Comment> comments = daoComment.getCommentsByProductId(id);
+        if (comments.size() > 0) {
+            Product p = daoProduct.getProductByID(id);
+            int updateRating = 0;
+            for (Comment comment : comments) {
+                updateRating += comment.getRating();
+            }
+            updateRating /= comments.size();
+            p.setRating(updateRating);
+            daoProduct.updateProduct(p);
+        }
         if (x != null) {
             View view = viewDAO.getView(id, Integer.parseInt(x.getUserId()));
-            if (view==null) {
-                 View insert = new View(Integer.parseInt(x.getUserId()), id, 1);
-                viewDAO.insertClick(insert);         
+            if (view == null) {
+                View insert = new View(Integer.parseInt(x.getUserId()), id, 1);
+                viewDAO.insertClick(insert);
             } else {
-                 viewDAO.changeClick(view);
-               
+                viewDAO.changeClick(view);
+
             }
         }
         Product product = daoProduct.getProductByID(id);
@@ -118,7 +129,6 @@ public class ProductDetailController extends HttpServlet {
         request.setAttribute("listSize", listSize);
         ArrayList<String> listColor = daoProductType.getAllColorOfProduct(id);
         request.setAttribute("listColor", listColor);
-        ArrayList<Comment> comments = daoComment.getCommentsByProductId(id);
         request.setAttribute("comments", comments);
         int count = 0;
 //        for (Comment comment : comments) {
@@ -201,12 +211,15 @@ public class ProductDetailController extends HttpServlet {
         int rating = Integer.parseInt(request.getParameter("rating"));
         String content = (String) request.getParameter("content");
         ArrayList<Comment> comments = daoComment.getCommentsByProductId(id);
-        int numOfComment = comments.size() + 2;
-        Product update = daoProduct.getProductByID(id);
-        double newRating = rating / numOfComment + update.getRating() * (numOfComment - 1) / numOfComment;
-        int x = (int) Math.round(newRating);
-        update.setRating(x);
-        daoProduct.updateProduct(update);
+        if (comments.size() > 0) {
+            Product p = daoProduct.getProductByID(id);
+            int updateRating = 0;
+            for (Comment comment : comments) {
+                updateRating += comment.getRating();
+            }
+            updateRating /= comments.size();
+            p.setRating(updateRating);
+        }
         Comment newCom = new Comment();
         newCom.setProductID(id);
         newCom.setUserID(Integer.parseInt(user.getUserId()));

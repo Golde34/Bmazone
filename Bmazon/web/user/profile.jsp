@@ -29,7 +29,7 @@
             ProductTypeDAO daoPrType = new ProductTypeDAO();
             ProductDAO daoProduct = new ProductDAO();
             GalleryDAO daoGallery = new GalleryDAO();
-            ArrayList<Comment> comments = daoComment.getCommentsByUserId(Integer.parseInt(x.getUserId()));
+            ArrayList<Comment> comments = (ArrayList<Comment>) request.getAttribute("comments");
         %>       
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         <title>Your public Profile</title>

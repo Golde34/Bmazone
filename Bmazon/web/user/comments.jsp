@@ -83,6 +83,8 @@
                         <p class="comment_content " style="padding-left: 18px;">Reviewed in the <%=x.getAddress()%></p>
                         <p class="comment_content " style="padding-left: 18px;"> <%=comments.get(i).getContent()%></p> 
                     </div>
+                    
+                    <!--Product Detail-->
                     <div class="col-md-7" style="padding:15px; margin:0;"> 
                         <%Product p = daoProduct.getProductByID(comments.get(i).getProductID());
                             ProductType pt = daoPrType.getDefaultProductTypeByProductId(p.getProductID());
@@ -119,19 +121,18 @@
                                 <%ArrayList<Comment> numberRating = daoComment.getCommensByProductIdAndRating(p.getProductID(), rate);%>
                                 <div class="row" style="height: 30px;">
                                     <div class="col-md-2">
-                                        <p><%=rate%> star</p>
+                                        <p><%=rate%> star </p>
                                     </div>
                                     <div class="col-md-8">
                                         <div class="w3-light-grey w3-round">
-                                            <div class="w3-container w3-round w3-blue" style="width:<%=(numberRating.size()/c.size())*100%>%; height: 1.5rem;"></div>
+                                            <div class="w3-container w3-round w3-blue" style="width:<%=((float)numberRating.size()/c.size())*100%>%; height: 1.5rem;"></div>
                                         </div>
                                     </div>
                                     <div class="col-md-2">
-                                        <p><%=(numberRating.size()/c.size())*100%>%</p>
+                                        <p><%=Math.floor(((float)numberRating.size()/c.size())*100)%>%</p>
                                     </div>
                                 </div>
                                 <%}%>
-
                             </div>
                         </div>
                     </div>

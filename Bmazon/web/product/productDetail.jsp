@@ -278,7 +278,7 @@
                     <div class="row row-collapse align-equal"  id="row-1706731289">
                         <div class="text">
                             <div class="col-inner text-center" >
-                                <h1>Related Products</h1>
+                                <h1><strong>Related Products</strong></h1>
                             </div>
                             <div class="col-inner text-left" >
                                 <p class="orange" style="float: right" ><a href="ProductDetailControllerMap?service=getRelatedProduct&pid=<%=product.getProductID()%>"><label>View All</label></a></p>
@@ -332,14 +332,87 @@
                     </div>
                 </div>
             </section>
+            <style scope="scope">
+                #section_1788051855 {
+                    padding-top: 0px;
+                    padding-bottom: 0px;
+                }
+            </style>
         </section>
-        <style scope="scope">
-            #section_1788051855 {
-                padding-top: 0px;
-                padding-bottom: 0px;
-            }
-        </style>
-        <br><br><br>
+
+        <section class="section sec_dien_thoai" id="section_1788051855">
+            <div class="section-content relative">
+                <div class="gap-element" style="display:block; height:auto; padding-top:30px" class="clearfix"></div>
+                <br><br>
+                <div class="row row-collapse align-equal"  id="row-1706731289">
+                    <div class="text">
+                        <div class="col-inner text-center" >
+                            <h1><strong>Product Ratings</strong></h1>
+                        </div>
+                    </div>
+                </div>
+                <div style="padding:15px; margin:0;"> 
+                    <%Product p = daoProduct.getProductByID(product.getProductID());
+                        ProductType pty = daoProductType.getDefaultProductTypeByProductId(product.getProductID());
+                        Gallery g = daoGallery.getDefaultGalleryByProductTypeId(pty.getProductTypeId());
+                        Seller s = daoSeller.getSellerByProductId(p.getProductID());
+                        ArrayList<Comment> c = daoComment.getCommentsByProductId(p.getProductID());
+                    %>
+
+                    <div class="row" style="border: 1px solid black; border-radius: 5px;padding: 10px;">
+                        <div class="col-md-3">
+                            <a href="ProductDetailControllerMap?service=getProductDetail&pid=<%=p.getProductID()%>">
+                                <object style="margin-right: 20px;" data="images/<%=g.getLink()%>"></object>
+                            </a>
+                        </div>
+                        <div class="col-md-9" style="padding: 0;">
+                            <p style="padding: 0; margin:0; color: #001f3f; font-size: 18px;"><%=p.getProductName()%></p> 
+                            <div class="row" style="padding: 3px 15px 0px 15px;">
+                                <p style="padding:0; margin: 0;">by <span style="color: #0089db;"><%=s.getSellerShopName()%></span</p>
+                            </div>
+                            <div class="reviews-counter">
+                                <div class="rate">
+                                    <% for (int star = 5; star > 0; star--) {%>
+                                    <%if (star <= p.getRating()) {%>
+                                    <label for="star<%=star%>" title="text" style="color: #ffa41c; font-size: 1.5rem;"><%=star%> stars</label>
+                                    <%} else {%>
+                                    <label for="star<%=star%>" title="text" style="font-size: 1.5rem;"><%=star%> stars</label>
+                                    <%}
+                                        }%>
+                                </div>
+                            </div>
+                            <p style="padding-left: 9rem; font-size: 1.2rem; margin:0;"> <%=p.getRating()%> out of 5.</p>
+                            <p style="margin:3px 0 5px 0;"><%=c.size()%> ratings</p>
+                            <%for (int rate = 5; rate > 0; rate--) {%>
+                            <%ArrayList<Comment> numberRating = daoComment.getCommensByProductIdAndRating(p.getProductID(), rate);%>
+                            <div class="row" style="height: 30px;">
+                                <div class="col-md-2">
+                                    <p><%=rate%> star </p>
+                                </div>
+                                <div class="col-md-8">
+                                    <div class="w3-light-grey w3-round">
+                                        <div class="w3-container w3-round w3-blue" style="width:<%=((float) numberRating.size() / c.size()) * 100%>%; height: 1.5rem;"></div>
+                                    </div>
+                                </div>
+                                <div class="col-md-2">
+                                    <p><%=Math.floor(((float) numberRating.size() / c.size()) * 100)%>%</p>
+                                </div>
+                            </div>
+                            <%}%>
+                        </div>
+                    </div>
+                    <br>
+                </div>
+            </div><!-- .section-content -->
+            <style scope="scope">
+
+                #section_1788051855 {
+                    padding-top: 0px;
+                    padding-bottom: 0px;
+                    background-color: rgb(241, 241, 241);
+                }
+            </style>
+        </section>      
 
         <jsp:include page="../footer.jsp"/>
     </body>

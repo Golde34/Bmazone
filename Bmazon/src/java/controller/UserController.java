@@ -12,6 +12,7 @@ import static APIs.SecurePBKDF2.validatePassword;
 import APIs.SendEmail;
 import entity.Category;
 import entity.Comment;
+import entity.Product;
 import entity.Seller;
 import entity.Transaction;
 import entity.User;
@@ -43,6 +44,7 @@ import model.CategoryDAO;
 import model.CommentDAO;
 import model.UserDAO;
 import model.DBConnection;
+import model.ProductDAO;
 import model.SellerDAO;
 import model.TransactionDAO;
 import org.apache.commons.fileupload.FileItem;
@@ -70,6 +72,7 @@ public class UserController extends HttpServlet {
     CommentDAO daoComment = new CommentDAO();
     TransactionDAO daoTransaction = new TransactionDAO();
     CategoryDAO daoCategory = new CategoryDAO();
+    ProductDAO daoProduct = new ProductDAO();
 
     private static final long serialVersionUID = 1;
 
@@ -234,6 +237,8 @@ public class UserController extends HttpServlet {
             daoUser.changePassword(user, securePassword);
             messChangepass = "Change password successfully !!";
         }
+        User editNew = daoUser.getUserById(account.getUserId());
+        request.setAttribute("currUser", editNew);
         request.setAttribute("messChangepass", messChangepass);
         sendDispatcher(request, response, "loginAndSecurity/changepass.jsp");
 //        request.setAttribute("mess", mess);
@@ -255,6 +260,19 @@ public class UserController extends HttpServlet {
     public void serviceInfo(HttpServletRequest request, HttpServletResponse response) {
         User x = (User) request.getSession().getAttribute("currUser");
         request.setAttribute("currUser", x);
+        ArrayList<Comment> comments = daoComment.getCommentsByUserId(Integer.parseInt(x.getUserId()));
+        for (int i = 0; i < comments.size(); i++) {
+            Product p = daoProduct.getProductByID(comments.get(i).getProductID());
+            ArrayList<Comment> commentsPr = daoComment.getCommentsByProductId(p.getProductID());
+            int updateRating = 0;
+            for (Comment comment : commentsPr) {
+                updateRating += comment.getRating();
+            }
+            updateRating /= commentsPr.size();
+            p.setRating(updateRating);
+            daoProduct.updateProduct(p);
+        }
+        request.setAttribute("comments", comments);
         sendDispatcher(request, response, "user/profile.jsp");
     }
 
@@ -305,7 +323,8 @@ public class UserController extends HttpServlet {
     private void serviceChangeInfoPrivateProfile(HttpServletRequest request, HttpServletResponse response) throws NoSuchAlgorithmException, InvalidKeySpecException {
         String mess = "";
 
-        User x = (User) request.getSession().getAttribute("currUser");
+        User account = (User) request.getSession().getAttribute("currUser");
+        User x = daoUser.getUserById(account.getUserId());
         request.setAttribute("currUser", daoUser.getUserById(x.getUserId()));
         String name = request.getParameter("name");
         String mail = request.getParameter("mail");
@@ -585,7 +604,7 @@ public class UserController extends HttpServlet {
             pr.print("<tr>"
                     + "<td style=\"width: 25%; text-align: center;\">" + transaction.getHistory() + " </td>"
                     + "<td style=\"width: 25%; text-align: center;\">" + nf.format(transaction.getMoney()) + " </td>"
-                    );
+            );
             if (transaction.getState() == 1) {
                 pr.print("<td style=\"width: 25%; text-align: center;\">Deposit</td>");
             } else {

@@ -77,7 +77,7 @@
                                 <div class="input-group" >
                                     <span class="input-group-addon">
                                         <span class="glyphicon glyphicon-user"></span></span>
-                                    <input type="text" class="form-control" name="name" 
+                                    <input pattern="^[^\s]+(\s+[^\s]+)*$" type="text" class="form-control" name="name" 
                                            placeholder="Your Name" value="<%=x.getFullname()%>" required>
                                 </div>
 
@@ -85,7 +85,7 @@
                                 <div class="input-group">
                                     <span class="input-group-addon">
                                         <span class="glyphicon glyphicon-envelope"></span></span>
-                                    <input type="email" class="form-control" name="mail" 
+                                    <input pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{1,4}$" type="email" class="form-control" name="mail" 
                                            placeholder="Your E-mail" value="<%=x.getEmail()%>" required>
                                 </div>
 
@@ -93,7 +93,7 @@
                                 <div class="input-group">
                                     <span class="input-group-addon">
                                         <span class="glyphicon glyphicon-phone"></span></span>
-                                    <input id="mobile" type="text" class="form-control" name="phone" 
+                                    <input pattern="(09|03|07|08|05)+([0-9]{8})" id="mobile" type="text" class="form-control" name="phone" 
                                            placeholder="Your Phone" value="<%=x.getPhoneNumber()%>" required>
                                     <span id='message1'></span>
                                 </div>
