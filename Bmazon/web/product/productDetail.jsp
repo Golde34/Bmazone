@@ -391,11 +391,19 @@
                                 </div>
                                 <div class="col-md-8">
                                     <div class="w3-light-grey w3-round">
+                                        <%if (c.size() != 0) {%>
                                         <div class="w3-container w3-round w3-blue" style="width:<%=((float) numberRating.size() / c.size()) * 100%>%; height: 1.5rem;"></div>
+                                        <%} else {%>
+                                        <div class="w3-container w3-round w3-blue" style="width:0%; height: 1.5rem;"></div>
+                                        <%}%>
                                     </div>
                                 </div>
                                 <div class="col-md-2">
+                                    <%if (c.size() != 0) {%>
                                     <p><%=Math.floor(((float) numberRating.size() / c.size()) * 100)%>%</p>
+                                    <%} else {%>
+                                    <p>0%</p>
+                                    <%}%>
                                 </div>
                             </div>
                             <%}%>
